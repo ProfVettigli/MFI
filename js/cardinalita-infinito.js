@@ -91,6 +91,96 @@ function initCardinalita() {
             cantorStep++;
         });
     }
+    /* --- HILBERT HOTEL SIMULATION --- */
+    const hotelRoomsDiv = document.getElementById('hotel-rooms');
+    const hotelMsg = document.getElementById('hotel-msg');
+    const btnAddOne = document.getElementById('btn-add-one');
+    const btnAddInf = document.getElementById('btn-add-infinite');
+    const btnReset = document.getElementById('btn-reset-hotel');
+    
+    // Rooms array: 1 = occupied, 0 = free
+    let rooms = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]; 
+    const numRooms = 10;
+
+    function renderHotel() {
+        if(!hotelRoomsDiv) return;
+        hotelRoomsDiv.innerHTML = "";
+        rooms.forEach((occ, i) => {
+            const roomDiv = document.createElement('div');
+            roomDiv.style.width = "45px";
+            roomDiv.style.height = "60px";
+            roomDiv.style.border = "1px solid rgba(255,255,255,0.2)";
+            roomDiv.style.borderRadius = "4px";
+            roomDiv.style.display = "flex";
+            roomDiv.style.flexDirection = "column";
+            roomDiv.style.alignItems = "center";
+            roomDiv.style.justifyContent = "center";
+            roomDiv.style.background = occ ? "rgba(239, 68, 68, 0.2)" : "rgba(16, 185, 129, 0.2)";
+            roomDiv.style.transition = "transform 0.4s ease, background 0.4s ease";
+            
+            const n = i + 1;
+            roomDiv.innerHTML = `<span style="font-size:0.7rem;">S.${n}</span><span style="font-size:1.5rem;">${occ ? '👤' : '🚪'}</span>`;
+            hotelRoomsDiv.appendChild(roomDiv);
+        });
+    }
+
+    if(btnAddOne) {
+        btnAddOne.onclick = () => {
+            hotelMsg.textContent = "Spostiamo tutti: n -> n+1...";
+            
+            // Animation shift
+            const cards = hotelRoomsDiv.children;
+            for(let i=0; i<cards.length; i++) cards[i].style.transform = "translateX(20px)";
+            
+            setTimeout(() => {
+                for(let i = numRooms - 1; i > 0; i--) {
+                    rooms[i] = rooms[i-1];
+                }
+                rooms[0] = 1;
+                renderHotel();
+                hotelMsg.textContent = "Ospite sistemato nella Stanza 1!";
+                hotelMsg.style.color = "#10B981";
+            }, 500);
+        };
+    }
+
+    if(btnAddInf) {
+        btnAddInf.onclick = () => {
+            hotelMsg.textContent = "Spostiamo tutti: n -> 2n...";
+            
+            setTimeout(() => {
+                const oldRooms = [...rooms];
+                rooms.fill(0);
+                for(let i=0; i < numRooms/2; i++) {
+                    if(oldRooms[i]) rooms[(i+1)*2 - 1] = 1; 
+                }
+                renderHotel();
+                
+                setTimeout(() => {
+                    hotelMsg.textContent = "Ora tutte le stanze DISPARI sono libere! Facciamo entrare gli infiniti nuovi...";
+                    hotelMsg.style.color = "#FCD34D";
+                    
+                    setTimeout(() => {
+                        rooms.fill(1);
+                        renderHotel();
+                        hotelMsg.textContent = "Infiniti ospiti sistemati (nelle stanze dispari)!";
+                        hotelMsg.style.color = "#10B981";
+                    }, 1500);
+                }, 1000);
+            }, 500);
+        };
+    }
+
+    if(btnReset) {
+        btnReset.onclick = () => {
+            rooms = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+            hotelMsg.textContent = "L'hotel è pieno (ma pronto per l'infinito)!";
+            hotelMsg.style.color = "#FCD34D";
+            renderHotel();
+        };
+    }
+
+    renderHotel();
 
     /* --- QUIZ GENERATION --- */
     const quizData = [
