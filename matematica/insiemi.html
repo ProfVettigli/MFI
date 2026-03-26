@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insiemi - Lezione Interattiva MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+
+        .sub-hero {
+            padding: 4rem 0 2rem;
+            text-align: left;
+        }
+
+        .sub-hero-title {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="sub-hero">
+        <div class="container">
+            <a href="logica.html" class="back-button">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Logica
+            </a>
+            <h1 class="sub-hero-title">Teoria degli <span class="gradient-text">Insiemi</span></h1>
+            <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+                Un insieme è una collezione di elementi ben definiti e distinti uno dall'altro, accomunati da almeno una
+                caratteristica in comune. Scopriamo insieme come funzionano raggruppando oggetti del nostro quotidiano.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- REPRESENTATION -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">Come si scrive un Insieme?</h2>
+            <p class="lesson-text">Un insieme si può rappresentare in vari modi. Il più intuitivo è la
+                <strong>Rappresentazione per Elencazione</strong>. In questo caso, elenchiamo tutti gli elementi tra
+                parentesi graffe "{ }", separandoli con una virgola.
+                Si usano spesso le lettere maiuscole (es. A, B) per dare il nome all'insieme.
+            </p>
+            <div
+                style="background: rgba(0,0,0,0.2); border-left: 4px solid var(--math-color); padding: 1rem 1.5rem; margin: 1.5rem 0; font-family: monospace; font-size: 1.1rem; color: var(--text-main);">
+                A = { 1, 2, 3, 4, 5 }<br><br>
+                Pari = { 2, 4, 6, 8, 10, ... }<br><br>
+                Dispari = { 1, 3, 5, 7, 9, ... }
+            </div>
+            <p class="lesson-text">È semplice: tu vedi l'insieme e sai esattamente cosa c'è dentro perché riesci a
+                leggere e "elencare" i suoi elementi!</p>
+        </section>
+
+        <!-- EULER VENN DIAGRAMS -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">I Diagrammi di Eulero-Venn</h2>
+            <p class="lesson-text">Un altro modo molto potente e "visivo" per rappresentare gli insiemi è il <strong>Diagramma di Eulero-Venn</strong>. Si disegna una linea chiusa (come un cerchio o un ovale) e si posizionano gli elementi dell'insieme al suo interno.</p>
+            <p class="lesson-text">Tutto ciò che sta <em>al di fuori</em> della linea chiusa semplicemente non appartiene all'insieme. <br>
+            <strong>Esercizio Interattivo:</strong> L'Insieme V è l'insieme delle <strong>Vocali</strong>. Trascina le vocali all'interno del diagramma circolarè. Lascia le consonanti al di fuori (nella scatola a sinistra)!</p>
+            
+            <div class="interactive-area" style="align-items: center; justify-content: flex-start; gap: 4rem;">
+                <div class="drag-pool" id="venn-pool" data-zone="pool" style="min-height: 120px; max-width: 200px;">
+                    <div class="drag-item" draggable="true" data-type="vocale">A</div>
+                    <div class="drag-item" draggable="true" data-type="consonante">B</div>
+                    <div class="drag-item" draggable="true" data-type="vocale">E</div>
+                    <div class="drag-item" draggable="true" data-type="consonante">C</div>
+                    <div class="drag-item" draggable="true" data-type="vocale">O</div>
+                    <div class="drag-item" draggable="true" data-type="consonante">F</div>
+                </div>
+                
+                <div class="drop-zone" id="venn-zone" data-zone="vocali" style="width: 250px; height: 250px; min-width: 250px; border-radius: 50%; border: 4px solid var(--math-color); background: rgba(59, 130, 246, 0.05); display: flex; align-content: flex-start; justify-content: center; position: relative;">
+                    <div style="position: absolute; top: -15px; left: 10px; background: var(--math-color); color: white; padding: 0.2rem 1rem; border-radius: 10px; font-weight: bold; font-size: 1.2rem;">V</div>
+                    <!-- container to correctly flex wrap objects inside -->
+                    <div style="width: 100%; height: 100%; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 5px; padding: 20px;"></div>
+                </div>
+            </div>
+            <div class="feedback-msg" id="venn-feedback"></div>
+        </section>
+
+        <!-- FIRST INTERACTIVE LESSON: GEOMETRY -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">1. Forme Geometriche</h2>
+            <p class="lesson-text">
+                Immagina di dover riordinare la tua scrivania. Un insieme è semplicemente un "cesto" dove inseriamo
+                oggetti coerenti tra loro. <br>
+                <strong>Tuo Compito:</strong> Raggruppa tutte le figure con <strong>4 lati (Quadrilateri)</strong>
+                nell'Insieme A, e le altre nell'Insieme B.
+            </p>
+
+            <div class="interactive-area">
+                <div class="drag-pool" id="geo-pool" data-zone="pool">
+                    <div class="drag-item" draggable="true" data-type="quad">🟦</div>
+                    <div class="drag-item" draggable="true" data-type="not-quad">🔺</div>
+                    <div class="drag-item" draggable="true" data-type="not-quad">🟡</div>
+                    <div class="drag-item" draggable="true" data-type="quad">🟧</div>
+                    <div class="drag-item" draggable="true" data-type="quad">🟪</div>
+                    <div class="drag-item" draggable="true" data-type="not-quad">⭐</div>
+                </div>
+
+                <div class="drop-zone" id="geo-zone-a" data-zone="quadrilateri">
+                    <h4>Insieme A (Quadrilateri)</h4>
+                </div>
+
+                <div class="drop-zone" id="geo-zone-b" data-zone="altre-forme">
+                    <h4>Insieme B (Altre Forme)</h4>
+                </div>
+            </div>
+            <div class="feedback-msg" id="geo-feedback"></div>
+        </section>
+
+        <!-- SECOND INTERACTIVE LESSON: POKEMON -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">2. I Pokémon</h2>
+            <p class="lesson-text">
+                Possiamo creare insiemi non solo con la geometria, ma con tutto! Ad esempio, i Pokémon possono essere
+                raggruppati in base al loro elemento (Fuoco, Acqua, Erba).
+                <br><strong>Tuo Compito:</strong> Inserisci i Pokémon nel loro Insieme (Habitat) corretto!
+            </p>
+
+            <div class="interactive-area">
+                <div class="drag-pool" id="pkmn-pool" data-zone="pool">
+                    <div class="drag-item" draggable="true" data-type="fuoco"
+                        style="font-size: 1rem; width: auto; padding: 0.5rem 1rem; flex-direction: column; height: auto; text-align: center;">
+                        Charizard<span>🔥</span></div>
+                    <div class="drag-item" draggable="true" data-type="acqua"
+                        style="font-size: 1rem; width: auto; padding: 0.5rem 1rem; flex-direction: column; height: auto; text-align: center;">
+                        Blastoise<span>💧</span></div>
+                    <div class="drag-item" draggable="true" data-type="erba"
+                        style="font-size: 1rem; width: auto; padding: 0.5rem 1rem; flex-direction: column; height: auto; text-align: center;">
+                        Venusaur<span>🍃</span></div>
+                    <div class="drag-item" draggable="true" data-type="fuoco"
+                        style="font-size: 1rem; width: auto; padding: 0.5rem 1rem; flex-direction: column; height: auto; text-align: center;">
+                        Arcanine<span>🔥</span></div>
+                    <div class="drag-item" draggable="true" data-type="acqua"
+                        style="font-size: 1rem; width: auto; padding: 0.5rem 1rem; flex-direction: column; height: auto; text-align: center;">
+                        Lapras<span>💧</span></div>
+                    <div class="drag-item" draggable="true" data-type="erba"
+                        style="font-size: 1rem; width: auto; padding: 0.5rem 1rem; flex-direction: column; height: auto; text-align: center;">
+                        Bulbasaur<span>🍃</span></div>
+                </div>
+
+                <!-- Use standard sizes but stylized borders via previously defined classes -->
+                <div class="drop-zone zone-fuoco" id="pkmn-zone-fuoco" data-zone="fuoco">
+                    <h4>🔥 Insieme Fuoco</h4>
+                </div>
+
+                <div class="drop-zone zone-acqua" id="pkmn-zone-acqua" data-zone="acqua">
+                    <h4>💧 Insieme Acqua</h4>
+                </div>
+
+                <div class="drop-zone zone-botanica" id="pkmn-zone-erba" data-zone="erba">
+                    <h4>🍃 Insieme Erba</h4>
+                </div>
+            </div>
+            <div class="feedback-msg" id="pkmn-feedback"></div>
+        </section>
+
+        <!-- OPERATIONS SECTION -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">3. Operazioni tra gli Insiemi</h2>
+            <p class="lesson-text">Gli insiemi non sono scatole rigide: possono interagire tra loro generando nuovi
+                raggruppamenti. Le tre operazioni fondamentali sono:</p>
+
+            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+                <div class="card" style="padding: 1.5rem; min-height: unset;">
+                    <h3 style="color: var(--math-color); font-size: 1.5rem; margin-bottom: 0.5rem;">Unione (A ∪ B)</h3>
+                    <p style="color: var(--text-muted); font-size: 0.95rem;">È l'insieme formato da tutti gli elementi
+                        che appartengono ad A oppure a B (o ad entrambi). Esempio: unendo l'insieme dei Pokémon di Fuoco
+                        e quelli d'Acqua avremo una squadra combinata!</p>
+                </div>
+                <div class="card" style="padding: 1.5rem; min-height: unset;">
+                    <h3 style="color: var(--physics-color); font-size: 1.5rem; margin-bottom: 0.5rem;">Intersezione (A ∩
+                        B)</h3>
+                    <p style="color: var(--text-muted); font-size: 0.95rem;">È l'insieme formato solo dagli elementi che
+                        appartengono <strong>contemporaneamente</strong> sia ad A che a B. Ad esempio, un Pokémon che è
+                        sia di tipo Acqua che Erba (come Ludicolo).</p>
+                </div>
+                <div class="card" style="padding: 1.5rem; min-height: unset;">
+                    <h3 style="color: #EF4444; font-size: 1.5rem; margin-bottom: 0.5rem;">Differenza (A \ B)</h3>
+                    <p style="color: var(--text-muted); font-size: 0.95rem;">È l'insieme degli elementi di A che
+                        <strong>non</strong> appartengono a B. Togliendo da A tutti gli elementi che condivide con B,
+                        otteniamo la differenza pura.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SUBSETS AND PARTITIONS -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">4. Sottoinsiemi e Partizioni</h2>
+
+            <h3 style="margin-top: 1rem; color: var(--text-main);">Il Sottoinsieme (A ⊆ B)</h3>
+            <p class="lesson-text">Se tutti gli elementi di un insieme A sono contenuti anche in un insieme più grande
+                B, allora diciamo che A è un sottoinsieme di B.
+                <br><em>Esempio:</em> L'insieme di tutti i "Pikachu" è chiaramente un sottoinsieme dell'insieme più
+                grande "Tutti i Pokémon Elettro".
+            </p>
+
+            <h3 style="margin-top: 2rem; color: var(--text-main);">La Partizione di un Insieme</h3>
+            <p class="lesson-text">Partizionare un insieme significa dividerlo in tanti sottoinsiemi più piccoli
+                ("fette") rispettando rigorosamente <strong>3 regole</strong>:
+            <ul
+                style="color: var(--text-muted); font-weight: 300; margin-left: 1.5rem; margin-top: 0.5rem; margin-bottom: 2rem; list-style-type: decimal;">
+                <li><strong>Nessun sottoinsieme è vuoto</strong>.</li>
+                <li><strong>L'intersezione di tutti i sottoinsiemi è vuota</strong> (non ci sono elementi in comune tra
+                    le fette, nessuna sovrapposizione).</li>
+                <li><strong>L'unione di tutti i sottoinsiemi è l'insieme di partenza</strong> (tutte le "fette" insieme
+                    ricreano l'intero senza lasciare fuori nulla).</li>
+            </ul>
+            </p>
+
+            <p class="lesson-text"><strong>Esercizio Interattivo:</strong> Prova a creare una partizione dell'insieme A
+                = { 1, 2, 3, 4, 5, 6 } suddividendolo in "Numeri Pari" e "Numeri Dispari". Devi rispettare le 3 regole
+                descritte sopra!</p>
+
+            <div class="interactive-area">
+                <div class="drag-pool" id="part-pool" data-zone="pool" style="min-height: 80px;">
+                    <div class="drag-item" draggable="true" data-type="dispari">1</div>
+                    <div class="drag-item" draggable="true" data-type="pari">2</div>
+                    <div class="drag-item" draggable="true" data-type="dispari">3</div>
+                    <div class="drag-item" draggable="true" data-type="pari">4</div>
+                    <div class="drag-item" draggable="true" data-type="dispari">5</div>
+                    <div class="drag-item" draggable="true" data-type="pari">6</div>
+                </div>
+
+                <div class="drop-zone" id="part-zone-pari" data-zone="pari"
+                    style="border-color: #10B981; background: rgba(16, 185, 129, 0.05);">
+                    <h4>Sottoinsieme Pari</h4>
+                </div>
+
+                <div class="drop-zone" id="part-zone-dispari" data-zone="dispari"
+                    style="border-color: #F59E0B; background: rgba(245, 158, 11, 0.05);">
+                    <h4>Sottoinsieme Dispari</h4>
+                </div>
+            </div>
+            <div class="feedback-msg" id="part-feedback"></div>
+        </section>
+
+        <!-- QUIZ -->
+        <section class="lesson-section quiz-container">
+            <h2 class="lesson-title">Quiz di Riepilogo</h2>
+            <p class="lesson-text" style="font-size: 0.95rem;">Testa le tue conoscenze rispondendo a queste domande.</p>
+            <div id="quiz-area">
+                <!-- Il quiz verrà generato via JS -->
+            </div>
+            <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Matematica.</p>
+    </footer>
+
+    <!-- JS -->
+    <script src="../js/insiemi.js"></script>
+</body>
+
+</html>
