@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biologia e Logica: Linneo - MFI Interattiva</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+    
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+        
+        .sub-hero {
+            padding: 4rem 0 2rem;
+            text-align: left;
+            position: relative;
+        }
+        
+        .sub-hero-title {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+        
+        .biology-badge {
+            display: inline-block;
+            background: rgba(16, 185, 129, 0.15); /* Greenish for bio */
+            color: #10B981;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            letter-spacing: 1px;
+        }
+
+        .hierarchy-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 600px;
+            margin: 2rem auto;
+        }
+
+        .h-box {
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            transition: transform 0.3s;
+        }
+        .h-box:hover { transform: scale(1.02); }
+
+        /* Drag & Drop Linneo */
+        .interactive-board {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+            background: rgba(255,255,255,0.02);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        @media(max-width: 768px) {
+            .interactive-board { grid-template-columns: 1fr; }
+        }
+
+        .animal-pool {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 1rem;
+            min-height: 100px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+            align-content: flex-start;
+        }
+
+        .animal-item {
+            background: var(--surface-light);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: grab;
+            border: 1px solid rgba(255,255,255,0.2);
+            user-select: none;
+        }
+        .animal-item:active { cursor: grabbing; transform: scale(0.95); }
+
+        .class-zone-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .class-zone {
+            min-height: 80px;
+            border: 2px dashed rgba(255,255,255,0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .class-zone h4 {
+            width: 100%;
+            margin-bottom: 0.5rem;
+            color: var(--physics-color); /* We'll use this greenish accent */
+            font-size: 1.1rem;
+        }
+
+        .lesson-text strong {
+            color: #10B981;
+        }
+    </style>
+</head>
+<body>
+    <header class="sub-hero">
+        <div class="container">
+            <a href="logica.html" class="back-button">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Logica
+            </a>
+            <div class="biology-badge">INTERDISCIPLINARE: BIOLOGIA 🧬</div>
+            <h1 class="sub-hero-title">La Logica di <span style="background: linear-gradient(135deg, #10B981, #3B82F6); -webkit-background-clip: text; background-clip: text; color: transparent;">Carlo Linneo</span></h1>
+            <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+                Come si fa a riordinare il caos assoluto di milioni di esseri viventi sulla Terra? Usando l'insiemistica e la logica! Scopriamo come definizioni univoche e inequivocabili hanno creato il sistema di classificazione della natura.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <!-- TEORIA: Insiemi e Definizioni -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">1. Definizioni Univoche come Filtri Logici</h2>
+            <p class="lesson-text">
+                In biologia, non possiamo permetterci ambiguità. Se diciamo "animali con le ali", stiamo includendo sia un'aquila, sia un pipistrello, sia una mosca. Ha senso raggrupparli insieme? Evolutivamente no!
+            </p>
+            <p class="lesson-text">
+                Il naturalista svedese <strong>Carlo Linneo</strong> (1707-1778) ha compreso che per studiare la vita serve la logica matematica degli insiemi. Ha introdotto una rigida gerarchia in cui ogni "scatola" (insieme) possiede una <strong>definizione logica univoca ed inequivocabile</strong>. Se un animale possiede tutte le proprietà della definizione, entra nell'insieme. Altrimenti resta fuori!
+            </p>
+            <div style="background: rgba(16, 185, 129, 0.05); padding: 1.5rem; border-left: 4px solid #10B981; border-radius: 0 8px 8px 0; margin-top: 1.5rem;">
+                <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">
+                    <strong>Esempio Logico (I Mammiferi):</strong><br>
+                    Per far parte dell'insieme "Mammiferi" (Classe), devi rispondere "Vero (T)" alla proposizione complessa: <br>
+                    <em>(Ha ghiandole mammarie) AND (Ha peli sul corpo) AND (È omeotermo)</em>. <br>
+                    Se anche solo una proprietà è Falsa... mi dispiace, la congiunzione logica (AND) fallisce e l'animale non entra in questo insieme!
+                </p>
+            </div>
+        </section>
+
+        <!-- GERARCHIA -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">2. Insiemi e Sottoinsiemi (La Tassonomia)</h2>
+            <p class="lesson-text">
+                Le categorie sviluppate da Linneo non sono altro che <strong>sottoinsiemi sempre più piccoli e specifici</strong>. Più scendiamo, più la definizione logica diventa severa e restrittiva. Questo sistema è chiamato nomenclatura binomiale (genere e specie).
+            </p>
+
+            <div class="hierarchy-container">
+                <div class="h-box" style="background:#1E3A8A; width: 100%;">Regno (es. Animali)</div>
+                <div class="h-box" style="background:#1D4ED8; width: 90%; margin: 0 auto;">Phylum (es. Cordati)</div>
+                <div class="h-box" style="background:#2563EB; width: 80%; margin: 0 auto;">Classe (es. Mammiferi)</div>
+                <div class="h-box" style="background:#3B82F6; width: 70%; margin: 0 auto;">Ordine (es. Carnivori)</div>
+                <div class="h-box" style="background:#60A5FA; width: 60%; margin: 0 auto;">Famiglia (es. Canidi)</div>
+                <div class="h-box" style="background:#93C5FD; width: 50%; margin: 0 auto; color: #1E3A8A;">Genere (es. Canis)</div>
+                <div class="h-box" style="background:#BFDBFE; width: 40%; margin: 0 auto; color: #1E3A8A;">Specie (es. Canis lupus)</div>
+            </div>
+            <p class="lesson-text" style="text-align: center; font-size: 0.9rem; color: var(--text-muted); margin-top: 1rem;">
+                <em>L'insieme vuoto non esiste in natura, e l'unione di tutte le Specie forma il Regno vitale.</em>
+            </p>
+        </section>
+
+        <!-- ATTIVITÀ INTERATTIVA -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">3. Classificazione Pratica (Drag & Drop)</h2>
+            <p class="lesson-text">
+                Riconosci questi animali in base alle loro caratteristiche biologiche/logiche inequivocabili e trascinali nel loro Insieme Tassonomico corretto (Classe).
+            </p>
+
+            <div class="interactive-board">
+                <!-- Zona degli Animali -->
+                <div>
+                    <h3 style="color: white; margin-bottom: 1rem;">Animali da smistare</h3>
+                    <div class="animal-pool" id="animal-pool">
+                        <div class="animal-item" draggable="true" data-class="mammiferi">Delfino 🐬</div>
+                        <div class="animal-item" draggable="true" data-class="uccelli">Pinguino 🐧</div>
+                        <div class="animal-item" draggable="true" data-class="rettili">Serpente 🐍</div>
+                        <div class="animal-item" draggable="true" data-class="mammiferi">Pipistrello 🦇</div>
+                        <div class="animal-item" draggable="true" data-class="anfibi">Rana 🐸</div>
+                        <div class="animal-item" draggable="true" data-class="rettili">Tartaruga 🐢</div>
+                    </div>
+                </div>
+
+                <!-- Zone di Classificazione -->
+                <div class="class-zone-container">
+                    <div class="class-zone" data-target="mammiferi" style="border-color: #3B82F6;">
+                        <h4 style="color: #3B82F6;">Classe: Mammiferi <br><span style="font-size:0.8rem; font-weight:normal; color: var(--text-muted)">(Allattano i cuccioli, hanno peli/capelli)</span></h4>
+                    </div>
+                    <div class="class-zone" data-target="uccelli" style="border-color: #F59E0B;">
+                        <h4 style="color: #F59E0B;">Classe: Uccelli <br><span style="font-size:0.8rem; font-weight:normal; color: var(--text-muted)">(Hanno piume, depongono uova a guscio duro)</span></h4>
+                    </div>
+                    <div class="class-zone" data-target="rettili" style="border-color: #10B981;">
+                        <h4 style="color: #10B981;">Classe: Rettili <br><span style="font-size:0.8rem; font-weight:normal; color: var(--text-muted)">(Squame, sangue freddo, polmoni)</span></h4>
+                    </div>
+                    <div class="class-zone" data-target="anfibi" style="border-color: #8B5CF6;">
+                        <h4 style="color: #8B5CF6;">Classe: Anfibi <br><span style="font-size:0.8rem; font-weight:normal; color: var(--text-muted)">(Pelle nuda umida, doppia vita acqua/terra)</span></h4>
+                    </div>
+                </div>
+            </div>
+
+            <div id="linneo-feedback" class="feedback-msg" style="margin-top: 1.5rem; font-size: 1.15rem;"></div>
+
+        </section>
+
+        <!-- QUIZ FINALE -->
+        <section class="lesson-section quiz-container">
+            <h2 class="lesson-title">Quiz: Logica Tassonomica</h2>
+            <p class="lesson-text" style="font-size: 0.95rem;">Verifica la tua comprensione del sistema linneano.</p>
+            <div id="quiz-area"></div>
+            <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Matematica e Biologia.</p>
+    </footer>
+
+    <!-- JS -->
+    <script src="../js/linneo.js"></script>
+</body>
+</html>
