@@ -62,4 +62,35 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    /* --- PRIME FACTORIZATION --- */
+    const factorInput = document.getElementById('factor-input');
+    const factorBtn = document.getElementById('btn-factorize');
+    const factorResult = document.getElementById('factor-result');
+
+    if (factorBtn && factorInput && factorResult) {
+        factorBtn.onclick = () => {
+            let n = parseInt(factorInput.value);
+            if (isNaN(n) || n < 2) {
+                factorResult.textContent = "Inserisci un numero >= 2!";
+                return;
+            }
+
+            const factors = [];
+            let d = 2;
+            let tempN = n;
+            while (tempN > 1) {
+                while (tempN % d === 0) {
+                    factors.push(d);
+                    tempN /= d;
+                }
+                d++;
+                if (d * d > tempN && tempN > 1) {
+                    factors.push(tempN);
+                    break;
+                }
+            }
+            factorResult.textContent = `${n} = ${factors.join(' × ')}`;
+        };
+    }
+
 });

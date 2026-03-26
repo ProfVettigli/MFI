@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operazioni con Numeri Relativi - MFI Interattiva</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+
+        .logic-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .sign-rule {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            max-width: 400px;
+            margin: 2rem auto;
+            text-align: center;
+        }
+
+        .rule-item {
+            padding: 1rem;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .plus-plus { background: rgba(16, 185, 129, 0.1); border: 1px solid #10B981; color: #10B981; }
+        .minus-minus { background: rgba(16, 185, 129, 0.1); border: 1px solid #10B981; color: #10B981; }
+        .plus-minus { background: rgba(239, 68, 68, 0.1); border: 1px solid #EF4444; color: #EF4444; }
+
+        .calc-tool {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px dashed var(--math-color);
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.8rem;
+            font-size: 1.2rem;
+            border-radius: 8px;
+            width: 80px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="sub-hero" style="padding: 4rem 0 2rem; text-align: left;">
+        <div class="container">
+            <a href="aritmetica.html" class="back-button">
+                <span style="font-size:1.2rem; margin-right: 0.5rem;">&larr;</span> Torna ad Aritmetica
+            </a>
+            <h1 style="font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; margin-bottom: 1rem;">Operazioni <span
+                    class="gradient-text"
+                    style="background: linear-gradient(135deg, #EF4444, #3B82F6); -webkit-background-clip: text; background-clip: text; color: transparent;">Relativi (ℤ)</span>
+            </h1>
+            <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+                Oltre lo zero: impara a gestire i segni e a muoverti con disinvoltura tra debiti e crediti.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- SOMMA E SOTTRAZIONE -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">1. Somma e Sottrazione: Il Termometro</h2>
+            <p class="lesson-text">
+                Pensare ai numeri relativi come a temperature su un termometro è il modo più semplice:
+            </p>
+            <div class="logic-card" style="border-left: 4px solid #3B82F6;">
+                <p><strong>Segno Concorde</strong>: Se hanno lo stesso segno, somma i valori e tieni il segno. <br>
+                <code style="color:#60A5FA;">(+3) + (+5) = +8</code> | <code style="color:#EF4444;">(-3) + (-5) = -8</code></p>
+            </div>
+            <div class="logic-card" style="border-left: 4px solid #F59E0B;">
+                <p><strong>Segno Discorde</strong>: Se hanno segno diverso, fai la differenza e tieni il segno del più grande in valore assoluto. <br>
+                <code style="color:#F59E0B;">(-10) + (+3) = -7</code> (Vince il meno perché 10 è più grande di 3)</p>
+            </div>
+        </section>
+
+        <!-- REGOLA DEI SEGNI -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">2. Moltiplicazione e Divisione: La Regola dei Segni</h2>
+            <p class="lesson-text">
+                Qui le cose cambiano. Non importa chi è più grande, importa solo la coppia di segni:
+            </p>
+            
+            <div class="sign-rule">
+                <div class="rule-item plus-plus">+ × + = +</div>
+                <div class="rule-item minus-minus">- × - = +</div>
+                <div class="rule-item plus-minus">+ × - = -</div>
+                <div class="rule-item plus-minus">- × + = -</div>
+            </div>
+            
+            <p class="lesson-text" style="text-align: center; font-style: italic;">
+                "L'amico del mio amico è mio amico... il nemico del mio nemico è mio amico!"
+            </p>
+        </section>
+
+        <!-- CALCOLATORE INTERATTIVO -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">Mettiti alla Prova 🎉</h2>
+            <div class="calc-tool">
+                <input type="number" id="n1" placeholder="Num 1">
+                <select id="op" style="padding: 0.8rem; border-radius: 8px; font-size: 1.2rem; background: #222; color: white; border: 1px solid #444;">
+                    <option value="+">+</option>
+                    <option value="-">-</option>
+                    <option value="*">×</option>
+                    <option value="/">÷</option>
+                </select>
+                <input type="number" id="n2" placeholder="Num 2">
+                <button class="btn-gen" id="btn-calc" style="margin-top:0;">=</button>
+                <div id="res" class="goldbach-result">?</div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Matematica.</p>
+    </footer>
+
+    <script>
+        document.getElementById('btn-calc').onclick = () => {
+            const n1 = parseFloat(document.getElementById('n1').value);
+            const n2 = parseFloat(document.getElementById('n2').value);
+            const op = document.getElementById('op').value;
+            const res = document.getElementById('res');
+
+            if(isNaN(n1) || isNaN(n2)) return;
+
+            let result;
+            if(op === '+') result = n1 + n2;
+            if(op === '-') result = n1 - n2;
+            if(op === '*') result = n1 * n2;
+            if(op === '/') result = n2 !== 0 ? n1 / n2 : "Infinito!";
+
+            res.textContent = result;
+            res.style.color = (typeof result === 'number' && result < 0) ? "#EF4444" : "#10B981";
+        };
+    </script>
+</body>
+
+</html>

@@ -127,6 +127,24 @@
             <p class="lesson-text" style="font-size: 0.9rem; font-style: italic; text-align: center;">
                 Sopra sono evidenziati i numeri primi fino a 100. Vedete una regolarità? Nessuno l'ha mai trovata!
             </p>
+        <section class="lesson-section">
+            <h2 class="lesson-title">La Scomposizione in Fattori Primi</h2>
+            <p class="lesson-text">
+                Ogni numero naturale maggiore di 1 che non è già primo può essere scritto come <strong>prodotto di numeri primi</strong>. È come se scoprissimo il "DNA" di quel numero, gli ingredienti fondamentali che lo compongono moltiplicati tra loro!
+            </p>
+            <div style="background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.2); padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem;">
+                <p style="margin:0; font-family: monospace; font-size: 1.1rem; color: #10B981;">
+                    Esempio: 60 = 2 × 2 × 3 × 5 = <strong>2² × 3 × 5</strong>
+                </p>
+            </div>
+            <p class="lesson-text">
+                Inserisci un numero per scoprire i suoi fattori primi:
+            </p>
+            <div class="goldbach-tool" style="border-color: #10B981; background: rgba(16, 185, 129, 0.02);">
+                <input type="number" id="factor-input" class="goldbach-input" placeholder="Es. 120" min="2">
+                <button class="btn-gen" id="btn-factorize" style="margin-top:0; background: #10B981;">Scomponi</button>
+                <div id="factor-result" class="goldbach-result" style="color: #60A5FA;"></div>
+            </div>
         </section>
 
         <section class="conjecture-box">
