@@ -3,15 +3,10 @@
  * Visualizzazioni 1-to-1 per N=Z e Cantor's zig zag per N=Q.
  */
 
-document.addEventListener('DOMContentLoaded', () => {
-
+// Funzione di inizializzazione
+function initCardinalita() {
     /* --- N = Z BIJECTION --- */
-    const numZ = 0; // next n index
     let currentN = 0;
-    
-    // N: 0, 1, 2,  3,  4,  5,  6
-    // Z: 0, 1, -1, 2, -2, 3, -3
-    
     const maxNRows = 8;
     const zContainer = document.getElementById('z-bijection-container');
     const zBtn = document.getElementById('btn-next-z');
@@ -52,11 +47,8 @@ document.addEventListener('DOMContentLoaded', () => {
     /* --- CANTOR ZIG ZAG N = Q --- */
     const cantorGrid = document.getElementById('cantor-grid');
     const cantorBtn = document.getElementById('btn-cantor-step');
-    
-    // Costruiamo una griglia 5x5
     const SIZE = 5;
     
-    // Generiamo l'HTML della griglia
     if (cantorGrid) {
         for(let r=1; r<=SIZE; r++) {
             for(let c=1; c<=SIZE; c++) {
@@ -69,10 +61,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Sequenza diagonale standard (ignorando riduzioni per semplicità visiva,
-    // di solito 1/1, 1/2, 2/1, 3/1, 2/2X, 1/3, 1/4...
-    // Qui mostriamo fisicamente il percorso sul 5x5 a zig zag:
-    // (r, c) => (row y, col x)
     const zigzagPath = [
         [1,1], 
         [1,2], [2,1], 
@@ -97,7 +85,6 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (activeCell) {
                 activeCell.classList.add('active-path');
-                // Sovrascrive il testo mostrando il conteggio ("X. r/c")
                 activeCell.innerHTML = `<span style="font-size:0.8rem;color:black;">N.${cantorStep}</span><br>${r}/${c}`;
             }
 
@@ -105,9 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    /* =========================================================
-       QUIZ GENERATION CARDINALITÀ
-       ========================================================= */
+    /* --- QUIZ GENERATION --- */
     const quizData = [
         {
             question: "1. Cosa significa che due insiemi hanno lo stesso 'numero' di elementi (stessa cardinalità)?",
@@ -152,6 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let questionsAnswered = 0;
 
     if (quizArea) {
+        quizArea.innerHTML = ""; // Pulisci se già presente
         quizData.forEach((q, qIndex) => {
             const qDiv = document.createElement('div');
             qDiv.className = 'quiz-question';
@@ -191,7 +177,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     const allBtns = optionsDiv.querySelectorAll('button');
                     allBtns.forEach(b => {
                         b.disabled = true;
-                        b.style.cursor = "not-allowed";
                     });
                     
                     if (optIndex === q.correct) {
@@ -205,6 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         btn.style.color = "#fff";
                         allBtns[q.correct].style.background = "var(--math-color)";
                         allBtns[q.correct].style.borderColor = "var(--math-color)";
+                        allBtns[q.correct].style.color = "#fff";
                     }
                     
                     questionsAnswered++;
@@ -212,7 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         const scoreEl = document.getElementById('quiz-score');
                         if (currentScore === quizData.length) {
                             scoreEl.textContent = `Perfetto! Hai totalizzato ${currentScore}/${quizData.length}. Sei un esperto di infiniti!`;
-                            scoreEl.style.color = "var(--math-color)";
+                            scoreEl.style.color = "var(--physics-color)";
                         } else {
                             scoreEl.textContent = `Punteggio finale: ${currentScore}/${quizData.length}. Rileggi le sezioni su Cantor e sulla densità dei Reali.`;
                             scoreEl.style.color = "#F59E0B";
@@ -227,5 +213,11 @@ document.addEventListener('DOMContentLoaded', () => {
             quizArea.appendChild(qDiv);
         });
     }
+}
 
-});
+// Avvio
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCardinalita);
+} else {
+    initCardinalita();
+}
