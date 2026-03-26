@@ -140,8 +140,10 @@
     <main class="container">
         <!-- TEORIA DEGLI INSIEMI NUMERICI -->
         <section class="lesson-section">
-            <h2 class="lesson-title">Le Famiglie dei Numeri</h2>
-            <p class="lesson-text">Gli insiemi numerici sono contenuti l'uno nell'altro come delle perfette scatole cinesi (Matrioske). Esploriamoli partendo dal più istintivo:</p>
+            <h2 class="lesson-title">Le Famiglie dei Numeri e le Operazioni</h2>
+            <p class="lesson-text">È fondamentale precisare che per ogni insieme numerico sono matematicamente <strong>definite determinate operazioni</strong> (concetto di chiusura). Lo sviluppo di nuovi insiemi nella storia è nato proprio per superare i limiti di calcolo dell'insieme precedente!</p>
+            <p class="lesson-text" style="background: rgba(59, 130, 246, 0.1); padding: 1rem; border-left: 4px solid #3B82F6; border-radius: 0 8px 8px 0;">Ad esempio, nei <strong>Numeri Naturali (ℕ)</strong> sono sempre ben definite solo <strong>l'addizione e la moltiplicazione</strong>. La <em>sottrazione</em> potrebbe infatti richiedere l'uso di numeri negativi (es. 3 - 5 = -2), forzando la nascita dei Relativi (ℤ). E la <em>divisione</em>? Può tranquillamente generare resti e decimali (es. 5 ÷ 2 = 2.5), imponendo perciò l'invenzione dei Razionali (ℚ).</p>
+            <p class="lesson-text">In sintesi, gli insiemi numerici sono contenuti l'uno nell'altro come perfette scatole cinesi (Matrioske). Esploriamoli partendo dal più istintivo:</p>
             
             <div class="timeline">
                 <div class="timeline-item">
@@ -162,6 +164,11 @@
                 <div class="timeline-item">
                     <h3 class="r-set">L'Insieme ℝ (Numeri Reali)</h3>
                     <p style="color: var(--text-muted); margin-top: 0.5rem;">Non tutti i numeri possono essere scritti come vere e prope frazioni (hanno decimali infiniti mai ripetitivi). Ad esempio, Pi Greco (π) o la radice quadrata di 2 (√2). L'unione dei numeri razionali e irrazionali genera il più grande gruppo di uso comune: i numeri Reali ℝ.</p>
+                </div>
+
+                <div class="timeline-item">
+                    <h3 style="color: #EC4899; font-weight: bold; font-size: 1.5rem;">L'Insieme ℂ (Numeri Complessi e Immaginari)</h3>
+                    <p style="color: var(--text-muted); margin-top: 0.5rem;">Perché fermarsi? Se cerchi di calcolare la radice quadrata di un numero negativo (es. √-1), l'insieme dei Reali fallisce (nessun numero reale moltiplicato per se stesso fa -1). I matematici hanno quindi definito la formidabile unità immaginaria <strong>i</strong>. Nascono così i Numeri Complessi (ℂ), l'insieme supremo utilizzato oggi in fisica quantistica ed elettronica elettronica, che include tutti gli altri!</p>
                 </div>
             </div>
         </section>
@@ -206,6 +213,14 @@
 
             <div id="feedback" class="feedback-msg" style="margin-top: 1.5rem; font-size: 1.15rem;"></div>
 
+        </section>
+
+        <!-- QUIZ FINALE -->
+        <section class="lesson-section quiz-container">
+            <h2 class="lesson-title">Quiz: Insiemi e Operazioni</h2>
+            <p class="lesson-text" style="font-size: 0.95rem;">Verifica la tua comprensione logica degli Insiemi Numerici.</p>
+            <div id="quiz-area"></div>
+            <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
         </section>
         
         <!-- NAVIGAZIONE -->
