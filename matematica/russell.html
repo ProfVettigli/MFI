@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bertrand Russell (CLIL) - MFI Interactive</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+    
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+        
+        .sub-hero {
+            padding: 4rem 0 2rem;
+            text-align: left;
+        }
+        
+        .sub-hero-title {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+        
+        /* Specific CLIL badge */
+        .clil-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.1);
+            color: #E2E8F0;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(255,255,255,0.2);
+            letter-spacing: 1px;
+        }
+        
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 2rem auto;
+            padding-left: 2rem;
+            border-left: 3px solid var(--math-color);
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 3rem;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -38px;
+            top: 5px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--surface);
+            border: 4px solid var(--math-color);
+        }
+        .timeline-year {
+            font-family: monospace;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--physics-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Interactive Paradox Box */
+        .paradox-box {
+            background: rgba(239, 68, 68, 0.05);
+            border: 2px dashed #EF4444;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+        .paradox-btn {
+            background: #EF4444;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 0.5rem;
+        }
+        .paradox-btn:hover {
+            transform: scale(1.05);
+            background: #DC2626;
+        }
+    </style>
+</head>
+<body>
+    <header class="sub-hero">
+        <div class="container">
+            <a href="logica.html" class="back-button">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Back to Logic
+            </a>
+            <div class="clil-badge">CLIL LESSON 🇬🇧</div>
+            <h1 class="sub-hero-title">Bertrand <span class="gradient-text">Russell</span></h1>
+            <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+                A journey into the mind of one of the 20th century's most brilliant polymaths. We will explore his major life events, his groundbreaking mathematical work, and the famous paradox that shattered the foundations of logic.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <!-- BIOGRAPHY SECTION -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">1. Early Life and Education</h2>
+            <p class="lesson-text">
+                Bertrand Arthur William Russell was born in 1872 into an aristocratic British family. Unfortunately, his childhood was marked by tragedy, as he was orphaned at a very young age and raised by his strict grandmother. Despite his lonely upbringing, Russell developed a profound passion for learning.
+            </p>
+            <p class="lesson-text">
+                He discovered geometry at the age of 11 through his brother Frank, an event he later described as "as dazzling as first love." He eventually earned a scholarship to Trinity College, Cambridge, where he studied mathematics and philosophy, laying the groundwork for his future intellectual conquests.
+            </p>
+        </section>
+
+        <!-- CONTRIBUTIONS SECTION -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">2. Contributions to Mathematics & Philosophy</h2>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-year">1903</div>
+                    <h3 style="color: white; font-size: 1.4rem;">The Principles of Mathematics</h3>
+                    <p style="color: var(--text-muted); margin-top: 0.5rem; font-size: 0.95rem;">
+                        Russell argued that all of mathematics could be derived from a few fundamental principles of logic. This view is known as <strong>Logicism</strong>.
+                    </p>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-year">1910 - 1913</div>
+                    <h3 style="color: white; font-size: 1.4rem;">Principia Mathematica</h3>
+                    <p style="color: var(--text-muted); margin-top: 0.5rem; font-size: 0.95rem;">
+                        Co-authored with A. N. Whitehead, this massive three-volume work attempted to prove definitively that mathematics is synonymous with logic. It famously took them over 300 pages just to prove that <strong>1 + 1 = 2</strong>!
+                    </p>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-year">1950</div>
+                    <h3 style="color: white; font-size: 1.4rem;">Nobel Prize in Literature</h3>
+                    <p style="color: var(--text-muted); margin-top: 0.5rem; font-size: 0.95rem;">
+                        Russell was not only a mathematician but also a prolific public intellectual. He was awarded the Nobel Prize in recognition of his varied and significant writings in which he championed humanitarian ideals and freedom of thought.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- RUSSELL'S PARADOX -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">3. Russell's Paradox (The Barber Paradox)</h2>
+            <p class="lesson-text">
+                In 1901, while working on set theory (the work of Georg Cantor and Gottlob Frege), Russell discovered a massive logical contradiction that threatened to destroy all mathematical foundations.
+            </p>
+            <p class="lesson-text">
+                He formulated a set: <strong>"The set of all sets that do not contain themselves."</strong> Does this set contain itself? If it does, it shouldn't. If it doesn't, it should!
+            </p>
+            
+            <div class="paradox-box">
+                <h3 style="color: #EF4444; margin-bottom: 1rem; font-size: 1.5rem;">Interactive Example: The Barber Paradox</h3>
+                <p style="color: var(--text-main); font-size: 1.1rem; max-width: 600px; margin: 0 auto 1.5rem; font-weight: 300;">
+                    Imagine a small town with only one barber. The town's law states: <em>"The barber must shave all men, and ONLY those men, who do not shave themselves."</em>
+                </p>
+                <h4 style="color: white; font-size: 1.2rem; margin-bottom: 1rem;">Who shaves the barber?</h4>
+                
+                <div>
+                    <button class="paradox-btn" id="btn-shave-himself">He shaves himself</button>
+                    <button class="paradox-btn" id="btn-not-shave">He does NOT shave himself</button>
+                </div>
+                
+                <div id="paradox-feedback" style="margin-top: 1.5rem; font-size: 1.2rem; font-weight: bold; color: var(--physics-color); min-height: 40px;"></div>
+            </div>
+            
+        </section>
+
+        <!-- CLIL QUIZ -->
+        <section class="lesson-section quiz-container">
+            <h2 class="lesson-title">English CLIL Quiz</h2>
+            <p class="lesson-text" style="font-size: 0.95rem;">Test your comprehension of the text above. Good luck!</p>
+            <div id="quiz-area"></div>
+            <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Interactive Education. Mathematics Section.</p>
+    </footer>
+
+    <!-- JS -->
+    <script src="../js/russell.js"></script>
+</body>
+</html>
