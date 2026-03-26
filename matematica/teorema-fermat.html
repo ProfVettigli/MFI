@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimo Teorema di Fermat - MFI Interattiva</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+
+        .fermat-quote {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 12px;
+            font-style: italic;
+            font-family: serif;
+            font-size: 1.3rem;
+            margin: 2rem 0;
+            color: #FCD34D;
+            line-height: 1.6;
+        }
+
+        .formula-card {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid var(--math-color);
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            margin: 3rem 0;
+        }
+
+        .fermat-formula {
+            font-size: 3rem;
+            font-weight: 800;
+            letter-spacing: 5px;
+            color: white;
+            text-shadow: 0 0 20px var(--math-glow);
+        }
+
+        .history-box {
+            border-left: 2px solid #8B5CF6;
+            padding-left: 2rem;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="sub-hero" style="padding: 4rem 0 2rem; text-align: left;">
+        <div class="container">
+            <a href="aritmetica.html" class="back-button">
+                <span style="font-size:1.2rem; margin-right: 0.5rem;">&larr;</span> Torna ad Aritmetica
+            </a>
+            <h1 style="font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; margin-bottom: 1rem;">Ultimo Teorema di <span
+                    class="gradient-text"
+                    style="background: linear-gradient(135deg, #8B5CF6, #3B82F6); -webkit-background-clip: text; background-clip: text; color: transparent;">Fermat</span>
+            </h1>
+            <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+                Il mistero matematico più famoso della storia: risolto solo dopo 358 anni di tentativi falliti.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <section class="lesson-section">
+            <h2 class="lesson-title">Dalla Geometria al Mistero</h2>
+            <p class="lesson-text">
+                Tutti conosciamo il teorema di Pitagora: <code style="color: #60A5FA;">a² + b² = c²</code>. Sappiamo che esistono infinite triple (come 3, 4, 5) che lo soddisfano.
+            </p>
+            <p class="lesson-text">
+                Nel 1637, il matematico francese <strong>Pierre de Fermat</strong> si chiese: "E se l'esponente non fosse 2, ma 3, 4, 5 o 100?"
+            </p>
+
+            <div class="formula-card">
+                <div class="fermat-formula">aⁿ + bⁿ = cⁿ</div>
+                <p style="margin-top: 1.5rem; color: #F8FAFC; font-weight: 600;">...per ogni intero positivo <code style="font-size:1.5rem;">n > 2</code></p>
+            </div>
+
+            <p class="lesson-text">
+                Fermat affermò che non esistono soluzioni di numeri interi soddisfacenti questa equazione. La sua nota al margine di un libro diceva:
+            </p>
+
+            <div class="fermat-quote">
+                "Dispongo di una meravigliosa dimostrazione di questo teorema, che però non può essere contenuta nel margine troppo stretto di questa pagina."
+            </div>
+
+            <p class="lesson-text">
+                Questo scatenò la follia tra i matematici del mondo per i secoli a venire. Fermat aveva davvero trovato la prova? Oggi pensiamo di no.
+            </p>
+        </section>
+
+        <section class="lesson-section history-box">
+            <h2 class="lesson-title" style="color: #8B5CF6;">La Fine di un'Era (1994)</h2>
+            <p class="lesson-text">
+                La sfida rimase aperta fino a quando <strong>Andrew Wiles</strong>, un matematico britannico, presentò una dimostrazione lunghissima e incredibilmente complessa (oltre 100 pagine!) che utilizzava strumenti matematici che Fermat non avrebbe mai potuto conoscere.
+            </p>
+            <p class="lesson-text" style="font-style: italic;">
+                Dopo 358 anni, l'Ultimo Teorema di Fermat era ufficialmente diventato tale, non più solo una congettura.
+            </p>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Matematica.</p>
+    </footer>
+
+</body>
+
+</html>

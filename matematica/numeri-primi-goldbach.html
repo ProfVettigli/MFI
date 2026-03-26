@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Numeri Primi e Goldbach - MFI Interattiva</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+
+        .prime-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+            gap: 5px;
+            margin: 2rem 0;
+        }
+
+        .num-box {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+        }
+
+        .is-prime {
+            background: var(--math-color);
+            border-color: var(--math-color);
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 0 10px var(--math-glow);
+        }
+
+        .conjecture-box {
+            background: rgba(245, 158, 11, 0.05);
+            border-left: 4px solid #F59E0B;
+            padding: 2rem;
+            margin: 3rem 0;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .goldbach-tool {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px dashed var(--math-color);
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .goldbach-input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.8rem;
+            font-size: 1.2rem;
+            border-radius: 8px;
+            width: 100px;
+            text-align: center;
+            margin-right: 1rem;
+        }
+
+        .goldbach-result {
+            margin-top: 1.5rem;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #10B981;
+            min-height: 2.2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="sub-hero" style="padding: 4rem 0 2rem; text-align: left;">
+        <div class="container">
+            <a href="aritmetica.html" class="back-button">
+                <span style="font-size:1.2rem; margin-right: 0.5rem;">&larr;</span> Torna ad Aritmetica
+            </a>
+            <h1 style="font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; margin-bottom: 1rem;">Numeri <span
+                    class="gradient-text"
+                    style="background: linear-gradient(135deg, #3B82F6, #60A5FA); -webkit-background-clip: text; background-clip: text; color: transparent;">Primi</span>
+            </h1>
+            <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+                I mattoni fondamentali della matematica: numeri indivisibili che nascondono misteri millenari.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <section class="lesson-section">
+            <h2 class="lesson-title">Cosa sono i Numeri Primi?</h2>
+            <p class="lesson-text">
+                Un numero si dice <strong>Primo</strong> se è un numero naturale maggiore di 1 che ha esattamente due divisori distinti: 1 e se stesso.
+                In altre parole, non puoi spezzarlo in parti uguali (se non in gruppi da 1).
+            </p>
+            <p class="lesson-text" style="font-size: 0.95rem; color: #60A5FA;">
+                Esempi: 2, 3, 5, 7, 11, 13, 17, 19... (Il numero 1 non è considerato primo).
+            </p>
+
+            <div class="prime-grid" id="prime-sieve">
+                <!-- Javascript will fill this with numbers -->
+            </div>
+            <p class="lesson-text" style="font-size: 0.9rem; font-style: italic; text-align: center;">
+                Sopra sono evidenziati i numeri primi fino a 100. Vedete una regolarità? Nessuno l'ha mai trovata!
+            </p>
+        </section>
+
+        <section class="conjecture-box">
+            <h2 style="color: #F59E0B; margin-bottom: 1rem;">Che cos'è una Congettura?</h2>
+            <p style="line-height: 1.7; color: var(--text-main);">
+                In matematica, una <strong>congettura</strong> è un'affermazione che si pensa sia vera (magari perché è stata verificata per milioni di casi), ma che <strong>non è stata ancora dimostrata</strong> logicamente.
+                Finché non esiste una prova definitiva, rimane una scommessa, seppur molto probabile. Se viene dimostrata diventa un <strong>Teorema</strong>, se viene trovata una smentita diventa un errore.
+            </p>
+        </section>
+
+        <section class="lesson-section">
+            <h2 class="lesson-title">La Congettura di Goldbach</h2>
+            <p class="lesson-text">
+                Formulata nel 1742, è uno dei problemi più semplici da capire ma più difficili da risolvere della storia:
+            </p>
+            <p style="background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 8px; text-align: center; font-size: 1.2rem; font-weight: 600; border: 1px solid rgba(255,255,255,0.1);">
+                "Ogni numero pari maggiore di 2 può essere scritto come la somma di due numeri primi."
+            </p>
+            
+            <p class="lesson-text" style="margin-top: 1.5rem;">
+                Proviamo a sfidare la congettura! Inserisci un numero pari e vediamo se riusciamo a trovare i due mattoni primi che lo compongono:
+            </p>
+
+            <div class="goldbach-tool">
+                <input type="number" id="gb-input" class="goldbach-input" placeholder="Es. 28" step="2" min="4">
+                <button class="btn-gen" id="btn-calculate-gb" style="margin-top:0;">Trova la Coppia</button>
+                <div id="gb-result" class="goldbach-result"></div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Matematica.</p>
+    </footer>
+
+    <!-- JS -->
+    <script src="../js/numeri-primi-goldbach.js"></script>
+</body>
+
+</html>
