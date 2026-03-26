@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notazione Esponenziale - MFI Interattiva</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+    
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+
+        .big-formula {
+            font-size: 5rem;
+            text-align: center;
+            margin: 2rem 0;
+            font-family: 'Times New Roman', serif;
+            color: #3B82F6;
+        }
+        .base { color: var(--text-main); font-weight: bold; }
+        .exponent { font-size: 3rem; vertical-align: super; color: #EC4899; }
+
+        .properties-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .prop-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+            transition: transform 0.3s;
+        }
+        .prop-card:hover { transform: translateY(-5px); background: rgba(59, 130, 246, 0.05); }
+
+        .prop-title { font-size: 1.1rem; color: #60A5FA; margin-bottom: 0.5rem; font-weight: bold; }
+        .prop-math { font-family: monospace; font-size: 1.4rem; color: #FCD34D; background: rgba(0,0,0,0.3); padding: 0.5rem; border-radius: 6px; text-align: center; margin-bottom: 0.5rem;}
+        
+        /* Drag Map */
+        .match-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .match-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .match-item {
+            background: rgba(255,255,255,0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            font-family: monospace;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: grab;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .match-target {
+            background: rgba(0,0,0,0.3);
+            border: 2px dashed rgba(255,255,255,0.3);
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            min-height: 60px;
+            font-family: monospace;
+            font-size: 1.2rem;
+            color: #FCD34D;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+    <header class="sub-hero" style="padding: 4rem 0 2rem; text-align: left;">
+        <div class="container">
+            <a href="aritmetica.html" class="back-button">
+                <span style="font-size:1.2rem; margin-right: 0.5rem;">&larr;</span> Torna ad Aritmetica
+            </a>
+            <h1 style="font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; margin-bottom: 1rem;">Notazione <span style="color: #EC4899;">Esponenziale</span></h1>
+            <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+                Come la moltiplicazione è un'addizione ripetuta (3+3+3 = 3×3), l'Esponente è una moltiplicazione ripetuta. Rappresenta il calcolo numerico potenziato all'estremo.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- BASE E ESPONENTE -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">Cos'è un Asponente?</h2>
+            
+            <div class="big-formula">
+                <span class="base">5</span><span class="exponent">3</span>
+            </div>
+            
+            <p class="lesson-text" style="text-align:center; font-size:1.2rem;">Significa: <strong style="color:var(--text-main);">5 × 5 × 5 = 125</strong></p>
+            <p class="lesson-text">
+                Il numero in basso (<strong>Base</strong>, Es. 5) è il numero che deve essere moltiplicato per se stesso. Il numero piccolo in alto a destra (<strong>Esponente</strong>, Es. 3) ti dice <em>quante volte</em> la Base deve apparire nella moltiplicazione!
+            </p>
+        </section>
+
+        <!-- PROPRIETA' -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">Le 5 Proprietà Magiche</h2>
+            <p class="lesson-text">Invece di calcolare numeri giganti, gli esponenti permettono di usare trucchi rapidissimi finché le basi sono identiche.</p>
+            
+            <div class="properties-grid">
+                <div class="prop-card">
+                    <div class="prop-title">1. Prodotto (Stessa base)</div>
+                    <div class="prop-math">a<sup style="font-size:0.6em">m</sup> × a<sup style="font-size:0.6em">n</sup> = a<sup style="font-size:0.6em">m+n</sup></div>
+                    <p style="margin:0; font-size:0.9rem; color:var(--text-muted);">Moltiplicando, gli esponenti si SOMMANO.</p>
+                </div>
+
+                <div class="prop-card">
+                    <div class="prop-title">2. Quoziente (Stessa base)</div>
+                    <div class="prop-math">a<sup style="font-size:0.6em">m</sup> ÷ a<sup style="font-size:0.6em">n</sup> = a<sup style="font-size:0.6em">m-n</sup></div>
+                    <p style="margin:0; font-size:0.9rem; color:var(--text-muted);">Dividendo, gli esponenti si SOTTRAGGONO.</p>
+                </div>
+
+                <div class="prop-card">
+                    <div class="prop-title">3. Potenza di Potenza</div>
+                    <div class="prop-math">(a<sup style="font-size:0.6em">m</sup>)<sup style="font-size:0.6em">n</sup> = a<sup style="font-size:0.6em">m×n</sup></div>
+                    <p style="margin:0; font-size:0.9rem; color:var(--text-muted);">Gli esponenti si MOLTIPLICANO tra loro.</p>
+                </div>
+
+                <div class="prop-card">
+                    <div class="prop-title">4. Esponente a Zero</div>
+                    <div class="prop-math">a<sup style="font-size:0.6em">0</sup> = 1</div>
+                    <p style="margin:0; font-size:0.9rem; color:var(--text-muted);">Qualsiasi numero elevato a 0 vale 1. È una legge ferrea!</p>
+                </div>
+
+                <div class="prop-card">
+                    <div class="prop-title">5. Esponente Negativo</div>
+                    <div class="prop-math">a<sup style="font-size:0.6em">-n</sup> = 1 / a<sup style="font-size:0.6em">n</sup></div>
+                    <p style="margin:0; font-size:0.9rem; color:var(--text-muted);">Il segno meno in un esponente significa 'inverso' (capovolgi la frazione).</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ESERCIZIO PRATICO -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">Collega le Semplificazioni</h2>
+            <p class="lesson-text">Risolvi mentalmente questi problemi usando le 5 proprietà magiche e trascina l'espressione di partenza nel riquadro col risultato corretto.</p>
+
+            <div class="match-container">
+                <!-- Origini da trascinare -->
+                <div class="match-list" id="sources">
+                    <div class="match-item" draggable="true" id="item1" data-val="1">2³ × 2²</div>
+                    <div class="match-item" draggable="true" id="item2" data-val="2">7⁵ ÷ 7³</div>
+                    <div class="match-item" draggable="true" id="item3" data-val="3">(4²)³</div>
+                    <div class="match-item" draggable="true" id="item4" data-val="4">156⁰</div>
+                    <div class="match-item" draggable="true" id="item5" data-val="5">3⁻²</div>
+                </div>
+
+                <!-- Bersagli risultati -->
+                <div class="match-list" id="targets">
+                    <div class="match-target" data-match="5">
+                        <span>1 / 3²</span> <div class="drop-slot" style="min-width: 100px; min-height:40px; border-bottom: 2px dashed #9ca3af;"></div>
+                    </div>
+                    <div class="match-target" data-match="3">
+                        <span>4⁶</span> <div class="drop-slot" style="min-width: 100px; min-height:40px; border-bottom: 2px dashed #9ca3af;"></div>
+                    </div>
+                    <div class="match-target" data-match="1">
+                        <span>2⁵</span> <div class="drop-slot" style="min-width: 100px; min-height:40px; border-bottom: 2px dashed #9ca3af;"></div>
+                    </div>
+                    <div class="match-target" data-match="4">
+                        <span>1</span> <div class="drop-slot" style="min-width: 100px; min-height:40px; border-bottom: 2px dashed #9ca3af;"></div>
+                    </div>
+                    <div class="match-target" data-match="2">
+                        <span>7²</span> <div class="drop-slot" style="min-width: 100px; min-height:40px; border-bottom: 2px dashed #9ca3af;"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="expo-feedback" class="feedback-msg" style="margin-top: 2rem; font-size: 1.2rem;"></div>
+
+        </section>
+        
+        <!-- NAV -->
+        <div style="text-align: right; margin-top: 4rem;">
+            <a href="cardinalita-infinito.html" style="background: var(--math-color); padding: 1rem 2rem; border-radius: 8px; color: white; text-decoration: none; font-weight: bold;">Lezione Finale: I Misteri dell'Infinito &rarr;</a>
+        </div>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Matematica.</p>
+    </footer>
+
+    <!-- JS -->
+    <script src="../js/notazione-esponenziale.js"></script>
+</body>
+</html>

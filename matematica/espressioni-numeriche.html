@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espressioni Numeriche - MFI Interattiva</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+    
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+
+        .rule-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+
+        .rule-step {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .step-num {
+            background: var(--math-color);
+            color: white;
+            width: 40px; height: 40px;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 1.5rem; font-weight: bold; border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* Interactive Solver */
+        .solver-box {
+            background: rgba(0,0,0,0.4);
+            border: 1px dashed var(--math-color);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .expression {
+            font-family: monospace;
+            font-size: 2.5rem;
+            letter-spacing: 5px;
+            margin: 2rem 0;
+            color: white;
+        }
+        
+        /* Each operator can be clicked */
+        .op-btn {
+            display: inline-block;
+            color: var(--math-color);
+            font-weight: bold;
+            cursor: pointer;
+            padding: 0.2rem 0.5rem;
+            border-radius: 8px;
+            transition: all 0.2s;
+            background: rgba(59, 130, 246, 0.1);
+        }
+        .op-btn:hover {
+            background: var(--math-color);
+            color: white;
+            transform: scale(1.2);
+        }
+
+        .solver-msg {
+            min-height: 40px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="sub-hero" style="padding: 4rem 0 2rem; text-align: left;">
+        <div class="container">
+            <a href="aritmetica.html" class="back-button">
+                <span style="font-size:1.2rem; margin-right: 0.5rem;">&larr;</span> Torna ad Aritmetica
+            </a>
+            <h1 style="font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; margin-bottom: 1rem;">Espressioni <span class="gradient-text">Numeriche</span></h1>
+            <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+                In matematica un'espressione è come una coreografia teatrale: per ottenere il risultato corretto devi sapere esattamente chi deve ballare prima e chi dopo!
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <section class="lesson-section">
+            <h2 class="lesson-title">Le Regole d'Oro della Precedenza (PEMDAS)</h2>
+            <p class="lesson-text">Se incontri <code style="color:#F59E0B; font-size:1.2rem;">3 + 4 × 2</code> non puoi fare 3+4 e poi moltiplicare per 2 (il risultato fa 14, sbagliato!). Devi prima fare la moltiplicazione (4×2=8) e poi l'addizione (3+8=11). Per mettere pace tra i matematici è stato creato un ORDINE INFALLIBILE:</p>
+
+            <div class="rule-card">
+                <div class="rule-step">
+                    <div class="step-num" style="background: #EC4899;">1</div>
+                    <div>
+                        <h3 style="color: #EC4899;">Parentesi <code>( ) [ ] { }</code></h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem; margin:0;">Le precedenze assolute. Si comincia operando sempre dentro le parentesi Tonde <code>( )</code>, poi si passa alle Quadre <code>[ ]</code> e solo alla fine alle Graffe <code>{ }</code>.</p>
+                    </div>
+                </div>
+                <div class="rule-step">
+                    <div class="step-num" style="background: #8B5CF6;">2</div>
+                    <div>
+                        <h3 style="color: #8B5CF6;">Potenze ed Esponenti <code>2³</code></h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem; margin:0;">Appena non ci sono più parentesi, l'operazione più potente vince. Esegui subito tutte le elevazioni a potenza e le radici.</p>
+                    </div>
+                </div>
+                <div class="rule-step">
+                    <div class="step-num" style="background: #3B82F6;">3</div>
+                    <div>
+                        <h3 style="color: #3B82F6;">Moltiplicazioni e Divisioni <code>× ÷</code></h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem; margin:0;">Hanno la stessa importanza. Falli sempre procedendo da Sinistra verso Destra.</p>
+                    </div>
+                </div>
+                <div class="rule-step">
+                    <div class="step-num" style="background: #10B981;">4</div>
+                    <div>
+                        <h3 style="color: #10B981;">Addizioni e Sottrazioni <code>+ -</code></h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem; margin:0;">Le cenerentole della matematica. Vanno sempre calcolate solo per ultime! Anche qui si procede da Sinistra verso Destra.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TUTORIAL INTERATTIVO DI RISOLUZIONE -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">Diventa tu il Processore!</h2>
+            <p class="lesson-text">Guarda l'espressione qui sotto. **Clicca sull'operatore matematico ( + , - , × , ÷ ) che bisogna risolvere ORA in base alle regole di precedenza**. Fallo a gradini, finché non arrivi ad un unico numero finale!</p>
+
+            <div class="solver-box">
+                <h3 style="color: white; font-size: 1.5rem; margin-bottom: 1rem;">Sfida Livello 1</h3>
+                <!-- Livello Iniziale: 5 + 3 * 2 -->
+                <div class="expression" id="expr-container">
+                     <span>5</span>
+                     <span class="op-btn" data-op="+" data-step="bad">+</span>
+                     <span>3</span>
+                     <span class="op-btn" data-op="*" data-step="1">×</span>
+                     <span>2</span>
+                </div>
+                <div id="solver-msg" class="solver-msg" style="color: var(--math-color);">Seleziona chi ha la precedenza assoluta.</div>
+                <button id="next-lvl-btn" class="back-button" style="display:none; margin: 2rem auto 0; background: var(--math-color); color: white; padding: 0.8rem 1.5rem; border-radius: 8px; border:none; cursor:pointer;">Prossimo Livello (Più Difficile!) &rarr;</button>
+            </div>
+        </section>
+
+        <!-- NAV -->
+        <div style="text-align: right; margin-top: 4rem;">
+            <a href="notazione-esponenziale.html" style="background: var(--math-color); padding: 1rem 2rem; border-radius: 8px; color: white; text-decoration: none; font-weight: bold;">Lezione Successiva: Esponenti &rarr;</a>
+        </div>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Matematica.</p>
+    </footer>
+
+    <!-- JS -->
+    <script src="../js/espressioni-numeriche.js"></script>
+</body>
+</html>

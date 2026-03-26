@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insiemi Numerici - MFI Interattiva</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+    
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+        
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 2rem auto;
+            border-left: 3px solid var(--math-color);
+            padding-left: 2rem;
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2.5rem;
+            background: rgba(255,255,255,0.02);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -38px;
+            top: 20px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--surface);
+            border: 4px solid var(--math-color);
+        }
+
+        .n-set { color: #3B82F6; font-weight: bold; font-size: 1.5rem; }
+        .z-set { color: #8B5CF6; font-weight: bold; font-size: 1.5rem; }
+        .q-set { color: #10B981; font-weight: bold; font-size: 1.5rem; }
+        .r-set { color: #F59E0B; font-weight: bold; font-size: 1.5rem; }
+
+        /* Sorter */
+        .interactive-board {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            background: rgba(0,0,0,0.2);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px dashed rgba(255,255,255,0.1);
+            margin-top: 2rem;
+        }
+
+        @media(max-width: 768px) {
+            .interactive-board { grid-template-columns: 1fr; }
+        }
+
+        .number-pool {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-content: flex-start;
+            min-height: 100px;
+        }
+
+        .num-item {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: grab;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .num-item:active { cursor: grabbing; transform: scale(0.95); }
+
+        .drop-zones {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .zone-box {
+            border: 2px solid;
+            min-height: 70px;
+            border-radius: 8px;
+            padding: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+            background: rgba(0,0,0,0.3);
+            transition: all 0.2s;
+        }
+
+        .zone-title {
+            width: 100%;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+    <header class="sub-hero" style="padding: 4rem 0 2rem; text-align: left;">
+        <div class="container">
+            <a href="aritmetica.html" class="back-button">
+                <span style="font-size:1.2rem; margin-right: 0.5rem;">&larr;</span> Torna ad Aritmetica
+            </a>
+            <h1 style="font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; margin-bottom: 1rem;">Gli Insiemi <span class="gradient-text">Numerici</span></h1>
+            <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+                Prima di fare i calcoli, dobbiamo capire con cosa stiamo calcolando! I numeri non sono tutti uguali: nel corso della storia, per risolvere problemi sempre più complessi, i matematici hanno "inventato" nuove famiglie di numeri.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- TEORIA DEGLI INSIEMI NUMERICI -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">Le Famiglie dei Numeri</h2>
+            <p class="lesson-text">Gli insiemi numerici sono contenuti l'uno nell'altro come delle perfette scatole cinesi (Matrioske). Esploriamoli partendo dal più istintivo:</p>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h3 class="n-set">L'Insieme ℕ (Numeri Naturali)</h3>
+                    <p style="color: var(--text-muted); margin-top: 0.5rem;">I numeri che usiamo per contare gli oggetti nella vita reale (0, 1, 2, 3...). Sono sempre positivi e interi.</p>
+                </div>
+                
+                <div class="timeline-item">
+                    <h3 class="z-set">L'Insieme ℤ (Numeri Relativi)</h3>
+                    <p style="color: var(--text-muted); margin-top: 0.5rem;">Cosa succede se fai "3 - 5"? Nei naturali non c'è risposta. Per indicare debiti o temperature sotto lo zero, nascono i numeri negativi (...-2, -1, 0, 1, 2...). I numeri ℕ sono ovviamente tutti inclusi internamente in ℤ!</p>
+                </div>
+                
+                <div class="timeline-item">
+                    <h3 class="q-set">L'Insieme ℚ (Numeri Razionali)</h3>
+                    <p style="color: var(--text-muted); margin-top: 0.5rem;">Come dividi 3 pizze per 2 persone? Servono le frazioni! I numeri razionali sono tutti i numeri che possono essere scritti come rapporto (frazione) tra due interi (es. 1/2, 0.75, -5/3). Anche il numero intero 2 è razionale (si scrive 2/1).</p>
+                </div>
+
+                <div class="timeline-item">
+                    <h3 class="r-set">L'Insieme ℝ (Numeri Reali)</h3>
+                    <p style="color: var(--text-muted); margin-top: 0.5rem;">Non tutti i numeri possono essere scritti come vere e prope frazioni (hanno decimali infiniti mai ripetitivi). Ad esempio, Pi Greco (π) o la radice quadrata di 2 (√2). L'unione dei numeri razionali e irrazionali genera il più grande gruppo di uso comune: i numeri Reali ℝ.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ESERCIZIO PRATICO -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">Esercizio: Collocamento Numerico</h2>
+            <p class="lesson-text">
+                Trascina ogni numero nell'<strong>Insieme più piccolo e specifico (ristretto)</strong> a cui appartiene. <br>
+                <em>(Ricorda: il numero '5' è Reale, Razionale, Relativo e Naturale... ma l'insieme più piccolo specifico che lo descrive è Naturale ℕ!).</em>
+            </p>
+
+            <div class="interactive-board">
+                <div>
+                    <h3 style="color: white; margin-bottom: 1rem;">Numeri da Collocare</h3>
+                    <div class="number-pool" id="pool">
+                        <div class="num-item" draggable="true" data-type="N">42</div>
+                        <div class="num-item" draggable="true" data-type="Z">-7</div>
+                        <div class="num-item" draggable="true" data-type="Q">3/4</div>
+                        <div class="num-item" draggable="true" data-type="R">√2</div>
+                        <div class="num-item" draggable="true" data-type="N">0</div>
+                        <div class="num-item" draggable="true" data-type="Q">-1.5</div>
+                        <div class="num-item" draggable="true" data-type="R">π</div>
+                    </div>
+                </div>
+
+                <div class="drop-zones">
+                    <div class="zone-box" data-target="N" style="border-color: #3B82F6;">
+                        <div class="zone-title" style="color:#3B82F6;">Insieme ℕ (Naturali)</div>
+                    </div>
+                    <div class="zone-box" data-target="Z" style="border-color: #8B5CF6;">
+                        <div class="zone-title" style="color:#8B5CF6;">Insieme ℤ (Relativi / Negativi)</div>
+                    </div>
+                    <div class="zone-box" data-target="Q" style="border-color: #10B981;">
+                        <div class="zone-title" style="color:#10B981;">Insieme ℚ (Razionali / Frazioni)</div>
+                    </div>
+                    <div class="zone-box" data-target="R" style="border-color: #F59E0B;">
+                        <div class="zone-title" style="color:#F59E0B;">Insieme ℝ (Esclusivamente Irrazionali qui)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="feedback" class="feedback-msg" style="margin-top: 1.5rem; font-size: 1.15rem;"></div>
+
+        </section>
+        
+        <!-- NAVIGAZIONE -->
+        <div style="text-align: right; margin-top: 4rem;">
+            <a href="espressioni-numeriche.html" style="background: var(--math-color); padding: 1rem 2rem; border-radius: 8px; color: white; text-decoration: none; font-weight: bold;">Lezione Successiva: Espressioni &rarr;</a>
+        </div>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Matematica.</p>
+    </footer>
+
+    <!-- JS -->
+    <script src="../js/insiemi-numerici.js"></script>
+</body>
+</html>
