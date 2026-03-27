@@ -12,6 +12,19 @@
     <!-- CSS -->
     <link rel="stylesheet" href="../css/style.css">
 
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {
+        delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false},
+            {left: '\\(', right: '\\)', display: false},
+            {left: '\\[', right: '\\]', display: true}
+        ],
+        throwOnError : false
+    });"></script>
+
     <style>
         .back-button {
             display: inline-flex;
@@ -85,30 +98,67 @@
     <main class="container">
 
         <section class="lesson-section">
-            <h2 class="lesson-title">Dalla Geometria al Mistero</h2>
+            <h2 class="lesson-title">1. Tutto Inizia con Pitagora</h2>
             <p class="lesson-text">
-                Tutti conosciamo il teorema di Pitagora: <code style="color: #60A5FA;">a² + b² = c²</code>. Sappiamo che esistono infinite triple (come 3, 4, 5) che lo soddisfano.
+                Tutti conosciamo il teorema di Pitagora: \( a^2 + b^2 = c^2 \). Le soluzioni intere positive di questa equazione sono chiamate <strong>Terne Pitagoriche</strong>.
             </p>
-            <p class="lesson-text">
-                Nel 1637, il matematico francese <strong>Pierre de Fermat</strong> si chiese: "E se l'esponente non fosse 2, ma 3, 4, 5 o 100?"
-            </p>
-
-            <div class="formula-card">
-                <div class="fermat-formula">aⁿ + bⁿ = cⁿ</div>
-                <p style="margin-top: 1.5rem; color: #F8FAFC; font-weight: 600;">...per ogni intero positivo <code style="font-size:1.5rem;">n > 2</code></p>
+            
+            <div style="display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; margin: 2rem 0;">
+                <div style="background: rgba(59, 130, 246, 0.1); padding: 1rem 2rem; border-radius: 12px; border: 1px solid var(--math-color);">
+                    <p style="font-size: 1.2rem; font-weight: bold; margin: 0;">\( 3^2 + 4^2 = 5^2 \)</p>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem;">9 + 16 = 25 (Vero!)</p>
+                </div>
+                <div style="background: rgba(59, 130, 246, 0.1); padding: 1rem 2rem; border-radius: 12px; border: 1px solid var(--math-color);">
+                    <p style="font-size: 1.2rem; font-weight: bold; margin: 0;">\( 5^2 + 12^2 = 13^2 \)</p>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem;">25 + 144 = 169 (Vero!)</p>
+                </div>
             </div>
 
             <p class="lesson-text">
-                Fermat affermò che non esistono soluzioni di numeri interi soddisfacenti questa equazione. La sua nota al margine di un libro diceva:
+                Esistono <strong>infinite</strong> terne pitagoriche. Ma nel 1637, <strong>Pierre de Fermat</strong> lanciò una sfida che avrebbe fatto impazzire il mondo: "Cosa succede se alziamo l'esponente?"
             </p>
+
+            <div class="formula-card">
+                <div class="fermat-formula">\( a^n + b^n = c^n \)</div>
+                <p style="margin-top: 1.5rem; color: #F8FAFC; font-weight: 600;">...non ha soluzioni intere per \( n > 2 \)</p>
+            </div>
 
             <div class="fermat-quote">
                 "Dispongo di una meravigliosa dimostrazione di questo teorema, che però non può essere contenuta nel margine troppo stretto di questa pagina."
             </div>
-
+            
             <p class="lesson-text">
-                Questo scatenò la follia tra i matematici del mondo per i secoli a venire. Fermat aveva davvero trovato la prova? Oggi pensiamo di no.
+                Fermat scrisse questa nota a margine della sua copia dell'<em>Arithmetica</em> di Diofanto. Per secoli, nessuno riuscì a capire se avesse ragione o se fosse solo un clamoroso errore. Oggi pensiamo che Fermat <strong>non</strong> avesse affatto una dimostrazione corretta, dato che gli strumenti necessari sono stati inventati solo 350 anni dopo!
             </p>
+        </section>
+
+        <!-- STRATEGIE E CURIOSITA' -->
+        <section class="lesson-section" style="background: rgba(0,0,0,0.2);">
+            <h2 class="lesson-title">2. Strategie, Premi e... I Simpson?</h2>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem;">
+                <div style="border-left: 2px solid #F59E0B; padding-left: 1.5rem;">
+                    <h4 style="color: #F59E0B; margin-bottom: 0.5rem;">La caccia al Controesempio</h4>
+                    <p style="font-size: 0.95rem; line-height: 1.6;">
+                        Per secoli, molti matematici hanno cercato un <strong>Controesempio</strong>: una singola terna di numeri che smentisse Fermat. Anche con l'avvento dei computer, sono stati testati miliardi di numeri... senza mai trovarne uno.
+                    </p>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 1rem; border: 1px dashed #555; padding: 10px; border-radius: 8px;">
+                        <strong>Curiosità Pop:</strong> In un episodio dei <em>Simpson</em> (scritti da diversi laureati in matematica), Homer scrive sulla lavagna: <br>
+                        \( 1782^{12} + 1841^{12} = 1922^{12} \). <br>
+                        Se provi con una calcolatrice standard, sembra vero! Ma è un <strong>falso controesempio</strong>: il calcolo è sbagliato solo per le ultime cifre, invisibili su display comuni.
+                    </p>
+                </div>
+
+                <div style="border-left: 2px solid #10B981; padding-left: 1.5rem;">
+                    <h4 style="color: #10B981; margin-bottom: 0.5rem;">Il Premio Wolfskehl</h4>
+                    <p style="font-size: 0.95rem; line-height: 1.6;">
+                        Nel 1908, l'industriale tedesco Paul Wolfskehl istituì un premio di <strong>100.000 marchi d'oro</strong> (una fortuna all'epoca) per chiunque fosse riuscito a dimostrare il teorema. 
+                    </p>
+                    <p style="font-size: 0.95rem; line-height: 1.6; margin-top: 1rem;">
+                        Questo premio attirò migliaia di appassionati e "matematici della domenica", inondando le università di false dimostrazioni! Solo nel 1994 il premio fu finalmente assegnato.
+                    </p>
+                </div>
+            </div>
         </section>
 
         <section class="lesson-section history-box">
