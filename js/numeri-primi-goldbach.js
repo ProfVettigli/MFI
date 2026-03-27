@@ -147,29 +147,47 @@ document.addEventListener('DOMContentLoaded', () => {
             q.options.forEach((optText, optIndex) => {
                 const btn = document.createElement('button');
                 btn.textContent = optText;
-                btn.className = "btn-gen";
-                btn.style.textAlign = "left";
-                btn.style.width = "100%";
+                
                 btn.style.background = "rgba(255,255,255,0.05)";
-                btn.style.color = "white";
+                btn.style.border = "1px solid rgba(255,255,255,0.1)";
+                btn.style.color = "var(--text-main)";
+                btn.style.padding = "1rem";
+                btn.style.borderRadius = "0.5rem";
+                btn.style.cursor = "pointer";
+                btn.style.textAlign = "left";
+                btn.style.fontSize = "1rem";
+                btn.style.fontFamily = "inherit";
+                btn.style.transition = "all 0.2s";
+                
+                btn.onmouseenter = () => { if(!btn.disabled) btn.style.background = "rgba(255,255,255,0.1)"; };
+                btn.onmouseleave = () => { if(!btn.disabled) btn.style.background = "rgba(255,255,255,0.05)"; };
 
                 btn.onclick = () => {
                     const allBtns = optsDiv.querySelectorAll('button');
-                    allBtns.forEach(b => b.disabled = true);
+                    allBtns.forEach(b => {
+                        b.disabled = true;
+                        b.style.cursor = "not-allowed";
+                    });
                     
                     if (optIndex === q.correct) {
-                        btn.style.background = "#10B981";
+                        btn.style.background = "var(--math-color)";
+                        btn.style.borderColor = "var(--math-color)";
+                        btn.style.color = "#fff";
                         currentScore++;
                     } else {
                         btn.style.background = "#EF4444";
-                        allBtns[q.correct].style.background = "#10B981";
+                        btn.style.borderColor = "#EF4444";
+                        btn.style.color = "#fff";
+                        allBtns[q.correct].style.background = "var(--math-color)";
+                        allBtns[q.correct].style.borderColor = "var(--math-color)";
+                        allBtns[q.correct].style.color = "#fff";
                     }
                     
                     questionsAnswered++;
                     if (questionsAnswered === quizData.length) {
                         const scoreEl = document.getElementById('quiz-score');
                         scoreEl.textContent = `Risultato: ${currentScore}/${quizData.length}. ${currentScore === quizData.length ? 'Ottimo lavoro!' : 'Ripassa la teoria e il Crivello.'}`;
-                        scoreEl.style.color = currentScore === quizData.length ? "#10B981" : "#F59E0B";
+                        scoreEl.style.color = currentScore === quizData.length ? "var(--math-color)" : "#F59E0B";
                     }
                 };
                 optsDiv.appendChild(btn);
