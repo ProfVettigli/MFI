@@ -93,4 +93,91 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 
+    /* --- QUIZ GENERATION --- */
+    const quizData = [
+        {
+            question: "1. Qual è la scomposizione corretta di 12?",
+            options: [
+                "2 × 6",
+                "2² × 3",
+                "3 × 4"
+            ],
+            correct: 1
+        },
+        {
+            question: "2. Cosa afferma la Congettura di Goldbach?",
+            options: [
+                "Che ogni numero primo è dispari.",
+                "Che ogni numero pari > 2 è somma di due primi.",
+                "Che i numeri primi sono infiniti."
+            ],
+            correct: 1
+        },
+        {
+            question: "3. Il numero 1 è un numero primo?",
+            options: [
+                "Sì, è l'unico numero primo speciale.",
+                "No, per definizione i numeri primi partono da 2 ed hanno esattamente due divisori.",
+                "Solo se moltiplicato per se stesso."
+            ],
+            correct: 1
+        }
+    ];
+
+    const quizArea = document.getElementById('quiz-area');
+    let currentScore = 0;
+    let questionsAnswered = 0;
+
+    if (quizArea) {
+        quizData.forEach((q, qIndex) => {
+            const qDiv = document.createElement('div');
+            qDiv.style.marginBottom = "2rem";
+            
+            const qTitle = document.createElement('h3');
+            qTitle.textContent = q.question;
+            qTitle.style.marginBottom = "1rem";
+            qTitle.style.fontSize = "1.1rem";
+            qDiv.appendChild(qTitle);
+
+            const optsDiv = document.createElement('div');
+            optsDiv.style.display = "flex";
+            optsDiv.style.flexDirection = "column";
+            optsDiv.style.gap = "0.5rem";
+
+            q.options.forEach((optText, optIndex) => {
+                const btn = document.createElement('button');
+                btn.textContent = optText;
+                btn.className = "btn-gen";
+                btn.style.textAlign = "left";
+                btn.style.width = "100%";
+                btn.style.background = "rgba(255,255,255,0.05)";
+                btn.style.color = "white";
+
+                btn.onclick = () => {
+                    const allBtns = optsDiv.querySelectorAll('button');
+                    allBtns.forEach(b => b.disabled = true);
+                    
+                    if (optIndex === q.correct) {
+                        btn.style.background = "#10B981";
+                        currentScore++;
+                    } else {
+                        btn.style.background = "#EF4444";
+                        allBtns[q.correct].style.background = "#10B981";
+                    }
+                    
+                    questionsAnswered++;
+                    if (questionsAnswered === quizData.length) {
+                        const scoreEl = document.getElementById('quiz-score');
+                        scoreEl.textContent = `Risultato: ${currentScore}/${quizData.length}. ${currentScore === quizData.length ? 'Ottimo lavoro!' : 'Ripassa la teoria e il Crivello.'}`;
+                        scoreEl.style.color = currentScore === quizData.length ? "#10B981" : "#F59E0B";
+                    }
+                };
+                optsDiv.appendChild(btn);
+            });
+
+            qDiv.appendChild(optsDiv);
+            quizArea.appendChild(qDiv);
+        });
+    }
+
 });
