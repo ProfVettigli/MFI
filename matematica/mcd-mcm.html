@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCD e mcm - MFI Interattiva</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+    
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+
+        .mcd-box {
+            background: rgba(59, 130, 246, 0.05);
+            border-left: 4px solid #3B82F6;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .mcm-box {
+            background: rgba(16, 185, 129, 0.05);
+            border-left: 4px solid #10B981;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .calc-panel {
+            background: rgba(0,0,0,0.3);
+            border: 1px dashed #555;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-top: 3rem;
+            text-align: center;
+        }
+
+        input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.8rem;
+            font-size: 1.2rem;
+            border-radius: 8px;
+            width: 100px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="sub-hero" style="padding: 4rem 0 2rem; text-align: left;">
+        <div class="container">
+            <a href="aritmetica.html" class="back-button">
+                <span style="font-size:1.2rem; margin-right: 0.5rem;">&larr;</span> Torna ad Aritmetica
+            </a>
+            <h1 style="font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; margin-bottom: 1rem;">MCD e mcm</h1>
+            <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+                Trova il divisore più grande e il multiplo più piccolo per risolvere equazioni e frazioni.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <section class="lesson-section">
+            <p class="lesson-text">Per calcolare queste quantità usiamo la <strong>scomposizione in fattori primi</strong>. Immaginiamo di avere i numeri 12 e 18:</p>
+            <div style="text-align:center; font-size:1.2rem; margin-bottom:2rem;">
+                \( 12 = 2^2 \times 3 \) <br>
+                \( 18 = 2 \times 3^2 \)
+            </div>
+
+            <div class="mcd-box">
+                <h3 style="color:#3B82F6;">M.C.D. (Massimo Comune Divisore)</h3>
+                <p>È il numero più grande in grado di dividere entrambi. Si prendono i <strong>fattori comuni</strong> con l'esponente <strong>minimo</strong>.</p>
+                <p>\( MCD(12, 18) = 2^1 \times 3^1 = \mathbf{6} \)</p>
+            </div>
+
+            <div class="mcm-box">
+                <h3 style="color:#10B981;">m.c.m. (minimo comune multiplo)</h3>
+                <p>È il numero più piccolo che è multiplo di entrambi. Si prendono i <strong>fattori comuni e non comuni</strong> con l'esponente <strong>massimo</strong>.</p>
+                <p>\( mcm(12, 18) = 2^2 \times 3^2 = \mathbf{36} \)</p>
+            </div>
+        </section>
+
+        <section class="lesson-section calc-panel">
+            <h2 class="lesson-title">Calcolatore Dinamico</h2>
+            <div style="display: flex; justify-content: center; gap: 1rem; align-items: center; margin-bottom: 2rem;">
+                <input type="number" id="ma" value="12">
+                <input type="number" id="mb" value="18">
+                <button class="btn-gen" id="run-calc" style="margin:0;">Esegui</button>
+            </div>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                <div>
+                    <h4 style="color:#3B82F6;">M.C.D.</h4>
+                    <div id="mcd-res" style="font-size: 1.5rem; font-weight: 800; margin-top: 1rem; color: #3B82F6;">?</div>
+                </div>
+                <div>
+                    <h4 style="color:#10B981;">m.c.m.</h4>
+                    <div id="mcm-res" style="font-size: 1.5rem; font-weight: 800; margin-top: 1rem; color: #10B981;">?</div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        function gcd(a, b) { return b ? gcd(b, a % b) : a; }
+        function lcm(a, b) { return (a * b) / gcd(a, b); }
+
+        document.getElementById('run-calc').onclick = () => {
+            const a = Math.abs(parseInt(document.getElementById('ma').value));
+            const b = Math.abs(parseInt(document.getElementById('mb').value));
+            if(isNaN(a) || isNaN(b) || a === 0 || b === 0) return;
+            
+            document.getElementById('mcd-res').textContent = gcd(a, b);
+            document.getElementById('mcm-res').textContent = lcm(a, b);
+        };
+    </script>
+</body>
+
+</html>
