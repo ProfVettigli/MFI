@@ -98,6 +98,38 @@
                 <span style="color:#10B981;">10 / 20</span> &rarr; Dividiamo entrambi per 10 &rarr; <span style="color:#10B981;">1 / 2</span>
                 <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 1rem;">La pizza intera divisa in 20 fette (ne mangi 10) è uguale a metà pizza!</p>
             </div>
+        <section class="lesson-section" style="border-left: 4px solid #10B981; background: rgba(16, 185, 129, 0.02);">
+            <h2 class="lesson-title">Le Classi di Equivalenza</h2>
+            <p class="lesson-text">
+                In matematica, un numero razionale è in realtà un <strong>Insieme (o Classe) di Equivalenza</strong>. 
+                Tutte le frazioni che indicano la stessa quantità, come $\{1/2, 2/4, 3/6, 4/8 \dots\}$, appartengono allo stesso gruppo.
+            </p>
+            <p class="lesson-text">
+                Prendiamo sempre la frazione <strong>ridotta ai minimi termini</strong> (quella con i numeri più piccoli) come "campione" o rappresentante di tutto l'insieme.
+            </p>
+
+            <div style="background: rgba(0, 0, 0, 0.4); padding: 2rem; border-radius: 12px; text-align: center; margin-top: 2rem;">
+                <h3 style="color: #FCD34D; margin-bottom: 2rem; font-size: 1.2rem;">Perché 1/2 è scavalcabile da 2/4?</h3>
+                <div style="display: flex; justify-content: center; gap: 3rem; align-items: center; flex-wrap: wrap;">
+                    <div style="text-align: center;">
+                        <canvas id="canvas-1-2" width="140" height="140"></canvas>
+                        <p style="margin-top: 1rem; font-weight: 800;">1 / 2</p>
+                    </div>
+                    <div style="font-size: 2.5rem; color: #10B981;">=</div>
+                    <div style="text-align: center;">
+                        <canvas id="canvas-dynamic" width="140" height="140"></canvas>
+                        <p style="margin-top: 1rem; font-weight: 800;" id="label-dynamic">2 / 4</p>
+                    </div>
+                </div>
+                <div style="margin-top: 2rem; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+                    <button class="btn-gen" onclick="drawPizza('canvas-dynamic', 2, 4, '#10B981'); document.getElementById('label-dynamic').textContent='2 / 4';" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Mostra 2/4</button>
+                    <button class="btn-gen" onclick="drawPizza('canvas-dynamic', 4, 8, '#3B82F6'); document.getElementById('label-dynamic').textContent='4 / 8';" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Mostra 4/8</button>
+                    <button class="btn-gen" onclick="drawPizza('canvas-dynamic', 8, 16, '#8B5CF6'); document.getElementById('label-dynamic').textContent='8 / 16';" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Mostra 8/16</button>
+                </div>
+                <p style="margin-top: 1.5rem; font-size: 0.9rem; color: var(--text-muted);">
+                    Nota come l'area colorata rimanga <strong>sempre la stessa</strong> (esattamente metà cerchio), anche se le fette diventano più numerose e piccole!
+                </p>
+            </div>
         </section>
 
         <!-- SOMMA E SOTTRAZIONE -->
@@ -168,6 +200,51 @@
     </footer>
 
     <script>
+        function drawPizza(canvasId, num, den, color) {
+            const canvas = document.getElementById(canvasId);
+            if(!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const cx = canvas.width / 2;
+            const cy = canvas.height / 2;
+            const r = 60;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Background circle
+            ctx.beginPath();
+            ctx.arc(cx, cy, r, 0, 2 * Math.PI);
+            ctx.fillStyle = "rgba(255,255,255,0.05)";
+            ctx.fill();
+            ctx.strokeStyle = "rgba(255,255,255,0.2)";
+            ctx.stroke();
+
+            // Shaded slice
+            const fractionArea = (num / den) * 2 * Math.PI;
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.arc(cx, cy, r, -Math.PI / 2, -Math.PI / 2 + fractionArea);
+            ctx.lineTo(cx, cy);
+            ctx.fillStyle = color || "#10B981";
+            ctx.fill();
+
+            // Grid lines (fette)
+            ctx.beginPath();
+            for (let i = 0; i < den; i++) {
+                const angle = (i / den) * 2 * Math.PI - Math.PI / 2;
+                ctx.moveTo(cx, cy);
+                ctx.lineTo(cx + Math.cos(angle) * r, cy + Math.sin(angle) * r);
+            }
+            ctx.strokeStyle = "rgba(0,0,0,0.4)";
+            ctx.lineWidth = 1;
+            ctx.stroke();
+        }
+
+        // Initialize
+        window.onload = () => {
+            drawPizza('canvas-1-2', 1, 2, '#10B981');
+            drawPizza('canvas-dynamic', 2, 4, '#10B981');
+        };
+
         // GCD helper
         function gcd(a, b) {
             return b ? gcd(b, a % b) : a;
