@@ -30,14 +30,20 @@ document.addEventListener('DOMContentLoaded', () => {
             btns.forEach(btn => {
                 const isSimilar = btn.dataset.similar === 'true';
                 const isSelected = btn.classList.contains('selected');
-
                 btn.classList.remove('selected');
 
                 if (isSimilar && isSelected) {
+                    // Correctly selected a similar monomial -> green
                     btn.classList.add('correct');
                 } else if (!isSimilar && !isSelected) {
+                    // Correctly ignored a non-similar -> no color (neutral)
+                    // Don't add any class
+                } else if (isSimilar && !isSelected) {
+                    // Missed a similar monomial -> show it green so they see the answer
                     btn.classList.add('correct');
+                    allCorrect = false;
                 } else {
+                    // Selected a non-similar monomial -> red
                     btn.classList.add('wrong');
                     allCorrect = false;
                 }
@@ -47,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 similiFeedback.textContent = "Perfetto! Hai identificato correttamente tutti i monomi simili a 4x²y!";
                 similiFeedback.style.color = "var(--math-color)";
             } else {
-                similiFeedback.textContent = "Attenzione! Ricorda: i monomi simili hanno la stessa parte letterale (stesse lettere, stessi esponenti).";
+                similiFeedback.textContent = "Attenzione! I monomi simili hanno la stessa parte letterale (stesse lettere, stessi esponenti). Quelli verdi sono i simili corretti.";
                 similiFeedback.style.color = "#EF4444";
             }
 
@@ -57,23 +63,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* =========================================================
-       2. CALCOLATORE SOMMA MONOMI
+       2. SFIDE SOMMA
        ========================================================= */
     const btnCheckSum = document.getElementById('btn-check-sum');
     const sumFeedback = document.getElementById('sum-feedback');
-
-    // Challenge buttons
+    const sumAnswer = document.getElementById('sum-answer');
     const challengeBtns = document.querySelectorAll('.challenge-btn');
-    let currentAnswer = null;
+    let currentSumAnswer = null;
 
     challengeBtns.forEach(btn => {
         btn.addEventListener('click', () => {
-            document.getElementById('mono1').value = btn.dataset.m1;
-            document.getElementById('mono2').value = btn.dataset.m2;
-            document.getElementById('mono-answer').value = '';
-            currentAnswer = btn.dataset.ans;
-            sumFeedback.textContent = '';
-
+            currentSumAnswer = btn.dataset.ans;
+            if (sumAnswer) sumAnswer.value = '';
+            if (sumFeedback) sumFeedback.textContent = '';
             challengeBtns.forEach(b => b.style.borderColor = 'transparent');
             btn.style.borderColor = 'var(--math-color)';
         });
@@ -81,34 +83,77 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (btnCheckSum) {
         btnCheckSum.addEventListener('click', () => {
-            const userAnswer = document.getElementById('mono-answer').value.trim().replace(/\s/g, '');
+            const userAnswer = sumAnswer ? sumAnswer.value.trim().replace(/\s/g, '') : '';
 
             if (!userAnswer) {
                 sumFeedback.textContent = "Scrivi la tua risposta prima di verificare!";
                 sumFeedback.style.color = "#F59E0B";
                 return;
             }
-
-            if (!currentAnswer) {
-                sumFeedback.textContent = "Seleziona una sfida rapida oppure inserisci due monomi simili!";
+            if (!currentSumAnswer) {
+                sumFeedback.textContent = "Seleziona prima una sfida cliccando uno dei bottoni!";
                 sumFeedback.style.color = "#F59E0B";
                 return;
             }
 
             const normalise = (s) => s.replace(/\s/g, '').toLowerCase();
-
-            if (normalise(userAnswer) === normalise(currentAnswer)) {
+            if (normalise(userAnswer) === normalise(currentSumAnswer)) {
                 sumFeedback.textContent = "Corretto! Ottimo lavoro! 🎉";
                 sumFeedback.style.color = "var(--math-color)";
             } else {
-                sumFeedback.textContent = `Non esatto. La risposta corretta è: ${currentAnswer}`;
+                sumFeedback.textContent = `Non esatto. La risposta corretta è: ${currentSumAnswer}`;
                 sumFeedback.style.color = "#EF4444";
             }
         });
     }
 
     /* =========================================================
-       3. QUIZ GENERATION
+       3. SFIDE MOLTIPLICAZIONE
+       ========================================================= */
+    const btnCheckMult = document.getElementById('btn-check-mult');
+    const multFeedback = document.getElementById('mult-feedback');
+    const multAnswer = document.getElementById('mult-answer');
+    const multBtns = document.querySelectorAll('.mult-btn');
+    let currentMultAnswer = null;
+
+    multBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            currentMultAnswer = btn.dataset.ans;
+            if (multAnswer) multAnswer.value = '';
+            if (multFeedback) multFeedback.textContent = '';
+            multBtns.forEach(b => b.style.borderColor = 'transparent');
+            btn.style.borderColor = 'var(--math-color)';
+        });
+    });
+
+    if (btnCheckMult) {
+        btnCheckMult.addEventListener('click', () => {
+            const userAnswer = multAnswer ? multAnswer.value.trim().replace(/\s/g, '') : '';
+
+            if (!userAnswer) {
+                multFeedback.textContent = "Scrivi la tua risposta prima di verificare!";
+                multFeedback.style.color = "#F59E0B";
+                return;
+            }
+            if (!currentMultAnswer) {
+                multFeedback.textContent = "Seleziona prima una sfida cliccando uno dei bottoni!";
+                multFeedback.style.color = "#F59E0B";
+                return;
+            }
+
+            const normalise = (s) => s.replace(/\s/g, '').toLowerCase();
+            if (normalise(userAnswer) === normalise(currentMultAnswer)) {
+                multFeedback.textContent = "Corretto! Ottimo lavoro! 🎉";
+                multFeedback.style.color = "var(--math-color)";
+            } else {
+                multFeedback.textContent = `Non esatto. La risposta corretta è: ${currentMultAnswer}`;
+                multFeedback.style.color = "#EF4444";
+            }
+        });
+    }
+
+    /* =========================================================
+       4. QUIZ GENERATION
        ========================================================= */
     const quizData = [
         {

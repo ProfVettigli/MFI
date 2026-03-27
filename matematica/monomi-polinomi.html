@@ -273,35 +273,48 @@
             </div>
         </section>
 
-        <!-- CALCOLATORE INTERATTIVO -->
+        <!-- PROVA TU: SOMMA -->
         <section class="lesson-section">
-            <h2 class="lesson-title">5. Prova tu! Somma di Monomi</h2>
+            <h2 class="lesson-title">5. Prova tu! Somma tra Monomi</h2>
             <p class="lesson-text">
-                Inserisci due monomi simili e calcola la loro somma. Verifica se la tua risposta è corretta!
+                Seleziona una sfida, scrivi la tua risposta e verifica!
             </p>
 
-            <div class="calc-row">
-                <input type="text" id="mono1" placeholder="Es. 3x^2">
-                <span style="font-size: 1.5rem; font-weight: 800;">+</span>
-                <input type="text" id="mono2" placeholder="Es. 5x^2">
+            <div style="display: flex; gap: 0.8rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
+                <button class="btn-gen challenge-btn" data-ans="8x^2" style="background: rgba(255,255,255,0.05); font-size: 0.95rem;">$3x^2 + 5x^2$</button>
+                <button class="btn-gen challenge-btn" data-ans="4ab" style="background: rgba(255,255,255,0.05); font-size: 0.95rem;">$7ab + (-3ab)$</button>
+                <button class="btn-gen challenge-btn" data-ans="7y^3" style="background: rgba(255,255,255,0.05); font-size: 0.95rem;">$-2y^3 + 9y^3$</button>
+                <button class="btn-gen challenge-btn" data-ans="0" style="background: rgba(255,255,255,0.05); font-size: 0.95rem;">$4x^2y + (-4x^2y)$</button>
             </div>
+
             <div class="calc-row">
                 <span style="font-weight: 600; color: var(--text-muted);">La tua risposta:</span>
-                <input type="text" id="mono-answer" placeholder="Es. 8x^2">
+                <input type="text" id="sum-answer" placeholder="Es. 8x^2">
             </div>
-
             <button id="btn-check-sum" class="btn-gen" style="background: var(--math-color);">Verifica Somma</button>
             <div id="sum-feedback" class="feedback-msg" style="margin-top: 1rem; font-size: 1.1rem;"></div>
+        </section>
 
-            <!-- Sfide preimpostate -->
-            <h3 style="color: #60A5FA; margin-top: 2.5rem;">⚔️ Sfide Rapide</h3>
-            <p class="lesson-text">Clicca una sfida, scrivi la risposta nel campo qui sopra e verifica!</p>
-            <div style="display: flex; gap: 0.8rem; flex-wrap: wrap;">
-                <button class="btn-gen challenge-btn" data-m1="3x^2" data-m2="5x^2" data-ans="8x^2" style="background: rgba(255,255,255,0.05); font-size: 0.95rem;">$3x^2 + 5x^2$</button>
-                <button class="btn-gen challenge-btn" data-m1="7ab" data-m2="-3ab" data-ans="4ab" style="background: rgba(255,255,255,0.05); font-size: 0.95rem;">$7ab + (-3ab)$</button>
-                <button class="btn-gen challenge-btn" data-m1="-2y^3" data-m2="9y^3" data-ans="7y^3" style="background: rgba(255,255,255,0.05); font-size: 0.95rem;">$-2y^3 + 9y^3$</button>
-                <button class="btn-gen challenge-btn" data-m1="4x^2y" data-m2="-4x^2y" data-ans="0" style="background: rgba(255,255,255,0.05); font-size: 0.95rem;">$4x^2y + (-4x^2y)$</button>
+        <!-- PROVA TU: MOLTIPLICAZIONE -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">6. Prova tu! Moltiplicazione tra Monomi</h2>
+            <p class="lesson-text">
+                Ricorda: moltiplica i coefficienti e somma gli esponenti delle stesse variabili!
+            </p>
+
+            <div style="display: flex; gap: 0.8rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
+                <button class="btn-gen mult-btn" data-ans="12x^5" style="background: rgba(255,255,255,0.05); font-size: 0.95rem;">$3x^2 \cdot 4x^3$</button>
+                <button class="btn-gen mult-btn" data-ans="10a^3b^2" style="background: rgba(255,255,255,0.05); font-size: 0.95rem;">$2a^2b \cdot 5ab$</button>
+                <button class="btn-gen mult-btn" data-ans="-6x^2y" style="background: rgba(255,255,255,0.05); font-size: 0.95rem;">$-3xy \cdot 2x$</button>
+                <button class="btn-gen mult-btn" data-ans="8x^6" style="background: rgba(255,255,255,0.05); font-size: 0.95rem;">$(2x^2)^3$</button>
             </div>
+
+            <div class="calc-row">
+                <span style="font-weight: 600; color: var(--text-muted);">La tua risposta:</span>
+                <input type="text" id="mult-answer" placeholder="Es. 12x^5">
+            </div>
+            <button id="btn-check-mult" class="btn-gen" style="background: var(--math-color);">Verifica Prodotto</button>
+            <div id="mult-feedback" class="feedback-msg" style="margin-top: 1rem; font-size: 1.1rem;"></div>
         </section>
 
         <!-- QUIZ -->
