@@ -12,6 +12,19 @@
     <!-- CSS -->
     <link rel="stylesheet" href="../css/style.css">
 
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {
+        delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false},
+            {left: '\\(', right: '\\)', display: false},
+            {left: '\\[', right: '\\]', display: true}
+        ],
+        throwOnError : false
+    });"></script>
+
     <style>
         .back-button {
             display: inline-flex;
@@ -134,9 +147,22 @@
             </p>
             <div style="background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.2); padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem;">
                 <p style="margin:0; font-family: monospace; font-size: 1.1rem; color: #10B981;">
-                    Esempio: 60 = 2 × 2 × 3 × 5 = <strong>2² × 3 × 5</strong>
+                    Esempio: \( 60 = 2 \times 2 \times 3 \times 5 = \mathbf{2^2 \times 3 \times 5} \)
                 </p>
             </div>
+
+            <h3 style="color:#10B981; margin-top: 2rem;">Il Metodo delle Divisioni Successive</h3>
+            <p class="lesson-text">Per scomporre un numero, si traccia una linea verticale e si divide il numero per il più piccolo numero primo possibile (2, poi 3, poi 5...), finché non si arriva a 1:</p>
+            
+            <div style="display: flex; justify-content: center; gap: 0; margin: 2rem 0; font-family: monospace; font-size: 1.4rem;">
+                <div style="border-right: 2px solid #10B981; padding: 0 1.5rem; text-align: right; line-height: 1.8;">
+                    60 <br> 30 <br> 15 <br> 5 <br> 1
+                </div>
+                <div style="padding: 0 1.5rem; text-align: left; line-height: 1.8;">
+                    2 <br> 2 <br> 3 <br> 5 <br> &nbsp;
+                </div>
+            </div>
+
             <p class="lesson-text">
                 Inserisci un numero per scoprire i suoi fattori primi:
             </p>
