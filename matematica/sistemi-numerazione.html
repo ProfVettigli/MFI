@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistemi di Numerazione - Aritmetica MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+    
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {
+        delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false},
+            {left: '\\(', right: '\\)', display: false},
+            {left: '\\[', right: '\\]', display: true}
+        ],
+        throwOnError : false
+    });"></script>
+
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+        
+        .converter-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1.5rem 0;
+        }
+
+        .base-input {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: white;
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            width: 100%;
+            max-width: 250px;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+        }
+
+        .result-badge {
+            display: inline-block;
+            background: var(--math-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 1.2rem;
+            margin-left: 1rem;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .joke-box {
+            background: rgba(245, 158, 11, 0.08);
+            border: 1px dashed #F59E0B;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            font-style: italic;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header class="lesson-header">
+        <div class="container" style="padding: 4rem 0 2rem;">
+            <a href="aritmetica.html" class="back-button">
+                <span style="font-size:1.2rem; margin-right: 0.5rem;">&larr;</span> Torna ad Aritmetica
+            </a>
+            <h1 class="lesson-title" style="font-size: clamp(2.2rem, 5vw, 3.5rem); font-weight: 800; margin-bottom: 1rem;">Sistemi di <span class="gradient-text" style="background: linear-gradient(135deg, #3B82F6, #10B981); -webkit-background-clip: text; background-clip: text; color: transparent;">Numerazione</span></h1>
+            <p class="lesson-subtitle" style="font-size: 1.2rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+                Come gli esseri umani (e le macchine) danno un senso ai numeri. Dalle dita delle mani ai bit del computer.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- DECIMALE -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">1. Sistema Decimale Posizionale</h2>
+            <p class="lesson-text">
+                Oggi usiamo il sistema decimale (base 10). Perché 10? Probabilmente perché abbiamo 10 dita! 👐 È un sistema <strong>posizionale</strong>: la stessa cifra cambia valore a seconda di dove si trova.
+            </p>
+            <div style="background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 12px; font-size: 1.2rem; line-height: 1.8;">
+                Prendiamo il numero \(342\):<br>
+                - \(2 \times 10^0 = 2\) (Unità)<br>
+                - \(4 \times 10^1 = 40\) (Decine)<br>
+                - \(3 \times 10^2 = 300\) (Centinaia)<br>
+                <strong>Totale:</strong> \(300 + 40 + 2 = 342\).
+            </div>
+            <p class="lesson-text" style="margin-top: 1.5rem;">
+                I numeri che usiamo (1, 2, 3...) sono nati in <strong>India</strong> più di 1500 anni fa, ma sono stati diffusi in Occidente dai matematici <strong>arabi</strong> (per questo li chiamiamo numeri indo-arabi).
+            </p>
+        </section>
+
+        <!-- ROMANI -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">2. La Lunga Ombra di Roma</h2>
+            <p class="lesson-text">
+                I Romani usavano un sistema <strong>non posizionale</strong> (o additivo). Invece di posizioni, usavano simboli fissi: \(I=1, V=5, X=10, L=50, C=100, D=500, M=1000\).
+            </p>
+            <p class="lesson-text">
+                Il problema? Provate a fare \((MCMXCIX \times XLII)\) senza carta e penna! Erano così complicati da rendere difficile l'algebra, per questo sono stati abbandonati, ma li usiamo ancora per i secoli o gli orologi di classe.
+            </p>
+        </section>
+
+        <!-- BINARIO -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">3. Sistema Binario (Base 2)</h2>
+            <p class="lesson-text">
+                In informatica, le macchine capiscono solo due stati: acceso (1) o spento (0). Questo è il bit. Tutte le foto, i video e i giochi che vedi sono in realtà sequenze di miliardi di zero e uno.
+            </p>
+            <div class="converter-box">
+                <h4 style="margin-bottom: 1rem;">Convertitori Binari</h4>
+                <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem;">
+                    <span style="font-size: 0.85rem; width: 100px;">Base 2 &rarr; 10:</span>
+                    <input type="text" id="bin-input" class="base-input" placeholder="Es. 1011" maxlength="12">
+                    <span style="font-size: 1.5rem;">=</span>
+                    <div id="bin-result" class="result-badge">11</div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+                    <span style="font-size: 0.85rem; width: 100px;">Base 10 &rarr; 2:</span>
+                    <input type="number" id="dec-to-bin-input" class="base-input" placeholder="Es. 11">
+                    <span style="font-size: 1.5rem;">=</span>
+                    <div id="bin-reverse-result" class="result-badge" style="background: var(--physics-color);">1011</div>
+                </div>
+            </div>
+            <p class="lesson-text">
+                <strong>Come si fa?</strong> Si moltiplica ogni cifra per \(2\) elevato alla sua posizione. 
+                Es. \(1011 = 1\times 2^3 + 0\times 2^2 + 1\times 2^1 + 1\times 2^0 = 8 + 0 + 2 + 1 = 11\).
+            </p>
+        </section>
+
+        <!-- ESADECIMALE -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">4. Esadecimale (Base 16)</h2>
+            <p class="lesson-text">
+                Poiché il binario è troppo lungo per noi umani, usiamo la base 16 per scrivere i codici dei colori HTML o gli indirizzi IP. Arrivati al 9, usiamo le lettere: \(A=10, B=11, C=12, D=13, E=14, F=15\).
+            </p>
+            <div class="converter-box">
+                <h4 style="margin-bottom: 1rem;">Convertitori Esadecimali</h4>
+                <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem;">
+                    <span style="font-size: 0.85rem; width: 100px;">Base 16 &rarr; 10:</span>
+                    <input type="text" id="hex-input" class="base-input" placeholder="Es. FF" maxlength="6">
+                    <span style="font-size: 1.5rem;">=</span>
+                    <div id="hex-result" class="result-badge">255</div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+                    <span style="font-size: 0.85rem; width: 100px;">Base 10 &rarr; 16:</span>
+                    <input type="number" id="dec-to-hex-input" class="base-input" placeholder="Es. 255">
+                    <span style="font-size: 1.5rem;">=</span>
+                    <div id="hex-reverse-result" class="result-badge" style="background: var(--physics-color);">FF</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- OTTALE -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">5. Ottale (Base 8)</h2>
+            <p class="lesson-text">
+                Il sistema ottale usa 8 cifre (da 0 a 7). Era popolare agli inizi dell'informatica.
+            </p>
+            <div class="converter-box">
+                <h4 style="margin-bottom: 1rem;">Convertitori Ottali</h4>
+                <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem;">
+                    <span style="font-size: 0.85rem; width: 100px;">Base 8 &rarr; 10:</span>
+                    <input type="text" id="oct-input" class="base-input" placeholder="Es. 31" maxlength="6">
+                    <span style="font-size: 1.5rem;">=</span>
+                    <div id="oct-result" class="result-badge">25</div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+                    <span style="font-size: 0.85rem; width: 100px;">Base 10 &rarr; 8:</span>
+                    <input type="number" id="dec-to-oct-input" class="base-input" placeholder="Es. 25">
+                    <span style="font-size: 1.5rem;">=</span>
+                    <div id="oct-reverse-result" class="result-badge" style="background: var(--physics-color);">31</div>
+                </div>
+            </div>
+            
+            <div class="joke-box">
+                "Perché i matematici confondono Halloween e Natale?"<br>
+                Perché <strong>OCT 31</strong> è uguale a <strong>DEC 25</strong>!<br>
+                <small style="opacity: 0.6;">(\(3 \times 8 + 1 = 25\))</small>
+            </div>
+        </section>
+
+        <!-- CINA E GIAPPONE -->
+        <section class="lesson-section" style="border-left: 4px solid var(--physics-color);">
+            <h2 class="lesson-title" style="color: var(--physics-color);">Oltre l'Occidente</h2>
+            <p class="lesson-text">
+                I sistemi che abbiamo visto sono di tipo posizionale o additivo "puro". Esistono però sistemi meravigliosi e diversi, come quello <strong>Cinese</strong> o <strong>Giapponese</strong>, che utilizzano ideogrammi diversi per le potenze di dieci (un modo per dire "dieci mila", "cento mila" e così via con un solo simbolo). 
+            </p>
+            <p class="lesson-text">
+                Ti invitiamo a fare una piccola ricerca sui sistemi di numerazione orientali o su quelli del passato come quello <strong>Maya</strong> (che usava la base 20!).
+            </p>
+        </section>
+
+        <!-- QUIZ -->
+        <section class="lesson-section quiz-container">
+            <h2 class="lesson-title">Verifica Comprensione</h2>
+            <p class="lesson-text" style="font-size: 0.95rem;">Vediamo se sai contare in più lingue (matematiche).</p>
+            <div id="quiz-area"></div>
+            <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Numeri Senza Frontiere.</p>
+    </footer>
+
+    <!-- JS -->
+    <script src="../js/sistemi-numerazione.js"></script>
+</body>
+</html>

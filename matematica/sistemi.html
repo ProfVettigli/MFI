@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistemi di Equazioni e Disequazioni - MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+        onload="renderMathInElement(document.body);"></script>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        :root {
+            --sys-color: #8B5CF6;
+        }
+
+        .sys-box {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: rgba(139, 92, 246, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+        }
+
+        .sys-bracket {
+            font-size: 4rem;
+            font-weight: 300;
+            line-height: 0.8;
+            color: var(--sys-color);
+        }
+
+        .sys-eqs {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .method-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .method-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--sys-color);
+        }
+
+        .interactive-tool {
+            background: rgba(139, 92, 246, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            border: 1px dashed var(--sys-color);
+        }
+
+        .cramer-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr) auto repeat(1, 1fr);
+            gap: 10px;
+            align-items: center;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .cramer-input {
+            width: 60px;
+            padding: 8px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--sys-color);
+            color: white;
+            border-radius: 4px;
+            text-align: center;
+            font-family: inherit;
+        }
+
+        .result-box {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: rgba(16, 185, 129, 0.1);
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            color: #10B981;
+            min-height: 50px;
+        }
+
+        .legend-badge {
+            display: inline-block;
+            background: #F59E0B;
+            color: black;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="sub-hero">
+        <div class="container">
+            <a href="algebra.html" class="back-button">
+                <span class="back-icon">&larr;</span> Torna ad Algebra
+            </a>
+            <h1 class="sub-hero-title">Sistemi di <span class="gradient-text"
+                    style="background: linear-gradient(135deg, #8B5CF6, #D8B4FE); -webkit-background-clip: text; background-clip: text; color: transparent;">Equazioni
+                    e Disequazioni</span></h1>
+            <p class="sub-hero-subtitle">Quando una sola frase non basta a descrivere la verità. Impara a coordinare più
+                condizioni algebriche per trovare l'unica soluzione possibile.</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- 1. INTRODUZIONE -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">1. Cos'è un Sistema?</h2>
+            <p class="lesson-text">
+                Immagina di voler descrivere un colpevole: "È alto 1.80m" ED "È biondo". Se consideri solo la prima
+                frase, avrai troppe persone. Se le consideri <strong>contemporaneamente</strong>, il cerchio si stringe.
+            </p>
+            <p class="lesson-text">
+                In matematica, un <strong>sistema</strong> è un insieme di equazioni (o disequazioni) che devono essere
+                soddisfatte allo stesso tempo dallo stesso gruppo di valori delle incognite.
+            </p>
+
+            <div style="text-align: center;">
+                <div class="sys-box">
+                    <span class="sys-bracket">{</span>
+                    <div class="sys-eqs">
+                        <div>\(x + y = 5\)</div>
+                        <div>\(x - y = 1\)</div>
+                    </div>
+                </div>
+            </div>
+
+            <p class="lesson-text">
+                <strong>Esempio a mente:</strong> Quali sono quei due numeri che sommati fanno 5 e sottratti fanno 1?
+                Pensa... Esatto, \(x = 3\) e \(y = 2\)!
+            </p>
+
+            <div class="card" style="border-left: 4px solid var(--sys-color);">
+                <p><strong>Regola d'oro:</strong> Una soluzione di un sistema non è un numero solo, ma una
+                    <em>coppia</em> (o terna, o enn-upla) di numeri, tanti quante sono le incognite!
+                </p>
+            </div>
+
+            <p class="lesson-text" style="margin-top: 1.5rem;">
+                Studieremo principalmente i sistemi di <strong>primo grado</strong> (lineari). Ma non temete, per ora
+                stiamo solo gettando le basi: avremo tutto il tempo per incontrare sistemi più complessi, di secondo
+                grado o misti, durante il nostro meraviglioso viaggio algebrico!
+            </p>
+        </section>
+
+        <!-- 2. LE TRE POSSIBILITÀ -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">2. Il Destino di un Sistema</h2>
+            <p class="lesson-text">Un sistema di equazioni lineari può avere tre "destini" diversi:</p>
+            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+                <div class="card" style="background: rgba(16, 185, 129, 0.05);">
+                    <h3 style="color: #10B981;">Determinato</h3>
+                    <p>Esiste <strong>una sola</strong> soluzione (una coppia di numeri).</p>
+                </div>
+                <div class="card" style="background: rgba(239, 68, 68, 0.05);">
+                    <h3 style="color: #EF4444;">Impossibile</h3>
+                    <p>Non esiste <strong>nessuna</strong> soluzione. Le condizioni si contraddicono tra loro.</p>
+                </div>
+                <div class="card" style="background: rgba(59, 130, 246, 0.05);">
+                    <h3 style="color: #3B82F6;">Indeterminato</h3>
+                    <p>Esistono <strong>infinite</strong> soluzioni. Le equazioni dicono la stessa cosa in modi diversi.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. METODO DELLA SOSTITUZIONE -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">3. Metodo della Sostituzione</h2>
+            <p class="lesson-text">
+                È il metodo più "naturale": isoli una variabile in un'equazione e la "paracaduti" nell'altra.
+            </p>
+
+            <div class="interactive-tool" id="substitution-demo">
+                <h3>Vedi il metodo in azione:</h3>
+                <div id="sub-steps" style="display: flex; justify-content: center;">
+                    <div id="sub-box-inner" class="sys-box">
+                        <span class="sys-bracket">{</span>
+                        <div class="sys-eqs">
+                            <div>\(x = 5 - y\)</div>
+                            <div>\(2x + y = 7\)</div>
+                        </div>
+                    </div>
+                </div>
+                <div id="sub-explanation"
+                    style="margin: 1rem 0; min-height: 40px; text-align: center; font-weight: 600;">
+                    Isoliamo la \(x\) nella prima equazione (già fatto!).
+                </div>
+                <div style="display: flex; gap: 10px; justify-content: center;">
+                    <button class="btn-gen" onclick="nextSubStep()">Passaggio Successivo</button>
+                    <button class="btn-gen" style="background: #475569;" onclick="resetSub()">Reset</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. ALTRI METODI -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">4. Altri Metodi: Confronto</h2>
+            <p class="lesson-text">
+                Oltre alla sostituzione, esistono altre strategie:
+            </p>
+            <div class="method-card">
+                <h4>Metodo del Confronto</h4>
+                <p>Isoli la <strong>stessa</strong> variabile in entrambe le equazioni e poi metti i due risultati al
+                    confronto. Se \(x = A\) e \(x = B\), allora per forza \(A = B\)!</p>
+                <p style="margin-top: 1rem; font-style: italic; color: var(--text-muted);">
+                    Esempio: \(\{x = y+2, x = 3y-4\} \Rightarrow y+2 = 3y-4\)
+                </p>
+            </div>
+        </section>
+
+        <!-- 5. METODO DI CRAMER -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">5. Il Metodo di Cramer (I Determinanti)</h2>
+            <p class="lesson-text">
+                Gabriel Cramer ha inventato un metodo "meccanico" basato sui determinanti. È perfetto per quando i
+                numeri si fanno brutti e le frazioni iniziano a spaventare!
+            </p>
+            <div class="card" style="background: rgba(139, 92, 246, 0.03);">
+                <p>Un sistema in forma normale è: \(\begin{cases} ax + by = c \\ a'x + b'y = c' \end{cases}\)</p>
+                <ul style="margin-left: 1.5rem; margin-top: 1rem;">
+                    <li>\(D = ab' - a'b\)</li>
+                    <li>\(D_x = cb' - c'b\)</li>
+                    <li>\(D_y = ac' - a'c\)</li>
+                </ul>
+                <p style="margin-top: 1rem;">Soluzioni: \(x = D_x/D\) e \(y = D_y/D\).</p>
+            </div>
+
+            <div class="interactive-tool">
+                <h3 style="text-align: center; margin-bottom: 2rem;">Risolutore Cramer automatico</h3>
+                <div class="cramer-grid">
+                    <input type="number" id="c-a" class="cramer-input" value="1"> <span>x +</span>
+                    <input type="number" id="c-b" class="cramer-input" value="1"> <span>y =</span>
+                    <input type="number" id="c-c" class="cramer-input" value="5">
+
+                    <input type="number" id="c-ap" class="cramer-input" value="1"> <span>x +</span>
+                    <input type="number" id="c-bp" class="cramer-input" value="-1"> <span>y =</span>
+                    <input type="number" id="c-cp" class="cramer-input" value="1">
+                </div>
+                <div style="text-align: center; margin-top: 2rem;">
+                    <button class="btn-gen" onclick="solveCramer()">Risolvi con Cramer</button>
+                </div>
+                <div id="cramer-result" class="result-box">Risultato apparirà qui...</div>
+            </div>
+        </section>
+
+        <section class="lesson-section">
+            <h2 class="lesson-title">6. Sistemi di Disequazioni</h2>
+            <p class="lesson-text">
+                Un sistema di disequazioni raccoglie più condizioni di disuguaglianza. A differenza delle equazioni, qui
+                non cerchiamo un punto, ma un <strong>intervallo</strong> di valori.
+            </p>
+            <p class="lesson-text">
+                <strong>Come si risolvono?</strong> Si risolve ogni disequazione separatamente. Anche qui possiamo usare
+                tecniche come la <strong>sostituzione</strong> per semplificare le espressioni, ma l'obiettivo finale è
+                trovare l'intersezione: quali sono i valori che soddisfano <em>contemporaneamente</em> tutte le
+                disuguaglianze?
+            </p>
+            <div class="card" style="border-left: 4px solid #EF4444;">
+                <p><strong>Metodo Grafico:</strong> Rappresentiamo le soluzioni su una retta numerica e cerchiamo dove
+                    le linee si sovrappongono. Solo quell'intervallo sarà il nostro Insieme di Verità!</p>
+            </div>
+
+            <div class="interactive-tool" style="background: rgba(239, 68, 68, 0.05); border-color: #EF4444;">
+                <div style="display: flex; flex-direction: column; gap: 2rem; align-items: center;">
+                    <div class="sys-box"
+                        style="background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.3);">
+                        <span class="sys-bracket">{</span>
+                        <div class="sys-eqs">
+                            <div>\(x > 2\)</div>
+                            <div>\(x < 6\)</div>
+                            </div>
+                        </div>
+
+                        <div id="ineq-visual"
+                            style="width: 100%; max-width: 500px; height: 120px; position: relative; border-bottom: 2px solid white; margin-top: 2rem;">
+                            <!-- Number Line -->
+                            <div
+                                style="position: absolute; bottom: -25px; left: 0; width: 100%; display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-muted);">
+                                <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span>
+                            </div>
+
+                            <!-- Line 1: x > 2 -->
+                            <div id="line-1"
+                                style="position: absolute; top: 20px; left: 25%; width: 75%; height: 4px; background: rgba(59, 130, 246, 0.3); border-radius: 2px;">
+                            </div>
+                            <div
+                                style="position: absolute; top: 12px; left: 25%; width: 15px; height: 15px; border: 2px solid #3B82F6; border-radius: 50%; background: #0f172a;">
+                            </div>
+
+                            <!-- Line 2: x < 6 -->
+                            <div id="line-2"
+                                style="position: absolute; top: 50px; left: 0; width: 75%; height: 4px; background: rgba(16, 185, 129, 0.3); border-radius: 2px;">
+                            </div>
+                            <div
+                                style="position: absolute; top: 42px; left: 75%; width: 15px; height: 15px; border: 2px solid #10B981; border-radius: 50%; background: #0f172a;">
+                            </div>
+
+                            <!-- Intersection -->
+                            <div id="overlap-area"
+                                style="position: absolute; top: 0; left: 25%; width: 50%; height: 100%; background: rgba(245, 158, 11, 0.15); display: none; border-left: 2px dashed #F59E0B; border-right: 2px dashed #F59E0B;">
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 10px;">
+                            <button class="btn-gen" style="background: #3B82F6;" onclick="showLine1()">Mostra \(x >
+                                2\)</button>
+                            <button class="btn-gen" style="background: #10B981;" onclick="showLine2()">Mostra \(x <
+                                    6\)</button>
+                                    <button class="btn-gen" style="background: #F59E0B;" onclick="showOverlap()">Trova
+                                        Intersezione</button>
+                        </div>
+                    <div id="ineq-feedback" style="min-height: 30px; font-weight: bold; color: #F59E0B;"></div>
+
+                    <!-- Nota sugli intervalli -->
+                    <div style="margin-top: 2rem; padding: 1rem; background: rgba(255,165,0,0.05); border-radius: 8px; font-size: 0.9rem; border-left: 3px solid #F59E0B;">
+                        <p><strong>Nota sulla Notazione:</strong> Quando vedi la scrittura \(2 < x < 6\), significa che la \(x\) è <strong>compresa</strong> tra 2 e 6. È un modo rapido per dire che \(x\) deve essere più grande di 2 ( \(x > 2\) ) <strong>E</strong> contemporaneamente più piccola di 6 ( \(x < 6\) ).</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. ONLY FOR THE BRAVE -->
+        <section class="lesson-section"
+            style="background: linear-gradient(145deg, rgba(0,0,0,0.4), rgba(139, 92, 246, 0.1)); border: 2px solid #F59E0B;">
+            <div class="legend-badge">👑 LEGGENDA DI POLLENATROCCHIA</div>
+            <h2 class="lesson-title" style="color: #F59E0B;">Only for the Brave</h2>
+            <p class="lesson-text">
+                Si dice che nei sotterranei di Pollenatrocchia sia custodito un tesoro che solo chi risolve queste due
+                prove potrà reclamare. Re e Regine, fatevi avanti!
+            </p>
+
+            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                <div class="card" style="border: 1px solid rgba(245, 158, 11, 0.3);">
+                    <h4 style="color: #F59E0B;">Il Gran Sistema Equazionale (7 Incognite)</h4>
+                    <p style="font-size: 0.85rem; font-family: monospace; white-space: pre-wrap; margin-top: 0.5rem;">
+\[ \begin{cases} a + b + c + d + e + f + g = 28 \\ 2a - b + c - d + e - f + g = 14 \\ (a+b)^2 - (a-b)^2 + c = 11 \\ \frac{g-f}{e-d} = 1 \\ a \cdot b \cdot c = 6 \\ d^2 - e^2 + f^2 = 27 \\ a+c+e+g = 16 \end{cases} \]
+                    </p>
+                    <p style="margin-top: 1rem; font-size: 0.8rem; font-style: italic;">Trova la settupla magica!</p>
+                </div>
+
+                <div class="card" style="border: 1px solid rgba(245, 158, 11, 0.3);">
+                    <h4 style="color: #F59E0B;">L'Abisso delle Disequazioni</h4>
+                    <p style="font-size: 0.85rem; font-family: monospace; white-space: pre-wrap; margin-top: 0.5rem;">
+\[ \begin{cases} x_1 + x_2 + x_3 + x_4 + x_5 + x_6 + x_7 \le 100 \\ x_1^2 - 1 > 0 \\ (x_2 - x_1)^2 < 4 \\ x_3 > x_2 + x_1 \\ x_4 \le \sqrt{x_1 + x_2 + x_3 + 20} \\ x_5 > 0 \\ x_7 < x_6 - x_5 \end{cases} \]
+                    </p>
+                    <p style="margin-top: 1rem; font-size: 0.8rem; font-style: italic;">Definisci l'intervallo del
+                        destino!</p>
+                </div>
+            </div>
+
+            <p style="text-align: center; margin-top: 2rem; font-weight: bold; color: #F59E0B;">
+                Chi risolverà sarà incoronato Re di Pollenatrocchia! 🏰🐣
+            </p>
+        </section>
+
+        <!-- 8. QUESTIONARIO -->
+        <section class="lesson-section quiz-container">
+            <h2 class="lesson-title">Questionario di Verifica</h2>
+            <div id="quiz-area">
+                <!-- Injected by JS -->
+            </div>
+            <div id="quiz-feedback" class="result-box" style="display: none; color: white; min-height: 100px;"></div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Algebra Live.</p>
+    </footer>
+
+    <script src="../js/sistemi.js"></script>
+</body>
+
+</html>

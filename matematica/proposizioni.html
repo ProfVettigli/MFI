@@ -11,6 +11,19 @@
     <!-- CSS -->
     <link rel="stylesheet" href="../css/style.css">
     
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {
+        delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false},
+            {left: '\\(', right: '\\)', display: false},
+            {left: '\\[', right: '\\]', display: true}
+        ],
+        throwOnError : false
+    });"></script>
+    
     <style>
         .back-button {
             display: inline-flex;
@@ -128,6 +141,73 @@
                 <strong>s:</strong> <em>"Che la Forza sia con te!"</em> <span style="color:var(--text-muted)">[ NON È UNA PROPOSIZIONE, è un augurio! ]</span>
             </div>
             <p class="lesson-text">Le proposizioni si indicano di solito con le lettere minuscole (p, q, r...).</p>
+        </section>
+        <!-- CHIUSE VS APERTE -->
+        <section class="lesson-section" style="border-left: 4px solid var(--physics-color);">
+            <h2 class="lesson-title">Proposizioni Chiuse vs Aperte</h2>
+            <p class="lesson-text">
+                Oltre alla verità o falsità, dobbiamo distinguere tra frasi che sono "complete" e frasi che dipendono da un'incognita.
+            </p>
+            
+            <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 2rem;">
+                <div style="background: rgba(16, 185, 129, 0.05); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(16, 185, 129, 0.1);">
+                    <h3 style="color: var(--physics-color); margin-bottom: 0.8rem;">Proposizione Chiusa</h3>
+                    <p class="lesson-text" style="font-size: 0.95rem;">È un'affermazione di cui possiamo stabilire <strong>subito</strong> il valore di verità.</p>
+                    <p style="font-style: italic; color: var(--text-main);">"Il numero 7 è un numero primo."</p>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">[ Risultato: VERA ]</p>
+                </div>
+
+                <div style="background: rgba(59, 130, 246, 0.05); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(59, 130, 246, 0.1);">
+                    <h3 style="color: var(--math-color); margin-bottom: 0.8rem;">Proposizione Aperta (Predicato)</h3>
+                    <p class="lesson-text" style="font-size: 0.95rem;">Contiene una variabile (come \(x\)). Non sappiamo se è vera o falsa finché non diamo un valore a quella \(x\)).</p>
+                    <p style="font-style: italic; color: var(--text-main);">"\(x\) è un numero primo."</p>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">[ Vero se \(x=7\), Falso se \(x=10\) ]</p>
+                </div>
+            </div>
+            <p class="lesson-text" style="margin-top: 1.5rem;">
+                In matematica, le proposizioni aperte diventano chiuse quando usiamo i <strong>Quantificatori</strong> (che vedremo tra poco) o quando sostituiamo le lettere con dei numeri reali.
+            </p>
+        </section>
+
+        <!-- INSIEME DI VERITÀ -->
+        <section class="lesson-section" style="background: rgba(245, 158, 11, 0.03); border-color: #F59E0B;">
+            <h2 class="lesson-title" style="color: #F59E0B;">L'Insieme di Verità</h2>
+            <p class="lesson-text">
+                Quando abbiamo una proposizione aperta (con una \(x\)), l'<strong>Insieme di Verità</strong> è l'elenco di tutti gli elementi del nostro "Universo" che, messi al posto della \(x\), rendono la frase <strong>VERA</strong>.
+            </p>
+            <p class="lesson-text" style="color: #F59E0B; opacity: 0.9; font-weight: 600;">
+                È come fare una query in un database nerd! 🤓
+            </p>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+                <div class="card" style="padding: 1.5rem; border-left: 4px solid #F59E0B; background: rgba(255,255,255,0.02);">
+                    <h4 style="margin-bottom: 0.5rem; color: #F59E0B;">Esempio Marvel 🦸‍♂️</h4>
+                    <p style="font-size: 0.95rem;"><strong>Predicato \(P(x)\):</strong> "\(x\) è un Avenger che può sollevare Mjolnir".</p>
+                    <p style="font-size: 0.95rem; margin-top: 0.5rem; color: var(--text-muted);">
+                        <strong>Insieme di Verità:</strong> \(\{ \text{Thor, Visione, Capitan America} \}\).
+                    </p>
+                </div>
+
+                <div class="card" style="padding: 1.5rem; border-left: 4px solid #F59E0B; background: rgba(255,255,255,0.02);">
+                    <h4 style="margin-bottom: 0.5rem; color: #F59E0B;">Esempio Pokémon ⚡</h4>
+                    <p style="font-size: 0.95rem;"><strong>Predicato \(Q(x)\):</strong> "\(x\) è l'evoluzione di Eevee tramite una pietra elementale".</p>
+                    <p style="font-size: 0.95rem; margin-top: 0.5rem; color: var(--text-muted);">
+                        <strong>Insieme di Verità:</strong> \(\{ \text{Vaporeon, Jolteon, Flareon} \}\).
+                    </p>
+                </div>
+
+                <div class="card" style="padding: 1.5rem; border-left: 4px solid #F59E0B; background: rgba(255,255,255,0.02);">
+                    <h4 style="margin-bottom: 0.5rem; color: #F59E0B;">Esempio Star Wars 🌌</h4>
+                    <p style="font-size: 1rem;"><strong>Predicato \(R(x)\):</strong> "\(x\) è un pianeta distrutto dalla Morte Nera".</p>
+                    <p style="font-size: 0.95rem; margin-top: 0.5rem; color: var(--text-muted);">
+                        <strong>Insieme di Verità:</strong> \(\{ \text{Alderaan} \}\).
+                    </p>
+                </div>
+            </div>
+            
+            <p class="lesson-text">
+                Se l'insieme di verità è <strong>vuoto</strong> (es. "\(x\) è un nemico di Batman che non è mai stato ad Arkham"), significa che la frase è falsa per ogni elemento dell'universo scelto!
+            </p>
         </section>
 
         <!-- AND SECTION -->

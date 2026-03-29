@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <!-- CSS -->
     <link rel="stylesheet" href="../css/style.css">
-    
+
     <style>
         .back-button {
             display: inline-flex;
@@ -21,22 +22,22 @@
             font-weight: 600;
             transition: color 0.3s ease, transform 0.3s ease;
         }
-        
+
         .back-button:hover {
             color: var(--text-main);
             transform: translateX(-5px);
         }
-        
+
         .back-icon {
             margin-right: 0.5rem;
             font-size: 1.2rem;
         }
-        
+
         .sub-hero {
             padding: 4rem 0 2rem;
             text-align: left;
         }
-        
+
         .sub-hero-title {
             font-size: clamp(2.5rem, 4vw, 3.5rem);
             font-weight: 800;
@@ -44,7 +45,7 @@
             margin-bottom: 1rem;
             line-height: 1.1;
         }
-        
+
         .sub-hero-subtitle {
             font-size: 1.15rem;
             color: var(--text-muted);
@@ -54,57 +55,80 @@
         }
     </style>
 </head>
+
 <body>
     <header class="sub-hero">
         <div class="container">
             <a href="../index.html" class="back-button">
                 <span class="back-icon">&larr;</span> Torna all'Indice Principale
             </a>
-            
-            <h1 class="sub-hero-title">Fondamenti di <span class="gradient-text" style="background: linear-gradient(135deg, #3B82F6, #60A5FA); -webkit-background-clip: text; background-clip: text; color: transparent;">Algebra</span></h1>
-            <p class="sub-hero-subtitle">Il passaggio dal numero al simbolo. Impara a manipolare lettere, espressioni e a risolvere equazioni: gli strumenti che trasformano un problema in una soluzione.</p>
+
+            <h1 class="sub-hero-title">Fondamenti di <span class="gradient-text"
+                    style="background: linear-gradient(135deg, #3B82F6, #60A5FA); -webkit-background-clip: text; background-clip: text; color: transparent;">Algebra</span>
+            </h1>
+            <p class="sub-hero-subtitle">Il passaggio dal numero al simbolo. Impara a manipolare lettere, espressioni e
+                a risolvere equazioni: gli strumenti che trasformano un problema in una soluzione.</p>
         </div>
     </header>
 
     <main class="container">
         <section class="subjects" style="padding-bottom: 4rem;">
             <div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));">
-                
+
                 <!-- Monomi e Polinomi -->
                 <a href="monomi-polinomi.html" class="card math-card">
                     <div class="card-icon">3x²</div>
                     <h3 class="card-title">Monomi e Polinomi</h3>
-                    <p class="card-desc">Scopri i mattoni dell'algebra: monomi, polinomi, operazioni tra di essi e grado di un'espressione letterale.</p>
+                    <p class="card-desc">Scopri i mattoni dell'algebra: monomi, polinomi, operazioni tra di essi e grado
+                        di un'espressione letterale.</p>
                 </a>
-                
+
                 <!-- Espressioni Algebriche -->
                 <a href="espressioni-algebriche.html" class="card math-card">
                     <div class="card-icon">a+b</div>
                     <h3 class="card-title">Espressioni Algebriche</h3>
-                    <p class="card-desc">Impara a semplificare, ridurre e calcolare il valore delle espressioni letterali sostituendo i numeri alle lettere.</p>
+                    <p class="card-desc">Impara a semplificare, ridurre e calcolare il valore delle espressioni
+                        letterali sostituendo i numeri alle lettere.</p>
                 </a>
 
                 <!-- Prodotti Notevoli -->
                 <a href="prodotti-notevoli.html" class="card math-card">
                     <div class="card-icon">(a+b)²</div>
                     <h3 class="card-title">Prodotti Notevoli</h3>
-                    <p class="card-desc">Le scorciatoie fondamentali: quadrato di un binomio, differenza di quadrati, cubo di un binomio e molto altro.</p>
+                    <p class="card-desc">Le scorciatoie fondamentali: quadrato di un binomio, differenza di quadrati,
+                        cubo di un binomio e molto altro.</p>
                 </a>
 
                 <!-- Equazioni e Disequazioni -->
                 <a href="equazioni-disequazioni.html" class="card math-card">
-                    <div class="card-icon">x = ?</div>
+                    <div class="card-icon">x>?</div>
                     <h3 class="card-title">Equazioni e Disequazioni</h3>
-                    <p class="card-desc">Risolvi equazioni di primo e secondo grado e scopri come trovare gli intervalli di verità delle disequazioni.</p>
+                    <p class="card-desc">Risolvi equazioni di primo e secondo grado e scopri come trovare gli intervalli
+                        di verità delle disequazioni.</p>
                 </a>
 
                 <!-- Sistemi -->
                 <a href="sistemi.html" class="card math-card">
-                    <div class="card-icon">⎧⎨⎩</div>
+                    <div class="card-icon">{}</div>
                     <h3 class="card-title">Sistemi di Equazioni e Disequazioni</h3>
-                    <p class="card-desc">Quando una sola equazione non basta: impara i metodi di sostituzione, confronto e Cramer per risolvere sistemi.</p>
+                    <p class="card-desc">Quando una sola equazione non basta: impara i metodi di sostituzione, confronto
+                        e Cramer per risolvere sistemi.</p>
                 </a>
-                
+
+                <!-- Sfida Speciale: Paradosso -->
+                <a href="paradosso-1-2.html" class="card math-card" style="border: 2px solid #F59E0B; background: rgba(245, 158, 11, 0.05);">
+                    <div class="card-icon" style="color: #F59E0B;">1=2?</div>
+                    <h3 class="card-title" style="color: #F59E0B;">Il Paradosso di 1=2</h3>
+                    <p class="card-desc">Una sfida logica per i più audaci: troverai l'errore nascosto nella dimostrazione "proibita"?</p>
+                </a>
+
+                <!-- CLIL Galois -->
+                <a href="clil-galois.html" class="card math-card" style="border: 2px solid #EF4444; background: rgba(239, 68, 68, 0.05);">
+                    <div class="card-icon" style="color: #EF4444;">⚔️</div>
+                    <h3 class="card-title" style="color: #EF4444;">CLIL: Évariste Galois</h3>
+                    <p class="card-desc">History in English: the rebel genius, mathematical duels, and the foundation of groups.</p>
+                </a>
+
             </div>
         </section>
     </main>
@@ -116,4 +140,5 @@
     <!-- JS -->
     <script src="../js/main.js"></script>
 </body>
+
 </html>

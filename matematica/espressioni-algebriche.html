@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espressioni Algebriche - Algebra MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {
+        delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false},
+            {left: '\\(', right: '\\)', display: false},
+            {left: '\\[', right: '\\]', display: true}
+        ],
+        throwOnError : false
+    });"></script>
+
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+
+        .translation-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .phrase-box {
+            flex: 1;
+            min-width: 200px;
+            font-size: 1.1rem;
+            color: var(--text-main);
+            border-left: 3px solid var(--math-color);
+            padding-left: 1rem;
+        }
+
+        .algebra-input {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: white;
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            width: 140px;
+            font-family: 'Times New Roman', serif;
+            text-align: center;
+        }
+
+        .btn-check-sm {
+            background: var(--math-color);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .btn-check-sm:hover {
+            filter: brightness(1.1);
+        }
+    </style>
+</head>
+
+<body>
+    <header class="lesson-header">
+        <div class="container" style="padding: 4rem 0 2rem;">
+            <a href="algebra.html" class="back-button">
+                <span style="font-size:1.2rem; margin-right: 0.5rem;">&larr;</span> Torna ad Algebra
+            </a>
+            <h1 class="lesson-title"
+                style="font-size: clamp(2.2rem, 5vw, 3.5rem); font-weight: 800; margin-bottom: 1rem;">Espressioni <span
+                    class="gradient-text"
+                    style="background: linear-gradient(135deg, #3B82F6, #60A5FA); -webkit-background-clip: text; background-clip: text; color: transparent;">Algebriche</span>
+            </h1>
+            <p class="lesson-subtitle"
+                style="font-size: 1.2rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+                Parliamo con i simboli: come trasformare il linguaggio naturale in equazioni e regole matematiche.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- COSA SONO -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">Dal Numero alla Lettera</h2>
+            <p class="lesson-text">
+                Un'espressione algebrica è una combinazione di numeri e lettere (variabili) collegati da segni di
+                operazione. Mentre in aritmetica calcoliamo \(5 + 3 = 8\), in algebra scriviamo \(x + y\) per dire "la somma
+                di due numeri qualsiasi".
+            </p>
+            <p class="lesson-text">
+                Le lettere rappresentano <strong>contenitori</strong> che possono ospitare qualsiasi valore numerico. Questo ci
+                permette di creare formule universali e risolvere problemi dove non conosciamo ancora il dato iniziale
+                (l'incognita).
+            </p>
+        </section>
+
+        <!-- DALL'ITALIANO ALL'ALGEBRA -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">Traduzione: Italiano &rarr; Algebra</h2>
+            <p class="lesson-text">
+                Uno dei passi più difficili è "leggere" un problema. Ogni parola ha un peso matematico preciso:
+            </p>
+
+            <div class="translation-area">
+                <!-- Esempio 1 -->
+                <div class="translation-card shadow">
+                    <div class="phrase-box">Il doppio di un numero \(n\) aumentato di 5.</div>
+                    <div style="display: flex; gap: 0.5rem; align-items: center;">
+                        <input type="text" class="algebra-input" data-ans="2n+5" placeholder="???">
+                        <button class="btn-check-sm">Verifica</button>
+                    </div>
+                </div>
+
+                <!-- Esempio 2 -->
+                <div class="translation-card shadow">
+                    <div class="phrase-box">Il quadrato della somma tra \(a\) e \(b\).</div>
+                    <div style="display: flex; gap: 0.5rem; align-items: center;">
+                        <input type="text" class="algebra-input" data-ans="(a+b)^2" placeholder="???">
+                        <button class="btn-check-sm">Verifica</button>
+                    </div>
+                </div>
+
+                <!-- Esempio 3 -->
+                <div class="translation-card shadow">
+                    <div class="phrase-box">La somma dei quadrati tra \(a\) e \(b\).</div>
+                    <div style="display: flex; gap: 0.5rem; align-items: center;">
+                        <input type="text" class="algebra-input" data-ans="a^2+b^2" placeholder="???">
+                        <button class="btn-check-sm">Verifica</button>
+                    </div>
+                </div>
+
+                <!-- Esempio 4 -->
+                <div class="translation-card shadow">
+                    <div class="phrase-box">La metà della somma tra \(x\) e \(y\).</div>
+                    <div style="display: flex; gap: 0.5rem; align-items: center;">
+                        <input type="text" class="algebra-input" data-ans="(x+y)/2" placeholder="???">
+                        <button class="btn-check-sm">Verifica</button>
+                    </div>
+                </div>
+            </div>
+            <p style="margin-top: 1rem; color: var(--text-muted); font-size: 0.9rem;">
+                Pssst! Usa ^ per le potenze (es. a^2) e / per la divisione.
+            </p>
+        </section>
+
+        <!-- SFIDA PER VERI MATEMATICI -->
+        <section class="lesson-section" style="border-color: #F59E0B; background: rgba(245, 158, 11, 0.05);">
+            <h2 class="lesson-title" style="color: #F59E0B;">🚀 Sfida per Veri Matematici</h2>
+            <p class="lesson-text">
+                Dato che chi legge ama la matematica (e noi lo sappiamo!), non ci fermeremo ad esercizi così semplici. 
+                Mettiti alla prova con questa espressione "mostruosa". Sembra un labirinto di calcoli, ma se usi bene i 
+                <strong>prodotti notevoli</strong>, tutto si semplificherà come per magia.
+            </p>
+            <div style="background: rgba(0,0,0,0.3); padding: 2rem; border-radius: 12px; text-align: center; margin: 2rem 0; border: 1px dashed #F59E0B;">
+                <p style="font-size: 1.4rem; font-family: 'Times New Roman', serif;">
+                    \[(x+1)^2 - (x-1)^2 - 4x + (x+y)(x-y) - x^2 + y^2 + 5\]
+                </p>
+            </div>
+            <p class="lesson-text">
+                Qual è il risultato finale di questa espressione? Prova a risolverla su un foglio e poi clicca per scoprire la soluzione.
+            </p>
+            <button id="btn-reveal-mega" class="btn-check-sm" style="background: #F59E0B;">Svela la Soluzione</button>
+            <div id="mega-solution" style="display: none; margin-top: 1.5rem; padding: 1.5rem; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                <p>Il risultato è... <strong>5</strong>!</p>
+                <p style="font-size: 0.95rem; margin-top: 0.5rem; color: var(--text-muted);">
+                    <strong>Spiegazione:</strong><br>
+                    1. \((x+1)^2 - (x-1)^2\) diventa \(4x\) (differenza di quadrati o espansione).<br>
+                    2. \(4x - 4x\) si annulla.<br>
+                    3. \((x+y)(x-y)\) diventa \(x^2 - y^2\).<br>
+                    4. \(x^2 - x^2\) e \(-y^2 + y^2\) si annullano.<br>
+                    5. Resta solo il numero <strong>5</strong>.
+                </p>
+            </div>
+        </section>
+
+        <!-- QUIZ -->
+        <section class="lesson-section quiz-container">
+            <h2 class="lesson-title">Quiz di Verifica</h2>
+            <p class="lesson-text" style="font-size: 0.95rem;">Vediamo se riesci a dominare il linguaggio dei simboli.
+            </p>
+            <div id="quiz-area"></div>
+            <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Algebra Live.</p>
+    </footer>
+
+    <!-- JS -->
+    <script src="../js/espressioni-algebriche.js"></script>
+</body>
+
+</html>

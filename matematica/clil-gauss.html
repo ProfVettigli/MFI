@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gauss: Prince of Mathematicians - MFI CLIL</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+    
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {
+        delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false},
+            {left: '\\(', right: '\\)', display: false},
+            {left: '\\[', right: '\\]', display: true}
+        ],
+        throwOnError : false
+    });"></script>
+
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+        
+        .gauss-portrait {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 4px solid var(--math-color);
+            margin: 0 auto 2rem;
+            display: block;
+            object-fit: cover;
+        }
+
+        .anecdote-box {
+            background: rgba(59, 130, 246, 0.05);
+            border-left: 5px solid var(--math-color);
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .interactive-gauss {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .meme-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .meme-card {
+            background: #1e293b;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <header class="lesson-header">
+        <div class="container" style="padding: 4rem 0 2rem;">
+            <a href="aritmetica.html" class="back-button">
+                <span style="font-size:1.2rem; margin-right: 0.5rem;">&larr;</span> Back to Arithmetic
+            </a>
+            <h1 class="lesson-title" style="font-size: clamp(2.2rem, 5vw, 3.5rem); font-weight: 800; margin-bottom: 1rem;">CLIL: <span class="gradient-text" style="background: linear-gradient(135deg, #3B82F6, #60A5FA); -webkit-background-clip: text; background-clip: text; color: transparent;">Carl Friedrich Gauss</span></h1>
+            <p class="lesson-subtitle" style="font-size: 1.2rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+                The "Prince of Mathematicians" who outsmarted his teacher in primary school.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- GAUSS LIFE -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">Who was Gauss?</h2>
+            <p class="lesson-text">
+                Carl Friedrich Gauss (1777–1855) was a German mathematician and physicist. He is often called the <strong>"Princeps Mathematicorum"</strong> (Latin for "Prince of Mathematicians") because of his enormous contributions to almost every field of science, from geometry and number theory to astronomy and electromagnetism.
+            </p>
+            <p class="lesson-text">
+                Gauss was a true child prodigy. It is said that at three years old, he corrected an error in his father's bookkeeping!
+            </p>
+        </section>
+
+        <!-- THE FAMOUS ANECDOTE -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">The "1 to 100" Trick</h2>
+            <div class="anecdote-box">
+                <p class="lesson-text" style="font-style: italic;">
+                    Story goes that when Gauss was only <strong>7 or 10 years old</strong>, his teacher gave the class a long task to keep them quiet: <strong>"Sum all the numbers from 1 to 100!"</strong>
+                </p>
+                <p class="lesson-text">
+                    While the other students were sweating over their slates, young Gauss placed his down in seconds. How? He realized that by pairing the numbers, he always got the same result:
+                </p>
+                <ul class="lesson-text">
+                    <li>\(1 + 100 = 101\)</li>
+                    <li>\(2 + 99 = 101\)</li>
+                    <li>\(3 + 98 = 101\)</li>
+                    <li>...and so on!</li>
+                </ul>
+                <p class="lesson-text">
+                    Since there are 100 numbers, there are <strong>50 pairs</strong> of 101. So, the sum is $50 \times 101 = 5050$. Brilliant!
+                </p>
+            </div>
+        </section>
+
+        <!-- INTERACTIVE SUMMATION -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">Interactive: The Secret Formula</h2>
+            <p class="lesson-text">
+                This trick works for any number \(n\). If you want to sum all numbers from 1 to \(n\), the formula is:
+                \[\sum_{i=1}^n i = \frac{n(n + 1)}{2}\]
+            </p>
+            <div class="interactive-gauss">
+                <p style="margin-bottom: 1rem; color: var(--text-muted);">Sum numbers from 1 up to:</p>
+                <input type="range" id="gauss-range" min="1" max="1000" value="100" style="width: 80%; margin-bottom: 1rem;">
+                <h3 id="gauss-n-display" style="font-size: 2rem; color: var(--math-color);">n = 100</h3>
+                <div id="gauss-calc-area" style="font-size: 1.5rem; margin-top: 1rem;">
+                    The sum is: <strong id="gauss-res">5050</strong>
+                </div>
+                <p id="gauss-pairs-explain" style="margin-top: 1.5rem; font-size: 0.9rem; color: var(--text-muted);"></p>
+            </div>
+        </section>
+
+        <!-- GAUSS MEMES -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">Math Memes: Gauss vs Chuck Norris</h2>
+            <p class="lesson-text">
+                Mathematicians love to joke about Gauss's legendary intellect. Here are some of the best "Gauss facts" (like Chuck Norris facts):
+            </p>
+            <div class="meme-grid">
+                <div class="meme-card shadow">"Gauss doesn't need to prove his theorems. They define themselves as true in his presence."</div>
+                <div class="meme-card shadow">"When Gauss counts to 10, he counts to infinity... twice."</div>
+                <div class="meme-card shadow">"Gauss once calculated the value of $\pi$ in his head. $\pi$ just turned into 3 out of respect."</div>
+                <div class="meme-card shadow">"Gauss's primary school teacher is still trying to get him to show his working."</div>
+                <div class="meme-card shadow" style="border: 1px solid #F59E0B;">"Chuck Norris can divide by zero. Without getting an error."</div>
+                <div class="meme-card shadow" style="border: 1px solid #F59E0B;">"Chuck Norris doesn't do math. He just stares at the equation until it solves itself out of fear."</div>
+                <div class="meme-card shadow" style="border: 1px solid #F59E0B;">"Chuck Norris counted to infinity. Exactly 101 times."</div>
+            </div>
+        </section>
+
+        <!-- QUIZ -->
+        <section class="lesson-section quiz-container">
+            <h2 class="lesson-title">Quiz: Gauss, are you a genius?</h2>
+            <p class="lesson-text" style="font-size: 0.95rem;">Test your knowledge about the most famous mathematician in history.</p>
+            <div id="quiz-area"></div>
+            <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. CLIL Science Project.</p>
+    </footer>
+
+    <!-- JS -->
+    <script src="../js/clil-gauss.js"></script>
+</body>
+</html>

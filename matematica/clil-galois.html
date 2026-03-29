@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galois: The Mathematical Rebel - MFI CLIL</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+        onload="renderMathInElement(document.body);"></script>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        :root {
+            --galois-color: #EF4444;
+        }
+
+        .clil-badge {
+            display: inline-block;
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--galois-color);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .history-card {
+            background: rgba(255, 255, 255, 0.02);
+            border-left: 4px solid var(--galois-color);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .duel-box {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.05), rgba(0, 0, 0, 0.4));
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        .duel-box::before {
+            content: "⚔️";
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2.5rem;
+            background: #0f172a;
+            padding: 0 10px;
+        }
+
+        .contribution-item {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            align-items: flex-start;
+        }
+
+        .contribution-icon {
+            font-size: 2rem;
+            color: var(--galois-color);
+            flex-shrink: 0;
+        }
+
+        .night-before-quote {
+            font-style: italic;
+            border-right: 4px solid var(--galois-color);
+            text-align: right;
+            padding-right: 1.5rem;
+            margin: 2rem 1rem;
+            color: var(--text-muted);
+        }
+
+        .interactive-duel {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            border: 1px dashed rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+    <header class="sub-hero">
+        <div class="container">
+            <a href="algebra.html" class="back-button">
+                <span class="back-icon">&larr;</span> Back to Algebra
+            </a>
+            <div class="clil-badge">CLIL Lesson</div>
+            <h1 class="sub-hero-title">Évariste Galois: <span class="gradient-text"
+                    style="background: linear-gradient(135deg, #EF4444, #F59E0B); -webkit-background-clip: text; background-clip: text; color: transparent;">The
+                    Mathematical Rebel</span></h1>
+            <p class="sub-hero-subtitle">Discover the life of the young genius who changed algebra forever before dying
+                at just 20 years old.</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- 1. INTRO & LIFE -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">1. A Life of Fire and Logic</h2>
+            <div class="history-card">
+                <p class="lesson-text">
+                    <strong>Évariste Galois (1811–1832)</strong> was a French mathematician and political activist.
+                    Unlike many other famous scientists, Galois was a rebel. He was twice rejected by the École
+                    Polytechnique, arrested for his political beliefs, and lived a life marked by frustration and
+                    brilliance.
+                </p>
+                <p class="lesson-text">
+                    Even though he died at the age of 20, his work laid the foundation for <strong>Modern
+                        Algebra</strong>.
+                </p>
+            </div>
+        </section>
+
+        <!-- 2. MATHEMATICAL DUELS -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">2. Mathematical Challenges: The Battle of Wits</h2>
+            <p class="lesson-text">
+                For centuries, mathematics was a <strong>competitive arena</strong>. Mathematicians did not just publish 
+                papers; they challenged each other to public duels. They would exchange a list of complex problems, 
+                and the winner was the one who solved the highest number of their opponent's riddles.
+            </p>
+            
+            <div class="duel-box" style="margin-top: 3rem; padding-top: 3rem;">
+                <p class="lesson-text">
+                    These battles were about <strong>money</strong>, <strong>jobs</strong>, and above all, <strong>honor</strong>. 
+                    Possessing a secret formula—a method that no one else knew—was like having a <strong>secret weapon</strong>. 
+                    It provided a massive strategic advantage, much like how the development of the atomic bomb gave 
+                    the United States a decisive edge in global conflict.
+                </p>
+                
+                <h4 style="color: var(--galois-color); margin-top: 2rem;">The Cubic War: Cardano vs. Tartaglia</h4>
+                <p class="lesson-text" style="font-size: 0.95rem;">
+                    Solving equations was the most common type of challenge. The most famous "war" was over the 
+                    <strong>Cubic Equation</strong> (\(x^3 + px = q\)):
+                </p>
+                <ul class="lesson-text" style="font-size: 0.9rem; list-style-type: none; padding-left: 0;">
+                    <li style="margin-bottom: 0.5rem;">📅 <strong>1530-1535:</strong> Niccolò Tartaglia, a self-taught genius, discovers a method to solve certain cubic equations. In a public duel in 1535, he solves 30 problems in a row, humiliating his rival!</li>
+                    <li style="margin-bottom: 0.5rem;">📅 <strong>1539:</strong> Gerolamo Cardano, a polymath, begs Tartaglia for his secret. Tartaglia eventually shares it as a <strong>poem</strong>, but only after making Cardano swear an oath of absolute secrecy.</li>
+                    <li style="margin-bottom: 0.5rem;">📅 <strong>1545:</strong> Breaking his vow, Cardano publishes the formula in his masterpiece <em>Ars Magna</em>. He justifies this because he found that Scipione del Ferro had discovered it even earlier.</li>
+                    <li style="margin-bottom: 0.5rem;">📅 <strong>1548:</strong> A final, legendary duel takes place between Tartaglia and Luigi Ferrari (Cardano's student). The result was a disaster for Tartaglia, cementing Cardano's legacy forever.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 3. CONTRIBUTIONS -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">3. What did he discover?</h2>
+            
+            <div class="contribution-item">
+                <div class="contribution-icon">∄</div>
+                <div>
+                    <h4>The Insolvability Proof</h4>
+                    <p class="lesson-text">
+                        While everyone was searching for a formula for 5th-degree equations, Galois did the unthinkable. 
+                        He used <strong>Group Theory</strong> to prove that a general formula using only radicals (square roots, etc.) 
+                        <strong>cannot exist</strong> for equations of degree 5 or higher. He didn't just fail to find it—he proved it was impossible.
+                    </p>
+                </div>
+            </div>
+
+            <div class="card" style="border-left: 5px solid #3B82F6; background: rgba(59, 130, 246, 0.05); margin-top: 2rem;">
+                <p class="lesson-text">
+                    <strong>Note: The "Prince" Gauss's perspective.</strong> <br>
+                    While Galois showed we can't always find a simple <em>formula</em>, the great <strong>Carl Friedrich Gauss</strong> 
+                    proved in his <em>Fundamental Theorem of Algebra</em> that solutions <strong>always exist</strong>! 
+                    He demonstrated that an equation of degree \(n\) always has exactly \(n\) solutions, though 
+                    some might be <strong>complex numbers</strong> (not real).
+                </p>
+            </div>
+
+            <div class="contribution-item" style="margin-top: 3rem;">
+                <div class="contribution-icon">🌀</div>
+                <div>
+                    <h4>Symmetry and Groups</h4>
+                    <p class="lesson-text">By studying how the roots of an equation can be swapped (permuted), he invented 
+                        <strong>Group Theory</strong>. This is now used in everything from modern physics to the encryption that 
+                        secures your smartphone!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. THE TRAGIC DEATH -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">4. The Final Duel</h2>
+            <p class="lesson-text">
+                In May 1832, Galois was challenged to a real duel with pistols. The reason is still debated: a woman,
+                political enemies, or a hopeless "suicide by honor"?
+            </p>
+            <div class="night-before-quote">
+                "I have not time! I have not time!"
+            </div>
+            <p class="lesson-text">
+                The night before the duel, sensing his death, he stayed up until dawn writing down all his mathematical
+                theories. In the margins, he feverishly wrote <em>"Je n'ai pas le temps"</em>.
+            </p>
+            <p class="lesson-text">
+                The next morning, he was shot in the stomach and died the following day. He was only 20.
+            </p>
+        </section>
+
+        <!-- 5. INTERACTIVE CHALLENGE -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">5. Interactive: The "Secret" Challenge</h2>
+            <div class="interactive-duel">
+                <p class="lesson-text">Ready to experience a 19th-century mathematical duel? Solve this problem before
+                    the timer runs out!</p>
+                <div id="duel-problem" style="font-size: 2rem; margin: 1.5rem 0; color: var(--galois-color);">
+                    ? + ? = ?
+                </div>
+                <div style="font-size: 1.5rem; margin-bottom: 1rem;" id="duel-timer">Time left: 10s</div>
+                <div id="duel-options" style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                    <!-- JS will inject buttons here -->
+                </div>
+                <button class="btn-gen" id="start-duel-btn" onclick="startDuel()">Start the Duel!</button>
+            </div>
+        </section>
+
+        <!-- 6. QUIZ -->
+        <section class="lesson-section quiz-container">
+            <h2 class="lesson-title">Assessment Quiz (CLIL)</h2>
+            <p class="lesson-text" style="font-size: 0.95rem;">Check your understanding of the text above in English.</p>
+            <div id="quiz-area"></div>
+            <div id="quiz-feedback" class="result-box" style="display: none; color: white;"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. History of Mathematics Project.</p>
+    </footer>
+
+    <script src="../js/clil-galois.js"></script>
+</body>
+
+</html>

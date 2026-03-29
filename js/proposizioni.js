@@ -195,6 +195,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 "Attenzione, pericolo imminente"
             ],
             correct: 1
+        },
+        {
+            question: "6. L'insieme di tutti i valori dell'incognita che rendono vera una proposizione aperta si chiama:",
+            options: [
+                "Insieme di Falsità",
+                "Insieme di Verità",
+                "Universo Parallelo"
+            ],
+            correct: 1
         }
     ];
 
@@ -202,7 +211,14 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentScore = 0;
     let questionsAnswered = 0;
 
-    if (quizArea) {
+    function renderQuiz() {
+        if (!quizArea) return;
+        quizArea.innerHTML = '';
+        currentScore = 0;
+        questionsAnswered = 0;
+        const scoreEl = document.getElementById('quiz-score');
+        if (scoreEl) scoreEl.textContent = '';
+
         quizData.forEach((q, qIndex) => {
             const qDiv = document.createElement('div');
             qDiv.className = 'quiz-question';
@@ -262,13 +278,25 @@ document.addEventListener('DOMContentLoaded', () => {
                     questionsAnswered++;
                     if (questionsAnswered === quizData.length) {
                         const scoreEl = document.getElementById('quiz-score');
+                        let summary = "";
                         if (currentScore === quizData.length) {
-                            scoreEl.textContent = `COMPLIMENTI! Punteggio pieno (${currentScore}/${quizData.length}). Sei un vero maestro Jedi della Logica!`;
+                            summary = `COMPLIMENTI! Punteggio pieno (${currentScore}/${quizData.length}). Sei un vero maestro Jedi della Logica!`;
                             scoreEl.style.color = "var(--physics-color)";
                         } else {
-                            scoreEl.textContent = `Punteggio finale: ${currentScore}/${quizData.length}. Fai di nuovo un tentativo per diventare un maestro!`;
+                            summary = `Punteggio finale: ${currentScore}/${quizData.length}. Fai di nuovo un tentativo per diventare un maestro!`;
                             scoreEl.style.color = "#F59E0B";
                         }
+                        
+                        scoreEl.innerHTML = `<div>${summary}</div>`;
+                        
+                        // Add reset button
+                        const resetBtn = document.createElement('button');
+                        resetBtn.textContent = 'Riprova il Quiz';
+                        resetBtn.className = 'btn-gen';
+                        resetBtn.style.marginTop = '1.5rem';
+                        resetBtn.style.background = 'var(--math-color)';
+                        resetBtn.onclick = renderQuiz;
+                        scoreEl.appendChild(resetBtn);
                     }
                 };
                 
@@ -279,5 +307,7 @@ document.addEventListener('DOMContentLoaded', () => {
             quizArea.appendChild(qDiv);
         });
     }
+
+    renderQuiz();
 
 });

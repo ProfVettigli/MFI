@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Il Paradosso di 1=2 - MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+        onload="renderMathInElement(document.body);"></script>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        :root {
+            --paradox-color: #F59E0B;
+        }
+
+        .proof-step {
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-left: 4px solid var(--paradox-color);
+            margin-bottom: 1rem;
+            border-radius: 0 12px 12px 0;
+            transition: transform 0.3s ease;
+        }
+
+        .proof-step:hover {
+            transform: scale(1.02);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .throne-badge {
+            background: linear-gradient(135deg, #FFD700, #F59E0B);
+            color: black;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-weight: 800;
+            display: inline-block;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+        }
+
+        .reveal-btn {
+            background: var(--paradox-color);
+            color: black;
+            font-weight: 800;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            border: none;
+            margin-top: 2rem;
+            transition: all 0.3s;
+        }
+
+        .reveal-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(245, 158, 11, 0.4);
+        }
+
+        .solution-box {
+            display: none;
+            margin-top: 20px;
+            padding: 2rem;
+            background: rgba(16, 185, 129, 0.1);
+            border: 2px solid #10B981;
+            border-radius: 15px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="sub-hero">
+        <div class="container">
+            <a href="algebra.html" class="back-button">
+                <span class="back-icon">&larr;</span> Torna ad Algebra
+            </a>
+            <h1 class="sub-hero-title">Il Miraggio di <span class="gradient-text"
+                    style="background: linear-gradient(135deg, #F59E0B, #EF4444); -webkit-background-clip: text; background-clip: text; color: transparent;">1 = 2</span></h1>
+            <p class="sub-hero-subtitle">La logica è una lama affilata: se non sai come maneggiarla, potresti tagliare le fondamenta della realtà.</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- COSA È UNA DIMOSTRAZIONE -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">Cos'è una Dimostrazione?</h2>
+            <p class="lesson-text">
+                In matematica, una <strong>dimostrazione</strong> non è un'opinione. È una sequenza logica di passaggi che partono da 
+                <em>premesse</em> (cose che sappiamo essere vere) e arrivano a una <em>conclusione</em> seguendo regole rigide e universali.
+            </p>
+            <p class="lesson-text">
+                Ogni passaggio è come un anello di una catena: se un solo anello è debole o forgiato male, l'intera catena si spezza. 
+                Il risultato che vedrai qui sotto suggerisce che \(1 = 2\). Questo significa solo due cose: 
+                o la matematica è un'illusione, oppure c'è un errore nascosto talmente bene che sembra verità.
+            </p>
+        </section>
+
+        <!-- LA SFIDA -->
+        <section class="lesson-section" style="text-align: center;">
+            <div class="throne-badge">🔥 SFIDA PER IL TRONO DI SPADE</div>
+            <p class="lesson-text" style="font-size: 1.2rem; margin-top: 1rem;">
+                Chiunque troverà l'inganno in questa dimostrazione sarà incoronato <strong>Re (o Regina) dei Sette Regni</strong> 
+                e governerà con saggezza sulle terre di Westeros, difendendole dalle minacce e cavalcando draghi!
+            </p>
+        </section>
+
+        <!-- LA DIMOSTRAZIONE -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">La Dimostrazione "Proibita"</h2>
+            <p class="lesson-text">Segui attentamente ogni passaggio. Dove si nasconde l'ombra?</p>
+
+            <div class="proof-step">
+                <strong>Premessa:</strong> Siano \(a\) e \(b\) due numeri uguali e diversi da zero. <br>
+                \[ a = b \]
+            </div>
+
+            <div class="proof-step">
+                <strong>Passaggio 1:</strong> Moltiplichiamo entrambi i membri per \(a\). <br>
+                \[ a^2 = ab \]
+            </div>
+
+            <div class="proof-step">
+                <strong>Passaggio 2:</strong> Sottraiamo \(b^2\) da entrambi i membri. <br>
+                \[ a^2 - b^2 = ab - b^2 \]
+            </div>
+
+            <div class="proof-step">
+                <strong>Passaggio 3:</strong> Applichiamo i prodotti notevoli (differenza di quadrati) e raccogliamo \(b\). <br>
+                \[ (a + b)(a - b) = b(a - b) \]
+            </div>
+
+            <div class="proof-step">
+                <strong>Passaggio 4:</strong> Dividiamo entrambi i membri per \((a - b)\). <br>
+                \[ a + b = b \]
+            </div>
+
+            <div class="proof-step">
+                <strong>Passaggio 5:</strong> Poiché all'inizio abbiamo detto che \(a = b\), sostituiamo \(a\) con \(b\). <br>
+                \[ b + b = b \Rightarrow 2b = b \]
+            </div>
+
+            <div class="proof-step">
+                <strong>Passaggio 6:</strong> Dividiamo entrambi i membri per \(b\). <br>
+                \[ 2 = 1 \]
+            </div>
+
+            <div style="text-align: center;">
+                <button class="reveal-btn" onclick="revealTruth()">Svela l'Inganno ed Esci Vincitore</button>
+            </div>
+
+            <div id="solution" class="solution-box">
+                <h3 style="color: #10B981; margin-bottom: 1rem;">👑 L'Inganno è Svelato!</h3>
+                <p class="lesson-text" style="color: white;">
+                    L'errore fatale si trova nel <strong>Passaggio 4</strong>. <br><br>
+                    Abbiamo diviso entrambi i membri per \((a - b)\). Ma ricorda: avevamo stabilito all'inizio che \(a = b\). 
+                    Se \(a = b\), allora \(a - b = 0\)!
+                </p>
+                <p class="lesson-text" style="color: white; font-weight: bold; margin-top: 1rem;">
+                    In matematica, DIVIDERE PER ZERO È PROIBITO. È un'operazione priva di significato che distrugge 
+                    le regole della logica, permettendo di "dimostrare" qualsiasi assurdità.
+                </p>
+                <p style="margin-top: 2rem; font-size: 1.1rem; color: #FFD700; font-weight: 800;">
+                    Bentornato, Maestà. Il Trono di Spade ti appartiene! 🐉🐲
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Paradosso Algebrico.</p>
+    </footer>
+
+    <script>
+        function revealTruth() {
+            const solution = document.getElementById('solution');
+            solution.style.display = 'block';
+            window.scrollTo({
+                top: solution.offsetTop - 100,
+                behavior: 'smooth'
+            });
+        }
+    </script>
+</body>
+
+</html>

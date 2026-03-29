@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prodotti Notevoli - Algebra MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+    
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {
+        delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false},
+            {left: '\\(', right: '\\)', display: false},
+            {left: '\\[', right: '\\]', display: true}
+        ],
+        throwOnError : false
+    });"></script>
+
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+        
+        .shortcut-box {
+            background: rgba(59, 130, 246, 0.05);
+            border-left: 5px solid var(--math-color);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* Geometric Visualization */
+        .geometry-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 3rem 0;
+            perspective: 1000px;
+        }
+
+        .main-square {
+            display: grid;
+            grid-template-columns: 140px 60px;
+            grid-template-rows: 140px 60px;
+            gap: 4px;
+            border: 2px solid rgba(255,255,255,0.1);
+            padding: 4px;
+            background: rgba(255,255,255,0.02);
+            border-radius: 8px;
+        }
+
+        .square-part {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 800;
+            font-family: 'Times New Roman', serif;
+            border-radius: 4px;
+            transition: transform 0.3s, filter 0.3s;
+            cursor: help;
+        }
+
+        .square-part:hover { transform: scale(1.05); filter: brightness(1.2); }
+
+        .part-a2 { background: #3B82F6; }
+        .part-ab { background: #F59E0B; }
+        .part-b2 { background: #EC4899; }
+
+        .formula-list {
+            list-style: none;
+            padding: 0;
+        }
+        .formula-item {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            margin-bottom: 0.8rem;
+            padding: 1.2rem;
+            border-radius: 12px;
+            font-size: 1.2rem;
+        }
+
+        .btn-check {
+            background: var(--math-color);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .btn-check:hover { opacity: 0.9; transform: translateY(-2px); }
+    </style>
+</head>
+<body>
+    <header class="lesson-header">
+        <div class="container" style="padding: 4rem 0 2rem;">
+            <a href="algebra.html" class="back-button">
+                <span style="font-size:1.2rem; margin-right: 0.5rem;">&larr;</span> Torna ad Algebra
+            </a>
+            <h1 class="lesson-title" style="font-size: clamp(2.2rem, 5vw, 3.5rem); font-weight: 800; margin-bottom: 1rem;">Prodotti <span class="gradient-text" style="background: linear-gradient(135deg, #3B82F6, #60A5FA); -webkit-background-clip: text; background-clip: text; color: transparent;">Notevoli</span></h1>
+            <p class="lesson-subtitle" style="font-size: 1.2rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+                Le "scorciatoie" dell'algebra: come risolvere moltiplicazioni complesse in un batter d'occhio.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- INTRO -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">Perché "Notevoli"?</h2>
+            <p class="lesson-text">
+                I prodotti notevoli sono particolari moltiplicazioni tra polinomi che si ripetono così spesso che conviene impararne il risultato a memoria. È un po' come imparare le tabelline: non devi fare \(7+7+7+7+7+7+7\) ogni volta, sai che \(7 \times 7 = 49\).
+            </p>
+            <p class="lesson-text" style="font-style: italic; opacity: 0.8;">
+                "Capita a tutti, nella vita di ogni giorno, di dover calcolare al volo \((a+b)^2\)... ad esempio mentre aspetti l'autobus o quando cerchi di capire se la tua nuova libreria svedese entrerà in quel centimetro quadrato di spazio rimasto in camera!" (Scherziamo, serve solo a non impazzire durante i compiti di matematica, ma è comunque un superpotere).
+            </p>
+        </section>
+
+        <!-- SOMMA PER DIFFERENZA -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">1. Somma per Differenza</h2>
+            <p class="lesson-text">
+                È il prodotto più elegante. Cosa succede se moltiplichiamo la somma di due termini per la loro differenza?
+                \[(a + b)(a - b) = a^2 - ab + ba - b^2\]
+                Noti nulla? \(-ab\) e \(+ba\) sono uguali ma di segno opposto... si annullano!
+            </p>
+            <div class="shortcut-box">
+                <h3 style="color: #60A5FA; margin-bottom: 0.5rem;">🚀 Scorciatoia:</h3>
+                <p style="font-size: 1.5rem;">\((a + b)(a - b) = a^2 - b^2\)</p>
+            </div>
+
+            <div style="background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 12px; margin-top: 2rem;">
+                <h4 style="margin-bottom: 1rem;">Prova tu: Risolvi \((3x + 2)(3x - 2)\)</h4>
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
+                    <input type="text" id="input-sxp" placeholder="Es. 9x^2 - 4" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 0.8rem; border-radius: 8px; flex: 1;">
+                    <button class="btn-check" id="btn-check-sxp">Verifica</button>
+                </div>
+                <div id="feedback-sxp" style="margin-top: 1rem; font-weight: 600;"></div>
+            </div>
+        </section>
+
+        <!-- QUADRATO DI BINOMIO -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">2. Quadrato del Binomio</h2>
+            <p class="lesson-text">
+                Attenzione! \((a + b)^2\) <strong>NON</strong> è \(a^2 + b^2\). C'è un terzo incomodo: il <strong>doppio prodotto</strong>.
+                \[(a + b)^2 = (a + b)(a + b) = a^2 + ab + ab + b^2 = a^2 + 2ab + b^2\]
+            </p>
+
+            <!-- GEOMETRIC INTERPRETATION -->
+            <div style="text-align: center; margin-top: 2rem;">
+                <h3>Visione Geometrica: L'Area del Quadrato</h3>
+                <p class="lesson-text">Immagina un quadrato di lato \((a+b)\). La sua area totale è la somma di 4 aree più piccole:</p>
+                <div class="geometry-container">
+                    <div class="main-square" id="geometric-square">
+                        <div class="square-part part-a2" title="Quadrato di lato a">a²</div>
+                        <div class="square-part part-ab" title="Rettangolo di lati a e b">ab</div>
+                        <div class="square-part part-ab" title="Rettangolo di lati b e a">ab</div>
+                        <div class="square-part part-b2" title="Quadrato di lato b">b²</div>
+                    </div>
+                </div>
+                <p class="lesson-text" style="font-weight: 600; color: var(--math-color);">
+                    Area totale \(= a^2 + ab + ab + b^2 = a^2 + 2ab + b^2\)
+                </p>
+            </div>
+
+            <!-- CASO SEGNO MENO -->
+            <div class="shortcut-box" style="margin-top: 3rem; border-color: #F87171;">
+                <h3 style="color: #F87171; margin-bottom: 1rem;">Cosa succede col segno meno?</h3>
+                <p class="lesson-text">
+                    Se abbiamo \((a - b)^2\), il ragionamento è identico, ma dobbiamo stare attenti ai segni del doppio prodotto:
+                    \[(a - b)^2 = a^2 - 2ab + b^2\]
+                    Nota che \(a^2\) e \(b^2\) sono <strong>sempre positivi</strong> (un quadrato non è mai negativo!), solo il doppio prodotto cambia segno.
+                </p>
+            </div>
+        </section>
+
+        <!-- ALTRI PRODOTTI -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">3. Altri Prodotti Notevoli</h2>
+            <p class="lesson-text">Qui le cose si fanno un po' più lunghe, ma le regole rimangono fisse. Ecco le formule pronte all'uso:</p>
+            
+            <ul class="formula-list">
+                <li class="formula-item">
+                    <strong>Quadrato di un trinomio:</strong><br>
+                    \((a + b + c)^2 = a^2 + b^2 + c^2 + 2ab + 2ac + 2bc\)
+                </li>
+                <li class="formula-item">
+                    <strong>Cubo di un binomio:</strong><br>
+                    \((a + b)^3 = a^3 + 3a^2b + 3ab^2 + b^3\)
+                </li>
+            </ul>
+        </section>
+
+        <!-- QUIZ -->
+        <section class="lesson-section quiz-container">
+            <h2 class="lesson-title">Quiz di Comprensione</h2>
+            <p class="lesson-text" style="font-size: 0.95rem;">Metti alla prova la tua memoria e il tuo intuito algebrico!</p>
+            <div id="quiz-area"></div>
+            <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Algebra Live.</p>
+    </footer>
+
+    <!-- JS -->
+    <script src="../js/prodotti-notevoli.js"></script>
+</body>
+</html>

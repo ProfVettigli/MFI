@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equazioni e Disequazioni - Algebra MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {
+        delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false},
+            {left: '\\(', right: '\\)', display: false},
+            {left: '\\[', right: '\\]', display: true}
+        ],
+        throwOnError : false
+    });"></script>
+
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+
+        /* Balance Scale Visualization */
+        .balance-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 3rem 0;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .balance-arm {
+            width: 300px;
+            height: 8px;
+            background: #94A3B8;
+            border-radius: 10px;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .balance-arm::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-bottom: 40px solid #64748B;
+            z-index: -1;
+        }
+
+        .scale-plate {
+            width: 100px;
+            height: 10px;
+            background: #CBD5E1;
+            margin-top: 60px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .scale-plate::before {
+            content: '';
+            position: absolute;
+            top: -60px;
+            width: 2px;
+            height: 60px;
+            background: #94A3B8;
+        }
+
+        .plate-content {
+            position: absolute;
+            bottom: 15px;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: #1E293B;
+            background: #fff;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            min-width: 140px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 60px;
+        }
+
+        .number-line {
+            position: relative;
+            height: 60px;
+            margin: 2rem 0;
+            border-bottom: 2px solid var(--text-muted);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding: 0 10%;
+        }
+
+        .num-marker {
+            position: relative;
+            height: 15px;
+            width: 2px;
+            background: var(--text-muted);
+        }
+
+        .num-label {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: monospace;
+            font-weight: bold;
+        }
+
+        .num-point {
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--math-color);
+            display: none;
+        }
+
+        /* Singapore Bar Model */
+        .bar-container {
+            display: flex;
+            gap: 2px;
+            margin: 1rem 0;
+            height: 40px;
+        }
+
+        .bar-part {
+            background: var(--math-color);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .bar-unit {
+            background: #10B981;
+        }
+
+        .bar-x {
+            background: #3B82F6;
+        }
+
+        .principle-controls {
+            display: flex;
+            gap: 1rem;
+            margin-top: 4rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn-op {
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 600;
+        }
+
+        .btn-op:hover {
+            background: var(--math-color);
+        }
+
+        /* Negative multiplier demo */
+        .inequality-demo {
+            background: rgba(239, 68, 68, 0.05);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            padding: 2rem;
+            border-radius: 16px;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .num-box {
+            display: inline-block;
+            padding: 1rem 1.5rem;
+            background: white;
+            color: #1E293B;
+            border-radius: 12px;
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin: 0 1rem;
+        }
+
+        .sign-box {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #EF4444;
+            transition: transform 0.5s;
+        }
+
+        .rotated {
+            transform: rotate(180deg);
+        }
+
+        .mental-challenge {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .mental-card {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="lesson-header">
+        <div class="container" style="padding: 4rem 0 2rem;">
+            <a href="algebra.html" class="back-button">
+                <span style="font-size:1.2rem; margin-right: 0.5rem;">&larr;</span> Torna ad Algebra
+            </a>
+            <h1 class="lesson-title"
+                style="font-size: clamp(2.2rem, 5vw, 3.5rem); font-weight: 800; margin-bottom: 1rem;">Equazioni e <span
+                    class="gradient-text"
+                    style="background: linear-gradient(135deg, #3B82F6, #10B981); -webkit-background-clip: text; background-clip: text; color: transparent;">Disequazioni</span>
+            </h1>
+            <p class="lesson-subtitle"
+                style="font-size: 1.2rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+                Dall'equilibrio perfetto alla ricerca di intervalli di verità. Impara a trovare l'ignoto.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- COSA È UN'UGUAGLIANZA -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">1. Uguaglianza: Il Ponte Logico</h2>
+            <p class="lesson-text">
+                Un'<strong>uguaglianza</strong> è una proposizione logica che afferma che due espressioni hanno lo
+                stesso valore. Come ogni proposizione, può essere:
+            </p>
+            <div style="display: flex; gap: 1rem; margin: 1.5rem 0; flex-wrap: wrap;">
+                <div
+                    style="flex: 1; min-width: 250px; background: rgba(16, 185, 129, 0.1); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(16, 185, 129, 0.2);">
+                    <h4 style="color: #10B981;">VERA ✓</h4>
+                    <p style="font-size: 1.2rem; font-family: serif;">\(5 + 3 = 8\)</p>
+                </div>
+                <div
+                    style="flex: 1; min-width: 250px; background: rgba(239, 68, 68, 0.1); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(239, 68, 68, 0.2);">
+                    <h4 style="color: #EF4444;">FALSA ✗</h4>
+                    <p style="font-size: 1.2rem; font-family: serif;">\(7 \times 2 = 15\)</p>
+                </div>
+            </div>
+            <p class="lesson-text">
+                Quando l'uguaglianza contiene una o più <strong>incognite</strong> (variabili), la chiamiamo
+                <strong>Equazione</strong>. In questo caso, siamo davanti a una proposizione aperta.
+            </p>
+            <div class="shortcut-box" style="border-left-color: var(--physics-color);">
+                <h4 style="color: var(--physics-color);">Insieme di Verità</h4>
+                <p>Risolvere un'equazione significa trovare tutti i valori che, sostituiti all'incognita, rendono
+                    l'uguaglianza <strong>Vera</strong>. Questo set di valori si chiama Insieme di Verità (o radici
+                    dell'equazione).</p>
+            </div>
+        </section>
+
+        <!-- ESEMPI A MENTE -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">2. Sfide Mentali: Trova la \(x\)</h2>
+            <p class="lesson-text">Prima di usare regole complicate, prova a usare il tuo intuito logico:</p>
+
+            <div class="mental-challenge">
+                <div class="mental-card">
+                    <p style="font-size: 1.3rem;">\(x + 4 = 10\)</p>
+                    <button class="btn-check-sm" onclick="this.textContent = 'x = 6'">Soluzione</button>
+                </div>
+                <div class="mental-card">
+                    <p style="font-size: 1.3rem;">\(3x = 15\)</p>
+                    <button class="btn-check-sm" onclick="this.textContent = 'x = 5'">Soluzione</button>
+                </div>
+                <div class="mental-card">
+                    <p style="font-size: 1.3rem;">\(\frac{x}{2} = 7\)</p>
+                    <button class="btn-check-sm" onclick="this.textContent = 'x = 14'">Soluzione</button>
+                </div>
+                <div class="mental-card">
+                    <p style="font-size: 1.3rem;">\(x - 10 = -2\)</p>
+                    <button class="btn-check-sm" onclick="this.textContent = 'x = 8'">Soluzione</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- PRINCIPI DI EQUIVALENZA -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">3. I Principi di Equivalenza</h2>
+            <p class="lesson-text">
+                Per risolvere le equazioni, usiamo due regole d'oro chiamate <strong>Principi di Equivalenza</strong>.
+                Immagina l'equazione come una bilancia: ogni operazione fatta su un piatto deve essere replicata
+                sull'altro per mantenere l'equilibrio.
+            </p>
+
+            <div
+                style="background: rgba(59, 130, 246, 0.05); padding: 1.5rem; border-radius: 12px; margin: 1.5rem 0; border-left: 5px solid var(--math-color);">
+                <p><strong>1° Principio (Somma):</strong> Se aggiungi o sottrai la stessa quantità a entrambi i membri,
+                    l'uguaglianza non cambia. È utile per "spostare" i numeri da una parte all'altra.</p>
+                <p style="margin-top: 1rem;"><strong>2° Principio (Prodotto):</strong> Se moltiplichi o dividi entrambi
+                    i membri per uno stesso numero (diverso da zero), l'uguaglianza non cambia. È fondamentale per
+                    "isolare" la \(x\).</p>
+            </div>
+
+            <!-- Bilancia 1: x + 5 = 12 -->
+            <div class="balance-container">
+                <h4 style="margin-bottom: 2rem;">Sfida 1: \(x + 5 = 12\)</h4>
+                <div class="balance-arm" id="arm-1">
+                    <div class="scale-plate">
+                        <div class="plate-content" id="p1-left">x + 5</div>
+                    </div>
+                    <div class="scale-plate">
+                        <div class="plate-content" id="p1-right">12</div>
+                    </div>
+                </div>
+                <div class="principle-controls">
+                    <button class="btn-op" onclick="solveB1()">Sottrai 5 dal 1° piatto</button>
+                    <button class="btn-op" onclick="msgB1()">Ma anche dal 2°! ➜</button>
+                    <button class="btn-op" style="background: #10B981;" onclick="finalB1()">Risolvi: x = 7</button>
+                </div>
+            </div>
+
+            <!-- Bilancia 2: 3x = 18 -->
+            <div class="balance-container">
+                <h4 style="margin-bottom: 2rem;">Sfida 2: \(3x = 18\)</h4>
+                <div class="balance-arm" id="arm-2">
+                    <div class="scale-plate">
+                        <div class="plate-content" id="p2-left">3x</div>
+                    </div>
+                    <div class="scale-plate">
+                        <div class="plate-content" id="p2-right">18</div>
+                    </div>
+                </div>
+                <div class="principle-controls">
+                    <button class="btn-op" onclick="solveB2()">Dividi per 3</button>
+                    <button class="btn-op" style="background: #10B981;" onclick="finalB2()">x = 6</button>
+                </div>
+            </div>
+
+            <p class="lesson-text" style="margin-top: 2rem; border-left: 3px solid #10B981; padding-left: 1rem;">
+                <strong>Nota:</strong> Inizieremo studiando le <strong>equazioni di primo grado</strong> (fino a
+                \(x^1\)). Non aver fretta per quelle di secondo grado o superiori: continueremo a risolvere equazioni
+                per tutto il meraviglioso tempo che passeremo insieme in questa piattaforma!
+            </p>
+        </section>
+
+
+        <!-- METODO SINGAPORE -->
+        <section class="lesson-section" style="border-left: 5px solid #3B82F6;">
+            <h2 class="lesson-title" style="color: #3B82F6;">4. Il Metodo Singapore (Bar Model)</h2>
+            <p class="lesson-text">
+                Il <strong>Metodo Singapore</strong> è un approccio visivo che usa dei rettangoli (modelli a barre) per rappresentare le quantità. È utilissimo per "vedere" l'equazione prima ancora di risolverla con le regole algebriche.
+            </p>
+            
+            <div class="op-demo" style="margin-bottom: 2rem; background: rgba(59, 130, 246, 0.03);">
+                <p><strong>Esempio Somma:</strong> \(x + 7 = 20\)</p>
+                <div class="bar-container" style="width: 250px;">
+                    <div class="bar-part bar-x" style="width: 65%;">x</div>
+                    <div class="bar-part bar-unit" style="width: 35%;">7</div>
+                </div>
+                <div class="bar-container" style="width: 250px;">
+                    <div class="bar-part" style="width: 100%; background: #475569;">20</div>
+                </div>
+                <p style="margin-top: 1rem; font-size: 0.95rem;">
+                    Osservando le barre, è chiaro che \(x\) è la parte che manca a 7 per arrivare a 20. <br>
+                    <strong>Soluzione:</strong> \(x = 20 - 7 = 13\).
+                </p>
+            </div>
+
+            <p class="lesson-text">
+                Oltre alla somma, possiamo visualizzare anche la sottrazione o il prodotto con i modelli a barre.
+            </p>
+
+            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                <div class="op-demo">
+                    <p><strong>Esempio Sottrazione:</strong> \(x - 5 = 15\)</p>
+                    <div class="bar-container" style="width: 250px;">
+                        <div class="bar-part bar-x" style="width: 100%;">x</div>
+                    </div>
+                    <div class="bar-container" style="width: 250px;">
+                        <div class="bar-part" style="width: 60%; background: #475569;">15</div>
+                        <div class="bar-part" style="width: 20%; background: #EF4444;">-5</div>
+                    </div>
+                    <p style="margin-top: 1rem; font-size: 0.9rem;">
+                        Se a \(x\) togliamo 5 otteniamo 15, allora \(x\) deve essere \(15 + 5 = 20\).
+                    </p>
+                </div>
+
+                <div class="op-demo">
+                    <p><strong>Esempio Moltiplicazione:</strong> \(3x = 30\)</p>
+                    <div class="bar-container" style="width: 250px;">
+                        <div class="bar-part bar-x" style="width: 33%;">x</div>
+                        <div class="bar-part bar-x" style="width: 33%;">x</div>
+                        <div class="bar-part bar-x" style="width: 33%;">x</div>
+                    </div>
+                    <div class="bar-container" style="width: 250px;">
+                        <div class="bar-part" style="width: 100%; background: #475569;">30</div>
+                    </div>
+                    <p style="margin-top: 1rem; font-size: 0.9rem;">
+                        Tre blocchi uguali valgono 30. Quanto vale un solo blocco? \(30 \div 3 = 10\).
+                    </p>
+                </div>
+
+                <div class="op-demo" style="grid-column: 1 / -1; margin-top: 1rem;">
+                    <p><strong>Esempio Combo:</strong> \(2x + 4 = 10\)</p>
+                    <div
+                        style="display: flex; flex-direction: column; gap: 0.8rem; align-items: center; margin: 1.5rem 0;">
+                        <div class="bar-container" style="width: 300px;">
+                            <div class="bar-part bar-x" style="width: 35%;">x</div>
+                            <div class="bar-part bar-x" style="width: 35%;">x</div>
+                            <div class="bar-part bar-unit" style="width: 30%;">4</div>
+                        </div>
+                        <div class="bar-container" style="width: 300px;">
+                            <div class="bar-part" style="width: 100%; background: #475569;">10</div>
+                        </div>
+                    </div>
+                    <p style="margin-top: 1rem; font-size: 0.95rem;">
+                        1. Togliamo il blocchetto 4 dal totale: resta \(10 - 4 = 6\). <br>
+                        2. Ora sappiamo che due blocchi \(x\) valgono 6, quindi uno solo vale \(6 \div 2 = 3\).
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- DISEQUAZIONI -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">5. Disequazioni: L'Invasione del Segno Negativo</h2>
+            <p class="lesson-text">
+                In una <strong>disequazione</strong> non cerchiamo un equilibrio perfetto, ma studiamo quando una parte
+                è <em>maggiore</em> (\(>\)) o <em>minore</em> (\(<\)) di un'altra. </p>
+
+            <div class="balance-container"
+                style="background: rgba(239, 68, 68, 0.05); border-color: rgba(239, 68, 68, 0.2);">
+                <div class="balance-arm" id="ineq-arm" style="transform: rotate(10deg);">
+                    <div class="scale-plate">
+                        <div class="plate-content">2</div>
+                    </div>
+                    <div class="scale-plate">
+                        <div class="plate-content">5</div>
+                    </div>
+                </div>
+                <p style="margin-top: 4rem; font-weight: bold; color: #EF4444;">Vedi? Il piatto con il 5 è più
+                    in basso perché è "più pesante"!</p>
+            </div>
+
+            <p class="lesson-text">
+                Esistono quattro simboli principali per le disequazioni:
+            </p>
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 2rem;">
+                <div class="card" style="padding: 1rem; text-align: center; border: 1px solid rgba(255,255,255,0.1);">
+                    <p style="font-size: 1.5rem;">\(<\) \(>\)</p>
+                    <p style="font-size: 0.8rem; color: var(--text-muted);">Minore e Maggiore</p>
+                </div>
+                <div class="card" style="padding: 1rem; text-align: center; border: 1px solid rgba(255,165,0,0.3);">
+                    <p style="font-size: 1.5rem;">\(\le\) \(\ge\)</p>
+                    <p style="font-size: 0.8rem; color: var(--text-muted);">Minore o uguale e Maggiore o uguale
+                    </p>
+                </div>
+            </div>
+
+            <p class="lesson-text">
+                Valgono gli stessi principi di prima, ma quando moltiplichiamo o dividiamo per un numero
+                negativo, dobbiamo invertire il verso!
+            </p>
+
+            <div class="inequality-demo">
+                <h3 style="margin-bottom: 2rem;">Prova</h3>
+                <div class="number-line">
+                    <div class="num-marker"><span class="num-label">-3</span>
+                        <div class="num-point" id="pt-minus-3" style="display:block; background:#EF4444;"></div>
+                    </div>
+                    <div class="num-marker"><span class="num-label">-2</span></div>
+                    <div class="num-marker"><span class="num-label">-1</span>
+                        <div class="num-point" id="pt-minus-1" style="display:block; background:#10B981;"></div>
+                    </div>
+                    <div class="num-marker"><span class="num-label">0</span></div>
+                    <div class="num-marker"><span class="num-label">1</span>
+                        <div class="num-point" id="pt-plus-1" style="display:block; background:#10B981;"></div>
+                    </div>
+                    <div class="num-marker"><span class="num-label">2</span></div>
+                    <div class="num-marker"><span class="num-label">3</span>
+                        <div class="num-point" id="pt-plus-3" style="display:block; background:#EF4444;"></div>
+                    </div>
+                </div>
+
+                <div style="margin: 2rem 0;">
+                    <div class="num-box" id="n-left">1</div>
+                    <span class="sign-box" id="s-main">&lt;</span>
+                    <div class="num-box" id="n-right">3</div>
+                </div>
+                <p id="demo-text" style="margin-top: 1rem; font-weight: 600;">Sulla retta, chi è più "a sinistra" è più
+                    piccolo.</p>
+                <p id="ineq-feedback" style="margin-top: 1rem; font-weight: bold; color: #F59E0B;">Prova a moltiplicare per
+                    -1 e guarda cosa succede...</p>
+                <button class="btn-gen" style="background: #EF4444;" onclick="demoInequalityFlip()">Moltiplica per
+                    -1</button>
+                <button class="btn-gen" style="background: var(--text-muted);" onclick="resetInequalityFlip()">Reset</button>
+            </div>
+
+            <!-- SFIDE INTERATTIVE DISEQUAZIONI -->
+            <div style="margin-top: 3rem;">
+                <h3 style="text-align: center; color: #EF4444; margin-bottom: 2rem;">Sfida: Risolvi le Disequazioni</h3>
+                <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+
+                    <!-- Sfida Disequazione 1 -->
+                    <div class="card"
+                        style="background: rgba(255, 255, 255, 0.02); padding: 1.5rem; border: 1px solid rgba(239, 68, 68, 0.2);">
+                        <p style="font-weight: bold; margin-bottom: 1rem;">Sfida A (1° Principio): \(x + 4 < 10\)</p>
+                        <div id="ineq-a-box"
+                            style="font-size: 1.5rem; text-align: center; margin: 1.5rem 0; font-weight: 800; color: #fff;">
+                            \(x + 4 < 10\)</div>
+                        <div style="display: flex; gap: 0.5rem; justify-content: center;">
+                            <button class="btn-op" style="padding: 0.5rem 1rem;" onclick="solveIneqA()">Sottrai 4</button>
+                            <button class="btn-op" style="padding: 0.5rem 1rem; background: #475569;"
+                                onclick="resetIneqA()">Reset</button>
+                        </div>
+                    </div>
+
+                    <!-- Sfida Disequazione 2 -->
+                    <div class="card"
+                        style="background: rgba(255, 255, 255, 0.02); padding: 1.5rem; border: 1px solid rgba(16, 185, 129, 0.2);">
+                        <p style="font-weight: bold; margin-bottom: 1rem;">Sfida B (2° Principio): \(3x \ge 12\)</p>
+                        <div id="ineq-b-box"
+                            style="font-size: 1.5rem; text-align: center; margin: 1.5rem 0; font-weight: 800; color: #fff;">
+                            \(3x \ge 12\)</div>
+                        <div style="display: flex; gap: 0.5rem; justify-content: center;">
+                            <button class="btn-op" style="padding: 0.5rem 1rem;" onclick="solveIneqB()">Dividi per 3</button>
+                            <button class="btn-op" style="padding: 0.5rem 1rem; background: #475569;"
+                                onclick="resetIneqB()">Reset</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- INDOVINELLO FINALE -->
+        <section class="lesson-section"
+            style="background: rgba(255,255,255,0.03); text-align: center; border: 1px dashed var(--math-color);">
+            <h2 class="lesson-title">🧐 L'Indovinello del Mattone</h2>
+            <p class="lesson-text" style="font-size: 1.2rem; font-style: italic;">
+                "Un mattone pesa <strong>1 kg più mezzo mattone</strong>. Quanto pesa il mattone?"
+            </p>
+            <button class="btn-gen" onclick="this.textContent = 'Pesa 2 kg! (x = 1 + 0.5x)'"
+                style="background: var(--math-color); margin-top: 1rem;">Svela il mistero</button>
+            <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--text-muted);">
+                Sembra un paradosso, ma se lo scrivi come equazione... la logica non mente mai!
+            </p>
+        </section>
+
+        <!-- ONLY FOR THE BRAVE -->
+        <section class="lesson-section"
+            style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.05), rgba(59, 130, 246, 0.05)); border: 2px solid #F59E0B; position: relative; overflow: hidden;">
+            <div
+                style="position: absolute; top: -10px; right: -10px; background: #F59E0B; color: #000; padding: 1rem 2rem; transform: rotate(15deg); font-weight: 800; font-size: 0.8rem;">
+                EPIC CHALLENGE</div>
+
+            <h2 class="lesson-title" style="color: #F59E0B;">🦁 Only for the Brave</h2>
+            <p class="lesson-text">
+                Sei arrivato fin qui, ma sei pronto per la vera gloria? Questi esercizi non sono per tutti. Richiedono
+                nervi saldi, occhio vigile sui <strong>prodotti notevoli</strong> e una precisione chirurgica con i
+                segni!
+            </p>
+
+            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem;">
+                <div class="card" style="padding: 1.5rem; background: rgba(0,0,0,0.3);">
+                    <h4 style="color: #F59E0B; margin-bottom: 1rem;">L'Equazione della Spada nella Roccia</h4>
+                    <p style="font-size: 1.1rem; line-height: 1.6;">
+                        \[ 3(x-2)^2 - (x+4)(x-4) = 2(x^2 - 5x + 10) + x^2 \]
+                    </p>
+                </div>
+                <div class="card" style="padding: 1.5rem; background: rgba(0,0,0,0.3);">
+                    <h4 style="color: #F59E0B; margin-bottom: 1rem;">La Disequazione del Trono</h4>
+                    <p style="font-size: 1.1rem; line-height: 1.6;">
+                        \[ (2x+1)^2 - (2x-1)^2 \le (x+3)^2 - x^2 - 5 \]
+                    </p>
+                </div>
+            </div>
+
+            <div
+                style="margin-top: 2rem; padding: 1.5rem; background: rgba(245, 158, 11, 0.1); border-radius: 12px; font-style: italic; text-align: center;">
+                <p>"La leggenda narra che chi riuscirà a risolvere questi due mostri algebrici senza sbagliare un solo
+                    coefficiente, sarà nominato <strong>Re (o Regina) d'Inghilterra</strong>... o almeno otterrà il rispetto eterno di ogni
+                    matematico vivente!" 👑</p>
+            </div>
+        </section>
+
+        <!-- QUIZ -->
+        <section class="lesson-section quiz-container">
+            <h2 class="lesson-title">Quiz di Comprensione</h2>
+            <p class="lesson-text" style="font-size: 0.95rem;">Verifica se hai capito le regole fondamentali del gioco
+                algebrico.</p>
+            <div id="quiz-area"></div>
+            <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Algebra Live.</p>
+    </footer>
+
+    <!-- JS -->
+    <script src="../js/equazioni-disequazioni.js"></script>
+    <script>
+        // Module 1 logic
+        function solveB1() {
+            document.getElementById('p1-left').textContent = "x + 5 - 5";
+            document.getElementById('arm-1').style.transform = "rotate(-5deg)";
+        }
+        function msgB1() {
+            document.getElementById('p1-right').textContent = "12 - 5";
+            document.getElementById('arm-1').style.transform = "rotate(0deg)";
+        }
+        function finalB1() {
+            document.getElementById('p1-left').textContent = "x";
+            document.getElementById('p1-right').textContent = "7";
+        }
+
+        // Module 2 logic
+        function solveB2() {
+            document.getElementById('p2-left').textContent = "3x / 3";
+            document.getElementById('p2-right').textContent = "18 / 3";
+            document.getElementById('arm-2').style.transform = "rotate(2deg)";
+            setTimeout(() => document.getElementById('arm-2').style.transform = "rotate(0deg)", 500);
+        }
+        function finalB2() {
+            document.getElementById('p2-left').textContent = "x";
+            document.getElementById('p2-right').textContent = "6";
+        }
+
+        // Inequality negative rule demo (-3 to 3 version)
+        function demoInequalityFlip() {
+            const l = document.getElementById('n-left');
+            const r = document.getElementById('n-right');
+            const s = document.getElementById('s-main');
+            const fb = document.getElementById('ineq-feedback');
+            const arm = document.getElementById('ineq-arm');
+            const txt = document.getElementById('demo-text');
+            
+            l.textContent = "-1";
+            r.textContent = "-3";
+            s.textContent = ">"; // 1 < 3  becomes  -1 > -3
+            s.className = "sign-box rotated";
+            
+            fb.innerHTML = "Hai invertito il segno! \(-1 > -3\).";
+            txt.innerHTML = "Sulla retta dei negativi, -1 è più a destra di -3, quindi è <strong>maggiore</strong>!";
+            arm.style.transform = "rotate(-20deg)"; // Tilted the other way
+            
+            // Highlight shift could be added if needed, but the labels already make it clear
+        }
+
+        function resetInequalityFlip() {
+            const l = document.getElementById('n-left');
+            const r = document.getElementById('n-right');
+            const s = document.getElementById('s-main');
+            const fb = document.getElementById('ineq-feedback');
+            const arm = document.getElementById('ineq-arm');
+            const txt = document.getElementById('demo-text');
+            
+            l.textContent = "1";
+            r.textContent = "3";
+            s.textContent = "<";
+            s.className = "sign-box";
+            fb.textContent = "Prova a moltiplicare per -1 e guarda cosa succede...";
+            txt.textContent = "Sulla retta, chi è più \"a sinistra\" è più piccolo.";
+            arm.style.transform = "rotate(10deg)";
+        }
+
+        // Challenge A
+        function solveIneqA() {
+            const box = document.getElementById('ineq-a-box');
+            box.innerHTML = "\\( x < 6 \\)";
+            if (window.renderMathInElement) {
+                renderMathInElement(box, {
+                    delimiters: [{left: '\\(', right: '\\)', display: false}]
+                });
+            }
+            box.style.color = "#10B981";
+        }
+        function resetIneqA() {
+            const box = document.getElementById('ineq-a-box');
+            box.innerHTML = "\\( x + 4 < 10 \\)";
+            if (window.renderMathInElement) {
+                renderMathInElement(box, {
+                    delimiters: [{left: '\\(', right: '\\)', display: false}]
+                });
+            }
+            box.style.color = "#fff";
+        }
+
+        // Challenge B
+        function solveIneqB() {
+            const box = document.getElementById('ineq-b-box');
+            box.innerHTML = "\\( x \\ge 4 \\)";
+            if (window.renderMathInElement) {
+                renderMathInElement(box, {
+                    delimiters: [
+                        {left: '\\(', right: '\\)', display: false}
+                    ]
+                });
+            }
+            box.style.color = "#10B981";
+        }
+        function resetIneqB() {
+            const box = document.getElementById('ineq-b-box');
+            box.innerHTML = "\\( 3x \\ge 12 \\)";
+            if (window.renderMathInElement) {
+                renderMathInElement(box, {
+                    delimiters: [
+                        {left: '\\(', right: '\\)', display: false}
+                    ]
+                });
+            }
+            box.style.color = "#fff";
+        }
+    </script>
+</body>
+
+</html>
