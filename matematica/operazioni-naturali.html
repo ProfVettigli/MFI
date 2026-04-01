@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operazioni con i Naturali - MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+        onload="renderMathInElement(document.body);"></script>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        :root {
+            --nat-color: #3B82F6;
+        }
+
+        .property-card {
+            background: rgba(59, 130, 246, 0.05);
+            border-left: 5px solid var(--nat-color);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 12px 12px 0;
+            transition: transform 0.3s ease;
+        }
+
+        .property-card:hover {
+            transform: translateX(10px);
+        }
+
+        .interactive-box {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px dashed var(--nat-color);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .ball-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 1rem 0;
+            min-height: 50px;
+        }
+
+        .ball {
+            width: 30px;
+            height: 30px;
+            background: var(--nat-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+        }
+
+        .op-anim {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin: 0 15px;
+        }
+
+        .grid-rect {
+            display: grid;
+            gap: 2px;
+            margin: 1rem auto;
+            justify-content: center;
+        }
+
+        .cell {
+            width: 25px;
+            height: 25px;
+            border-radius: 4px;
+        }
+
+        .cell.a { background: #3B82F6; }
+        .cell.b { background: #60A5FA; }
+        .cell.c { background: #93C5FD; }
+    </style>
+</head>
+
+<body>
+    <header class="sub-hero">
+        <div class="container">
+            <a href="aritmetica.html" class="back-button">
+                <span class="back-icon">&larr;</span> Torna ad Aritmetica
+            </a>
+            <h1 class="sub-hero-title">Operazioni con i <span class="gradient-text"
+                    style="background: linear-gradient(135deg, #3B82F6, #60A5FA); -webkit-background-clip: text; background-clip: text; color: transparent;">Naturali</span></h1>
+            <p class="sub-hero-subtitle">Impara a padroneggiare le basi del calcolo: addizione, moltiplicazione e le
+                leggi che governano il mondo dei numeri del conteggio.</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- 1. INSIEMI CHIUSI -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">1. Il Concetto di Insieme Chiuso</h2>
+            <p class="lesson-text">
+                Immagina un recinto che contiene tutti i numeri naturali \(\mathbb{N} = \{0, 1, 2, 3, ...\}\).
+                Diciamo che l'insieme è <strong>chiuso</strong> rispetto a un'operazione se, prendendo due numeri
+                qualsiasi all'interno del recinto e operando su di essi, il risultato <strong>cade ancora dentro</strong>
+                lo stesso recinto.
+            </p>
+            
+            <div class="interactive-box">
+                <h3>Esplora la Chiusura</h3>
+                <p>Prendi due numeri naturali e vedi dove finisce il risultato.</p>
+                <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 1rem;">
+                    <input type="number" id="num-a" value="3" class="cramer-input" style="width: 80px;">
+                    <select id="op-select" class="cramer-input" style="width: 60px;">
+                        <option value="+">+</option>
+                        <option value="*">&times;</option>
+                        <option value="-">-</option>
+                    </select>
+                    <input type="number" id="num-b" value="5" class="cramer-input" style="width: 80px;">
+                </div>
+                <button class="btn-gen" onclick="checkClosure()">Verifica!</button>
+                <div id="closure-result" class="result-box" style="margin-top:1.5rem;"></div>
+            </div>
+
+            <p class="lesson-text">
+                Noterai che:
+            </p>
+            <ul>
+                <li>L'addizione è <strong>chiusa</strong>: \(n + m\) è sempre un naturale.</li>
+                <li>La moltiplicazione è <strong>chiusa</strong>: \(n \times m\) è sempre un naturale.</li>
+                <li>La sottrazione <strong>NON è sempre chiusa</strong>: \(3 - 5 = -2\), che non è un numero naturale! Per questo ci concentreremo sulle prime due.</li>
+            </ul>
+        </section>
+
+        <!-- 2. L'ADDIZIONE -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">2. L'Addizione e le sue Proprietà</h2>
+            <p class="lesson-text">L'addizione è l'operazione che mette insieme due quantità. I numeri che si sommano si chiamano <strong>addendi</strong>, il risultato si chiama <strong>somma</strong>.</p>
+
+            <div class="property-card">
+                <h3>Proprietà Commutativa</h3>
+                <p>\(a + b = b + a\). Scambiando l'ordine degli addendi, la somma non cambia.</p>
+            </div>
+
+            <div class="interactive-box" id="commutative-demo">
+                <div class="ball-container" id="ball-box">
+                    <!-- Balls injected by JS -->
+                </div>
+                <h3 id="comm-text">3 + 5 = 8</h3>
+                <button class="btn-gen" onclick="swapCommutative()">Scambia gli addendi!</button>
+            </div>
+
+            <div class="property-card">
+                <h3>Proprietà Associativa</h3>
+                <p>\((a + b) + c = a + (b + c)\). Se dobbiamo sommare tre numeri, possiamo raggrupparli come vogliamo.</p>
+            </div>
+
+            <div class="property-card">
+                <h3>Elemento Neutro: Lo Zero</h3>
+                <p>\(a + 0 = a\). Lo zero è l'elemento neutro perché, aggiunto a qualsiasi numero, lo lascia invariato.</p>
+            </div>
+        </section>
+
+        <!-- 3. LA MOLTIPLICAZIONE -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">3. La Moltiplicazione</h2>
+            <p class="lesson-text">La moltiplicazione è un'addizione ripetuta. I numeri moltiplicati si chiamano <strong>fattori</strong>, il risultato si chiama <strong>prodotto</strong>.</p>
+
+            <div class="property-card">
+                <h3>Proprietà Distributiva</h3>
+                <p>\(a \times (b + c) = a \times b + a \times c\). Moltiplicare un numero per una somma è come moltiplicarlo per ogni addendo e poi sommare i prodotti.</p>
+            </div>
+
+            <div class="interactive-box">
+                <h3>Esempio Visivo: Area Rettangolo</h3>
+                <div id="dist-rect" class="grid-rect"></div>
+                <p id="dist-text">\(2 \times (3 + 4) = 2 \times 7 = 14\)</p>
+                <p id="dist-split-text" style="color: var(--text-muted); font-size: 0.9rem;">Oppure: \((2 \times 3) + (2 \times 4) = 6 + 8 = 14\)</p>
+            </div>
+
+            <div class="property-card">
+                <h3>Elemento Neutro: L'Uno</h3>
+                <p>\(a \times 1 = a\). L'uno non cambia il valore del fattore.</p>
+            </div>
+            
+            <div class="property-card">
+                <h3>Elemento Assorbente: Lo Zero</h3>
+                <p>\(a \times 0 = 0\). Qualunque numero moltiplicato per zero diventa zero.</p>
+            </div>
+        </section>
+
+        <!-- 4. QUIZ -->
+        <section class="lesson-section quiz-container">
+            <h2 class="lesson-title">Mettiti alla Prova!</h2>
+            <div id="quiz-area">
+                <!-- Injected by JS -->
+            </div>
+            <div id="quiz-feedback" class="result-box" style="display: none; color: white; min-height: 100px;"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Aritmetica Live.</p>
+    </footer>
+
+    <script src="../js/operazioni-naturali.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calorimetria</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+    <header class="hero">
+        <div class="container" style="text-align: center;">
+            <a href="termodinamica.html"
+                style="text-decoration: none; color: var(--physics-color); font-weight: 600; margin-bottom: 2rem; display: inline-block;">←
+                Torna alla Termodinamica</a>
+            <h1 class="hero-title"><span class="gradient-text">Introduzione alla Calorimetria</span></h1>
+            <p class="hero-subtitle">Esplora Temperatura, Calore e Dilatazione Termica</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- SEZIONE TEMPERATURA -->
+        <section id="temperatura" class="lesson-section">
+            <h2 class="lesson-title" style="color: var(--physics-color);">Che cos'è la Temperatura?</h2>
+            <p>Iniziamo con la definizione più semplice e pratica in assoluto: <strong>la temperatura è quella cosa che
+                    si misura con il termometro</strong>.</p>
+            <p>Esistono diversi modi per misurarla, a seconda della tecnologia utilizzata:</p>
+            <ul
+                style="color: var(--text-muted); margin-left: 2rem; margin-top: 1rem; margin-bottom: 2rem; line-height: 1.8;">
+                <li><strong>Termometri Digitali:</strong> Utilizzano sensori elettronici (termistori) che cambiano la
+                    loro resistenza elettrica al variare del calore.</li>
+                <li><strong>Termometri a Infrarossi:</strong> Misurano l'energia termica emessa sotto forma di
+                    radiazioni (comuni oggi per misurazioni istantanee a distanza).</li>
+                <li><strong>Termometri a Liquido:</strong> Quelli "classici" (un tempo a mercurio, oggi ad alcool
+                    colorato) che sfruttano un principio fisico fondamentale: la <strong>dilatazione termica</strong>.
+                </li>
+            </ul>
+            <p>In questa lezione ci concentreremo proprio su quest'ultimo tipo.</p>
+        </section>
+
+
+        <!-- SEZIONE DILATAZIONE LINEARE -->
+        <section id="dilatazione-lineare" class="lesson-section">
+            <h2 class="lesson-title" style="color: var(--physics-color);">La Dilatazione Termica Lineare</h2>
+            <p>Quando la temperatura aumenta, gli oggetti tendono ad "allungarsi". Pensa al Bastone Magico
+                (<em>Nyoibo</em>) di Son Goku: se fosse fatto di un normale metallo terrestre, riscaldandolo
+                diventerebbe
+                leggermente più lungo a causa della dilatazione termica lineare.</p>
+            <p>La regola fondamentale da stampare in mente è questa: <strong>raddoppiando la variazione di temperatura,
+                    raddoppia l'allungamento</strong> (fai attenzione, raddoppia l'allungamento &Delta;L, NON la
+                lunghezza totale dell'oggetto!).</p>
+
+            <div
+                style="background: rgba(16, 185, 129, 0.05); border: 1px solid var(--physics-glow); border-radius: 1rem; padding: 2rem; margin: 2rem 0; text-align: center;">
+                <p
+                    style="font-size: 1.5rem; font-family: 'Courier New', monospace; color: var(--text-main); margin-bottom: 1.5rem;">
+                    &Delta;L = &lambda; L<sub>0</sub> &Delta;T
+                </p>
+                <ul
+                    style="text-align: left; color: var(--text-muted); list-style: none; padding: 0; display: inline-block;">
+                    <li><strong>&Delta;L</strong>: Variazione di lunghezza (allungamento) [m]</li>
+                    <li><strong>&lambda;</strong>: Coefficiente di dilatazione termica lineare [K⁻¹]</li>
+                    <li><strong>L<sub>0</sub></strong>: Lunghezza iniziale dell'oggetto [m]</li>
+                    <li><strong>&Delta;T</strong>: Variazione di temperatura [K]</li>
+                </ul>
+            </div>
+
+            <div class="interactive-panel">
+                <h3>Simulatore di Allungamento</h3>
+                <input type="range" id="temp-slider" min="0" max="60" step="15" value="0">
+                <p>Variazione di Temperatura (&Delta;T): <strong id="temp-val">0</strong> °C</p>
+
+                <div class="bar-container" style="display: flex; align-items: center; margin: 20px 0;">
+                    <div style="background-color: #888; width: 200px; height: 30px;" title="Lunghezza Iniziale"></div>
+                    <div id="expansion-bar"
+                        style="background-color: #e74c3c; width: 0px; height: 30px; transition: width 0.3s;"
+                        title="Allungamento"></div>
+                </div>
+                <p>Allungamento (&Delta;L): <strong id="exp-val">0</strong> mm</p>
+                <p id="slider-feedback" style="font-weight: bold; color: #2980b9; height: 24px;"></p>
+            </div>
+
+            <div class="quiz-panel">
+                <h3>Esercizio Interattivo</h3>
+                <p>Il treno marino Puffing Tom viaggia su binari di metallo. Se un segmento di binario si allunga di
+                    <strong>4 mm</strong> quando la temperatura sale di <strong>20 °C</strong>, di quanto si allungherà
+                    se la temperatura sale di <strong>40 °C</strong>?
+                </p>
+                <input type="number" id="quiz-answer" placeholder="Es. 8"
+                    style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-main); padding: 0.8rem; border-radius: 0.5rem; margin-right: 1rem; width: 100px;">
+                <button class="quiz-btn" onclick="checkAnswer()"
+                    style="display: inline-block; padding: 0.8rem 1.5rem;">Verifica</button>
+                <p id="quiz-feedback"></p>
+            </div>
+        </section>
+
+        <!-- ALTRE DILATAZIONI -->
+        <section id="altre-dilatazioni" class="lesson-section">
+            <h2 class="lesson-title" style="color: var(--physics-color);">Dilatazione Superficiale e Volumetrica</h2>
+            <p>Oltre alla dilatazione lineare, esistono anche la dilatazione superficiale (per oggetti piatti come lo
+                scudo di Captain America) e volumetrica (per oggetti in 3D come una Sfera del Drago). Le formule sono
+                concettualmente identiche:</p>
+            <ul>
+                <li><strong>Dilatazione Superficiale:</strong> &Delta;S = &sigma; &middot; S<sub>0</sub> &middot;
+                    &Delta;T</li>
+                <li><strong>Dilatazione Volumetrica:</strong> &Delta;V = &alpha; &middot; V<sub>0</sub> &middot;
+                    &Delta;T</li>
+            </ul>
+        </section>
+
+        <!-- ESEMPI CONCRETI -->
+        <section id="esempi-reali" class="lesson-section">
+            <h2 class="lesson-title" style="color: var(--physics-color);">Perché è importante nella realtà?</h2>
+            <p>Se gli ingegneri non tenessero conto di questo fenomeno, le conseguenze sarebbero disastrose. I binari
+                dei treni si deformerebbero sotto il sole estivo e i ponti d'acciaio potrebbero cedere per la troppa
+                pressione.</p>
+            <p>Per prevenire questi danni, si utilizzano diversi accorgimenti tecnici:</p>
+            <ul style="color: var(--text-muted); margin-left: 2rem; margin-top: 1rem; margin-bottom: 2rem; line-height: 1.8;">
+                <li><strong>Giunti di Dilatazione:</strong> Spazi vuoti "a pettine" nei ponti e nelle autostrade che permettono alla struttura di scorrere avanti e indietro senza spaccarsi.</li>
+                <li><strong>Rulli di Appoggio:</strong> Molte campate di ponti appoggiano su dei rulli, permettendo al ponte di allungarsi leggermente senza deformare i piloni di supporto.</li>
+                <li><strong>Anse di Dilatazione:</strong> Nelle tubature molto lunghe (come quelle degli oleodotti o del riscaldamento urbano), si creano delle curve a "U" che assorbono l'allungamento del metallo.</li>
+                <li><strong>Spazi tra i Binari:</strong> Tradizionalmente, si lasciava un piccolo spazio tra un pezzo di binario e l'altro (il tipico "ta-tum" del treno) proprio per permetterne l'allungamento estivo.</li>
+            </ul>
+
+            <div class="nota"
+                style="background-color: rgba(243, 156, 18, 0.1); color: var(--text-main); padding: 1.5rem; border-left: 5px solid #f39c12; border-radius: 0 1rem 1rem 0; margin: 2rem 0;">
+                <strong>Nota Bene:</strong> La ragione microscopica per cui avviene questa dilatazione (gli atomi che
+                vibrano e si allontanano) sarà spiegata nel dettaglio più avanti, quando arriveremo ad una descrizione
+                più dettagliata della struttura della materia.
+            </div>
+        </section>
+
+        <!-- DIFFERENZA CALORE E TEMPERATURA -->
+        <section id="calore-vs-temperatura" class="lesson-section">
+            <h2 class="lesson-title" style="color: var(--physics-color);">Non farti ingannare dalle illusioni: Calore vs
+                Temperatura</h2>
+            <p>Nella vita quotidiana usiamo "calore" e "temperatura" come sinonimi (es. "che caldo che fa oggi!"), ma in
+                fisica sono concetti molto diversi. La temperatura è lo stato di un corpo, mentre il calore è
+                <strong>l'energia in transito</strong> da un corpo più caldo a uno più freddo. I nostri sensi non
+                percepiscono la temperatura assoluta, ma avvertono proprio questo passaggio di calore!
+            </p>
+
+            <div class="experiment-panel"
+                style="background-color: rgba(52, 152, 219, 0.1); color: var(--text-main); padding: 1.5rem; border-left: 5px solid #3498db; border-radius: 0 1rem 1rem 0; margin: 2rem 0;">
+                <h3>Esperimento Pratico: L'illusione termica (Genjutsu sensoriale)</h3>
+                <p>Vuoi la prova che i tuoi sensi ti ingannano? Prepara tre bacinelle d'acqua:</p>
+                <ol>
+                    <li>Bacinella A: <strong>Acqua calda</strong> (non bollente!)</li>
+                    <li>Bacinella B: <strong>Acqua a temperatura ambiente</strong> (tiepida)</li>
+                    <li>Bacinella C: <strong>Acqua fredda</strong> (magari con qualche cubetto di ghiaccio)</li>
+                </ol>
+                <p><strong>Cosa devi fare:</strong> Immergi la mano sinistra nell'acqua calda e la destra in quella
+                    fredda per circa un minuto. Dopodiché, toglile e immergile <strong>entrambe
+                        contemporaneamente</strong> nella bacinella tiepida centrale.</p>
+                <p><strong>Risultato:</strong> La mano sinistra ti dirà che l'acqua centrale è fredda, mentre la mano
+                    destra ti giurerà che la stessa acqua è calda! Questo perché la mano sinistra sta <em>cedendo</em>
+                    calore (e sente freddo), mentre la destra lo sta <em>assorbendo</em> (e sente caldo). Il termometro,
+                    invece, segnerebbe per entrambe la stessa identica temperatura oggettiva.</p>
+            </div>
+        </section>
+
+        <!-- CALORE E CALORIMETRO -->
+        <section id="calore" class="lesson-section">
+            <h2 class="lesson-title" style="color: var(--physics-color);">Che cos'è il calore?</h2>
+            <p><strong>Il calore è energia in transito</strong> che fluisce spontaneamente da un corpo a temperatura superiore verso un corpo a temperatura inferiore.</p>
+            <p>Quando mettiamo a contatto due corpi con temperature diverse, osserviamo che la temperatura del primo scende mentre quella del secondo sale, finché non raggiungono lo stesso valore finale: la <strong>temperatura di equilibrio</strong>.</p>
+            <p>Per misurare con precisione questi scambi, i fisici usano uno strumento chiamato <strong>calorimetro</strong>. È essenzialmente un contenitore isolato termicamente che impedisce al calore di disperdersi verso l'ambiente esterno.</p>
+
+            <div class="calorimeter-panel"
+                style="background: rgba(236, 240, 241, 0.05); padding: 2.5rem; border-radius: 1rem; text-align: center; margin-top: 2rem; border: 1px solid rgba(255,255,255,0.05);">
+                <h3>Simulatore di Equilibrio Termico</h3>
+                <p>Premi il pulsante per far scambiare calore ai due corpi chiusi nel calorimetro. Il calore fluirà dal
+                    corpo caldo a quello freddo finché non raggiungeranno la stessa temperatura.</p>
+
+                <div style="display: flex; justify-content: center; gap: 20px; margin: 20px 0;">
+                    <div id="hot-block"
+                        style="background-color: #e74c3c; color: white; padding: 30px; border-radius: 8px; width: 120px; font-size: 24px; font-weight: bold; transition: background-color 0.2s;">
+                        80°C
+                    </div>
+                    <div style="font-size: 40px; color: #7f8c8d; align-self: center;">&lrarr;</div>
+                    <div id="cold-block"
+                        style="background-color: #3498db; color: white; padding: 30px; border-radius: 8px; width: 120px; font-size: 24px; font-weight: bold; transition: background-color 0.2s;">
+                        20°C
+                    </div>
+                </div>
+
+                <div style="background: rgba(0,0,0,0.3); border-radius: 1rem; padding: 1.5rem; margin: 1.5rem 0;">
+                    <canvas id="calorimeter-chart" width="400" height="200" style="width: 100%; height: auto;"></canvas>
+                </div>
+
+                <button id="btn-calorimetro" class="quiz-btn" onclick="startCalorimeter()"
+                    style="background: var(--physics-color); color: #fff; border: none; padding: 1rem 2rem; font-weight: 600; margin-top: 1rem;">Avvia
+                    Scambio Termico</button>
+                <p id="calorimeter-status" style="margin-top: 15px; font-weight: bold; color: #2c3e50;">Stato: Isolati
+                </p>
+            </div>
+
+            <p style="margin-top: 2rem;">Per spiegarsi questo fenomeno, in passato si credeva che esistesse un fluido invisibile chiamato <strong>calorico</strong>, che fluiva spontaneamente da un corpo a un altro come se fosse un liquido.</p>
+            <div class="nota" style="background-color: rgba(243, 156, 18, 0.1); color: var(--text-main); padding: 1.5rem; border-left: 5px solid #f39c12; border-radius: 0 1rem 1rem 0; margin: 2rem 0;">
+                <strong>Nota Bene:</strong> Abbiamo una spiegazione più razionale di come gli oggetti si scambino energia: questo processo sarà spiegato con maggior dettaglio quando analizzeremo la natura microscopica della materia e il movimento delle particelle.
+            </div>
+
+            <h3 style="margin-top: 3rem; margin-bottom: 1.5rem; color: var(--text-main);">Le tre modalità di scambio termico</h3>
+            <p>Il contatto diretto non è l'unico modo in cui il calore può fluire. Esistono tre modalità principali di trasmissione dell'energia termica:</p>
+            
+            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
+                <div class="card" style="padding: 1.5rem; min-height: unset; background: rgba(59, 130, 246, 0.05);">
+                    <h4 style="color: var(--math-color); margin-bottom: 0.5rem; font-size: 1.3rem;">1. Conduzione</h4>
+                    <p style="font-size: 0.95rem; color: var(--text-muted);">Avviene principalmente nei <strong>solidi</strong>. Il calore si trasmette da una particella all'altra senza che queste si spostino, come una "frenetica vibrazione" che si propaga lungo un cucchiaio dimenticato nel tè caldo.</p>
+                </div>
+                <div class="card" style="padding: 1.5rem; min-height: unset; background: rgba(16, 185, 129, 0.05);">
+                    <h4 style="color: var(--physics-color); margin-bottom: 0.5rem; font-size: 1.3rem;">2. Convezione</h4>
+                    <p style="font-size: 0.95rem; color: var(--text-muted);">Tipica di <strong>liquidi e gas</strong>. Il calore si trasmette attraverso il movimento della materia stessa (correnti convettive). È il motivo per cui l'aria calda sale sopra un termosifone o l'acqua bolle in una pentola.</p>
+                </div>
+                <div class="card" style="padding: 1.5rem; min-height: unset; background: rgba(245, 158, 11, 0.05);">
+                    <h4 style="color: var(--chem-color); margin-bottom: 0.5rem; font-size: 1.3rem;">3. Irraggiamento</h4>
+                    <p style="font-size: 0.95rem; color: var(--text-muted);">Il calore si trasmette tramite <strong>onde elettromagnetiche</strong>. È l'unico modo in cui il calore può viaggiare nel <strong>vuoto</strong>: è così che l'energia del Sole raggiunge la Terra attraverso lo spazio siderale (ed è anche il modo in cui <strong>Son Goku</strong> lancia la sua leggendaria <em>Onda Energetica</em>!).</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- QUESTIONARIO FINALE -->
+        <section id="quiz-finale" class="lesson-section">
+            <h2 class="lesson-title" style="color: var(--physics-color);">Test di Comprensione Finale</h2>
+            <p class="lesson-text">Metti alla prova quello che hai imparato in questa lezione!</p>
+
+            <div class="quiz-container">
+                <div id="quiz-area">
+                    <!-- Le domande verranno inserite qui via JavaScript -->
+                </div>
+                <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Questo è il collegamento aggiornato al nuovo nome del file JS -->
+    <script src="../js/calorimetria.js"></script>
+</body>
+
+</html>

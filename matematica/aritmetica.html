@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <!-- CSS -->
     <link rel="stylesheet" href="../css/style.css">
-    
+
     <style>
         .back-button {
             display: inline-flex;
@@ -21,22 +22,22 @@
             font-weight: 600;
             transition: color 0.3s ease, transform 0.3s ease;
         }
-        
+
         .back-button:hover {
             color: var(--text-main);
             transform: translateX(-5px);
         }
-        
+
         .back-icon {
             margin-right: 0.5rem;
             font-size: 1.2rem;
         }
-        
+
         .sub-hero {
             padding: 4rem 0 2rem;
             text-align: left;
         }
-        
+
         .sub-hero-title {
             font-size: clamp(2.5rem, 4vw, 3.5rem);
             font-weight: 800;
@@ -44,7 +45,7 @@
             margin-bottom: 1rem;
             line-height: 1.1;
         }
-        
+
         .sub-hero-subtitle {
             font-size: 1.15rem;
             color: var(--text-muted);
@@ -54,100 +55,125 @@
         }
     </style>
 </head>
+
 <body>
     <header class="sub-hero">
         <div class="container">
             <a href="../index.html" class="back-button">
                 <span class="back-icon">&larr;</span> Torna all'Indice Principale
             </a>
-            
-            <h1 class="sub-hero-title">Fondamenti di <span class="gradient-text" style="background: linear-gradient(135deg, #3B82F6, #60A5FA); -webkit-background-clip: text; background-clip: text; color: transparent;">Aritmetica</span></h1>
-            <p class="sub-hero-subtitle">Esplora il linguaggio universale dei numeri. Dagli insiemi numerici primordiali alle regole delle espressioni, le potenze e gli sbalorditivi paradossi sull'infinito.</p>
+
+            <h1 class="sub-hero-title">Fondamenti di <span class="gradient-text"
+                    style="background: linear-gradient(135deg, #3B82F6, #60A5FA); -webkit-background-clip: text; background-clip: text; color: transparent;">Aritmetica</span>
+            </h1>
+            <p class="sub-hero-subtitle">Esplora il linguaggio universale dei numeri. Dagli insiemi numerici primordiali
+                alle regole delle espressioni, le potenze e gli sbalorditivi paradossi sull'infinito.</p>
         </div>
     </header>
 
     <main class="container">
         <section class="subjects" style="padding-bottom: 4rem;">
             <div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));">
-                
+
                 <!-- Insiemi Numerici -->
                 <a href="insiemi-numerici.html" class="card math-card">
                     <div class="card-icon">ℕℤℝ</div>
                     <h3 class="card-title">Insiemi Numerici</h3>
-                    <p class="card-desc">Esplora le famiglie dei numeri: dai Naturali che usiamo per contare fino all'infinità dei numeri Razionali e Reali.</p>
+                    <p class="card-desc">Esplora le famiglie dei numeri: dai Naturali che usiamo per contare fino
+                        all'infinità dei numeri Razionali e Reali.</p>
                 </a>
-                
+
+                <!-- Operazioni con i Naturali -->
+                <a href="operazioni-naturali.html" class="card math-card">
+                    <div class="card-icon">🔢</div>
+                    <h3 class="card-title">Operazioni sui Naturali</h3>
+                    <p class="card-desc">Addizione, moltiplicazione e le loro leggi segrete. Scopri perché i naturali
+                        sono un "insieme chiuso" e impara a calcolare con intelligenza.</p>
+                </a>
+
+                <!-- Operazioni con Relativi -->
+                <a href="operazioni-relativi.html" class="card math-card">
+                    <div class="card-icon">±5</div>
+                    <h3 class="card-title">Operazioni sui Relativi</h3>
+                    <p class="card-desc">Gestisci i segni positivi e negativi. Impara la regola del castello e la
+                        bizzarra regola dei segni per moltiplicare i debiti.</p>
+                </a>
+
+                <!-- Operazioni con Razionali -->
+                <a href="operazioni-razionali.html" class="card math-card">
+                    <div class="card-icon">½</div>
+                    <h3 class="card-title">Operazioni sui Razionali</h3>
+                    <p class="card-desc">Cioè le mitiche frazioni! Impara a sommarle col minimo comune denominatore e a
+                        semplificarle ai minimi termini.</p>
+                </a>
+
                 <!-- Espressioni e Precedenze -->
                 <a href="espressioni-numeriche.html" class="card math-card">
                     <div class="card-icon">➕✖️</div>
                     <h3 class="card-title">Espressioni Numeriche</h3>
-                    <p class="card-desc">Ordina il caos matematico: impara le regole infallibili della precedenza degli operatori e l'uso corretto delle parentesi.</p>
+                    <p class="card-desc">Ordina il caos matematico: impara le regole infallibili della precedenza degli
+                        operatori e l'uso corretto delle parentesi.</p>
                 </a>
-                
+
                 <!-- Notazione Esponenziale -->
                 <a href="notazione-esponenziale.html" class="card math-card">
                     <div class="card-icon">10³</div>
                     <h3 class="card-title">Notazione Esponenziale</h3>
-                    <p class="card-desc">Sblocca il potere della moltiplicazione ripetuta e domina le importantissime proprietà degli esponenti.</p>
-                </a>
-
-                <!-- Operazioni Relativi -->
-                <a href="operazioni-relativi.html" class="card math-card">
-                    <div class="card-icon">±5</div>
-                    <h3 class="card-title">Operazioni con Relativi</h3>
-                    <p class="card-desc">Gestisci i segni positivi e negativi. Impara la regola del castello e la bizzarra regola dei segni per moltiplicare i debiti.</p>
-                </a>
-
-                <!-- Operazioni Razionali -->
-                <a href="operazioni-razionali.html" class="card math-card">
-                    <div class="card-icon">½</div>
-                    <h3 class="card-title">Operazioni con Razionali</h3>
-                    <p class="card-desc">Cioè le mitiche frazioni! Impara a sommarle col minimo comune denominatore e a semplificarle ai minimi termini.</p>
+                    <p class="card-desc">Sblocca il potere della moltiplicazione ripetuta e domina le importantissime
+                        proprietà degli esponenti.</p>
                 </a>
 
                 <!-- Numeri Primi e Goldbach -->
                 <a href="numeri-primi-goldbach.html" class="card math-card">
                     <div class="card-icon">2,3,5</div>
                     <h3 class="card-title">Numeri Primi e Congetture e congettura di Goldbach</h3>
-                    <p class="card-desc">Cosa sono i numeri primi e perché la congettura di Goldbach è ancora il rompicapo preferito dei matematici?</p>
+                    <p class="card-desc">Cosa sono i numeri primi e perché la congettura di Goldbach è ancora il
+                        rompicapo preferito dei matematici?</p>
                 </a>
 
                 <!-- Teorema di Fermat -->
                 <a href="teorema-fermat.html" class="card math-card">
                     <div class="card-icon">aⁿ</div>
                     <h3 class="card-title">Ultimo Teorema di Fermat</h3>
-                    <p class="card-desc">Un mistero durato 358 anni che ha ossessionato generazioni di scienziati in tutto il mondo.</p>
+                    <p class="card-desc">Un mistero durato 358 anni che ha ossessionato generazioni di scienziati in
+                        tutto il mondo.</p>
                 </a>
 
                 <!-- Dimostrazioni -->
                 <a href="dimostrazioni.html" class="card math-card">
                     <div class="card-icon">📜</div>
                     <h3 class="card-title">L'arte della Dimostrazione</h3>
-                    <p class="card-desc">Perché in matematica non ci si accontenta di "sembra vero"? Impara il rigore delle dimostrazioni con i numeri pari e dispari.</p>
+                    <p class="card-desc">Perché in matematica non ci si accontenta di "sembra vero"? Impara il rigore
+                        delle dimostrazioni con i numeri pari e dispari.</p>
                 </a>
 
                 <!-- Sistemi di Numerazione -->
                 <a href="sistemi-numerazione.html" class="card math-card">
                     <div class="card-icon">1010</div>
                     <h3 class="card-title">Sistemi di Numerazione</h3>
-                    <p class="card-desc">Dalla sabbia ai computer: scopri come i Romani contavano senza lo zero e perché i PC parlano solo in binario.</p>
+                    <p class="card-desc">Dalla sabbia ai computer: scopri come i Romani contavano senza lo zero e perché
+                        i PC parlano solo in binario.</p>
                 </a>
 
                 <!-- CLIL: Gauss -->
                 <a href="clil-gauss.html" class="card math-card">
                     <div class="card-icon">👑</div>
                     <h3 class="card-title">CLIL: Gauss, the Prince</h3>
-                    <p class="card-desc">Explore the life of Carl Friedrich Gauss, his childhood genius, and the secret formula to sum N numbers in seconds.</p>
+                    <p class="card-desc">Explore the life of Carl Friedrich Gauss, his childhood genius, and the secret
+                        formula to sum N numbers in seconds.</p>
                 </a>
 
                 <!-- Cardinalità dell'Infinito -->
                 <a href="cardinalita-infinito.html" class="card math-card" style="position: relative;">
                     <div class="card-icon">∞</div>
-                    <div style="position: absolute; top: 1.5rem; right: 1.5rem; font-size: 0.75rem; font-weight: bold; background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.2); color: #60A5FA; padding: 0.2rem 0.6rem; border-radius: 6px; letter-spacing: 1px;">AVANZATO</div>
+                    <div
+                        style="position: absolute; top: 1.5rem; right: 1.5rem; font-size: 0.75rem; font-weight: bold; background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.2); color: #60A5FA; padding: 0.2rem 0.6rem; border-radius: 6px; letter-spacing: 1px;">
+                        AVANZATO</div>
                     <h3 class="card-title">I Misteri dell'Infinito</h3>
-                    <p class="card-desc">Una dimostrazione sconvolgente: ci sono tanti numeri Naturali quanti sono gli interi, ma quanti sono i Razionali?</p>
+                    <p class="card-desc">Una dimostrazione sconvolgente: ci sono tanti numeri Naturali quanti sono gli
+                        interi, ma quanti sono i Razionali?</p>
                 </a>
-                
+
             </div>
         </section>
     </main>
@@ -159,4 +185,5 @@
     <!-- JS -->
     <script src="../js/main.js"></script>
 </body>
+
 </html>

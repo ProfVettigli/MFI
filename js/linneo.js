@@ -172,36 +172,45 @@ document.addEventListener('DOMContentLoaded', () => {
                 btn.onmouseleave = () => { if(!btn.disabled) btn.style.background = "rgba(255,255,255,0.05)"; };
 
                 btn.onclick = () => {
-                    const allBtns = optionsDiv.querySelectorAll('.quiz-btn');
-                    allBtns.forEach(b => {
-                        b.disabled = true;
-                        b.style.cursor = "not-allowed";
-                    });
+                    if (btn.classList.contains('correct') || btn.classList.contains('wrong')) return;
                     
                     if (optIndex === q.correct) {
                         btn.style.background = "#10B981"; // Green for Bio
                         btn.style.borderColor = "#10B981";
                         btn.style.color = "#fff";
-                        currentScore++;
+                        btn.classList.add('correct');
+
+                        const allBtns = optionsDiv.querySelectorAll('.quiz-btn');
+                        allBtns.forEach(b => {
+                            b.disabled = true;
+                            b.style.cursor = "not-allowed";
+                            if (!b.classList.contains('correct')) b.style.opacity = "0.6";
+                        });
+
+                        const alreadyWrong = optionsDiv.querySelectorAll('.wrong').length > 0;
+                        if (!alreadyWrong) {
+                            currentScore++;
+                        }
+                        
+                        questionsAnswered++;
+                        if (questionsAnswered === quizData.length) {
+                            const scoreEl = document.getElementById('quiz-score');
+                            if (currentScore === quizData.length) {
+                                scoreEl.textContent = `Bravissimo! Hai totalizzato ${currentScore}/${quizData.length}. Hai capito perfettamente l'importazione logica della biologia!`;
+                                scoreEl.style.color = "#10B981";
+                            } else {
+                                scoreEl.textContent = `Punteggio finale: ${currentScore}/${quizData.length}. Ottimo lavoro nel completare tutte le sfide!`;
+                                scoreEl.style.color = "#F59E0B";
+                            }
+                        }
                     } else {
+                        btn.classList.add('wrong');
                         btn.style.background = "#EF4444";
                         btn.style.borderColor = "#EF4444";
                         btn.style.color = "#fff";
-                        // Color the correct one Green
-                        allBtns[q.correct].style.background = "#10B981";
-                        allBtns[q.correct].style.borderColor = "#10B981";
-                    }
-                    
-                    questionsAnswered++;
-                    if (questionsAnswered === quizData.length) {
-                        const scoreEl = document.getElementById('quiz-score');
-                        if (currentScore === quizData.length) {
-                            scoreEl.textContent = `Bravissimo! Hai totalizzato ${currentScore}/${quizData.length}. Hai capito perfettamente l'importazione logica della biologia!`;
-                            scoreEl.style.color = "#10B981";
-                        } else {
-                            scoreEl.textContent = `Punteggio finale: ${currentScore}/${quizData.length}. Ricorda, la biologia usa forme strette di logica! Riprova gli esercizi.`;
-                            scoreEl.style.color = "#F59E0B";
-                        }
+                        btn.innerHTML += " <strong>✗ Riprova!</strong>";
+                        btn.disabled = true;
+                        btn.style.opacity = "0.7";
                     }
                 };
                 

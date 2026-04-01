@@ -211,29 +211,36 @@ function initQuiz() {
             btn.onmouseleave = () => { if(!btn.disabled) btn.style.background = "rgba(255,255,255,0.05)"; };
 
             btn.onclick = () => {
-                const allBtns = optionsDiv.querySelectorAll('.quiz-btn');
-                allBtns.forEach(b => {
-                    b.disabled = true;
-                    b.style.cursor = "not-allowed";
-                    b.style.opacity = "0.6";
-                });
+                if (btn.classList.contains('correct') || btn.classList.contains('wrong')) return;
                 
-                btn.style.opacity = "1";
                 if (optIndex === q.correct) {
+                    btn.classList.add('correct');
                     btn.style.background = "#10B981";
                     btn.style.borderColor = "#10B981";
-                    currentScore++;
+                    
+                    const allBtns = optionsDiv.querySelectorAll('.quiz-btn');
+                    allBtns.forEach(b => {
+                        b.disabled = true;
+                        b.style.cursor = "not-allowed";
+                        if (!b.classList.contains('correct')) b.style.opacity = "0.6";
+                    });
+
+                    const alreadyWrong = optionsDiv.querySelectorAll('.wrong').length > 0;
+                    if (!alreadyWrong) {
+                        currentScore++;
+                    }
+                    
+                    questionsAnswered++;
+                    if (questionsAnswered === quizQuestions.length) {
+                        showFinalFeedback();
+                    }
                 } else {
+                    btn.classList.add('wrong');
                     btn.style.background = "#EF4444";
                     btn.style.borderColor = "#EF4444";
-                    allBtns[q.correct].style.background = "#10B981";
-                    allBtns[q.correct].style.borderColor = "#10B981";
-                    allBtns[q.correct].style.opacity = "1";
-                }
-                
-                questionsAnswered++;
-                if (questionsAnswered === quizQuestions.length) {
-                    showFinalFeedback();
+                    btn.innerHTML += " <strong>✗ Riprova!</strong>";
+                    btn.disabled = true;
+                    btn.style.opacity = "0.7";
                 }
             };
             

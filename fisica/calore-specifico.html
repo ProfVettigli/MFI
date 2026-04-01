@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calore Specifico - MFI</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header class="hero">
+        <div class="container" style="text-align: center;">
+            <a href="termodinamica.html"
+                style="text-decoration: none; color: var(--physics-color); font-weight: 600; margin-bottom: 2rem; display: inline-block;">←
+                Torna alla Termodinamica</a>
+            <h1 class="hero-title"><span class="gradient-text">Il Calore Specifico</span></h1>
+            <p class="hero-subtitle">L'inerzia termica della materia e l'equilibrio termico</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- DEFINIZIONE CALORE SPECIFICO -->
+        <section id="cos-e-il-calore-specifico" class="lesson-section">
+            <h2 class="lesson-title" style="color: var(--physics-color);">Cos'è il Calore Specifico?</h2>
+            <p class="lesson-text">Se forniamo la stessa quantità di calore a un chilo d'acqua e a un chilo di ferro, la
+                loro temperatura non aumenterà allo stesso modo. Il ferro diventerà bollente molto prima! Questo accade
+                perché ogni materiale ha una sua "resistenza" a cambiare temperatura, chiamata <strong>calore specifico
+                    (c)</strong>.</p>
+            <p class="lesson-text">Per capirci in termini videoludici, è come la statistica di <em>Difesa (contro gli
+                    attacchi di fuoco)</em> di un personaggio: più è alta, più energia serve per fargli salire la
+                temperatura di 1°C.</p>
+
+            <h3 style="margin-top: 2rem; margin-bottom: 1rem; color: var(--text-main);">La Definizione Formale</h3>
+            <p class="lesson-text">Il calore specifico (c) di una sostanza è la quantità di calore necessaria per
+                innalzare di 1 Kelvin (o 1 grado centigrado) la temperatura di 1 kg di quella sostanza.</p>
+
+            <div
+                style="background: rgba(16, 185, 129, 0.05); border: 1px solid var(--physics-glow); border-radius: 1rem; padding: 2rem; margin: 2rem 0; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <div style="font-size: 2rem; font-family: 'Courier New', monospace; color: var(--text-main); display: flex; align-items: center; gap: 10px;">
+                    <span>c = </span>
+                    <div style="display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle;">
+                        <span style="width: 100%; border-bottom: 2px solid var(--text-main); padding: 0 10px; text-align: center;">Q</span>
+                        <span style="padding: 5px 10px 0;">m &middot; &Delta;T</span>
+                    </div>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 1rem;">
+                    Unit&agrave; di misura nel SI: <strong>J / (kg &middot; K)</strong> o <strong>J / (kg &middot; &deg;C)</strong>
+                </p>
+            </div>
+
+            <h3 style="margin-top: 2rem; margin-bottom: 1.5rem; color: var(--text-main);">Tabella dei Calori Specifici
+            </h3>
+            <div style="overflow-x: auto; margin-bottom: 25px;">
+                <table
+                    style="width: 100%; border-collapse: collapse; background: rgba(0,0,0,0.2); border-radius: 10px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05);">
+                    <thead>
+                        <tr style="background: rgba(16, 185, 129, 0.2); color: var(--physics-color);">
+                            <th style="padding: 15px; text-align: left; border-bottom: 2px solid rgba(16, 185, 129, 0.3);">Materiale</th>
+                            <th style="padding: 15px; text-align: left; border-bottom: 2px solid rgba(16, 185, 129, 0.3);">J / (kg &middot; &deg;C)</th>
+                            <th style="padding: 15px; text-align: left; border-bottom: 2px solid rgba(16, 185, 129, 0.3);">Caratteristica</th>
+                        </tr>
+                    </thead>
+                    <tbody style="color: var(--text-muted);">
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.03);">
+                            <td style="padding: 12px 15px; color: var(--text-main);">Acqua Liquida</td>
+                            <td style="padding: 12px 15px; font-family: monospace;">4186</td>
+                            <td style="padding: 12px 15px; font-size: 0.85em;">Altissima inerzia termica (mitiga il clima).</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.03);">
+                            <td style="padding: 12px 15px; color: var(--text-main);">Ghiaccio</td>
+                            <td style="padding: 12px 15px; font-family: monospace;">2090</td>
+                            <td style="padding: 12px 15px; font-size: 0.85em;">Met&agrave; dell'acqua liquida!</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.03);">
+                            <td style="padding: 12px 15px; color: var(--text-main);">Alluminio</td>
+                            <td style="padding: 12px 15px; font-family: monospace;">900</td>
+                            <td style="padding: 12px 15px; font-size: 0.85em;">Buon conduttore ma con discreta capacità.</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.03);">
+                            <td style="padding: 12px 15px; color: var(--text-main);">Acciaio / Ferro</td>
+                            <td style="padding: 12px 15px; font-family: monospace;">450</td>
+                            <td style="padding: 12px 15px; font-size: 0.85em;">Si scalda circa 9 volte pi&ugrave; velocemente dell'acqua.</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.03);">
+                            <td style="padding: 12px 15px; color: var(--text-main);">Rame</td>
+                            <td style="padding: 12px 15px; font-family: monospace;">385</td>
+                            <td style="padding: 12px 15px; font-size: 0.85em;">Ottimo conduttore termico.</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 12px 15px; color: var(--text-main);">Oro</td>
+                            <td style="padding: 12px 15px; font-family: monospace;">129</td>
+                            <td style="padding: 12px 15px; font-size: 0.85em;">Bassissima inerzia: basta poco calore per farlo diventare rovente.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- SIMULATORE EQUILIBRIO (2 CORPI) -->
+        <section id="simulatore-equilibrio" class="lesson-section">
+            <h2 class="lesson-title" style="color: var(--physics-color);">Simulatore di Equilibrio Termico</h2>
+            <p class="lesson-text">Mettiamo a contatto due corpi all'interno di un calorimetro ideale. Modifica le masse
+                e i calori specifici per vedere come cambia il punto di incontro.</p>
+
+            <div class="interactive-panel"
+                style="background: rgba(255,255,255,0.03); padding: 2rem; border-radius: 1rem; border: 1px solid rgba(255,255,255,0.05);">
+                <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 2rem;">
+                    <!-- CORPO A -->
+                    <div id="panel-a"
+                        style="background: rgba(245, 158, 11, 0.05); padding: 20px; border-radius: 8px; flex: 1; min-width: 250px; border-left: 5px solid var(--chem-color);">
+                        <h3 style="color: var(--chem-color); text-align: center; margin-bottom: 1.5rem;">Corpo Caldo (A)
+                        </h3>
+                        <div style="margin-bottom: 1.5rem;">
+                            <label style="display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Massa
+                                (kg):</label>
+                            <input type="number" id="mass-a" value="2" min="0.1" step="0.1"
+                                style="width: 100%; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 8px; border-radius: 4px;">
+                        </div>
+                        <div style="margin-bottom: 1.5rem;">
+                            <label style="display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Calore
+                                Specifico (J/kg°C):</label>
+                            <input type="number" id="cs-a" value="385" min="1"
+                                style="width: 100%; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 8px; border-radius: 4px;">
+                        </div>
+                        <div style="margin-bottom: 1.5rem;">
+                            <label style="display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Temp.
+                                Iniziale (°C):</label>
+                            <input type="number" id="temp-a" value="90"
+                                style="width: 100%; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 8px; border-radius: 4px;">
+                        </div>
+                        <div id="block-a"
+                            style="background-color: #e74c3c; color: white; padding: 20px; text-align: center; font-size: 28px; font-weight: bold; border-radius: 8px;">
+                            90.0 °C</div>
+                    </div>
+
+                    <!-- CORPO B -->
+                    <div id="panel-b"
+                        style="background: rgba(59, 130, 246, 0.05); padding: 20px; border-radius: 8px; flex: 1; min-width: 250px; border-left: 5px solid var(--math-color);">
+                        <h3 style="color: var(--math-color); text-align: center; margin-bottom: 1.5rem;">Corpo Freddo
+                            (B)</h3>
+                        <div style="margin-bottom: 1.5rem;">
+                            <label style="display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Massa
+                                (kg):</label>
+                            <input type="number" id="mass-b" value="1" min="0.1" step="0.1"
+                                style="width: 100%; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 8px; border-radius: 4px;">
+                        </div>
+                        <div style="margin-bottom: 1.5rem;">
+                            <label style="display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Calore
+                                Specifico (J/kg°C):</label>
+                            <input type="number" id="cs-b" value="4186" min="1"
+                                style="width: 100%; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 8px; border-radius: 4px;">
+                        </div>
+                        <div style="margin-bottom: 1.5rem;">
+                            <label style="display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Temp.
+                                Iniziale (°C):</label>
+                            <input type="number" id="temp-b" value="20"
+                                style="width: 100%; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 8px; border-radius: 4px;">
+                        </div>
+                        <div id="block-b"
+                            style="background-color: #3498db; color: white; padding: 20px; text-align: center; font-size: 28px; font-weight: bold; border-radius: 8px;">
+                            20.0 °C</div>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 2.5rem;">
+                    <button id="btn-start" class="quiz-btn" onclick="startSimulation()"
+                        style="background: var(--physics-color); color: #fff; border: none; padding: 1rem 2.5rem; font-weight: 800; font-size: 1.2rem; cursor: pointer; display: inline-block; width: auto; text-align: center;">Metti
+                        a Contatto!</button>
+                    <p id="sim-status" style="margin-top: 1.5rem; font-size: 1.2rem; color: var(--text-main);">
+                        Temperatura di Equilibrio: <strong id="teq-display"
+                            style="font-size: 1.5rem; color: var(--physics-color);">...</strong></p>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 3rem; margin-bottom: 1.5rem;">La Matematica: Una Media Ponderata Termica</h3>
+            <p class="lesson-text">La temperatura di equilibrio è una media ponderata delle temperature iniziali, dove
+                i "pesi" sono dati dalla <em>capacità termica</em> (il prodotto tra la massa <strong>m</strong> e il
+                calore specifico <strong>c</strong>):</p>
+            <div
+                style="background: rgba(16, 185, 129, 0.05); border: 1px solid var(--physics-glow); border-radius: 1rem; padding: 2.5rem; margin: 2rem 0; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <div style="font-size: 1.8rem; font-family: 'Courier New', monospace; color: var(--text-main); display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: center;">
+                    <span>T<sub>eq</sub> = </span>
+                    <div style="display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle;">
+                        <span style="width: 100%; border-bottom: 2px solid var(--text-main); padding: 0 15px; text-align: center;">m<sub>1</sub>c<sub>1</sub>T<sub>1</sub> + m<sub>2</sub>c<sub>2</sub>T<sub>2</sub></span>
+                        <span style="padding: 5px 15px 0;">m<sub>1</sub>c<sub>1</sub> + m<sub>2</sub>c<sub>2</sub></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEZIONE RESERVOIR ED ESPONENZIALE -->
+        <section id="reservoir-termico" class="lesson-section">
+            <h2 class="lesson-title" style="color: var(--physics-color);">Il Serbatoio Termico (Reservoir)</h2>
+            <p class="lesson-text">Cosa succede se uno dei due corpi è immenso? Ad esempio, se buttiamo un sasso bollente
+                nell'Oceano Atlantico? L'Oceano assorbirà tutto il calore del sasso senza che la sua temperatura
+                complessiva salga minimamente.</p>
+            <p class="lesson-text">In fisica, questo sistema ideale dalla capacità termica virtualmente infinita è
+                chiamato <strong>Serbatoio Termico (o Reservoir)</strong>. Qualunque sia la quantità di calore che gli
+                cediate o gli sottraiate, <strong>la sua temperatura non cambia mai</strong>.</p>
+
+            <div class="reservoir-panel"
+                style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(16, 185, 129, 0.1)); padding: 2.5rem; border-radius: 1rem; border: 1px solid rgba(255,255,255,0.1); margin: 2rem 0;">
+                <h3 style="margin-top:0; margin-bottom: 1.5rem;">Laboratorio: Tuffo nel Reservoir</h3>
+                <p class="lesson-text">Premi il pulsante per far cadere l'oggetto bollente nel reservoir e osserva la
+                    curva esponenziale tracciata in tempo reale.</p>
+
+                <div style="display: flex; gap: 2rem; align-items: center; justify-content: center; margin-bottom: 2rem;">
+                    <div
+                        style="background: #e74c3c; padding: 20px; border-radius: 8px; width: 180px; text-align: center; box-shadow: 0 10px 20px rgba(231, 76, 60, 0.2);">
+                        <strong style="display: block; margin-bottom: 0.5rem;">Oggetto</strong>
+                        <span id="obj-temp-display" style="font-size: 1.8rem; font-weight: 800;">100 °C</span>
+                    </div>
+                    <div style="font-size: 3rem; color: var(--text-muted);">&rarr;</div>
+                    <div
+                        style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 20px; border-radius: 8px; width: 180px; text-align: center;">
+                        <strong style="display: block; margin-bottom: 0.5rem;">Reservoir</strong>
+                        <span style="font-size: 1.8rem; font-weight: 800; color: var(--math-color);">20 °C</span><br>
+                        <small style="color: var(--text-muted);">(costante)</small>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-bottom: 2rem;">
+                    <button id="btn-reservoir" class="quiz-btn" onclick="startReservoirSim()"
+                        style="background: #f39c12; color: #fff; border: none; padding: 1rem 2rem; font-weight: 800; display: inline-block; width: auto; text-align: center;">Butta
+                        l'oggetto nel Reservoir!</button>
+                </div>
+
+                <div style="background: rgba(0,0,0,0.3); padding: 1.5rem; border-radius: 1rem; border: 1px solid rgba(255,255,255,0.05);">
+                    <canvas id="coolingCanvas" width="600" height="250"
+                        style="width: 100%; height: auto; border-radius: 4px;"></canvas>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 2rem; margin-bottom: 1rem;">La Legge di Newton del Raffreddamento</h3>
+            <p class="lesson-text">Se buttate una spada di ferro rovente a 500°C in un lago a 10°C, lo scambio termico
+                frenerà vistosamente man mano che la differenza di temperatura diminuisce. Questo andamento è descritto
+                da un <strong>decadimento esponenziale</strong> che tende asintoticamente alla temperatura del
+                reservoir.</p>
+        </section>
+
+        <!-- QUIZ FINALE -->
+        <section id="quiz-finale" class="lesson-section">
+            <h2 class="lesson-title" style="color: var(--physics-color); text-align: center;">Test di Comprensione</h2>
+
+            <div class="quiz-container">
+                <div class="quiz-question">
+                    <h3>1. Che cos'è, in parole semplici, il "calore specifico"?</h3>
+                    <div class="quiz-options">
+                        <button class="quiz-btn" onclick="checkAnswer(this, false)">A) La quantità totale di calore immagazzinata in un corpo.</button>
+                        <button class="quiz-btn" onclick="checkAnswer(this, true)">B) La "resistenza" di un materiale a cambiare la propria temperatura.</button>
+                        <button class="quiz-btn" onclick="checkAnswer(this, false)">C) La velocità con cui un oggetto disperde calore nell'aria.</button>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <h3>2. Qual è la caratteristica principale di un Serbatoio Termico (Reservoir)?</h3>
+                    <div class="quiz-options">
+                        <button class="quiz-btn" onclick="checkAnswer(this, false)">A) È perfettamente isolato termicamente dal resto del mondo.</button>
+                        <button class="quiz-btn" onclick="checkAnswer(this, true)">B) Ha una capacità termica così grande che la sua temperatura non cambia quando scambia calore.</button>
+                        <button class="quiz-btn" onclick="checkAnswer(this, false)">C) È un contenitore che aumenta la temperatura dei corpi esponenzialmente.</button>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <h3>3. Con che tipo di curva matematica un corpo si raffredda verso il reservoir?</h3>
+                    <div class="quiz-options">
+                        <button class="quiz-btn" onclick="checkAnswer(this, false)">A) Con una retta costante (lineare).</button>
+                        <button class="quiz-btn" onclick="checkAnswer(this, false)">B) Con una parabola discendente.</button>
+                        <button class="quiz-btn" onclick="checkAnswer(this, true)">C) Con una curva esponenziale (decadimento asintotico).</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 MFI - Matematica, Fisica, Informatica. Tutti i diritti riservati.</p>
+        </div>
+    </footer>
+
+    <script src="../js/calore_specifico.js"></script>
+</body>
+
+</html>

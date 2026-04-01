@@ -259,29 +259,41 @@ document.addEventListener('DOMContentLoaded', () => {
                 btn.textContent = optText;
                 
                 btn.onclick = () => {
-                    // disables all buttons in this question
-                    const allBtns = optionsDiv.querySelectorAll('.quiz-btn');
-                    allBtns.forEach(b => b.disabled = true);
+                    if (btn.classList.contains('correct') || btn.classList.contains('wrong')) return;
                     
                     if (optIndex === q.correct) {
                         btn.classList.add('correct');
-                        currentScore++;
+                        
+                        // Disabilita tutte le opzioni per questa domanda ora che è corretta
+                        const allBtns = optionsDiv.querySelectorAll('.quiz-btn');
+                        allBtns.forEach(b => {
+                            b.disabled = true;
+                            b.style.cursor = 'default';
+                        });
+
+                        // Conta il punto solo se non era stato già sbagliato
+                        const alreadyWrong = optionsDiv.querySelectorAll('.wrong').length > 0;
+                        if (!alreadyWrong) {
+                            currentScore++;
+                        }
+                        
+                        questionsAnswered++;
+                        if (questionsAnswered === quizData.length) {
+                            const scoreEl = document.getElementById('quiz-score');
+                            if (currentScore === quizData.length) {
+                                scoreEl.textContent = `COMPLIMENTI! Hai ottenuto ${currentScore} / ${quizData.length}. Hai imparato cos'è un insieme!`;
+                                scoreEl.style.color = "var(--physics-color)";
+                            } else {
+                                scoreEl.textContent = `Hai ottenuto ${currentScore} / ${quizData.length}. Ottimo lavoro nel completare tutte le sfide!`;
+                                scoreEl.style.color = "#F59E0B";
+                            }
+                        }
                     } else {
                         btn.classList.add('wrong');
-                        // highlight the correct one
-                        allBtns[q.correct].classList.add('correct');
-                    }
-                    
-                    questionsAnswered++;
-                    if (questionsAnswered === quizData.length) {
-                        const scoreEl = document.getElementById('quiz-score');
-                        if (currentScore === quizData.length) {
-                            scoreEl.textContent = `COMPLIMENTI! Hai ottenuto ${currentScore} / ${quizData.length}. Hai imparato cos'è un insieme!`;
-                            scoreEl.style.color = "var(--physics-color)";
-                        } else {
-                            scoreEl.textContent = `Hai ottenuto ${currentScore} / ${quizData.length}. Rileggi la lezione e andrà meglio!`;
-                            scoreEl.style.color = "#F59E0B";
-                        }
+                        btn.innerHTML += " <strong>✗ Riprova!</strong>";
+                        btn.disabled = true;
+                        btn.style.opacity = "0.7";
+                        btn.style.cursor = "not-allowed";
                     }
                 };
                 
