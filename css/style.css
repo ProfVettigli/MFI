@@ -279,3 +279,25 @@ footer {
         grid-template-columns: 1fr;
     }
 }
+/* Navigation */
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    text-decoration: none;
+    margin: 0 auto 2rem auto;
+    font-weight: 600;
+    transition: color 0.3s ease, transform 0.3s ease;
+    width: fit-content;
+}
+
+.back-button:hover {
+    color: var(--text-main);
+    transform: translateX(-5px);
+}
+
+.back-icon {
+    margin-right: 0.5rem;
+    font-size: 1.2rem;
+}
