@@ -23,9 +23,7 @@
         }
 
         .clil-hero {
-            background: linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.95)), url('https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&q=80');
-            background-size: cover;
-            background-position: center;
+            background: linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.95));
             padding: 8rem 0 4rem;
             text-align: left;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -98,7 +96,11 @@
 <body>
     <header class="clil-hero">
         <div class="container">
-            <a href="termodinamica.html" style="color: var(--clil-primary); text-decoration: none; font-weight: 600; margin-bottom: 2rem; display: inline-block;">← Back to Thermodynamics</a>
+            <div style="text-align: center; margin-bottom: 2.5rem;">
+                <a href="termodinamica.html" class="back-button" style="margin-bottom: 0;">
+                    <span style="font-size:1.2rem; margin-right: 0.5rem;">&larr;</span> Back to Thermodynamics
+                </a>
+            </div>
             <h1 style="font-family: 'Playfair Display', serif; font-size: clamp(3rem, 8vw, 5rem); line-height: 1.1; margin-bottom: 1.5rem;">
                 The <span class="glow-text">Industrial</span><br>Revolution
             </h1>
