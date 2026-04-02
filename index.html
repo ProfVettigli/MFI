@@ -3,143 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MFI - Esplora Matematica, Fisica e Scienze</title>
+    <title>MFI - Matematica, Fisica, Informatica</title>
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <!-- CSS -->
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        .main-subjects-grid {
+            margin-top: 4rem;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+        @media (max-width: 900px) {
+            .main-subjects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .main-card {
+            height: 350px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border-radius: 24px;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+        .main-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+            z-index: 1;
+        }
+        .main-card:hover {
+            transform: translateY(-15px) scale(1.02);
+        }
+        .main-card .card-icon {
+            font-size: 5rem;
+            margin-bottom: 1.5rem;
+            z-index: 2;
+        }
+        .main-card .card-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            z-index: 2;
+        }
+        .main-card .card-desc {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            z-index: 2;
+            padding: 0 2rem;
+        }
+
+        .math-main { background: linear-gradient(135deg, #1e3a8a, #3b82f6); color: white; box-shadow: 0 20px 40px rgba(59, 130, 246, 0.3); }
+        .physics-main { background: linear-gradient(135deg, #1e293b, #64748b); color: white; box-shadow: 0 20px 40px rgba(30, 41, 59, 0.3); }
+        .info-main { background: linear-gradient(135deg, #064e3b, #10b981); color: white; box-shadow: 0 20px 40px rgba(16, 185, 129, 0.3); }
+    </style>
 </head>
 <body>
     <header class="hero">
         <div class="container">
             <h1 class="hero-title">Esplora l'Universo della <span class="gradient-text">Scienza</span></h1>
-            <p class="hero-subtitle">Lezioni interattive per scoprire le meraviglie della Matematica, della Fisica e delle Scienze.</p>
+            <p class="hero-subtitle">Scegli la tua area di studio e inizia il viaggio verso la conoscenza.</p>
         </div>
     </header>
 
     <main class="container">
-        <section class="subjects">
+        <div class="main-subjects-grid">
             <!-- Matematica -->
-            <div class="subject-group">
-                <h2 class="subject-title math-title">Matematica</h2>
-                <div class="grid">
-                    <a href="matematica/Logica/logica.html" class="card math-card">
-                        <div class="card-icon">🧠</div>
-                        <h3 class="card-title">Logica</h3>
-                        <p class="card-desc">Esplora i fondamenti del ragionamento, proposizioni e connettivi logici.</p>
-                    </a>
-                    <a href="matematica/Aritmetica/aritmetica.html" class="card math-card">
-                        <div class="card-icon">🔢</div>
-                        <h3 class="card-title">Aritmetica</h3>
-                        <p class="card-desc">Scopri le basi dei numeri, delle operazioni e delle loro proprietà.</p>
-                    </a>
-                    <a href="matematica/Algebra/algebra.html" class="card math-card">
-                        <div class="card-icon">𝑥</div>
-                        <h3 class="card-title">Algebra</h3>
-                        <p class="card-desc">Impara a risolvere equazioni, disequazioni e a padroneggiare i polinomi.</p>
-                    </a>
-                    <a href="matematica/geometria.html" class="card math-card">
-                        <div class="card-icon">📐</div>
-                        <h3 class="card-title">Geometria</h3>
-                        <p class="card-desc">Esplora forme, spazi, teoremi e figure geometriche piane e solide.</p>
-                    </a>
-                    <a href="matematica/probabilita-statistica.html" class="card math-card">
-                        <div class="card-icon">📊</div>
-                        <h3 class="card-title">Probabilità e statistica</h3>
-                        <p class="card-desc">Analizza i dati e calcola le probabilità degli eventi nel mondo reale.</p>
-                    </a>
-                    <a href="matematica/funzioni-elementari.html" class="card math-card">
-                        <div class="card-icon">ƒ(x)</div>
-                        <h3 class="card-title">Funzioni elementari</h3>
-                        <p class="card-desc">Esplora rette, parabole, esponenziali e logaritmi: i mattoni del calcolo.</p>
-                    </a>
-                    <a href="matematica/studio-funzione.html" class="card math-card">
-                        <div class="card-icon">📈</div>
-                        <h3 class="card-title">Studio di funzione</h3>
-                        <p class="card-desc">Analizza il comportamento delle funzioni: dominio, segni, limiti e derivate.</p>
-                    </a>
-                </div>
-            </div>
+            <a href="matematica/matematica.html" class="main-card math-main">
+                <div class="card-icon">📐</div>
+                <h2 class="card-title">Matematica</h2>
+                <p class="card-desc">Dalla logica formale allo studio delle funzioni complesse.</p>
+            </a>
 
             <!-- Fisica -->
-            <div class="subject-group">
-                <h2 class="subject-title physics-title">Fisica</h2>
-                <div class="grid">
-                    <a href="fisica/ottica.html" class="card physics-card">
-                        <div class="card-icon">🌈</div>
-                        <h3 class="card-title">Ottica</h3>
-                        <p class="card-desc">Studia la luce, la riflessione, la rifrazione e le lenti.</p>
-                    </a>
-                    <a href="fisica/cinematica.html" class="card physics-card">
-                        <div class="card-icon">🚗</div>
-                        <h3 class="card-title">Cinematica</h3>
-                        <p class="card-desc">Studia il moto dei corpi, le velocità e le accelerazioni.</p>
-                    </a>
-                    <a href="fisica/meccanica.html" class="card physics-card">
-                        <div class="card-icon">⚙️</div>
-                        <h3 class="card-title">Meccanica</h3>
-                        <p class="card-desc">Esplora le forze, l'equilibrio e le leggi della dinamica di Newton.</p>
-                    </a>
-                    <a href="fisica/Termodinamica/termodinamica.html" class="card physics-card">
-                        <div class="card-icon">🔥</div>
-                        <h3 class="card-title">Termodinamica</h3>
-                        <p class="card-desc">Esplora calore, gas perfetti e le leggi della fisica termica.</p>
-                    </a>
-                    <a href="fisica/elettromagnetismo.html" class="card physics-card">
-                        <div class="card-icon">🧲</div>
-                        <h3 class="card-title">Elettromagnetismo</h3>
-                        <p class="card-desc">Interagisci con cariche, campi elettrici e magnetici in 2D e 3D.</p>
-                    </a>
-                    <a href="fisica/fisica-moderna.html" class="card physics-card">
-                        <div class="card-icon">⚛️</div>
-                        <h3 class="card-title">Fisica Moderna</h3>
-                        <p class="card-desc">Scopri i misteri della relatività e della meccanica quantistica.</p>
-                    </a>
-                </div>
-            </div>
-            
+            <a href="fisica/fisica.html" class="main-card physics-main">
+                <div class="card-icon">⚛️</div>
+                <h2 class="card-title">Fisica</h2>
+                <p class="card-desc">Le leggi fondamentali che governano il tempo, lo spazio e l'energia.</p>
+            </a>
+
             <!-- Informatica -->
-            <div class="subject-group">
-                <h2 class="subject-title chemistry-title">Informatica</h2>
-                <div class="grid">
-                    <a href="informatica/hardware-software.html" class="card chemistry-card">
-                        <div class="card-icon">💻</div>
-                        <h3 class="card-title">Hardware e Software</h3>
-                        <p class="card-desc">Comprendi i componenti fisici e i programmi del computer.</p>
-                    </a>
-                    <a href="informatica/account-navigazione.html" class="card chemistry-card">
-                        <div class="card-icon">🌐</div>
-                        <h3 class="card-title">Account e navigazione in internet</h3>
-                        <p class="card-desc">Gestisci le tue identità digitali e naviga la rete in sicurezza.</p>
-                    </a>
-                    <a href="informatica/cad.html" class="card chemistry-card">
-                        <div class="card-icon">📐</div>
-                        <h3 class="card-title">CAD</h3>
-                        <p class="card-desc">Crea modelli e disegni tecnici assistiti dal calcolatore.</p>
-                    </a>
-                    <a href="informatica/algoritmo.html" class="card chemistry-card">
-                        <div class="card-icon">🔁</div>
-                        <h3 class="card-title">Algoritmo</h3>
-                        <p class="card-desc">Risolvi problemi scrivendo sequenze di istruzioni logiche e codici.</p>
-                    </a>
-                    <a href="informatica/foglio-calcolo.html" class="card chemistry-card">
-                        <div class="card-icon">📈</div>
-                        <h3 class="card-title">Foglio di calcolo</h3>
-                        <p class="card-desc">Elabora dati, esegui calcoli e crea grafici usando le celle.</p>
-                    </a>
-                    <a href="informatica/intelligenza-artificiale.html" class="card chemistry-card">
-                        <div class="card-icon">🤖</div>
-                        <h3 class="card-title">Intelligenza artificiale</h3>
-                        <p class="card-desc">Esplora come le macchine apprendono, ragionano e generano contenuti.</p>
-                    </a>
-                </div>
-            </div>
-        </section>
+            <a href="informatica/informatica.html" class="main-card info-main">
+                <div class="card-icon">💻</div>
+                <h2 class="card-title">Informatica</h2>
+                <p class="card-desc">Il mondo digitale: algoritmi, software e intelligenza artificiale.</p>
+            </a>
+        </div>
     </main>
 
-    <footer>
+    <footer style="margin-top: 6rem;">
         <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Creato per gli studenti.</p>
     </footer>
 

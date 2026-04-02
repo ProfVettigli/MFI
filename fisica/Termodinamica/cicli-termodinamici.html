@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cicli Termodinamici - MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+        onload="renderMathInElement(document.body);"></script>
+
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+
+        .sub-hero {
+            padding: 4rem 0 2rem;
+            text-align: left;
+        }
+
+        .sub-hero-title {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        /* SVG P-V Diagrams */
+        .pv-diagram-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .pv-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .pv-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--physics-color);
+        }
+
+        .pv-svg {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 1rem;
+        }
+
+        .pv-axis {
+            stroke: var(--text-muted);
+            stroke-width: 2;
+        }
+
+        .pv-curve {
+            stroke: var(--physics-color);
+            stroke-width: 3;
+            fill: none;
+        }
+
+        .pv-area {
+            fill: rgba(59, 130, 246, 0.2);
+        }
+
+        .coordinate-label {
+            font-size: 12px;
+            fill: var(--text-muted);
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Piston Animation */
+        .piston-simulator {
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 3rem 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .piston-container {
+            width: 160px;
+            height: 300px;
+            border: 4px solid #4a5568;
+            border-top: none;
+            border-radius: 0 0 10px 10px;
+            position: relative;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .piston-head {
+            width: 152px;
+            height: 40px;
+            background: #718096;
+            position: absolute;
+            left: 0;
+            top: 100px;
+            /* Controlled by JS */
+            border-bottom: 4px solid #2d3748;
+            transition: top 0.05s linear;
+        }
+
+        .piston-rod {
+            width: 20px;
+            height: 150px;
+            background: #a0aec0;
+            position: absolute;
+            left: 66px;
+            bottom: 40px;
+        }
+
+        .gas {
+            width: 100%;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            background: linear-gradient(to top, rgba(59, 130, 246, 0.6), rgba(59, 130, 246, 0.2));
+            transition: height 0.05s linear, background 0.5s ease;
+        }
+
+        .piston-controls {
+            margin-top: 2rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .data-panel {
+            margin-top: 1.5rem;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .data-item {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.8rem;
+            border-radius: 8px;
+        }
+
+        .data-value {
+            display: block;
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--physics-color);
+        }
+
+        .data-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: rgba(var(--physics-color-rgb), 0.1);
+            border-left: 4px solid var(--physics-color);
+            padding: 1.5rem;
+            border-radius: 0 12px 12px 0;
+            margin: 2rem 0;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="sub-hero">
+        <div class="container">
+            <a href="termodinamica.html" class="back-button">
+                <span style="font-size:1.2rem; margin-right: 0.5rem;">&larr;</span> Torna a Termodinamica
+            </a>
+            <h1 class="sub-hero-title">Cicli <span class="gradient-text"
+                    style="color: var(--physics-color);">Termodinamici</span></h1>
+            <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+                Come trasformare il calore in movimento. Dai diagrammi P-V alle macchine termiche che hanno alimentato
+                la rivoluzione industriale.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- TRASFORMAZIONI REVERSIBILI -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">1. Trasformazioni Reversibili</h2>
+            <p class="lesson-text">
+                In termodinamica, una trasformazione si dice <strong>reversibile</strong> se può essere percorsa a
+                ritroso riportando sia il sistema che l'ambiente esattamente nelle condizioni iniziali.
+            </p>
+            <div class="info-box">
+                <p class="lesson-text" style="margin: 0; font-style: italic;">
+                    "Una trasformazione reversibile è un'idealizzazione: avviene in modo infinitamente lento (processo
+                    quasi-statico) e senza attriti o dispersioni di calore non controllate."
+                </p>
+            </div>
+            <p class="lesson-text">
+                Sebbene nella realtà tutte le trasformazioni siano irreversibili (a causa dell'attrito e della
+                dispersione), studiare quelle reversibili ci permette di calcolare i limiti massimi di efficienza di
+                qualsiasi macchina.
+            </p>
+        </section>
+
+        <!-- LE 4 TRASFORMAZIONI -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">2. Tipologie di Trasformazioni</h2>
+            <p class="lesson-text">
+                Ogni trasformazione può essere rappresentata sul <strong>Piano di Clapeyron (P-V)</strong>. Ecco le
+                quattro trasformazioni fondamentali per un gas perfetto:
+            </p>
+
+            <div class="pv-diagram-container">
+                <!-- ISOCORA -->
+                <div class="pv-card">
+                    <h3 style="color: #ef4444;">Isocora</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-muted);">Volume Costante (\(\Delta V = 0\))</p>
+                    <svg class="pv-svg" viewBox="0 0 200 200">
+                        <line x1="20" y1="180" x2="190" y2="180" class="pv-axis" /> <!-- V axis -->
+                        <line x1="20" y1="180" x2="20" y2="10" class="pv-axis" /> <!-- P axis -->
+                        <line x1="100" y1="160" x2="100" y2="40" class="pv-curve" style="stroke: #ef4444;" />
+                        <text x="180" y="195" class="coordinate-label">V</text>
+                        <text x="5" y="20" class="coordinate-label">P</text>
+                    </svg>
+                    <p class="lesson-text" style="font-size: 0.9rem;">Il lavoro è nullo: \(L = 0\). Tutto il calore
+                        scambiato varia l'energia interna.</p>
+                </div>
+
+                <!-- ISOBARA -->
+                <div class="pv-card">
+                    <h3 style="color: #10b981;">Isobara</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-muted);">Pressione Costante (\(\Delta P = 0\))</p>
+                    <svg class="pv-svg" viewBox="0 0 200 200">
+                        <rect x="50" y="100" width="100" height="80" class="pv-area"
+                            style="fill: rgba(16, 185, 129, 0.1);" />
+                        <line x1="20" y1="180" x2="190" y2="180" class="pv-axis" />
+                        <line x1="20" y1="180" x2="20" y2="10" class="pv-axis" />
+                        <line x1="50" y1="100" x2="150" y2="100" class="pv-curve" style="stroke: #10b981;" />
+                        <text x="180" y="195" class="coordinate-label">V</text>
+                        <text x="5" y="20" class="coordinate-label">P</text>
+                    </svg>
+                    <p class="lesson-text" style="font-size: 0.9rem;">Il lavoro è l'area del rettangolo: \(L = P \cdot
+                        \Delta V\).</p>
+                </div>
+
+                <!-- ISOTERMA -->
+                <div class="pv-card">
+                    <h3 style="color: #3b82f6;">Isoterma</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-muted);">Temperatura Costante (\(\Delta T = 0\))</p>
+                    <svg class="pv-svg" viewBox="0 0 200 200">
+                        <path d="M 50 60 Q 80 150 160 160" class="pv-curve" style="stroke: #3b82f6;" />
+                        <line x1="20" y1="180" x2="190" y2="180" class="pv-axis" />
+                        <line x1="20" y1="180" x2="20" y2="10" class="pv-axis" />
+                        <text x="180" y="195" class="coordinate-label">V</text>
+                        <text x="5" y="20" class="coordinate-label">P</text>
+                    </svg>
+                    <p class="lesson-text" style="font-size: 0.9rem;">L'energia interna non cambia: \(\Delta U = 0\).
+                        Quindi \(Q = L\).</p>
+                </div>
+
+                <!-- ADIABATICA -->
+                <div class="pv-card">
+                    <h3 style="color: #f59e0b;">Adiabatica</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-muted);">Nessun Calore Scambiato (\(Q = 0\))</p>
+                    <svg class="pv-svg" viewBox="0 0 200 200">
+                        <path d="M 50 40 Q 60 140 140 170" class="pv-curve" style="stroke: #f59e0b;" />
+                        <line x1="20" y1="180" x2="190" y2="180" class="pv-axis" />
+                        <line x1="20" y1="180" x2="20" y2="10" class="pv-axis" />
+                        <text x="180" y="195" class="coordinate-label">V</text>
+                        <text x="5" y="20" class="coordinate-label">P</text>
+                    </svg>
+                    <p class="lesson-text" style="font-size: 0.9rem;">Più ripida dell'isoterma. Il lavoro è fatto a
+                        spese dell'energia interna.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ENERGIA E AREA -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">3. Lavoro e Aria Sotto la Curva</h2>
+            <p class="lesson-text">
+                C'è una connessione profonda tra la geometria del grafico e l'energia fisica: il <strong>Lavoro
+                    Meccanico (\(L\))</strong> compiuto dal gas durante una trasformazione corrisponde esattamente
+                all'<strong>area racchiusa sotto la curva</strong> nel piano P-V.
+            </p>
+            <div
+                style="text-align: center; margin: 2rem 0; font-size: 1.5rem; font-family: monospace; color: var(--physics-color);">
+                \(L = \int_{V_i}^{V_f} P(V) \, dV\)
+            </div>
+            <p class="lesson-text">
+                - Se il volume aumenta (<strong>espansione</strong>), il gas compie lavoro verso l'esterno (\(L >
+                0\)).<br>
+                - Se il volume diminuisce (<strong>compressione</strong>), è l'esterno a compiere lavoro sul gas (\(L <
+                    0\)). </p>
+        </section>
+
+        <!-- SCHEMA CICLO TERMICO -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">3.1 Lo Schema di una Macchina Termica</h2>
+            <p class="lesson-text">
+                Ogni macchina termica opera scambiando calore tra due zone a temperature diverse per produrre lavoro.
+                Ecco lo schema universale del flusso di energia:
+            </p>
+
+            <div style="display: flex; justify-content: center; margin: 3rem 0;">
+                <svg width="500" height="350" viewBox="0 0 500 350">
+                    <!-- Hot Source -->
+                    <rect x="100" y="20" width="200" height="60" rx="10" fill="rgba(239, 68, 68, 0.15)" stroke="#ef4444" stroke-width="2" />
+                    <text x="200" y="55" text-anchor="middle" fill="white" font-weight="bold" font-size="16">
+                        Sorgente Calda (<tspan font-style="italic">T</tspan><tspan baseline-shift="sub" font-size="10">H</tspan>)
+                    </text>
+                    
+                    <!-- Engine -->
+                    <circle cx="200" cy="180" r="50" fill="rgba(30, 41, 59, 0.8)" stroke="white" stroke-width="2" />
+                    <text x="200" y="185" text-anchor="middle" fill="white" font-weight="bold" font-size="14">MACCHINA</text>
+                    
+                    <!-- Cold Source -->
+                    <rect x="100" y="270" width="200" height="60" rx="10" fill="rgba(59, 130, 246, 0.15)" stroke="#3b82f6" stroke-width="2" />
+                    <text x="200" y="305" text-anchor="middle" fill="white" font-weight="bold" font-size="16">
+                        Sorgente Fredda (<tspan font-style="italic">T</tspan><tspan baseline-shift="sub" font-size="10">C</tspan>)
+                    </text>
+                    
+                    <!-- Q_H in (From top to engine) -->
+                    <g>
+                        <line x1="200" y1="80" x2="200" y2="120" stroke="#ef4444" stroke-width="5" />
+                        <polygon points="192,115 200,130 208,115" fill="#ef4444" />
+                        <text x="215" y="110" fill="#ef4444" font-weight="bold">Q_assorbito</text>
+                    </g>
+                    
+                    <!-- Q_C out (From engine to bottom) -->
+                    <g>
+                        <line x1="200" y1="230" x2="200" y2="260" stroke="#3b82f6" stroke-width="5" />
+                        <polygon points="192,255 200,270 208,255" fill="#3b82f6" />
+                        <text x="215" y="255" fill="#3b82f6" font-weight="bold">Q_ceduto</text>
+                    </g>
+                    
+                    <!-- L work out (From engine to right) -->
+                    <g>
+                        <line x1="250" y1="180" x2="320" y2="180" stroke="#eab308" stroke-width="5" />
+                        <polygon points="315,172 335,180 315,188" fill="#eab308" />
+                        <text x="345" y="185" fill="#eab308" font-weight="bold">Lavoro Prodotto (L)</text>
+                    </g>
+                </svg>
+            </div>
+
+            <div class="info-box" style="border-left-color: #F59E0B;">
+                <p class="lesson-text" style="margin: 0;">
+                    Per il Primo Principio, l'energia si conserva: <strong>\(L = |Q_{assorbito}| -
+                        |Q_{ceduto}|\)</strong>. Il lavoro è la differenza tra il calore preso e quello sprecato.
+                </p>
+            </div>
+        </section>
+
+        <!-- ESERCIZIO RENDIMENTO -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">3.2 Esercizio Guidato: Il Calcolo del Rendimento</h2>
+            <div
+                style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 2rem;">
+                <p class="lesson-text"><strong>Problema:</strong> Una macchina termica assorbe \(5000 \, J\) di calore
+                    da una fornace e ne cede \(3000 \, J\) all'atmosfera. Calcola il lavoro prodotto e il rendimento
+                    (\(\eta\)) della macchina.</p>
+
+                <div style="margin-top: 1.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                    <div>
+                        <h4 style="color: var(--physics-color);">1. Calcolo del Lavoro</h4>
+                        <p style="font-size: 1.1rem; font-family: monospace;">
+                            \(L = Q_{in} - Q_{out}\)<br>
+                            \(L = 5000 \, J - 3000 \, J = \mathbf{2000 \, J}\)
+                        </p>
+                    </div>
+                    <div>
+                        <h4 style="color: var(--physics-color);">2. Calcolo del Rendimento</h4>
+                        <p style="font-size: 1.1rem; font-family: monospace;">
+                            \(\eta = \frac{L}{Q_{in}} = \frac{2000}{5000}\)<br>
+                            \(\eta = 0.4 = \mathbf{40\%}\)
+                        </p>
+                    </div>
+                </div>
+                <p class="lesson-text" style="font-size: 0.9rem; margin-top: 1rem; color: var(--text-muted);">
+                    <em>Riflessione:</em> Significa che solo il \(40\%\) dell'energia del combustibile è diventata
+                    movimento utile, il resto è stato "buttato" via come riscaldamento dell'aria.
+                </p>
+            </div>
+        </section>
+
+        <!-- ESOTERME VS ENDOTERME -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">4. Scambi di Calore: Esotermiche e Endotermiche</h2>
+            <p class="lesson-text">
+                Nello studio dei cicli è fondamentale capire se il sistema sta assorbendo o cedendo energia sotto forma
+                di calore (\(Q\)):
+            </p>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.5rem;">
+                <div
+                    style="background: rgba(239, 68, 68, 0.05); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(239, 68, 68, 0.2);">
+                    <h3 style="color: #ef4444; margin-bottom: 0.5rem;">Processo Endotermico</h3>
+                    <p style="font-size: 0.95rem;">Il sistema <strong>assorbe calore</strong> dall'ambiente esterno.
+                        (\(Q > 0\)). Tipicamente accade durante un'espansione isoterma o isobara.</p>
+                </div>
+                <div
+                    style="background: rgba(59, 130, 246, 0.05); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(59, 130, 246, 0.2);">
+                    <h3 style="color: #3b82f6; margin-bottom: 0.5rem;">Processo Esotermico</h3>
+                    <p style="font-size: 0.95rem;">Il sistema <strong>cede calore</strong> all'ambiente esterno. (\(Q <
+                            0\)). Tipico delle fasi di raffreddamento o compressione.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- FRIGORIFERI E CONDIZIONATORI -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">4.1 Macchine Frigorifere e Condizionatori</h2>
+            <p class="lesson-text">
+                Il frigorifero è essenzialmente una macchina termica che gira al contrario. Invece di usare il calore
+                per produrre lavoro, <strong>usa il lavoro (elettrico) per forzare il calore a spostarsi da dove è già
+                    freddo a dove è già caldo.</strong>
+            </p>
+            <div
+                style="background: rgba(var(--physics-color-rgb), 0.05); padding: 2rem; border-radius: 16px; margin: 2rem 0;">
+                <h3 style="color: #3b82f6; margin-bottom: 1rem;">Il Ciclo Inverso</h3>
+                <p class="lesson-text">
+                    In un condizionatore, un gas refrigerante compie un ciclo continuo:
+                </p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                    <ul style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;">
+                        <li><strong>Evaporazione:</strong> All'interno (dove fa caldo), il refrigerante evapora
+                            assorbendo calore dalla stanza (Rinfrescando).</li>
+                        <li><strong>Compressione:</strong> Il compressore spende energia elettrica per comprimere il
+                            gas, aumentandone pressione e temperatura.</li>
+                    </ul>
+                    <ul style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;">
+                        <li><strong>Condensazione:</strong> All'esterno, il gas caldissimo cede calore all'aria esterna
+                            (che è più fredda di lui) e diventa liquido.</li>
+                        <li><strong>Espansione:</strong> Il liquido passa in una valvola, crolla di pressione e diventa
+                            freddissimo, pronto a ricominciare.</li>
+                    </ul>
+                </div>
+            </div>
+            <p class="lesson-text">
+                Curiosità: Il condizionatore non "crea il freddo", ma sposta il calore da dentro a fuori. È per questo
+                che l'unità esterna butta fuori aria calda!
+            </p>
+        </section>
+
+        <!-- CICLO DI CARNOT -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">5. Il Ciclo di Carnot</h2>
+            <p class="lesson-text">
+                Il <strong>Ciclo di Carnot</strong> è il ciclo termodinamico teorico più efficiente possibile che lavora
+                tra due sorgenti di temperatura. Fu ideato da Sadi Carnot nel 1824 ed è composto da 4 fasi reversibili:
+            </p>
+            <ol class="lesson-text" style="line-height: 1.8;">
+                <li><strong>Espansione Isoterma:</strong> Il gas assorbe calore dalla sorgente calda e si espande.</li>
+                <li><strong>Espansione Adiabatica:</strong> Il gas continua a espandersi senza scambiare calore,
+                    raffreddandosi.</li>
+                <li><strong>Compressione Isoterma:</strong> Il gas viene compresso cedendo calore alla sorgente fredda.
+                </li>
+                <li><strong>Compressione Adiabatica:</strong> Il gas viene compresso tornando allo stato e alla
+                    temperatura iniziale.</li>
+            </ol>
+            <p class="lesson-text">
+                Il lavoro utile del ciclo è l'area racchiusa all'interno delle quattro curve. Il suo rendimento dipende
+                solo dalle temperature delle sorgenti: \(\eta = 1 - \frac{T_{fredda}}{T_{calda}}\).
+            </p>
+        </section>
+
+        <!-- SIMULATORE PISTONE -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">6. Laboratorio: Il Pistone Interattivo</h2>
+            <p class="lesson-text">
+                Sperimenta come cambiano Pressione, Volume e Temperatura muovendo il pistone. Osserva come l'energia
+                interna aumenta quando comprimi il gas!
+            </p>
+
+            <div class="piston-simulator">
+                <div class="piston-container">
+                    <div id="gas-cloud" class="gas" style="height: 180px;"></div>
+                    <div id="piston-head" class="piston-head" style="top: 120px;">
+                        <div class="piston-rod" style="left: 66px; top: -150px;"></div>
+                    </div>
+                </div>
+
+                <div class="data-panel">
+                    <div class="data-item">
+                        <span class="data-label">Pressione</span>
+                        <span id="val-p" class="data-value">1.0 atm</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Volume</span>
+                        <span id="val-v" class="data-value">2.0 L</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Temperatura</span>
+                        <span id="val-t" class="data-value">300 K</span>
+                    </div>
+                </div>
+
+                <div class="piston-controls">
+                    <input type="range" id="volume-slider" min="50" max="250" value="180" style="width: 250px;">
+                    <p style="font-size: 0.8rem; color: var(--text-muted); width: 100%; text-align: center;">Muovi lo
+                        slider per comprimere o espandere il gas</p>
+                    <button class="control-btn" id="btn-auto-cycle" onclick="toggleAutoCycle()"
+                        style="background: var(--physics-color);">Avvia Ciclo Automatico</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- MOTORE STIRLING -->
+        <section class="lesson-section" style="margin-bottom: 5rem;">
+            <h2 class="lesson-title">7. L'Ingegneria del Futuro: Il Motore Stirling</h2>
+            <p class="lesson-text">
+                Il <strong>Motore Stirling</strong> è un'applicazione pratica incredibile dei cicli termodinamici. A
+                differenza del motore a scoppio delle auto, è un motore a <strong>combustione esterna</strong>.
+            </p>
+            <p class="lesson-text">
+                Utilizza un ciclo chiuso con un gas (solitamente aria o elio) che viene spostato continuamente tra una
+                zona calda e una zona fredda. L'espansione e la compressione del gas muovono il pistone.
+            </p>
+            <div
+                style="background: rgba(245, 158, 11, 0.1); border: 1px dashed #f59e0b; padding: 1.5rem; border-radius: 12px; display: flex; gap: 1.5rem; align-items: center;">
+                <div style="font-size: 2.5rem;">🔋</div>
+                <div>
+                    <h4 style="color: #f59e0b; margin-bottom: 0.3rem;">Perché è speciale?</h4>
+                    <p style="font-size: 0.9rem; margin: 0;">È estremamente silenzioso, può funzionare con qualsiasi
+                        fonte di calore (sole, biomassa, scarti industriali) ed è molto efficiente. Oggi viene studiato
+                        per le colonie spaziali e per i sistemi di energia solare a concentrazione.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- QUIZ FINALE -->
+        <section id="quiz-finale" class="lesson-section quiz-container">
+            <h2 class="lesson-title" style="color: var(--physics-color); text-align: center;">Verifica le tue Competenze
+            </h2>
+            <p class="lesson-text" style="text-align: center; font-size: 0.95rem; margin-bottom: 2rem;">Testa quello che
+                hai imparato sui cicli termodinamici e le macchine termiche (10 domande).</p>
+
+            <!-- Question 1 -->
+            <div class="quiz-question"
+                style="margin-bottom: 2.5rem; background: rgba(255,255,255,0.02); padding: 1.5rem; border-radius: 12px;">
+                <h3 style="font-size: 1.2rem; margin-bottom: 1rem; color: white;">1. Cosa rappresenta geometricamente
+                    l'area racchiusa all'interno di un ciclo termodinamico sul piano P-V?</h3>
+                <div class="grid" style="grid-template-columns: 1fr; gap: 0.8rem;">
+                    <button class="quiz-btn" onclick="checkAnswer(this, false)">A) La temperatura massima raggiunta nel
+                        ciclo.</button>
+                    <button class="quiz-btn" onclick="checkAnswer(this, true)">B) Il lavoro netto prodotto (o assorbito)
+                        durante un intero ciclo.</button>
+                    <button class="quiz-btn" onclick="checkAnswer(this, false)">C) Il volume totale del gas
+                        utilizzato.</button>
+                </div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="quiz-question"
+                style="margin-bottom: 2.5rem; background: rgba(255,255,255,0.02); padding: 1.5rem; border-radius: 12px;">
+                <h3 style="font-size: 1.2rem; margin-bottom: 1rem; color: white;">2. Un condizionatore d'aria può essere
+                    considerato una macchina termica?</h3>
+                <div class="grid" style="grid-template-columns: 1fr; gap: 0.8rem;">
+                    <button class="quiz-btn" onclick="checkAnswer(this, true)">A) Sì, è una macchina termica che opera
+                        un ciclo inverso, usando lavoro per spostare calore.</button>
+                    <button class="quiz-btn" onclick="checkAnswer(this, false)">B) No, perché produce freddo e non
+                        movimento.</button>
+                    <button class="quiz-btn" onclick="checkAnswer(this, false)">C) No, è una macchina puramente
+                        elettrica.</button>
+                </div>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="quiz-question"
+                style="margin-bottom: 2.5rem; background: rgba(255,255,255,0.02); padding: 1.5rem; border-radius: 12px;">
+                <h3 style="font-size: 1.2rem; margin-bottom: 1rem; color: white;">3. Nel Ciclo di Carnot, quali sono le
+                    quattro trasformazioni?</h3>
+                <div class="grid" style="grid-template-columns: 1fr; gap: 0.8rem;">
+                    <button class="quiz-btn" onclick="checkAnswer(this, false)">A) 2 Isocore e 2 Isobare.</button>
+                    <button class="quiz-btn" onclick="checkAnswer(this, false)">B) 4 Trasformazioni
+                        Adiabatiche.</button>
+                    <button class="quiz-btn" onclick="checkAnswer(this, true)">C) 2 Isoterme e 2 Adiabatiche.</button>
+                </div>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="quiz-question"
+                style="margin-bottom: 2.5rem; background: rgba(255,255,255,0.02); padding: 1.5rem; border-radius: 12px;">
+                <h3 style="font-size: 1.2rem; margin-bottom: 1rem; color: white;">4. Se una macchina assorbe 1000J di
+                    calore e ne produce 200J di lavoro, quanto calore espelle nella sorgente fredda?</h3>
+                <div class="grid" style="grid-template-columns: 1fr; gap: 0.8rem;">
+                    <button class="quiz-btn" onclick="checkAnswer(this, false)">A) 1200 J</button>
+                    <button class="quiz-btn" onclick="checkAnswer(this, true)">B) 800 J</button>
+                    <button class="quiz-btn" onclick="checkAnswer(this, false)">C) 200 J</button>
+                </div>
+            </div>
+
+            <!-- Question 5 (NEW) -->
+            <div class="quiz-question"
+                style="margin-bottom: 2.5rem; background: rgba(255,255,255,0.02); padding: 1.5rem; border-radius: 12px;">
+                <h3 style="font-size: 1.2rem; margin-bottom: 1rem; color: #F59E0B;">5. Se lasci la porta del frigorifero
+                    aperta in una stanza sigillata e isolata per tutto il giorno, cosa succede?</h3>
+                <div class="grid" style="grid-template-columns: 1fr; gap: 0.8rem;">
+                    <button class="quiz-btn" onclick="checkAnswer(this, false)">A) La stanza si raffredda come se fosse
+                        un grande frigorifero.</button>
+                    <button class="quiz-btn" onclick="checkAnswer(this, true)">B) La stanza si riscalda, perché il
+                        motore emette più calore di quanto ne sottragga all'aria.</button>
+                    <button class="quiz-btn" onclick="checkAnswer(this, false)">C) La temperatura rimane costante perché
+                        c'è un equilibrio perfetto.</button>
+                </div>
+            </div>
+
+            <!-- Question 6 (NEW) -->
+            <div class="quiz-question"
+                style="margin-bottom: 2.5rem; background: rgba(255,255,255,0.02); padding: 1.5rem; border-radius: 12px;">
+                <h3 style="font-size: 1.2rem; margin-bottom: 1rem; color: white;">6. In una trasformazione ISOCORA,
+                    quanto lavoro meccanico compie il gas?</h3>
+                <div class="grid" style="grid-template-columns: 1fr; gap: 0.8rem;">
+                    <button class="quiz-btn" onclick="checkAnswer(this, true)">A) Zero (L = 0), perché non c'è
+                        variazione di volume.</button>
+                    <button class="quiz-btn" onclick="checkAnswer(this, false)">B) Il massimo lavoro possibile.</button>
+                    <button class="quiz-btn" onclick="checkAnswer(this, false)">C) Dipende solo dalla pressione
+                        finale.</button>
+                </div>
+            </div>
+
+            <!-- Question 7 (NEW) -->
+            <div class="quiz-question"
+                style="margin-bottom: 2.5rem; background: rgba(255,255,255,0.02); padding: 1.5rem; border-radius: 12px;">
+                <h3 style="font-size: 1.2rem; margin-bottom: 1rem; color: white;">7. Il Motore Stirling è un motore a:
+                </h3>
+                <div class="grid" style="grid-template-columns: 1fr; gap: 0.8rem;">
+                    <button class="quiz-btn" onclick="checkAnswer(this, false)">A) Combustione interna (come quello
+                        delle auto).</button>
+                    <button class="quiz-btn" onclick="checkAnswer(this, true)">B) Combustione esterna.</button>
+                    <button class="quiz-btn" onclick="checkAnswer(this, false)">C) Propulsione ionica.</button>
+                </div>
+            </div>
+
+            <!-- Question 8 (NEW) -->
+            <div class="quiz-question"
+                style="margin-bottom: 2.5rem; background: rgba(255,255,255,0.02); padding: 1.5rem; border-radius: 12px;">
+                <h3 style="font-size: 1.2rem; margin-bottom: 1rem; color: white;">8. Quale tipo di macchina termica ha
+                    il rendimento massimo teorico tra due sorgenti?</h3>
+                <div class="grid" style="grid-template-columns: 1fr; gap: 0.8rem;">
+                    <button class="quiz-btn" onclick="checkAnswer(this, false)">A) Il motore a vapore di Watt.</button>
+                    <button class="quiz-btn" onclick="checkAnswer(this, true)">B) La macchina di Carnot.</button>
+                    <button class="quiz-btn" onclick="checkAnswer(this, false)">C) Una caldaia a condensazione.</button>
+                </div>
+            </div>
+
+            <!-- Question 9 (NEW) -->
+            <div class="quiz-question"
+                style="margin-bottom: 2.5rem; background: rgba(255,255,255,0.02); padding: 1.5rem; border-radius: 12px;">
+                <h3 style="font-size: 1.2rem; margin-bottom: 1rem; color: white;">9. Cosa si intende per processo
+                    "quasi-statico"?</h3>
+                <div class="grid" style="grid-template-columns: 1fr; gap: 0.8rem;">
+                    <button class="quiz-btn" onclick="checkAnswer(this, true)">A) Una trasformazione infinitamente lenta
+                        che mantiene il sistema in equilibrio.</button>
+                    <button class="quiz-btn" onclick="checkAnswer(this, false)">B) Uno stato in cui il gas è
+                        solido.</button>
+                    <button class="quiz-btn" onclick="checkAnswer(this, false)">C) Un'esplosione istantanea.</button>
+                </div>
+            </div>
+
+            <!-- Question 10 (NEW) -->
+            <div class="quiz-question"
+                style="margin-bottom: 2.5rem; background: rgba(255,255,255,0.02); padding: 1.5rem; border-radius: 12px;">
+                <h3 style="font-size: 1.2rem; margin-bottom: 1rem; color: white;">10. Qual è la definizione corretta di
+                    rendimento (η)?</h3>
+                <div class="grid" style="grid-template-columns: 1fr; gap: 0.8rem;">
+                    <button class="quiz-btn" onclick="checkAnswer(this, false)">A) η = Calore ceduto / Lavoro.</button>
+                    <button class="quiz-btn" onclick="checkAnswer(this, true)">B) η = Lavoro prodotto / Calore
+                        assorbito.</button>
+                    <button class="quiz-btn" onclick="checkAnswer(this, false)">C) η = Calore assorbito +
+                        Lavoro.</button>
+                </div>
+            </div>
+
+            <div id="quiz-score" class="feedback-msg"
+                style="text-align: center; font-size: 1.2rem; margin-top: 2rem; color: #10B981; font-weight: bold;">
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Termodinamica Avanzata.</p>
+    </footer>
+
+    <!-- JS -->
+    <script src="cicli-termodinamici.js"></script>
+    <script src="../../js/main.js"></script>
+</body>
+
+</html>

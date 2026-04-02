@@ -1,0 +1,442 @@
+﻿<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leggi della Termodinamica - MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+        onload="renderMathInElement(document.body);"></script>
+
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+
+        .sub-hero {
+            padding: 4rem 0 2rem;
+            text-align: left;
+        }
+
+        .sub-hero-title {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        /* Interactive Diagram Styles */
+        .system-diagram {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            margin: 3rem 0;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .system-box {
+            width: 120px;
+            height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 12px;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: white;
+            transition: all 0.5s ease;
+            position: relative;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            border: 2px solid transparent;
+        }
+
+        .temp-display {
+            font-size: 1rem;
+            font-weight: 400;
+            margin-top: 0.5rem;
+        }
+
+        .connection-line {
+            height: 4px;
+            flex-grow: 1;
+            background: rgba(255, 255, 255, 0.2);
+            position: relative;
+            transition: background 0.5s ease;
+            overflow: hidden;
+        }
+
+        .connection-line::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
+            animation: none;
+        }
+        
+        .heat-flow-left::after {
+            animation: flowLeft 1s linear infinite;
+        }
+        
+        .heat-flow-right::after {
+            animation: flowRight 1s linear infinite;
+        }
+
+        @keyframes flowRight {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        @keyframes flowLeft {
+            0% { left: 100%; }
+            100% { left: -100%; }
+        }
+
+        .control-panel {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        .control-btn {
+            background: var(--physics-color);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.3s;
+        }
+
+        .control-btn:hover {
+            transform: translateY(-2px);
+            background: #2563EB; /* Darker blue */
+        }
+        
+        .control-btn:disabled {
+            background: #555;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+    </style>
+</head>
+
+<body>
+    <header class="sub-hero">
+        <div class="container">
+            <a href="termodinamica.html" class="back-button">
+                <span style="font-size:1.2rem; margin-right: 0.5rem;">&larr;</span> Torna a Termodinamica
+            </a>
+            <h1 class="sub-hero-title">Le Leggi della <span class="gradient-text" style="color: var(--physics-color);">Termodinamica</span></h1>
+            <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+                Tutto nell'universo, dal motore di un'auto fino alle stelle lontane, obbedisce a quattro regole fondamentali. In questa lezione esploreremo in dettaglio tutti i principi che governano calore, lavoro e caos.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <!-- INTRODUZIONE -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">Le Fondamenta della Natura</h2>
+            <p class="lesson-text">
+                Quando parliamo di "Leggi della Termodinamica" ci riferiamo a quattro principi (numerati da 0 a 3, per ragioni storiche) che descrivono come l'energia si muove, si trasforma e si conserva.
+            </p>
+            <p class="lesson-text">
+                Oggi affronteremo tutti e quattro i principi per avere una panoramica completa, iniziando però dalle basi dell'equilibrio termico: il <strong>Principio Zero</strong>. Ma perché si chiama "Zero"? 
+                Perché gli scienziati si resero conto della sua importanza logica solo dopo aver già enunciato il Primo e il Secondo Principio! Avendo un'importanza fondamentale e precedendo logicamente gli altri, decisero di chiamarlo Principio "Zero" invece di rinumerare gli altri.
+            </p>
+        </section>
+
+        <!-- PRINCIPIO ZERO -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">Il Principio Zero e l'Equilibrio Termico</h2>
+            
+            <div style="background: rgba(var(--physics-color-rgb), 0.1); border-left: 4px solid var(--physics-color); padding: 1.5rem; margin: 2rem 0; border-radius: 0 8px 8px 0;">
+                <h3 style="color: var(--physics-color); margin-bottom: 0.5rem;">L'Enunciato:</h3>
+                <p style="font-size: 1.1rem; font-style: italic;">"Se un corpo A è in equilibrio termico con un corpo C, e anche un corpo B è in equilibrio termico con lo stesso corpo C, allora A e B sono in equilibrio termico tra loro."</p>
+            </div>
+
+            <p class="lesson-text">
+                Sembra banale, equivalente a dire che "se A = C e B = C, allora A = B". Eppure, è questo principio che ci permette di definire il concetto rigoroso di <strong>temperatura</strong> e di usare dei misuratori universali: i <strong>termometri</strong> (che fanno le veci del corpo C!).
+            </p>
+            <p class="lesson-text">
+                Per "equilibrio termico" si intende che due corpi a contatto <strong>non si scambiano più calore</strong> (hanno raggiunto la stessa temperatura).
+            </p>
+
+            <!-- SIMULAZIONE INTERATTIVA -->
+            <h3 style="margin-top: 3rem; color: var(--text-main);">Simulazione: L'Importanza del Corpo "C"</h3>
+            <p class="lesson-text" style="font-size: 0.95rem;">
+                Abbiamo tre blocchi. Il blocco C è il nostro "Termometro". Mettiamo C a contatto con gli altri blocchi. Clicca sui pulsanti per simulare il processo.
+            </p>
+
+            <div class="control-panel">
+                <button class="control-btn" id="btn-contact-AC" onclick="simulateAC()">1. Metti in contatto A e C</button>
+                <button class="control-btn" id="btn-contact-BC" onclick="simulateBC()" disabled>2. Metti in contatto B e C</button>
+                <button class="control-btn" id="btn-conclusion" onclick="checkAB()" disabled>3. Verifica A e B</button>
+                <button class="control-btn" style="background: #eab308; color: #1f2937;" onclick="resetSim()">Ripristina</button>
+            </div>
+            
+            <div id="sim-status" style="text-align: center; color: var(--text-muted); min-height: 24px; font-weight: bold; margin-bottom: 1rem;">
+                Stato iniziale: Sistemi separati
+            </div>
+
+            <div class="system-diagram">
+                <div class="system-box" id="box-A" style="background: #ef4444;">
+                    Sistema A
+                    <div class="temp-display" id="temp-A">90°C</div>
+                </div>
+                
+                <div class="connection-line" id="line-AC"></div>
+
+                <div class="system-box" id="box-C" style="background: #3b82f6;">
+                    Sistema C
+                    <div class="temp-display" id="temp-C">10°C</div>
+                </div>
+
+                <div class="connection-line" id="line-BC"></div>
+
+                <div class="system-box" id="box-B" style="background: #eab308;">
+                    Sistema B
+                    <div class="temp-display" id="temp-B">50°C</div>
+                </div>
+            </div>
+            
+            <!-- Result Box container -->
+            <div id="sim-result" style="display: none; background: rgba(16, 185, 129, 0.1); border: 1px solid #10B981; border-radius: 8px; padding: 1.5rem; text-align: center; margin-top: 1rem;">
+                <h4 style="color: #10B981; font-size: 1.3rem; margin-bottom: 0.5rem;">Principio Zero Dimostrato!</h4>
+                <p>Poiché A è in equilibrio con C (a 50°C), e B è in equilibrio con C (a 50°C), mettendoli a contatto tra loro <strong>non ci sarà alcun flusso di calore</strong>. A e B sono già in equilibrio termico!</p>
+            </div>
+
+        </section>
+
+        <!-- PRIMO PRINCIPIO E ENERGIA INTERNA -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: var(--physics-color);">Il Primo Principio: Conservazione dell'Energia</h2>
+            
+            <p class="lesson-text">
+                "L'energia non si crea e non si distrugge, ma si trasforma." In termodinamica, questo significa che l'energia che forniamo a un sistema sotto forma di calore (\(Q\)) deve andare da qualche parte: in parte compie un lavoro meccanico verso l'esterno (\(L\)), e in parte rimane intrappolata nel sistema, aumentandone l'<strong>Energia Interna (\(U\))</strong>.
+            </p>
+            <div style="background: rgba(var(--physics-color-rgb), 0.1); border: 1px solid var(--physics-color); padding: 1.5rem; text-align: center; border-radius: 8px; margin: 1.5rem 0; font-size: 1.5rem; font-family: monospace; color: var(--text-main);">
+                \(\Delta U = Q - L\)
+            </div>
+
+            <h3 style="margin-top: 2rem; color: var(--text-main);">Che cos'è l'Energia Interna (\(U\))?</h3>
+            <p class="lesson-text">
+                L'Energia Interna è la <strong>somma totale di tutte le energie microscopiche</strong> delle particelle che compongono un corpo. A livello molecolare, le particelle non stanno mai ferme, quindi possiedono:
+            </p>
+            <ul style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.6; margin-bottom: 2rem; margin-left: 2rem;">
+                <li><strong>Energia Cinetica microscopica:</strong> Le molecole traslano, ruotano su se stesse e vibrano come molle. All'aumentare della temperatura, questa agitazione aumenta freneticamente.</li>
+                <li><strong>Energia Potenziale microscopica:</strong> Derivata dalle forze di attrazione chimiche ed elettromagnetiche tra le molecole (i legami intermolecolari).</li>
+            </ul>
+            <p class="lesson-text">
+                L'energia interna è una <em>"funzione di stato"</em>: dipende solo dallo stato in cui si trova il sistema in quel momento (pressione, volume, temperatura), e non da come ci è arrivato.
+            </p>
+
+            <!-- Modulo Interattivo Primo Principio -->
+            <div style="background: rgba(255,255,255,0.03); padding: 2rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); margin-top: 2rem;">
+                <h3 style="margin-bottom: 1rem; color: var(--physics-color);">Calcolatore del Primo Principio</h3>
+                <div style="display: flex; gap: 2rem; flex-wrap: wrap; justify-content: center;">
+                    <div style="flex: 1; min-width: 200px;">
+                        <label style="display: block; color: var(--text-muted); margin-bottom: 0.5rem;">Calore scambiato \(Q\) (J):</label>
+                        <input type="number" id="input-q" value="500" class="base-input" oninput="calculateU()" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 0.8rem; border-radius: 8px;">
+                        <small style="color: #10B981;">> 0 se assorbito, < 0 se ceduto</small>
+                    </div>
+                    <div style="flex: 1; min-width: 200px;">
+                        <label style="display: block; color: var(--text-muted); margin-bottom: 0.5rem;">Lavoro compiuto \(L\) (J):</label>
+                        <input type="number" id="input-l" value="200" class="base-input" oninput="calculateU()" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 0.8rem; border-radius: 8px;">
+                        <small style="color: #3B82F6;">> 0 se eseguito dal sistema (espansione)</small>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 2rem;">
+                    <span style="font-size: 1.2rem; color: var(--text-muted);">Variazione di Energia Interna (\(\Delta U\)):</span>
+                    <div id="result-u" style="font-size: 2.5rem; font-weight: bold; color: white; margin-top: 0.5rem;">300 J</div>
+                    <div style="width: 100%; height: 20px; background: rgba(255,255,255,0.1); border-radius: 10px; margin-top: 1rem; overflow: hidden; position: relative;">
+                        <!-- Simple visual bar, updated by JS -->
+                        <div id="bar-u" style="height: 100%; width: 50%; background: #10B981; transition: width 0.3s, background 0.3s;"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECONDO PRINCIPIO -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #ef4444;">Il Secondo Principio: Le Direzioni della Natura</h2>
+            <p class="lesson-text">
+                Mentre il Primo Principio è un "ragioniere" che dice che i conti sull'energia devono tornare, il <strong>Secondo Principio</strong> è il vero dittatore dell'Universo: purtroppo l'energia tende a degradarsi e i processi avvengono solo in un verso temporale. Esistono due formulazioni storiche fondamentali di questo limite assoluto:
+            </p>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
+                <div style="background: rgba(239, 68, 68, 0.05); padding: 1.5rem; border-radius: 8px; border-left: 4px solid #ef4444;">
+                    <h3 style="color: #ef4444; margin-bottom: 1rem;">L'Enunciato di Kelvin-Planck</h3>
+                    <p style="font-style: italic; color: var(--text-muted);">"È impossibile realizzare una trasformazione termodinamica il cui unico risultato sia quello di assorbire calore da una sola sorgente e trasformarlo integralmente in lavoro."</p>
+                    <p style="margin-top: 1rem; font-size: 0.95rem;">
+                        <strong>Significato:</strong> Nessun motore, nemmeno in teoria, può essere efficiente al 100%. Una parte del calore (il "tubo di scappamento") deve sempre essere buttata via nell'ambiente freddo.
+                    </p>
+                </div>
+                
+                <div style="background: rgba(59, 130, 246, 0.05); padding: 1.5rem; border-radius: 8px; border-left: 4px solid #3b82f6;">
+                    <h3 style="color: #3b82f6; margin-bottom: 1rem;">L'Enunciato di Clausius</h3>
+                    <p style="font-style: italic; color: var(--text-muted);">"È impossibile realizzare una trasformazione il cui unico risultato sia quello di far passare calore da un corpo più freddo a uno più caldo."</p>
+                    <p style="margin-top: 1rem; font-size: 0.95rem;">
+                        <strong>Significato:</strong> Il calore fluisce spontaneamente solo dal caldo al freddo. Per farlo andare al contrario (come fa un frigorifero), devi per forza consumare energia (fornire <em>Lavoro</em> e attaccarlo alla presa di corrente!).
+                    </p>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 2rem; color: var(--text-main);">L'Equivalenza dei due Enunciati</h3>
+            <p class="lesson-text">
+                I due scienziati sembravano parlare di cose diverse (motori vs frigoriferi), ma la verità stupefacente è che <strong>le due frasi sono fisicamente e logicamente equivalenti</strong>. Se si potesse violare il Principio di Clausius (frigorifero magico che non consuma corrente), si potrebbe affiancare a un motore reale per violare anche Kelvin-Planck (un motore perfetto al 100%), e viceversa.
+            </p>
+            <p class="lesson-text">
+                Questa inevitabilità dei processi è legata al concetto profondo di <strong>Entropia</strong>: in un sistema isolato, l'entropia (ovvero il grado della disorganizzazione energetica e molecolare) aumenta o al limite rimane costante, ma non diminuisce mai spontaneamente. L'Universo sta procedendo verso il disordine massimo.
+            </p>
+
+            <!-- Modulo Interattivo Rendimento -->
+            <div style="background: rgba(255,255,255,0.03); padding: 2rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); margin-top: 2rem;">
+                <h3 style="margin-bottom: 1rem; color: #ef4444;">Calcolatore del Rendimento Ideale (Carnot)</h3>
+                <p class="lesson-text" style="font-size: 0.95rem; margin-bottom: 1.5rem;">
+                    Il Secondo Principio fissa un limite invalicabile al rendimento (\(\eta\)) di una macchina termica che opera tra una sorgente calda (\(T_C\)) e una fredda (\(T_F\)), misurate in Kelvin.
+                </p>
+                <div style="display: flex; gap: 2rem; flex-wrap: wrap; justify-content: center; align-items: center;">
+                    <div style="flex: 1; min-width: 200px;">
+                        <label style="display: block; color: var(--text-muted); margin-bottom: 0.5rem; font-weight: bold; color: #ef4444;">Temp. Sorgente Calda (K):</label>
+                        <input type="number" id="input-th" value="600" min="1" class="base-input" oninput="calculateEfficiency()" style="width: 100%; background: #ef444422; border: 1px solid #ef4444; color: white; padding: 0.8rem; border-radius: 8px;">
+                    </div>
+                    <div style="flex: 1; min-width: 200px;">
+                        <label style="display: block; color: var(--text-muted); margin-bottom: 0.5rem; font-weight: bold; color: #3b82f6;">Temp. Sorgente Fredda (K):</label>
+                        <input type="number" id="input-tc" value="300" min="1" class="base-input" oninput="calculateEfficiency()" style="width: 100%; background: #3b82f622; border: 1px solid #3b82f6; color: white; padding: 0.8rem; border-radius: 8px;">
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 2rem;">
+                    <span style="font-size: 1.2rem; color: var(--text-muted);">Efficienza Massima Teorica (\(\eta_{Max} = 1 - T_F / T_C\)):</span>
+                    <div id="result-eff" style="font-size: 3rem; font-weight: bold; color: #F59E0B; margin-top: 0.5rem;">50.0 %</div>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); font-style: italic;">Nota: l'efficienza non sarà mai del 100% a meno che la sorgente fredda non sia allo Zero Assoluto!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- TERZO PRINCIPIO -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #8B5CF6;">Il Terzo Principio: Il Traguardo Irraggiungibile</h2>
+            <p class="lesson-text">
+                Formulato dal chimico-fisico Walther Nernst all'inizio del '900 (e spesso chiamato Teorema di Nernst), il <strong>Terzo Principio</strong> afferma che:
+            </p>
+            <div style="background: rgba(139, 92, 246, 0.05); border-left: 4px solid #8b5cf6; padding: 1.5rem; margin: 1.5rem 0;">
+                <p style="font-size: 1.1rem; font-style: italic;">"È impossibile raffreddare un sistema fisico fino allo Zero Assoluto (0 K) mediante un numero finito di processi termodinamici."</p>
+            </div>
+            <p class="lesson-text">
+                Lo Zero Assoluto (\(-273.15\) °C) è come la velocità della luce: puoi avvicinarti asintoticamente (gli scienziati moderni con il raffreddamento laser sono arrivati a frazioni di miliardesimi di kelvin dallo zero!), ma il traguardo esatto è inattingibile. A \(0\) K, le molecole di un cristallo perfetto si fermerebbero nel loro stato fondamentale, e l'entropia diventerebbe esattamente pari a zero.
+            </p>
+            <div style="background: rgba(59, 130, 246, 0.05); padding: 1.5rem; border-radius: 8px; border: 1px dashed #3b82f6; margin-top: 2rem;">
+                <h4 style="color: #3b82f6; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;"><span>❄️</span> Curiosità Nerd: I Cavalieri dello Zodiaco</h4>
+                <p style="font-size: 0.95rem; color: var(--text-muted); margin: 0; line-height: 1.6;">
+                    Nella celebre serie animata <em>I Cavalieri dello Zodiaco (Saint Seiya)</em>, la tecnica suprema dei Cavalieri delle energie fredde è raggiungere lo <strong>Zero Assoluto</strong>. Durante l'epica battaglia tra l'allievo Crystal il Cigno (Hyoga) e il suo maestro Acquarius (Camus) nell'Undicesima Casa, Crystal riesce infine a espandere il suo cosmo fino a fermare completamente il moto atomico del suo avversario, superando persino la resistenza dell'armatura d'oro del maestro. Un bellissimo esempio di "iperbole termodinamica" negli anime anni '80! E chissà se avessero saputo che, per il Terzo Principio, neanche il cosmo dei Cavalieri potrebbe fisicamente raggiungere lo 0 K perfetto...
+                </p>
+            </div>
+        </section>
+
+        <!-- QUIZ FINALE -->
+        <section id="quiz-finale" class="lesson-section">
+            <h2 class="lesson-title" style="color: var(--physics-color); text-align: center;">Test di Comprensione</h2>
+
+            <div class="quiz-container">
+                <div class="quiz-question">
+                    <h3>1. Il calore passa da un corpo freddo a un termosifone rovente senza l'aiuto di corrente o motori esterni. Quale principio termodinamico stiamo violando?</h3>
+                    <div class="quiz-options">
+                        <button class="quiz-btn" onclick="checkAnswer(this, false)">A) L'Enunciato di Kelvin-Planck (Secondo Principio)</button>
+                        <button class="quiz-btn" onclick="checkAnswer(this, true)">B) L'Enunciato di Clausius (Secondo Principio)</button>
+                        <button class="quiz-btn" onclick="checkAnswer(this, false)">C) Il Primo Principio della Termodinamica</button>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <h3>2. Che cos'è esattamente l'"Energia Interna" di un gas chiuso in una bombola?</h3>
+                    <div class="quiz-options">
+                        <button class="quiz-btn" onclick="checkAnswer(this, false)">A) Il calore che la bombola assorbe dal sole esterno.</button>
+                        <button class="quiz-btn" onclick="checkAnswer(this, true)">B) La somma di tutta l'energia cinetica e potenziale microscopica delle molecole di gas al suo interno.</button>
+                        <button class="quiz-btn" onclick="checkAnswer(this, false)">C) L'energia cinetica dell'intera bombola se la lanciamo giù da una collina.</button>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <h3>3. Qual è un modo per avere un motore (macchina termica) dal rendimento del 100% secondo il limite di Carnot?</h3>
+                    <div class="quiz-options">
+                        <button class="quiz-btn" onclick="checkAnswer(this, true)">A) Avere una sorgente fredda esattamente allo Zero Assoluto (0 K), che però è irraggiungibile (Terzo Principio).</button>
+                        <button class="quiz-btn" onclick="checkAnswer(this, false)">B) Avere una sorgente calda con temperatura illimitatamente alta in gradi Celsius.</button>
+                        <button class="quiz-btn" onclick="checkAnswer(this, false)">C) Isolare la macchina con il vuoto, per evitare attriti meccanici.</button>
+                    </div>
+                </div>
+                
+                <div class="quiz-question">
+                    <h3>4. Fornisco 1000 J di calore a un pistone, che espandendosi compie un lavoro di 600 J. Di quanto aumenta l'energia interna del gas?</h3>
+                    <div class="quiz-options">
+                        <button class="quiz-btn" onclick="checkAnswer(this, false)">A) 1600 J</button>
+                        <button class="quiz-btn" onclick="checkAnswer(this, false)">B) L'energia interna scende di 400 J</button>
+                        <button class="quiz-btn" onclick="checkAnswer(this, true)">C) Sale di 400 J, perché \(\Delta U = Q - L\)</button>
+                    </div>
+                </div>
+                
+                <div class="quiz-question">
+                    <h3>5. Se volessimo misurare la temperatura esatta dell'aria per confermare l'equilibrio termico, su quale principio ci fideremmo delle letture del nostro termometro?</h3>
+                    <div class="quiz-options">
+                        <button class="quiz-btn" onclick="checkAnswer(this, true)">A) Sul Principio Zero della Termodinamica</button>
+                        <button class="quiz-btn" onclick="checkAnswer(this, false)">B) Sul Terzo Principio della Termodinamica</button>
+                        <button class="quiz-btn" onclick="checkAnswer(this, false)">C) Sull'Entropia</button>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <h3>6. "Non puoi vincere, puoi solo sperare di pareggiare allo zero assoluto." A quale concetto termodinamico si adatta meglio questa metafora pessimistica?</h3>
+                    <div class="quiz-options">
+                        <button class="quiz-btn" onclick="checkAnswer(this, false)">A) All'Enunciato di Clausius, perché i frigoriferi costano.</button>
+                        <button class="quiz-btn" onclick="checkAnswer(this, false)">B) Alla conservazione dell'Energia, l'energia cade sempre fuori dal sistema chiuso.</button>
+                        <button class="quiz-btn" onclick="checkAnswer(this, true)">C) All'aumento costante dell'Entropia (Secondo Principio), l'inevitabile degradazione dell'energia utile verso il caos.</button>
+                    </div>
+                </div>
+            </div>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Fisica.</p>
+    </footer>
+
+    <!-- JS -->
+    <script src="leggi-termodinamica.js"></script>
+
+    <script src="../../js/main.js"></script>
+</body>
+
+</html>

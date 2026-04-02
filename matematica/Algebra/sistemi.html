@@ -268,8 +268,79 @@
             </div>
         </section>
 
+        <!-- 6. INDOVINELLI -->
         <section class="lesson-section">
-            <h2 class="lesson-title">6. Sistemi di Disequazioni</h2>
+            <h2 class="lesson-title">6. L'Arte della Modellizzazione: Indovinelli logici</h2>
+            <p class="lesson-text">
+                Spesso i sistemi di equazioni sono il segreto per risolvere enigmi apparentemente impossibili da calcolare a mente. Prova a tradurre in "matematichese" i seguenti indovinelli!
+            </p>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3 style="color: var(--physics-color);">Indovinello dell'Età</h3>
+                <p style="font-size: 1.1rem; margin: 1rem 0;"><em>"Oggi, l'età di Anna è esattamente il doppio di quella di suo fratello Marco. Fra 5 anni, la somma delle due età sarà di 40 anni. Quanti anni hanno oggi i due fratelli?"</em></p>
+                <details style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 8px; cursor: pointer;">
+                    <summary style="font-weight: bold; color: var(--text-main);">Mostra la Soluzione (Il Sistema)</summary>
+                    <div style="margin-top: 1rem;">
+                        <p>Impostiamo le incognite: \(A\) è l'età di Anna, \(M\) l'età di Marco.</p>
+                        <div class="sys-box">
+                            <span class="sys-bracket">{</span>
+                            <div class="sys-eqs">
+                                <div>\(A = 2M\)</div>
+                                <div>\((A + 5) + (M + 5) = 40\)</div>
+                            </div>
+                        </div>
+                        <p>Sostituendo la prima equazione nella seconda: \(2M + 5 + M + 5 = 40 \Rightarrow 3M = 30 \Rightarrow M = 10\). Quindi Marco ha 10 anni e Anna ne ha 20!</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3 style="color: var(--physics-color);">Indovinello delle Altezze</h3>
+                <p style="font-size: 1.1rem; margin: 1rem 0;"><em>"Impilando una scatola Verde e una scatola Rossa, si raggiunge l'altezza di 80 cm. Impilando due scatole Verdi uguali e una scatola Rossa, si arriva a 110 cm. Quanto è alta la scatola Rossa?"</em></p>
+                
+                <!-- Rappresentazione visuale -->
+                <div style="display: flex; justify-content: center; gap: 4rem; align-items: flex-end; margin: 3rem 0; flex-wrap: wrap;">
+                    
+                    <!-- Prima combinazione -->
+                    <div style="display: flex; flex-direction: column; align-items: center;">
+                        <div style="font-weight: bold; margin-bottom: 1rem; font-size: 1.2rem;">80 cm</div>
+                        <div style="border-left: 2px dashed rgba(255,255,255,0.3); border-right: 2px dashed rgba(255,255,255,0.3); padding: 0 10px; display: flex; flex-direction: column; justify-content: flex-end;">
+                            <div style="width: 80px; height: 30px; background-color: #10B981; border: 2px solid white; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-bottom: 2px; color: white;">V</div>
+                            <div style="width: 80px; height: 50px; background-color: #EF4444; border: 2px solid white; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white;">R</div>
+                        </div>
+                    </div>
+
+                    <!-- Seconda combinazione -->
+                    <div style="display: flex; flex-direction: column; align-items: center;">
+                        <div style="font-weight: bold; margin-bottom: 1rem; font-size: 1.2rem;">110 cm</div>
+                        <div style="border-left: 2px dashed rgba(255,255,255,0.3); border-right: 2px dashed rgba(255,255,255,0.3); padding: 0 10px; display: flex; flex-direction: column; justify-content: flex-end;">
+                            <div style="width: 80px; height: 30px; background-color: #10B981; border: 2px solid white; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-bottom: 2px; color: white;">V</div>
+                            <div style="width: 80px; height: 30px; background-color: #10B981; border: 2px solid white; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-bottom: 2px; color: white;">V</div>
+                            <div style="width: 80px; height: 50px; background-color: #EF4444; border: 2px solid white; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white;">R</div>
+                        </div>
+                    </div>
+                </div>
+
+                <details style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 8px; cursor: pointer;">
+                    <summary style="font-weight: bold; color: var(--text-main);">Mostra la Soluzione (Il Sistema)</summary>
+                    <div style="margin-top: 1rem;">
+                        <p>Trasformiamo le altezze in un sistema, con \(V\) altezza della scatola Verde e \(R\) di quella Rossa:</p>
+                        <div class="sys-box">
+                            <span class="sys-bracket">{</span>
+                            <div class="sys-eqs">
+                                <div>\(V + R = 80\)</div>
+                                <div>\(2V + R = 110\)</div>
+                            </div>
+                        </div>
+                        <p>Dalla prima si ottiene \(R = 80 - V\). Sostituendo nella seconda: \(2V + (80 - V) = 110\), che semplificando diventa \(V = 110 - 80 \Rightarrow V = 30\). La scatola verde misurerà 30 cm, e la rossa sarà \(80 - 30 = 50\) cm!</p>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <!-- 7. DISEQUAZIONI -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">7. Sistemi di Disequazioni</h2>
             <p class="lesson-text">
                 Un sistema di disequazioni raccoglie più condizioni di disuguaglianza. A differenza delle equazioni, qui
                 non cerchiamo un punto, ma un <strong>intervallo</strong> di valori.
@@ -344,7 +415,7 @@
             </div>
         </section>
 
-        <!-- 7. ONLY FOR THE BRAVE -->
+        <!-- 8. ONLY FOR THE BRAVE -->
         <section class="lesson-section"
             style="background: linear-gradient(145deg, rgba(0,0,0,0.4), rgba(139, 92, 246, 0.1)); border: 2px solid #F59E0B;">
             <div class="legend-badge">👑 LEGGENDA DI POLLENATROCCHIA</div>
@@ -378,7 +449,7 @@
             </p>
         </section>
 
-        <!-- 8. QUESTIONARIO -->
+        <!-- 9. QUESTIONARIO -->
         <section class="lesson-section quiz-container">
             <h2 class="lesson-title">Questionario di Verifica</h2>
             <div id="quiz-area">
@@ -394,6 +465,8 @@
     </footer>
 
     <script src="sistemi.js"></script>
+
+    <script src="../../js/main.js"></script>
 </body>
 
 </html>

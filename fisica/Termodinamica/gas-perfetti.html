@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gas Perfetti e Reali</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <style>
+        .equation-box {
+            background: rgba(16, 185, 129, 0.05);
+            border: 1px solid var(--physics-glow);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .equation {
+            font-size: 1.5rem;
+            font-family: 'Courier New', monospace;
+            color: var(--text-main);
+            margin-bottom: 1.5rem;
+        }
+
+        .var-list {
+            text-align: left;
+            color: var(--text-muted);
+            list-style: none;
+            padding: 0;
+            display: inline-block;
+        }
+
+        .var-list li {
+            margin-bottom: 0.5rem;
+        }
+        .frac {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            vertical-align: middle;
+            margin: 0 0.4rem;
+        }
+        .frac > span:first-child {
+            border-bottom: 2px solid currentColor;
+            padding: 0 0.2rem;
+            line-height: 1.2;
+        }
+        .frac > span:last-child {
+            padding: 0 0.2rem;
+            line-height: 1.2;
+        }
+        .math-paren {
+            font-size: 2.2rem;
+            font-weight: 300;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="hero">
+        <div class="container" style="text-align: center;">
+            <a href="termodinamica.html"
+                style="text-decoration: none; color: var(--physics-color); font-weight: 600; margin-bottom: 2rem; display: inline-block;">←
+                Torna alla Termodinamica</a>
+            <h1 class="hero-title"><span class="gradient-text">I Gas Perfetti</span></h1>
+            <p class="hero-subtitle">Modelli Ideali, Leggi di Stato e Gas Reali</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- SEZIONE INTRODUTTIVA E ASSUNZIONI -->
+        <section id="gas-perfetto" class="lesson-section">
+            <h2 class="lesson-title" style="color: var(--physics-color);">Cos'è un Gas Perfetto?</h2>
+            <p>La materia allo stato gassoso ha un comportamento molto complesso a causa del numero enorme di particelle
+                e delle loro interazioni. Tuttavia, in condizioni di bassa pressione e alta temperatura, la maggior
+                parte dei gas reali si comporta in modo eccezionalmente prevedibile.</p>
+            <p>Per semplificare lo studio, i fisici hanno inventato un modello teorico chiamato <strong>gas
+                    perfetto</strong> (o gas ideale). Un gas reale può essere approssimato a un gas perfetto quando
+                rispetta tre assunzioni macroscopiche/microscopiche fondamentali:</p>
+
+            <div class="grid" style="margin-top: 2rem; margin-bottom: 2rem;">
+                <div class="card physics-card" style="cursor: default;">
+                    <div class="card-icon">🔵</div>
+                    <h3 class="card-title">Materia Puntiforme</h3>
+                    <p class="card-desc">Il volume occupato dalle singole molecole del gas è trascurabile rispetto al
+                        volume totale del contenitore in cui risiedono.</p>
+                </div>
+                <div class="card physics-card" style="cursor: default;">
+                    <div class="card-icon">⚡</div>
+                    <h3 class="card-title">Urti Elastici</h3>
+                    <p class="card-desc">Le collisioni tra le particelle e le pareti del recipiente sono perfettamente
+                        elastiche: l'energia cinetica totale del sistema si conserva sempre.</p>
+                </div>
+                <div class="card physics-card" style="cursor: default;">
+                    <div class="card-icon">🚫</div>
+                    <h3 class="card-title">Nessuna Interazione</h3>
+                    <p class="card-desc">Non vi sono forze di attrazione chimico-fisica o repulsione tra le molecole
+                        (ovvero, in media l'energia potenziale di interazione è zero).</p>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- SEZIONE DELLE 3 LEGGI DEI GAS -->
+        <section id="leggi-gas" class="lesson-section">
+            <h2 class="lesson-title" style="color: var(--physics-color);">Le Leggi dei Gas (Trasformazioni Semplici)
+            </h2>
+            <p>Se consideriamo una quantità fissa di un gas (cioè il numero di moli rimane costante), tre scienziati
+                hanno trovato tre leggi empiriche bloccando a turno una delle variabili termodinamiche: Pressione (P),
+                Volume (V), o Temperatura (T).</p>
+
+            <h3 style="margin-top: 2rem; color: var(--text-main);">1. Legge di Boyle (Trasformazione Isoterma: T
+                costante)</h3>
+            <p>Se manteniamo la temperatura costante, la pressione e il volume di un gas sono inversamente
+                proporzionali. Se raddoppi la pressione (comprimendo il gas), il volume si dimezza.</p>
+            <div class="equation-box" style="padding: 1rem;">
+                <p class="equation" style="margin: 0;">P &middot; V = costante</p>
+            </div>
+
+            <h3 style="margin-top: 2rem; color: var(--text-main);">2. Prima Legge di Gay-Lussac / Charles
+                (Trasformazione Isobara: P costante)</h3>
+            <p>A pressione costante, il volume di un gas perfetto è direttamente proporzionale alla sua temperatura
+                assoluta (espressa in Kelvin). Riscaldando un palloncino, si espande.</p>
+            <div class="equation-box" style="padding: 1rem;">
+                <p class="equation" style="margin: 0; display: flex; align-items: center; justify-content: center;">
+                    <span class="frac"><span>V</span><span>T</span></span> = costante
+                </p>
+            </div>
+
+            <h3 style="margin-top: 2rem; color: var(--text-main);">3. Seconda Legge di Gay-Lussac (Trasformazione
+                Isocora: V costante)</h3>
+            <p>A volume costante, la pressione di un gas perfetto è direttamente proporzionale alla temperatura
+                assoluta. Ecco perché scaldare una bombola di gas sigillata è pericoloso (aumenta P)!</p>
+            <div class="equation-box" style="padding: 1rem;">
+                <p class="equation" style="margin: 0; display: flex; align-items: center; justify-content: center;">
+                    <span class="frac"><span>P</span><span>T</span></span> = costante
+                </p>
+            </div>
+
+            <!-- SIMULATORE TRASFORMAZIONI GAS -->
+            <div class="interactive-panel" style="margin-top: 3rem;">
+                <h3 style="text-align: center; margin-bottom: 2rem; color: var(--physics-color);">Simulatore di
+                    Trasformazioni</h3>
+                <p>Seleziona quale variabile vuoi tenere costante e muovi lo slider per vedere l'effetto sull'altra
+                    variabile.</p>
+
+                <div style="display: flex; gap: 1rem; justify-content: center; margin-bottom: 2rem; flex-wrap: wrap;">
+                    <button class="quiz-btn" id="btn-isoterma" style="background: var(--physics-color);">Isoterma (T
+                        cost.)</button>
+                    <button class="quiz-btn" id="btn-isobara">Isobara (P cost.)</button>
+                    <button class="quiz-btn" id="btn-isocora">Isocora (V cost.)</button>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 1rem;">
+                    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 2rem; width: 100%;">
+                        <!-- Piano di Clapeyron -->
+                        <div style="background: rgba(0,0,0,0.3); border-radius: 1rem; padding: 1.5rem;">
+                            <h4
+                                style="text-align: center; margin-bottom: 1rem; margin-top: 0; color: var(--text-muted);">
+                                Piano di Clapeyron (P-V)</h4>
+                            <canvas id="clapeyron-chart" width="300" height="250"
+                                style="background: #111; border-radius: 8px;"></canvas>
+                        </div>
+
+                        <div
+                            style="display: flex; flex-direction: column; justify-content: center; gap: 1rem; min-width: 300px;">
+                            <!-- Visualizzazione numerica -->
+                            <div
+                                style="background: rgba(0,0,0,0.3); padding: 1.5rem; border-radius: 1rem; display: flex; justify-content: space-around;">
+                                <div style="text-align: center;">
+                                    <span style="font-size: 0.9rem; color: var(--text-muted);">Pressione (P)</span><br>
+                                    <strong id="sim-p" style="font-size: 1.5rem; color: #e74c3c;">1.00 atm</strong>
+                                </div>
+                                <div style="text-align: center;">
+                                    <span style="font-size: 0.9rem; color: var(--text-muted);">Volume (V)</span><br>
+                                    <strong id="sim-v" style="font-size: 1.5rem; color: #3498db;">1.00 L</strong>
+                                </div>
+                                <div style="text-align: center;">
+                                    <span style="font-size: 0.9rem; color: var(--text-muted);">Temp (T)</span><br>
+                                    <strong id="sim-t" style="font-size: 1.5rem; color: #f1c40f;">300 K</strong>
+                                </div>
+                            </div>
+
+                            <!-- Slider di controllo -->
+                            <div style="width: 100%;">
+                                <label id="sim-label"
+                                    style="display: block; text-align: center; margin-bottom: 0.5rem; color: var(--text-main);">Varia
+                                    Pressione (1.00 atm):</label>
+                                <input type="range" id="sim-slider" min="0.5" max="2" step="0.1" value="1.0"
+                                    style="width: 100%;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- SEZIONE EQUAZIONE DI STATO -->
+        <section id="equazione-stato" class="lesson-section">
+            <h2 class="lesson-title" style="color: var(--physics-color);">L'Equazione di Stato dei Gas Perfetti</h2>
+            <p>Se combiniamo le tre leggi precedenti, e introduciamo il numero di moli del gas (n), otteniamo la legge
+                suprema che descrive lo stato microscopico di un gas ideale in ogni istante.</p>
+
+            <div class="equation-box">
+                <p class="equation">PV = nRT</p>
+                <ul class="var-list">
+                    <li><strong>P</strong>: Pressione (in Pascal [Pa])</li>
+                    <li><strong>V</strong>: Volume (in metri cubi [m³])</li>
+                    <li><strong>n</strong>: Numero di moli della sostanza [mol]</li>
+                    <li><strong>R</strong>: Costante universale dei gas (≈ 8.314 J/(mol·K))</li>
+                    <li><strong>T</strong>: Temperatura assoluta (in Kelvin [K])</li>
+                </ul>
+            </div>
+            <div class="nota"
+                style="background-color: rgba(52, 152, 219, 0.1); color: var(--text-main); padding: 1.5rem; border-left: 5px solid #3498db; border-radius: 0 1rem 1rem 0; margin: 2rem 0;">
+                <strong>Consiglio:</strong> Molti chimici usano la pressione in Atmosfere (atm) e il Volume in Litri
+                (L). In quel caso, il valore di R da usare è diverso: <strong>R = 0.0821 (atm·L)/(mol·K)</strong>. Fai
+                sempre attenzione alle unità di misura usate nel problema!
+            </div>
+        </section>
+
+
+        <!-- CALORE SPECIFICO DEI GAS -->
+        <section id="calore-specifico-gas" class="lesson-section">
+            <h2 class="lesson-title" style="color: var(--physics-color);">Calore Specifico nei Gas Perfetti</h2>
+            <p>Nei solidi e nei liquidi avevamo un solo calore specifico. Nei gas, invece, il modo in cui il calore fa
+                variare la temperatura dipende molto da come è contenuto il gas:</p>
+            <ul>
+                <li><strong>C<sub>V</sub> (Calore specifico molare a volume costante):</strong> Il gas è chiuso in un
+                    recipiente rigido. Tutto il calore fornito serve per aumentare la temperatura (energia interna).
+                </li>
+                <li><strong>C<sub>P</sub> (Calore specifico molare a pressione costante):</strong> Il gas si espande e
+                    compie un "lavoro" contro l'ambiente, spingendo ad esempio le pareti di un palloncino verso
+                    l'esterno. Visto che in parte il calore si spreca nel fare lavoro fisico (espansione), ne serve di
+                    più per riscaldare il gas. Quindi <strong>C<sub>P</sub> > C<sub>V</sub></strong>.</li>
+            </ul>
+
+            <h3 style="margin-top: 2rem; color: var(--text-main);">La Relazione di Mayer</h3>
+            <p>Julius von Mayer dimostrò che, per i gas perfetti, la differenza tra questi due calori specifici è sempre
+                e solo pari alla costante universale R:</p>
+            <div class="equation-box" style="padding: 1rem;">
+                <p class="equation" style="margin: 0; color: #f39c12;">C<sub>P</sub> - C<sub>V</sub> = R</p>
+            </div>
+        </section>
+
+
+        <!-- GAS REALI E VAN DER WAALS -->
+        <section id="gas-reali" class="lesson-section">
+            <h2 class="lesson-title" style="color: var(--physics-color);">I Limiti dell'Idealità: L'Equazione per i Gas
+                Reali</h2>
+            <p>E quando le pressioni diventano enormemente alte e le temperature scendono vicino al punto di
+                liquefazione? Le molecole si avvicinano così tanto da percepire l'attrazione reciproca, e il loro
+                proprio spessore (volume) non può più essere ignorato.</p>
+            <p>Johannes Diderik van der Waals vinse il premio Nobel modificando l'equazione dei gas ideali con due
+                fondamentali correttivi, <em>a</em> e <em>b</em>:</p>
+
+            <div class="equation-box">
+                <p class="equation" style="margin-bottom: 2rem; display: flex; align-items: center; justify-content: center; flex-wrap: wrap;">
+                    <span class="math-paren">(</span>
+                    P + <span style="color:#e74c3c; display: inline-flex; align-items: center; margin-left: 0.5rem;">
+                        a
+                        <span class="math-paren" style="margin-left: 0.2rem;">(</span>
+                        <span class="frac"><span>n</span><span>V</span></span>
+                        <span class="math-paren">)</span><sup style="font-size: 1.1rem; margin-top: -1.8rem;">2</sup>
+                    </span>
+                    <span class="math-paren" style="margin-right: 0.5rem;">)</span> 
+                    &middot; 
+                    <span class="math-paren" style="margin-left: 0.5rem;">(</span>
+                    V - <span style="color:#3498db; margin-left: 0.2rem;">nb</span>
+                    <span class="math-paren">)</span> 
+                    <span style="margin: 0 0.5rem;">=</span> n &middot; R &middot; T
+                </p>
+                <div style="display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;">
+                    <div style="text-align: left; max-width: 300px;">
+                        <h4 style="color:#e74c3c; margin-bottom: 0.5rem;">La Pressione Interna (+ a...)</h4>
+                        <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.5;">Correzione dovuta alle
+                            <strong>forze di attrazione</strong> intermolecolari (forze di Van der Waals) che
+                            "trattengono" le molecole rendendo la pressione reale misurabile un po' più debole di quella
+                            ideale.</p>
+                    </div>
+                    <div style="text-align: left; max-width: 300px;">
+                        <h4 style="color:#3498db; margin-bottom: 0.5rem;">Il Covolume (- nb)</h4>
+                        <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.5;">Il volume
+                            <em>realmente a disposizione</em> del gas viene diminuito, sottraendo il volume strutturale
+                            proprio (<em>b</em>) occupato dalle sfere atomiche o molecolari.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- INTERPRETAZIONE MICROSCOPICA -->
+        <section id="interpretazione-micro" class="lesson-section">
+            <h2 class="lesson-title" style="color: var(--physics-color);">7. Dal Micro al Macro: Perché i gas si comportano così?</h2>
+            <p class="lesson-text">
+                Proprio come abbiamo visto studiando l'entropia, le proprietà che misuriamo con i termometri e i manometri non sono altro che la <strong>somma statistica</strong> di miliardi di comportamenti microscopici individuali delle molecole.
+            </p>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem;">
+                <div style="background: rgba(var(--physics-color-rgb), 0.05); padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);">
+                    <h3 style="color: #e74c3c; margin-bottom: 0.5rem;">La Pressione (P)</h3>
+                    <p style="font-size: 0.95rem; line-height: 1.6;">
+                        È causata dagli <strong>urti incessanti</strong> delle particelle contro le pareti del contenitore. <br>
+                        Ogni volta che una molecola rimbalza, esercita una minuscola forza sulla parete. Miliardi di questi urti al secondo creano la pressione costante che misuriamo.
+                    </p>
+                </div>
+                <div style="background: rgba(var(--physics-color-rgb), 0.05); padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);">
+                    <h3 style="color: #f1c40f; margin-bottom: 0.5rem;">La Temperatura (T)</h3>
+                    <p style="font-size: 0.95rem; line-height: 1.6;">
+                        Non è altro che una misura dell'<strong>energia cinetica media</strong> (\(K_{med}\)) delle particelle. <br>
+                        Più le particelle "corrono" e vibrano velocemente, più il gas è caldo. La relazione matematica è:
+                    </p>
+                    <div style="font-size: 1.2rem; margin-top: 1rem; text-align: center; font-family: monospace;">
+                        K<sub>med</sub> = <span class="frac"><span>3</span><span>2</span></span> k<sub>B</sub> T
+                    </div>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 1rem; background: rgba(0,0,0,0.2); padding: 0.8rem; border-radius: 8px;">
+                        <strong>La Costante di Boltzmann (k<sub>B</sub>):</strong> Vale circa <strong>1.38 &times; 10<sup>-23</sup> J/K</strong>. <br>
+                        Rappresenta il rapporto tra la costante universale dei gas (R) e il numero di Avogadro (N<sub>A</sub>). È il valore unitario di energia termica per ogni singola molecola.
+                    </p>
+                </div>
+            </div>
+
+            <div class="info-box" style="margin-top: 2.5rem; border-left: 5px solid #60A5FA; background: rgba(96, 165, 250, 0.05);">
+                <h4 style="color: #60A5FA; margin-bottom: 0.5rem;">Entropia Zero</h4>
+                <p class="lesson-text" style="font-size: 0.95rem; margin: 0;">
+                    Infine, ricorda un dettaglio fondamentale: per avere un'<strong>entropia pari a zero</strong> (assenza totale di disordine), tutte le particelle dovrebbero essere <strong>perfettamente ferme</strong>. Questo stato di immobilità assoluta è teoricamente raggiungibile solo allo Zero Assoluto (0 Kelvin), un limite invalicabile dell'Universo.
+                </p>
+            </div>
+        </section>
+
+        <!-- QUESTIONARIO FINALE -->
+        <section id="quiz-finale" class="lesson-section">
+            <h2 class="lesson-title" style="color: var(--physics-color);">Test di Comprensione Finale</h2>
+            <p class="lesson-text">Verifica le conoscenze apprese sui Gas Perfetti in questo quiz.</p>
+
+            <div class="quiz-container">
+                <div id="quiz-area">
+                    <!-- Le domande verranno inserite qui via JavaScript -->
+                </div>
+                <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+            </div>
+        </section>
+    </main>
+
+    <script src="../../js/main.js"></script>
+    <script src="gas_perfetti.js"></script>
+</body>
+
+</html>

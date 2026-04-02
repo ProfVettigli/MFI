@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Industrial Revolution - CLIL Lesson</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Playfair+Display:ital,wght@0,800;1,800&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        :root {
+            --clil-primary: #60A5FA;
+            --steam-gray: #475569;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .clil-hero {
+            background: linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.95)), url('https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&q=80');
+            background-size: cover;
+            background-position: center;
+            padding: 8rem 0 4rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .historical-note {
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 4px solid var(--clil-primary);
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .timeline {
+            position: relative;
+            margin: 3rem 0;
+            padding-left: 2rem;
+            border-left: 2px dashed rgba(255, 255, 255, 0.1);
+        }
+
+        .timeline-item {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2.35rem;
+            top: 0.5rem;
+            width: 10px;
+            height: 10px;
+            background: var(--clil-primary);
+            border-radius: 50%;
+        }
+
+        .vocab-box {
+            background: #1e293b;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 16px;
+            margin: 2rem 0;
+        }
+
+        .vocab-title {
+            color: var(--clil-primary);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .glow-text {
+            color: var(--clil-primary);
+            text-shadow: 0 0 15px rgba(96, 165, 250, 0.4);
+        }
+
+        .impact-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="clil-hero">
+        <div class="container">
+            <a href="termodinamica.html" style="color: var(--clil-primary); text-decoration: none; font-weight: 600; margin-bottom: 2rem; display: inline-block;">← Back to Thermodynamics</a>
+            <h1 style="font-family: 'Playfair Display', serif; font-size: clamp(3rem, 8vw, 5rem); line-height: 1.1; margin-bottom: 1.5rem;">
+                The <span class="glow-text">Industrial</span><br>Revolution
+            </h1>
+            <p style="font-size: 1.25rem; color: var(--text-muted); max-width: 700px; line-height: 1.6;">
+                How the laws of Thermodynamics transformed human society from manual labor to machine power.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- VOCABULARY SUPPORT -->
+        <div class="vocab-box">
+            <span class="vocab-title">Keywords for this lesson</span>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; font-size: 0.9rem;">
+                <div><strong>Steam Engine:</strong> Macchina a vapore</div>
+                <div><strong>Coal:</strong> Carbone</div>
+                <div><strong>Efficiency:</strong> Efficienza/Rendimento</div>
+                <div><strong>Manufacturing:</strong> Produzione industriale</div>
+                <div><strong>Urbanization:</strong> Urbanizzazione</div>
+                <div><strong>Growth:</strong> Crescita</div>
+            </div>
+        </div>
+
+        <!-- HISTORICAL CONTEXT -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">1. The Historical Spark</h2>
+            <p class="lesson-text">
+                The First Industrial Revolution began around <strong>1760 in Great Britain</strong>. Before this era, European society was primarily agricultural. People lived in small villages and produced goods by hand (manual labor).
+            </p>
+            <div class="historical-note">
+                <p class="lesson-text" style="font-style: italic; margin: 0;">
+                    "Why Britain? Because it had massive reserves of <strong>coal</strong>, a stable government, and a strong banking system that allowed entrepreneurs to invest in new, risky technologies."
+                </p>
+            </div>
+        </section>
+
+        <!-- PHYSICS & TECH -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">2. Thermodynamics into Action</h2>
+            <p class="lesson-text">
+                The true turning point was the discovery of how to convert <strong>Heat into Mechanical Work</strong>. This is the foundation of Thermodynamics.
+            </p>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h3 style="color: white; margin-bottom: 0.5rem;">1712: Thomas Newcomen</h3>
+                    <p style="font-size: 0.95rem;">Creates the first atmospheric steam engine to pump water out of coal mines. It was massive and very inefficient.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3 style="color: var(--clil-primary); margin-bottom: 0.5rem;">1776: James Watt</h3>
+                    <p style="font-size: 0.95rem;">Improves the design by adding a <strong>separate condenser</strong>. This tripled the efficiency of the machine, allowing it to be used in factories and mills, not just mines.</p>
+                </div>
+            </div>
+
+            <p class="lesson-text">
+                Watt's engine provided <strong>constant, tireless power</strong>. For the first time in history, production was no longer limited by human or animal strength.
+            </p>
+        </section>
+
+        <!-- SOCIAL IMPACT -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">3. Changing Human Life</h2>
+            <p class="lesson-text">
+                The shift from farms to factories changed everything. This era saw the rise of <strong>Urbanization</strong>: the mass movement of people from the countryside to growing cities like Manchester and London.
+            </p>
+            
+            <div class="grid" style="margin-top: 3rem;">
+                <div class="impact-card">
+                    <div style="font-size: 2.5rem; margin-bottom: 1rem;">🚂</div>
+                    <h4 style="color: white; margin-bottom: 0.5rem;">Transportation</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);">Steam-powered trains and ships connected the world. Travel time dropped by 90%.</p>
+                </div>
+                <div class="impact-card">
+                    <div style="font-size: 2.5rem; margin-bottom: 1rem;">🏢</div>
+                    <h4 style="color: white; margin-bottom: 0.5rem;">Mass Production</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);">Factories could produce thousands of items (clothing, tools) at a fraction of the cost.</p>
+                </div>
+                <div class="impact-card">
+                    <div style="font-size: 2.5rem; margin-bottom: 1rem;">🍎</div>
+                    <h4 style="color: white; margin-bottom: 0.5rem;">Living Standards</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);">While cities were often crowded and dirty, the availability of goods and food increased significantly.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- EXPONENTIAL GROWTH -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">4. Exponential Progress</h2>
+            <p class="lesson-text">
+                From 1800 onwards, the world entered a phase of <strong>Exponential Growth</strong>. This means that every new invention accelerated the creation of the next one.
+            </p>
+            <div style="background: rgba(var(--physics-color-rgb), 0.1); padding: 2rem; border-radius: 16px; margin: 2rem 0; border: 1px dashed var(--clil-primary);">
+                <p class="lesson-text" style="text-align: center; font-weight: 600; color: white;">
+                    Scientific Discovery → Technological Innovation → Economic Expansion → More Scientific Funding
+                </p>
+            </div>
+            <p class="lesson-text">
+                Physics provided the tools; the economy provided the fuel. Together, they built the modern world we live in today.
+            </p>
+        </section>
+
+        <!-- COMPREHENSION QUIZ -->
+        <section class="lesson-section quiz-container" style="margin-bottom: 5rem;">
+            <h2 class="lesson-title" style="text-align: center;">Comprehension Check</h2>
+            <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">Test your knowledge of the Industrial Revolution (CLIL Quiz).</p>
+            
+            <div id="quiz-area"></div>
+            <div id="quiz-score" style="text-align: center; font-weight: bold; margin-top: 2rem; font-size: 1.2rem;"></div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Interactive Education Section: CLIL (Physics & History).</p>
+    </footer>
+
+    <!-- JS -->
+    <script>
+        const quizData = [
+            {
+                q: "1. When and where did the First Industrial Revolution start?",
+                a: ["Around 1760 in Great Britain", "Around 1850 in the USA", "Around 1900 in Germany"],
+                c: 0
+            },
+            {
+                q: "2. What was the main fuel used to power steam engines?",
+                a: ["Electricity", "Wood", "Coal"],
+                c: 2
+            },
+            {
+                q: "3. What did James Watt add to the steam engine to make it more efficient?",
+                a: ["A separate condenser", "A solar panel", "Larger wheels"],
+                c: 0
+            },
+            {
+                q: "4. What is 'Urbanization'?",
+                a: ["When people move from cities to farms.", "When people move from farms to growing cities.", "When people build new bridges."],
+                c: 1
+            },
+            {
+                q: "5. Thermodynamics is the study of how to convert heat into...",
+                a: ["Light", "Mechanical Work", "Food"],
+                c: 1
+            },
+            {
+                q: "6. Why is the progress after 1800 considered 'exponential'?",
+                a: ["Because it stopped suddenly.", "Because it moved very slowly.", "Because every invention accelerated the next discovery."],
+                c: 2
+            }
+        ];
+
+        const quizArea = document.getElementById('quiz-area');
+        const scoreDisplay = document.getElementById('quiz-score');
+        let currentScore = 0;
+        let answeredCount = 0;
+
+        quizData.forEach((data, index) => {
+            const card = document.createElement('div');
+            card.className = 'quiz-question';
+            card.style.background = 'rgba(255,255,255,0.03)';
+            card.style.padding = '1.5rem';
+            card.style.borderRadius = '12px';
+            card.style.marginBottom = '1.5rem';
+
+            card.innerHTML = `<h3 style="color: white; margin-bottom: 1rem;">${data.q}</h3>`;
+            const optionsGroup = document.createElement('div');
+            optionsGroup.style.display = 'flex';
+            optionsGroup.style.flexDirection = 'column';
+            optionsGroup.style.gap = '0.5rem';
+
+            data.a.forEach((opt, oIdx) => {
+                const btn = document.createElement('button');
+                btn.className = 'quiz-btn';
+                btn.style.textAlign = 'left';
+                btn.textContent = opt;
+                btn.onclick = () => {
+                    if (btn.disabled) return;
+                    
+                    const buttons = optionsGroup.querySelectorAll('.quiz-btn');
+                    buttons.forEach(b => b.disabled = true);
+
+                    if (oIdx === data.c) {
+                        btn.style.background = '#10B981';
+                        currentScore++;
+                    } else {
+                        btn.style.background = '#EF4444';
+                        buttons[data.c].style.background = '#10B981';
+                        buttons[data.c].style.opacity = '1';
+                    }
+                    
+                    answeredCount++;
+                    if (answeredCount === quizData.length) {
+                        scoreDisplay.innerHTML = `Final Score: ${currentScore}/${quizData.length}`;
+                        scoreDisplay.style.color = '#60A5FA';
+                    }
+                };
+                optionsGroup.appendChild(btn);
+            });
+
+            card.appendChild(optionsGroup);
+            quizArea.appendChild(card);
+        });
+    </script>
+</body>
+
+</html>
