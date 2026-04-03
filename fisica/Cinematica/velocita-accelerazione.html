@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cinematica: Velocità e Accelerazione - MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+        onload="renderMathInElement(document.body);"></script>
+
+    <style>
+        :root {
+            --cinematica-color: #10B981;
+            --cinematica-glow: rgba(16, 185, 129, 0.5);
+        }
+
+        .sub-hero {
+            padding: 4rem 0 2rem;
+            text-align: left;
+        }
+
+        .sub-hero-title {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .simulator-container {
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .track {
+            width: 100%;
+            height: 120px;
+            background: rgba(255, 255, 255, 0.05);
+            border-bottom: 4px solid #4a5568;
+            position: relative;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .object {
+            width: 60px;
+            height: 40px;
+            position: absolute;
+            bottom: 4px;
+            left: 0;
+            transition: left 0.1s linear;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            transform: scaleX(-1);
+            /* Face right */
+        }
+
+        .zeno-character {
+            display: inline-block;
+            transform: scaleX(-1);
+            /* Face right */
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .control-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .data-display {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .data-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .data-value {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--cinematica-color);
+        }
+
+        /* Pursuit Specific Styles */
+        .pursuit-track {
+            height: 180px;
+            background: linear-gradient(to bottom, #1e3a8a, #1e40af);
+            border-bottom: 4px solid #fbbf24;
+            border-radius: 10px;
+        }
+
+        .ship {
+            font-size: 3rem;
+            position: absolute;
+            bottom: 10px;
+            transition: left 0.05s linear;
+            transform: scaleX(-1);
+            /* Flip ships to face right */
+        }
+
+        .marine-ship {
+            z-index: 2;
+        }
+
+        .pirate-ship {
+            z-index: 1;
+        }
+
+        /* Zeno Paradox Styles */
+        .zeno-viz {
+            height: 100px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            position: relative;
+            margin: 2rem 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .zeno-step {
+            height: 100%;
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+            position: absolute;
+            top: 0;
+            transition: all 0.5s ease;
+        }
+
+        .zeno-marker {
+            position: absolute;
+            top: -25px;
+            transform: translateX(-50%);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .gojo-box {
+            background: linear-gradient(135deg, rgba(147, 51, 234, 0.2), rgba(79, 70, 229, 0.2));
+            border: 2px solid #a855f7;
+            padding: 2rem;
+            border-radius: 20px;
+            margin: 4rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gojo-box::after {
+            content: '🤞';
+            position: absolute;
+            right: -20px;
+            bottom: -20px;
+            font-size: 8rem;
+            opacity: 0.1;
+            transform: rotate(-15deg);
+        }
+
+        .btn-action {
+            background: var(--cinematica-color);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px var(--cinematica-glow);
+        }
+
+        .info-box {
+            background: rgba(var(--physics-color-rgb), 0.1);
+            border-left: 4px solid var(--cinematica-color);
+            padding: 1.5rem;
+            border-radius: 0 12px 12px 0;
+            margin: 2rem 0;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="sub-hero">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <a href="../cinematica.html" class="back-button" style="margin-bottom: 0;">
+                    <span class="back-icon">&larr;</span> Lezioni di Cinematica
+                </a>
+            </div>
+            <h1 class="sub-hero-title">Cinematica 1: <span class="gradient-text">Il Moto</span></h1>
+            <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+                Dallo studio della velocità all'accelerazione. Capiremo come si muovono gli oggetti e risolveremo uno
+                dei paradossi più famosi dell'antichità.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- INTRODUZIONE -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">1. Le Grandezze della Cinematica</h2>
+            <p class="lesson-text">
+                La <strong>cinematica</strong> è quella branca della fisica che descrive il moto dei corpi, senza
+                occuparsi delle cause che lo producono (le forze). Per farlo, utilizziamo tre grandezze fondamentali:
+            </p>
+
+            <div class="grid">
+                <div class="card physics-card">
+                    <h3 class="card-title">Posizione (\(s\))</h3>
+                    <p class="card-desc">Indica dove si trova l'oggetto rispetto a un'origine. Si misura in metri
+                        (\(m\)).</p>
+                </div>
+                <div class="card physics-card">
+                    <h3 class="card-title">Velocità (\(v\))</h3>
+                    <p class="card-desc">Indica quanto rapidamente cambia la posizione nel tempo (\(\Delta s / \Delta
+                        t\)). Si misura in \(m/s\).</p>
+                </div>
+                <div class="card physics-card">
+                    <h3 class="card-title">Accelerazione (\(a\))</h3>
+                    <p class="card-desc">Indica quanto rapidamente cambia la velocità nel tempo (\(\Delta v / \Delta
+                        t\)). Si misura in \(m/s^2\).</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- MOTO RETTILINEO UNIFORME -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">2. Moto Rettilineo Uniforme (MRU)</h2>
+            <p class="lesson-text">
+                Un corpo si muove di <strong>MRU</strong> quando percorre una traiettoria rettilinea con
+                <strong>velocità costante</strong>. In questo caso, l'accelerazione è nulla (\(a = 0\)).
+            </p>
+            <div class="info-box">
+                <p class="lesson-text" style="margin: 0;">
+                    Legge oraria del MRU: \[s(t) = s_0 + v \cdot t\]
+                    Dove \(s_0\) è la posizione iniziale.
+                </p>
+            </div>
+
+            <!-- MRU SIMULATOR -->
+            <div class="simulator-container">
+                <h3 style="margin-bottom: 1rem;">Laboratorio MRU</h3>
+                <div class="track">
+                    <div id="mru-object" class="object">🚗</div>
+                </div>
+                <div class="controls">
+                    <div class="control-group">
+                        <label class="control-label">Velocità (\(v\)): <span id="mru-v-val">5</span> m/s</label>
+                        <input type="range" id="mru-v-slider" min="1" max="20" value="5">
+                    </div>
+                    <div class="control-group" style="justify-content: flex-end; flex-direction: row; gap: 1rem;">
+                        <button class="btn-action" onclick="runMRU()">Avvia Macchina</button>
+                        <button class="btn-action" style="background: #64748b;" onclick="stopMRU()">Ferma</button>
+                    </div>
+                </div>
+                <div class="data-display">
+                    <div class="data-card">
+                        <span class="data-label">Tempo</span>
+                        <span id="mru-t-data" class="data-value">0.00 s</span>
+                    </div>
+                    <div class="data-card">
+                        <span class="data-label">Posizione</span>
+                        <span id="mru-s-data" class="data-value">0.00 m</span>
+                    </div>
+                    <div class="data-card">
+                        <span class="data-label">Velocità</span>
+                        <span id="mru-v-data" class="data-value">5.00 m/s</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MOTO UNIFORMEMENTE ACCELERATO -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">3. Moto Rettilineo Uniformemente Accelerato (MRUA)</h2>
+            <p class="lesson-text">
+                Nel <strong>MRUA</strong>, la velocità cambia in modo costante nel tempo. Questo significa che
+                l'<strong>accelerazione è costante</strong>.
+            </p>
+            <div class="info-box">
+                <p class="lesson-text" style="margin: 0;">
+                    Legge oraria: \[s(t) = s_0 + v_0 \cdot t + \frac{1}{2} a \cdot t^2\]
+                </p>
+            </div>
+
+            <div class="simulator-container">
+                <h3 style="margin-bottom: 1rem;">Laboratorio MRUA</h3>
+                <div class="track">
+                    <div id="mrua-object" class="object">🏎️</div>
+                </div>
+                <div class="controls">
+                    <div class="control-group">
+                        <label class="control-label">Accelerazione (\(a\)): <span id="mrua-a-val">1.5</span>
+                            m/s²</label>
+                        <input type="range" id="mrua-a-slider" min="0.5" max="5" step="0.5" value="1.5">
+                    </div>
+                    <div class="control-group" style="justify-content: flex-end; flex-direction: row; gap: 1rem;">
+                        <button class="btn-action" onclick="runMRUA()">Avvia Test</button>
+                        <button class="btn-action" style="background: #64748b;" onclick="stopMRUA()">Ferma</button>
+                    </div>
+                </div>
+                <div class="data-display">
+                    <div class="data-card">
+                        <span class="data-label">Tempo</span>
+                        <span id="mrua-t-data" class="data-value">0.00 s</span>
+                    </div>
+                    <div class="data-card">
+                        <span class="data-label">Velocità</span>
+                        <span id="mrua-v-data" class="data-value">0.00 m/s</span>
+                    </div>
+                    <div class="data-card">
+                        <span class="data-label">Posizione</span>
+                        <span id="mrua-s-data" class="data-value">0.00 m</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DINAMICA DEI GRAFICI -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">4. Laboratorio Grafico: Spazio-Tempo</h2>
+            <p class="lesson-text">
+                Osserva come cambiano i grafici trascinando gli slider sopra.
+            </p>
+            <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 2rem;">
+                <div class="data-card" style="padding: 1.5rem;">
+                    <h3 style="color: var(--cinematica-color);">Grafico MRU</h3>
+                    <div class="controls" style="margin-bottom: 10px;">
+                        <div class="control-group">
+                            <label class="control-label">Velocità (\(v\)): <span id="g-mru-v-val">10</span></label>
+                            <input type="range" id="g-mru-v-slider" min="0" max="20" value="10">
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">Pos. Iniziale (\(s_0\)): <span
+                                    id="g-mru-s0-val">0</span></label>
+                            <input type="range" id="g-mru-s0-slider" min="0" max="50" value="0">
+                        </div>
+                    </div>
+                    <div style="margin: 1rem 0; background: rgba(0,0,0,0.2); border-radius: 8px; padding: 10px;">
+                        <svg width="100%" height="200" viewBox="0 0 300 200" style="overflow: hidden;">
+                            <line x1="30" y1="170" x2="280" y2="170" stroke="white" stroke-width="2" />
+                            <line x1="30" y1="170" x2="30" y2="20" stroke="white" stroke-width="2" />
+                            <path id="mru-path" d="M 30 170 L 280 170" stroke="#3b82f6" stroke-width="3" fill="none" />
+                            <text x="280" y="190" fill="white" font-size="12">t</text>
+                            <text x="5" y="25" fill="white" font-size="12">s</text>
+                        </svg>
+                    </div>
+                </div>
+                <div class="data-card" style="padding: 1.5rem;">
+                    <h3 style="color: var(--cinematica-color);">Grafico MRUA</h3>
+                    <div class="controls" style="margin-bottom: 10px;">
+                        <div class="control-group">
+                            <label class="control-label">Acc. (\(a\)): <span id="g-mrua-a-val">2</span></label>
+                            <input type="range" id="g-mrua-a-slider" min="0.1" max="5" step="0.1" value="2">
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">Vel. Iniz. (\(v_0\)): <span id="g-mrua-v0-val">0</span></label>
+                            <input type="range" id="g-mrua-v0-slider" min="0" max="10" value="0">
+                        </div>
+                    </div>
+                    <div style="margin: 1rem 0; background: rgba(0,0,0,0.2); border-radius: 8px; padding: 10px;">
+                        <svg width="100%" height="200" viewBox="0 0 300 200" style="overflow: hidden;">
+                            <line x1="30" y1="170" x2="280" y2="170" stroke="white" stroke-width="2" />
+                            <line x1="30" y1="170" x2="30" y2="20" stroke="white" stroke-width="2" />
+                            <path id="mrua-path" d="M 30 170 Q 155 170 280 170" stroke="#ef4444" stroke-width="3"
+                                fill="none" />
+                            <text x="280" y="190" fill="white" font-size="12">t</text>
+                            <text x="10" y="25" fill="white" font-size="12">s</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box" style="margin-top: 2rem; border-left-color: #3b82f6;">
+                <h3 style="color: #3b82f6; margin-bottom: 2rem; text-align: center;">Corrispondenza Matematica-Fisica
+                </h3>
+
+                <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 3rem;">
+                    <!-- MRU Comparison -->
+                    <div style="text-align: center;">
+                        <h4 style="color: #60a5fa; margin-bottom: 1.5rem;">MRU: La Retta</h4>
+                        <div
+                            style="font-size: 1.4rem; background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 12px; line-height: 2;">
+                            <span style="color: #ef4444;">\(y\)</span> = <span style="color: #3b82f6;">\(m\)</span>\(x\)
+                            + <span style="color: #a855f7;">\(q\)</span> <br>
+                            <span style="color: #ef4444;">\(s\)</span> = <span style="color: #3b82f6;">\(v\)</span>\(t\)
+                            + <span style="color: #a855f7;">\(s_0\)</span>
+                        </div>
+                        <ul style="text-align: left; margin-top: 1.5rem; font-size: 0.9rem; color: var(--text-muted);">
+                            <li><strong style="color: #3b82f6;">m &leftrightarrow; v</strong>: La pendenza è la
+                                velocità.</li>
+                            <li><strong style="color: #a855f7;">q &leftrightarrow; s₀</strong>: L'intercetta è la
+                                posizione iniziale.</li>
+                        </ul>
+                    </div>
+
+                    <!-- MRUA Comparison -->
+                    <div style="text-align: center;">
+                        <h4 style="color: #f87171; margin-bottom: 1.5rem;">MRUA: La Parabola</h4>
+                        <div
+                            style="font-size: 1.4rem; background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 12px; line-height: 2;">
+                            <span style="color: #ef4444;">\(y\)</span> = <span
+                                style="color: #3b82f6;">\(a\)</span>\(x^2\) + <span
+                                style="color: #10b981;">\(b\)</span>\(x\) + <span style="color: #a855f7;">\(c\)</span>
+                            <br>
+                            <span style="color: #ef4444;">\(s\)</span> = <span
+                                style="color: #3b82f6;">\(\frac{1}{2}a\)</span>\(t^2\) + <span
+                                style="color: #10b981;">\(v_0\)</span>\(t\) + <span
+                                style="color: #a855f7;">\(s_0\)</span>
+                        </div>
+                        <ul style="text-align: left; margin-top: 1.5rem; font-size: 0.9rem; color: var(--text-muted);">
+                            <li><strong style="color: #3b82f6;">a &leftrightarrow; ½a_fis</strong>: La curvatura è metà
+                                accelerazione.</li>
+                            <li><strong style="color: #10b981;">b &leftrightarrow; v₀</strong>: La pendenza iniziale è
+                                la velocità iniziale.</li>
+                            <li><strong style="color: #a855f7;">c &leftrightarrow; s₀</strong>: Il termine noto è la
+                                posizione iniziale.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ESERCIZI -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">5. Esercizi di Pratica</h2>
+            <div class="grid">
+                <div class="data-card" style="text-align: left; background: rgba(16, 185, 129, 0.05);">
+                    <h4>Esercizio MRU: Il Viaggio in Autostrada</h4>
+                    <p style="font-size: 0.95rem; color: var(--text-muted); margin: 0.5rem 0;">
+                        Un'automobile viaggia a una velocità costante di \(120 \, km/h\). Se deve percorrere un tratto rettilineo di \(300 \, km\), calcola il tempo necessario per completare il viaggio.
+                    </p>
+                    <button class="btn-action" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;"
+                        onclick="toggleSolution('sol-mru')">Mostra Soluzione</button>
+                    <div id="sol-mru" style="display: none; margin-top: 1rem; color: #10B981; font-family: monospace;">
+                        \(t = \frac{s}{v} = \frac{300}{120} = \mathbf{2.5 \, ore}\) (ovvero 2 ore e 30 minuti)
+                    </div>
+                </div>
+                <div class="data-card" style="text-align: left; background: rgba(239, 68, 68, 0.05);">
+                    <h4>Esercizio MRUA: Lo Sprint</h4>
+                    <p style="font-size: 0.95rem; color: var(--text-muted); margin: 0.5rem 0;">
+                        Uno sprinter parte da fermo (\(v_0 = 0\)) e accelera costantemente a \(3 \, m/s^2\). Quale sarà la sua velocità dopo \(4\) secondi dall'inizio della corsa?
+                    </p>
+                    <button class="btn-action" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;"
+                        onclick="toggleSolution('sol-mrua')">Mostra Soluzione</button>
+                    <div id="sol-mrua" style="display: none; margin-top: 1rem; color: #10B981; font-family: monospace;">
+                        \(v = v_0 + a \cdot t = 0 + 3 \cdot 4 = \mathbf{12 \, m/s}\)
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- INSEGUIMENTO -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">6. Missione: Marina vs Thousand Sunny</h2>
+            <p class="lesson-text" style="font-style: italic; font-size: 0.95rem;">
+                Siamo nel Nuovo Mondo. La Thousand Sunny della ciurma di Cappello di Paglia sta navigando verso Egghead
+                a velocità costante.
+                Una nave della Marina li ha intercettati e sta per iniziare l'inseguimento partendo da ferma, ma con
+                un'accelerazione micidiale prodotta dalla nuova tecnologia Vegapunk.
+                Riusciranno i Mugiwara a mantenere il vantaggio iniziale?
+            </p>
+            <div class="simulator-container" style="background: rgba(30, 58, 138, 0.4);">
+                <div class="pursuit-track track">
+                    <div id="pirate-ship" class="ship pirate-ship">🦁</div>
+                    <div id="marine-ship" class="ship marine-ship">🚢</div>
+                </div>
+                <div class="controls">
+                    <div class="control-group">
+                        <label class="control-label">Acc. Marina: <span id="a-marine-val">1.5</span> m/s²</label>
+                        <input type="range" id="a-marine-slider" min="0.5" max="3" step="0.1" value="1.5">
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">Velocità Sunny: <span id="v-pirate-val">15</span> m/s</label>
+                        <input type="range" id="v-pirate-slider" min="10" max="25" value="15">
+                    </div>
+                    <div class="control-group" style="justify-content: flex-end; flex-direction: row; gap: 1rem;">
+                        <button class="btn-action" style="background: #ef4444;" onclick="startPursuit()">Ingaggia
+                            Battaglia!</button>
+                        <button class="btn-action" style="background: #64748b;"
+                            onclick="stopPursuit()">Ritirata!</button>
+                    </div>
+                </div>
+                <div id="pursuit-feedback" class="feedback-msg"></div>
+            </div>
+        </section>
+
+        <!-- ZENONE -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">7. Zenone: Achille e la Tartaruga</h2>
+            <div class="simulator-container">
+                <div id="zeno-viz" class="zeno-viz"
+                    style="height: 150px; flex-direction: column; align-items: flex-start; justify-content: center; gap: 20px;">
+                    <div id="zeno-achille" class="zeno-character"
+                        style="font-size: 2.5rem; position: absolute; transition: left 0.5s ease; left: 0;">🏃</div>
+                    <div id="zeno-tortoise" class="zeno-character"
+                        style="font-size: 2.5rem; position: absolute; transition: left 0.5s ease; left: 100px;">🐢</div>
+                </div>
+                <div id="zeno-line-viz" class="zeno-viz" style="height: 30px; margin-top: 50px;"></div>
+                <div id="zeno-table-container" style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 1rem; color: var(--text-muted);">
+                        <thead>
+                            <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                                <th>Step</th>
+                                <th>Distanza</th>
+                                <th>Δt</th>
+                                <th>Totale</th>
+                            </tr>
+                        </thead>
+                        <tbody id="zeno-table-body"></tbody>
+                    </table>
+                </div>
+                <div style="margin-top: 2rem; text-align: center;">
+                    <button id="zeno-btn" class="btn-action" onclick="nextZenoStep()">Prossimo Step</button>
+                    <p id="zeno-counter">Step: 0/5</p>
+                    <p id="zeno-result" style="margin-top: 1rem; font-weight: 600; color: #10B981;"></p>
+                </div>
+            </div>
+
+            <!-- GOJO INFINITY ALERT -->
+            <div class="gojo-box" style="margin: 2rem 0;">
+                <h2 style="color: #a855f7; margin-bottom: 0.5rem;">Attenzione agli Infiniti!</h2>
+                <p style="font-size: 1.1rem; color: var(--text-main); font-weight: 300;">
+                    La gestione degli infiniti in matematica e fisica può essere pericolosa per la mente umana.
+                    Suggeriamo di non giocare con lo spazio infinito a meno che tu non sia <strong>Satoru Gojo</strong>.
+                    Solo lui può padroneggiare il "Vuoto Infinito" (Muryōkūsho) grazie agli occhi del Sei.
+                </p>
+                <p style="margin-top: 1rem; font-size: 1.5rem; color: #a855f7; font-weight: 800;">領域展開</p>
+            </div>
+        </section>
+
+        <!-- QUIZ FINALE -->
+        <section id="quiz-finale" class="lesson-section quiz-container">
+            <h2 class="lesson-title" style="color: var(--cinematica-color); text-align: center;">Verifica Finale</h2>
+            <div id="quiz-box">
+                <!-- Question 1 -->
+                <div class="quiz-question">
+                    <h3>1. Unità di misura dell'accelerazione?</h3>
+                    <div class="quiz-options">
+                        <button class="quiz-btn" onclick="checkQuizAnswer(this, false)">m/s</button>
+                        <button class="quiz-btn" onclick="checkQuizAnswer(this, true)">m/s²</button>
+                        <button class="quiz-btn" onclick="checkQuizAnswer(this, false)">km/h</button>
+                    </div>
+                </div>
+                <!-- Question 2 -->
+                <div class="quiz-question" style="margin-top: 2rem;">
+                    <h3>2. Cosa rappresenta la pendenza nel grafico spazio-tempo del MRU?</h3>
+                    <div class="quiz-options">
+                        <button class="quiz-btn" onclick="checkQuizAnswer(this, true)">Velocità</button>
+                        <button class="quiz-btn" onclick="checkQuizAnswer(this, false)">Accelerazione</button>
+                        <button class="quiz-btn" onclick="checkQuizAnswer(this, false)">Posizione</button>
+                    </div>
+                </div>
+                <!-- Question 3 -->
+                <div class="quiz-question" style="margin-top: 2rem;">
+                    <h3>3. Forma del grafico spazio-tempo nel MRUA?</h3>
+                    <div class="quiz-options">
+                        <button class="quiz-btn" onclick="checkQuizAnswer(this, false)">Retta orizzontale</button>
+                        <button class="quiz-btn" onclick="checkQuizAnswer(this, true)">Parabola</button>
+                        <button class="quiz-btn" onclick="checkQuizAnswer(this, false)">Retta obliqua</button>
+                    </div>
+                </div>
+                <!-- Question 4 -->
+                <div class="quiz-question" style="margin-top: 2rem;">
+                    <h3>4. Il paradosso di Zenone si risolve perché la somma di infiniti tempi:</h3>
+                    <div class="quiz-options">
+                        <button class="quiz-btn" onclick="checkQuizAnswer(this, false)">È infinita</button>
+                        <button class="quiz-btn" onclick="checkQuizAnswer(this, false)">È zero</button>
+                        <button class="quiz-btn" onclick="checkQuizAnswer(this, true)">È finita (converge)</button>
+                    </div>
+                </div>
+                <!-- Question 5 -->
+                <div class="quiz-question" style="margin-top: 2rem;">
+                    <h3>5. Maring (MRUA) raggiunge i Pirati (MRU) grazie a:</h3>
+                    <div class="quiz-options">
+                        <button class="quiz-btn" onclick="checkQuizAnswer(this, true)">L'incremento costante della
+                            velocità</button>
+                        <button class="quiz-btn" onclick="checkQuizAnswer(this, false)">Il vento a favore</button>
+                        <button class="quiz-btn" onclick="checkQuizAnswer(this, false)">Una velocità costante più
+                            alta</button>
+                    </div>
+                </div>
+            </div>
+            <div id="quiz-feedback" class="feedback-msg"></div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Cinematica Avanzata.</p>
+    </footer>
+
+    <!-- JS -->
+    <script src="velocita-accelerazione.js"></script>
+    <script src="../../js/main.js"></script>
+</body>
+
+</html>

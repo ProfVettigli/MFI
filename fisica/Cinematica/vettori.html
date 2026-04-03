@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vettori: La Forza della Direzione - MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+        onload="renderMathInElement(document.body);"></script>
+
+    <style>
+        :root {
+            --vettori-color: #10b981;
+            --vettori-color-rgb: 16, 185, 129;
+            --vector-a: #3b82f6;
+            --vector-b: #ef4444;
+            --vector-res: #fbbf24;
+        }
+
+        .vector-canvas {
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            cursor: crosshair;
+            touch-action: none;
+            width: 100%;
+            height: 400px;
+            display: block;
+        }
+
+        .operation-card {
+            background: rgba(var(--vettori-color-rgb), 0.05);
+            border: 1px solid rgba(var(--vettori-color-rgb), 0.2);
+            padding: 1.5rem;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .operation-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .medusa-box {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.15), rgba(16, 185, 129, 0.15));
+            border-left: 6px solid #a855f7;
+            padding: 2rem;
+            border-radius: 0 16px 16px 0;
+            margin: 3rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .medusa-box::before {
+            content: "🐍";
+            position: absolute;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 5rem;
+            opacity: 0.15;
+        }
+
+        .vector-property {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+            padding: 0.8rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+        }
+
+        .property-icon {
+            width: 42px;
+            height: 42px;
+            background: var(--vettori-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            color: #0f172a;
+            flex-shrink: 0;
+            font-size: 1rem;
+        }
+
+        .method-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .method-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            padding: 1.5rem;
+        }
+
+        .method-card h4 {
+            margin-bottom: 0.8rem;
+            color: var(--vettori-color);
+        }
+
+        .formula-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 10px;
+        }
+
+        .color-a {
+            color: #3b82f6;
+        }
+
+        .color-b {
+            color: #ef4444;
+        }
+
+        .color-r {
+            color: #fbbf24;
+        }
+
+        .step-list {
+            counter-reset: step;
+            list-style: none;
+            padding: 0;
+        }
+
+        .step-list li {
+            counter-increment: step;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        .step-list li::before {
+            content: counter(step);
+            min-width: 28px;
+            height: 28px;
+            background: var(--vettori-color);
+            color: #0f172a;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .warning-card {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 14px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .method-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="sub-hero">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <a href="../cinematica.html" class="back-button" style="margin-bottom: 0;">
+                    <span class="back-icon">&larr;</span> Lezioni di Cinematica
+                </a>
+            </div>
+            <h1 class="sub-hero-title">I Vettori: <span class="gradient-text">Direzione e Forza</span></h1>
+            <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+                Dalle frecce magiche della strega Medusa alla fisica dei moti in un piano. Quando un singolo numero non
+                basta più.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- ═══════════════════════════════════════════════ -->
+        <!-- 1. SCALARI VS VETTORI                          -->
+        <!-- ═══════════════════════════════════════════════ -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">1. Scalari e Vettori: Una Questione di Informazione</h2>
+            <p class="lesson-text">
+                In fisica, non tutte le grandezze sono uguali. Alcune si descrivono con un solo numero, altre richiedono
+                anche una direzione e un verso.
+                Immagina di dover fuggire dall'Academy City inseguita dalla strega Medusa: sapere di correre a <em>10
+                    m/s</em> non basta.
+                Devi sapere <strong>verso dove</strong>!
+            </p>
+            <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem;">
+                <div class="card physics-card">
+                    <h3 style="color: #60a5fa;">🔢 Grandezze Scalari</h3>
+                    <p style="font-size: 0.95rem; color: var(--text-muted);">Definite solo da un <strong>numero</strong>
+                        e un'unità di misura. Bastano e avanzano.</p>
+                    <ul style="color: var(--text-muted); font-size: 0.9rem; padding-left: 1.5rem; margin-top: 0.5rem;">
+                        <li>Massa (70 kg)</li>
+                        <li>Temperatura (37 °C)</li>
+                        <li>Tempo (10 s)</li>
+                        <li>Energia (100 J)</li>
+                    </ul>
+                </div>
+                <div class="card physics-card" style="border-left-color: var(--vettori-color);">
+                    <h3 style="color: var(--vettori-color);">➤ Grandezze Vettoriali</h3>
+                    <p style="font-size: 0.95rem; color: var(--text-muted);">Richiedono <strong>intensità</strong>,
+                        <strong>direzione</strong> e <strong>verso</strong>. Una freccia è il loro simbolo.</p>
+                    <ul style="color: var(--text-muted); font-size: 0.9rem; padding-left: 1.5rem; margin-top: 0.5rem;">
+                        <li>Spostamento (5 m verso Nord)</li>
+                        <li>Velocità (10 m/s verso Est)</li>
+                        <li>Forza (20 N verso il basso)</li>
+                        <li>Accelerazione</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════ -->
+        <!-- 2. ANATOMIA DI UN VETTORE                      -->
+        <!-- ═══════════════════════════════════════════════ -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">2. L'Anatomia di un Vettore</h2>
+            <p class="lesson-text">
+                Graficamente, un vettore \(\vec{v}\) è una <strong>freccia</strong>. Si scrive con una freccia sopra la
+                lettera: \(\vec{v}\).
+                Il suo modulo (lunghezza) si indica con \(|\vec{v}|\) oppure semplicemente \(v\).
+                Ogni vettore ha esattamente tre caratteristiche:
+            </p>
+            <div style="margin-top: 1.5rem;">
+                <div class="vector-property">
+                    <div class="property-icon">M</div>
+                    <div>
+                        <strong>Modulo (o Intensità):</strong> la lunghezza della freccia.
+                        Indica "quanto è grande" la grandezza. È sempre un numero positivo.
+                        <span
+                            style="color: var(--text-muted); font-size: 0.85rem; display:block; margin-top: 0.3rem;">Es.
+                            la velocità può avere modulo 50 km/h</span>
+                    </div>
+                </div>
+                <div class="vector-property">
+                    <div class="property-icon">D</div>
+                    <div>
+                        <strong>Direzione:</strong> la retta su cui giace la freccia.
+                        Può essere orizzontale, verticale, o obliqua a un certo angolo.
+                        <span
+                            style="color: var(--text-muted); font-size: 0.85rem; display:block; margin-top: 0.3rem;">Es.
+                            direzione orizzontale, lungo l'asse x</span>
+                    </div>
+                </div>
+                <div class="vector-property">
+                    <div class="property-icon">V</div>
+                    <div>
+                        <strong>Verso:</strong> in quale dei due sensi punta la freccia lungo la sua direzione.
+                        <span
+                            style="color: var(--text-muted); font-size: 0.85rem; display:block; margin-top: 0.3rem;">Es.
+                            verso destra oppure verso sinistra</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box" style="margin-top: 2rem;">
+                <p style="margin: 0;">
+                    Due vettori sono <strong>uguali</strong> se e solo se hanno lo stesso modulo, la stessa direzione e
+                    lo stesso verso.
+                    La <em>posizione</em> di un vettore nel piano non conta: una freccia uguale spostata parallelamente
+                    è lo <strong>stesso vettore</strong>.
+                </p>
+            </div>
+
+            <!-- MEDUSA BOX -->
+            <div class="medusa-box">
+                <h3 style="color: #a855f7; margin-bottom: 0.8rem;">🐍 Riferimento: Medusa Gorgon — Soul Eater</h3>
+                <p class="lesson-text">
+                    <strong>Medusa Gorgon</strong> è la strega antagonista dell'anime/manga <em>Soul Eater</em> di
+                    Atsushi Ōkubo (2003-2013).
+                    Con i suoi tatuaggi a serpente, evoca le sue celebri <strong>Vector Arrows</strong>: frecce nere di
+                    magia che colpiscono gli avversari.
+                    Ogni freccia è un vettore perfetto: ha un'<em>intensità</em> (la potenza dell'attacco),
+                    una <em>direzione</em> (l'angolo dell'attacco) e un <em>verso</em> (verso la vittima).
+                    Medusa può persino sommare più Vector Arrows per aumentare la potenza — esattamente come si fa in
+                    fisica!
+                </p>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════ -->
+        <!-- 3. SOMMA: PUNTA-CODA                           -->
+        <!-- ═══════════════════════════════════════════════ -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">3. Somma di Vettori: Il Metodo Punta-Coda</h2>
+            <p class="lesson-text">
+                Il modo più intuitivo per sommare due vettori è il <strong>metodo punta-coda</strong> (o testa-coda):
+                si posiziona la coda del secondo vettore sulla punta del primo. La risultante \(\vec{r} = \vec{a} +
+                \vec{b}\)
+                va dalla coda del primo alla punta del secondo.
+            </p>
+
+            <ul class="step-list">
+                <li>Disegna il vettore \(\vec{a}\) a partire dall'origine.</li>
+                <li>Trasla il vettore \(\vec{b}\) (senza ruotarlo) in modo che la sua coda coincida con la punta di
+                    \(\vec{a}\).</li>
+                <li>Il vettore risultante \(\vec{r}\) va dall'origine (coda di \(\vec{a}\)) alla punta di \(\vec{b}\).
+                </li>
+            </ul>
+
+            <div class="operation-card">
+                <h3>🖱️ Laboratorio: Punta-Coda Interattivo</h3>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">
+                    Trascina il <strong style="color: #ef4444;">punto rosso</strong> per cambiare il vettore
+                    \(\vec{b}\).
+                    Il vettore <strong style="color: #fbbf24;">giallo</strong> è la risultante \(\vec{r} = \vec{a} +
+                    \vec{b}\).
+                </p>
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; align-items: start;">
+                    <canvas id="vectorCanvas" class="vector-canvas"></canvas>
+                    <div class="data-display" style="grid-template-columns: 1fr;">
+                        <div class="data-card" style="border-left-color: #3b82f6;">
+                            <span class="data-label">Vettore \(\vec{a}\) (Fisso)</span>
+                            <span id="vec-a-info" class="data-value" style="font-size:0.85rem;">—</span>
+                        </div>
+                        <div class="data-card" style="border-left-color: #ef4444;">
+                            <span class="data-label">Vettore \(\vec{b}\) (Mobile)</span>
+                            <span id="vec-b-info" class="data-value" style="font-size:0.85rem;">—</span>
+                        </div>
+                        <div class="data-card" style="border-left-color: #fbbf24;">
+                            <span class="data-label">Risultante \(\vec{r}\)</span>
+                            <span id="vec-r-info" class="data-value" style="font-size:0.85rem;">—</span>
+                        </div>
+                        <div class="data-card" style="border-left-color: #a855f7;">
+                            <span class="data-label">Angolo \(\vec{a}\)–\(\vec{b}\)</span>
+                            <span id="vec-angle" class="data-value" style="font-size:0.85rem;">—</span>
+                        </div>
+                        <div class="data-card" style="border-left-color: #fbbf24;">
+                            <span class="data-label">Modulo \(|\vec{r}|\)</span>
+                            <span id="vec-r-mod" class="data-value">—</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════ -->
+        <!-- 4. METODO PARALLELOGRAMMO                      -->
+        <!-- ═══════════════════════════════════════════════ -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">4. Somma di Vettori: Il Metodo del Parallelogrammo</h2>
+            <p class="lesson-text">
+                Esiste un secondo metodo grafico, equivalente al punta-coda, chiamato <strong>regola del
+                    parallelogrammo</strong>.
+                È particolarmente utile quando i due vettori partono dallo stesso punto.
+            </p>
+
+            <ul class="step-list">
+                <li>Posiziona entrambi i vettori \(\vec{a}\) e \(\vec{b}\) con la coda nell'<strong>stesso
+                        punto</strong> (l'origine).</li>
+                <li>Costruisci il parallelogrammo usando \(\vec{a}\) e \(\vec{b}\) come lati adiacenti: tracia due rette
+                    parallele e uguali.</li>
+                <li>La <strong>diagonale</strong> del parallelogrammo, partendo dall'origine, è la risultante \(\vec{r}
+                    = \vec{a} + \vec{b}\).</li>
+            </ul>
+
+            <div class="operation-card">
+                <h3>🖱️ Laboratorio: Metodo del Parallelogrammo</h3>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">
+                    Trascina il <strong style="color: #ef4444;">punto rosso</strong>. Il parallelogrammo tratteggiato e
+                    la diagonale <strong style="color: #fbbf24;">gialla</strong> mostrano la risultante.
+                </p>
+                <canvas id="paraCanvas" class="vector-canvas"></canvas>
+            </div>
+
+            <div class="info-box">
+                <p style="margin: 0;">
+                    I due metodi (punta-coda e parallelogrammo) sono <strong>completamente equivalenti</strong> e danno
+                    sempre la stessa risultante.
+                    La somma vettoriale è anche <strong>commutativa</strong>: \(\vec{a} + \vec{b} = \vec{b} + \vec{a}\).
+                </p>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════ -->
+        <!-- 5. SOTTRAZIONE                                 -->
+        <!-- ═══════════════════════════════════════════════ -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">5. Sottrazione tra Vettori</h2>
+            <p class="lesson-text">
+                La <strong>differenza</strong> di due vettori si ottiene sommando il vettore opposto.
+                Il vettore opposto di \(\vec{b}\) è \(-\vec{b}\): stesso modulo e direzione, verso invertito.
+            </p>
+
+            <div class="formula-row">
+                <span>\(\vec{a} - \vec{b} = \vec{a} + (-\vec{b})\)</span>
+            </div>
+
+            <div class="method-grid">
+                <div class="method-card">
+                    <h4>Metodo grafico</h4>
+                    <ol class="step-list">
+                        <li>Inverti il verso di \(\vec{b}\) per ottenere \(-\vec{b}\).</li>
+                        <li>Somma \(\vec{a}\) e \(-\vec{b}\) col metodo punta-coda.</li>
+                    </ol>
+                </div>
+                <div class="method-card">
+                    <h4>Metodo analitico (componenti)</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);">
+                        \[\vec{a} - \vec{b} = (a_x - b_x,\ a_y - b_y)\]
+                        Si sottraggono le componenti asse per asse.
+                    </p>
+                </div>
+            </div>
+
+            <div class="medusa-box">
+                <h3 style="color: #a855f7; margin-bottom: 0.8rem;">🐍 Soul Eater: Inversione di Rotta</h3>
+                <p class="lesson-text">
+                    Nel momento in cui Maka e Soul riescono a contrastare un Vector Arrow di Medusa,
+                    in pratica stanno applicando un vettore opposto: stessa potenza, stessa direzione, verso invertito.
+                    La risultante è zero — l'attacco viene annullato! La sottrazione vettoriale in azione.
+                </p>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════ -->
+        <!-- 6. SCOMPOSIZIONE                               -->
+        <!-- ═══════════════════════════════════════════════ -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">6. Scomposizione nelle Componenti</h2>
+            <p class="lesson-text">
+                Ogni vettore può essere <strong>scomposto</strong> in due componenti perpendicolari, una lungo l'asse
+                \(x\) e una lungo l'asse \(y\).
+                È il processo inverso della somma: partiamo da \(\vec{v}\) e troviamo i vettori-componente \(\vec{v}_x\)
+                e \(\vec{v}_y\).
+            </p>
+
+            <div class="info-box">
+                <p style="margin: 0;">
+                    \[v_x = |\vec{v}| \cos(\theta)\]
+                    \[v_y = |\vec{v}| \sin(\theta)\]
+                    dove \(\theta\) è l'angolo che il vettore forma con l'asse \(x\) positivo.
+                </p>
+            </div>
+
+            <p class="lesson-text" style="margin-top: 1.5rem;">
+                Conoscendo le componenti, si può ricostruire il modulo usando il <strong>Teorema di Pitagora</strong>:
+            </p>
+            <div class="info-box">
+                <p style="margin: 0;">
+                    \[|\vec{v}| = \sqrt{v_x^2 + v_y^2}\]
+                </p>
+            </div>
+
+            <!-- ESERCIZIO 1: SCOMPOSIZIONE -->
+            <div class="operation-card" style="margin-top: 2rem;">
+                <h3>✏️ Esercizio 1: Scomposizione di un Vettore</h3>
+                <p class="lesson-text">
+                    Un vettore \(\vec{F}\) ha modulo \(|\vec{F}| = 50 \, N\) e forma un angolo di \(\theta = 30°\) con
+                    l'asse \(x\) positivo.
+                    Calcola le componenti \(F_x\) e \(F_y\).
+                </p>
+                <button class="btn-action" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;"
+                    onclick="toggleSolution('sol-scomp')">Mostra Soluzione</button>
+                <div id="sol-scomp"
+                    style="display:none; margin-top: 1rem; color: #10B981; font-family: monospace; line-height: 2;">
+                    \(F_x = 50 \cdot \cos(30°) = 50 \cdot \frac{\sqrt{3}}{2} \approx \mathbf{43.3 \, N}\) <br>
+                    \(F_y = 50 \cdot \sin(30°) = 50 \cdot \frac{1}{2} = \mathbf{25 \, N}\)
+                </div>
+            </div>
+
+            <!-- ESERCIZIO 2: MODULO -->
+            <div class="operation-card">
+                <h3>✏️ Esercizio 2: Trovare il Modulo con Pitagora</h3>
+                <p class="lesson-text">
+                    Uno spostamento \(\vec{s}\) ha componenti \(s_x = 6 \, m\) e \(s_y = 8 \, m\).
+                    Calcola il modulo \(|\vec{s}|\) sfruttando il Teorema di Pitagora.
+                </p>
+                <button class="btn-action" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;"
+                    onclick="toggleSolution('sol-modulo')">Mostra Soluzione</button>
+                <div id="sol-modulo"
+                    style="display:none; margin-top: 1rem; color: #10B981; font-family: monospace; line-height: 2;">
+                    \(|\vec{s}| = \sqrt{s_x^2 + s_y^2} = \sqrt{6^2 + 8^2} = \sqrt{36 + 64} = \sqrt{100} = \mathbf{10 \,
+                    m}\)
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════ -->
+        <!-- 7. PRODOTTO SCALARE × VETTORE                  -->
+        <!-- ═══════════════════════════════════════════════ -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">7. Prodotto di uno Scalare per un Vettore</h2>
+            <p class="lesson-text">
+                Moltiplicare un vettore \(\vec{v}\) per uno scalare \(k\) produce un nuovo vettore con modulo
+                <em>scalato</em>:
+            </p>
+            <div class="info-box">
+                <p style="margin: 0;">
+                    \[k \vec{v} = (k \cdot v_x,\ k \cdot v_y)\]
+                    Il modulo diventa \(|k| \cdot |\vec{v}|\). La direzione resta uguale.
+                    Se \(k < 0\), anche il verso si inverte. </p>
+            </div>
+
+            <div class="operation-card">
+                <h3>🖱️ Laboratorio: Scalare \(\times\) Vettore</h3>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.5rem;">
+                    Sposta lo slider per cambiare il valore di \(k\). Osserva come il vettore risultante si allunga, si
+                    accorcia o inverte il verso!
+                </p>
+                <div class="grid" style="grid-template-columns: 2fr 1fr; gap: 2rem; align-items: start;">
+                    <canvas id="scalarCanvas" class="vector-canvas" style="height: 250px;"></canvas>
+                    <div class="data-display" style="grid-template-columns: 1fr;">
+                        <div class="control-group">
+                            <label class="control-label">Scalare \(k\): <span id="scalar-k-val">1.5</span></label>
+                            <input type="range" id="scalar-k-slider" min="-3" max="3" step="0.1" value="1.5">
+                        </div>
+                        <div class="data-card" style="border-left-color: #3b82f6;">
+                            <span class="data-label">Vettore \(\vec{v}\)</span>
+                            <span class="data-value">(50, 0)</span>
+                        </div>
+                        <div class="data-card" style="border-left-color: #fbbf24;">
+                            <span class="data-label">Risultato \(k\vec{v}\)</span>
+                            <span id="scalar-res-info" class="data-value">(75, 0)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="method-grid" style="margin-top: 1.5rem;">
+                <div class="method-card">
+                    <h4>\(k = 2\) — vettore doppio</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);">La freccia è il doppio più lunga, stessa
+                        direzione e verso.</p>
+                </div>
+                <div class="method-card">
+                    <h4>\(k = -1\) — vettore opposto</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);">La freccia ha stesso modulo ma verso
+                        invertito. Questo è \(-\vec{v}\).</p>
+                </div>
+            </div>
+            <p class="lesson-text" style="margin-top: 1.5rem;">
+                <strong>Esempio fisico:</strong> La seconda legge di Newton \(\vec{F} = m \vec{a}\) è proprio un
+                prodotto scalare-vettore.
+                La massa \(m\) (scalare) moltiplica l'accelerazione \(\vec{a}\) (vettore): la forza ha la stessa
+                direzione dell'accelerazione.
+            </p>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════ -->
+        <!-- 8. PRODOTTO SCALARE ·                          -->
+        <!-- ═══════════════════════════════════════════════ -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">8. Prodotto Scalare \(\vec{a} \cdot \vec{b}\)</h2>
+            <p class="lesson-text">
+                Il prodotto scalare tra due vettori restituisce un <strong>numero</strong> (scalare), non un vettore.
+                Misura quanto i due vettori "vanno nella stessa direzione".
+            </p>
+
+            <div class="method-grid">
+                <div class="method-card">
+                    <h4>Definizione Geometrica</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);">
+                        \[\vec{a} \cdot \vec{b} = |\vec{a}| \cdot |\vec{b}| \cdot \cos(\theta)\]
+                        dove \(\theta\) è l'angolo <em>compreso</em> tra i due vettori.
+                    </p>
+                </div>
+                <div class="method-card">
+                    <h4>Definizione con Componenti</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);">
+                        \[\vec{a} \cdot \vec{b} = a_x b_x + a_y b_y\]
+                        Si moltiplicano le componenti omologhe e si sommano.
+                    </p>
+                </div>
+            </div>
+
+            <div class="grid" style="margin-top: 1.5rem;">
+                <div class="data-card">
+                    <h4 style="color: #10b981; margin-bottom: 0.5rem;">Proprietà chiave</h4>
+                    <ul style="font-size: 0.9rem; color: var(--text-muted); padding-left: 1.2rem;">
+                        <li><strong>Commutativo:</strong> \(\vec{a} \cdot \vec{b} = \vec{b} \cdot \vec{a}\)</li>
+                        <li><strong>Perpendicolarità:</strong> Se \(\vec{a} \cdot \vec{b} = 0\), i vettori sono perpendicolari (\(\theta = 90°\)), poiché \(\cos(90°) = 0\).</li>
+                        <li>Se \(\theta = 0°\): \(\vec{a} \cdot \vec{b} = |\vec{a}| |\vec{b}|\) (valore massimo)</li>
+                        <li>Se \(\theta = 180°\): \(\vec{a} \cdot \vec{b} = -|\vec{a}| |\vec{b}|\) (valore minimo)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <p class="lesson-text" style="margin-top: 1.5rem;">
+                <strong>Esempio fisico:</strong> Il <strong>lavoro</strong> di una forza è un prodotto scalare: \(W =
+                \vec{F} \cdot \vec{s} = |\vec{F}||\vec{s}|\cos\theta\).
+                Una forza perpendicolare allo spostamento non compie lavoro (W = 0)!
+            </p>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════ -->
+        <!-- 9. PRODOTTO VETTORIALE ×                       -->
+        <!-- ═══════════════════════════════════════════════ -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">9. Prodotto Vettoriale \(\vec{a} \times \vec{b}\)</h2>
+            <p class="lesson-text">
+                Il prodotto vettoriale tra due vettori restituisce un <strong>nuovo vettore</strong>, perpendicolare al
+                piano che contiene i due vettori originali.
+            </p>
+
+            <div class="method-grid">
+                <div class="method-card">
+                    <h4>Modulo</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);">
+                        \[|\vec{a} \times \vec{b}| = |\vec{a}| \cdot |\vec{b}| \cdot \sin(\theta)\]
+                        L'area del parallelogrammo costruito su \(\vec{a}\) e \(\vec{b}\).
+                    </p>
+                </div>
+                <div class="method-card">
+                    <h4>Direzione e Verso</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);">
+                        Perpendicolare al piano di \(\vec{a}\) e \(\vec{b}\). Esistono due metodi comuni per determinare il verso:
+                    </p>
+                    <ul style="font-size: 0.85rem; color: var(--text-muted); padding-left: 1.2rem; margin-top: 0.5rem;">
+                        <li><strong>Regola della mano destra:</strong> posiziona l'indice su \(\vec{a}\) e il medio su \(\vec{b}\); il pollice teso indicherà il verso del risultato.</li>
+                        <li><strong>Regola della vite:</strong> immagina di ruotare una vite destrorsa portando \(\vec{a}\) su \(\vec{b}\) percorrendo l'angolo minore; la direzione in cui la vite avanza (si avvita o si svita) indica il verso del prodotto.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="warning-card" style="margin-top: 1.5rem;">
+                <h4 style="color: #ef4444; margin-bottom: 0.8rem;">⚠️ Il Prodotto Vettoriale è ANTICOMMUTATIVO</h4>
+                <p style="color: var(--text-muted); font-size: 0.95rem;">
+                    A differenza del prodotto scalare, il vettoriale <strong>non è commutativo</strong>. Scambiando
+                    l'ordine, il risultato cambia di segno:
+                </p>
+                <div class="formula-row" style="margin-top: 1rem;">
+                    <span style="font-size: 1.2rem;">\(\vec{a} \times \vec{b} = \mathbf{-}(\vec{b} \times
+                        \vec{a})\)</span>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.8rem;">
+                    Il modulo è lo stesso, ma il verso è invertito: il prodotto vettoriale è <strong>anticommutativo</strong>.
+                </p>
+                <div style="background: rgba(var(--vettori-color-rgb), 0.1); padding: 1rem; border-radius: 8px; margin-top: 1rem; border-left: 3px solid #fbbf24;">
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0;">
+                        <strong>Nota Avanzata:</strong> In fisica, il risultato di un prodotto vettoriale non è propriamente un "vettore", ma uno <strong>pseudovettore</strong> (o vettore assiale). A differenza dei vettori "polari" (come lo spostamento), se invertiamo gli assi del sistema di riferimento (operazione di parità, simile a guardarsi allo specchio), lo pseudovettore non si inverte come farebbe un vettore normale, mantenendo il verso definito dalla regola della mano destra.
+                    </p>
+                </div>
+            </div>
+
+            <div class="info-box" style="margin-top: 1.5rem;">
+                <p style="margin: 0; font-size: 0.95rem;">
+                    <strong>Parallelismo:</strong> Se il prodotto vettoriale è nullo (\(\vec{a} \times \vec{b} = \vec{0}\)), significa che i vettori sono <strong>paralleli</strong> (\(\theta = 0°\)) o antiparalleli (\(180°\)), poiché \(\sin(0°) = 0\).
+                    <br><br>
+                    <strong>Esempio fisico:</strong> Il <strong>momento torcente</strong> (torque) di una forza è \(\vec{\tau} = \vec{r} \times \vec{F}\). Una forza applicata radialmente (parallela a \(\vec{r}\)) non produce rotazione.
+                </p>
+            </div>
+
+            <div class="medusa-box">
+                <h3 style="color: #a855f7; margin-bottom: 0.8rem;">🐍 Vector Boost — Soul Eater</h3>
+                <p class="lesson-text">
+                    Il Vector Boost di Medusa moltiplica le sue frecce vettoriali. Ma attenzione: quando lancia due
+                    arrows in sequenza su piani diversi,
+                    il risultato è perpendicolare ad entrambi — come il prodotto vettoriale! Invertire l'ordine delle
+                    frecce inverte la perpendicular direction dell'attacco.
+                    Medusa lo sa e usa questo per colpire da angolazioni impreviste.
+                </p>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════ -->
+        <!-- 10. RIEPILOGO                                  -->
+        <!-- ═══════════════════════════════════════════════ -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">10. Riepilogo delle Operazioni</h2>
+            <div class="grid" style="grid-template-columns: repeat(2, 1fr); gap: 1.5rem;">
+                <div class="data-card" style="border-left-color: #3b82f6;">
+                    <h4 style="color: #3b82f6;">Somma \(\vec{a} + \vec{b}\)</h4>
+                    <p style="font-size: 0.85rem; color: var(--text-muted);">Metodo punta-coda o parallelogrammo.
+                        Risultato: vettore. Commutativa.</p>
+                </div>
+                <div class="data-card" style="border-left-color: #ef4444;">
+                    <h4 style="color: #ef4444;">Sottrazione \(\vec{a} - \vec{b}\)</h4>
+                    <p style="font-size: 0.85rem; color: var(--text-muted);">Somma con il vettore opposto. \(\vec{a} +
+                        (-\vec{b})\).</p>
+                </div>
+                <div class="data-card" style="border-left-color: #a855f7;">
+                    <h4 style="color: #a855f7;">Scalare × Vettore \(k\vec{v}\)</h4>
+                    <p style="font-size: 0.85rem; color: var(--text-muted);">Scala il modulo. Inverte il verso se \(k <
+                            0\). Risultato: vettore.</p>
+                </div>
+                <div class="data-card" style="border-left-color: #fbbf24;">
+                    <h4 style="color: #fbbf24;">Prodotto Scalare \(\vec{a} \cdot \vec{b}\)</h4>
+                    <p style="font-size: 0.85rem; color: var(--text-muted);">\(|\vec{a}||\vec{b}|\cos\theta\).
+                        Risultato: <strong>numero</strong>. Commutativo.</p>
+                </div>
+                <div class="data-card" style="border-left-color: #10b981; grid-column: span 2;">
+                    <h4 style="color: #10b981;">Prodotto Vettoriale \(\vec{a} \times \vec{b}\)</h4>
+                    <p style="font-size: 0.85rem; color: var(--text-muted);">\(|\vec{a}||\vec{b}|\sin\theta\),
+                        perpendicolare al piano. Risultato: <strong>vettore</strong>. <strong
+                            style="color: #ef4444;">Anticommutativo</strong>: \(\vec{a} \times \vec{b} = -\vec{b} \times
+                        \vec{a}\).</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════ -->
+        <!-- QUIZ                                           -->
+        <!-- ═══════════════════════════════════════════════ -->
+        <section class="lesson-section quiz-container">
+            <h2 class="lesson-title" style="text-align: center; color: var(--vettori-color);">Verifica Finale sui
+                Vettori</h2>
+            <div id="quiz-box">
+
+                <div class="quiz-question">
+                    <h3>1. Quale di queste è una grandezza vettoriale?</h3>
+                    <div class="quiz-options">
+                        <button class="quiz-btn" onclick="checkQuizAnswer(this, false)">Temperatura (37 °C)</button>
+                        <button class="quiz-btn" onclick="checkQuizAnswer(this, true)">Forza (20 N verso il
+                            basso)</button>
+                        <button class="quiz-btn" onclick="checkQuizAnswer(this, false)">Energia (100 J)</button>
+                        <button class="quiz-btn" onclick="checkQuizAnswer(this, false)">Massa (5 kg)</button>
+                    </div>
+                </div>
+
+                <div class="quiz-question" style="margin-top: 2rem;">
+                    <h3>2. Un vettore è definito completamente da:</h3>
+                    <div class="quiz-options">
+                        <button class="quiz-btn" onclick="checkQuizAnswer(this, false)">Solo il modulo</button>
+                        <button class="quiz-btn" onclick="checkQuizAnswer(this, false)">Modulo e direzione</button>
+                        <button class="quiz-btn" onclick="checkQuizAnswer(this, true)">Modulo, direzione e
+                            verso</button>
+                    </div>
+                </div>
+
+                <div class="quiz-question" style="margin-top: 2rem;">
+                    <h3>3. Con il metodo del parallelogrammo, la risultante \(\vec{r} = \vec{a} + \vec{b}\) è:</h3>
+                    <div class="quiz-options">
+                        <button class="quiz-btn" onclick="checkQuizAnswer(this, false)">Uno dei lati del
+                            parallelogrammo</button>
+                        <button class="quiz-btn" onclick="checkQuizAnswer(this, true)">La diagonale del parallelogrammo,
+                            dall'origine</button>
+                        <button class="quiz-btn" onclick="checkQuizAnswer(this, false)">La diagonale più corta del
+                            parallelogrammo</button>
+                    </div>
+                </div>
+
+                <div class="quiz-question" style="margin-top: 2rem;">
+                    <h3>4. Un vettore \(\vec{v}\) ha \(v_x = 3\) e \(v_y = 4\). Qual è il suo modulo \(|\vec{v}|\)?</h3>
+                    <div class="quiz-options">
+                        <button class="quiz-btn" onclick="checkQuizAnswer(this, false)">7</button>
+                        <button class="quiz-btn" onclick="checkQuizAnswer(this, true)">5</button>
+                        <button class="quiz-btn" onclick="checkQuizAnswer(this, false)">12</button>
+                        <button class="quiz-btn" onclick="checkQuizAnswer(this, false)">1</button>
+                    </div>
+                </div>
+
+                <div class="quiz-question" style="margin-top: 2rem;">
+                    <h3>5. Il prodotto scalare \(\vec{a} \cdot \vec{b}\) è nullo quando:</h3>
+                    <div class="quiz-options">
+                        <button class="quiz-btn" onclick="checkQuizAnswer(this, false)">I due vettori sono
+                            paralleli</button>
+                        <button class="quiz-btn" onclick="checkQuizAnswer(this, true)">I due vettori sono perpendicolari
+                            (\(\theta = 90°\))</button>
+                        <button class="quiz-btn" onclick="checkQuizAnswer(this, false)">I due vettori hanno lo stesso
+                            modulo</button>
+                    </div>
+                </div>
+
+                <div class="quiz-question" style="margin-top: 2rem;">
+                    <h3>6. Il prodotto vettoriale \(\vec{a} \times \vec{b}\) è anticommutativo. Cosa significa?</h3>
+                    <div class="quiz-options">
+                        <button class="quiz-btn" onclick="checkQuizAnswer(this, false)">\(\vec{a} \times \vec{b} =
+                            \vec{b} \times \vec{a}\)</button>
+                        <button class="quiz-btn" onclick="checkQuizAnswer(this, true)">\(\vec{a} \times \vec{b} =
+                            -\vec{b} \times \vec{a}\)</button>
+                        <button class="quiz-btn" onclick="checkQuizAnswer(this, false)">\(\vec{a} \times \vec{b} = 0\)
+                            sempre</button>
+                    </div>
+                </div>
+
+                <div class="quiz-question" style="margin-top: 2rem;">
+                    <h3>7. In Soul Eater, le "Vector Arrows" di Medusa Gorgon sono un buon esempio di vettore perché:
+                    </h3>
+                    <div class="quiz-options">
+                        <button class="quiz-btn" onclick="checkQuizAnswer(this, false)">Sono molto veloci</button>
+                        <button class="quiz-btn" onclick="checkQuizAnswer(this, false)">Sono magiche</button>
+                        <button class="quiz-btn" onclick="checkQuizAnswer(this, true)">Hanno modulo (potenza), direzione
+                            e verso (verso la vittima)</button>
+                    </div>
+                </div>
+
+            </div>
+            <div id="quiz-feedback" class="feedback-msg" style="margin-top: 2rem;"></div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Algebra Vettoriale e Fisica.</p>
+    </footer>
+
+    <script src="vettori.js"></script>
+    <script src="../../js/main.js"></script>
+</body>
+
+</html>
