@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLIL: Linus Torvalds - MFI Informatica</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        .clil-badge {
+            background-color: #3b82f6; 
+            color: white; 
+            font-weight: bold; 
+            padding: 0.2rem 0.8rem; 
+            border-radius: 20px; 
+            font-size: 0.9rem;
+            vertical-align: middle;
+            margin-right: 1rem;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .comparison-card {
+            padding: 2rem;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .glossary-term {
+            border-bottom: 1px dotted #10b981;
+            cursor: help;
+            color: #10b981;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="sub-hero" style="background: linear-gradient(rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.95)), url('https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80'); background-size: cover; padding: 6rem 0 3rem;">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2.5rem;">
+                <a href="informatica.html" class="back-button" style="margin-bottom: 0;">
+                    <span style="font-size:1.2rem; margin-right: 0.5rem;">&larr;</span> Back to Informatics
+                </a>
+            </div>
+            <h1 style="font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 800; margin-bottom: 1.5rem;"><span class="clil-badge">CLIL / ENS</span> Linus <span style="color: #f59e0b;">Torvalds</span></h1>
+            <p style="font-size: 1.25rem; color: var(--text-muted); max-width: 800px; line-height: 1.6;">
+                The story of a practical man who gave away his operating system for free, and ended up ruling the Internet.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <!-- THE CONTRAST -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #3b82f6;">1. The Visionaries vs The Pragmatist</h2>
+            <p class="lesson-text">
+                When we think about the pioneers of the digital revolution, two names instantly come to mind: <strong>Steve Jobs</strong> (Apple) and <strong>Bill Gates</strong> (Microsoft). They were unparalleled visionaries and formidable entrepreneurs. They knew how to sell a dream, build closed ecosystems, and create multi-billion dollar business empires based on <span class="glossary-term" title="Software Proprietario: sorgente chiuso a pagamento">proprietary software</span>.
+            </p>
+            <p class="lesson-text">
+                Then, there is a Finnish university student named <strong>Linus Torvalds</strong>. Linus is fundamentally different. He is not a marketer or a charismatic CEO; he is a <em>down-to-earth, highly practical nerd</em>. He didn't want to change the world or become a billionaire. He just wanted a working operating system for his personal computer.
+            </p>
+
+            <div class="comparison-grid">
+                <div class="comparison-card" style="border-top: 4px solid #ef4444;">
+                    <h3 style="color: #ef4444; margin-bottom: 1rem; text-align: center;">Jobs & Gates</h3>
+                    <ul style="font-size: 0.95rem; line-height: 1.8; color: #cbd5e1; list-style-type: '👔 ';">
+                        <li><strong>Business Mindset:</strong> Maximizing profits and market shares.</li>
+                        <li><strong>Secrecy:</strong> The source code is an industrial secret.</li>
+                        <li><strong>Patents:</strong> Aggressively patented every software feature.</li>
+                        <li><strong>Goal:</strong> Building massive corporate monopolies.</li>
+                    </ul>
+                </div>
+                <div class="comparison-card" style="border-top: 4px solid #10b981;">
+                    <h3 style="color: #10b981; margin-bottom: 1rem; text-align: center;">Linus Torvalds</h3>
+                    <ul style="font-size: 0.95rem; line-height: 1.8; color: #cbd5e1; list-style-type: '🐧 ';">
+                        <li><strong>Engineering Mindset:</strong> Maximizing efficiency and performance.</li>
+                        <li><strong>Openness:</strong> The source code belongs to humanity.</li>
+                        <li><strong>Collaboration:</strong> Allowed millions of strangers to edit his code freely.</li>
+                        <li><strong>Goal:</strong> "Just for fun" (as stated in his autobiography).</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- THE CREATION OF LINUX -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #f59e0b;">2. The Birth of Linux (1991)</h2>
+            <p class="lesson-text">
+                In 1991, frustrated because he couldn't afford a high-end UNIX system, Torvalds began writing his own operating system kernel as a simple hobby. On August 25, 1991, he posted a now-legendary message on a Usenet newsgroup:
+            </p>
+            <blockquote style="background: rgba(255,255,255,0.05); padding: 1.5rem; border-left: 4px solid #f59e0b; font-family: 'Fira Code', monospace; font-size: 0.95rem; color: #9ca3af; margin: 1.5rem 0; border-radius: 8px;">
+                "Hello everybody out there... I'm doing a (free) operating system (just a hobby, won't be big and professional like gnu) for 386(486) AT clones. [...]"
+            </blockquote>
+            <p class="lesson-text">
+                He named it <strong>Linux</strong> (Linus + UNIX). Instead of selling it, he uploaded the <span class="glossary-term" title="Codice Sorgente">Source Code</span> to the internet, embracing the <strong>Open Source</strong> philosophy. He invited developers worldwide to find bugs and suggest improvements. What started as "just a hobby" exploded. Driven by a global community of volunteers, Linux evolved at a terrifying speed, becoming far more stable and secure than any commercial alternative. Today, Linux runs all Android phones, most supercomputers, server farms, smart TVs, and the internet infrastructure itself.
+            </p>
+        </section>
+
+        <!-- GIT AND GITHUB -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #a855f7;">3. The Second Revolution: Git and GitHub</h2>
+            <p class="lesson-text">
+                Creating the most important Operating System in the world was not enough. In 2005, Torvalds faced a practical problem: too many developers were sending him code changes for Linux, and managing all those files was becoming a nightmare.
+            </p>
+            <p class="lesson-text">
+                Over a single weekend, because he was unhappy with existing tools, he sat down and programmed <strong>Git</strong>. Git is a Version Control System: a tool that tracks every single modification made to a file, allowing thousands of programmers to work on the exact same project simultaneously without overwriting each other's work.
+            </p>
+
+            <div style="background: rgba(168, 85, 247, 0.05); padding: 1.5rem; border-radius: 12px; border: 1px dashed rgba(168, 85, 247, 0.4); margin-top: 1.5rem;">
+                <h4 style="color: #a855f7; margin-bottom: 0.5rem; font-size: 1.2rem;">What about GitHub?</h4>
+                <p style="font-size: 0.95rem; line-height: 1.6; margin: 0;">
+                    While Linus created <em>Git</em> (the underlying technology), he did <strong>not</strong> create <strong>GitHub</strong>. GitHub is a commercial website (a hub), created by third-party developers, designed to host millions of Git repositories in the cloud with a nice graphical interface. It became the "Facebook of Programmers".<br><br>
+                    <strong>The Ultimate Irony:</strong> In 2018, Microsoft—the ultimate champion of proprietary software—purchased GitHub for a staggering $7.5 Billion! Microsoft currently owns the largest platform hosting Open Source code, ironically heavily relying on Torvalds' own invention.
+                </p>
+            </div>
+        </section>
+
+        <!-- THE FINAL VICTORY -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #10b981;">4. The Open Source Victory</h2>
+            <p class="lesson-text">
+                For over a decade, Torvalds' open-source philosophy was engaged in a holy war against proprietary software. In 2001, Microsoft's CEO Steve Ballmer famously stated: <em>"Linux is a cancer that attaches itself in an intellectual property sense to everything it touches."</em>
+            </p>
+
+            <div style="background: rgba(16, 185, 129, 0.05); padding: 2rem; border-radius: 12px; border-left: 4px solid #10b981; margin-top: 2rem; text-align: center;">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">🏆</div>
+                <h3 style="color: #10b981; margin-bottom: 1rem;">Fast Forward to Today</h3>
+                <p style="font-size: 1rem; line-height: 1.6; max-width: 800px; margin: 0 auto; color: #cbd5e1;">
+                    The war is over. Open Source won aggressively. Today, the world's most profitable, multi-billion dollar companies (including Google, Amazon, Facebook, and yes, even Microsoft) <strong>must absolutely rely on Linux</strong>. Microsoft's own cloud computing platform, <em>Azure</em>, runs more Linux servers than Windows servers! The practical, no-nonsense approach of a Finnish student proved to be far more scalable, secure, and democratic than any closed, profit-driven corporate lab.
+                </p>
+            </div>
+        </section>
+
+        <!-- QUIZ -->
+        <section id="quiz-finale" class="lesson-section quiz-container">
+            <h2 class="lesson-title" style="color: #3b82f6; text-align: center;">Comprehension Quiz (5 Questions)</h2>
+            <p class="lesson-text" style="text-align: center; font-size: 0.95rem; margin-bottom: 2rem;">Test your knowledge on Linus Torvalds and the Open Source history.</p>
+            <div id="quiz-area"></div>
+            <div id="quiz-score" class="feedback-msg" style="text-align: center; font-size: 1.2rem; margin-top: 2rem; font-weight: bold;"></div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione Informatica.</p>
+    </footer>
+
+    <!-- JS -->
+    <script src="clil-linus-torvalds.js"></script>
+    <script src="../js/main.js"></script>
+</body>
+
+</html>

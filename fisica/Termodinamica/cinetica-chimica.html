@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cinetica Chimica - MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap"
+        rel="stylesheet">
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+        onload="renderMathInElement(document.body);"></script>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        .quote-box {
+            background: rgba(16, 185, 129, 0.05);
+            border-left: 4px solid #10b981;
+            padding: 2rem;
+            margin: 3rem 0;
+            font-style: italic;
+            border-radius: 0 16px 16px 0;
+            color: #6ee7b7;
+            line-height: 1.6;
+        }
+
+        .kinetic-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .kinetic-formula {
+            font-size: 1.4rem;
+            color: #10b981;
+            margin: 1rem 0;
+        }
+
+        #kinetics-canvas {
+            background: #0f172a;
+            border-radius: 16px;
+            width: 100%;
+            height: 400px;
+            display: block;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .controls-container {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-top: 1rem;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="sub-hero"
+        style="background: linear-gradient(rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.95)), url('https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&q=80'); background-size: cover; padding: 6rem 0 3rem;">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2.5rem;">
+                <a href="termodinamica.html" class="back-button" style="margin-bottom: 0;">
+                    <span style="font-size:1.2rem; margin-right: 0.5rem;">&larr;</span> Torna alla Termodinamica
+                </a>
+            </div>
+            <h1 style="font-size: clamp(3rem, 6vw, 5rem); font-weight: 800; margin-bottom: 1.5rem;">Cinetica <span
+                    style="color: #10b981;">Chimica</span></h1>
+            <p style="font-size: 1.25rem; color: var(--text-muted); max-width: 800px; line-height: 1.6;">
+                Interdisciplinarietà: come la termodinamica incontra la chimica per determinare la velocità e i
+                meccanismi delle reazioni.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- VELOCITA DI REAZIONE -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">1. La Velocità di Reazione</h2>
+            <p class="lesson-text">
+                Mentre la termodinamica ci dice <strong>se</strong> una reazione può avvenire (attraverso la variazione
+                di energia libera \(\Delta G\)), non ci dice <strong>quando</strong> avverrà. Una reazione
+                termodinamicamente favorita potrebbe richiedere millenni per completarsi. La <strong>Cinetica
+                    Chimica</strong> studia il tempo e la velocità con cui i reagenti si trasformano in prodotti.
+            </p>
+            <div
+                style="background: rgba(255,255,255,0.02); padding: 2.5rem; border-radius: 20px; text-align: center; margin: 2rem 0;">
+                <p style="font-size: 1.2rem; color: var(--text-muted); margin-bottom: 1rem;">Definizione di Velocità
+                    (\(v\))</p>
+                <div style="font-size: 2.5rem; font-family: 'Fira Code', monospace; color: #10b981;">
+                    \(v = -\frac{\Delta [Reagenti]}{\Delta t} = \frac{\Delta [Prodotti]}{\Delta t}\)
+                </div>
+            </div>
+            <p class="lesson-text">
+                La velocità si esprime comunemente in \(mol / (L \cdot s)\). Il segno negativo per i reagenti indica che
+                la loro concentrazione diminuisce nel tempo.
+            </p>
+            <div
+                style="background: rgba(245, 158, 11, 0.05); border-left: 3px solid #f59e0b; padding: 1.5rem; border-radius: 12px; margin-top: 1.5rem;">
+                <h4 style="color: #f59e0b; margin-bottom: 0.5rem;">Attenzione: Spontaneo non significa Veloce!</h4>
+                <p style="font-size: 0.95rem; margin: 0; line-height: 1.6;">
+                    Esistono reazioni che dal punto di vista termodinamico sono <strong>perfettamente spontanee
+                        (\(\Delta G < 0\))</strong>, ma avvengono con tempi talmente lunghi da risultare quasi
+                            "invisibili". Un classico esempio è la trasformazione del <strong>diamante in
+                                grafite</strong>. A temperatura e pressione ambiente, il diamante è instabile e tende
+                            per natura a diventare banale grafite. Tuttavia, l'energia di attivazione (cioè la barriera)
+                            è talmente alta che la velocità di reazione è approssimabile a zero: potremmo dover
+                            aspettare miliardi di anni per vedere l'anello smantellarsi. Un altro esempio concreto è la
+                            lentissima degradazione chimica del vetro o l'ingiallimento e decomposizione molto lenta
+                            della carta nei millenni.
+                </p>
+            </div>
+        </section>
+
+        <!-- TEORIA DEGLI URTI E ENERGIA DI ATTIVAZIONE -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">2. Teoria degli Urti e Energia di Attivazione</h2>
+            <p class="lesson-text">
+                Affinché una reazione avvenga, le molecole dei reagenti devono collidere tra loro. Ma non tutti gli urti
+                sono efficaci! Devono soddisfare due requisiti:
+            </p>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.5rem;">
+                <div
+                    style="background: rgba(16, 185, 129, 0.05); padding: 1.5rem; border-radius: 12px; border-left: 3px solid #10b981;">
+                    <h3 style="color: #10b981; margin-bottom: 0.5rem;">Fattore Sterico</h3>
+                    <p style="font-size: 0.9rem;">Le molecole devono urtarsi con la giusta orientazione spaziale.
+                        Immagina due chiavi che cercano di entrare in due serrature distinte durante uno scontro.</p>
+                </div>
+                <div
+                    style="background: rgba(245, 158, 11, 0.05); padding: 1.5rem; border-radius: 12px; border-left: 3px solid #f59e0b;">
+                    <h3 style="color: #f59e0b; margin-bottom: 0.5rem;">Fattore Energetico</h3>
+                    <p style="font-size: 0.9rem;">L'urto deve essere sufficientemente violento da rompere i legami
+                        chimici esistenti. L'energia minima necessaria è detta <strong>Energia di Attivazione
+                            (\(E_a\))</strong>.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- EQUAZIONE DI ARRHENIUS E TERMODINAMICA -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">3. L'Equazione di Arrhenius: Il legame con la Termodinamica</h2>
+            <p class="lesson-text">
+                Come fa la temperatura (un concetto termodinamico) ad influenzare la velocità di reazione (un concetto
+                cinetico)? Svante Arrhenius trovò la relazione matematica:
+            </p>
+            <div
+                style="background: #1e293b; padding: 2.5rem; border-radius: 20px; text-align: center; margin: 2rem 0; border: 1px solid #10b981;">
+                <div style="font-size: 3rem; font-family: 'Fira Code', monospace; color: white;">
+                    \(k = A \cdot e^{-\frac{E_a}{RT}}\)
+                </div>
+            </div>
+
+            <div
+                style="background: rgba(16, 185, 129, 0.05); padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem;">
+                <ul style="list-style-type: disc; margin-left: 1.5rem; line-height: 1.8;">
+                    <li><strong>\(k\)</strong>: Costante di velocità della reazione.</li>
+                    <li><strong>\(A\)</strong>: Fattore pre-esponenziale (dipende dalla frequenza degli urti e
+                        dall'orientazione spaziale).</li>
+                    <li><strong>\(E_a\)</strong>: Energia di attivazione.</li>
+                    <li><strong>\(R\)</strong>: Costante universale dei gas perfetti (collegamento con i gas ideali).
+                    </li>
+                    <li><strong>\(T\)</strong>: Temperatura assoluta in Kelvin.</li>
+                </ul>
+            </div>
+            <p class="lesson-text">
+                Il termine esponenziale \(e^{-\frac{E_a}{RT}}\) rappresenta la <strong>frazione di molecole</strong> che
+                possiede energia sufficiente per superare la barriera dell'energia di attivazione. Aumentando la
+                temperatura \(T\), questa frazione aumenta esponenzialmente, velocizzando la reazione!
+            </p>
+        </section>
+
+        <!-- CATALIZZATORI -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">4. I Catalizzatori</h2>
+            <div class="quote-box">
+                "Un catalizzatore apre un tunnel nella montagna, piuttosto che costringere i reagenti a scalarla."
+            </div>
+            <p class="lesson-text">
+                Un <strong>catalizzatore</strong> è una sostanza che aumenta la velocità di reazione offrendo un
+                percorso alternativo con una minore energia di attivazione (\(E_a\)). Al termine della reazione, il
+                catalizzatore si ritrova inalterato. Esistono:
+            </p>
+            <ul
+                style="list-style-type: disc; margin-left: 2rem; margin-top: 1rem; margin-bottom: 2rem; line-height: 1.8;">
+                <li><strong>Catalizzatori omogenei:</strong> si trovano nella stessa fase dei reagenti (es. gas in gas).
+                </li>
+                <li><strong>Catalizzatori eterogenei:</strong> si trovano in una fase diversa (es. un solido metallico
+                    che catalizza una reazione tra gas, come le marmitte catalitiche).</li>
+                <li><strong>Enzimi:</strong> catalizzatori biologici fondamentali per la vita.</li>
+            </ul>
+        </section>
+
+        <!-- EQUILIBRIO -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">5. L'Equilibrio Chimico Dinamico</h2>
+            <p class="lesson-text">
+                Spesso le reazioni non si completano spingendo il 100% dei reagenti in prodotti, ma raggiungono uno
+                stato particolare chiamato <strong>Equilibrio Chimico</strong>. Si tratta fondamentalmente di un
+                <strong>equilibrio dinamico</strong>: la reazione diretta (Reagenti \(\rightarrow\) Prodotti) e quella
+                inversa (Prodotti \(\rightarrow\) Reagenti) continuano incessantemente ad avvenire, ma
+                <strong>raggiungono la stessa identica velocità</strong>. A livello macroscopico sembra che tutto si sia
+                fermato, poiché le concentrazioni rimangono costanti, ma a livello microscopico la frenetica danza
+                molecolare tra reagenti e prodotti non si interrompe mai.
+            </p>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.5rem;">
+                <div
+                    style="background: rgba(239, 68, 68, 0.05); padding: 1.5rem; border-radius: 12px; border-left: 3px solid #ef4444;">
+                    <h3 style="color: #ef4444; margin-bottom: 0.5rem; font-size: 1.1rem;">L'Effetto della Temperatura
+                    </h3>
+                    <p style="font-size: 0.9rem; margin: 0; line-height: 1.6;">Secondo il <strong>Principio di Le
+                            Châtelier</strong>, modificare la temperatura <strong>sposta l'equilibrio</strong>.
+                        Aumentare la temperatura favorisce sempre il lato della reazione <em>endotermica</em> (che
+                        assorbe calore), alterando le concentrazioni finali a favore di una sola delle due direzioni.
+                    </p>
+                </div>
+                <div
+                    style="background: rgba(234, 179, 8, 0.05); padding: 1.5rem; border-radius: 12px; border-left: 3px solid #eab308;">
+                    <h3 style="color: #eab308; margin-bottom: 0.5rem; font-size: 1.1rem;">Il Ruolo (Inutile) del
+                        Catalizzatore sull'Equilibrio</h3>
+                    <p style="font-size: 0.9rem; margin: 0; line-height: 1.6;">Un catalizzatore abbassa l'Energia di
+                        Attivazione in <em>entrambi</em> i versi. Di conseguenza accelera allo stesso modo sia andata
+                        che ritorno. <strong>Un catalizzatore non modifica le quantità dell'equilibrio finale</strong>,
+                        ma fa semplicemente in modo che lo stato di equilibrio venga raggiunto molto più velocemente!
+                    </p>
+                </div>
+            </div>
+
+            <!-- SIMULATORE CINETICA (Spostato qui) -->
+            <h3 class="lesson-title" style="margin-top: 3rem; color: #3b82f6;">Laboratorio: Il Raggiungimento
+                dell'Equilibrio</h3>
+            <p class="lesson-text">Osserva il box microscopico. Le molecole grigie (Reagenti) collidendo formano
+                Prodotti (verde). Ma osserva bene: anche i prodotti verdi, se collidono abbastanza forte, possono
+                <strong>ritrasformarsi in reagenti grigi</strong>. Dopo un po', i due processi si bilanciano e le
+                quantità relative non cambieranno più: è stato raggiunto l'equilibrio dinamico!
+            </p>
+            <div style="margin: 2rem 0;">
+                <canvas id="kinetics-canvas"></canvas>
+                <div class="controls-container">
+                    <div style="flex: 1; min-width: 200px;">
+                        <label for="temp-slider"
+                            style="display: block; margin-bottom: 0.5rem; font-weight: bold; color: var(--text-muted);">Temperatura
+                            (T): <span id="temp-val">300</span> K</label>
+                        <input type="range" id="temp-slider" min="100" max="1000" step="10" value="300"
+                            style="width: 100%;">
+                    </div>
+                    <div style="flex: 1; min-width: 200px;">
+                        <label for="ea-slider"
+                            style="display: block; margin-bottom: 0.5rem; font-weight: bold; color: var(--text-muted);">Ea
+                            Diretta: <span id="ea-val">40</span> kJ</label>
+                        <input type="range" id="ea-slider" min="10" max="100" step="5" value="40" style="width: 100%;">
+                    </div>
+                    <div style="display: flex; gap: 1rem; align-items: flex-end; flex-wrap: wrap;">
+                        <button id="btn-start" class="control-btn"
+                            style="background: #3b82f6; color: white; font-weight: bold; min-width: 160px;">Avvia
+                            Simulazione</button>
+                        <button id="btn-catalyst" class="control-btn"
+                            style="background: #eab308; color: black; font-weight: bold; min-width: 180px;">Aggiungi
+                            Catalizzatore</button>
+                        <button id="btn-reset" class="control-btn" style="background: #475569;">Reset
+                            Simulazione</button>
+                    </div>
+                </div>
+                <div
+                    style="margin-top: 1rem; background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 8px; text-align: center;">
+                    <span
+                        style="display: inline-block; width: 15px; height: 15px; background: #64748b; border-radius: 50%; margin-right: 5px;"></span>
+                    Reagenti: <strong id="reag-count">100</strong>
+                    <span
+                        style="display: inline-block; width: 15px; height: 15px; background: #10b981; border-radius: 50%; margin-left: 20px; margin-right: 5px;"></span>
+                    Prodotti: <strong id="prod-count">0</strong>
+                </div>
+            </div>
+        </section>
+
+        <!-- REVERSIBILITA -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">6. Reazioni Reversibili: Applicazioni Pratiche</h2>
+            <div
+                style="background: rgba(59, 130, 246, 0.05); padding: 1.5rem; border-radius: 12px; border-left: 3px solid #3b82f6; margin-top: 1.5rem; margin-bottom: 2rem;">
+                <h4 style="color: #3b82f6; margin-bottom: 0.5rem;">Cosa succede in una Batteria?</h4>
+                <p style="font-size: 0.95rem; margin: 0; line-height: 1.6;">
+                    Le reazioni chimiche reversibili (indicate col simbolo \(\rightleftharpoons\)) sono alla base della
+                    tecnologia che usiamo tutti i giorni. L'esempio più concreto sono le <strong>batterie
+                        ricaricabili</strong> dei nostri smartphone e computer portatili (come le batterie agli ioni di
+                    litio). Quando il telefono è acceso, avviene una reazione spontanea che viaggia in avanti producendo
+                    energia elettrica come sottoprodotto (scaricamento). Quando "ricarichi" il telefono, il
+                    caricabatterie fornisce esternamente l'energia inversa necessaria per spezzare i legami neo-formati
+                    e <strong>costringere i prodotti a ritrasformarsi nuovamente nei reagenti originari</strong>,
+                    invertendo la direzione di equilibrio. E il ciclo ricomincia!
+                </p>
+            </div>
+        </section>
+
+        <!-- QUIZ CINETICA -->
+        <section id="quiz-finale" class="lesson-section quiz-container">
+            <h2 class="lesson-title" style="color: #10b981; text-align: center;">Verifica le tue Competenze
+            </h2>
+            <p class="lesson-text" style="text-align: center; font-size: 0.95rem; margin-bottom: 2rem;">Testa la tua
+                comprensione sulla cinetica chimica e termodinamica molecolare.</p>
+            <div id="quiz-area"></div>
+            <div id="quiz-score" class="feedback-msg"
+                style="text-align: center; font-size: 1.2rem; margin-top: 2rem; font-weight: bold;"></div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione Termodinamica (Modulo Interdisciplinare).</p>
+    </footer>
+
+    <!-- JS -->
+    <script src="cinetica-chimica.js"></script>
+    <script src="../../js/main.js"></script>
+</body>
+
+</html>

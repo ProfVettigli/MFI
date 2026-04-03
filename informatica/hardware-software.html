@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hardware e Software - MFI Informatica</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        .hw-card, .sw-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            height: 100%;
+        }
+
+        .hw-card {
+            border-bottom: 3px solid #10b981;
+        }
+
+        .sw-card {
+            border-bottom: 3px solid #3b82f6;
+        }
+
+        .icon-large {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="sub-hero" style="background: linear-gradient(rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.95)), url('https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80'); background-size: cover; padding: 6rem 0 3rem;">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2.5rem;">
+                <a href="informatica.html" class="back-button" style="margin-bottom: 0;">
+                    <span style="font-size:1.2rem; margin-right: 0.5rem;">&larr;</span> Torna a Informatica
+                </a>
+            </div>
+            <h1 style="font-size: clamp(3rem, 6vw, 4.5rem); font-weight: 800; margin-bottom: 1.5rem;">Il Corpo e la Mente: <span style="color: #10b981;">Hardware e Software</span></h1>
+            <p style="font-size: 1.25rem; color: var(--text-muted); max-width: 800px; line-height: 1.6;">
+                Scopri come i componenti fisici di un computer collaborano con le istruzioni digitali per creare la magia della computazione moderna.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <!-- INTRO -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">1. La dualità del Computer</h2>
+            <p class="lesson-text">
+                Ogni sistema informatico, dal tuo smartphone al supercomputer più potente del mondo, è formato da due anime inseparabili: <strong>l'Hardware</strong> e il <strong>Software</strong>. Nessuno dei due può fare assolutamente nulla senza l'altro. Un computer senza software è solo un costoso pezzo di metallo e silicio freddo; un software senza hardware è solo un'idea astratta scritta su carta senza niente che possa eseguirla.
+            </p>
+        </section>
+
+        <!-- HARDWARE -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #10b981;">2. L'Hardware (Tutto ciò che puoi "prendere a calci")</h2>
+            <p class="lesson-text">
+                L'hardware (dall'inglese <em>hard</em> = duro, tangibile) rappresenta tutte le componenti fisiche, elettroniche e meccaniche del computer. Ecco i "motori" principali:
+            </p>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+                <div class="hw-card">
+                    <div class="icon-large">🧠</div>
+                    <h3 style="color: #10b981; margin-bottom: 0.5rem;">CPU (Processore)</h3>
+                    <p style="font-size: 0.9rem;">Il cervello del computer. Esegue miliardi di calcoli matematici e operazioni logiche al secondo.</p>
+                </div>
+                <div class="hw-card">
+                    <div class="icon-large">⚡</div>
+                    <h3 style="color: #10b981; margin-bottom: 0.5rem;">RAM (Memoria Veloce)</h3>
+                    <p style="font-size: 0.9rem;">Il banco di lavoro temporaneo. Molto veloce, ma "dimentica" tutto quando spegni il computer.</p>
+                </div>
+                <div class="hw-card">
+                    <div class="icon-large">💾</div>
+                    <h3 style="color: #10b981; margin-bottom: 0.5rem;">Memoria di Massa (SSD/HDD)</h3>
+                    <p style="font-size: 0.9rem;">Il magazzino a lungo termine. Conserva i tuoi file, foto e programmi anche a computer spento.</p>
+                </div>
+                <div class="hw-card">
+                    <div class="icon-large">⌨️</div>
+                    <h3 style="color: #10b981; margin-bottom: 0.5rem;">Periferiche (I/O)</h3>
+                    <p style="font-size: 0.9rem;">Apparati di Input (Mouse, Tastiera) e Output (Monitor, Casse) per dialogare con l'utente.</p>
+                </div>
+            </div>
+
+            <!-- ARCHITETTURA DI VON NEUMANN -->
+            <div style="background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.2); padding: 2rem; border-radius: 12px; margin-top: 3rem; text-align: center; overflow-x: auto;">
+                <h3 style="color: #10b981; margin-bottom: 1rem;">L'Architettura di Von Neumann</h3>
+                <p style="font-size: 0.95rem; margin-bottom: 2rem; max-width: 700px; margin-left: auto; margin-right: auto; line-height: 1.6;">
+                    Quasi tutti i computer moderni si basano sul rivoluzionario modello teorizzato da John von Neumann nel 1945. L'idea innovativa? Utilizzare la <strong>stessa memoria</strong> sia per conservare i <em>dati</em>, sia per immagazzinare le <em>istruzioni</em> dei programmi.
+                </p>
+                
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; min-width: 500px;">
+                    <!-- MEMORIA -->
+                    <div style="background: #1f2937; padding: 1.5rem; border-radius: 8px; width: 280px; border-top: 4px solid #f59e0b; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+                        <strong>Memoria Centrale (RAM)</strong><br><span style="font-size:0.8rem; color: #9ca3af;">Contiene Dati e Istruzioni Software</span>
+                    </div>
+                    
+                    <div style="display: flex; gap: 1rem; align-items: center;">
+                        <span style="color: #9ca3af;">&#11014; Dati</span>
+                        <div style="font-size: 1.5rem; color: #10b981;">&#8645;</div> <!-- Doppia freccia -->
+                        <span style="color: #9ca3af;">Istruzioni &#11015;</span>
+                    </div>
+                    
+                    <!-- CPU E I/O -->
+                    <div style="display: flex; gap: 1.5rem; align-items: center;">
+                        <div style="background: #374151; padding: 1.2rem; border-radius: 8px; border-left: 4px solid #60a5fa;"><strong>Dispositivi<br>di Input</strong></div>
+                        
+                        <div style="font-size: 1.8rem; color: #9ca3af;">&#10142;</div>
+                        
+                        <div style="background: #1f2937; padding: 1.5rem; border-radius: 12px; border: 2px solid #10b981; width: 240px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+                            <h4 style="color: #10b981; margin: 0 0 1rem 0; font-size: 1.2rem;">C.P.U.</h4>
+                            <div style="background: rgba(16, 185, 129, 0.1); padding: 0.6rem; border-radius: 6px; font-size: 0.85rem; margin-bottom:0.5rem; border: 1px solid rgba(16, 185, 129, 0.3);"><strong>ALU</strong><br>Unità Aritmetico/Logica</div>
+                            <div style="background: rgba(16, 185, 129, 0.1); padding: 0.6rem; border-radius: 6px; font-size: 0.85rem; border: 1px solid rgba(16, 185, 129, 0.3);"><strong>Control Unit</strong><br>Unità di Controllo</div>
+                        </div>
+                        
+                        <div style="font-size: 1.8rem; color: #9ca3af;">&#10142;</div>
+                        
+                        <div style="background: #374151; padding: 1.2rem; border-radius: 8px; border-right: 4px solid #ef4444;"><strong>Dispositivi<br>di Output</strong></div>
+                    </div>
+                </div>
+
+                <!-- IL COLLO DI BOTTIGLIA -->
+                <div style="background: rgba(239, 68, 68, 0.05); padding: 1.5rem; border-radius: 12px; border-left: 4px solid #ef4444; margin-top: 2.5rem; max-width: 800px; margin-left: auto; margin-right: auto; text-align: left;">
+                    <h4 style="color: #ef4444; margin-bottom: 0.5rem; font-size: 1.1rem;">⚠️ Il "Collo di Bottiglia" di Von Neumann</h4>
+                    <p style="font-size: 0.95rem; margin: 0; line-height: 1.6;">
+                        Questa architettura geniale ha però un tallone d'Achille strutturale: il temuto <strong>Collo di Bottiglia di Von Neumann</strong>. Poiché sia i <em>dati</em> su cui lavorare che le <em>istruzioni</em> da eseguire risiedono nella stessa memoria, la CPU non può prelevarli nello stesso istante. Ogni singola informazione deve mettersi in fila indiana per viaggiare attraverso lo stesso ristretto canale comunicativo (il Bus di Sistema). Il risultato? Anche se possiedi la CPU più veloce del pianeta, questa trascorrerà la maggior parte del suo tempo "seduta in panchina" aspettando pigramente che la memoria riesca a fornirle i maccheroni da digerire.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SOFTWARE -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #3b82f6;">3. Il Software (Tutto ciò contro cui puoi "imprecare")</h2>
+            <p class="lesson-text">
+                Il software (<em>soft</em> = morbido, astratto) è la parte logica: file, codice, programmi e sequenze di istruzioni che dicono all'hardware cosa fare, passo dopo passo. Si divide in due categorie principali:
+            </p>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 2rem 0;">
+                <div style="background: rgba(59, 130, 246, 0.05); padding: 1.5rem; border-radius: 12px; border-left: 3px solid #3b82f6;">
+                    <h3 style="color: #3b82f6; margin-bottom: 0.5rem;">Software di Sistema</h3>
+                    <p style="font-size: 0.95rem; line-height: 1.6; margin-bottom: 0.5rem;">
+                        Fa da ponte tra te, i programmi e l'hardware complesso sottostante. Il protagonista assoluto qui è il <strong>Sistema Operativo</strong> (es. Windows, macOS, Android, Linux).
+                    </p>
+                    <ul style="font-size: 0.9rem; margin-left: 1.5rem;">
+                        <li>Gestisce la distribuzione della RAM ai vari programmi.</li>
+                        <li>Traduce i tuoi click in comandi elettrici per il disco fisso.</li>
+                        <li>Fornisce l'interfaccia grafica.</li>
+                    </ul>
+                </div>
+                
+                <div style="background: rgba(168, 85, 247, 0.05); padding: 1.5rem; border-radius: 12px; border-left: 3px solid #a855f7;">
+                    <h3 style="color: #a855f7; margin-bottom: 0.5rem;">Software Applicativo</h3>
+                    <p style="font-size: 0.95rem; line-height: 1.6; margin-bottom: 0.5rem;">
+                        Soprastanno al sistema operativo per farti svolgere compiti specifici e utili. Sono le "App" o "Programmi" veri e propri:
+                    </p>
+                    <ul style="font-size: 0.9rem; margin-left: 1.5rem;">
+                        <li>Browser web (es. Chrome, Safari).</li>
+                        <li>Videogiochi (es. Minecraft).</li>
+                        <li>Elaboratori testi (es. Word, Excel).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- STRATIFICAZIONE A CIPOLLA -->
+            <div style="background: rgba(59, 130, 246, 0.05); border: 1px solid rgba(59, 130, 246, 0.2); padding: 2rem; border-radius: 12px; margin-top: 3rem; text-align: center;">
+                <h3 style="color: #3b82f6; margin-bottom: 1rem;">La "Cipolla" del Software: I Livelli di Astrazione</h3>
+                <p style="font-size: 0.95rem; margin-bottom: 2rem; max-width: 700px; margin-left: auto; margin-right: auto; line-height: 1.6;">
+                    In informatica si ragiona per <strong>strati</strong>. Ogni strato "nasconde" la tremenda complessità del livello inferiore per permettere al livello superiore di lavorare in modo facile e sicuro. Più si va verso l'alto (verso l'esterno della cipolla), più ci si <em>astrae</em> dal metallo fisico. L'utente per fortuna non ha bisogno di saper inviare segnali elettrici alla RAM per usare un'app!
+                </p>
+                
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-weight: 600;">
+                    <div style="background: #10b981; color: #000; padding: 1rem; width: 100%; max-width: 600px; border-radius: 12px 12px 0 0; font-size: 1.1rem; box-shadow: 0 -4px 10px rgba(16, 185, 129, 0.2); z-index: 5;">👤 Livello 5: Utente</div>
+                    <div style="background: #a855f7; color: #fff; padding: 1rem; width: 90%; max-width: 550px; border-radius: 4px; display: flex; justify-content: space-between; align-items: center; z-index: 4;"><span style="font-size: 1.2rem;">📱</span> <span>Livello 4: Software Applicativo</span> <span style="font-size: 0.8rem; font-weight:400;">(App, Giochi)</span></div>
+                    <div style="background: #3b82f6; color: #fff; padding: 1rem; width: 80%; max-width: 500px; border-radius: 4px; display: flex; justify-content: space-between; align-items: center; z-index: 3;"><span style="font-size: 1.2rem;">⚙️</span> <span>Livello 3: Sistema Operativo</span> <span style="font-size: 0.8rem; font-weight:400;">(Kernel, Shell)</span></div>
+                    <div style="background: #64748b; color: #fff; padding: 1rem; width: 70%; max-width: 450px; border-radius: 4px; display: flex; justify-content: space-between; align-items: center; z-index: 2;"><span style="font-size: 1.2rem;">📟</span> <span>Livello 2: Firmware / BIOS</span> <span style="font-size: 0.8rem; font-weight:400;">(Istruzioni fisse base)</span></div>
+                    <div style="background: #1f2937; color: #10b981; padding: 1.5rem; width: 60%; max-width: 400px; border-radius: 0 0 12px 12px; border: 2px solid #10b981; display: flex; justify-content: space-between; align-items: center; z-index: 1;"><span style="font-size: 1.5rem;">🔌</span> <span>Livello 1: Hardware Fisico</span> <span style="font-size: 0.8rem; font-weight:400; color: #9ca3af;">(CPU, RAM, Dischi)</span></div>
+                </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PANORAMA 2026 -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #a855f7;">4. Il Panorama Attuale (2026): L'Era dell'IA e del Cloud</h2>
+            <p class="lesson-text">
+                L'informatica è in continua, feroce evoluzione. Oggi, considerando il quadro reale del mercato del 2026, lo sviluppo hardware e software gravita attorno a dinamiche ben specifiche e a colossi tecnologici che ne dettano le regole.
+            </p>
+            
+            <h3 style="color: #10b981; margin-top: 2rem; margin-bottom: 1rem; font-size: 1.4rem;">I Colossi dell'Hardware</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+                <div style="background: rgba(16, 185, 129, 0.05); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(16, 185, 129, 0.2);">
+                    <h4 style="color: #10b981; margin-bottom: 0.5rem; font-size: 1.1rem;">NVIDIA e l'Intelligenza Artificiale</h4>
+                    <p style="font-size: 0.9rem; margin: 0; line-height: 1.6;">Le <strong>GPU</strong> (Schede Video) non servono più solo per il rendering o per i videogiochi. La loro architettura interna si è rivelata perfetta per eseguire calcoli paralleli massicci necessari ad addestrare le grandi Reti Neurali. NVIDIA domina oggi incontestata il mercato fornendo di fatto "il cervello" fisico alle grandi IA.</p>
+                </div>
+                <div style="background: rgba(16, 185, 129, 0.05); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(16, 185, 129, 0.2);">
+                    <h4 style="color: #10b981; margin-bottom: 0.5rem; font-size: 1.1rem;">Apple e l'Efficienza Estrema</h4>
+                    <p style="font-size: 0.9rem; margin: 0; line-height: 1.6;">Producendo autonomamente i chip basati su architettura ARM-Silicon (Serie M per Mac, Serie A per iPhone), Apple ha dimostrato all'industria come ottenere una brutale potenza di calcolo pur abbattendo vertiginosamente il consumo energetico e la temperatura.</p>
+                </div>
+                <div style="background: rgba(16, 185, 129, 0.05); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(16, 185, 129, 0.2);">
+                    <h4 style="color: #10b981; margin-bottom: 0.5rem; font-size: 1.1rem;">L'Invisibile Cloud Computing</h4>
+                    <p style="font-size: 0.9rem; margin: 0; line-height: 1.6;">Oggi, gran parte dei calcoli complessi non avviene più nel dispositivo che tieni in mano, che spesso funge solo da "schermo interattivo". L'elaborazione pesante avviene su sterminate <strong>Server Farm</strong> remote nel Cloud gestite da giganti come AWS (Amazon), Google e Microsoft Azure.</p>
+                </div>
+            </div>
+
+            <h3 style="color: #3b82f6; margin-top: 3rem; margin-bottom: 1rem; font-size: 1.4rem;">I Registi del Software: Sistemi Operativi (OS)</h3>
+            <p class="lesson-text">Il <strong>Sistema Operativo</strong> è il più privilegiato tra tutti i software. È il direttore d'orchestra che smista la memoria, gestisce il disco e fa in modo che applicazioni diverse non entrino in conflitto. Quali sono gli OS padroni del mercato odierno?</p>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-top: 1.5rem;">
+                <div style="background: rgba(59, 130, 246, 0.05); padding: 1rem; border-radius: 8px; border-left: 3px solid #3b82f6;">
+                    <strong style="color: white;">Microsoft Windows</strong><br>
+                    <span style="font-size: 0.85rem; color: #cbd5e1; display: inline-block; margin-top: 0.5rem;">Il leader tradizionale dei PC desktop. Gode di un'infinita retrocompatibilità e rimane lo standard incalcolabile per l'ambiente domestico e aziendale d'ufficio.</span>
+                </div>
+                <div style="background: rgba(168, 85, 247, 0.05); padding: 1rem; border-radius: 8px; border-left: 3px solid #a855f7;">
+                    <strong style="color: white;">Apple (macOS / iOS)</strong><br>
+                    <span style="font-size: 0.85rem; color: #cbd5e1; display: inline-block; margin-top: 0.5rem;">Un ecosistema "chiuso". L'OS è programmato e ottimizzato esclusivamente per girare sul pochissimo hardware nativo Apple scelto dalla casa madre, garantendo un'integrazione software-hardware imbattibile.</span>
+                </div>
+                <div style="background: rgba(16, 185, 129, 0.05); padding: 1rem; border-radius: 8px; border-left: 3px solid #10b981;">
+                    <strong style="color: white;">Google Android</strong><br>
+                    <span style="font-size: 0.85rem; color: #cbd5e1; display: inline-block; margin-top: 0.5rem;">Costruito su Kernel Linux, è dominatore assoluto del mondo mobile, installato sulla quasi totalità degli smartphone e tablet non-Apple nel mondo intero.</span>
+                </div>
+                <div style="background: rgba(245, 158, 11, 0.05); padding: 1rem; border-radius: 8px; border-left: 3px solid #f59e0b;">
+                    <strong style="color: white;">Linux</strong><br>
+                    <span style="font-size: 0.85rem; color: #cbd5e1; display: inline-block; margin-top: 0.5rem;">Il re invisibile ma onnipresente. Totalmente open-source e personalizzabile, è usato da pochi home-PC, ma fa girare quasi tutto il web, l'infrastruttura Cloud e i Supercomputer.</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- LICENZE E OPEN SOURCE -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #f59e0b;">5. Le Licenze: Di chi è la tecnologia?</h2>
+            <p class="lesson-text">
+                Oltre all'aspetto puramente tecnico, esiste un livello legale e filosofico dietro al software (e persino all'hardware!): <strong>le licenze</strong>. Chi possiede le istruzioni che mandano avanti le macchine?
+            </p>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
+                <div style="background: rgba(239, 68, 68, 0.05); padding: 1.5rem; border-radius: 12px; border-left: 3px solid #ef4444;">
+                    <h3 style="color: #ef4444; margin-bottom: 0.5rem; font-size: 1.2rem;">Software Proprietario (Closed Source)</h3>
+                    <p style="font-size: 0.95rem; margin: 0; line-height: 1.6;">
+                        Il codice sorgente è rigorosamente segreto e protetto dal diritto d'autore. L'utente umano compra solo una licenza d'uso per poter interagire con il programma, ma non può guardare "sotto il cofano" per vedere come è stato programmato, né legalmente modificarlo o ridistribuirlo.<br><br>
+                        <em>Esempi famosi: Microsoft Office, Photoshop, videogiochi commerciali (AAA).</em>
+                    </p>
+                </div>
+                <div style="background: rgba(16, 185, 129, 0.05); padding: 1.5rem; border-radius: 12px; border-left: 3px solid #10b981;">
+                    <h3 style="color: #10b981; margin-bottom: 0.5rem; font-size: 1.2rem;">Il Movimento Open Source</h3>
+                    <p style="font-size: 0.95rem; margin: 0; line-height: 1.6;">
+                        Il codice sorgente è esplicitamente pubblico. Chiunque possieda le competenze può sbirciare nei file di testo originali, studiarne la logica, correggere i difetti e aggiungervi nuove funzioni, per poi condividere queste migliorie con la comunità globale. Questo porta a collaborazioni mondiali di scala epocale.<br><br>
+                        <em>Esempi famosi: Linux, Android (versione base AOSP), Mozilla Firefox, VLC Player.</em>
+                    </p>
+                </div>
+            </div>
+
+            <div style="background: rgba(59, 130, 246, 0.05); border: 1px solid rgba(59, 130, 246, 0.2); padding: 2rem; border-radius: 12px; margin-top: 2.5rem; display: flex; flex-direction: column; align-items: center; text-align: center;">
+                <div style="font-size: 2.5rem; margin-bottom: 1rem;">♾️🔬</div>
+                <h3 style="color: #3b82f6; margin-bottom: 0.5rem; font-size: 1.3rem;">Sorpresa: Anche l'Hardware può essere Open Source!</h3>
+                <p style="font-size: 0.95rem; line-height: 1.6; max-width: 800px; margin: 0;">
+                    Siamo solitamente portati ad associare il concetto di condivisione gratuita unicamente al software digitale, dal momento che clonare un file costa niente. Ma il celebre progetto italiano <strong>Arduino</strong> ha rivoluzionato il mondo dimostrando l'esistenza dell'<strong>Open Source Hardware</strong>. I creatori di Arduino hanno rilasciato gratuitamente su internet gli <em>schemi elettrici</em> completi e i progetti fisici per far fabbricare e stampare la loro scheda madre. Questo ha permesso a qualsiasi studente, inventore o piccola azienda del mondo di saldare i componenti e replicare legalmente la scheda in totale indipendenza!
+                </p>
+            </div>
+        </section>
+
+        <!-- QUIZ -->
+        <section id="quiz-finale" class="lesson-section quiz-container">
+            <h2 class="lesson-title" style="color: #10b981; text-align: center;">Verifica Cognitiva (10 Domande)</h2>
+            <p class="lesson-text" style="text-align: center; font-size: 0.95rem; margin-bottom: 2rem;">Controlla quanto hai compreso riguardo i fondamenti fisici e logici dell'informatica.</p>
+            <div id="quiz-area"></div>
+            <div id="quiz-score" class="feedback-msg" style="text-align: center; font-size: 1.2rem; margin-top: 2rem; font-weight: bold;"></div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione Informatica.</p>
+    </footer>
+
+    <!-- JS -->
+    <script src="hardware-software.js"></script>
+    <script src="../js/main.js"></script>
+</body>
+
+</html>

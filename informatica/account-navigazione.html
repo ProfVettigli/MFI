@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navigazione Sicura - MFI Informatica</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap"
+        rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        .concept-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+            height: 100%;
+        }
+
+        .url-highlight {
+            font-family: 'Fira Code', monospace;
+            background: #1e293b;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            text-align: center;
+            border-left: 4px solid #10b981;
+            margin: 1.5rem 0;
+            overflow-wrap: anywhere;
+        }
+
+        .https-chip {
+            color: #10b981;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="sub-hero"
+        style="background: linear-gradient(rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.95)), url('https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&q=80'); background-size: cover; padding: 6rem 0 3rem;">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2.5rem;">
+                <a href="informatica.html" class="back-button" style="margin-bottom: 0;">
+                    <span style="font-size:1.2rem; margin-right: 0.5rem;">&larr;</span> Torna a Informatica
+                </a>
+            </div>
+            <h1 style="font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 800; margin-bottom: 1.5rem;">Identità e <span
+                    style="color: #3b82f6;">Navigazione Sicura</span></h1>
+            <p style="font-size: 1.25rem; color: var(--text-muted); max-width: 800px; line-height: 1.6;">
+                Come proteggere te stesso nel più grande labirinto di calcolatori umani mai costruito: Internet.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- GLI ACCOUNT -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #3b82f6;">1. Cos'è un Account? La tua Identità Digitale</h2>
+            <p class="lesson-text">
+                Nel mondo fisico, la tua identità è definita dal tuo volto, dalla tua voce o dalla tua carta d'identità.
+                Ma quando un computer ti "guarda", vede solo segnali elettrici. Come fa a sapere chi sei tu e quali
+                diritti hai?
+            </p>
+            <p class="lesson-text">
+                È qui che entra in gioco l'<strong>Account</strong> (o profilo utente). Un account è uno spazio logico
+                strettamente personale. È il tuo personale contenitore di identità, dati, e permessi all'interno di un
+                vasto sistema informatico.
+            </p>
+
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-top: 1.5rem;">
+                <div class="concept-card">
+                    <h3 style="color: #3b82f6; margin-bottom: 0.5rem;">🎓 Registro Elettronico</h3>
+                    <p style="font-size: 0.9rem; margin: 0; line-height: 1.5;">Il tuo account studentesco permette di
+                        vedere SOLO i tuoi voti, mentre quello dei docenti permette loro di scriverli. Mantiene separati
+                        i ruoli.</p>
+                </div>
+                <div class="concept-card">
+                    <h3 style="color: #3b82f6; margin-bottom: 0.5rem;">🛒 Amazon / Netflix</h3>
+                    <p style="font-size: 0.9rem; margin: 0; line-height: 1.5;">Mantiene il registro univoco dei tuoi
+                        ordini passati o dei film che hai già visto, personalizzandosi sui tuoi gusti intimi e sulla tua
+                        carta di credito.</p>
+                </div>
+                <div class="concept-card">
+                    <h3 style="color: #3b82f6; margin-bottom: 0.5rem;">🏦 Home Banking</h3>
+                    <p style="font-size: 0.9rem; margin: 0; line-height: 1.5;">Probabilmente l'account più critico di
+                        tutti. Dichiara l'appartenenza esclusiva del tuo denaro a te e a te soltanto.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CHE COS'E' INTERNET -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #10b981;">2. Che cos'è Internet? L'Oceano dei Dati</h2>
+            <p class="lesson-text">
+                Quando usi il tuo laptop per aprire una pagina, non stai richiamando magia. Stai dialogando con
+                <strong>Internet</strong>: l'Infrastruttura fisica più grande al mondo.
+            </p>
+            <div
+                style="background: rgba(16, 185, 129, 0.05); padding: 2rem; border-radius: 12px; border-left: 4px solid #10b981; margin: 2rem 0;">
+                <p style="font-size: 1rem; margin: 0; line-height: 1.6;">
+                    Internet non è una nuvola astratta tra le stelle: è un'infinita e caotica <strong>rete di cavi
+                        chilometrici, router fisici e computer interconnessi</strong> (spesso disposti sui fondali degli
+                    oceani per collegare i continenti). Ogni singolo dispositivo (Server) su cui è ospitato un sito
+                    risiede fisicamente in qualche magazzino refrigerato nel mondo. Quando chiedi di guardare l'ultimo
+                    post su Instagram, il tuo comando viaggia alla velocità della luce lungo cavi sottomarini fino
+                    server americani e torna indietro per scriverlo sul tuo schermo.
+                </p>
+            </div>
+        </section>
+
+        <!-- PRIVACY E CREDENZIALI -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #f59e0b;">3. Chiavistelli e Password: Il Diritto allo Sguardo</h2>
+            <p class="lesson-text">
+                Proprio perché internet concatena fisicamente miliardi di computer di perfetti sconosciuti insieme, la
+                nostra intimità è tremendamente vulnerabile. È imperativo che certe informazioni (i nostri diari, conti
+                bancari, email) viaggino nella rete in modo che <strong>solo chi ne ha il diritto</strong> possa
+                vederle.
+            </p>
+            <p class="lesson-text">
+                Per garantire che tu sia davvero chi dici di essere, un account richiede delle credenziali: generalmente
+                un Nome Utente (pubblico) e una <strong>Password</strong> (rigorosamente segreta, il tuo
+                "chiavistello").
+            </p>
+
+            <div
+                style="background: rgba(239, 68, 68, 0.05); padding: 1.5rem; border-radius: 12px; border-left: 3px solid #ef4444; margin-top: 1.5rem; display: flex; flex-direction: column;">
+                <h4 style="color: #ef4444; font-size: 1.2rem; margin-bottom: 0.5rem;">🚨 Allarme Rosso: Le Credenziali
+                    non si difendono da sole</h4>
+                <p style="font-size: 0.95rem; line-height: 1.6; margin: 0;">
+                    Il sistema ti protegge fino alla tua password. Il problema? Spesso gli hacker non sfondano il
+                    sistema a forza bruta, ma <strong>ti ingannano con la psicologia</strong> (Social Engineering o
+                    Phishing). Creano finte email che sembrano la tua banca per farti spaventare e indurti a digitare la
+                    password volontariamente. <br><br>
+                    <strong>Ricorda sempre:</strong> è vitale non condividere inavvertitamente le tue credenziali. Mai.
+                    Nessuna banca, server universitario o sviluppatore ti chiederà la password in un'email o al
+                    telefono.
+                </p>
+            </div>
+
+            <div
+                style="background: rgba(59, 130, 246, 0.05); padding: 1.5rem; border-radius: 12px; border-left: 3px solid #3b82f6; margin-top: 1.5rem;">
+                <h4 style="color: #3b82f6; font-size: 1.2rem; margin-bottom: 0.5rem;">🛡️ Lo Scudo Supremo:
+                    Autenticazione a 2 Fattori (2FA)</h4>
+                <p style="font-size: 0.95rem; line-height: 1.6; margin: 0;">
+                    Poiché la password può sempre essere rubata o indovinata, i moderni sistemi informatici hanno
+                    introdotto una forte misura di sicurezza chiamata <strong>Autenticazione a Due Fattori
+                        (2FA)</strong>. L'idea è geniale e si basa sul verificare non una ma ben due prove della tua
+                    identità, di natura completamente diversa:<br><br>
+                    1. <strong>Qualcosa che SAI:</strong> La tua Password (può essere rubata tramite phishing).<br>
+                    2. <strong>Qualcosa che HAI:</strong> Il tuo Smartphone fisico (sul quale ricevi un SMS temporaneo a
+                    6 cifre, un codice OTP da un'App o una notifica push).<br><br>
+                    <strong>Risultato:</strong> Se l'hacker ruba la tua password in Russia tramite una finta email, non
+                    potrà comunque entrare nel tuo conto bancario senza venirti a rubare fisicamente anche il telefono
+                    dalla tasca! Questo ha reso la vita quasi impossibile per le frodi online a distanza.
+                </p>
+            </div>
+        </section>
+
+        <!-- NAVIGAZIONE: URL E PROTOCOLLI -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #8b5cf6;">4. Come navighiamo da un Capo all'Altro del Mondo</h2>
+            <p class="lesson-text">
+                Sai cos'è un indirizzo civico nel mondo reale (es: via Falcone, 105 Marano di Napoli). Internet non è
+                diverso: al fine
+                di permettere a due computer di dialogare, bisogna sapere "da chi andare". Questo indirizzo si chiama
+                <strong>URL</strong> (<em>Uniform Resource Locator</em>).
+            </p>
+            <div class="url-highlight">
+                <span class="https-chip">https://</span><span style="color: #fff;">www.mfi-platform.it</span><span
+                    style="color: #9ca3af;">/informatica/index.html</span>
+            </div>
+
+            <p class="lesson-text">L'URL ha un ordine molto preciso, partendo costantemente in testa (il prefisso) col
+                famigerato "Protocollo". Ma cos'è questo protocollo iniziale?</p>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.5rem;">
+                <div
+                    style="background: rgba(156, 163, 175, 0.1); padding: 1.5rem; border-radius: 12px; border-left: 3px solid #9ca3af;">
+                    <h3 style="color: #cbd5e1; margin-bottom: 0.5rem; font-size: 1.2rem;">HTTP (Testo in Chiaro)</h3>
+                    <p style="font-size: 0.9rem; margin: 0; line-height: 1.6;">
+                        Significa <em>HyperText Transfer Protocol</em>. È il "linguaggio" usato da internet per inviare
+                        pagine web da decenni. Il grosso problema? Quello che digiti viene inviato attraverso i cavi
+                        oceanici come testo puro, quindi se un malintenzionato intercetta il cavo di rete
+                        all'Università, leggerà esattamente "CiaoMamma123" o la tua carta di credito.<br><strong>(Oggi
+                            considerato totalmente insicuro!).</strong>
+                    </p>
+                </div>
+                <div
+                    style="background: rgba(16, 185, 129, 0.05); padding: 1.5rem; border-radius: 12px; border-left: 3px solid #10b981;">
+                    <h3 style="color: #10b981; margin-bottom: 0.5rem; font-size: 1.2rem;">HTTPS (Sistema Criptato)</h3>
+                    <p style="font-size: 0.9rem; margin: 0; line-height: 1.6;">
+                        La <strong>"S"</strong> sta per <strong>Secure</strong>! In questo protocollo (simboleggiato dal
+                        lucchetto chiuso verde 🔒 in alto nel browser), il tuo PC e il Server lontano eseguono una
+                        criptazione complessa prima di spedire il pacchetto.<br> Se un hacker intercetta il
+                        collegamento, vedrà i dati come rumore incomprensibile (es. "Yh7%kx&20P"). Tu e la banca siete
+                        gli unici con la chiave per rimettere in chiaro il testo!
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        </div>
+        </section>
+
+        <!-- MESSAGGISTICA -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #6366f1;">5. Sicurezza e Messaggistica (Mail, Chat e PEC)</h2>
+            <p class="lesson-text">
+                Internet non serve solo a visualizzare pagine web, ma è il più formidabile condotto di messaggistica
+                della storia umana. Possiamo dividere questa comunicazione in due grandi famiglie:
+            </p>
+
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
+                <div
+                    style="background: rgba(99, 102, 241, 0.05); padding: 1.5rem; border-radius: 12px; border-left: 3px solid #6366f1;">
+                    <h3 style="color: #6366f1; margin-bottom: 0.5rem; font-size: 1.1rem;">Messaggistica Istantanea
+                        (Sincrona)</h3>
+                    <p style="font-size: 0.9rem; margin: 0; line-height: 1.6;">
+                        Applicazioni come <strong>WhatsApp</strong> o <strong>Telegram</strong> simulano una
+                        conversazione vocale in tempo reale. Per proteggere la nostra privacy, oggi queste app usano la
+                        <strong>Crittografia End-to-End (E2EE)</strong>: il messaggio viene cifrato localmente sul tuo
+                        telefono e decifrato <em>solo</em> su quello del ricevente. Nemmeno l'azienda creatrice (come
+                        Meta) possiede le chiavi per poterlo leggere nel mezzo.
+                    </p>
+                </div>
+                <div
+                    style="background: rgba(16, 185, 129, 0.05); padding: 1.5rem; border-radius: 12px; border-left: 3px solid #10b981;">
+                    <h3 style="color: #10b981; margin-bottom: 0.5rem; font-size: 1.1rem;">Messaggistica Email
+                        (Asincrona)</h3>
+                    <p style="font-size: 0.9rem; margin: 0; line-height: 1.6;">
+                        Concettualmente identica alla posta cartacea. Invii un messaggio "digitalmente pesante" a
+                        qualcuno e questo resta in giacenza finché lui non decide di svuotare la cassetta della posta.
+                        Non richiede che siate online contemporaneamente.
+                    </p>
+                </div>
+            </div>
+
+            <div style="margin-top: 2.5rem;">
+                <h3 style="color: #cbd5e1; margin-bottom: 1rem;">La Struttura dell'Email e la <em>Netiquette</em></h3>
+                <p class="lesson-text">
+                    La tua <strong>Casella Postale</strong> non è un oggetto fisico che possiedi: è uno spazio logico
+                    che affitti (spesso gratuitamente) sui dischi fissi di colossali <strong>Provider</strong>
+                    informatici (aziende come Google per <em>Gmail</em>, Microsoft per <em>Outlook/Hotmail</em>, Apple
+                    per <em>iCloud</em> o Yahoo). Loro mantengono il server attivo H24 per ricevere la posta per tuo
+                    conto anche quando il tuo cellulare è spento o sei in aereo.
+                </p>
+
+                <div
+                    style="background: rgba(255, 255, 255, 0.02); padding: 1.5rem; border-radius: 12px; border: 1px dashed rgba(255,255,255,0.15);">
+                    <h4 style="color: #fff; margin-bottom: 0.8rem;">Le Regole d'Oro per un'Email Accettabile:</h4>
+                    <ul style="font-size: 0.95rem; line-height: 1.6; color: #cbd5e1; margin-left: 1.5rem;">
+                        <li><strong>Inserisci sempre l'Oggetto:</strong> Inviare un'email senza oggetto è grave
+                            maleducazione. L'oggetto riassume telegraficamente il motivo dell'email, aiutando il
+                            ricevente.</li>
+                        <li><strong>Il tono verbale:</strong> Saluta sempre formalmente all'apertura (Gentile Prof. /
+                            Ciao Anna) e firma in chiusura alla fine dell'email (Cordiali saluti, Nome).</li>
+                        <li><strong>Niente Offese:</strong> Negli anni dell'impero romano si diceva <em>"verba volant,
+                                scripta manent"</em> (le parole volano, gli scritti restano). Oggi è peggio: la mail
+                            viene replicata su 10 server di backup diversi in vari continenti per anni. Quello che
+                            scrivi non può più essere rimangiato.</li>
+                        <li><strong>Gli Allegati:</strong> Ricordati di caricare per davvero il file pdf prima di
+                            inviare!</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div
+                style="background: rgba(245, 158, 11, 0.05); padding: 1.5rem; border-radius: 12px; border-left: 3px solid #f59e0b; margin-top: 2.5rem; display: flex; align-items: flex-start; gap: 1rem;">
+                <div style="font-size: 2rem;">⚖️</div>
+                <div>
+                    <h4 style="color: #f59e0b; font-size: 1.2rem; margin-bottom: 0.5rem;">La PEC: Un'eccellenza informatica italiana</h4>
+                    <p style="font-size: 0.95rem; line-height: 1.6; margin: 0;">
+                        La <strong>PEC</strong> (Posta Elettronica Certificata) è un virtuoso e geniale standard adottato quasi esclusivamente nel nostro Paese, un vero e proprio fiore all'occhiello per la burocrazia. Come ben sanno gli informatici, <em>ogni</em> normale email inviata nel mondo lascia già per sua natura una perfetta traccia indelebile sui server, garantendo l'orario di invio, la ricezione e la provenienza con immacolata ed inequivocabile precisione matematica. <br><br>
+                        Tuttavia, intuendo quanto sarebbe stato arduo spiegare il funzionamento delle reti a chi mastica giurisprudenza, l'Italia ha brillantemente superato l'ostacolo. Abbiamo creato un ingegnoso sistema di abbonamenti a pagamento affinché alcuni gestori accreditati possano semplicemente generare delle "ricevute" digitali, certificando ufficialmente ciò che i server già certificavano gratis. Questo ci ha permesso la monumentale impresa di digitalizzare la classica <strong>Raccomandata con Ricevuta Ritorno (A/R)</strong> senza farne pesare l'assenza, a portata di click e di portafoglio!
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- QUIZ -->
+        <section id="quiz-finale" class="lesson-section quiz-container">
+            <h2 class="lesson-title" style="color: #3b82f6; text-align: center;">Verifica Cognitiva (6 Domande)</h2>
+            <p class="lesson-text" style="text-align: center; font-size: 0.95rem; margin-bottom: 2rem;">Metti alla prova
+                la tua prudenza sulla navigazione telematica.</p>
+            <div id="quiz-area"></div>
+            <div id="quiz-score" class="feedback-msg"
+                style="text-align: center; font-size: 1.2rem; margin-top: 2rem; font-weight: bold;"></div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione Informatica.</p>
+    </footer>
+
+    <!-- JS -->
+    <script src="account-navigazione.js"></script>
+    <script src="../js/main.js"></script>
+</body>
+
+</html>

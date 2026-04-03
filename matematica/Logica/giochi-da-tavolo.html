@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logica nei Giochi da Tavolo - MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap"
+        rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        .quote-box {
+            background: rgba(59, 130, 246, 0.05);
+            border-left: 4px solid #3b82f6;
+            padding: 2rem;
+            margin: 3rem 0;
+            font-style: italic;
+            border-radius: 0 16px 16px 0;
+            color: #93c5fd;
+            line-height: 1.6;
+            font-size: 1.1rem;
+        }
+
+        .board-visual {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            margin: 2rem 0;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="sub-hero"
+        style="background: linear-gradient(rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.95)), url('https://images.unsplash.com/photo-1529699211952-734e80c4d42b?auto=format&fit=crop&q=80'); background-size: cover; padding: 6rem 0 3rem;">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2.5rem;">
+                <a href="logica.html" class="back-button" style="margin-bottom: 0;">
+                    <span style="font-size:1.2rem; margin-right: 0.5rem;">&larr;</span> Torna a Logica
+                </a>
+            </div>
+            <h1 style="font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 800; margin-bottom: 1.5rem;">Scacchi, Go e
+                l'Arte della <span style="color: #3b82f6;">Logica</span></h1>
+            <p style="font-size: 1.25rem; color: var(--text-muted); max-width: 800px; line-height: 1.6;">
+                Come i giochi da tavolo insegnano la deduzione, i limiti del calcolo umano e l'alba dell'Intelligenza
+                Artificiale.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- INTRODUZIONE ALLA LOGICA NEI GIOCHI -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">1. Essere Creativi Senza Infrangere le Regole</h2>
+            <p class="lesson-text">
+                Spesso pensiamo alla logica e alla creatività come a due opposti. La logica sembra fredda e restrittiva,
+                mentre la creatività necessita libertà. <strong>I giochi da tavolo dimostrano il contrario</strong>.
+            </p>
+            <p class="lesson-text">
+                Cos'è un gioco da tavolo se non un sistema logico chiuso? Esistono un <strong>insieme di
+                    assiomi</strong> (le regole del gioco, come ad esempio "l'alfiere muove solo in diagonale") e un
+                <strong>teorema finale da dimostrare</strong> (l'obiettivo: fare scacco matto, o catturare territorio).
+            </p>
+            <div class="quote-box">
+                Essere creativi, in questo contesto, non significa rompere le regole o barare. Significa capire
+                profondamente i meccanismi logici del sistema per trovare un percorso inesplorato che ci porti al nostro
+                obiettivo senza mai violarli.
+            </div>
+        </section>
+
+        <!-- SCACCHI -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">2. La Storia degli Scacchi e la Forza Bruta</h2>
+            <p class="lesson-text">
+                Gli <strong>scacchi</strong> nacquero in India intorno al VI secolo col nome di <em>Chaturanga</em>,
+                evolvendosi poi in Persia e arrivando nell'Europa medievale per diventare il gioco strategico per
+                eccellenza. Basato su una scacchiera di \(8 \times 8\) caselle, offre un numero enorme di partite
+                possibili (si stima che il numero di mosse lecite, chiamato Numero di Shannon, sia intorno a
+                \(10^{120}\), superiore agli atomi dell'universo osservabile).
+            </p>
+            <div
+                style="background: rgba(16, 185, 129, 0.05); padding: 1.5rem; border-radius: 12px; border-left: 3px solid #10b981; margin: 2rem 0;">
+                <h4 style="color: #10b981; margin-bottom: 0.5rem; font-size: 1.1rem;">La sconfitta dell'essere umano:
+                    Kasparov contro Deep Blue</h4>
+                <p style="font-size: 0.95rem; margin: 0; line-height: 1.6;">
+                    Per decenni si è pensato che la genialità umana e l'intuizione non potessero essere superate dai
+                    computer. Questa illusione crollò nel 1997, quando il supercomputer IBM <strong>Deep Blue sconfisse
+                        il campione mondiale Garry Kasparov</strong>.
+                    <br><br>
+                    Come fece? Deep Blue usava principalmente un approccio di <strong>forza bruta</strong>: grazie a
+                    potentissimi processori (per l'epoca), esplorava attivamente e velocissimamente milioni di alberi
+                    decisionali al secondo, prevedendo un numero così massiccio di scenari futuri che nessuna intuizione
+                    di Kasparov poteva più cogliere di sorpresa il calcolatore.
+                </p>
+            </div>
+        </section>
+
+        <!-- IL GO E L'INTELLIGENZA ARTIFICIALE -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">3. Il Gioco del Go e l'Intuizione Artificiale</h2>
+            <p class="lesson-text">
+                Dopo la sconfitta di Kasparov, gli scienziati si rivolsero all'ultimo baluardo dell'umanità contro i
+                computer: <strong>il gioco asiatico del Go</strong>.
+            </p>
+            <p class="lesson-text">
+                Le regole del Go sono persino più semplici e pulite di quelle degli scacchi: due giocatori mettono, a
+                turno, pietre bianche e nere su una griglia \(19 \times 19\). L'obiettivo è circondare un territorio
+                maggiore rispetto all'avversario e intrappolare le sue pietre. Questa pulizia logica di base lo ha reso
+                il gioco perfetto.
+            </p>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 2rem 0;">
+                <div
+                    style="background: rgba(239, 68, 68, 0.05); padding: 1.5rem; border-radius: 12px; border-left: 3px solid #ef4444;">
+                    <h3 style="color: #ef4444; margin-bottom: 0.5rem; font-size: 1.1rem;">Perché la Forza Bruta Fallisce
+                    </h3>
+                    <p style="font-size: 0.9rem; margin: 0; line-height: 1.6;">
+                        A differenza degli scacchi, il Go ha una board immensa. Le partite possibili sfiorano
+                        l'incredibile numero di \(10^{360}\). Inoltre, a metà partita, capire "chi sta vincendo" è una
+                        questione più geometrica e intuitiva che di puro conteggio pezzi. I computer tradizionali che
+                        cercavano di prevedere le mosse <strong>finivano la memoria e il tempo senza riuscire a
+                            calcolare nulla di utile</strong>.
+                    </p>
+                </div>
+                <div
+                    style="background: rgba(168, 85, 247, 0.05); padding: 1.5rem; border-radius: 12px; border-left: 3px solid #a855f7;">
+                    <h3 style="color: #a855f7; margin-bottom: 0.5rem; font-size: 1.1rem;">AlphaGo e le Reti Neurali</h3>
+                    <p style="font-size: 0.9rem; margin: 0; line-height: 1.6;">
+                        Nel 2016, <strong>AlphaGo</strong> sconfisse il campione mondiale di Go Lee Sedol. Non lo fece
+                        calcolando tutto brutalmente, ma sviluppando un'architettura di <strong>Intelligenza Artificiale
+                            e Deep Learning</strong> ("reti neurali"). Il programma aveva imparato a giocare "valutando"
+                        le posizioni in maniera olistica, sviluppando una forma strabiliante di <em>"intuizione
+                            artificiale"</em> del tutto aliena ma immensamente creativa.
+                    </p>
+                </div>
+            </div>
+            <p class="lesson-text">
+                La mossa 37 di AlphaGo contro Sedol è descritta dagli esperti come "bellissima e incomprensibile": ruppe
+                ogni convenzione logica codificata nei millenni passati dai maestri di Go per seguire percorsi e schemi
+                che gli esseri umani non avevano mai visto prima.
+            </p>
+        </section>
+
+        <!-- QUIZ -->
+        <section id="quiz-finale" class="lesson-section quiz-container">
+            <h2 class="lesson-title" style="color: #3b82f6; text-align: center;">Verifica Cognitiva</h2>
+            <p class="lesson-text" style="text-align: center; font-size: 0.95rem; margin-bottom: 2rem;">Controlla quanto
+                hai appreso in questa lezione su giochi e computazione.</p>
+            <div id="quiz-area"></div>
+            <div id="quiz-score" class="feedback-msg"
+                style="text-align: center; font-size: 1.2rem; margin-top: 2rem; font-weight: bold;"></div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione Logica (Giochi e IA).</p>
+    </footer>
+
+    <!-- JS -->
+    <script src="giochi-da-tavolo.js"></script>
+    <script src="../../js/main.js"></script>
+</body>
+
+</html>

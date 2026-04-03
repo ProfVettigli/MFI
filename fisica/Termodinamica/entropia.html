@@ -8,11 +8,14 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap"
+        rel="stylesheet">
     <!-- KaTeX -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+        onload="renderMathInElement(document.body);"></script>
     <!-- CSS -->
     <link rel="stylesheet" href="../../css/style.css">
 
@@ -30,7 +33,7 @@
 
         .potential-card {
             background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             padding: 1.5rem;
             border-radius: 12px;
             text-align: center;
@@ -48,7 +51,7 @@
             width: 100%;
             height: 400px;
             display: block;
-            border: 2px solid rgba(255,255,255,0.1);
+            border: 2px solid rgba(255, 255, 255, 0.1);
         }
 
         .stat-bar {
@@ -61,36 +64,44 @@
 </head>
 
 <body>
-    <header class="sub-hero" style="background: linear-gradient(rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.95)), url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&q=80'); background-size: cover; padding: 6rem 0 3rem;">
+    <header class="sub-hero"
+        style="background: linear-gradient(rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.95)), url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&q=80'); background-size: cover; padding: 6rem 0 3rem;">
         <div class="container">
             <div style="text-align: center; margin-bottom: 2.5rem;">
                 <a href="termodinamica.html" class="back-button" style="margin-bottom: 0;">
                     <span style="font-size:1.2rem; margin-right: 0.5rem;">&larr;</span> Torna alla Termodinamica
                 </a>
             </div>
-            <h1 style="font-size: clamp(3rem, 6vw, 5rem); font-weight: 800; margin-bottom: 1.5rem;">L'Entropia e la <span style="color: var(--physics-color);">Freccia del Tempo</span></h1>
+            <h1 style="font-size: clamp(3rem, 6vw, 5rem); font-weight: 800; margin-bottom: 1.5rem;">L'Entropia e la
+                <span style="color: var(--physics-color);">Freccia del Tempo</span></h1>
             <p style="font-size: 1.25rem; color: var(--text-muted); max-width: 800px; line-height: 1.6;">
-                Dal calore dei motori al disordine cosmico, fino ai bit di informazione: scopri la grandezza che definisce il destino dell'Universo.
+                Dal calore dei motori al disordine cosmico, fino ai bit di informazione: scopri la grandezza che
+                definisce il destino dell'Universo.
             </p>
         </div>
     </header>
 
     <main class="container">
-        
+
         <!-- MACROSCOPICO -->
         <section class="lesson-section">
             <h2 class="lesson-title">1. Definizione Macroscopica: Lo Scambio di Calore</h2>
             <p class="lesson-text">
-                Storicamente, l'entropia (\(S\)) è nata per spiegare perché il calore fluisce spontaneamente solo dal caldo al freddo. Rudolf Clausius la definì attraverso il rapporto tra il calore scambiato reversibilmente e la temperatura a cui avviene lo scambio.
+                Storicamente, l'entropia (\(S\)) è nata per spiegare perché il calore fluisce spontaneamente solo dal
+                caldo al freddo. Rudolf Clausius la definì attraverso il rapporto tra il calore scambiato
+                reversibilmente e la temperatura a cui avviene lo scambio.
             </p>
-            <div style="background: rgba(255,255,255,0.02); padding: 2.5rem; border-radius: 20px; text-align: center; margin: 2rem 0;">
-                <p style="font-size: 1.2rem; color: var(--text-muted); margin-bottom: 1rem;">Variazione di Entropia (\(\Delta S\))</p>
+            <div
+                style="background: rgba(255,255,255,0.02); padding: 2.5rem; border-radius: 20px; text-align: center; margin: 2rem 0;">
+                <p style="font-size: 1.2rem; color: var(--text-muted); margin-bottom: 1rem;">Variazione di Entropia
+                    (\(\Delta S\))</p>
                 <div style="font-size: 2.5rem; font-family: 'Fira Code', monospace; color: var(--physics-color);">
                     \(\Delta S = \int \frac{\delta Q_{rev}}{T}\)
                 </div>
             </div>
             <p class="lesson-text">
-                In un sistema isolato, l'entropia può solo aumentare o rimanere costante (\(\Delta S \ge 0\)). Questo è il cuore del <strong>Secondo Principio della Termodinamica</strong>.
+                In un sistema isolato, l'entropia può solo aumentare o rimanere costante (\(\Delta S \ge 0\)). Questo è
+                il cuore del <strong>Secondo Principio della Termodinamica</strong>.
             </p>
         </section>
 
@@ -98,9 +109,11 @@
         <section class="lesson-section">
             <h2 class="lesson-title">2. I Potenziali Termodinamici</h2>
             <p class="lesson-text">
-                L'energia non è tutta uguale. Per capire quanta energia è realmente "utile" (capace di produrre lavoro), i fisici hanno creato dei potenziali speciali:
+                L'energia non è tutta uguale. Per capire quanta energia è realmente "utile" (capace di produrre lavoro),
+                i fisici hanno creato dei potenziali speciali:
             </p>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
                 <div class="potential-card">
                     <h4>Entalpia (\(H\))</h4>
                     <div class="potential-formula">\(H = U + PV\)</div>
@@ -109,13 +122,30 @@
                 <div class="potential-card">
                     <h4>Energia Libera di Helmholtz (\(F\))</h4>
                     <div class="potential-formula">\(F = U - TS\)</div>
-                    <p style="font-size: 0.85rem; color: var(--text-muted);">Lavoro massimo estraibile a volume costante.</p>
+                    <p style="font-size: 0.85rem; color: var(--text-muted);">Lavoro massimo estraibile a volume
+                        costante.</p>
                 </div>
                 <div class="potential-card" style="border-color: var(--physics-color);">
                     <h4>Energia Libera di Gibbs (\(G\))</h4>
                     <div class="potential-formula">\(G = H - TS\)</div>
-                    <p style="font-size: 0.85rem; color: var(--text-muted);">Il potenziale critico per la stabilità chimica.</p>
+                    <p style="font-size: 0.85rem; color: var(--text-muted);">Il potenziale critico per la stabilità
+                        chimica.</p>
                 </div>
+            </div>
+
+            <div
+                style="background: rgba(16, 185, 129, 0.05); padding: 1.5rem; border-radius: 12px; border-left: 3px solid #10b981; margin-top: 1.5rem;">
+                <h4 style="color: #10b981; margin-bottom: 0.5rem;">Spontaneità in Chimica e il Limite dei Potenziali
+                </h4>
+                <p style="font-size: 0.95rem; margin: 0; line-height: 1.6;">
+                    I potenziali termodinamici (e in particolare l'<strong>Energia Libera di Gibbs</strong>) sono
+                    estesamente utilizzati in chimica per una ragione fondamentale: <strong>ci dicono se una reazione è
+                        spontanea</strong>. Se la variazione di energia libera è negativa (\(\Delta G < 0\)), la
+                        reazione chimica avverrà in natura. Tuttavia, la termodinamica ha un limite: si occupa
+                        unicamente degli stati iniziali e finali. Ci dice che la reazione avverrà, ma <strong>non ci
+                        dice assolutamente nulla sulla sua velocità</strong>. Una reazione puramente spontanea sulla
+                        carta potrebbe richiedere millisecondi o milioni di anni per completarsi.
+                </p>
             </div>
         </section>
 
@@ -123,22 +153,28 @@
         <section class="lesson-section">
             <h2 class="lesson-title">3. Verso l'Infinitamente Piccolo</h2>
             <div class="quote-box">
-                "Ludwig Boltzmann, che dedicò gran parte della sua vita allo studio della meccanica statistica, morì nel 1906 per mano propria. Paul Ehrenfest, continuando il suo lavoro, morì allo stesso modo nel 1933. Ora tocca a noi studiare la meccanica statistica. Forse sarà saggio approcciare l'argomento con cautela."
-                <div style="margin-top: 1rem; text-align: right; font-weight: 600;">— David Goodstein, States of Matter</div>
+                "Ludwig Boltzmann, che dedicò gran parte della sua vita allo studio della meccanica statistica, morì nel
+                1906 per mano propria. Paul Ehrenfest, continuando il suo lavoro, morì allo stesso modo nel 1933. Ora
+                tocca a noi studiare la meccanica statistica. Forse sarà saggio approcciare l'argomento con cautela."
+                <div style="margin-top: 1rem; text-align: right; font-weight: 600;">— David Goodstein, States of Matter
+                </div>
             </div>
-            
+
             <p class="lesson-text">
-                Perché tanta cautela? Perché qui la materia perde la sua solidità "sicura" e diventa una danza caotica di probabilità.
+                Perché tanta cautela? Perché qui la materia perde la sua solidità "sicura" e diventa una danza caotica
+                di probabilità.
             </p>
-            
+
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.5rem;">
                 <div style="background: rgba(59, 130, 246, 0.05); padding: 1.5rem; border-radius: 12px;">
                     <h3 style="color: #3b82f6; margin-bottom: 0.5rem;">Macro-stato</h3>
-                    <p style="font-size: 0.9rem;">Le variabili globali "facili" da vedere: Pressione, Volume, Temperatura. È l'aspetto esteriore del sistema.</p>
+                    <p style="font-size: 0.9rem;">Le variabili globali "facili" da vedere: Pressione, Volume,
+                        Temperatura. È l'aspetto esteriore del sistema.</p>
                 </div>
                 <div style="background: rgba(168, 85, 247, 0.05); padding: 1.5rem; border-radius: 12px;">
                     <h3 style="color: #a855f7; margin-bottom: 0.5rem;">Micro-stato</h3>
-                    <p style="font-size: 0.9rem;">La posizione e la velocità di ogni SINGOLA molecola. Ci sono miliardi di miliardi di microstati per ogni macrostato.</p>
+                    <p style="font-size: 0.9rem;">La posizione e la velocità di ogni SINGOLA molecola. Ci sono miliardi
+                        di miliardi di microstati per ogni macrostato.</p>
                 </div>
             </div>
 
@@ -146,14 +182,19 @@
             <div style="margin-top: 3rem;">
                 <h3 style="color: white; margin-bottom: 1rem;">3.1 Probabilità e Distribuzione Binomiale</h3>
                 <p class="lesson-text">
-                    Immagina di avere una scatola divisa in due metà e di lanciarci dentro delle palline. Qual è la probabilità che una pallina finisca a sinistra? È il \(50\%\). Se abbiamo \(N\) palline, il numero di modi (\(W\)) in cui possono distribuirsi segue la <strong>Distribuzione Binomiale</strong>:
+                    Immagina di avere una scatola divisa in due metà e di lanciarci dentro delle palline. Qual è la
+                    probabilità che una pallina finisca a sinistra? È il \(50\%\). Se abbiamo \(N\) palline, il numero
+                    di modi (\(W\)) in cui possono distribuirsi segue la <strong>Distribuzione Binomiale</strong>:
                 </p>
                 <div style="text-align: center; margin: 2rem 0; font-size: 1.5rem; color: #a855f7;">
                     \(P(k) = \binom{N}{k} p^k (1-p)^{N-k}\)
                 </div>
                 <div class="info-box" style="border-left-color: #a855f7;">
                     <p class="lesson-text" style="font-size: 0.95rem; margin: 0;">
-                        Quando \(N\) è piccolo (es. 4 palline), lo stato "tutte a sinistra" è raro ma possibile. Ma quando \(N\) è enorme (miliardi di molecole), la matematica mostra che <strong>quasi tutti i microstati</strong> corrispondono a una distribuzione \(50/50\). Lo stato ordinato diventa statisticamente impossibile: ecco perché il disordine trionfa!
+                        Quando \(N\) è piccolo (es. 4 palline), lo stato "tutte a sinistra" è raro ma possibile. Ma
+                        quando \(N\) è enorme (miliardi di molecole), la matematica mostra che <strong>quasi tutti i
+                            microstati</strong> corrispondono a una distribuzione \(50/50\). Lo stato ordinato diventa
+                        statisticamente impossibile: ecco perché il disordine trionfa!
                     </p>
                 </div>
             </div>
@@ -163,36 +204,46 @@
         <section class="lesson-section">
             <h2 class="lesson-title">4. La Definizione di Boltzmann</h2>
             <p class="lesson-text">
-                Boltzmann trovò la formula magica che collega il mondo visibile a quello invisibile delle molecole. L'entropia è semplicemente una misura di <strong>quanti microstati (\(W\)) sono compatibili</strong> con il macrostato osservato.
+                Boltzmann trovò la formula magica che collega il mondo visibile a quello invisibile delle molecole.
+                L'entropia è semplicemente una misura di <strong>quanti microstati (\(W\)) sono compatibili</strong> con
+                il macrostato osservato.
             </p>
-            <div style="background: #1e293b; padding: 2.5rem; border-radius: 20px; text-align: center; margin: 2rem 0; border: 1px solid var(--physics-color);">
+            <div
+                style="background: #1e293b; padding: 2.5rem; border-radius: 20px; text-align: center; margin: 2rem 0; border: 1px solid var(--physics-color);">
                 <div style="font-size: 3rem; font-family: 'Fira Code', monospace; color: white;">
                     \(S = k_B \ln W\)
                 </div>
-                <p style="margin-top: 1rem; color: var(--text-muted);">Questa equazione è incisa sulla sua lapide a Vienna!</p>
+                <p style="margin-top: 1rem; color: var(--text-muted);">Questa equazione è incisa sulla sua lapide a
+                    Vienna!</p>
             </div>
-            
-            <div style="background: rgba(var(--physics-color-rgb), 0.05); padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem; border-left: 3px solid var(--physics-color);">
+
+            <div
+                style="background: rgba(var(--physics-color-rgb), 0.05); padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem; border-left: 3px solid var(--physics-color);">
                 <h4 style="color: var(--physics-color); margin-bottom: 0.5rem;">La Costante di Boltzmann (\(k_B\))</h4>
                 <p style="font-size: 0.95rem; margin: 0;">
                     È il "ponte" tra la temperatura macroscopica e l'energia cinetica microscopica. <br>
                     <strong>\(k_B \approx 1.38 \times 10^{-23} \, J/K\)</strong>. <br>
-                    Fondamentalmente, ci dice quanta energia termica corrisponde a un grado di temperatura per ogni singola molecola.
+                    Fondamentalmente, ci dice quanta energia termica corrisponde a un grado di temperatura per ogni
+                    singola molecola.
                 </p>
             </div>
             <p class="lesson-text">
-                Perché i sistemi evolvono verso il disordine? Non per una legge "maligna", ma per pura <strong>PROBABILITÀ</strong>. Ci sono così tanti modi di essere disordinati, e così pochi di essere ordinati, che il caso vince sempre.
+                Perché i sistemi evolvono verso il disordine? Non per una legge "maligna", ma per pura
+                <strong>PROBABILITÀ</strong>. Ci sono così tanti modi di essere disordinati, e così pochi di essere
+                ordinati, che il caso vince sempre.
             </p>
         </section>
 
         <!-- SIMULATORE ENTROPIA -->
         <section class="lesson-section">
             <h2 class="lesson-title">Laboratorio: Il Trionfo del Caos</h2>
-            <p class="lesson-text">Inizia con tutte le particelle in un angolo (ordine massimo, entropia minima). Guarda cosa succede quando le lasci libere di muoversi.</p>
+            <p class="lesson-text">Inizia con tutte le particelle in un angolo (ordine massimo, entropia minima). Guarda
+                cosa succede quando le lasci libere di muoversi.</p>
             <div style="margin: 2rem 0;">
                 <canvas id="entropy-canvas"></canvas>
                 <div style="display: flex; gap: 1rem; margin-top: 1rem;">
-                    <button id="btn-release" class="control-btn" style="background: var(--physics-color);">Libera le Particelle</button>
+                    <button id="btn-release" class="control-btn" style="background: var(--physics-color);">Libera le
+                        Particelle</button>
                     <button id="btn-reset" class="control-btn" style="background: #475569;">Ripristina Ordine</button>
                 </div>
             </div>
@@ -204,22 +255,31 @@
                 <div>
                     <h2 class="lesson-title">5. La Freccia del Tempo</h2>
                     <p class="lesson-text">
-                        Le equazioni della meccanica sono reversibili: una pallina che rimbalza sembra "giusta" anche se il video viene mandato all'indietro. Tuttavia, un sistema di miliardi di molecole non torna mai indietro spontaneamente.
+                        Le equazioni della meccanica sono reversibili: una pallina che rimbalza sembra "giusta" anche se
+                        il video viene mandato all'indietro. Tuttavia, un sistema di miliardi di molecole non torna mai
+                        indietro spontaneamente.
                     </p>
                     <p class="lesson-text">
-                        L'Entropia introduce l'<strong>asimmetria temporale</strong>: l'universo evolve da stati a bassa probabilità (ordine) a stati ad alta probabilità (disordine). Questo "senso unico" è ciò che noi percepiamo come lo scorrere del tempo. Senza l'entropia, non ci sarebbe differenza tra passato e futuro.
+                        L'Entropia introduce l'<strong>asimmetria temporale</strong>: l'universo evolve da stati a bassa
+                        probabilità (ordine) a stati ad alta probabilità (disordine). Questo "senso unico" è ciò che noi
+                        percepiamo come lo scorrere del tempo. Senza l'entropia, non ci sarebbe differenza tra passato e
+                        futuro.
                     </p>
                 </div>
                 <div>
                     <h2 class="lesson-title">6. L'Energia dell'Informazione</h2>
                     <p class="lesson-text">
-                        Claude Shannon scoprì che la formula dell'entropia descrive anche la <strong>quantità di informazione</strong> mancante in un messaggio.
+                        Claude Shannon scoprì che la formula dell'entropia descrive anche la <strong>quantità di
+                            informazione</strong> mancante in un messaggio.
                     </p>
-                    <div style="background: rgba(16, 185, 129, 0.1); padding: 1rem; border-radius: 8px; font-family: monospace; border-left: 3px solid #10b981; margin-bottom: 1rem;">
+                    <div
+                        style="background: rgba(16, 185, 129, 0.1); padding: 1rem; border-radius: 8px; font-family: monospace; border-left: 3px solid #10b981; margin-bottom: 1rem;">
                         \(H = -\sum p_i \log p_i\)
                     </div>
                     <p class="lesson-text" style="font-size: 0.9rem;">
-                        In questa equazione, l'entropia misura il grado di <strong>sorpresa</strong>: se un evento è certo (\(p=1\)), l'entropia è zero (nessuna informazione nuova). Se l'evento è incerto, l'entropia è massima. Comunicare significa ridurre l'entropia del ricevente!
+                        In questa equazione, l'entropia misura il grado di <strong>sorpresa</strong>: se un evento è
+                        certo (\(p=1\)), l'entropia è zero (nessuna informazione nuova). Se l'evento è incerto,
+                        l'entropia è massima. Comunicare significa ridurre l'entropia del ricevente!
                     </p>
                 </div>
             </div>
@@ -227,10 +287,13 @@
 
         <!-- QUIZ ENTROPIA -->
         <section id="quiz-finale" class="lesson-section quiz-container">
-            <h2 class="lesson-title" style="color: var(--physics-color); text-align: center;">Verifica le tue Competenze (10 Domande)</h2>
-            <p class="lesson-text" style="text-align: center; font-size: 0.95rem; margin-bottom: 2rem;">Testa la tua comprensione dell'entropia statistica e macroscopica.</p>
+            <h2 class="lesson-title" style="color: var(--physics-color); text-align: center;">Verifica le tue Competenze
+            </h2>
+            <p class="lesson-text" style="text-align: center; font-size: 0.95rem; margin-bottom: 2rem;">Testa la tua
+                comprensione dell'entropia statistica e macroscopica.</p>
             <div id="quiz-area"></div>
-            <div id="quiz-score" class="feedback-msg" style="text-align: center; font-size: 1.2rem; margin-top: 2rem; font-weight: bold;"></div>
+            <div id="quiz-score" class="feedback-msg"
+                style="text-align: center; font-size: 1.2rem; margin-top: 2rem; font-weight: bold;"></div>
         </section>
 
     </main>
