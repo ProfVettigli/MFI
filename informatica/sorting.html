@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ordinamento Array - MFI Informatica</title>
+    <meta name="description" content="Lezione interattiva sull'ordinamento degli array: Bubble Sort, algoritmi a confronto e visualizzazione dinamica.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        .sorting-visualizer {
+            background: #0d1117;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            position: relative;
+        }
+        .bars-container {
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 4px;
+            height: 250px;
+            margin-bottom: 2rem;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(255,255,255,0.05);
+        }
+        .bar {
+            background: linear-gradient(to top, #3b82f6, #a855f7);
+            width: 25px;
+            border-radius: 4px 4px 0 0;
+            transition: height 0.1s ease, background 0.2s;
+            position: relative;
+        }
+        .bar.comparing { background: #f59e0b !important; }
+        .bar.swapping { background: #ef4444 !important; }
+        .bar.sorted { background: #10b981 !important; }
+        
+        .code-block {
+            background: #1a1e2e;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #e2e8f0;
+            position: relative;
+            white-space: pre-wrap;
+            margin: 1.5rem 0;
+        }
+        .code-block .kw { color: #c084fc; font-weight: 600; }
+        .code-block .var { color: #38bdf8; }
+        .code-block .op { color: #f59e0b; }
+        .code-block .num { color: #fb923c; }
+        .code-block .cmt { color: #64748b; font-style: italic; }
+
+        .stat-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .stat-value { font-weight: 800; font-size: 1.2rem; color: #fff; display: block; }
+        .stat-label { font-size: 0.75rem; color: #94A3B8; text-transform: uppercase; }
+
+        canvas#bubble-flowchart {
+            background: rgba(0,0,0,0.2);
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.05);
+            max-width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="sub-hero" style="background: linear-gradient(rgba(15, 23, 42, 0.94), rgba(15, 23, 42, 0.98)), url('https://images.unsplash.com/photo-1504639725590-34d0984388bd?auto=format&fit=crop&q=80'); background-size: cover; padding: 6rem 0 3rem;">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2.5rem;">
+                <a href="informatica.html" class="back-button" style="margin-bottom: 0;">
+                    <span style="font-size:1.2rem; margin-right: 0.5rem;">&larr;</span> Torna ad Informatica
+                </a>
+            </div>
+            <h1 style="font-size: clamp(3rem, 6vw, 4.5rem); font-weight: 800; margin-bottom: 1.5rem;">Ordinamento <span style="color: #3b82f6;">Array</span></h1>
+            <p style="font-size: 1.25rem; color: var(--text-muted); max-width: 800px; line-height: 1.6;">
+                Mettere ordine nel caos: scopri come i computer organizzano miliardi di dati in millisecondi attraverso algoritmi ingegnosi.
+            </p>
+        </div>
+    </header>
+
+    <main class="container py-12">
+        <!-- 1. CHE COS'È UN ARRAY? -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #3b82f6;">1. Che cos'è un Array?</h2>
+            <p class="lesson-text">
+                Prima di imparare a ordinarli, dobbiamo capire bene cosa stiamo maneggiando. Un <strong>Array</strong> (o <em>vettore</em>) è una struttura dati che contiene una collezione di elementi dello stesso tipo, identificati da un <strong>indice</strong> numerico.
+            </p>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 2rem 0;">
+                <div class="prop-card" style="border-top: 4px solid #3b82f6; text-align: left;">
+                    <h4 style="color: #3b82f6; margin-bottom: 1rem;">🧠 Come lo vede la RAM?</h4>
+                    <p style="font-size: 0.9rem; line-height: 1.6; color: #cbd5e1;">
+                        In memoria, un array è un <strong>blocco contiguo</strong> di celle. Se crei un array di 10 numeri, il computer riserva 10 "scatole" una accanto all'altra.
+                    </p>
+                    <p style="font-size: 0.9rem; line-height: 1.6; color: #cbd5e1; margin-top: 0.8rem;">
+                        <strong>Vantaggio:</strong> È velocissimo accedere a un elemento (es. il 5°) perché il computer sa esattamente a quale indirizzo di memoria trovarlo calcolando la distanza dall'inizio.
+                    </p>
+                </div>
+                <div class="prop-card" style="border-top: 4px solid #a855f7; text-align: left;">
+                    <h4 style="color: #a855f7; margin-bottom: 1rem;">⚖️ Array vs Lista</h4>
+                    <p style="font-size: 0.9rem; line-height: 1.6; color: #cbd5e1;">
+                        Anche se spesso usiamo i termini come sinonimi, c'è una differenza tecnica profonda:
+                    </p>
+                    <ul style="font-size: 0.85rem; color: #cbd5e1; margin-top: 0.5rem; line-height: 1.6;">
+                        <li><strong>Array:</strong> Dimensione fissa, elementi vicini in memoria. Rigidità = Massima velocità.</li>
+                        <li><strong>Lista (Dinamica):</strong> Può crescere o rimpicciolirsi. Gli elementi possono essere sparsi nella RAM e collegati tra loro da "puntatori".</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="background: rgba(59,130,246,0.05); border: 1px solid rgba(59,130,246,0.2); padding: 1.5rem; border-radius: 12px; font-family: 'Fira Code', monospace; text-align: center;">
+                <span style="color: #94A3B8;">RAM Address: [1000] [1004] [1008] [1012]</span><br>
+                <span style="font-size: 1.5rem; letter-spacing: 5px; color: #fff;">[ 42 | 17 | 89 | 31 ]</span><br>
+                <span style="color: #3b82f6; font-size: 0.8rem;">Indice: &nbsp;&nbsp;&nbsp;&nbsp;0 &nbsp;&nbsp;&nbsp;&nbsp;1 &nbsp;&nbsp;&nbsp;&nbsp;2 &nbsp;&nbsp;&nbsp;&nbsp;3</span>
+            </div>
+        </section>
+
+        <!-- 2. STRUTTURE E TIPI DI DATO -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #10b981;">2. Strutture e Tipi di Dato</h2>
+            <p class="lesson-text">
+                Un array è solo un esempio di <strong>Struttura Dati</strong>: un "contenitore" logico progettato per organizzare le informazioni in modo che il computer possa manipolarle con efficienza. Ma cosa mettiamo dentro questi contenitori? Qui entrano in gioco i <strong>Tipi di Dato</strong>.
+            </p>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 2rem 0;">
+                <!-- Dati Numerici -->
+                <div style="background: rgba(16,185,129,0.03); border: 1px solid rgba(16,185,129,0.1); padding: 1.5rem; border-radius: 12px; border-left: 4px solid #10b981;">
+                    <h4 style="color: #10b981; margin-bottom: 0.8rem;">🔢 Dati Numerici</h4>
+                    <p style="font-size: 0.9rem; line-height: 1.6; color: #cbd5e1;">
+                        Sono numeri puri (interi o decimali). Il computer li memorizza direttamente convertendoli in <strong>binario</strong>.
+                    </p>
+                    <p style="font-size: 0.85rem; color: #94A3B8; margin-top: 0.5rem; font-style: italic;">
+                        Esempio: Il numero 5 diventa 101 in binario. Il computer può sommarli o ordinarli matematicamente all'istante.
+                    </p>
+                </div>
+                <!-- Stringhe -->
+                <div style="background: rgba(245,158,11,0.03); border: 1px solid rgba(245,158,11,0.1); padding: 1.5rem; border-radius: 12px; border-left: 4px solid #f59e0b;">
+                    <h4 style="color: #f59e0b; margin-bottom: 0.8rem;">🔤 Stringhe (Testo)</h4>
+                    <p style="font-size: 0.9rem; line-height: 1.6; color: #cbd5e1;">
+                        Una <strong>Stringa</strong> è una sequenza di caratteri. In memoria, è come un "array di lettere". 
+                    </p>
+                    <p style="font-size: 0.85rem; color: #94A3B8; margin-top: 0.5rem; font-style: italic;">
+                        Esempio: La stringa "CIAO" è composta da 4 caratteri (C-I-A-O). Ogni lettera corrisponde a un codice numerico (es. codifica ASCII o Unicode).
+                    </p>
+                </div>
+            </div>
+
+            <div style="background: rgba(255,255,255,0.03); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);">
+                <h4 style="color: #94A3B8; margin-bottom: 0.8rem; font-size: 0.95rem;">⭐ La "Stele di Rosetta" dei Computer: Il Codice ASCII</h4>
+                <p style="font-size: 0.92rem; line-height: 1.6; margin: 0; color: #cbd5e1;">
+                    Poiché i computer capiscono solo i numeri, è stato creato il codice <strong>ASCII</strong> (<em>American Standard Code for Information Interchange</em>). È una tabella universale che assegna a ogni lettera, numero o simbolo un valore numerico preciso da 0 a 127.
+                </p>
+                <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-top: 1rem; font-family: 'Fira Code', monospace; font-size: 0.85rem; color: #3b82f6;">
+                    <span style="background: rgba(0,0,0,0.2); padding: 5px 10px; border-radius: 4px;">'A' = 65</span>
+                    <span style="background: rgba(0,0,0,0.2); padding: 5px 10px; border-radius: 4px;">'B' = 66</span>
+                    <span style="background: rgba(0,0,0,0.2); padding: 5px 10px; border-radius: 4px;">'a' = 97</span>
+                    <span style="background: rgba(0,0,0,0.2); padding: 5px 10px; border-radius: 4px;">'0' = 48</span>
+                    <span style="background: rgba(0,0,0,0.2); padding: 5px 10px; border-radius: 4px;">SPAZIO = 32</span>
+                </div>
+                <p style="font-size: 0.9rem; line-height: 1.6; margin-top: 1rem; color: #94A3B8;">
+                    <strong>Perché è importante per l'ordinamento?</strong> Quando un algoritmo ordina un elenco di nomi, non "legge" le lettere, ma confronta questi codici numerici. Questo ordine è chiamato <strong>lessicografico</strong>. 
+                    <br><em>Nota:</em> Noterai che 'A' (65) viene prima di 'a' (97), ecco perché negli elenchi del computer le parole Tutto-Maiuscole appaiono spesso prima di quelle minuscole!
+                </p>
+            </div>
+
+            <!-- SEZIONE PUNTATORI -->
+            <div style="background: rgba(59,130,246,0.05); border: 1px solid rgba(59,130,246,0.15); padding: 1.5rem; border-radius: 12px; margin-top: 1.5rem;">
+                <h4 style="color: #3b82f6; margin-bottom: 0.8rem; font-size: 0.95rem;">🛰️ Curiosità: I Puntatori (Il potere del C)</h4>
+                <p style="font-size: 0.92rem; line-height: 1.7; color: #cbd5e1; margin-bottom: 1rem;">
+                    In linguaggi come il <strong>C</strong>, non manipoliamo sempre direttamente il valore di una variabile. Spesso usiamo i <strong>Puntatori</strong>.
+                </p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                    <div>
+                        <strong style="color: #3b82f6;">Cosa sono?</strong>
+                        <p style="font-size: 0.85rem; color: #94A3B8; margin-top: 0.4rem;">
+                            Un puntatore è una variabile che non contiene un valore (come 42), ma l'<strong>indirizzo di memoria</strong> (la posizione esatta nella RAM) dove quel valore è salvato. 
+                        </p>
+                    </div>
+                    <div>
+                        <strong style="color: #a855f7;">L'analogia del GPS</strong>
+                        <p style="font-size: 0.85rem; color: #94A3B8; margin-top: 0.4rem;">
+                            Se vuoi dare a un amico la tua casa, non gliela spedisci per posta (valore). Gli dai le sue <strong>coordinate GPS</strong> (puntatore). Lui potrà andare lì e trovare quello che c'è dentro.
+                        </p>
+                    </div>
+                </div>
+                <p style="font-size: 0.88rem; line-height: 1.6; color: #cbd5e1; margin-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 0.8rem;">
+                    <strong>Perché si usavano?</strong> Per pura <strong>efficienza</strong>. Passare un puntatore a un array di 1 milione di elementi è immediato (spedisci solo un piccolo indirizzo), mentre passare l'intero array richiederebbe di copiare un milione di dati, rallentando drasticamente il computer.
+                </p>
+            </div>
+        </section>
+
+        <!-- 3. PERCHÉ ORDINARE È FONDAMENTALE? -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #3b82f6;">3. Perché Ordinare è Fondamentale?</h2>
+            <p class="lesson-text">
+                Immagina di cercare un libro in una biblioteca dove i libri sono buttati a terra a caso. Dovresti controllarli tutti, uno per uno. Se invece i libri sono ordinati alfabeticamente, puoi trovare quello che cerchi in pochi secondi.
+            </p>
+            <p class="lesson-text">
+                In informatica, l'<strong>ordinamento (sorting)</strong> è l'operazione che dispone gli elementi di una collezione in una determinata sequenza (crescente o decrescente). È il pilastro di quasi ogni sistema moderno:
+            </p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+                <div class="prop-card">
+                    <div class="icon-large">🔍</div>
+                    <h4>Ricerca Rapida</h4>
+                    <p style="font-size:0.88rem; color: #cbd5e1;">Senza ordinamento, algoritmi ultra-veloci come la <em>Ricerca Binaria</em> non potrebbero funzionare.</p>
+                </div>
+                <div class="prop-card">
+                    <div class="icon-large">📊</div>
+                    <h4>Visualizzazione</h4>
+                    <p style="font-size:0.88rem; color: #cbd5e1;">Classifiche, listini prezzi e database devono essere ordinati per essere comprensibili agli umani.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. IL DILEMMA: TEMPO VS MEMORIA -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #a855f7;">2. Il Grande Compromesso (Trade-off)</h2>
+            <p class="lesson-text">
+                Non esiste un "algoritmo perfetto". Storicamente ne sono stati sviluppati centinaia, ognuno con i suoi punti di forza e debolezze. La scelta dipende da un delicato equilibrio:
+            </p>
+            <div style="background: rgba(168,85,247,0.08); border-left: 4px solid #a855f7; padding: 1.5rem 2rem; border-radius: 0 12px 12px 0; margin: 1.5rem 0;">
+                <ul style="font-size: 1.05rem; line-height: 1.8; margin: 0;">
+                    <li><strong>Complessità Temporale:</strong> Quanto tempo impiega (es. Bubble Sort è lento con molti dati).</li>
+                    <li><strong>Complessità Spaziale:</strong> Quanta memoria extra richiede (molti algoritmi veloci necessitano di "fogli d'appoggio" in memoria).</li>
+                    <li><strong>Stabilità:</strong> Se mantiene l'ordine relativo di elementi con lo stesso valore.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 3. IL BUBBLE SORT -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #ef4444;">3. Bubble Sort: L'Algoritmo "a Bolle"</h2>
+            <p class="lesson-text">
+                Il <strong>Bubble Sort</strong> è uno degli algoritmi più semplici e intuitivi. Il suo nome deriva dal fatto che gli elementi più grandi "risalgono" verso la fine dell'array come bollicine d'aria in un bicchiere d'acqua.
+            </p>
+            <p class="lesson-text">
+                <strong>Come funziona:</strong> confronta coppie di elementi adiacenti e li scambia se sono nell'ordine sbagliato. Ripete questo processo finché l'intero array è ordinato.
+            </p>
+
+            <!-- SEZIONE SWAP -->
+            <div style="background: rgba(239,68,68,0.05); border: 1px solid rgba(239,68,68,0.2); padding: 2rem; border-radius: 12px; margin: 2rem 0;">
+                <h3 style="color: #ef4444; margin-bottom: 1.5rem; font-size: 1.3rem;">🔄 Lo Scambio (Swap) e la Variabile Temporanea</h3>
+                <p style="font-size: 0.95rem; line-height: 1.7; color: #cbd5e1; margin-bottom: 1.5rem;">
+                    In informatica, scambiare il valore di due variabili (es. <code>A</code> e <code>B</code>) non è così immediato come sembra. Se scrivessimo <code>A = B</code>, il valore originale di <code>A</code> verrebbe sovrascritto e perso per sempre!
+                </p>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center;">
+                    <!-- Analogia Bicchieri -->
+                    <div>
+                        <h4 style="color: #ef4444; margin-bottom: 1rem;">🍷 L'Analogia dei Bicchieri</h4>
+                        <p style="font-size: 0.88rem; line-height: 1.6; color: #cbd5e1;">
+                            Immagina di avere un bicchiere di <strong>Vino (A)</strong> e uno di <strong>Acqua (B)</strong>. Vuoi scambiarne il contenuto. Non puoi versare l'acqua nel vino direttamente: faresti un pasticcio e perderesti il vino!
+                        </p>
+                        <p style="font-size: 0.88rem; line-height: 1.6; color: #cbd5e1; margin-top: 0.8rem;">
+                            Hai bisogno di un <strong>terzo bicchiere vuoto (Temp)</strong>:
+                            <ol style="font-size: 0.85rem; color: #94A3B8; margin-top: 0.5rem; line-height: 1.8;">
+                                <li>Versi il <strong>Vino (A)</strong> nel bicchiere <strong>Temp</strong>.</li>
+                                <li>Versi l'<strong>Acqua (B)</strong> nel bicchiere <strong>A</strong> (ora vuoto).</li>
+                                <li>Versi il <strong>Vino (da Temp)</strong> nel bicchiere <strong>B</strong>.</li>
+                            </ol>
+                        </p>
+                    </div>
+                    <!-- Codice Swap -->
+                    <div class="code-block" style="margin: 0;">
+                        <span class="code-label">SWAP LOGIC</span>
+<span class="cmt">// Scambio di A e B</span>
+<span class="var">temp</span> <span class="op">←</span> <span class="var">A</span>
+<span class="var">A</span> <span class="op">←</span> <span class="var">B</span>
+<span class="var">B</span> <span class="op">←</span> <span class="var">temp</span>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="color: #ef4444; margin-top: 2rem;">📐 Diagramma di Flusso</h3>
+            <div style="text-align: center; margin: 2rem 0;">
+                <canvas id="bubble-flowchart" width="600" height="700"></canvas>
+            </div>
+
+            <h3 style="color: #ef4444; margin-top: 2rem;">📝 Pseudocodice</h3>
+            <div class="code-block">
+<span class="kw">PROCEDURA</span> <span class="var">BubbleSort</span>(<span class="var">A</span>: Array di N elementi)
+    <span class="kw">PER</span> <span class="var">i</span> <span class="op">DA</span> <span class="num">0</span> <span class="op">A</span> <span class="num">N-2</span> <span class="kw">ESEGUI</span>
+        <span class="kw">PER</span> <span class="var">j</span> <span class="op">DA</span> <span class="num">0</span> <span class="op">A</span> <span class="num">N-i-2</span> <span class="kw">ESEGUI</span>
+            <span class="kw">SE</span> <span class="var">A[j]</span> <span class="op">&gt;</span> <span class="var">A[j+1]</span> <span class="kw">ALLORA</span>
+                <span class="cmt">// Scambia gli elementi</span>
+                <span class="var">temp</span> <span class="op">←</span> <span class="var">A[j]</span>
+                <span class="var">A[j]</span> <span class="op">←</span> <span class="var">A[j+1]</span>
+                <span class="var">A[j+1]</span> <span class="op">←</span> <span class="var">temp</span>
+            <span class="kw">FINE SE</span>
+        <span class="kw">FINE PER</span>
+    <span class="kw">FINE PER</span>
+<span class="kw">FINE PROCEDURA</span>
+            </div>
+
+            <h3 style="color: #ef4444; margin-top: 2rem;">🐍 Implementazione Python</h3>
+            <div class="code-block">
+<span class="kw">def</span> <span class="var">bubble_sort</span>(arr):
+    n = <span class="kw">len</span>(arr)
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="kw">range</span>(n):
+        <span class="kw">for</span> j <span class="kw">in</span> <span class="kw">range</span>(<span class="num">0</span>, n - i - <span class="num">1</span>):
+            <span class="kw">if</span> arr[j] > arr[j + <span class="num">1</span>]:
+                <span class="cmt"># Scambio simultaneo (Pythonic way)</span>
+                arr[j], arr[j + <span class="num">1</span>] = arr[j + <span class="num">1</span>], arr[j]
+    <span class="kw">return</span> arr
+            </div>
+        </section>
+
+        <!-- 4. LABORATORIO INTERATTIVO -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #10b981;">4. Laboratorio: Algoritmi a Confronto</h2>
+            <p class="lesson-text">
+                Vediamo gli algoritmi in azione! Osserva come il <strong>Bubble Sort</strong> (lento ma semplice) si comporta rispetto ad algoritmi più avanzati (che impareremo presto).
+            </p>
+
+            <div class="sorting-visualizer">
+                <div class="bars-container" id="bars-container">
+                    <!-- Bars will be generated by JS -->
+                </div>
+
+                <div style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: center;">
+                    <button class="run-btn" id="btn-shuffle" style="background: #64748b;">🔀 Mescola</button>
+                    <button class="run-btn" id="btn-bubble" style="background: #ef4444;">🫧 Bubble Sort (O(n²))</button>
+                    <button class="run-btn" id="btn-quick" style="background: #10b981;">⚡ Quick Sort (O(n log n))</button>
+                    <div style="margin-left: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="color: #94A3B8; font-size: 0.9rem;">Velocità:</span>
+                        <input type="range" id="speed-range" min="1" max="100" value="50">
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 2rem;">
+                    <div class="stat-card">
+                        <span class="stat-label">Confronti</span>
+                        <span class="stat-value" id="stat-comparisons">0</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Scambi</span>
+                        <span class="stat-value" id="stat-swaps">0</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Tempo Stimato</span>
+                        <span class="stat-value" id="stat-time">0 ms</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="background: rgba(59,130,246,0.05); border: 1px solid rgba(59,130,246,0.2); padding: 1.5rem; border-radius: 12px; margin-top: 2rem;">
+                <h4 style="color: #3b82f6; margin-bottom: 0.5rem;">💡 Cosa hai notato?</h4>
+                <p style="font-size: 0.95rem; line-height: 1.6; margin: 0;">
+                    Il <strong>Bubble Sort</strong> è inefficiente su grandi moli di dati perché confronta ogni singola coppia molte volte. Il <strong>Quick Sort</strong>, invece, usa una strategia <strong>Divide et Impera</strong>, dividendo l'array in parti più piccole e ordinandole ricorsivamente. La differenza di velocità diventa abissale al crescere di N.
+                </p>
+            </div>
+        </section>
+
+        <!-- QUIZ placeholder -->
+        <section id="quiz-sorting" class="lesson-section quiz-container">
+            <h2 class="lesson-title" style="color: #a855f7; text-align: center;">Metti alla Prova</h2>
+            <div id="quiz-area"></div>
+            <div id="quiz-score" class="feedback-msg" style="text-align: center; font-size: 1.2rem; margin-top: 2rem; font-weight: bold;"></div>
+        </section>
+
+    </main>
+
+    <footer style="background: #0f172a; padding: 4rem 0; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 4rem;">
+        <div class="container" style="text-align: center;">
+            <p style="color: #94A3B8;">&copy; 2026 MFI - Moduli Formativi Informatica. Progetto Didattico Integrato.</p>
+        </div>
+    </footer>
+
+    <script src="sorting.js"></script>
+    <script src="../js/main.js"></script>
+</body>
+</html>

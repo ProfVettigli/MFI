@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algoritmi e Linguaggi - MFI Informatica</title>
+    <meta name="description"
+        content="Lezione interattiva su algoritmi, pseudocodice, diagrammi di flusso e linguaggi di programmazione.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .prop-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            border-bottom: 3px solid #a855f7;
+        }
+
+        .prop-card .icon-large {
+            font-size: 2.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .prop-card h4 {
+            color: #a855f7;
+            margin-bottom: 0.5rem;
+        }
+
+        .code-block {
+            background: #1a1e2e;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.92rem;
+            line-height: 1.7;
+            overflow-x: auto;
+            color: #e2e8f0;
+            position: relative;
+            white-space: pre-wrap;
+        }
+
+        .code-block .kw {
+            color: #c084fc;
+            font-weight: 600;
+        }
+
+        .code-block .str {
+            color: #34d399;
+        }
+
+        .code-block .cmt {
+            color: #64748b;
+            font-style: italic;
+        }
+
+        .code-block .var {
+            color: #38bdf8;
+        }
+
+        .code-block .num {
+            color: #fb923c;
+        }
+
+        .code-block .op {
+            color: #f59e0b;
+        }
+
+        .code-label {
+            position: absolute;
+            top: 8px;
+            right: 12px;
+            font-size: 0.7rem;
+            font-family: 'Inter', sans-serif;
+            padding: 2px 10px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.08);
+            color: #94A3B8;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .interactive-runner {
+            background: rgba(59, 130, 246, 0.05);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .interactive-runner label {
+            color: #3b82f6;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .interactive-runner input[type="number"] {
+            background: #1a1e2e;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: white;
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            width: 100px;
+            margin: 0 0.8rem;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .run-btn {
+            background: linear-gradient(135deg, #3b82f6, #a855f7);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .run-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .output-box {
+            background: #0d1117;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 1rem 1.2rem;
+            margin-top: 1rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.88rem;
+            line-height: 1.8;
+            min-height: 60px;
+            color: #94A3B8;
+        }
+
+        /* Hello World Tabs */
+        .hw-tabs {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 0;
+        }
+
+        .hw-tab {
+            padding: 0.5rem 1.2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: none;
+            border-radius: 8px 8px 0 0;
+            cursor: pointer;
+            color: #94A3B8;
+            font-weight: 600;
+            font-size: 0.85rem;
+            font-family: 'Inter', sans-serif;
+            transition: 0.3s;
+        }
+
+        .hw-tab:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .hw-tab.active {
+            background: #1a1e2e;
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .hw-panel {
+            display: none;
+        }
+
+        .hw-panel.active {
+            display: block;
+        }
+
+        .hw-panel .code-block {
+            border-radius: 0 12px 12px 12px;
+            margin-top: 0;
+        }
+
+        /* Language cards */
+        .lang-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .lang-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .lang-card .lang-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.8rem;
+            text-align: center;
+        }
+
+        /* Comparison table */
+        .cmp-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+        }
+
+        .cmp-table th,
+        .cmp-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 0.92rem;
+        }
+
+        .cmp-table th {
+            color: #a855f7;
+            font-weight: 600;
+            background: rgba(168, 85, 247, 0.08);
+        }
+
+        .cmp-table tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+    </style>
+</head>
+
+<body>
+    <header class="sub-hero"
+        style="background: linear-gradient(rgba(15, 23, 42, 0.92), rgba(15, 23, 42, 0.96)), url('https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&q=80'); background-size: cover; padding: 6rem 0 3rem;">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2.5rem;">
+                <a href="informatica.html" class="back-button" style="margin-bottom: 0;">
+                    <span style="font-size:1.2rem; margin-right: 0.5rem;">&larr;</span> Torna a Informatica
+                </a>
+            </div>
+            <h1 style="font-size: clamp(3rem, 6vw, 4.5rem); font-weight: 800; margin-bottom: 1.5rem;">Il Pensiero
+                Logico: <span style="color: #a855f7;">Algoritmi e Linguaggi</span></h1>
+            <p style="font-size: 1.25rem; color: var(--text-muted); max-width: 800px; line-height: 1.6;">
+                Scopri come si traduce un'idea in una sequenza logica di passi, come si rappresenta visivamente e come i
+                linguaggi di programmazione la trasformano in realtà digitale.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- ==================== SEZIONE 1: COS'È UN ALGORITMO ==================== -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #a855f7;">1. Cos'è un Algoritmo?</h2>
+            <p class="lesson-text">
+                La parola <strong>algoritmo</strong> deriva dal nome del matematico persiano <em>Muhammad
+                    al-Khwarizmi</em> (IX secolo), padre dell'algebra. Ma cos'è concretamente?
+            </p>
+            <div
+                style="background: rgba(168,85,247,0.08); border-left: 4px solid #a855f7; padding: 1.5rem 2rem; border-radius: 0 12px 12px 0; margin: 1.5rem 0;">
+                <p style="font-size: 1.15rem; margin: 0; line-height: 1.6;">
+                    <strong style="color: #a855f7;">Definizione:</strong> Un <strong>algoritmo</strong> è una
+                    <em>sequenza finita, ordinata e non ambigua di istruzioni</em> che, a partire da dati iniziali
+                    (input), porta a un risultato desiderato (output) attraverso un numero finito di passi.
+                </p>
+            </div>
+            <p class="lesson-text">
+                Nella vita quotidiana usiamo costantemente algoritmi senza rendercene conto: una ricetta di cucina, le
+                istruzioni per montare un mobile IKEA, le indicazioni stradali del navigatore GPS. Tuttavia, un
+                algoritmo <em>informatico</em> deve rispettare proprietà molto più rigorose di una semplice ricetta,
+                perché il suo esecutore è una macchina che non può interpretare nulla: segue le istruzioni alla lettera,
+                senza intuizione né buon senso.
+            </p>
+        </section>
+
+        <!-- ==================== SEZIONE 2: PROPRIETÀ ==================== -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #a855f7;">2. Le Proprietà di un Algoritmo Informatico</h2>
+            <p class="lesson-text">Affinché una sequenza di istruzioni meriti il titolo di "algoritmo informatico", deve
+                rispettare rigorosamente <strong>cinque proprietà fondamentali</strong>:</p>
+
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+                <div class="prop-card">
+                    <div class="icon-large">🔢</div>
+                    <h4>Finitezza</h4>
+                    <p style="font-size:0.88rem; color: #cbd5e1;">L'algoritmo deve terminare <strong>sempre</strong>
+                        dopo un numero finito di passi. Niente cicli infiniti!</p>
+                </div>
+                <div class="prop-card">
+                    <div class="icon-large">🎯</div>
+                    <h4>Non Ambiguità</h4>
+                    <p style="font-size:0.88rem; color: #cbd5e1;">Ogni istruzione deve avere un'<strong>unica
+                            interpretazione possibile</strong>. La macchina non può "indovinare".</p>
+                </div>
+                <div class="prop-card">
+                    <div class="icon-large">📥📤</div>
+                    <h4>Input / Output</h4>
+                    <p style="font-size:0.88rem; color: #cbd5e1;">Deve ricevere <strong>dati in ingresso</strong> e
+                        produrre almeno un <strong>risultato in uscita</strong>.</p>
+                </div>
+                <div class="prop-card">
+                    <div class="icon-large">⚡</div>
+                    <h4>Effettività</h4>
+                    <p style="font-size:0.88rem; color: #cbd5e1;">Ogni singola operazione deve essere
+                        <strong>concretamente realizzabile</strong> dall'esecutore (il computer).</p>
+                </div>
+                <div class="prop-card">
+                    <div class="icon-large">🌍</div>
+                    <h4>Generalità</h4>
+                    <p style="font-size:0.88rem; color: #cbd5e1;">Deve funzionare per <strong>tutti i dati</strong>
+                        dello stesso tipo, non solo per un caso particolare.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SEZIONE 3: MATEMATICO vs INFORMATICO ==================== -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #a855f7;">3. Algoritmo Matematico vs Algoritmo Informatico</h2>
+            <p class="lesson-text">
+                L'algoritmo è un concetto nato in matematica, ma il suo ruolo in informatica è profondamente diverso.
+                Vediamo le differenze chiave:
+            </p>
+
+            <div style="overflow-x: auto;">
+                <table class="cmp-table">
+                    <thead>
+                        <tr>
+                            <th>Aspetto</th>
+                            <th style="color: #3b82f6;">🔢 Algoritmo Matematico</th>
+                            <th style="color: #10b981;">💻 Algoritmo Informatico</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Esecutore</strong></td>
+                            <td>L'essere umano (con carta e penna)</td>
+                            <td>La macchina (il computer)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Ambiguità</strong></td>
+                            <td>Tollerata: l'umano "interpreta"</td>
+                            <td>Assolutamente vietata: la macchina non "capisce"</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Dati</strong></td>
+                            <td>Possono essere astratti (∞, insiemi infiniti)</td>
+                            <td>Sempre finiti e concreti (bit nella memoria)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tempo</strong></td>
+                            <td>Può essere "idealmente" illimitato</td>
+                            <td>Deve terminare in tempo ragionevole</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Esempio</strong></td>
+                            <td>Algoritmo di Euclide per il MCD</td>
+                            <td>Programma Python che calcola il MCD</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div
+                style="background: rgba(59,130,246,0.05); border: 1px solid rgba(59,130,246,0.2); padding: 1.5rem; border-radius: 12px; margin-top: 2rem;">
+                <h4 style="color: #3b82f6; margin-bottom: 0.5rem;">💡 In sintesi</h4>
+                <p style="font-size: 0.95rem; margin: 0; line-height: 1.6;">L'algoritmo matematico è un concetto
+                    <em>teorico</em> e astratto. L'algoritmo informatico è la sua traduzione <em>pratica</em>, vincolata
+                    ai limiti fisici della macchina: memoria finita, velocità finita, istruzioni non ambigue. Un
+                    programma è la codifica di un algoritmo informatico in un linguaggio che il computer può eseguire.
+                </p>
+            </div>
+        </section>
+
+        <!-- ==================== SEZIONE 4: STRUTTURA CONDIZIONALE ==================== -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #F59E0B;">4. La Struttura Condizionale (IF / ELSE)</h2>
+            <p class="lesson-text">
+                La <strong>struttura condizionale</strong> è il meccanismo che permette all'algoritmo di <em>prendere
+                    decisioni</em>. Il flusso di esecuzione si biforca: se una condizione è vera, si esegue un blocco di
+                istruzioni; se è falsa, se ne esegue un altro (opzionale).
+            </p>
+
+            <div class="code-block">
+                <span class="code-label">PSEUDOCODICE</span>
+                <span class="kw">INIZIO</span>
+                <span class="kw">LEGGI</span> <span class="var">età</span>
+                <span class="kw">SE</span> <span class="var">età</span> <span class="op">≥</span> <span
+                    class="num">18</span> <span class="kw">ALLORA</span>
+                <span class="kw">SCRIVI</span> <span class="str">"Sei maggiorenne"</span>
+                <span class="kw">ALTRIMENTI</span>
+                <span class="kw">SCRIVI</span> <span class="str">"Sei minorenne"</span>
+                <span class="kw">FINE SE</span>
+                <span class="kw">FINE</span>
+            </div>
+
+            <!-- INTERACTIVE RUNNER -->
+            <div class="interactive-runner">
+                <label for="cond-input">🧪 Provalo tu!</label>
+                <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 0.8rem; margin-top: 0.8rem;">
+                    <span style="color: #cbd5e1;">Inserisci un'età:</span>
+                    <input type="number" id="cond-input" value="16" min="0" max="120">
+                    <button class="run-btn" id="cond-run-btn">▶ Esegui</button>
+                </div>
+                <div class="output-box" id="cond-output">Premi "Esegui" per vedere il risultato…</div>
+            </div>
+
+            <!-- SWITCH / CASE -->
+            <h3 style="color: #F59E0B; margin-top: 3rem; margin-bottom: 1rem; font-size: 1.3rem;">🔀 La Struttura SWITCH
+                (Selezione Multipla)</h3>
+            <p class="lesson-text">
+                Quando le possibilità non sono solo due (Sì / No) ma <strong>molte</strong>, usare una catena di
+                SE…ALTRIMENTI SE…ALTRIMENTI SE… diventa illeggibile. La struttura <strong>SWITCH</strong> (o
+                <em>CASO</em>) risolve il problema: valuta il valore di una variabile e salta direttamente al blocco
+                corrispondente.
+            </p>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 1.5rem 0;">
+                <div class="code-block">
+                    <span class="code-label">PSEUDOCODICE</span>
+                    <span class="cmt">// Il giorno della settimana</span>
+                    <span class="kw">INIZIO</span>
+                    <span class="kw">LEGGI</span> <span class="var">giorno</span>
+                    <span class="kw">SELEZIONA</span> <span class="var">giorno</span>
+                    <span class="kw">CASO</span> <span class="num">1</span>:
+                    <span class="kw">SCRIVI</span> <span class="str">"Lunedì"</span>
+                    <span class="kw">CASO</span> <span class="num">2</span>:
+                    <span class="kw">SCRIVI</span> <span class="str">"Martedì"</span>
+                    <span class="kw">CASO</span> <span class="num">3</span>:
+                    <span class="kw">SCRIVI</span> <span class="str">"Mercoledì"</span>
+                    <span class="kw">CASO</span> <span class="num">4</span>:
+                    <span class="kw">SCRIVI</span> <span class="str">"Giovedì"</span>
+                    <span class="kw">CASO</span> <span class="num">5</span>:
+                    <span class="kw">SCRIVI</span> <span class="str">"Venerdì"</span>
+                    <span class="kw">CASO</span> <span class="num">6</span>:
+                    <span class="kw">SCRIVI</span> <span class="str">"Sabato"</span>
+                    <span class="kw">CASO</span> <span class="num">7</span>:
+                    <span class="kw">SCRIVI</span> <span class="str">"Domenica"</span>
+                    <span class="kw">DEFAULT</span>:
+                    <span class="kw">SCRIVI</span> <span class="str">"Errore!"</span>
+                    <span class="kw">FINE SELEZIONA</span>
+                    <span class="kw">FINE</span>
+                </div>
+
+                <div>
+                    <div
+                        style="background: rgba(245,158,11,0.08); border-left: 4px solid #f59e0b; padding: 1.5rem; border-radius: 0 12px 12px 0;">
+                        <h4 style="color: #f59e0b; margin-bottom: 0.8rem;">Quando usare SWITCH?</h4>
+                        <ul style="font-size: 0.9rem; margin-left: 1.2rem; line-height: 1.8; color: #cbd5e1;">
+                            <li>Quando la variabile può assumere <strong>molti valori discreti</strong></li>
+                            <li>Quando ogni valore ha un'azione <strong>diversa</strong></li>
+                            <li>È più leggibile di una catena di IF/ELSE IF</li>
+                            <li>Il blocco <strong>DEFAULT</strong> gestisce tutti i valori non previsti</li>
+                        </ul>
+                    </div>
+                    <div
+                        style="background: rgba(59,130,246,0.05); border: 1px solid rgba(59,130,246,0.2); padding: 1.2rem; border-radius: 12px; margin-top: 1.5rem;">
+                        <h4 style="color: #3b82f6; margin-bottom: 0.5rem;">💡 IF vs SWITCH</h4>
+                        <p style="font-size: 0.88rem; margin: 0; line-height: 1.6;">
+                            Usa <strong style="color: #f59e0b;">IF/ELSE</strong> quando la condizione è un confronto
+                            generico (maggiore, minore, uguale, combinazioni logiche). Usa <strong
+                                style="color: #f59e0b;">SWITCH</strong> quando devi confrontare una variabile con una
+                            <em>lista di valori possibili</em>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SEZIONE 5: STRUTTURA ITERATIVA ==================== -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #F59E0B;">5. La Struttura Iterativa (Ciclo / Loop)</h2>
+            <p class="lesson-text">
+                La <strong>struttura iterativa</strong> (o <em>ciclo</em>) permette di ripetere un blocco di istruzioni
+                più volte, finché una condizione resta vera. È la base del potere computazionale: un computer può
+                ripetere un'operazione milioni di volte in un secondo senza stancarsi. Esistono tre tipi fondamentali di
+                ciclo: <strong>FOR</strong>, <strong>WHILE</strong> e <strong>DO…WHILE</strong>.
+            </p>
+
+            <h3 style="color: #F59E0B; margin-top: 2rem; margin-bottom: 1rem; font-size: 1.3rem;">🔢 Il Ciclo FOR
+                (PER…DA…A…ESEGUI)</h3>
+            <p class="lesson-text">
+                Il ciclo <strong>FOR</strong> è il più diretto: si usa quando <strong>si conosce in anticipo</strong>
+                quante volte ripetere il blocco. Ha un contatore che parte da un valore iniziale, arriva a un valore
+                finale, e si incrementa automaticamente ad ogni iterazione.
+            </p>
+
+            <div class="code-block">
+                <span class="code-label">PSEUDOCODICE</span>
+                <span class="cmt">// Calcola la somma dei primi N numeri naturali</span>
+                <span class="kw">INIZIO</span>
+                <span class="kw">LEGGI</span> <span class="var">N</span>
+                <span class="var">somma</span> <span class="op">←</span> <span class="num">0</span>
+                <span class="kw">PER</span> <span class="var">i</span> <span class="op">DA</span> <span
+                    class="num">1</span> <span class="op">A</span> <span class="var">N</span> <span
+                    class="kw">ESEGUI</span>
+                <span class="var">somma</span> <span class="op">←</span> <span class="var">somma</span> <span
+                    class="op">+</span> <span class="var">i</span>
+                <span class="kw">FINE PER</span>
+                <span class="kw">SCRIVI</span> <span class="str">"La somma è: "</span>, <span class="var">somma</span>
+                <span class="kw">FINE</span>
+            </div>
+
+            <div class="interactive-runner">
+                <label for="iter-input">🧪 Provalo tu!</label>
+                <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 0.8rem; margin-top: 0.8rem;">
+                    <span style="color: #cbd5e1;">Somma dei primi N numeri (1–20):</span>
+                    <input type="number" id="iter-input" value="5" min="1" max="20">
+                    <button class="run-btn" id="iter-run-btn">▶ Esegui</button>
+                </div>
+                <div class="output-box" id="iter-output">Premi "Esegui" per vedere il ciclo in azione…</div>
+            </div>
+
+            <!-- WHILE DO -->
+            <h3 style="color: #F59E0B; margin-top: 3rem; margin-bottom: 1rem; font-size: 1.3rem;">🔄 Il Ciclo WHILE…DO
+                (MENTRE…ESEGUI)</h3>
+            <p class="lesson-text">
+                Il ciclo <strong>WHILE</strong> è il più flessibile: ripete un blocco di istruzioni <em>finché</em> la
+                condizione resta vera. La condizione viene verificata <strong>prima</strong> di ogni iterazione: se è
+                subito falsa, il corpo del ciclo non viene mai eseguito (zero iterazioni).
+            </p>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 1.5rem 0;">
+                <div class="code-block">
+                    <span class="code-label">PSEUDOCODICE</span>
+                    <span class="cmt">// Conta alla rovescia da N a 1</span>
+                    <span class="kw">INIZIO</span>
+                    <span class="kw">LEGGI</span> <span class="var">N</span>
+                    <span class="kw">MENTRE</span> <span class="var">N</span> <span class="op">&gt;</span> <span
+                        class="num">0</span> <span class="kw">ESEGUI</span>
+                    <span class="kw">SCRIVI</span> <span class="var">N</span>
+                    <span class="var">N</span> <span class="op">←</span> <span class="var">N</span> <span
+                        class="op">−</span> <span class="num">1</span>
+                    <span class="kw">FINE MENTRE</span>
+                    <span class="kw">SCRIVI</span> <span class="str">"Via!"</span>
+                    <span class="kw">FINE</span>
+                </div>
+                <div
+                    style="background: rgba(245,158,11,0.08); border-left: 4px solid #f59e0b; padding: 1.5rem; border-radius: 0 12px 12px 0;">
+                    <h4 style="color: #f59e0b; margin-bottom: 0.8rem;">Caratteristiche del WHILE</h4>
+                    <ul style="font-size: 0.9rem; margin-left: 1.2rem; line-height: 1.8; color: #cbd5e1;">
+                        <li>La condizione è testata <strong>prima</strong> di eseguire il corpo</li>
+                        <li>Il corpo potrebbe non essere mai eseguito</li>
+                        <li>Numero di iterazioni <strong>non noto a priori</strong></li>
+                        <li>⚠️ Attenzione: se la condizione è sempre vera → <strong>ciclo infinito!</strong></li>
+                    </ul>
+                    <div
+                        style="background: rgba(0,0,0,0.2); padding: 0.8rem 1rem; border-radius: 8px; margin-top: 1rem;">
+                        <p style="font-size: 0.85rem; margin: 0; color: #94A3B8;">📌 <strong>Quando usarlo:</strong>
+                            quando <em>non sai in anticipo</em> quante volte ripetere (es. "leggi input finché l'utente
+                            non scrive STOP").</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DO WHILE -->
+            <h3 style="color: #F59E0B; margin-top: 3rem; margin-bottom: 1rem; font-size: 1.3rem;">🔁 Il Ciclo DO…WHILE
+                (RIPETI…FINCHÉ)</h3>
+            <p class="lesson-text">
+                Il ciclo <strong>DO…WHILE</strong> è simile al WHILE, ma con una differenza cruciale: la condizione
+                viene verificata <strong>dopo</strong> l'esecuzione del corpo. Questo garantisce che il blocco sia
+                eseguito <strong>almeno una volta</strong>, anche se la condizione è subito falsa.
+            </p>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 1.5rem 0;">
+                <div class="code-block">
+                    <span class="code-label">PSEUDOCODICE</span>
+                    <span class="cmt">// Chiedi la password finché non è corretta</span>
+                    <span class="kw">INIZIO</span>
+                    <span class="kw">RIPETI</span>
+                    <span class="kw">SCRIVI</span> <span class="str">"Inserisci password:"</span>
+                    <span class="kw">LEGGI</span> <span class="var">tentativo</span>
+                    <span class="kw">FINCHÉ</span> <span class="var">tentativo</span> <span class="op">≠</span> <span
+                        class="str">"segreta123"</span>
+                    <span class="kw">SCRIVI</span> <span class="str">"Accesso consentito!"</span>
+                    <span class="kw">FINE</span>
+                </div>
+                <div
+                    style="background: rgba(245,158,11,0.08); border-left: 4px solid #f59e0b; padding: 1.5rem; border-radius: 0 12px 12px 0;">
+                    <h4 style="color: #f59e0b; margin-bottom: 0.8rem;">Caratteristiche del DO…WHILE</h4>
+                    <ul style="font-size: 0.9rem; margin-left: 1.2rem; line-height: 1.8; color: #cbd5e1;">
+                        <li>La condizione è testata <strong>dopo</strong> aver eseguito il corpo</li>
+                        <li>Il corpo viene eseguito <strong>almeno 1 volta</strong></li>
+                        <li>Ideale per validazione input, menù interattivi</li>
+                    </ul>
+                    <div
+                        style="background: rgba(0,0,0,0.2); padding: 0.8rem 1rem; border-radius: 8px; margin-top: 1rem;">
+                        <p style="font-size: 0.85rem; margin: 0; color: #94A3B8;">📌 <strong>Quando usarlo:</strong>
+                            quando il corpo <em>deve essere eseguito almeno una volta</em> (es. "mostra il menù, poi
+                            ripeti finché l'utente non sceglie 'Esci'").</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONFRONTO DEI TRE CICLI -->
+            <div
+                style="background: rgba(59,130,246,0.05); border: 1px solid rgba(59,130,246,0.2); padding: 2rem; border-radius: 12px; margin-top: 2.5rem;">
+                <h4 style="color: #3b82f6; margin-bottom: 1rem;">📊 Confronto: FOR vs WHILE vs DO…WHILE</h4>
+                <div style="overflow-x: auto;">
+                    <table class="cmp-table">
+                        <thead>
+                            <tr>
+                                <th>Aspetto</th>
+                                <th style="color: #10b981;">FOR</th>
+                                <th style="color: #3b82f6;">WHILE…DO</th>
+                                <th style="color: #a855f7;">DO…WHILE</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Controllo</strong></td>
+                                <td>Prima del corpo</td>
+                                <td>Prima del corpo</td>
+                                <td>Dopo il corpo</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Iterazioni minime</strong></td>
+                                <td>0 (se intervallo vuoto)</td>
+                                <td>0 (se condizione subito falsa)</td>
+                                <td><strong>Almeno 1</strong></td>
+                            </tr>
+                            <tr>
+                                <td><strong>N° iterazioni noto?</strong></td>
+                                <td>Sì, in anticipo</td>
+                                <td>No</td>
+                                <td>No</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Caso d'uso tipico</strong></td>
+                                <td>Contatori, scansione liste</td>
+                                <td>Attesa di eventi, ricerca</td>
+                                <td>Validazione input, menù</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SEZIONE 6: PSEUDOCODICE ==================== -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #3b82f6;">6. Lo Pseudocodice</h2>
+            <p class="lesson-text">
+                Lo <strong>pseudocodice</strong> è un modo <em>informale</em> di descrivere un algoritmo. Non è un vero
+                linguaggio di programmazione: non ha una sintassi rigida e non può essere eseguito direttamente da un
+                computer. È scritto in linguaggio quasi-naturale (spesso un misto di italiano/inglese e parole chiave
+                logiche) ed è pensato per essere comprensibile da un <em>essere umano</em>.
+            </p>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 2rem 0;">
+                <div
+                    style="background: rgba(16,185,129,0.05); padding: 1.5rem; border-radius: 12px; border-left: 3px solid #10b981;">
+                    <h4 style="color: #10b981; margin-bottom: 0.5rem;">✅ Vantaggi</h4>
+                    <ul style="font-size: 0.9rem; margin-left: 1.5rem; line-height: 1.8;">
+                        <li>Facile da leggere e capire</li>
+                        <li>Indipendente dal linguaggio</li>
+                        <li>Ottimo per progettare prima di scrivere codice</li>
+                        <li>Concentra l'attenzione sulla <em>logica</em></li>
+                    </ul>
+                </div>
+                <div
+                    style="background: rgba(239,68,68,0.05); padding: 1.5rem; border-radius: 12px; border-left: 3px solid #ef4444;">
+                    <h4 style="color: #ef4444; margin-bottom: 0.5rem;">⚠️ Limiti</h4>
+                    <ul style="font-size: 0.9rem; margin-left: 1.5rem; line-height: 1.8;">
+                        <li>Non è eseguibile dal computer</li>
+                        <li>Nessuno standard universale</li>
+                        <li>Può essere ambiguo tra autori diversi</li>
+                        <li>Deve essere tradotto in un linguaggio reale</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div
+                style="background: rgba(168,85,247,0.05); border: 1px solid rgba(168,85,247,0.2); padding: 1.5rem; border-radius: 12px;">
+                <h4 style="color: #a855f7; margin-bottom: 0.5rem;">📝 Parole chiave tipiche dello pseudocodice</h4>
+                <p style="font-size: 0.92rem; line-height: 1.8; margin: 0; font-family: 'Fira Code', monospace;">
+                    <span style="color: #c084fc;">INIZIO</span> · <span style="color: #c084fc;">FINE</span> · <span
+                        style="color: #c084fc;">LEGGI</span> · <span style="color: #c084fc;">SCRIVI</span> · <span
+                        style="color: #c084fc;">SE…ALLORA…ALTRIMENTI</span> · <span
+                        style="color: #c084fc;">MENTRE…ESEGUI</span> · <span
+                        style="color: #c084fc;">PER…DA…A…ESEGUI</span> · <span
+                        style="color: #c084fc;">RIPETI…FINCHÉ</span> · <span style="color: #f59e0b;">←</span>
+                    (assegnazione)
+                </p>
+            </div>
+        </section>
+
+        <!-- ==================== SEZIONE 7: DIAGRAMMI DI FLUSSO ==================== -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #3b82f6;">7. I Diagrammi di Flusso (Flowchart)</h2>
+            <p class="lesson-text">
+                Un <strong>diagramma di flusso</strong> (o <em>flowchart</em>) è la rappresentazione <em>grafica</em> di
+                un algoritmo. Utilizza forme geometriche standard collegate da frecce che indicano la direzione del
+                flusso di esecuzione. È un sistema standardizzato (norma ISO 5807) e universale.
+            </p>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 2rem 0;">
+                <div>
+                    <h4 style="color: #3b82f6; margin-bottom: 1rem;">Le Forme Standard</h4>
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <div
+                            style="display: flex; align-items: center; gap: 1rem; background: rgba(255,255,255,0.03); padding: 1rem; border-radius: 8px;">
+                            <div
+                                style="width: 60px; height: 35px; border-radius: 50%; border: 2px solid #10b981; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: #10b981; flex-shrink: 0;">
+                                OVALE</div>
+                            <span style="font-size: 0.9rem;">= <strong>Inizio / Fine</strong> del programma</span>
+                        </div>
+                        <div
+                            style="display: flex; align-items: center; gap: 1rem; background: rgba(255,255,255,0.03); padding: 1rem; border-radius: 8px;">
+                            <div
+                                style="width: 60px; height: 35px; border: 2px solid #3b82f6; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: #3b82f6; flex-shrink: 0;">
+                                RETT.</div>
+                            <span style="font-size: 0.9rem;">= <strong>Processo</strong> (calcoli, assegnazioni)</span>
+                        </div>
+                        <div
+                            style="display: flex; align-items: center; gap: 1rem; background: rgba(255,255,255,0.03); padding: 1rem; border-radius: 8px;">
+                            <div
+                                style="width: 60px; height: 35px; border: 2px solid #f59e0b; transform: rotate(45deg) scale(0.7); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            </div>
+                            <span style="font-size: 0.9rem;">= <strong>Decisione</strong> (condizione Sì/No)</span>
+                        </div>
+                        <div
+                            style="display: flex; align-items: center; gap: 1rem; background: rgba(255,255,255,0.03); padding: 1rem; border-radius: 8px;">
+                            <div
+                                style="width: 60px; height: 35px; border: 2px solid #ec4899; border-radius: 4px; position: relative; flex-shrink: 0; clip-path: polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%); display: flex; align-items: center; justify-content: center; font-size: 0.65rem; color: #ec4899;">
+                                I/O</div>
+                            <span style="font-size: 0.9rem;">= <strong>Input / Output</strong>
+                                (lettura/scrittura)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center;">
+                    <h4 style="color: #3b82f6; margin-bottom: 1rem;">Esempio: Maggiorenne?</h4>
+                    <canvas id="flowchart-canvas"
+                        style="border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; background: rgba(0,0,0,0.3);"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SEZIONE 8: LINGUAGGI DI PROGRAMMAZIONE ==================== -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #10b981;">8. I Linguaggi di Programmazione</h2>
+            <p class="lesson-text">
+                Un <strong>linguaggio di programmazione</strong> è un linguaggio formale con una sintassi rigorosa e
+                precisa che permette di scrivere istruzioni che un computer può <em>effettivamente eseguire</em> (dopo
+                compilazione o interpretazione). A differenza dello pseudocodice, ogni virgola, parentesi e punto e
+                virgola conta!
+            </p>
+
+            <div
+                style="background: rgba(16,185,129,0.08); border-left: 4px solid #10b981; padding: 1.5rem 2rem; border-radius: 0 12px 12px 0; margin: 1.5rem 0;">
+                <h4 style="color: #10b981; margin-bottom: 0.5rem;">🌍 Il Programma "Hello, World!"</h4>
+                <p style="font-size: 0.95rem; margin: 0; line-height: 1.6;">
+                    Per tradizione, il primo programma che ogni programmatore scrive è il famoso <strong>"Hello,
+                        World!"</strong>: un programma minimalista che stampa un messaggio sullo schermo. Fu introdotto
+                    da Brian Kernighan nel 1978 nel libro sul linguaggio C ed è diventato il rito di iniziazione
+                    universale del programmatore. Serve a verificare che il linguaggio sia installato e funzionante.
+                </p>
+            </div>
+
+            <!-- HELLO WORLD TABS -->
+            <div style="margin: 2rem 0;">
+                <div class="hw-tabs">
+                    <button class="hw-tab active" data-lang="python">Python</button>
+                    <button class="hw-tab" data-lang="javascript">JavaScript</button>
+                    <button class="hw-tab" data-lang="java">Java</button>
+                    <button class="hw-tab" data-lang="c">C</button>
+                    <button class="hw-tab" data-lang="csharp">C#</button>
+                    <button class="hw-tab" data-lang="html">HTML</button>
+                </div>
+                <div id="hw-python" class="hw-panel active">
+                    <div class="code-block"><span class="code-label">PYTHON</span><span class="cmt"># Il programma più
+                            semplice del mondo</span>
+                        <span class="kw">print</span>(<span class="str">"Hello, World!"</span>)
+                    </div>
+                    <p style="font-size: 0.85rem; color: #94A3B8; margin-top: 0.5rem;">🐍 Python: una sola riga.
+                        Semplicità assoluta.</p>
+                </div>
+                <div id="hw-javascript" class="hw-panel">
+                    <div class="code-block"><span class="code-label">JAVASCRIPT</span><span class="cmt">// Il linguaggio
+                            del web</span>
+                        console.<span class="kw">log</span>(<span class="str">"Hello, World!"</span>);</div>
+                    <p style="font-size: 0.85rem; color: #94A3B8; margin-top: 0.5rem;">⚡ JavaScript: il motore
+                        interattivo di ogni pagina web.</p>
+                </div>
+                <div id="hw-java" class="hw-panel">
+                    <div class="code-block"><span class="code-label">JAVA</span><span class="kw">public class</span>
+                        HelloWorld {
+                        <span class="kw">public static void</span> main(String[] args) {
+                        System.out.<span class="kw">println</span>(<span class="str">"Hello, World!"</span>);
+                        }
+                        }
+                    </div>
+                    <p style="font-size: 0.85rem; color: #94A3B8; margin-top: 0.5rem;">☕ Java: molto verboso, ma robusto
+                        e multi-piattaforma.</p>
+                </div>
+                <div id="hw-c" class="hw-panel">
+                    <div class="code-block"><span class="code-label">C</span><span class="kw">#include</span> <span
+                            class="str">&lt;stdio.h&gt;</span>
+
+                        <span class="kw">int</span> main() {
+                        <span class="kw">printf</span>(<span class="str">"Hello, World!\n"</span>);
+                        <span class="kw">return</span> <span class="num">0</span>;
+                        }
+                    </div>
+                    <p style="font-size: 0.85rem; color: #94A3B8; margin-top: 0.5rem;">⚙️ C: il "nonno" dei linguaggi
+                        moderni (1972). Vicino all'hardware.</p>
+                </div>
+                <div id="hw-csharp" class="hw-panel">
+                    <div class="code-block"><span class="code-label">C#</span><span class="kw">using</span> System;
+                        <span class="kw">class</span> Program {
+                        <span class="kw">static void</span> Main() {
+                        Console.<span class="kw">WriteLine</span>(<span class="str">"Hello, World!"</span>);
+                        }
+                        }
+                    </div>
+                    <p style="font-size: 0.85rem; color: #94A3B8; margin-top: 0.5rem;">🎮 C#: creato da Microsoft,
+                        usatissimo nei videogiochi (Unity).</p>
+                </div>
+                <div id="hw-html" class="hw-panel">
+                    <div class="code-block" style="border-left: 3px solid #ef4444;"><span class="code-label"
+                            style="color: #ef4444;">⚠ HTML (NON è un linguaggio!)</span><span class="cmt">&lt;!-- HTML
+                            non "programma": descrive struttura --&gt;</span>
+                        &lt;<span class="kw">html</span>&gt;
+                        &lt;<span class="kw">body</span>&gt;
+                        &lt;<span class="kw">p</span>&gt;<span class="str">Hello, World!</span>&lt;/<span
+                            class="kw">p</span>&gt;
+                        &lt;/<span class="kw">body</span>&gt;
+                        &lt;/<span class="kw">html</span>&gt;</div>
+                    <p style="font-size: 0.85rem; color: #ef4444; margin-top: 0.5rem;">⚠️ HTML è un linguaggio di
+                        <strong>markup</strong>, non di programmazione! Non ha IF, cicli né logica.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SEZIONE 9: PANORAMA LINGUAGGI ==================== -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #10b981;">9. Panoramica dei Principali Linguaggi (2026)</h2>
+            <p class="lesson-text">Ogni linguaggio ha il suo dominio ideale. Ecco i protagonisti del panorama attuale:
+            </p>
+
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+                <div class="lang-card" style="border-left: 3px solid #3b82f6;">
+                    <div class="lang-icon">🐍</div>
+                    <h4 style="color: #3b82f6; margin-bottom: 0.3rem;">Python</h4>
+                    <p style="font-size: 0.85rem; color: #94A3B8; margin-bottom: 0.5rem;"><em>Il più popolare al mondo
+                            (2026)</em></p>
+                    <p style="font-size: 0.88rem; line-height: 1.6;">Sintassi semplicissima, perfetto per principianti.
+                        Domina l'<strong>Intelligenza Artificiale</strong>, il <strong>Data Science</strong>,
+                        l'automazione e la didattica. Usato da Google, Netflix, NASA.</p>
+                </div>
+                <div class="lang-card" style="border-left: 3px solid #f59e0b;">
+                    <div class="lang-icon">⚡</div>
+                    <h4 style="color: #f59e0b; margin-bottom: 0.3rem;">JavaScript</h4>
+                    <p style="font-size: 0.85rem; color: #94A3B8; margin-bottom: 0.5rem;"><em>Il linguaggio del Web</em>
+                    </p>
+                    <p style="font-size: 0.88rem; line-height: 1.6;">È l'unico linguaggio che gira direttamente nel
+                        <strong>browser</strong>. Rende le pagine web interattive. Con Node.js funziona anche lato
+                        server. Questa stessa lezione è scritta con JavaScript!</p>
+                </div>
+                <div class="lang-card" style="border-left: 3px solid #ef4444;">
+                    <div class="lang-icon">☕</div>
+                    <h4 style="color: #ef4444; margin-bottom: 0.3rem;">Java</h4>
+                    <p style="font-size: 0.85rem; color: #94A3B8; margin-bottom: 0.5rem;"><em>L'enterprise e
+                            Android</em></p>
+                    <p style="font-size: 0.88rem; line-height: 1.6;">Robusto e multi-piattaforma ("Write once, run
+                        anywhere"). Usato dalle grandi <strong>banche</strong>, sistemi aziendali e per le app
+                        <strong>Android</strong> native. Molto verboso ma solidissimo.</p>
+                </div>
+                <div class="lang-card" style="border-left: 3px solid #10b981;">
+                    <div class="lang-icon">⚙️</div>
+                    <h4 style="color: #10b981; margin-bottom: 0.3rem;">C / C++</h4>
+                    <p style="font-size: 0.85rem; color: #94A3B8; margin-bottom: 0.5rem;"><em>La potenza pura</em></p>
+                    <p style="font-size: 0.88rem; line-height: 1.6;">Ultra-veloci, vicini all'hardware. Usati per
+                        <strong>sistemi operativi</strong> (Windows, Linux), <strong>videogiochi AAA</strong>, sistemi
+                        embedded e software dove ogni millisecondo conta.</p>
+                </div>
+                <div class="lang-card" style="border-left: 3px solid #a855f7;">
+                    <div class="lang-icon">🎮</div>
+                    <h4 style="color: #a855f7; margin-bottom: 0.3rem;">C#</h4>
+                    <p style="font-size: 0.85rem; color: #94A3B8; margin-bottom: 0.5rem;"><em>Microsoft e
+                            videogiochi</em></p>
+                    <p style="font-size: 0.88rem; line-height: 1.6;">Creato da Microsoft, è il linguaggio di
+                        <strong>Unity</strong> (il motore con cui sono stati fatti Fall Guys, Hollow Knight, Cuphead).
+                        Usato anche per app Windows e web backend.</p>
+                </div>
+                <div class="lang-card" style="border-left: 3px solid #ec4899;">
+                    <div class="lang-icon">🦀</div>
+                    <h4 style="color: #ec4899; margin-bottom: 0.3rem;">Rust</h4>
+                    <p style="font-size: 0.85rem; color: #94A3B8; margin-bottom: 0.5rem;"><em>Il futuro della
+                            sicurezza</em></p>
+                    <p style="font-size: 0.88rem; line-height: 1.6;">Nuovo linguaggio ad alte prestazioni che previene
+                        errori di memoria a livello di compilazione. Adottato da <strong>Mozilla</strong>,
+                        <strong>Microsoft</strong> e <strong>Linux</strong> come sostituto moderno di C.</p>
+                </div>
+            </div>
+
+            <!-- HTML NON È UN LINGUAGGIO -->
+            <div
+                style="background: rgba(239,68,68,0.08); border: 2px solid rgba(239,68,68,0.3); padding: 2rem; border-radius: 12px; margin-top: 2rem;">
+                <h3 style="color: #ef4444; margin-bottom: 1rem; font-size: 1.3rem;">⚠️ HTML: il "Falso Linguaggio"</h3>
+                <p style="font-size: 0.95rem; line-height: 1.7; margin-bottom: 1rem;">
+                    <strong>HTML</strong> (<em>HyperText Markup Language</em>) è spesso erroneamente chiamato
+                    "linguaggio di programmazione", ma tecnicamente è un <strong>linguaggio di markup</strong>
+                    (marcatura). Quale differenza?
+                </p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                    <div style="background: rgba(0,0,0,0.3); padding: 1.2rem; border-radius: 8px;">
+                        <h4 style="color: #10b981; margin-bottom: 0.5rem;">Linguaggio di Programmazione</h4>
+                        <ul style="font-size: 0.88rem; margin-left: 1.2rem; line-height: 1.8;">
+                            <li>Ha <strong>logica</strong> (IF, ELSE)</li>
+                            <li>Ha <strong>cicli</strong> (FOR, WHILE)</li>
+                            <li>Manipola <strong>dati e variabili</strong></li>
+                            <li>Prende <strong>decisioni</strong></li>
+                        </ul>
+                    </div>
+                    <div style="background: rgba(0,0,0,0.3); padding: 1.2rem; border-radius: 8px;">
+                        <h4 style="color: #ef4444; margin-bottom: 0.5rem;">Linguaggio di Markup (HTML)</h4>
+                        <ul style="font-size: 0.88rem; margin-left: 1.2rem; line-height: 1.8;">
+                            <li><strong>Descrive</strong> la struttura di una pagina</li>
+                            <li>Usa <strong>tag</strong> (&lt;h1&gt;, &lt;p&gt;, &lt;img&gt;)</li>
+                            <li><strong>Non ha logica</strong> né cicli</li>
+                            <li>Non può prendere <strong>decisioni</strong></li>
+                        </ul>
+                    </div>
+                </div>
+                <p style="font-size: 0.92rem; margin-top: 1rem; line-height: 1.6; color: #fca5a5;">
+                    💡 Per rendere una pagina HTML interattiva serve <strong>JavaScript</strong> (linguaggio di
+                    programmazione vero). Per renderla bella sserve <strong>CSS</strong> (altro linguaggio di markup,
+                    per lo stile). I tre lavorano sempre insieme: HTML = scheletro, CSS = vestiti, JavaScript =
+                    cervello.
+                </p>
+            </div>
+        </section>
+
+        <!-- ==================== SEZIONE 10: TOP-DOWN ==================== -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #ec4899;">10. Il Modello Top-Down: Dividere per Conquistare</h2>
+            <p class="lesson-text">
+                Quando un problema è troppo complesso per essere risolto tutto insieme, si usa una strategia
+                potentissima chiamata <strong>approccio Top-Down</strong> (dall'alto verso il basso). L'idea è geniale
+                nella sua semplicità: si prende il problema grande e lo si <em>spezza</em> in sotto-problemi più piccoli
+                e gestibili, e poi si spezza ciascun sotto-problema in sotto-sotto-problemi ancora più semplici, fino ad
+                arrivare a operazioni così elementari da poter essere tradotte direttamente in istruzioni per il
+                computer.
+            </p>
+
+            <div
+                style="background: rgba(236,72,153,0.08); border-left: 4px solid #ec4899; padding: 1.5rem 2rem; border-radius: 0 12px 12px 0; margin: 1.5rem 0;">
+                <p style="font-size: 1.1rem; margin: 0; line-height: 1.6;">
+                    <strong style="color: #ec4899;">Principio:</strong> <em>"Non cercare di risolvere tutto in un colpo
+                        solo. Scomponi il problema complesso in sotto-problemi semplici, risolvili uno alla volta, e poi
+                        ricomponi la soluzione finale."</em>
+                </p>
+            </div>
+
+            <p class="lesson-text">
+                Il nome "Top-Down" riflette proprio la direzione del ragionamento: si parte dall'<strong>alto</strong>
+                (il problema generale) e si scende verso il <strong>basso</strong> (i dettagli concreti). In
+                informatica, questo approccio è anche chiamato <strong>scomposizione funzionale</strong> o
+                <strong>raffinamento progressivo</strong> (<em>stepwise refinement</em>).
+            </p>
+
+            <!-- ESEMPIO 1: VITA QUOTIDIANA -->
+            <h3 style="color: #ec4899; margin-top: 2.5rem; margin-bottom: 1rem; font-size: 1.3rem;">🎂 Esempio concreto:
+                Organizzare una festa di compleanno</h3>
+            <p class="lesson-text" style="margin-bottom: 1.5rem;">
+                Immaginiamo di voler organizzare una festa di compleanno. Il problema sembra enorme! Ma con il metodo
+                Top-Down, diventa gestibile:
+            </p>
+
+            <!-- ALBERO VISUALE -->
+            <div
+                style="background: rgba(0,0,0,0.3); padding: 2rem; border-radius: 12px; overflow-x: auto; text-align: center;">
+                <!-- LIVELLO 0 -->
+                <div style="display: flex; justify-content: center; margin-bottom: 0.5rem;">
+                    <div
+                        style="background: linear-gradient(135deg, #ec4899, #a855f7); color: #fff; padding: 0.8rem 2rem; border-radius: 10px; font-weight: 700; font-size: 1.1rem; box-shadow: 0 4px 15px rgba(236,72,153,0.3);">
+                        🎂 Organizzare la Festa
+                    </div>
+                </div>
+                <div style="color: #64748b; font-size: 1.5rem; margin-bottom: 0.5rem;">┃</div>
+                <div style="display: flex; justify-content: center; gap: 0; margin-bottom: 0.5rem;">
+                    <div style="color: #64748b; font-size: 1rem;">┏━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━┓
+                    </div>
+                </div>
+
+                <!-- LIVELLO 1 -->
+                <div
+                    style="display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 0.5rem;">
+                    <div
+                        style="background: rgba(59,130,246,0.15); border: 1px solid #3b82f6; color: #93c5fd; padding: 0.6rem 1.2rem; border-radius: 8px; font-weight: 600; font-size: 0.9rem; min-width: 140px;">
+                        📋 Invitati
+                    </div>
+                    <div
+                        style="background: rgba(16,185,129,0.15); border: 1px solid #10b981; color: #6ee7b7; padding: 0.6rem 1.2rem; border-radius: 8px; font-weight: 600; font-size: 0.9rem; min-width: 140px;">
+                        🍕 Cibo e Bevande
+                    </div>
+                    <div
+                        style="background: rgba(245,158,11,0.15); border: 1px solid #f59e0b; color: #fcd34d; padding: 0.6rem 1.2rem; border-radius: 8px; font-weight: 600; font-size: 0.9rem; min-width: 140px;">
+                        🎈 Decorazioni
+                    </div>
+                    <div
+                        style="background: rgba(168,85,247,0.15); border: 1px solid #a855f7; color: #c4b5fd; padding: 0.6rem 1.2rem; border-radius: 8px; font-weight: 600; font-size: 0.9rem; min-width: 140px;">
+                        🎵 Intrattenimento
+                    </div>
+                </div>
+
+                <!-- SOTTO-LIVELLO -->
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-top: 1rem;">
+                    <div style="text-align: center;">
+                        <div style="color: #64748b; margin-bottom: 0.3rem;">┃</div>
+                        <div
+                            style="font-size: 0.78rem; color: #94A3B8; line-height: 1.5; background: rgba(255,255,255,0.03); padding: 0.5rem; border-radius: 6px;">
+                            • Scrivere lista nomi<br>
+                            • Inviare inviti<br>
+                            • Raccogliere conferme
+                        </div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="color: #64748b; margin-bottom: 0.3rem;">┃</div>
+                        <div
+                            style="font-size: 0.78rem; color: #94A3B8; line-height: 1.5; background: rgba(255,255,255,0.03); padding: 0.5rem; border-radius: 6px;">
+                            • Scegliere menù<br>
+                            • Fare la spesa<br>
+                            • Ordinare la torta
+                        </div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="color: #64748b; margin-bottom: 0.3rem;">┃</div>
+                        <div
+                            style="font-size: 0.78rem; color: #94A3B8; line-height: 1.5; background: rgba(255,255,255,0.03); padding: 0.5rem; border-radius: 6px;">
+                            • Comprare palloncini<br>
+                            • Appendere striscioni<br>
+                            • Preparare tavolo
+                        </div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="color: #64748b; margin-bottom: 0.3rem;">┃</div>
+                        <div
+                            style="font-size: 0.78rem; color: #94A3B8; line-height: 1.5; background: rgba(255,255,255,0.03); padding: 0.5rem; border-radius: 6px;">
+                            • Creare playlist<br>
+                            • Preparare giochi<br>
+                            • Testare casse audio
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <p class="lesson-text" style="margin-top: 1.5rem;">
+                Notare come il problema gigantesco "Organizzare la festa" sia diventato una serie di <strong>azioni
+                    concrete e facili</strong> da eseguire una alla volta. Questa è la potenza del Top-Down!
+            </p>
+
+            <!-- ESEMPIO 2: INFORMATICO -->
+            <h3 style="color: #ec4899; margin-top: 2.5rem; margin-bottom: 1rem; font-size: 1.3rem;">💻 Esempio
+                informatico: Gestione voti studenti</h3>
+            <p class="lesson-text" style="margin-bottom: 1rem;">
+                Un professore vuole un programma che legga i voti degli studenti, calcoli la media della classe e stampi
+                una pagella. Un problema complesso! Applichiamo il Top-Down:
+            </p>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 1.5rem 0;">
+                <!-- Scomposizione -->
+                <div
+                    style="background: rgba(236,72,153,0.05); border: 1px solid rgba(236,72,153,0.2); padding: 1.5rem; border-radius: 12px;">
+                    <h4 style="color: #ec4899; margin-bottom: 1rem;">📐 Scomposizione Top-Down</h4>
+                    <div style="font-family: 'Fira Code', monospace; font-size: 0.85rem; line-height: 2;">
+                        <div style="color: #ec4899; font-weight: 700;">Gestione Voti</div>
+                        <div style="padding-left: 1.5rem; color: #3b82f6;">├─ 1. Acquisizione Dati</div>
+                        <div style="padding-left: 3rem; color: #94A3B8;">├─ Leggere nome studente</div>
+                        <div style="padding-left: 3rem; color: #94A3B8;">└─ Leggere voti materie</div>
+                        <div style="padding-left: 1.5rem; color: #10b981;">├─ 2. Elaborazione</div>
+                        <div style="padding-left: 3rem; color: #94A3B8;">├─ Calcolare media singolo</div>
+                        <div style="padding-left: 3rem; color: #94A3B8;">├─ Calcolare media classe</div>
+                        <div style="padding-left: 3rem; color: #94A3B8;">└─ Determinare promozione</div>
+                        <div style="padding-left: 1.5rem; color: #f59e0b;">└─ 3. Output</div>
+                        <div style="padding-left: 3rem; color: #94A3B8;">├─ Stampare pagella</div>
+                        <div style="padding-left: 3rem; color: #94A3B8;">└─ Stampare statistiche</div>
+                    </div>
+                </div>
+
+                <!-- Pseudocodice -->
+                <div class="code-block" style="margin: 0;">
+                    <span class="code-label">PSEUDOCODICE TOP-DOWN</span>
+                    <span class="cmt">// Livello 0: Problema principale</span>
+                    <span class="kw">INIZIO</span>
+                    <span class="kw">ESEGUI</span> <span class="var">AcquisizioneDati</span>()
+                    <span class="kw">ESEGUI</span> <span class="var">Elaborazione</span>()
+                    <span class="kw">ESEGUI</span> <span class="var">StampaRisultati</span>()
+                    <span class="kw">FINE</span>
+
+                    <span class="cmt">// Livello 1: Sotto-problema</span>
+                    <span class="kw">PROCEDURA</span> <span class="var">Elaborazione</span>()
+                    <span class="kw">PER OGNI</span> <span class="var">studente</span> <span class="kw">ESEGUI</span>
+                    <span class="var">media</span> <span class="op">←</span> <span class="var">CalcolaMedia</span>(<span
+                        class="var">voti</span>)
+                    <span class="kw">SE</span> <span class="var">media</span> <span class="op">≥</span> <span
+                        class="num">6</span> <span class="kw">ALLORA</span>
+                    <span class="var">esito</span> <span class="op">←</span> <span class="str">"Promosso"</span>
+                    <span class="kw">ALTRIMENTI</span>
+                    <span class="var">esito</span> <span class="op">←</span> <span class="str">"Bocciato"</span>
+                    <span class="kw">FINE PER</span>
+                    <span class="kw">FINE PROCEDURA</span>
+                </div>
+            </div>
+
+            <!-- VANTAGGI DEL TOP-DOWN -->
+            <h3 style="color: #ec4899; margin-top: 2.5rem; margin-bottom: 1rem; font-size: 1.3rem;">🎯 Perché il
+                Top-Down è così potente?</h3>
+
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin: 1.5rem 0;">
+                <div
+                    style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 12px; border-bottom: 3px solid #ec4899; text-align: center;">
+                    <div style="font-size: 2.5rem; margin-bottom: 0.8rem;">🧩</div>
+                    <h4 style="color: #ec4899; margin-bottom: 0.5rem;">Modularità</h4>
+                    <p style="font-size: 0.85rem; color: #cbd5e1;">Ogni sotto-problema diventa un <strong>modulo
+                            indipendente</strong> che può essere sviluppato, testato e corretto separatamente.</p>
+                </div>
+                <div
+                    style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 12px; border-bottom: 3px solid #ec4899; text-align: center;">
+                    <div style="font-size: 2.5rem; margin-bottom: 0.8rem;">👥</div>
+                    <h4 style="color: #ec4899; margin-bottom: 0.5rem;">Lavoro di squadra</h4>
+                    <p style="font-size: 0.85rem; color: #cbd5e1;">Programmatori diversi possono lavorare <strong>in
+                            parallelo</strong> su sotto-problemi diversi senza interferire.</p>
+                </div>
+                <div
+                    style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 12px; border-bottom: 3px solid #ec4899; text-align: center;">
+                    <div style="font-size: 2.5rem; margin-bottom: 0.8rem;">🐛</div>
+                    <h4 style="color: #ec4899; margin-bottom: 0.5rem;">Debug facile</h4>
+                    <p style="font-size: 0.85rem; color: #cbd5e1;">Se qualcosa non funziona, sai <strong>esattamente
+                            dove cercare</strong> l'errore: nel sotto-modulo specifico che fallisce.</p>
+                </div>
+                <div
+                    style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 12px; border-bottom: 3px solid #ec4899; text-align: center;">
+                    <div style="font-size: 2.5rem; margin-bottom: 0.8rem;">♻️</div>
+                    <h4 style="color: #ec4899; margin-bottom: 0.5rem;">Riusabilità</h4>
+                    <p style="font-size: 0.85rem; color: #cbd5e1;">Un modulo ben scritto (es. "CalcolaMedia") può essere
+                        <strong>riutilizzato</strong> in programmi completamente diversi.</p>
+                </div>
+            </div>
+
+            <!-- TOP-DOWN vs BOTTOM-UP -->
+            <div
+                style="background: rgba(59,130,246,0.05); border: 1px solid rgba(59,130,246,0.2); padding: 2rem; border-radius: 12px; margin-top: 2rem;">
+                <h4 style="color: #3b82f6; margin-bottom: 1rem;">🔄 Top-Down vs Bottom-Up: due strade opposte</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                    <div
+                        style="background: rgba(0,0,0,0.3); padding: 1.2rem; border-radius: 8px; border-top: 3px solid #ec4899;">
+                        <h4 style="color: #ec4899; margin-bottom: 0.5rem;">⬇️ Top-Down</h4>
+                        <p style="font-size: 0.88rem; line-height: 1.7; margin: 0;">Si parte dal <strong>problema
+                                generale</strong> e si scompone in parti sempre più piccole. Si progetta <em>prima</em>
+                            la struttura d'insieme, <em>poi</em> i dettagli. È come costruire una casa partendo dal
+                            progetto architettonico.</p>
+                    </div>
+                    <div
+                        style="background: rgba(0,0,0,0.3); padding: 1.2rem; border-radius: 8px; border-top: 3px solid #10b981;">
+                        <h4 style="color: #10b981; margin-bottom: 0.5rem;">⬆️ Bottom-Up</h4>
+                        <p style="font-size: 0.88rem; line-height: 1.7; margin: 0;">Si parte dai <strong>pezzi
+                                elementari</strong> già pronti e si assemblano in strutture sempre più grandi. Si
+                            costruiscono <em>prima</em> i mattoncini, <em>poi</em> si combinano. È come costruire con i
+                            LEGO senza istruzioni.</p>
+                    </div>
+                </div>
+                <p style="font-size: 0.92rem; margin-top: 1rem; line-height: 1.6; color: #94A3B8;">
+                    💡 Nella pratica professionale, spesso si usano <strong>entrambi gli approcci insieme</strong>: si
+                    progetta dall'alto (Top-Down) ma si riutilizzano componenti già esistenti dal basso (Bottom-Up).
+                    Questo approccio ibrido è tipico dello sviluppo software moderno.
+                </p>
+            </div>
+        </section>
+
+        <!-- ==================== SEZIONE 11: COMPLESSITÀ DI UN ALGORITMO ==================== -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #f472b6;">11. La Complessità di un Algoritmo</h2>
+            <p class="lesson-text">
+                Non tutti gli algoritmi che risolvono lo stesso problema sono uguali. Alcuni sono veloci, altri sono
+                incredibilmente lenti. La <strong>complessità computazionale</strong> è la misura di quante risorse
+                (tempo di calcolo e memoria) un algoritmo consuma al crescere della dimensione dei dati in ingresso (che
+                chiamiamo <strong>n</strong>).
+            </p>
+
+            <div
+                style="background: rgba(244,114,182,0.08); border-left: 4px solid #f472b6; padding: 1.5rem 2rem; border-radius: 0 12px 12px 0; margin: 1.5rem 0;">
+                <p style="font-size: 1.1rem; margin: 0; line-height: 1.6;">
+                    <strong style="color: #f472b6;">Notazione Big O:</strong> In informatica usiamo il simbolo
+                    <strong>O(...)</strong> per descrivere il "caso peggiore". Se un algoritmo è <strong>O(n)</strong>,
+                    il tempo cresce linearmente. Se è <strong>O(n²)</strong>, il tempo cresce con il quadrato dei dati.
+                </p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 2rem 0;">
+                <!-- O(n) -->
+                <div
+                    style="background: rgba(16,185,129,0.05); padding: 1.5rem; border-radius: 12px; border-top: 3px solid #10b981;">
+                    <h4 style="color: #10b981; margin-bottom: 1rem;">📈 Complessità Lineare: O(n)</h4>
+                    <p style="font-size: 0.9rem; line-height: 1.6;">Il computer deve scansionare ogni elemento una sola
+                        volta. Se raddoppiano i dati, raddoppia il tempo.</p>
+                    <div
+                        style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 8px; margin-top: 1rem; font-family: 'Fira Code', monospace; font-size: 0.8rem;">
+                        <span class="cmt">// Esempio: Trovare il massimo in una lista</span><br>
+                        <span class="kw">PER OGNI</span> elemento <span class="var">x</span> <span class="kw">IN</span>
+                        lista:<br>
+                        &nbsp;&nbsp;<span class="kw">SE</span> <span class="var">x</span> > <span class="var">max</span>
+                        <span class="kw">ALLORA</span> <span class="var">max</span> = <span class="var">x</span>
+                    </div>
+                    <p style="font-size: 0.85rem; color: #94A3B8; margin-top: 0.8rem;">⚡ <strong>Velocissimo:</strong>
+                        Gestisce milioni di dati in frazioni di secondo.</p>
+                </div>
+                <!-- O(n^2) -->
+                <div
+                    style="background: rgba(239,68,68,0.05); padding: 1.5rem; border-radius: 12px; border-top: 3px solid #ef4444;">
+                    <h4 style="color: #ef4444; margin-bottom: 1rem;">📉 Complessità Quadratica: O(n²)</h4>
+                    <p style="font-size: 0.9rem; line-height: 1.6;">Solitamente causata da <strong>cicli
+                            annidati</strong> (un ciclo dentro l'altro). Se raddoppiano i dati, il tempo
+                        <strong>quadruplica</strong>.</p>
+                    <div
+                        style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 8px; margin-top: 1rem; font-family: 'Fira Code', monospace; font-size: 0.8rem;">
+                        <span class="cmt">// Esempio: Controllare duplicati</span><br>
+                        <span class="kw">PER OGNI</span> <span class="var">i</span> <span class="kw">IN</span>
+                        lista:<br>
+                        &nbsp;&nbsp;<span class="kw">PER OGNI</span> <span class="var">j</span> <span
+                            class="kw">IN</span> lista:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">SE</span> <span class="var">lista[i]</span> == <span
+                            class="var">lista[j]</span> <span class="kw">ALLORA</span> ...
+                    </div>
+                    <p style="font-size: 0.85rem; color: #94A3B8; margin-top: 0.8rem;">🐌 <strong>Rischioso:</strong>
+                        Con 100.000 dati, il computer deve fare 10 miliardi di confronti!</p>
+                </div>
+            </div>
+
+            <div
+                style="background: rgba(59,130,246,0.05); border: 1px solid rgba(59,130,246,0.2); padding: 1.5rem; border-radius: 12px;">
+                <h4 style="color: #3b82f6; margin-bottom: 0.5rem;">❓ Perché è importante che la complessità sia bassa?
+                </h4>
+                <p style="font-size: 0.92rem; line-height: 1.7; margin: 0;">
+                    Un algoritmo inefficiente (es. O(n²)) potrebbe sembrare veloce con 10 dati, ma diventare
+                    <strong>completamente inutilizzabile</strong> con 1 milione di dati (Big Data). Nel mondo reale,
+                    l'efficienza non è un lusso: è ciò che permette a Google di cercarti un file in millisecondi o a una
+                    banca di gestire migliaia di transazioni al secondo. Progettare algoritmi a bassa complessità è la
+                    sfida principale dell'Ingegneria del Software.
+                </p>
+            </div>
+            <!-- ==================== SEZIONE 12: LABORATORIO DI OTTIMIZZAZIONE ==================== -->
+            <section class="lesson-section">
+                <h2 class="lesson-title" style="color: #10b981;">12. Laboratorio: L'Arte dell'Ottimizzazione</h2>
+                <p class="lesson-text">
+                    Mettiamo in pratica quanto appreso. Riprendiamo l'algoritmo della <strong>somma dei primi N
+                        numeri</strong>. È un ottimo esempio per capire come la matematica possa rendere un algoritmo
+                    incredibilmente più efficiente.
+                </p>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 2rem 0;">
+                    <!-- Versione Standard -->
+                    <div
+                        style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 12px; border-top: 3px solid #3b82f6;">
+                        <h4 style="color: #3b82f6; margin-bottom: 1rem;">⚙️ Approccio Iterativo (Ciclo)</h4>
+                        <p style="font-size: 0.88rem; margin-bottom: 1rem;">Si usa un ciclo per scorrere i numeri uno ad
+                            uno.</p>
+                        <div class="code-block" style="font-size: 0.82rem;">
+<span class="kw">PER</span> <span class="var">i</span> <span class="op">DA</span> <span class="num">1</span> <span class="op">A</span> <span class="var">N</span> <span class="kw">ESEGUI</span>
+    <span class="var">somma</span> <span class="op">←</span> <span class="var">somma</span> <span class="op">+</span> <span class="var">i</span>
+<span class="kw">FINE PER</span>
+                        </div>
+                        <p style="font-size: 0.85rem; color: #94A3B8; margin-top: 0.8rem;">📏 Complessità: <strong
+                                style="color: #38bdf8;">O(n)</strong> (Lineare)</p>
+                    </div>
+
+                    <!-- Versione Matematica -->
+                    <div
+                        style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 12px; border-top: 3px solid #10b981;">
+                        <h4 style="color: #10b981; margin-bottom: 1rem;">🍎 Approccio Matematico (Formula)</h4>
+                        <p style="font-size: 0.88rem; margin-bottom: 1rem;">Usiamo la formula di Gauss/Newton (scoperta
+                            dal giovane Gauss a 10 anni!): <strong>S = [N * (N + 1)] / 2</strong>. Nessun ciclo
+                            necessario.</p>
+                        <div class="code-block" style="font-size: 0.82rem;">
+<span class="cmt">// Nessun ciclo! Solo un calcolo diretto</span>
+<span class="var">somma</span> <span class="op">←</span> (<span class="var">N</span> <span class="op">*</span> (<span class="var">N</span> <span class="op">+</span> <span class="num">1</span>)) <span class="op">/</span> <span class="num">2</span>
+                        </div>
+                        <p style="font-size: 0.85rem; color: #93c5fd; margin-top: 0.8rem;">⚡ Complessità: <strong
+                                style="color: #10b981;">O(1)</strong> (Costante)</p>
+                        <p style="font-size: 0.8rem; color: #94A3B8; font-style: italic;">Nota: Con la formula il tempo
+                            non cambia se N è 10 o 10 miliardi!</p>
+                    </div>
+                </div>
+
+                <!-- ESERCIZIO INTERATTIVO -->
+                <div class="interactive-runner"
+                    style="background: rgba(16,185,129,0.05); border-color: rgba(16,185,129,0.2);">
+                    <h4 style="color: #10b981; margin-bottom: 1rem;">🧪 Sfida l'Efficienza!</h4>
+                    <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div>
+                            <span style="color: #cbd5e1;">Calcola somma fino a N:</span>
+                            <input type="number" id="lab-n-input" value="1000" min="1" max="1000000"
+                                style="width: 140px;">
+                        </div>
+                        <button class="run-btn" id="lab-run-btn" style="background: #10b981;">▶ Calcola e
+                            Compara</button>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="output-box" id="lab-output-iter">Iterativo (O(n))...</div>
+                        <div class="output-box" id="lab-output-math">Matematico (O(1))...</div>
+                    </div>
+                    <div id="lab-insight"
+                        style="margin-top: 1rem; font-size: 0.9rem; color: #94A3B8; text-align: center; font-style: italic;">
+                    </div>
+                </div>
+            </section>
+
+
+
+            <!-- ==================== QUIZ FINALE ==================== -->
+            <section id="quiz-finale" class="lesson-section quiz-container">
+                <h2 class="lesson-title" style="color: #a855f7; text-align: center;">Verifica Cognitiva</h2>
+                <p class="lesson-text" style="text-align: center; font-size: 0.95rem; margin-bottom: 2rem;">Metti alla
+                    prova quanto hai appreso su algoritmi, pseudocodice, diagrammi di flusso e linguaggi di
+                    programmazione.</p>
+                <div id="quiz-area"></div>
+                <div id="quiz-score" class="feedback-msg"
+                    style="text-align: center; font-size: 1.2rem; margin-top: 2rem; font-weight: bold;"></div>
+            </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione Informatica.</p>
+    </footer>
+
+    <script src="algoritmo.js"></script>
+    <script src="../js/main.js"></script>
+</body>
+
+</html>

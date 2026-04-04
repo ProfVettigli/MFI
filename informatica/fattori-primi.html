@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scomposizione in Fattori Primi - MFI Informatica</title>
+    <meta name="description" content="Lezione interattiva sulla scomposizione in fattori primi: algoritmo, pseudocodice, implementazione Python e applicazioni alla crittografia.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+        .code-block {
+            background: #1a1e2e;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.92rem;
+            line-height: 1.7;
+            overflow-x: auto;
+            color: #e2e8f0;
+            position: relative;
+            white-space: pre-wrap;
+        }
+        .code-block .kw { color: #c084fc; font-weight: 600; }
+        .code-block .str { color: #34d399; }
+        .code-block .cmt { color: #64748b; font-style: italic; }
+        .code-block .var { color: #38bdf8; }
+        .code-block .num { color: #fb923c; }
+        .code-block .op { color: #f59e0b; }
+        .code-block .fn { color: #f472b6; }
+
+        .code-label {
+            position: absolute;
+            top: 8px; right: 12px;
+            font-size: 0.7rem;
+            font-family: 'Inter', sans-serif;
+            padding: 2px 10px;
+            border-radius: 6px;
+            background: rgba(255,255,255,0.08);
+            color: #94A3B8;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .interactive-runner {
+            background: rgba(59,130,246,0.05);
+            border: 1px solid rgba(59,130,246,0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        .interactive-runner label { color: #3b82f6; font-weight: 600; font-size: 1rem; }
+        .interactive-runner input[type="number"] {
+            background: #1a1e2e;
+            border: 1px solid rgba(255,255,255,0.15);
+            color: white;
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            width: 160px;
+            margin: 0 0.8rem;
+            font-family: 'Fira Code', monospace;
+        }
+        .run-btn {
+            background: linear-gradient(135deg, #3b82f6, #a855f7);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .run-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(59,130,246,0.4); }
+        .output-box {
+            background: #0d1117;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 8px;
+            padding: 1rem 1.2rem;
+            margin-top: 1rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.88rem;
+            line-height: 1.8;
+            min-height: 60px;
+            color: #94A3B8;
+        }
+
+        .step-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            position: relative;
+        }
+        .step-num {
+            position: absolute;
+            top: -12px; left: 50%;
+            transform: translateX(-50%);
+            background: #a855f7;
+            color: #fff;
+            width: 28px; height: 28px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 0.85rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="sub-hero" style="background: linear-gradient(rgba(15, 23, 42, 0.92), rgba(15, 23, 42, 0.96)), url('https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&q=80'); background-size: cover; padding: 6rem 0 3rem;">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2.5rem;">
+                <a href="informatica.html" class="back-button" style="margin-bottom: 0;">
+                    <span style="font-size:1.2rem; margin-right: 0.5rem;">&larr;</span> Torna a Informatica
+                </a>
+            </div>
+            <h1 style="font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 800; margin-bottom: 1.5rem;">La Chiave Segreta: <span style="color: #a855f7;">Fattori Primi</span></h1>
+            <p style="font-size: 1.25rem; color: var(--text-muted); max-width: 800px; line-height: 1.6;">
+                Scopri come un algoritmo apparentemente semplice — la scomposizione in fattori primi — sia il pilastro invisibile che protegge ogni tuo messaggio, ogni transazione bancaria e ogni password nel mondo digitale.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- ==================== SEZIONE 1: IL PROBLEMA ==================== -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #a855f7;">1. Il Problema: che cos'è la Scomposizione?</h2>
+            <p class="lesson-text">
+                Ogni numero intero maggiore di 1 può essere scritto come prodotto di <strong>numeri primi</strong> — quei numeri speciali divisibili solo per 1 e per se stessi (2, 3, 5, 7, 11, 13, 17, …). Questa è la <strong>scomposizione in fattori primi</strong>, e il Teorema Fondamentale dell'Aritmetica ci garantisce che per ogni numero questa scomposizione è <em>unica</em>.
+            </p>
+
+            <div style="background: rgba(168,85,247,0.08); border-left: 4px solid #a855f7; padding: 1.5rem 2rem; border-radius: 0 12px 12px 0; margin: 1.5rem 0;">
+                <p style="font-size: 1.1rem; margin: 0; line-height: 1.6;">
+                    <strong style="color: #a855f7;">Definizione:</strong> La <strong>scomposizione in fattori primi</strong> di un numero intero N è l'espressione di N come prodotto di potenze di numeri primi. Ad esempio: <strong>360 = 2³ × 3² × 5</strong>.
+                </p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 2rem 0;">
+                <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 1.2rem; border-radius: 10px; text-align: center;">
+                    <div style="font-size: 1.8rem; margin-bottom: 0.5rem;">12</div>
+                    <div style="font-size: 0.9rem; color: #a855f7; font-weight: 600;">= 2² × 3</div>
+                </div>
+                <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 1.2rem; border-radius: 10px; text-align: center;">
+                    <div style="font-size: 1.8rem; margin-bottom: 0.5rem;">45</div>
+                    <div style="font-size: 0.9rem; color: #a855f7; font-weight: 600;">= 3² × 5</div>
+                </div>
+                <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 1.2rem; border-radius: 10px; text-align: center;">
+                    <div style="font-size: 1.8rem; margin-bottom: 0.5rem;">84</div>
+                    <div style="font-size: 0.9rem; color: #a855f7; font-weight: 600;">= 2² × 3 × 7</div>
+                </div>
+                <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 1.2rem; border-radius: 10px; text-align: center;">
+                    <div style="font-size: 1.8rem; margin-bottom: 0.5rem;">97</div>
+                    <div style="font-size: 0.9rem; color: #10b981; font-weight: 600;">= 97 (primo!)</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SEZIONE 2: PERCHÉ È IMPORTANTE ==================== -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #ef4444;">2. Perché è Importante? La Crittografia RSA</h2>
+            <p class="lesson-text">
+                "Ma a che serve scomporre numeri?" — la risposta ti sorprenderà: la scomposizione in fattori primi è il <strong>fondamento della sicurezza digitale moderna</strong>. Ogni volta che invii un messaggio su WhatsApp, fai un acquisto online o accedi alla tua banca, stai usando (senza saperlo) un sistema crittografico chiamato <strong>RSA</strong> che si basa su un principio geniale:
+            </p>
+
+            <div style="background: rgba(239,68,68,0.08); border-left: 4px solid #ef4444; padding: 1.5rem 2rem; border-radius: 0 12px 12px 0; margin: 1.5rem 0;">
+                <p style="font-size: 1.1rem; margin: 0; line-height: 1.7;">
+                    <strong style="color: #ef4444;">Il Principio RSA:</strong> Moltiplicare due numeri primi enormi è <strong>facilissimo</strong> (anche per un computer vecchio). Ma partendo dal risultato, <strong>risalire ai due fattori originali</strong> è praticamente <strong>impossibile</strong> se il numero è abbastanza grande — anche con i supercomputer più potenti del mondo.
+                </p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 2rem 0;">
+                <!-- Facile -->
+                <div style="background: rgba(16,185,129,0.05); padding: 1.5rem; border-radius: 12px; border-top: 3px solid #10b981; text-align: center;">
+                    <h4 style="color: #10b981; margin-bottom: 1rem;">✅ Moltiplicare (facile!)</h4>
+                    <div style="font-family: 'Fira Code', monospace; font-size: 1rem; line-height: 2;">
+                        <span style="color: #a855f7;">61</span> <span style="color: #94A3B8;">×</span> <span style="color: #a855f7;">53</span> <span style="color: #94A3B8;">=</span> <span style="color: #10b981; font-weight: 700;">3.233</span>
+                    </div>
+                    <p style="font-size: 0.85rem; color: #94A3B8; margin-top: 0.8rem;">⚡ Tempo: <strong>0,000001 secondi</strong></p>
+                </div>
+                <!-- Difficile -->
+                <div style="background: rgba(239,68,68,0.05); padding: 1.5rem; border-radius: 12px; border-top: 3px solid #ef4444; text-align: center;">
+                    <h4 style="color: #ef4444; margin-bottom: 1rem;">❌ Scomporre (difficile!)</h4>
+                    <div style="font-family: 'Fira Code', monospace; font-size: 1rem; line-height: 2;">
+                        <span style="color: #10b981; font-weight: 700;">3.233</span> <span style="color: #94A3B8;">=</span> <span style="color: #ef4444;">? × ?</span>
+                    </div>
+                    <p style="font-size: 0.85rem; color: #94A3B8; margin-top: 0.8rem;">🐌 Devi provare tutti i divisori!</p>
+                </div>
+            </div>
+
+            <!-- APPLICAZIONI -->
+            <h3 style="color: #ef4444; margin-top: 2rem; margin-bottom: 1rem; font-size: 1.3rem;">🔐 Dove viene usata ogni giorno?</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+                <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 12px; border-bottom: 3px solid #10b981;">
+                    <div style="font-size: 2.2rem; margin-bottom: 0.8rem; text-align: center;">💬</div>
+                    <h4 style="color: #10b981; margin-bottom: 0.5rem;">Messaggistica</h4>
+                    <p style="font-size: 0.88rem; color: #cbd5e1; line-height: 1.6;">WhatsApp, Signal, Telegram usano la <strong>crittografia end-to-end</strong> basata su RSA: il tuo messaggio viene "chiuso" con una chiave pubblica (il prodotto di due primi) che solo il destinatario può "aprire" con la sua chiave privata (i due fattori segreti).</p>
+                </div>
+                <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 12px; border-bottom: 3px solid #3b82f6;">
+                    <div style="font-size: 2.2rem; margin-bottom: 0.8rem; text-align: center;">🏦</div>
+                    <h4 style="color: #3b82f6; margin-bottom: 0.5rem;">Banche e Pagamenti</h4>
+                    <p style="font-size: 0.88rem; color: #cbd5e1; line-height: 1.6;">Ogni transazione bancaria online (home banking, carte di credito, PayPal) usa il protocollo <strong>HTTPS</strong> che si basa su certificati digitali protetti da RSA. Senza i fattori primi, nessun hacker potrebbe fare pagamenti online.</p>
+                </div>
+                <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 12px; border-bottom: 3px solid #f59e0b;">
+                    <div style="font-size: 2.2rem; margin-bottom: 0.8rem; text-align: center;">🔑</div>
+                    <h4 style="color: #f59e0b; margin-bottom: 0.5rem;">Password e Accessi</h4>
+                    <p style="font-size: 0.88rem; color: #cbd5e1; line-height: 1.6;">Quando accedi a Instagram, Gmail o al registro elettronico, la tua password non viaggia mai "in chiaro". Viene cifrata con algoritmi che dipendono dalla difficoltà di scomporre numeri enormi in fattori primi.</p>
+                </div>
+            </div>
+
+            <!-- RSA DEMO -->
+            <div class="interactive-runner" style="margin-top: 2rem;">
+                <label>🧪 L'esplosione dei tempi</label>
+                <p style="font-size: 0.88rem; color: #cbd5e1; margin: 0.5rem 0 1rem;">Clicca per vedere come il tempo necessario a scomporre un numero esplode al crescere delle cifre — da frazioni di secondo a milioni di anni:</p>
+                <button class="run-btn" id="rsa-demo-btn">▶ Mostra la Tabella dei Tempi</button>
+                <div class="output-box" id="rsa-output">Premi il pulsante per vedere come i tempi esplodono…</div>
+            </div>
+        </section>
+
+        <!-- ==================== SEZIONE 3: DIAGRAMMA DI FLUSSO ==================== -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #3b82f6;">3. Il Diagramma di Flusso dell'Algoritmo</h2>
+            <p class="lesson-text">
+                L'algoritmo di scomposizione in fattori primi usa la strategia della <strong>divisione ripetuta</strong>: partiamo dal divisore più piccolo possibile (2) e continuiamo a dividere finché possiamo. Ecco la rappresentazione visiva completa con il diagramma di flusso:
+            </p>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 2rem 0;">
+                <!-- FLOWCHART CANVAS -->
+                <div style="display: flex; flex-direction: column; align-items: center;">
+                    <h4 style="color: #3b82f6; margin-bottom: 1rem;">Diagramma di Flusso</h4>
+                    <canvas id="flowchart-canvas" style="border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; background: rgba(0,0,0,0.3);"></canvas>
+                </div>
+
+                <!-- ESEMPIO A MANO -->
+                <div>
+                    <h4 style="color: #3b82f6; margin-bottom: 1rem;">📝 Esempio: scomponiamo 180</h4>
+                    <div style="background: rgba(59,130,246,0.05); border: 1px solid rgba(59,130,246,0.2); padding: 1.5rem; border-radius: 12px; font-family: 'Fira Code', monospace; font-size: 0.85rem; line-height: 2.2;">
+                        <div><span style="color: #94A3B8;">Passo 1:</span> 180 ÷ <span style="color: #a855f7; font-weight:700;">2</span> = 90</div>
+                        <div><span style="color: #64748b;">          ← 2 è fattore</span></div>
+                        <div><span style="color: #94A3B8;">Passo 2:</span> &nbsp;90 ÷ <span style="color: #a855f7; font-weight:700;">2</span> = 45</div>
+                        <div><span style="color: #64748b;">          ← ancora 2</span></div>
+                        <div><span style="color: #94A3B8;">Passo 3:</span> &nbsp;45 ÷ 2 = ?</div>
+                        <div><span style="color: #ef4444;">          ← non divisibile! d=3</span></div>
+                        <div><span style="color: #94A3B8;">Passo 4:</span> &nbsp;45 ÷ <span style="color: #a855f7; font-weight:700;">3</span> = 15</div>
+                        <div><span style="color: #64748b;">          ← 3 è fattore</span></div>
+                        <div><span style="color: #94A3B8;">Passo 5:</span> &nbsp;15 ÷ <span style="color: #a855f7; font-weight:700;">3</span> = &nbsp;5</div>
+                        <div><span style="color: #64748b;">          ← ancora 3</span></div>
+                        <div><span style="color: #94A3B8;">Passo 6:</span> &nbsp;&nbsp;5 ÷ 3 = ?</div>
+                        <div><span style="color: #ef4444;">          ← non divisibile! d=4…5</span></div>
+                        <div><span style="color: #94A3B8;">Passo 7:</span> d²=25 > 5</div>
+                        <div><span style="color: #10b981; font-weight:700;">          5 è primo → fattore finale!</span></div>
+                        <div style="margin-top: 0.8rem; padding-top: 0.8rem; border-top: 1px solid rgba(255,255,255,0.1);">
+                            <span style="color: #10b981; font-weight: 700; font-size: 1.05rem;">180 = 2² × 3² × 5</span>
+                        </div>
+                    </div>
+
+                    <div style="background: rgba(168,85,247,0.05); border: 1px solid rgba(168,85,247,0.2); padding: 1rem 1.2rem; border-radius: 10px; margin-top: 1.5rem;">
+                        <h4 style="color: #a855f7; margin-bottom: 0.3rem; font-size: 0.95rem;">💡 Legenda Forme</h4>
+                        <ul style="font-size: 0.82rem; margin-left: 1rem; line-height: 1.8; color: #cbd5e1;">
+                            <li><span style="color: #10b981;">Ovale</span> = Inizio / Fine</li>
+                            <li><span style="color: #3b82f6;">Rettangolo</span> = Processo (azione)</li>
+                            <li><span style="color: #f59e0b;">Rombo</span> = Decisione (Sì/No)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SEZIONE 4: PSEUDOCODICE ==================== -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #3b82f6;">4. Lo Pseudocodice</h2>
+            <p class="lesson-text">
+                Traduciamo il workflow in pseudocodice — un linguaggio quasi-naturale che descrive la logica dell'algoritmo prima di scriverlo in un linguaggio di programmazione reale:
+            </p>
+
+            <div class="code-block">
+                <span class="code-label">PSEUDOCODICE</span>
+<span class="cmt">// Algoritmo: Scomposizione in Fattori Primi</span>
+<span class="kw">INIZIO</span>
+    <span class="kw">LEGGI</span> <span class="var">N</span>                           <span class="cmt">// il numero da scomporre</span>
+    <span class="var">d</span> <span class="op">←</span> <span class="num">2</span>                              <span class="cmt">// partiamo dal più piccolo primo</span>
+
+    <span class="kw">MENTRE</span> <span class="var">d</span> × <span class="var">d</span> <span class="op">≤</span> <span class="var">N</span> <span class="kw">ESEGUI</span>            <span class="cmt">// finché ha senso cercare</span>
+        <span class="kw">MENTRE</span> <span class="var">N</span> <span class="op">mod</span> <span class="var">d</span> <span class="op">=</span> <span class="num">0</span> <span class="kw">ESEGUI</span>       <span class="cmt">// se d divide N esattamente</span>
+            <span class="kw">SCRIVI</span> <span class="var">d</span>                       <span class="cmt">// d è un fattore primo!</span>
+            <span class="var">N</span> <span class="op">←</span> <span class="var">N</span> <span class="op">÷</span> <span class="var">d</span>                     <span class="cmt">// continua col quoziente</span>
+        <span class="kw">FINE MENTRE</span>
+        <span class="var">d</span> <span class="op">←</span> <span class="var">d</span> <span class="op">+</span> <span class="num">1</span>                        <span class="cmt">// prova il divisore successivo</span>
+    <span class="kw">FINE MENTRE</span>
+
+    <span class="kw">SE</span> <span class="var">N</span> <span class="op">&gt;</span> <span class="num">1</span> <span class="kw">ALLORA</span>                    <span class="cmt">// se resta un numero > 1</span>
+        <span class="kw">SCRIVI</span> <span class="var">N</span>                           <span class="cmt">// è l'ultimo fattore primo</span>
+    <span class="kw">FINE SE</span>
+<span class="kw">FINE</span>
+            </div>
+
+            <div style="background: rgba(168,85,247,0.05); border: 1px solid rgba(168,85,247,0.2); padding: 1.5rem; border-radius: 12px; margin-top: 1.5rem;">
+                <h4 style="color: #a855f7; margin-bottom: 0.5rem;">💡 Perché ci fermiamo a d² ≤ N?</h4>
+                <p style="font-size: 0.92rem; margin: 0; line-height: 1.7;">
+                    È un'<strong>ottimizzazione fondamentale</strong>. Se un numero N ha un fattore primo maggiore di √N, allora l'altro fattore dev'essere più piccolo di √N — e lo avremmo già trovato! Quindi, se arriviamo a d² > N senza averlo diviso, N stesso è primo. Questa ottimizzazione riduce drasticamente i calcoli: per scomporre 1.000.000 basta testare fino a 1.000 invece che fino a 999.999.
+                </p>
+            </div>
+        </section>
+
+        <!-- ==================== SEZIONE 5: PYTHON ==================== -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #10b981;">5. L'Implementazione in Python</h2>
+            <p class="lesson-text">
+                Ora traduciamo lo pseudocodice in un vero linguaggio di programmazione. Python è perfetto per questo — la sua sintassi è quasi identica allo pseudocodice:
+            </p>
+
+            <div class="code-block" style="border-left: 3px solid #10b981;">
+                <span class="code-label" style="color: #10b981;">PYTHON</span>
+<span class="kw">def</span> <span class="fn">scomponi</span>(<span class="var">n</span>):
+    <span class="str">"""Restituisce la lista dei fattori primi di n."""</span>
+    <span class="var">fattori</span> = []
+    <span class="var">d</span> = <span class="num">2</span>
+
+    <span class="kw">while</span> <span class="var">d</span> * <span class="var">d</span> <= <span class="var">n</span>:          <span class="cmt"># finché d² ≤ n</span>
+        <span class="kw">while</span> <span class="var">n</span> % <span class="var">d</span> == <span class="num">0</span>:         <span class="cmt"># se n è divisibile per d</span>
+            <span class="var">fattori</span>.append(<span class="var">d</span>)    <span class="cmt"># salva d come fattore</span>
+            <span class="var">n</span> = <span class="var">n</span> // <span class="var">d</span>             <span class="cmt"># dividi n per d</span>
+        <span class="var">d</span> += <span class="num">1</span>                    <span class="cmt"># prossimo divisore</span>
+
+    <span class="kw">if</span> <span class="var">n</span> > <span class="num">1</span>:
+        <span class="var">fattori</span>.append(<span class="var">n</span>)        <span class="cmt"># n è l'ultimo primo</span>
+
+    <span class="kw">return</span> <span class="var">fattori</span>
+
+<span class="cmt"># Esempio di utilizzo:</span>
+<span class="fn">print</span>(<span class="fn">scomponi</span>(<span class="num">360</span>))   <span class="cmt"># Output: [2, 2, 2, 3, 3, 5]</span>
+<span class="fn">print</span>(<span class="fn">scomponi</span>(<span class="num">97</span>))    <span class="cmt"># Output: [97] → è primo!</span>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem;">
+                <div style="background: rgba(16,185,129,0.05); padding: 1.2rem; border-radius: 12px; border-left: 3px solid #10b981;">
+                    <h4 style="color: #10b981; margin-bottom: 0.5rem;">Pseudocodice → Python</h4>
+                    <ul style="font-size: 0.88rem; margin-left: 1.2rem; line-height: 1.8; color: #cbd5e1;">
+                        <li><code>MENTRE...ESEGUI</code> → <code style="color: #c084fc;">while</code></li>
+                        <li><code>SE...ALLORA</code> → <code style="color: #c084fc;">if</code></li>
+                        <li><code>N mod d</code> → <code style="color: #f59e0b;">n % d</code></li>
+                        <li><code>N ÷ d</code> → <code style="color: #f59e0b;">n // d</code></li>
+                    </ul>
+                </div>
+                <div style="background: rgba(59,130,246,0.05); padding: 1.2rem; border-radius: 12px; border-left: 3px solid #3b82f6;">
+                    <h4 style="color: #3b82f6; margin-bottom: 0.5rem;">Simboli chiave</h4>
+                    <ul style="font-size: 0.88rem; margin-left: 1.2rem; line-height: 1.8; color: #cbd5e1;">
+                        <li><code style="color: #f59e0b;">%</code> = resto della divisione (modulo)</li>
+                        <li><code style="color: #f59e0b;">//</code> = divisione intera (senza decimali)</li>
+                        <li><code style="color: #f59e0b;"><=</code> = minore o uguale</li>
+                        <li><code style="color: #c084fc;">def</code> = definisce una funzione</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SEZIONE 6: PROVALO ==================== -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #f59e0b;">6. Provalo Tu! Scomposizione Interattiva</h2>
+            <p class="lesson-text">
+                Inserisci un numero qualsiasi e guarda l'algoritmo scomporlo passo dopo passo, esattamente come farebbe un programma Python:
+            </p>
+
+            <div class="interactive-runner">
+                <label for="factor-input">🧪 Scomponi un numero</label>
+                <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 0.8rem; margin-top: 0.8rem;">
+                    <span style="color: #cbd5e1;">Numero da scomporre (2 – 999.999.999):</span>
+                    <input type="number" id="factor-input" value="360" min="2" max="999999999">
+                    <button class="run-btn" id="factor-run-btn">▶ Scomponi</button>
+                </div>
+                <div class="output-box" id="factor-output">Premi "Scomponi" per vedere i fattori primi…</div>
+            </div>
+
+            <div style="background: rgba(245,158,11,0.05); border: 1px solid rgba(245,158,11,0.2); padding: 1rem 1.5rem; border-radius: 12px; margin-top: 1.5rem;">
+                <p style="font-size: 0.9rem; margin: 0; line-height: 1.6; color: #fcd34d;">
+                    💡 <strong>Prova numeri curiosi:</strong> <span style="color: #cbd5e1;">7919 (primo!), 123456789, 2048 (= 2¹¹), 65536 (= 2¹⁶), 100000000, 999999937 (primo enorme!)</span>
+                </p>
+            </div>
+        </section>
+
+        <!-- ==================== SEZIONE 7: COMPUTER QUANTISTICI ==================== -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #ec4899;">7. Curiosità Finale: l'Incubo Quantistico</h2>
+            <p class="lesson-text">
+                Abbiamo visto che tutta la sicurezza di internet si basa sul fatto che scomporre numeri enormi è <em>praticamente impossibile</em> per i computer classici. Ma cosa succederebbe se esistesse un tipo di computer completamente diverso, capace di violare questa regola?
+            </p>
+
+            <div style="background: rgba(236,72,153,0.05); border: 2px solid rgba(236,72,153,0.3); padding: 2rem; border-radius: 12px; margin: 1.5rem 0;">
+                <div style="text-align: center; margin-bottom: 1.5rem;">
+                    <span style="font-size: 3rem;">⚛️</span>
+                    <h3 style="color: #ec4899; margin-top: 0.5rem;">Il Computer Quantistico e l'Algoritmo di Shor</h3>
+                </div>
+
+                <p style="font-size: 0.95rem; line-height: 1.7; margin-bottom: 1.5rem;">
+                    Nel 1994, il matematico <strong>Peter Shor</strong> dimostrò teoricamente che un <strong>computer quantistico</strong> — una macchina che sfrutta le leggi della meccanica quantistica (sovrapposizione e entanglement) — potrebbe scomporre in fattori primi numeri enormi in pochi minuti, laddove un computer classico impiegherebbe <em>milioni di anni</em>.
+                </p>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 1.5rem;">
+                    <div style="background: rgba(0,0,0,0.3); padding: 1.5rem; border-radius: 10px; text-align: center;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🖥️</div>
+                        <h4 style="color: #94A3B8; margin-bottom: 0.5rem;">Computer Classico</h4>
+                        <p style="font-size: 0.9rem; color: #cbd5e1;">Scomporre un numero RSA di 600 cifre:</p>
+                        <p style="color: #ef4444; font-weight: 700; font-size: 1.3rem; margin: 0.5rem 0 0;">~10 milioni di anni</p>
+                    </div>
+                    <div style="background: rgba(0,0,0,0.3); padding: 1.5rem; border-radius: 10px; text-align: center;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">⚛️</div>
+                        <h4 style="color: #ec4899; margin-bottom: 0.5rem;">Computer Quantistico</h4>
+                        <p style="font-size: 0.9rem; color: #cbd5e1;">Lo stesso numero con l'algoritmo di Shor:</p>
+                        <p style="color: #10b981; font-weight: 700; font-size: 1.3rem; margin: 0.5rem 0 0;">~poche ore (teorico)</p>
+                    </div>
+                </div>
+
+                <div style="background: rgba(59,130,246,0.08); padding: 1.2rem 1.5rem; border-radius: 10px; border-left: 4px solid #3b82f6;">
+                    <h4 style="color: #3b82f6; margin-bottom: 0.5rem;">🔮 E quindi, siamo in pericolo?</h4>
+                    <p style="font-size: 0.92rem; line-height: 1.7; margin: 0;">
+                        <strong>Non ancora</strong> (nel 2026). I computer quantistici odierni sono ancora troppo instabili e "piccoli" (pochi migliaia di <em>qubit</em>) per attaccare le chiavi RSA reali. Ma la minaccia è così seria che governi e aziende stanno già sviluppando la <strong>crittografia post-quantistica</strong>: nuovi algoritmi di cifratura che saranno sicuri anche contro i futuri computer quantistici. È una corsa contro il tempo tra chi costruisce i computer del futuro e chi progetta le serrature del futuro!
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== QUIZ FINALE ==================== -->
+        <section id="quiz-finale" class="lesson-section quiz-container">
+            <h2 class="lesson-title" style="color: #a855f7; text-align: center;">Verifica Cognitiva (10 Domande)</h2>
+            <p class="lesson-text" style="text-align: center; font-size: 0.95rem; margin-bottom: 2rem;">Metti alla prova quanto hai appreso sulla scomposizione in fattori primi e le sue applicazioni.</p>
+            <div id="quiz-area"></div>
+            <div id="quiz-score" class="feedback-msg" style="text-align: center; font-size: 1.2rem; margin-top: 2rem; font-weight: bold;"></div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione Informatica.</p>
+    </footer>
+
+    <script src="fattori-primi.js"></script>
+    <script src="../js/main.js"></script>
+</body>
+
+</html>

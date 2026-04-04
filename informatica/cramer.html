@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metodo di Cramer - MFI Informatica</title>
+    <meta name="description" content="Lezione interattiva sul Metodo di Cramer: algoritmo, pseudocodice e implementazione Python per risolvere sistemi lineari.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+        .code-block {
+            background: #1a1e2e;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.92rem;
+            line-height: 1.7;
+            overflow-x: auto;
+            color: #e2e8f0;
+            position: relative;
+            white-space: pre-wrap;
+        }
+        .code-block .kw { color: #c084fc; font-weight: 600; }
+        .code-block .str { color: #34d399; }
+        .code-block .cmt { color: #64748b; font-style: italic; }
+        .code-block .var { color: #38bdf8; }
+        .code-block .num { color: #fb923c; }
+        .code-block .op { color: #f59e0b; }
+        .code-block .fn { color: #f472b6; }
+
+        .code-label {
+            position: absolute;
+            top: 8px; right: 12px;
+            font-size: 0.7rem;
+            font-family: 'Inter', sans-serif;
+            padding: 2px 10px;
+            border-radius: 6px;
+            background: rgba(255,255,255,0.08);
+            color: #94A3B8;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .matrix-box {
+            background: rgba(59,130,246,0.05);
+            border: 1px solid rgba(59,130,246,0.2);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            font-family: 'Times New Roman', serif;
+            font-size: 1.25rem;
+        }
+
+        .interactive-runner {
+            background: rgba(59,130,246,0.05);
+            border: 1px solid rgba(59,130,246,0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .cramer-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 80px) 20px 80px;
+            gap: 10px;
+            align-items: center;
+            justify-content: center;
+            margin: 1.5rem 0;
+        }
+
+        .cramer-grid input {
+            background: #1a1e2e;
+            border: 1px solid rgba(255,255,255,0.15);
+            color: white;
+            padding: 0.6rem;
+            border-radius: 8px;
+            text-align: center;
+            width: 100%;
+            font-family: 'Fira Code', monospace;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="sub-hero" style="background: linear-gradient(rgba(15, 23, 42, 0.92), rgba(15, 23, 42, 0.96)), url('https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&q=80'); background-size: cover; padding: 6rem 0 3rem;">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2.5rem;">
+                <a href="informatica.html" class="back-button" style="margin-bottom: 0;">
+                    <span style="font-size:1.2rem; margin-right: 0.5rem;">&larr;</span> Torna a Informatica
+                </a>
+            </div>
+            <h1 style="font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 800; margin-bottom: 1.5rem;">Risolvere Sistemi: <span style="color: #3b82f6;">Metodo di Cramer 🧮</span></h1>
+            <p style="font-size: 1.25rem; color: var(--text-muted); max-width: 800px; line-height: 1.6;">
+                Scopri come unire algebra lineare e algoritmi per risolvere sistemi di equazioni in modo automatico.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- ==================== SEZIONE 1: IL PROBLEMA ==================== -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #3b82f6;">1. Il Problema: Sistemi di Equazioni</h2>
+            <p class="lesson-text">
+                Un sistema di due equazioni lineari in due incognite (x e y) si presenta nella forma:
+            </p>
+            
+            <div class="matrix-box" style="margin: 2rem auto; max-width: 300px;">
+                { a₁x + b₁y = c₁ <br>
+                { a₂x + b₂y = c₂
+            </div>
+
+            <p class="lesson-text">
+                Risolvere questo sistema significa trovare i valori di <strong>x</strong> e <strong>y</strong> che soddisfano contemporaneamente entrambe le equazioni. Perché è importante? In ingegneria, economia, fisica e persino nella grafica dei videogiochi, dobbiamo costantemente trovare punti di intersezione o equilibri tra forze diverse. Saper automatizzare questa risoluzione è fondamentale.
+            </p>
+        </section>
+
+        <!-- ==================== SEZIONE 2: DIAGRAMMA DI FLUSSO ==================== -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #3b82f6;">2. Il Diagramma di Flusso</h2>
+            <p class="lesson-text">
+                L'algoritmo calcola tre determinanti (D, Dx, Dy) e verifica se il sistema è risolvibile.
+            </p>
+            <div style="text-align: center; margin: 2rem 0;">
+                <canvas id="flowchart-canvas" style="border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; background: rgba(0,0,0,0.3);"></canvas>
+            </div>
+        </section>
+
+        <!-- ==================== SEZIONE 3: PSEUDOCODICE ==================== -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #3b82f6;">3. Lo Pseudocodice</h2>
+            <div class="code-block">
+                <span class="code-label">PSEUDOCODICE</span>
+<span class="kw">INIZIO</span>
+    <span class="kw">LEGGI</span> <span class="var">a1, b1, c1, a2, b2, c2</span>
+    
+    <span class="var">D</span> <span class="op">←</span> (<span class="var">a1</span> * <span class="var">b2</span>) − (<span class="var">a2</span> * <span class="var">b1</span>)
+    <span class="var">Dx</span> <span class="op">←</span> (<span class="var">c1</span> * <span class="var">b2</span>) − (<span class="var">c2</span> * <span class="var">b1</span>)
+    <span class="var">Dy</span> <span class="op">←</span> (<span class="var">a1</span> * <span class="var">c2</span>) − (<span class="var">a2</span> * <span class="var">c1</span>)
+    
+    <span class="kw">SE</span> <span class="var">D</span> <span class="op">≠</span> <span class="num">0</span> <span class="kw">ALLORA</span>
+        <span class="var">x</span> <span class="op">←</span> <span class="var">Dx</span> <span class="op">/</span> <span class="var">D</span>
+        <span class="var">y</span> <span class="op">←</span> <span class="var">Dy</span> <span class="op">/</span> <span class="var">D</span>
+        <span class="kw">SCRIVI</span> <span class="str">"Soluzione unica: "</span>, <span class="var">x</span>, <span class="var">y</span>
+    <span class="kw">ALTRIMENTI</span>
+        <span class="kw">SE</span> <span class="var">Dx</span> <span class="op">=</span> <span class="num">0</span> <span class="kw">E</span> <span class="var">Dy</span> <span class="op">=</span> <span class="num">0</span> <span class="kw">ALLORA</span>
+            <span class="kw">SCRIVI</span> <span class="str">"Sistema Indeterminato"</span>
+        <span class="kw">ALTRIMENTI</span>
+            <span class="kw">SCRIVI</span> <span class="str">"Sistema Impossibile"</span>
+        <span class="kw">FINE SE</span>
+    <span class="kw">FINE SE</span>
+<span class="kw">FINE</span>
+            </div>
+        </section>
+
+        <!-- ==================== SEZIONE 4: PYTHON ==================== -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #10b981;">4. Implementazione in Python</h2>
+            <div class="code-block" style="border-left: 3px solid #10b981;">
+                <span class="code-label" style="color: #10b981;">PYTHON</span>
+<span class="kw">def</span> <span class="fn">risolvi_cramer</span>(<span class="var">a1, b1, c1, a2, b2, c2</span>):
+    <span class="cmt"># Calcolo determinanti</span>
+    <span class="var">D</span> = <span class="var">a1</span> * <span class="var">b2</span> - <span class="var">a2</span> * <span class="var">b1</span>
+    <span class="var">Dx</span> = <span class="var">c1</span> * <span class="var">b2</span> - <span class="var">c2</span> * <span class="var">b1</span>
+    <span class="var">Dy</span> = <span class="var">a1</span> * <span class="var">c2</span> - <span class="var">a2</span> * <span class="var">c1</span>
+
+    <span class="kw">if</span> <span class="var">D</span> != <span class="num">0</span>:
+        <span class="var">x</span> = <span class="var">Dx</span> / <span class="var">D</span>
+        <span class="var">y</span> = <span class="var">Dy</span> / <span class="var">D</span>
+        <span class="kw">return</span> <span class="str">f"x = {x}, y = {y}"</span>
+    <span class="kw">else</span>:
+        <span class="kw">if</span> <span class="var">Dx</span> == <span class="num">0</span> <span class="kw">and</span> <span class="var">Dy</span> == <span class="num">0</span>:
+            <span class="kw">return</span> <span class="str">"Sistema Indeterminato"</span>
+        <span class="kw">else</span>:
+            <span class="kw">return</span> <span class="str">"Sistema Impossibile"</span>
+
+<span class="cmt"># Test</span>
+<span class="fn">print</span>(<span class="fn">risolvi_cramer</span>(<span class="num">1, 1, 5, 1, -1, 1</span>)) <span class="cmt"># Esempio: x+y=5, x-y=1</span>
+            </div>
+        </section>
+
+        <!-- ==================== SEZIONE 5: PROVALO ==================== -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #f59e0b;">5. Simulatore Interattivo</h2>
+            <div class="interactive-runner">
+                <div class="cramer-grid">
+                    <input type="number" id="a1" value="1" step="any"> <span>x +</span>
+                    <input type="number" id="b1" value="1" step="any"> <span>y =</span>
+                    <input type="number" id="c1" value="5" step="any">
+                    
+                    <input type="number" id="a2" value="1" step="any"> <span>x +</span>
+                    <input type="number" id="b2" value="-1" step="any"> <span>y =</span>
+                    <input type="number" id="c2" value="1" step="any">
+                </div>
+                <div style="text-align: center;">
+                    <button class="run-btn" id="solve-btn">▶ Risolvi con Cramer</button>
+                </div>
+                <div class="output-box" id="cramer-output">Risultati:</div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva.</p>
+    </footer>
+
+    <script src="cramer.js"></script>
+    <script src="../js/main.js"></script>
+</body>
+</html>
