@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esempi di Descrizione del Moto - MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- Katex -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+        onload="renderMathInElement(document.body);"></script>
+
+    <style>
+        :root {
+            --moto-color: #3b82f6;
+            --moto-color-rgb: 59, 130, 246;
+        }
+
+        .simulation-canvas {
+            background: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            width: 100%;
+            display: block;
+            touch-action: none;
+        }
+
+        .operation-card {
+            background: rgba(var(--moto-color-rgb), 0.05);
+            border: 1px solid rgba(var(--moto-color-rgb), 0.2);
+            padding: 1.5rem;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .formula-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 10px;
+            font-size: 1.1rem;
+        }
+
+        .one-piece-box {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(245, 158, 11, 0.1));
+            border-left: 6px solid #f59e0b;
+            padding: 2rem;
+            border-radius: 0 16px 16px 0;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .one-piece-box::before {
+            content: "⚓";
+            position: absolute;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 5rem;
+            opacity: 0.1;
+        }
+
+        .guided-exercise {
+            background: rgba(16, 185, 129, 0.05);
+            border: 1px dashed rgba(16, 185, 129, 0.4);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-top: 1.5rem;
+        }
+
+        .step-list {
+            counter-reset: step;
+            list-style: none;
+            padding: 0;
+        }
+
+        .step-list li {
+            counter-increment: step;
+            position: relative;
+            padding-left: 2.5rem;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* Prevent KaTeX formulas from line-breaking internally */
+        .katex-html {
+            white-space: nowrap !important;
+        }
+
+        .step-list li .katex {
+            white-space: nowrap !important;
+            display: inline-block;
+        }
+
+        .step-list li::before {
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: -2px;
+            min-width: 28px;
+            height: 28px;
+            background: var(--moto-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        .flex-col {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="sub-hero">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <a href="../cinematica.html" class="back-button" style="margin-bottom: 0;">
+                    <span class="back-icon">&larr;</span> Lezioni di Cinematica
+                </a>
+            </div>
+            <h1 class="sub-hero-title">Esempi di Descrizione del <span class="gradient-text">Moto</span></h1>
+            <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+                Dalla caduta libera alla traiettoria di un proiettile, al movimento circolare e alle oscillazioni del
+                pendolo: scopriamo le leggi orarie e le loro simulazioni.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- ═══════════════════════════════════════════════ -->
+        <!-- 1. CADUTA DEI GRAVI                            -->
+        <!-- ═══════════════════════════════════════════════ -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">1. La Caduta dei Gravi (Gittata Verticale)</h2>
+            <p class="lesson-text">
+                Quando si lascia cadere un oggetto dall'alto senza imprimergli una velocità iniziale, quest'ultimo cade
+                verso il basso attratto dalla gravità terrestre. Si tratta di un <strong>Moto Rettilineo Uniformemente
+                    Accelerato (MRUA)</strong> lungo l'asse verticale \(y\). L'accelerazione è costante e vale \(a = -g
+                = -9.81 \, \text{m/s}^2\).
+            </p>
+
+            <div class="formula-row">
+                <div class="flex-col">
+                    <span style="color: #3b82f6;">Equazione della Posizione:</span>
+                    <span>\(y(t) = h - \frac{1}{2}gt^2\)</span>
+                </div>
+                <div class="flex-col">
+                    <span style="color: #ef4444;">Equazione della Velocità:</span>
+                    <span>\(v_y(t) = -gt\)</span>
+                </div>
+            </div>
+
+            <div class="guided-exercise">
+                <h3 style="color: #10b981;">✏️ Esercizio Guidato: Quanto dura una caduta?</h3>
+                <p class="lesson-text">Una mela cade da un albero alto \(h = 5 \, \text{m}\). Quanto tempo impiega a
+                    toccare il suolo?</p>
+                <ol class="step-list">
+                    <li>Individua l'equazione del moto: \(y(t) = h - \frac{1}{2}gt^2\).</li>
+                    <li>Il suolo corrisponde a \(y = 0\), quindi imponi: \(0 = 5 - \frac{1}{2}(9.81)t^2\).</li>
+                    <li>Isola \(t^2\): \(t^2 = \frac{2 \cdot 5}{9.81} \approx 1.02 \, \text{s}^2\).</li>
+                    <li>Applica la radice quadrata: \(t = \sqrt{1.02} \approx 1.01 \, \text{s}\).</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════ -->
+        <!-- 2. LANCIO VERSO L'ALTO                         -->
+        <!-- ═══════════════════════════════════════════════ -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">2. Lancio Verso l'Alto</h2>
+            <p class="lesson-text">
+                Se invece lanciamo un oggetto verso l'alto, questo partirà con una velocità iniziale positiva \(v_{0y}
+                &gt; 0\). Mentre sale, la gravità comincia a rallentarlo (\(a = -g\)), fino a fermarlo per un istante
+                (altezza massima) per poi farlo ricadere.
+            </p>
+
+            <div class="formula-row">
+                <div class="flex-col">
+                    <span style="color: #3b82f6;">Equazione della Posizione:</span>
+                    <span>\(y(t) = y_0 + v_{0y}t - \frac{1}{2}gt^2\)</span>
+                </div>
+                <div class="flex-col">
+                    <span style="color: #ef4444;">Equazione della Velocità:</span>
+                    <span>\(v_y(t) = v_{0y} - gt\)</span>
+                </div>
+            </div>
+
+            <div class="guided-exercise">
+                <h3 style="color: #10b981;">✏️ Esercizio Guidato: Calcolo dell'altezza massima</h3>
+                <p class="lesson-text">Lanci in aria una palla da pallavolo dal suolo (\(y_0 = 0\)) con una velocità
+                    \(v_{0y} = 15 \, \text{m/s}\). Quale altezza massima raggiunge?</p>
+                <ol class="step-list">
+                    <li>Nel punto più alto, la palla si ferma: imposta \(v_y(t) = 0\), ovvero \(0 = 15 - 9.81 \cdot t\).
+                    </li>
+                    <li>Ricava il tempo di salita: \(t = \frac{15}{9.81} \approx 1.53 \, \text{s}\).</li>
+                    <li>Sostituisci questo tempo nell'equazione di \(y(t)\): \(y_{max} = 15(1.53) -
+                        \frac{1}{2}(9.81)(1.53)^2\).</li>
+                    <li>Calcola il risultato finale: \(y_{max} \approx 22.95 - 11.48 = 11.47 \, \text{m}\).</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════ -->
+        <!-- 3. MOTO PARABOLICO                             -->
+        <!-- ═══════════════════════════════════════════════ -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">3. Il Moto Parabolico: Due Assi Indipendenti</h2>
+            <p class="lesson-text">
+                Il moto parabolico (o del proiettile) avviene in 2 Dimensioni. La chiave assoluta per risolverlo è usare
+                il <strong>Principio di Indipendenza dei Moti</strong> scoperto da Galileo: il moto può essere scomposto
+                in due moti distinti lungo gli assi \(X\) e \(Y\).
+            </p>
+
+            <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.5rem;">
+                <div class="data-card" style="border-left-color: #f59e0b;">
+                    <h3 style="color: #f59e0b; margin-bottom: 0.5rem;">Asse X: Moto Rettilineo Uniforme (MRU)</h3>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);">
+                        Sull'orizzontale non ci sono forze, l'accelerazione è \(0\). La velocità orizzontale rimane
+                        costante.<br><br>
+                        <strong>Velocità Iniziale:</strong> \(v_{0x} = v_0 \cos(\theta)\)<br>
+                        <strong>Legge Oraria:</strong> \(x(t) = x_0 + v_{0x}t\)
+                    </p>
+                </div>
+                <div class="data-card" style="border-left-color: #10b981;">
+                    <h3 style="color: #10b981; margin-bottom: 0.5rem;">Asse Y: Moto Rettilineo Accelerato (MRUA)</h3>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);">
+                        In verticale agisce la gravità (\(a = -g\)), spingendo il corpo verso il basso (è un lancio
+                        verso l'alto e/o caduta).<br><br>
+                        <strong>Velocità Iniziale:</strong> \(v_{0y} = v_0 \sin(\theta)\)<br>
+                        <strong>Legge Oraria:</strong> \(y(t) = y_0 + v_{0y}t - \frac{1}{2}gt^2\)
+                    </p>
+                </div>
+            </div>
+
+            <h3 style="color: #3b82f6; margin-top: 2rem;">Formule Principali (se \(y_0 = 0\))</h3>
+            <p class="lesson-text">
+                Se l'oggetto parte dal suolo con inclinazione \(\theta\), combinando il moto dei due assi si ricavano
+                tre formule fondamentali dirette:
+            </p>
+            <div class="grid" style="grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 1rem;">
+                <div class="data-card" style="border-left-color: #ef4444;">
+                    <h4 style="color: #ef4444; margin-bottom: 0.5rem; font-size: 1rem;">Tempo di Volo</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem;">Il tempo totale
+                        trascorso in aria prima di atterrare.</p>
+                    <div style="background: rgba(0,0,0,0.2); padding: 0.5rem; border-radius: 8px; text-align: center;">
+                        \(T_{volo} = \frac{2 v_0 \sin(\theta)}{g}\)</div>
+                </div>
+                <div class="data-card" style="border-left-color: #3b82f6;">
+                    <h4 style="color: #3b82f6; margin-bottom: 0.5rem; font-size: 1rem;">Altezza Massima</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem;">Il punto più alto
+                        toccato dalla parabola.</p>
+                    <div style="background: rgba(0,0,0,0.2); padding: 0.5rem; border-radius: 8px; text-align: center;">
+                        \(H_{max} = \frac{v_0^2 \sin^2(\theta)}{2g}\)</div>
+                </div>
+                <div class="data-card" style="border-left-color: #10b981;">
+                    <h4 style="color: #10b981; margin-bottom: 0.5rem; font-size: 1rem;">Gittata</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem;">La distanza
+                        orizzontale massima colpita (\(y=0\)).</p>
+                    <div style="background: rgba(0,0,0,0.2); padding: 0.5rem; border-radius: 8px; text-align: center;">
+                        \(X = \frac{v_0^2 \sin(2\theta)}{g}\)</div>
+                </div>
+            </div>
+
+            <!-- ONE PIECE MARINE BOX -->
+            <div class="one-piece-box">
+                <h3 style="color: #f59e0b; margin-bottom: 0.8rem;">⚓ Simulazione: Affondate la Thousand Sunny!</h3>
+                <p class="lesson-text">
+                    La Marina ha sorpreso la ciurma di Cappello di Paglia al largo! Tu sei l'artigliere della nave della
+                    Marina e devi colpire la celebre <em>Thousand Sunny</em>. Regola la posizione verticale del cannone,
+                    la velocità della palla di cannone e l'inclinazione. Usa la fisica dei due assi per trovare la
+                    traiettoria vincente!
+                </p>
+            </div>
+
+            <div class="operation-card" style="margin-top: 2rem;">
+                <div class="grid" style="grid-template-columns: 1fr 2.5fr; gap: 2rem; align-items: start;">
+
+                    <div class="data-display" style="grid-template-columns: 1fr;">
+                        <button class="btn-action" id="btn-fire"
+                            style="font-size: 1.1rem; padding: 0.8rem 1.5rem; background: #ef4444; width: 100%; margin-bottom: 1rem;">💥
+                            Fuoco!</button>
+
+                        <div class="control-group">
+                            <label class="control-label">Altezza Iniziale \(y_0\): <span id="val-y0">10 m</span></label>
+                            <input type="range" id="slider-y0" min="0" max="100" step="1" value="10">
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">Velocità Modulo \(v_0\): <span id="val-v0">45
+                                    m/s</span></label>
+                            <input type="range" id="slider-v0" min="10" max="150" step="1" value="45">
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">Inclinazione \(\theta\): <span
+                                    id="val-theta">35°</span></label>
+                            <input type="range" id="slider-theta" min="-20" max="90" step="1" value="35">
+                        </div>
+
+                        <div class="data-card" style="border-left-color: #3b82f6; margin-top: 1rem;">
+                            <span class="data-label">Dati Navali:</span>
+                            <span class="data-value" style="font-size:0.9rem;">Distanza: <span
+                                    style="color:#f59e0b;">500 m</span></span>
+                        </div>
+                    </div>
+
+                    <div style="position: relative;">
+                        <!-- Canvas per la simulazione -->
+                        <canvas id="parabolaCanvas" class="simulation-canvas" height="400"></canvas>
+                        <div id="parabolaResult"
+                            style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); font-weight: bold; font-size: 1.5rem; text-shadow: 2px 2px 0px #000; display: none;">
+                            COLPITO!</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="guided-exercise">
+                <h3 style="color: #10b981;">✏️ Esercizio Guidato: Gittata Massima</h3>
+                <p class="lesson-text">Quale dovrebbe essere l'inclinazione \(\theta\) per avere la Gittata (distanza
+                    orizzontale) massima se il cannone è a livello del mare (\(y_0 = 0\))?</p>
+                <ol class="step-list">
+                    <li>La formula matematica per la gittata con \(y_0 = 0\) si ottiene trovando il tempo in cui \(y=0\)
+                        e mettendolo in \(x(t)\), ed è: \(X = \frac{v_0^2 \sin(2\theta)}{g}\).</li>
+                    <li>Questa formula raggiunge il suo valore massimo quando \(\sin(2\theta)\) è massimo.</li>
+                    <li>Il valore massimo del seno è \(1\), che avviene a \(90^\circ\).</li>
+                    <li>Quindi, \(2\theta = 90^\circ \implies \theta = 45^\circ\). L'angolo ottimale per la massima
+                        gittata è di 45 gradi!</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════ -->
+        <!-- 4. MOTO CIRCOLARE UNIFORME                     -->
+        <!-- ═══════════════════════════════════════════════ -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">4. Moto Circolare Uniforme (MCU)</h2>
+            <p class="lesson-text">
+                Il Moto Circolare Uniforme è un moto che avviene lungo una traiettoria circolare di raggio \(R\) con
+                <strong>rapidità costante</strong>. Anche se il "modulo" della velocità è costante, la sua direzione
+                cambia continuamente (compie un giro), il che significa che è presente un'accelerazione continua puntata
+                sempre verso il cerchio.
+            </p>
+
+            <div class="formula-row">
+                <div class="flex-col">
+                    <span style="color: #a855f7;">Velocità Angolare (\(\omega\)):</span>
+                    <span>\(\omega = \frac{2\pi}{T}\)</span>
+                    <span style="font-size: 0.8rem; color: var(--text-muted);">in rad/s (dove T è il periodo)</span>
+                </div>
+                <div class="flex-col">
+                    <span style="color: #3b82f6;">Velocità Tangenziale (\(v\)):</span>
+                    <span>\(v = \omega R = \frac{2\pi R}{T}\)</span>
+                    <span style="font-size: 0.8rem; color: var(--text-muted);">in m/s</span>
+                </div>
+            </div>
+
+            <div class="info-box" style="margin-top: 2rem;">
+                <h3 style="color: #ef4444; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <span>🌀</span> Accelerazione Centripeta ed "Accelerazione Centrifuga"
+                </h3>
+                <p class="lesson-text" style="font-size: 0.95rem;">
+                    In un moto su curva, per cambiare direzione al vettore velocità serve forza: l'<strong>Accelerazione
+                        Centripeta</strong> (\(a_c\)), orientata rigorosamente verso il "centro" della spirale.
+                    Tuttavia, quando noi stessi facciamo parte del corpo in moto circolare (ad esempio su un'auto in
+                    curva), sperimentiamo una forza che cerca di buttarci verso l'esterno.
+                </p>
+                <p class="lesson-text" style="font-size: 0.95rem; margin-top: 0.8rem;">
+                    Questa sensazione deriva dalla nostra inerzia di scappare dritti (MRU), che in un sistema ruotante
+                    viene percepita come una forza e un'accelerazione fittizia/apparente: l'<strong>Accelerazione
+                        Centrifuga</strong>. Geometricamente il suo modulo è identico alla centripeta, ma punta verso
+                    l'esterno. La sua formula matematica è:
+                </p>
+                <div class="formula-row"
+                    style="background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.3);">
+                    <span>\(a_{c} = \frac{v^2}{R} = \omega^2 R\)</span>
+                </div>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.8rem;">Più andiamo veloci (\(v\))
+                    o stringiamo il Raggio della curva (\(R\)), maggiore sarà l'aggressività dell'accelerazione
+                    centrifuga che ci spinge ad uscire fuori strada!</p>
+            </div>
+
+            <div class="operation-card" style="margin-top: 2rem; border-left-color: #a855f7;">
+                <h3 style="color: #a855f7; margin-bottom: 1.5rem;">🌀 Simulazione: Circolare e Armonico</h3>
+                <p class="lesson-text" style="font-size: 0.95rem; margin-bottom: 1.5rem;">
+                    Osserva come il Moto Circolare Uniforme (il punto viola sulla circonferenza) possa essere scomposto
+                    lungo i due assi cartesiani. La proiezione orizzontale (punto blu) e quella verticale (punto rosso)
+                    compiono un <strong>Moto Armonico</strong>, oscillando avanti e indietro proprio come fa la
+                    coordinata angolare del pendolo!
+                </p>
+                <div class="grid" style="grid-template-columns: 1fr 2fr; gap: 2rem; align-items: start;">
+                    <div class="data-display" style="grid-template-columns: 1fr;">
+                        <button class="btn-action" id="btn-circolare"
+                            style="font-size: 1.1rem; padding: 0.8rem 1.5rem; background: #a855f7; width: 100%; margin-bottom: 1rem;">▶️
+                            Pausa</button>
+
+                        <div class="control-group">
+                            <label class="control-label">Raggio \(R\): <span id="val-circR">100</span></label>
+                            <input type="range" id="slider-circR" min="50" max="140" step="5" value="100">
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">Vel. Angolare \(\omega\): <span id="val-circOmega">1.5
+                                    rad/s</span></label>
+                            <input type="range" id="slider-circOmega" min="0.5" max="5" step="0.1" value="1.5">
+                        </div>
+                    </div>
+                    <div style="position: relative;">
+                        <!-- Canvas per il moto circolare e scomposizione assi -->
+                        <canvas id="circolareCanvas" class="simulation-canvas" height="350"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="guided-exercise"
+                style="border-color: rgba(59, 130, 246, 0.4); background: rgba(59, 130, 246, 0.05);">
+                <h3 style="color: #3b82f6;">✏️ Esercizio Guidato: Curva Pericolosa</h3>
+                <p class="lesson-text">Un'auto viaggia a \(20 \, \text{m/s}\) e affronta una curva di raggio \(R = 50 \,
+                    \text{m}\). Qual è la sua accelerazione centrifuga?</p>
+                <ol class="step-list">
+                    <li>Individua i dati noti: \(v = 20 \, \text{m/s}\) e \(R = 50 \, \text{m}\).</li>
+                    <li>Utilizza la formula dell'accelerazione in versione tangenziale: \(a_{c} = \frac{v^2}{R}\).</li>
+                    <li>Sostituisci i valori: \(a_{c} = \frac{20^2}{50} = \frac{400}{50}\).</li>
+                    <li>Calcola: \(a_c = 8 \, \text{m/s}^2\). Essendo molto vicina all'accelerazione di gravità (9.81),
+                        è una curva molto stringente per quell'altissima velocità!</li>
+                </ol>
+            </div>
+
+        </section>
+
+        <!-- ═══════════════════════════════════════════════ -->
+        <!-- 5. MOTO ARMONICO (PENDOLO)                     -->
+        <!-- ═══════════════════════════════════════════════ -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">5. Il Pendolo Semplice (Moto Armonico)</h2>
+            <p class="lesson-text">
+                Il <strong>moto armonico</strong> è un moto periodico causato da una forza di richiamo direttamente
+                proporzionale allo spostamento (come una molla o la gravità nel caso del pendolo). Un <em>pendolo
+                    semplice</em>, se allontanato di un piccolo angolo dalla sua posizione di equilibrio, compie
+                oscillazioni regolari: il tempo che impiega per un'oscillazione completa (andata e ritorno) è detto
+                <strong>periodo (\(T\))</strong>.
+            </p>
+
+            <div class="formula-row">
+                <div class="flex-col">
+                    <span style="color: #f59e0b;">Periodo del Pendolo (\(T\)):</span>
+                    <span>\(T = 2\pi \sqrt{\frac{L}{g}}\)</span>
+                    <span style="font-size: 0.8rem; color: var(--text-muted);">in secondi (s)</span>
+                </div>
+                <div class="flex-col">
+                    <span style="color: #10b981;">Legge Oraria (angolo):</span>
+                    <span>\(\theta(t) = \theta_0 \cos(\omega t)\)</span>
+                    <span style="font-size: 0.8rem; color: var(--text-muted);">con \(\omega = \frac{2\pi}{T} =
+                        \sqrt{\frac{g}{L}}\)</span>
+                </div>
+            </div>
+
+            <div class="operation-card" style="margin-top: 2rem; border-left-color: #10b981;">
+                <h3 style="color: #10b981; margin-bottom: 1.5rem;">⏱️ Simulazione: Il Pendolo Semplice</h3>
+                <div class="grid" style="grid-template-columns: 1fr 2fr; gap: 2rem; align-items: start;">
+                    <div class="data-display" style="grid-template-columns: 1fr;">
+                        <button class="btn-action" id="btn-pendolo"
+                            style="font-size: 1.1rem; padding: 0.8rem 1.5rem; background: #10b981; width: 100%; margin-bottom: 1rem;">▶️
+                            Pausa</button>
+
+                        <div class="control-group">
+                            <label class="control-label">Lunghezza \(L\): <span id="val-L">2 m</span></label>
+                            <input type="range" id="slider-L" min="0.5" max="5" step="0.1" value="2">
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">Gravità \(g\): <span id="val-g">9.81 m/s²</span></label>
+                            <input type="range" id="slider-g" min="1" max="25" step="0.1" value="9.81">
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">Angolo Iniziale \(\theta_0\): <span
+                                    id="val-theta0">30°</span></label>
+                            <input type="range" id="slider-theta0" min="5" max="60" step="1" value="30">
+                        </div>
+
+                        <div class="data-card" style="border-left-color: #f59e0b; margin-top: 1rem;">
+                            <span class="data-label">Periodo T:</span>
+                            <span class="data-value" style="font-size:0.9rem;"><span id="display-periodo"
+                                    style="color:#f59e0b;">2.84 s</span></span>
+                        </div>
+
+                        <div style="margin-top: 1.5rem; padding: 1rem; background: rgba(168, 85, 247, 0.1); border-radius: 8px; border-left: 3px solid #a855f7; font-size: 0.85rem; color: var(--text-main); font-style: italic;">
+                            🌀 <strong>Attenzione!</strong> Fissa intensamente il pendolo... lasciati ipnotizzare dal suo ritmo regolare. Ora chiudi gli occhi, conta fino a 3 e riaprili... Puff! Avrai magicamente imparato a memoria tutta la lezione! (N.B. Il docente declina ogni responsabilità per i brutti voti).
+                        </div>
+                    </div>
+
+                    <div style="position: relative;">
+                        <!-- Canvas per il pendolo -->
+                        <canvas id="pendoloCanvas" class="simulation-canvas" height="350"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box" style="margin-top: 2rem;">
+                <h3 style="color: #3b82f6; margin-bottom: 0.5rem;">Curiosità sul Pendolo</h3>
+                <p class="lesson-text" style="font-size: 0.95rem;">
+                    Osservando la formula del periodo \(T\), notiamo che <strong>non dipende dalla massa</strong> del
+                    pendolo! A parità di lunghezza \(L\) e gravità \(g\), una palla da bowling e una piuma da 10 grammi
+                    (trascurando l'attrito dell'aria) oscilleranno con lo stesso identico ritmo. Si dice che Galileo
+                    Galilei lo intuì per primo osservando le oscillazioni spontanee del lampadario nel Duomo di Pisa!
+                </p>
+            </div>
+
+            <div class="guided-exercise" style="border-color: rgba(245, 158, 11, 0.4); background: rgba(245, 158, 11, 0.05); margin-top: 2rem;">
+                <h3 style="color: #f59e0b;">✏️ Esercizio Guidato: Su quale Pianeta siamo?</h3>
+                <p class="lesson-text">Ti sei risvegliato improvvisamente e non sai dove ti trovi, ma la stanza ti sembra in qualche modo "aliena". L'unica cosa che hai in tasca è uno spago lungo esattamente \(1 \, \text{m}\) e una piccola biglia, con i quali costruisci un rudimentale pendolo. Cronometri l'oscillazione e noti che possiede un <strong>Periodo</strong> di circa \(T = 3.26 \, \text{s}\). In quale pianeta del Sistema Solare potresti essere?</p>
+                <ol class="step-list">
+                    <li>Conosciamo \(L = 1 \, \text{m}\) e \(T = 3.26 \, \text{s}\). L'obiettivo è calcolare l'accelerazione di gravità locale (\(g\)).</li>
+                    <li>Prendiamo l'equazione del periodo: \(T = 2\pi \sqrt{\frac{L}{g}}\).</li>
+                    <li>Eleviamo entrambi i membri al quadrato per sbarazzarci della radice: \(T^2 = 4\pi^2 \frac{L}{g}\).</li>
+                    <li>Isoliamo \(g\) moltiplicando da entrambe le parti e dividendo per \(T^2\). Otteniamo quindi l'equazione inversa: \(g = \frac{4\pi^2 L}{T^2}\).</li>
+                    <li>Sostituiamo i valori sperimentali: \(g = \frac{4 \cdot (3.1415)^2 \cdot 1}{(3.26)^2} \approx \frac{39.48}{10.63}\).</li>
+                    <li>Il calcolo finale restituisce \(g \approx 3.71 \, \text{m/s}^2\).</li>
+                    <li>Sapendo che sulla Terra \(g = 9.81\), non sei sulla Terra. Consultando una tabella astrofisica, scopri la verità: \(3.71 \, \text{m/s}^2\) è l'accelerazione gravitazionale caratteristica di <strong>Marte</strong>! Complimenti, sei diventato un esploratore marziano!</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- QUIZ FINALE -->
+        <section class="lesson-section quiz-container">
+            <h2 class="lesson-title" style="text-align: center; color: var(--moto-color);">Verifica Finale sul Moto</h2>
+            <div id="quiz-box">
+                <div class="quiz-question">
+                    <h3>1. Da cosa è formata la traiettoria del proiettile di fronte alla gravità?</h3>
+                    <div class="quiz-options">
+                        <button class="quiz-btn" onclick="checkQuizAnswer(this, false)">Due moti MRUA
+                            sovrapposti</button>
+                        <button class="quiz-btn" onclick="checkQuizAnswer(this, true)">Da un orizzontale MRU e un
+                            verticale MRUA</button>
+                        <button class="quiz-btn" onclick="checkQuizAnswer(this, false)">Solo da una caduta libera in
+                            MRUA</button>
+                    </div>
+                </div>
+
+                <div class="quiz-question" style="margin-top: 2rem;">
+                    <h3>2. L'Accelerazione Centrifuga punta:</h3>
+                    <div class="quiz-options">
+                        <button class="quiz-btn" onclick="checkQuizAnswer(this, false)">Verso il centro della
+                            circonferenza</button>
+                        <button class="quiz-btn" onclick="checkQuizAnswer(this, false)">Lungo la direzione tangenziale
+                            alla curva</button>
+                        <button class="quiz-btn" onclick="checkQuizAnswer(this, true)">Verso l'esterno della
+                            circonferenza radialmente</button>
+                    </div>
+                </div>
+
+                <div class="quiz-question" style="margin-top: 2rem;">
+                    <h3>3. Qual è l'inclinazione ottimale di un cannone per ottenere gittata massima a y0=0?</h3>
+                    <div class="quiz-options">
+                        <button class="quiz-btn" onclick="checkQuizAnswer(this, false)">0°</button>
+                        <button class="quiz-btn" onclick="checkQuizAnswer(this, false)">90°</button>
+                        <button class="quiz-btn" onclick="checkQuizAnswer(this, true)">45°</button>
+                    </div>
+                </div>
+            </div>
+            <div id="quiz-feedback" class="feedback-msg" style="margin-top: 2rem;"></div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Esempi di Cinematica.</p>
+    </footer>
+
+    <!-- Carica lo script dedicato -->
+    <script src="esempi_moto.js"></script>
+    <script src="../../js/main.js"></script>
+</body>
+
+</html>

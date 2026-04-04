@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatività Galileiana - MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- Katex -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+        onload="renderMathInElement(document.body);"></script>
+
+    <style>
+        :root {
+            --moto-color: #a855f7;
+            --moto-color-rgb: 168, 85, 247;
+        }
+
+        .simulation-canvas {
+            background: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            width: 100%;
+            display: block;
+            touch-action: none;
+        }
+
+        .operation-card {
+            background: rgba(var(--moto-color-rgb), 0.05);
+            border: 1px solid rgba(var(--moto-color-rgb), 0.2);
+            padding: 1.5rem;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .step-list {
+            counter-reset: step;
+            list-style: none;
+            padding: 0;
+        }
+
+        .step-list li {
+            counter-increment: step;
+            position: relative;
+            padding-left: 2.5rem;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* Prevent KaTeX formulas from line-breaking internally */
+        .step-list li .katex {
+            white-space: nowrap !important;
+            display: inline-block;
+        }
+
+        .step-list li::before {
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: -2px;
+            min-width: 28px;
+            height: 28px;
+            background: #3b82f6;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        .flex-col {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="sub-hero" style="border-bottom: 2px solid rgba(168, 85, 247, 0.5);">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <a href="../cinematica.html" class="back-button" style="margin-bottom: 0;">
+                    <span class="back-icon">&larr;</span> Lezioni di Cinematica
+                </a>
+            </div>
+            <h1 class="sub-hero-title">Relatività <span class="gradient-text" style="background: linear-gradient(to right, #a855f7, #3b82f6); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">Galileiana</span></h1>
+            <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+                Sistemi di Riferimento, inosservabilità del moto rettilineo uniforme e le famose trasformazioni cinematiche dettate da Galileo Galilei.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: var(--moto-color);">1. Che cos'è un Sistema di Riferimento?</h2>
+            <p class="lesson-text">
+                In fisica, non ha senso affermare che un oggetto "si trova nella posizione 5" oppure che "si sta muovendo a 10 km/h" in senso assoluto. Tutto dipende da <strong>rispetto a chi</strong> o a <strong>cosa</strong> stiamo misurando.
+            </p>
+            <p class="lesson-text">
+                Un <strong>Sistema di Riferimento (S.d.R.)</strong> è un apparato concettuale o matematico, solitamente formato da un insieme di assi cartesiani (X, Y, Z) dotati di un'origine \(O\), e da un <em>orologio</em> per misurare il tempo. Identifica univocamente dove e quando accade un evento geometrico.
+            </p>
+
+            <div class="operation-card" style="border-left-color: #3b82f6; margin-top: 1.5rem;">
+                <h3 style="color: #3b82f6; margin-bottom: 1.5rem;">📏 Simulazione 1: L'Arbitrarietà del Sistema</h3>
+                <p class="lesson-text" style="font-size: 0.95rem; margin-bottom: 1.5rem;">
+                    In cinemtatica, la scelta del sistema di riferimento è a <strong>totale discrezione dello scienziato</strong>! Puoi posizionare l'origine dove ti è più comodo per semplificare i calcoli. Prova a cliccare nel vuoto per spostare l'Origine \(O(0,0)\): noterai che l'evento (la stella dorata) rimane fisicamente fermo, ma le sue coordinate lette sul reticolo cambiano radicalmente.
+                </p>
+                <div class="grid" style="grid-template-columns: 1fr 2fr; gap: 2rem; align-items: start;">
+                    <div class="data-display" style="grid-template-columns: 1fr;">
+                        <div class="data-card" style="border-left-color: #f59e0b; margin-top: 0.5rem;">
+                            <span class="data-label">Coord. Stella rispetto a O:</span>
+                            <div style="font-size:1.1rem; margin-top: 0.5rem; display:flex; flex-direction:column; gap:0.3rem;">
+                                <span>\(X_{stella} =\) <span id="val-x">5.0</span> m</span>
+                                <span>\(Y_{stella} =\) <span id="val-y">4.0</span> m</span>
+                            </div>
+                        </div>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 1rem;">
+                            <em>💡 Clicca / Trascina ovunque sulla griglia per riposizionare l'Origine (il pallino rosso).</em>
+                        </p>
+                    </div>
+                    <div style="position: relative;">
+                        <!-- Canvas per spostare sistema di riferimento -->
+                        <canvas id="refCanvas" class="simulation-canvas" height="350" style="cursor: crosshair;"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: var(--moto-color);">2. L'Esempio de "Il Gran Navilio"</h2>
+            <p class="lesson-text">
+                Una delle argomentazioni più affascinanti e rivoluzionarie di Galileo Galilei è tratta dal suo scitto <strong>Il Saggiatore</strong> (1623) e prende il nome del classico esempio del <strong>"Gran Navilio"</strong>. 
+            </p>
+            <p class="lesson-text">
+                Immaginiamo di trovarci nella cabina chiusa (senza oblò) posizionata all'interno della stiva di una grande nave. Galileo fa notare che se la nave è ormeggiata oppure si sta muovendo su un mare di quiete a velocità costante (Moto Rettilineo Uniforme), <em>nessun esperimento puramente meccanico condotto sottocoperta ci potrà mai rivelare se siamo in moto o siamo fermi</em>.
+            </p>
+            <p class="lesson-text">
+                L'acqua nel catino cadrà dritta, le farfalle voleranno in tutte le direzioni con la stessa fluidità, e le palline da ping-pong rimbalzeranno sui banchi sempre negli stessi identici punti. Tutta la fisica apparirà identica.
+            </p>
+
+            <div class="info-box" style="margin-top: 2rem; border-left-color: #10b981; background: rgba(16, 185, 129, 0.05);">
+                <h3 style="color: #10b981; margin-bottom: 0.5rem;">📜 Il Principio di Relatività Galileiana</h3>
+                <p class="lesson-text" style="font-size: 0.95rem; font-weight: 600; font-style: italic; margin-bottom: 0;">
+                    "Le leggi della meccanica sono le stesse in tutti i Sistemi di Riferimento Inerziali (cioè quelli che si muovono di moto rettilineo uniforme gli uni rispetto agli altri)."
+                </p>
+            </div>
+        </section>
+
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: var(--moto-color);">3. Le Trasformazioni Galileiane</h2>
+            <p class="lesson-text">
+                Per tradurre il principio di Galileo in algebra matematicamente utile, abbiamo bisogno delle equazioni in grado di tradurre le informazioni misurate da due osservatori diversi. Immaginiamo due sistemi di riferimento:
+            </p>
+            <ul style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem; line-height: 1.6;">
+                <li>Un sistema fisso \(S\) con coordinate \((x, y, z)\) e tempo \(t\).</li>
+                <li>Un sistema mobile \(S'\) con coordinate \((x', y', z')\) e tempo \(t'\) che si sta muovendo a velocità vettoriale costante \(\vec{V}\) rispetto a \(S\), per semplicità spostandosi solo lungo l'asse X.</li>
+            </ul>
+
+            <div class="formula-row">
+                <div class="flex-col">
+                    <span style="color: #10b981;">Equazioni di Trasformazione (da S a S')</span>
+                    <span style="font-size: 1.2rem;">
+                        \(\begin{cases} 
+                        x' = x - V \cdot t \\ 
+                        y' = y \\ 
+                        z' = z \\ 
+                        t' = t 
+                        \end{cases}\)
+                    </span>
+                </div>
+            </div>
+
+            <p class="lesson-text" style="margin-top: 1.5rem;">
+                Dalle trasformazioni delle posizioni, derivando matematicamente rispetto al tempo, possiamo scrivere il famoso calcolo per la composizione galileiana delle velocità. 
+            </p>
+
+            <div class="formula-row" style="background: rgba(236, 72, 153, 0.1); border-color: rgba(236, 72, 153, 0.3);">
+                <div class="flex-col">
+                    <span style="color: #ec4899;">Legge di Addizione delle Velocità</span>
+                    <span>\(v'_{oggetto} = v_{oggetto} - V_{sistema}\)</span>
+                    <span style="font-size: 0.85rem; color: var(--text-muted);">Oppure, da S' a S: \( v = v' + V_{sistema} \)</span>
+                </div>
+            </div>
+
+            <div class="guided-exercise" style="border-color: rgba(59, 130, 246, 0.4); background: rgba(59, 130, 246, 0.05); margin-top: 2rem;">
+                <h3 style="color: #3b82f6;">✏️ Esercizio Guidato: Il Cuoco sul Puffing Tom</h3>
+                <p class="lesson-text">Il mitico treno marino <strong>Puffing Tom</strong> (Sistema \(S'\)) viaggia spedito verso Enies Lobby a una velocità costante di \(V = 100 \, \text{km/h}\) sull'acqua. <strong>Sanji</strong> sfreccia dal vagone ristorante in avanti per consegnare una torta a <strong>Nami</strong> (comodamente seduta a un tavolino) ad una corsetta di agilità \(v' = 15 \, \text{km/h}\). Nel frattempo, <strong>Jinbei</strong> (Sistema \(S\)) osserva la scena da fuori, immobile sulla panchina di sosta.</p>
+                <ol class="step-list">
+                    <li>Qual è la velocità di Sanji <em>rispetto a Nami</em>? Nami condivide lo stesso Sistema \(S'\) in viaggio, non ha velocità rispetto al pavimento del treno. Dunque, dal suo punto di vista, vede Sanji avvicinarsi semplicemente a \( v' = 15 \, \text{km/h} \).</li>
+                    <li>Con che velocità si muove Sanji <em>rispetto a Jinbei</em>? Poiché lui guarda dal Sistema Fisso \(S\), dobbiamo usare l'equazione di Galilei: \( v = v' + V_{treno} \).</li>
+                    <li>Sia la velocità del treno \(V\) che la corsa di Sanji \(v'\) vanno nello stesso verso propulsivo, le sommiamo: \(v = 15 + 100 = 115 \, \text{km/h}\).</li>
+                    <li>Per Jinbei, che sta facendo l'osservatore solidale con l'oceano, Sanji "schizza" letteralmente davanti ai suoi occhi a ben \(115 \, \text{km/h}\)! Due percezioni di velocità diverse unificate sapientemente dalla matematica.</li>
+                </ol>
+            </div>
+        </section>
+
+        <section class="lesson-section" id="quiz-finale">
+            <h2 class="lesson-title" style="color: var(--moto-color);">Quiz di Verifica</h2>
+            <div class="quiz-container">
+                <!-- Domanda 1 -->
+                <div class="quiz-question" id="q1">
+                    <h3>1. Cosa afferma il Principio di Relatività Galileiana?</h3>
+                    <div class="quiz-options">
+                        <button class="quiz-btn" data-status="wrong">A) Le leggi della meccanica cambiano in scia ad un corpo che accelera.</button>
+                        <button class="quiz-btn" data-status="correct">B) Le leggi della meccanica sono le stesse in tutti i Sistemi di Riferimento Inerziali.</button>
+                        <button class="quiz-btn" data-status="wrong">C) Non è possibile muoversi a una velocità costante nel vuoto.</button>
+                        <button class="quiz-btn" data-status="wrong">D) Il tempo diviene relativo al variare del moto rettilineo.</button>
+                    </div>
+                </div>
+
+                <!-- Domanda 2 -->
+                <div class="quiz-question" id="q2">
+                    <h3>2. Il Sistema Mobile \(S'\) si muove in avanti a destra rispetto al Fisso \(S\) a traslazione costante \(V\). L'equazione per le posizioni è:</h3>
+                    <div class="quiz-options">
+                        <button class="quiz-btn" data-status="wrong">A) \(x' = x + V \cdot t\)</button>
+                        <button class="quiz-btn" data-status="wrong">B) \(x' = x/V + t\)</button>
+                        <button class="quiz-btn" data-status="correct">C) \(x' = x - V \cdot t\)</button>
+                        <button class="quiz-btn" data-status="wrong">D) \(x = x' - V \cdot c\)</button>
+                    </div>
+                </div>
+
+                <!-- Domanda 3 -->
+                <div class="quiz-question" id="q3">
+                    <h3>3. Riferendosi all'argomentazione del Gran Navilio, perché gli esperimenti di meccanica non svelano il moto della barca?</h3>
+                    <div class="quiz-options">
+                        <button class="quiz-btn" data-status="wrong">A) Perché le palline cadono dritte frenate dall'aria compressa della stiva.</button>
+                        <button class="quiz-btn" data-status="correct">B) Perché la meccanica locale è interamente solidale alla quiete apparente e non distingue il moto uniforme.</button>
+                        <button class="quiz-btn" data-status="wrong">C) Perché l'acqua marina annulla la forza di spinta propulsiva laterale.</button>
+                        <button class="quiz-btn" data-status="wrong">D) Perché occorre un orologio satellitare molto più preciso.</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Cinematica.</p>
+    </footer>
+
+    <!-- Carica lo script dedicato -->
+    <script src="relativita.js"></script>
+    <script src="../../js/main.js"></script>
+</body>
+
+</html>

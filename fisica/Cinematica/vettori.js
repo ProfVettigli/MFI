@@ -203,10 +203,118 @@ if (scalarKSlider) {
 }
 
 // ═══════════════════════════════════════════════════════
+// CROSS PRODUCT 3D LAB
+// ═══════════════════════════════════════════════════════
+const crossCanvas = document.getElementById('crossCanvas');
+const crossAngleSlider = document.getElementById('cross-angle-slider');
+const crossAngleVal = document.getElementById('cross-angle-val');
+const crossResInfo = document.getElementById('cross-res-info');
+
+function project3D(x, y, z, scale = 1, cx = 0, cy = 0) {
+    const cos30 = Math.cos(Math.PI / 6);
+    const sin30 = Math.sin(Math.PI / 6);
+    const px = (x - y) * cos30;
+    const py = (x + y) * sin30 - z;
+    return { x: cx + px * scale, y: cy + py * scale };
+}
+
+function drawCrossLab() {
+    if (!crossCanvas) return;
+    const ctx = crossCanvas.getContext('2d');
+    const W = crossCanvas.width, H = crossCanvas.height;
+    ctx.clearRect(0, 0, W, H);
+    
+    // Origin for 3D projection
+    const origin = { x: W / 2.2, y: H / 2 + 30 };
+    const scale = 80;
+    
+    const angleDeg = parseFloat(crossAngleSlider.value);
+    if(crossAngleVal) crossAngleVal.innerText = angleDeg + '°';
+    const angleRad = angleDeg * Math.PI / 180;
+    
+    // Draw XY Plane (ground)
+    ctx.beginPath();
+    const p1 = project3D(2, 2, 0, scale, origin.x, origin.y);
+    const p2 = project3D(-2, 2, 0, scale, origin.x, origin.y);
+    const p3 = project3D(-2, -2, 0, scale, origin.x, origin.y);
+    const p4 = project3D(2, -2, 0, scale, origin.x, origin.y);
+    ctx.moveTo(p1.x, p1.y);
+    ctx.lineTo(p2.x, p2.y);
+    ctx.lineTo(p3.x, p3.y);
+    ctx.lineTo(p4.x, p4.y);
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.03)';
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+    ctx.stroke();
+
+    // Draw axes
+    const axX = project3D(2, 0, 0, scale, origin.x, origin.y);
+    const axY = project3D(0, 2, 0, scale, origin.x, origin.y);
+    const axZ = project3D(0, 0, 2, scale, origin.x, origin.y);
+    const axZneg = project3D(0, 0, -2, scale, origin.x, origin.y);
+    
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath(); ctx.moveTo(origin.x, origin.y); ctx.lineTo(axX.x, axX.y); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(origin.x, origin.y); ctx.lineTo(axY.x, axY.y); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(axZneg.x, axZneg.y); ctx.lineTo(axZ.x, axZ.y); ctx.stroke();
+    ctx.setLineDash([]);
+    
+    // Vectors
+    const a = { x: 1.5, y: 0, z: 0 };
+    const b = { x: 1.5 * Math.cos(angleRad), y: 1.5 * Math.sin(angleRad), z: 0 };
+    // Cross product: a x b = (0, 0, ax*by - ay*bx)
+    const cross = { x: 0, y: 0, z: (a.x * b.y - a.y * b.x) * 0.7 };
+    
+    const pa = project3D(a.x, a.y, a.z, scale, origin.x, origin.y);
+    const pb = project3D(b.x, b.y, b.z, scale, origin.x, origin.y);
+    const pcross = project3D(cross.x, cross.y, cross.z, scale, origin.x, origin.y);
+    
+    // Draw Arc for angle
+    ctx.beginPath();
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+    ctx.lineWidth = 2;
+    for(let t = 0; t <= angleRad; t += 0.05) {
+        const pt = project3D(Math.cos(t)*0.5, Math.sin(t)*0.5, 0, scale, origin.x, origin.y);
+        if(t === 0) ctx.moveTo(pt.x, pt.y);
+        else ctx.lineTo(pt.x, pt.y);
+    }
+    ctx.stroke();
+
+    // Draw vectors
+    drawArrow(ctx, origin.x, origin.y, pa.x, pa.y, '#3b82f6', 'a', 3);
+    drawArrow(ctx, origin.x, origin.y, pb.x, pb.y, '#ef4444', 'b', 3);
+    
+    if (Math.abs(cross.z) > 0.05) {
+        drawArrow(ctx, origin.x, origin.y, pcross.x, pcross.y, '#10b981', 'a × b', 4);
+        if (crossResInfo) {
+            if (cross.z > 0) {
+                crossResInfo.innerText = "Verso l'alto (+Z)";
+                crossResInfo.style.color = '#10b981';
+            } else {
+                crossResInfo.innerText = "Verso il basso (-Z)";
+                crossResInfo.style.color = '#ef4444';
+            }
+        }
+    } else {
+        if (crossResInfo) {
+            crossResInfo.innerText = "Nullo (Vettori paralleli)";
+            crossResInfo.style.color = 'var(--text-muted)';
+        }
+    }
+}
+
+if (crossAngleSlider) {
+    crossAngleSlider.addEventListener('input', drawCrossLab);
+}
+
+// ═══════════════════════════════════════════════════════
 // EVENTS
 // ═══════════════════════════════════════════════════════
 function resizeAll() {
-    [canvas, paraCanvas, scalarCanvas].forEach(c => {
+    [canvas, paraCanvas, scalarCanvas, crossCanvas].forEach(c => {
         if (!c) return;
         c.width = c.offsetWidth;
         c.height = c.offsetHeight;
@@ -218,6 +326,7 @@ function drawAll() {
     drawPuntaCoda();
     drawParallelogrammo();
     drawScalarLab();
+    drawCrossLab();
 }
 
 function initEvents() {

@@ -640,6 +640,41 @@
                 </div>
             </div>
 
+            <div class="operation-card" style="margin-top: 2rem;">
+                <h3>🖱️ Laboratorio 3D: Prodotto Vettoriale e Regola della Mano Destra</h3>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.5rem;">
+                    Osserva i vettori nello spazio 3D. Il piano grigio contiene i vettori <strong style="color: #3b82f6;">\(\vec{a}\)</strong> e <strong style="color: #ef4444;">\(\vec{b}\)</strong>. 
+                    Trascina lo slider per ruotare il vettore \(\vec{b}\) e osserva come il prodotto vettoriale <strong style="color: #10b981;">\(\vec{a} \times \vec{b}\)</strong> sia sempre perpendicolare al piano.
+                </p>
+                <div class="grid" style="grid-template-columns: 2fr 1fr; gap: 2rem; align-items: start;">
+                    <canvas id="crossCanvas" class="vector-canvas" style="height: 350px; background: rgba(0, 0, 0, 0.5);"></canvas>
+                    <div class="data-display" style="grid-template-columns: 1fr;">
+                        <div class="control-group">
+                            <label class="control-label">Angolo \(\vec{b}\) sul piano: <span id="cross-angle-val">45°</span></label>
+                            <input type="range" id="cross-angle-slider" min="0" max="360" step="5" value="45">
+                        </div>
+                        <div class="data-card" style="border-left-color: #3b82f6;">
+                            <span class="data-label">Vettore \(\vec{a}\)</span>
+                            <span class="data-value">Fisso su asse X</span>
+                        </div>
+                        <div class="data-card" style="border-left-color: #ef4444;">
+                            <span class="data-label">Vettore \(\vec{b}\)</span>
+                            <span class="data-value">Ruota sul piano XY</span>
+                        </div>
+                        <div class="data-card" style="border-left-color: #10b981;">
+                            <span class="data-label">Risultante \(\vec{a} \times \vec{b}\)</span>
+                            <span id="cross-res-info" class="data-value">Lungo asse Z</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="info-box" style="margin-top: 1.5rem; background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.3);">
+                    <p style="margin: 0; font-size: 0.95rem;">
+                        <strong>✋ Regola della Mano Destra (o della Vite):</strong> Metti le dita della mano destra lungo \(\vec{a}\) e piegale verso \(\vec{b}\). Il pollice (o l'avanzamento di una vite destrorsa) indicherà il verso del prodotto vettoriale \(\vec{a} \times \vec{b}\). 
+                        Se l'angolo supera i 180°, il vettore risultante si inverte e punta verso il basso!
+                    </p>
+                </div>
+            </div>
+
             <div class="warning-card" style="margin-top: 1.5rem;">
                 <h4 style="color: #ef4444; margin-bottom: 0.8rem;">⚠️ Il Prodotto Vettoriale è ANTICOMMUTATIVO</h4>
                 <p style="color: var(--text-muted); font-size: 0.95rem;">

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vectors in Video Games - MFI CLIL</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+        onload="renderMathInElement(document.body);"></script>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <style>
+        :root {
+            --game-color: #14b8a6;
+            --game-color-rgb: 20, 184, 166;
+        }
+
+        .clil-badge {
+            display: inline-block;
+            background: rgba(20, 184, 166, 0.1);
+            color: var(--game-color);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .simulation-canvas {
+            background: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            width: 100%;
+            display: block;
+            touch-action: none;
+        }
+
+        .operation-card {
+            background: rgba(var(--game-color-rgb), 0.05);
+            border: 1px solid rgba(var(--game-color-rgb), 0.2);
+            padding: 1.5rem;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .concept-box {
+            background: rgba(255, 255, 255, 0.02);
+            border-left: 4px solid var(--game-color);
+            padding: 1.5rem 2rem;
+            margin-bottom: 2rem;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .flex-col {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .key-term {
+            display: inline-block;
+            background: rgba(var(--game-color-rgb), 0.15);
+            color: var(--game-color);
+            padding: 0.15rem 0.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="sub-hero" style="border-bottom: 2px solid rgba(20, 184, 166, 0.5);">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <a href="../cinematica.html" class="back-button" style="margin-bottom: 0;">
+                    <span class="back-icon">&larr;</span> Back to Kinematics
+                </a>
+            </div>
+            <div class="clil-badge">CLIL Lesson 🇬🇧</div>
+            <h1 class="sub-hero-title">Vectors in <span class="gradient-text" style="background: linear-gradient(to right, #14b8a6, #3b82f6); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">Video Games</span></h1>
+            <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+                Discover how the Cartesian Plane, coordinate systems, and vector operations make it possible for your favourite video game characters to move, jump, and live on screen.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- 1. THE SCREEN AS A COORDINATE SYSTEM -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: var(--game-color);">1. The Screen is a Cartesian Plane</h2>
+            <p class="lesson-text">
+                Every video game you play — from <em>Super Mario Bros.</em> to <em>Fortnite</em> — runs on the same fundamental idea: the screen is a <span class="key-term">Coordinate System</span>. Each pixel on the screen has a unique address defined by two numbers: an <strong>X</strong> coordinate (horizontal position) and a <strong>Y</strong> coordinate (vertical position).
+            </p>
+            <p class="lesson-text">
+                When a game developer writes the code for a character like Mario, they don't tell him "go right". Instead, they say something like: <em>"increase your X position by 5 pixels every frame"</em>. The entire world of the game exists as numbers inside a coordinate plane.
+            </p>
+
+            <div class="concept-box">
+                <h4 style="color: var(--game-color); margin-bottom: 0.5rem;">⚠️ Screen Coordinates vs. Math Coordinates</h4>
+                <p class="lesson-text" style="margin-bottom: 0;">
+                    In mathematics, the Y-axis points <strong>upward</strong>. But in computer graphics, the origin \((0, 0)\) is typically at the <strong>top-left corner</strong> of the screen, and the Y-axis points <strong>downward</strong>. This means that increasing Y moves objects down, not up! Game developers must always keep this difference in mind.
+                </p>
+            </div>
+        </section>
+
+        <!-- 2. INTERACTIVE: POSITION ON THE GRID -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: var(--game-color);">2. Interactive: Mapping a Character's Position</h2>
+            <p class="lesson-text">
+                Click anywhere on the grid below. A character (🧑‍🚀) will be placed at those exact coordinates. Notice how the position vector from the Origin \(O(0, 0)\) to the character is displayed in real time. This is exactly how a game engine <strong>locates</strong> every object on screen.
+            </p>
+
+            <div class="operation-card" style="border-left-color: var(--game-color);">
+                <h3 style="color: var(--game-color); margin-bottom: 1.5rem;">🎯 Simulation 1: Click to Place!</h3>
+                <div class="grid" style="grid-template-columns: 1fr 2fr; gap: 2rem; align-items: start;">
+                    <div class="data-display" style="grid-template-columns: 1fr;">
+                        <div class="data-card" style="border-left-color: var(--game-color); margin-bottom: 0.5rem;">
+                            <span class="data-label">Character Position:</span>
+                            <div style="font-size: 1.1rem; margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.3rem;">
+                                <span>\(X =\) <span id="pos-x" style="color: var(--game-color); font-weight: bold;">0</span> px</span>
+                                <span>\(Y =\) <span id="pos-y" style="color: var(--game-color); font-weight: bold;">0</span> px</span>
+                            </div>
+                        </div>
+                        <div class="data-card" style="border-left-color: #f59e0b; margin-top: 0.5rem;">
+                            <span class="data-label">Position Vector:</span>
+                            <div style="font-size: 1.1rem; margin-top: 0.5rem;">
+                                <span id="pos-vec" style="color: #f59e0b; font-weight: bold;">\(\vec{P} = (0, 0)\)</span>
+                            </div>
+                        </div>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 1rem;">
+                            <em>💡 Click anywhere on the grid to teleport the astronaut!</em>
+                        </p>
+                    </div>
+                    <div style="position: relative;">
+                        <canvas id="posCanvas" class="simulation-canvas" height="400" style="cursor: crosshair;"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. VELOCITY AS A VECTOR -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: var(--game-color);">3. Velocity is a Vector</h2>
+            <p class="lesson-text">
+                In physics and in video games, <span class="key-term">velocity</span> is not just a number — it is a <strong>vector</strong>. It has both a <em>magnitude</em> (how fast?) and a <em>direction</em> (where?). A game character stores its velocity as a pair of components:
+            </p>
+            <div class="formula-row" style="background: rgba(var(--game-color-rgb), 0.1); border-color: rgba(var(--game-color-rgb), 0.3);">
+                <div class="flex-col">
+                    <span style="color: var(--game-color);">Velocity Vector</span>
+                    <span>\(\vec{v} = (v_x, \, v_y)\)</span>
+                    <span style="font-size: 0.85rem; color: var(--text-muted);">\(v_x\) = horizontal speed, \(v_y\) = vertical speed</span>
+                </div>
+            </div>
+
+            <p class="lesson-text" style="margin-top: 1.5rem;">
+                Every single frame (typically 60 times per second!), the game engine updates the character's position using the simplest yet most powerful equation in game development:
+            </p>
+
+            <div class="formula-row">
+                <div class="flex-col">
+                    <span style="color: #ec4899;">The Game Loop Update Rule</span>
+                    <span style="font-size: 1.2rem;">
+                        \(\begin{cases}
+                        x_{\text{new}} = x_{\text{old}} + v_x \cdot \Delta t \\
+                        y_{\text{new}} = y_{\text{old}} + v_y \cdot \Delta t
+                        \end{cases}\)
+                    </span>
+                    <span style="font-size: 0.85rem; color: var(--text-muted);">where \(\Delta t\) is the time elapsed since the last frame</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. INTERACTIVE: SQUALL MUST REACH RINOA (FF8) -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: var(--game-color);">4. Interactive: Help Squall Reach Rinoa!</h2>
+            <p class="lesson-text">
+                In one of the most iconic scenes of <strong>Final Fantasy VIII</strong>, <strong>Rinoa Heartilly</strong> is drifting helplessly through the void of outer space, her oxygen running out. <strong>Squall Leonhart</strong>, her knight, launches himself into the infinite darkness to save her — guided only by coordinates and his unwavering resolve. Use the <strong>Arrow Keys</strong> (or the on-screen D-pad) to set Squall's velocity vector \(\vec{v}\) and pilot him through space towards Rinoa before she drifts away forever!
+            </p>
+
+            <div class="operation-card" style="border-left-color: #3b82f6;">
+                <h3 style="color: #3b82f6; margin-bottom: 1.5rem;">🚀 Simulation 2: Rescue in Space</h3>
+                <div class="grid" style="grid-template-columns: 1fr 2fr; gap: 2rem; align-items: start;">
+                    <div class="data-display" style="grid-template-columns: 1fr;">
+                        <div class="data-card" style="border-left-color: #3b82f6; margin-bottom: 0.5rem;">
+                            <span class="data-label">🧑‍🚀 Squall's Position:</span>
+                            <div style="font-size: 1rem; margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.2rem;">
+                                <span>\(x =\) <span id="mv-x" style="color: #3b82f6;">60</span></span>
+                                <span>\(y =\) <span id="mv-y" style="color: #3b82f6;">300</span></span>
+                            </div>
+                        </div>
+                        <div class="data-card" style="border-left-color: #ec4899; margin-top: 0.5rem;">
+                            <span class="data-label">Velocity \(\vec{v}\):</span>
+                            <div style="font-size: 1rem; margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.2rem;">
+                                <span>\(v_x =\) <span id="mv-vx" style="color: #ec4899;">0</span></span>
+                                <span>\(v_y =\) <span id="mv-vy" style="color: #ec4899;">0</span></span>
+                            </div>
+                        </div>
+                        <div class="data-card" style="border-left-color: #f59e0b; margin-top: 0.5rem;">
+                            <span class="data-label">👩‍🚀 Rinoa's Position:</span>
+                            <div style="font-size: 1rem; margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.2rem;">
+                                <span id="rinoa-coords" style="color: #f59e0b;">waiting...</span>
+                            </div>
+                        </div>
+                        <div id="rescue-msg" style="margin-top: 1rem; text-align: center; font-weight: bold; font-size: 1rem; min-height: 2rem;"></div>
+                        <!-- On-screen D-pad -->
+                        <div style="display: grid; grid-template-columns: repeat(3, 50px); grid-template-rows: repeat(3, 50px); gap: 4px; margin-top: 1rem; justify-content: center;">
+                            <div></div>
+                            <button class="quiz-btn dpad-btn" id="btn-up" style="font-size: 1.3rem; padding: 0; display: flex; align-items: center; justify-content: center;">⬆️</button>
+                            <div></div>
+                            <button class="quiz-btn dpad-btn" id="btn-left" style="font-size: 1.3rem; padding: 0; display: flex; align-items: center; justify-content: center;">⬅️</button>
+                            <button class="quiz-btn dpad-btn" id="btn-stop" style="font-size: 1rem; padding: 0; display: flex; align-items: center; justify-content: center; color: #ef4444;">⏹</button>
+                            <button class="quiz-btn dpad-btn" id="btn-right" style="font-size: 1.3rem; padding: 0; display: flex; align-items: center; justify-content: center;">➡️</button>
+                            <div></div>
+                            <button class="quiz-btn dpad-btn" id="btn-down" style="font-size: 1.3rem; padding: 0; display: flex; align-items: center; justify-content: center;">⬇️</button>
+                            <div></div>
+                        </div>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.8rem; text-align: center;">
+                            <em>💡 Use arrow keys or tap the D-pad.</em>
+                        </p>
+                    </div>
+                    <div style="position: relative;">
+                        <canvas id="moveCanvas" class="simulation-canvas" height="400"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. VECTOR ADDITION: FORCES AND JUMPS -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: var(--game-color);">5. Vector Addition: Gravity and Jumps</h2>
+            <p class="lesson-text">
+                What happens when a character <strong>jumps</strong>? The game sets an initial upward velocity \(\vec{v}_{\text{jump}} = (0, -v_0)\) (negative because up means smaller Y in screen coordinates). But at every frame, <span class="key-term">gravity</span> adds a small downward vector to the velocity:
+            </p>
+
+            <div class="formula-row" style="background: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.3);">
+                <div class="flex-col">
+                    <span style="color: #f59e0b;">Gravity Applied Every Frame</span>
+                    <span>\(\vec{v}_{\text{new}} = \vec{v}_{\text{old}} + \vec{g} \cdot \Delta t\)</span>
+                    <span style="font-size: 0.85rem; color: var(--text-muted);">where \(\vec{g} = (0, +g)\) points downward on screen</span>
+                </div>
+            </div>
+
+            <p class="lesson-text" style="margin-top: 1.5rem;">
+                This simple <strong>vector addition</strong> is what creates the beautiful parabolic arc of a jump. The horizontal component stays constant (no air friction), while the vertical component starts negative (going up), gradually reaches zero (peak of the jump), and then becomes positive (falling back down). It's the same projectile motion you study in physics!
+            </p>
+
+            <div class="concept-box" style="border-left-color: #f59e0b;">
+                <h4 style="color: #f59e0b; margin-bottom: 0.5rem;">🎮 Fun Fact</h4>
+                <p class="lesson-text" style="margin-bottom: 0;">
+                    In the original <em>Super Mario Bros.</em> (1985), gravity is set to approximately <strong>75 pixels/s²</strong>. But when Mario is falling, Nintendo secretly increases gravity to make the game feel more responsive. This "cheat" makes the controls feel incredibly satisfying — and it's all just tweaking a vector!
+                </p>
+            </div>
+        </section>
+
+        <!-- 6. QUIZ -->
+        <section class="lesson-section quiz-container" id="quiz-finale">
+            <h2 class="lesson-title" style="color: var(--game-color);">Assessment Quiz (CLIL)</h2>
+            <p class="lesson-text" style="font-size: 0.95rem;">Test your understanding of vectors in video games. Answer in English!</p>
+
+            <div class="quiz-question" id="q1">
+                <h3>1. In screen coordinates, where is the origin \((0, 0)\) typically located?</h3>
+                <div class="quiz-options">
+                    <button class="quiz-btn" data-status="wrong">A) At the centre of the screen.</button>
+                    <button class="quiz-btn" data-status="correct">B) At the top-left corner of the screen.</button>
+                    <button class="quiz-btn" data-status="wrong">C) At the bottom-left corner, like in maths.</button>
+                    <button class="quiz-btn" data-status="wrong">D) It depends on the game engine.</button>
+                </div>
+            </div>
+
+            <div class="quiz-question" id="q2">
+                <h3>2. A character has position \((100, 200)\) and velocity \(\vec{v} = (5, -3)\). After one frame (\(\Delta t = 1\)), what is the new position?</h3>
+                <div class="quiz-options">
+                    <button class="quiz-btn" data-status="wrong">A) \((95, 203)\)</button>
+                    <button class="quiz-btn" data-status="correct">B) \((105, 197)\)</button>
+                    <button class="quiz-btn" data-status="wrong">C) \((105, 203)\)</button>
+                    <button class="quiz-btn" data-status="wrong">D) \((500, -600)\)</button>
+                </div>
+            </div>
+
+            <div class="quiz-question" id="q3">
+                <h3>3. Why does a jumping character follow a parabolic arc?</h3>
+                <div class="quiz-options">
+                    <button class="quiz-btn" data-status="wrong">A) Because the programmer draws a parabola manually.</button>
+                    <button class="quiz-btn" data-status="wrong">B) Because the X velocity increases over time.</button>
+                    <button class="quiz-btn" data-status="correct">C) Because gravity adds a constant downward vector to the velocity every frame.</button>
+                    <button class="quiz-btn" data-status="wrong">D) Because the screen resolution is curved.</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Interactive Educational Platform. CLIL Science Project.</p>
+    </footer>
+
+    <script src="clil-vectors-videogames.js"></script>
+    <script src="../../js/main.js"></script>
+</body>
+
+</html>

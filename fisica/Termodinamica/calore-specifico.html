@@ -204,6 +204,10 @@
                 chiamato <strong>Serbatoio Termico (o Reservoir)</strong>. Qualunque sia la quantità di calore che gli
                 cediate o gli sottraiate, <strong>la sua temperatura non cambia mai</strong>.</p>
 
+            <h3 style="margin-top: 2rem; margin-bottom: 1rem; color: var(--text-main);">Il Termometro: Misurare senza Disturbare</h3>
+            <p class="lesson-text">Un'applicazione pratica di questo principio è il <strong>termometro</strong>. Entrando in contatto con un corpo, esso scambia calore fino a raggiungere l'equilibrio termico.</p>
+            <p class="lesson-text">Per non falsare la misura, il termometro deve avere una <strong>capacità termica estremamente minore</strong> rispetto a quella del corpo misurato. Così facendo, l'oggetto funge da reservoir per il termometro: cede o assorbe la minima quantità di calore necessaria senza che la propria temperatura subisca variazioni rilevanti.</p>
+
             <div class="reservoir-panel"
                 style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(16, 185, 129, 0.1)); padding: 2.5rem; border-radius: 1rem; border: 1px solid rgba(255,255,255,0.1); margin: 2rem 0;">
                 <h3 style="margin-top:0; margin-bottom: 1.5rem;">Laboratorio: Tuffo nel Reservoir</h3>
@@ -237,11 +241,22 @@
                 </div>
             </div>
 
-            <h3 style="margin-top: 2rem; margin-bottom: 1rem;">La Legge di Newton del Raffreddamento</h3>
+            <h3 style="margin-top: 2rem; margin-bottom: 1rem; color: var(--text-main);">La Legge Esponenziale e la Prontezza</h3>
             <p class="lesson-text">Se buttate una spada di ferro rovente a 500°C in un lago a 10°C, lo scambio termico
-                frenerà vistosamente man mano che la differenza di temperatura diminuisce. Questo andamento è descritto
-                da un <strong>decadimento esponenziale</strong> che tende asintoticamente alla temperatura del
-                reservoir.</p>
+                frenerà vistosamente man mano che la differenza di temperatura diminuisce. Questo andamento è regolato
+                dalla <strong>legge di Newton del raffreddamento/riscaldamento</strong>, con una curva che tende asintoticamente alla temperatura del reservoir:</p>
+
+            <div
+                style="background: rgba(16, 185, 129, 0.05); border: 1px solid var(--physics-glow); border-radius: 1rem; padding: 2rem; margin: 2rem 0; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <div style="font-size: 1.8rem; font-family: 'Courier New', monospace; color: var(--text-main); display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: center;">
+                    <span>T(t) = T<sub>res</sub> + (T<sub>0</sub> - T<sub>res</sub>) &middot; e<sup>-t / &tau;</sup></span>
+                </div>
+            </div>
+
+            <p class="lesson-text">In questa equazione, <strong>T<sub>res</sub></strong> è la temperatura costante dell'ambiente da misurare (reservoir), mentre <strong>T<sub>0</sub></strong> è la temperatura iniziale del corpo di prova.</p>
+            
+            <p class="lesson-text">Anche un termometro appena immerso seguirà questa tipica curva esponenziale prima di assestarsi sulla lettura finale. Il parametro chiave che troviamo a denominatore dell'esponente, <strong>&tau; (tau)</strong>, definisce matematicamente la <strong>prontezza</strong> dello strumento.
+            Essendo una costante di tempo, se <strong>&tau; è molto piccolo</strong>, la frazione temporale cresce, l'esponenziale decade a zero molto in fretta e il termometro raggiunge quasi istantaneamente l'equilibrio con l'ambiente misurandone la temperatura in pochissimo tempo.</p>
         </section>
 
         <!-- QUIZ FINALE -->

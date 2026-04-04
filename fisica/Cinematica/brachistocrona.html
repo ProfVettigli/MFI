@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brachistocrona e Isocrona - MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- Katex -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+        onload="renderMathInElement(document.body);"></script>
+
+    <style>
+        :root {
+            --moto-color: #ec4899;
+            --moto-color-rgb: 236, 72, 153;
+        }
+
+        .simulation-canvas {
+            background: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            width: 100%;
+            display: block;
+            touch-action: none;
+        }
+
+        .operation-card {
+            background: rgba(var(--moto-color-rgb), 0.05);
+            border: 1px solid rgba(var(--moto-color-rgb), 0.2);
+            padding: 1.5rem;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .history-box {
+            background: linear-gradient(135deg, rgba(236, 72, 153, 0.1), rgba(245, 158, 11, 0.1));
+            border-left: 6px solid #f59e0b;
+            padding: 2rem;
+            border-radius: 0 16px 16px 0;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .history-box::before {
+            content: "📜";
+            position: absolute;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 5rem;
+            opacity: 0.1;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="sub-hero" style="border-bottom: 2px solid rgba(236, 72, 153, 0.5);">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <a href="../cinematica.html" class="back-button" style="margin-bottom: 0;">
+                    <span class="back-icon">&larr;</span> Lezioni di Cinematica
+                </a>
+            </div>
+            <h1 class="sub-hero-title">Le Curve <span class="gradient-text" style="background: linear-gradient(to right, #ec4899, #8b5cf6); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">Meravigliose</span></h1>
+            <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+                Brachistocrona e Isocrona: la sfida matematica che ha appassionato le più grandi menti della storia per trovare la discesa più rapida.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: var(--moto-color);">1. Il Problema della Discesa più Rapida</h2>
+            <p class="lesson-text">
+                Immagina di avere due punti, \(A\) e \(B\), ad altezze diverse (con \(A\) più in alto di \(B\)) e non esattamente uno sotto l'altro. Qual è la forma dello scivolo che collega \(A\) a \(B\) in modo che una sferetta che ci rotola sopra, soggetta solo alla forza di gravità, arrivi al punto \(B\) nel <strong>minor tempo possibile</strong>?
+            </p>
+            <p class="lesson-text">
+                L'istinto suggerisce la retta, perché è il tragitto più corto nello spazio. Ma il tragitto più corto <em>nello spazio</em> non è sempre il più breve <em>nel tempo</em>! Un percorso più curvo verso il basso potrebbe far acquistare una velocità molto più alta inizialmente, compensando ampiamente il tragitto un po' più lungo per arrivare al traguardo.
+            </p>
+        </section>
+
+        <section class="lesson-section">
+            <div class="history-box">
+                <h3 style="color: #f59e0b; margin-top: 0; margin-bottom: 0.8rem;">📜 Excursus Storico: La Sfida di Johann Bernoulli</h3>
+                <p class="lesson-text" style="color: var(--text-main);">Nel <strong>1696</strong>, il matematico svizzero <strong>Johann Bernoulli</strong> pubblicò questo enigma sulla rivista <em>Acta Eruditorum</em>, lanciando una sfida alle menti più brillanti d'Europa. Lo chiamò il problema della <strong>Brachistocrona</strong> (dal greco <em>brachistos</em> = il più breve, <em>chronos</em> = tempo).</p>
+                
+                <p class="lesson-text" style="color: var(--text-main);">Bernoulli diede sei mesi di tempo per risolvere il problema (che richiedeva un nuovo ramo della matematica, non ancora formalizzato: il calcolo delle variazioni). Dopo sei mesi, nessuna risposta. Il suo rivale/amico Leibniz gli suggerì di prorogare la sfida per un anno e di inviarla direttamente a <strong>Isaac Newton</strong>. </p>
+
+                <p class="lesson-text" style="color: var(--text-main);">La leggenda narra che Newton, all'epoca direttore della Zecca Reale, ricevette la lettera alle 4 del pomeriggio rientrando faticosamente dal lavoro. Nonostante fosse esausto e da anni non si occupasse di matematica pura, passò sveglio tutta la notte e, alle 8 del mattino, la soluzione era pronta. La inviò in forma anonima, ma Bernoulli, vedendone la genialità e l'efficienza formidabile, riconobbe subito l'autore esclamando: <em>«Riconosco il leone dalla sua impronta!»</em> (Tanquam ex ungue leonem).</p>
+
+                <p class="lesson-text" style="margin-bottom: 0;">Alla fine, i solutori del problema furono Newton, Jakob Bernoulli (il fratello rivale di Johann), Leibniz, L'Hôpital e ovviamente lo stesso Johann Bernoulli. Tutti scoprirono che la curva miracolosa è la <strong>Cicloide</strong> rovesciata.</p>
+            </div>
+        </section>
+
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: var(--moto-color);">2. La Cicloide Capovolta (La Brachistocrona)</h2>
+            <p class="lesson-text">La <strong>cicloide</strong> è in realtà una curva molto celebre in geometria: è la traiettoria tracciata da un punto posizionato sul bordo di una ruota (un cerchio) che rotola senza strisciare su un piano dritto. Capovolgendo questa curva e usandola come scivolo, otteniamo proprio la magica Brachistocrona.</p>
+
+            <div class="operation-card" style="border-left-color: #3b82f6; margin-top: 1.5rem;">
+                <h3 style="color: #3b82f6; margin-bottom: 1.5rem;">🎡 Simulazione 1: La Genesi della Cicloide</h3>
+                <p class="lesson-text" style="font-size: 0.95rem; margin-bottom: 1.5rem;">
+                    Osserva la ruota che gira. Il punto sul bordo dipinge nel vuoto un arco dopo l'altro. L'equazione di questo moto meraviglioso si scrive in forma parametrica (in funzione dell'angolo \(\theta\) di rotazione della ruota):
+                </p>
+                <div class="formula-row" style="background: rgba(59, 130, 246, 0.1); border-color: rgba(59, 130, 246, 0.3);">
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+                        <span>\(x(\theta) = R(\theta - \sin\theta)\)</span>
+                        <span>\(y(\theta) = R(1 - \cos\theta)\)</span>
+                    </div>
+                </div>
+                <div style="position: relative; margin-top: 1.5rem;">
+                    <canvas id="genesiCanvas" class="simulation-canvas" height="250"></canvas>
+                </div>
+                <button class="btn-action" id="btn-genesi" style="font-size: 1.1rem; padding: 0.8rem 1.5rem; background: #3b82f6; width: 100%; margin-top: 1rem;">▶️ Avvia Rotolamento</button>
+            </div>
+
+            <div class="operation-card" style="border-left-color: var(--moto-color);">
+                <h3 style="color: var(--moto-color); margin-bottom: 1.5rem;">🎢 Simulazione 2: La Gara di Discesa (Brachistocrona)</h3>
+                <p class="lesson-text" style="font-size: 0.95rem; margin-bottom: 1.5rem;">
+                    Ora capovolgiamo la cicloide (in rosa) e confrontiamola con un piano inclinato rettilineo (in verde) e con una discesa formata da una conca parabolica (in blu). Quale sferetta giungerà prima alla fine del tracciato? Avvia la corsa!
+                </p>
+                <div class="grid" style="grid-template-columns: 1fr 2fr; gap: 2rem; align-items: start;">
+                    <div class="data-display" style="grid-template-columns: 1fr;">
+                        <button class="btn-action" id="btn-race" style="font-size: 1.1rem; padding: 0.8rem 1.5rem; background: var(--moto-color); width: 100%; margin-bottom: 1rem;">🏁 Avvia Gara!</button>
+
+                        <div class="data-card" style="border-left-color: #10b981; margin-top: 1rem;">
+                            <span class="data-label">Tempo Retta:</span>
+                            <span class="data-value" style="font-size:1.1rem;"><span id="time-line" style="color:#10b981;">0.00 s</span></span>
+                        </div>
+                        <div class="data-card" style="border-left-color: #3b82f6; margin-top: 0.5rem;">
+                            <span class="data-label">Tempo Parabola:</span>
+                            <span class="data-value" style="font-size:1.1rem;"><span id="time-parabola" style="color:#3b82f6;">0.00 s</span></span>
+                        </div>
+                        <div class="data-card" style="border-left-color: #ec4899; margin-top: 0.5rem;">
+                            <span class="data-label">Tempo Cicloide:</span>
+                            <span class="data-value" style="font-size:1.1rem;"><span id="time-cycloid" style="color:#ec4899;">0.00 s</span></span>
+                        </div>
+                    </div>
+                    <div style="position: relative;">
+                        <!-- Canvas per la gara della Brachistocrona -->
+                        <canvas id="brachistoCanvas" class="simulation-canvas" height="400"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: var(--moto-color);">3. La Curva Isocrona (o Tautocrona)</h2>
+            <p class="lesson-text">
+                Come se non bastasse essere la discesa più rapida tra due punti, nel 1659 <strong>Christiaan Huygens</strong> scoprì che la cicloide godeva di un'altra proprietà stratosferica: è una curva <strong>Isocrona</strong> (dallo stesso tempo).
+            </p>
+            <p class="lesson-text">
+                Cosa significa? Immagina uno scivolo a forma di cicloide. Se lasci cadere una sferetta dal punto più alto, impiegherà un certo tempo per scivolare fino al fondo. Ma se abbandoni la sferetta partendo da metà strada o vicinissimo al fondo, <strong>essa arriverà sul fondo esattamente nello stesso momento!</strong> Il tempo di discesa è indipendente dal punto di partenza dell'oscillazione. Un pendolo costruito sfruttando binari a cicloide divenne fondamentale per la precisione degli orologi per i navigatori!
+            </p>
+
+            <div class="operation-card" style="border-left-color: #a855f7; margin-top: 2rem;">
+                <h3 style="color: #a855f7; margin-bottom: 1.5rem;">⏳ Simulazione 3: La Magia dell'Isocrona</h3>
+                <p class="lesson-text" style="font-size: 0.95rem; margin-bottom: 1.5rem;">
+                    Tre palline si trovano su un recipiente formato da archi di cicloide. Vengono rilasciate simultaneamente da tre <strong>altezze diverse</strong>. Scopri in quale tempo si scontreranno al centro (punto più basso)!
+                </p>
+                <div class="grid" style="grid-template-columns: 1fr 2fr; gap: 2rem; align-items: start;">
+                    <div class="data-display" style="grid-template-columns: 1fr;">
+                        <button class="btn-action" id="btn-iso" style="font-size: 1.1rem; padding: 0.8rem 1.5rem; background: #a855f7; width: 100%; margin-bottom: 1rem;">▶️ Lascia Cadere!</button>
+                    </div>
+                    <div style="position: relative;">
+                        <canvas id="isocroneCanvas" class="simulation-canvas" height="400"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #10b981;">4. Perché è proprio la curva del tempo minore?</h2>
+            <p class="lesson-text">
+                Come fece Bernoulli a dimostrarlo? Usò un geniale <strong>trucco ottico</strong>. Sapeva che in ottica vige il <strong>Principio di Fermat</strong>: la luce, viaggiando tra due punti, sceglie sempre il percorso che richiede il <em>minor tempo possibile</em>. Se avesse capito che percorso fa la luce in mezzo a gradienti di velocità, avrebbe svelato la Brachistocrona!
+            </p>
+            <p class="lesson-text">
+                Sulla nostra curva, per via della gravità, la sferetta guadagna velocità man mano che scende, secondo la legge: \(v = \sqrt{2gy}\). Immaginiamo allora infiniti strati "ottici" verso il basso, in cui la velocità della luce \(v\) aumenta proporzionalmente alla \( \sqrt{y} \).
+            </p>
+            <p class="lesson-text">
+                Applicando la celebre <strong>Legge di Snell</strong> sulla rifrazione dei raggi di luce (che stabilisce che il rapporto \(\frac{v}{\sin(\alpha)}\) deve rimanere costante durante l'attraversamento degli strati), Bernoulli ottenne un'equazione differenziale. Sostituendo la relazione delle velocità, si accorse con enorme stupore che la curva tracciata dal raggio di luce ottico in quel mezzo... rispondeva esattamente all'equazione della <strong>cicloide</strong>! La natura si comporta con coerenza estrema.
+            </p>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Cinematica e Curve Notevoli.</p>
+    </footer>
+
+    <!-- Carica lo script dedicato -->
+    <script src="brachistocrona.js"></script>
+    <script src="../../js/main.js"></script>
+</body>
+
+</html>
