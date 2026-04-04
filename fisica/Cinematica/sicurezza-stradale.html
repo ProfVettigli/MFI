@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sicurezza Stradale - Ed. Civica - MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+        onload="renderMathInElement(document.body);"></script>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <style>
+        :root {
+            --safety-color: #ef4444;
+            --safety-color-rgb: 239, 68, 68;
+        }
+
+        .simulation-canvas {
+            background: #1a1a2e;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            width: 100%;
+            display: block;
+            touch-action: none;
+        }
+
+        .operation-card {
+            background: rgba(var(--safety-color-rgb), 0.05);
+            border: 1px solid rgba(var(--safety-color-rgb), 0.2);
+            padding: 1.5rem;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .concept-box {
+            background: rgba(255, 255, 255, 0.02);
+            border-left: 4px solid var(--safety-color);
+            padding: 1.5rem 2rem;
+            margin-bottom: 2rem;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .flex-col {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .key-term {
+            display: inline-block;
+            background: rgba(var(--safety-color-rgb), 0.15);
+            color: var(--safety-color);
+            padding: 0.15rem 0.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .law-box {
+            background: linear-gradient(135deg, rgba(var(--safety-color-rgb), 0.08), rgba(0, 0, 0, 0.3));
+            border: 1px solid rgba(var(--safety-color-rgb), 0.3);
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        .law-box::before {
+            content: "⚖️";
+            position: absolute;
+            top: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2rem;
+            background: #0f172a;
+            padding: 0 10px;
+        }
+
+        .speed-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        .speed-table th {
+            background: rgba(var(--safety-color-rgb), 0.15);
+            color: var(--safety-color);
+            padding: 0.8rem 1rem;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid rgba(var(--safety-color-rgb), 0.3);
+        }
+
+        .speed-table td {
+            padding: 0.7rem 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+        }
+
+        .speed-table tr:hover td {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .slider-control {
+            width: 100%;
+            -webkit-appearance: none;
+            appearance: none;
+            height: 8px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            outline: none;
+            margin: 1rem 0;
+        }
+
+        .slider-control::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--safety-color);
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(var(--safety-color-rgb), 0.5);
+        }
+
+        .step-list {
+            counter-reset: step;
+            list-style: none;
+            padding: 0;
+        }
+
+        .step-list li {
+            counter-increment: step;
+            position: relative;
+            padding-left: 2.5rem;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .step-list li .katex {
+            white-space: nowrap !important;
+            display: inline-block;
+        }
+
+        .step-list li::before {
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: -2px;
+            min-width: 28px;
+            height: 28px;
+            background: var(--safety-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="sub-hero" style="border-bottom: 2px solid rgba(239, 68, 68, 0.5);">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <a href="../cinematica.html" class="back-button" style="margin-bottom: 0;">
+                    <span class="back-icon">&larr;</span> Lezioni di Cinematica
+                </a>
+            </div>
+            <div style="display: inline-block; background: rgba(239, 68, 68, 0.1); color: var(--safety-color); padding: 0.3rem 0.8rem; border-radius: 20px; font-weight: 800; font-size: 0.8rem; margin-bottom: 1rem; text-transform: uppercase;">Ed. Civica</div>
+            <h1 class="sub-hero-title">Sicurezza <span class="gradient-text" style="background: linear-gradient(to right, #ef4444, #f59e0b); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">Stradale</span></h1>
+            <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+                Spazi di frenata, indicatori di direzione e limiti di velocità: la fisica della cinematica al servizio della sicurezza di tutti.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- 1. IL CODICE DELLA STRADA -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: var(--safety-color);">1. Perché esiste un Codice della Strada?</h2>
+            <p class="lesson-text">
+                Immagina una città senza <strong>nessuna regola</strong>: ognuno guida alla velocità che vuole, svolta dove e quando gli va, nessuno segnala le proprie intenzioni. Il risultato? Chaos totale, incidenti continui e vite in pericolo.
+            </p>
+            <p class="lesson-text">
+                Il <span class="key-term">Codice della Strada</span> (D.Lgs. 285/1992) è il sistema di regole che governa la circolazione veicolare e pedonale in Italia. È un contratto sociale: funziona <strong>solo</strong> se <em>tutti</em> lo rispettano, <strong>senza nessuna eccezione</strong>.
+            </p>
+
+            <div class="law-box" style="margin-top: 3rem; padding-top: 2.5rem;">
+                <h4 style="color: var(--safety-color); margin-bottom: 1rem;">Il Principio Fondamentale</h4>
+                <p class="lesson-text" style="font-style: italic; font-weight: 600; margin-bottom: 1rem;">
+                    "La sicurezza stradale è un bene collettivo. Ogni eccezione concessa a un singolo è un rischio imposto a tutti gli altri."
+                </p>
+                <p class="lesson-text" style="font-size: 0.9rem; margin-bottom: 0;">
+                    Quando un automobilista supera i limiti dicendo <em>"ma tanto qui non c'è nessuno"</em>, sta facendo una scommessa sulla vita degli altri. La fisica non fa eccezioni: a 130 km/h lo spazio di frenata è <strong>identico</strong> sia sulla tangenziale vuota che su quella trafficata. Le regole servono proprio per quei pochi, imprevedibili secondi in cui qualcosa va storto.
+                </p>
+            </div>
+        </section>
+
+        <!-- 2. I LIMITI DI VELOCITÀ -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: var(--safety-color);">2. I Limiti di Velocità</h2>
+            <p class="lesson-text">
+                I <span class="key-term">limiti di velocità</span> non sono numeri arbitrari scritti su cartelli per infastidire gli automobilisti. Sono il risultato di calcolazioni precise di ingegneria stradale che tengono conto della visibilità, del raggio delle curve, del tipo di fondo stradale e dei tempi di reazione umani.
+            </p>
+
+            <table class="speed-table">
+                <thead>
+                    <tr>
+                        <th>🛣️ Tipo di Strada</th>
+                        <th>Limite (km/h)</th>
+                        <th>Motivazione</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Centro abitato</td>
+                        <td><strong>50</strong></td>
+                        <td>Pedoni, ciclisti, attraversamenti. Tempo di reazione sufficiente per fermarsi.</td>
+                    </tr>
+                    <tr>
+                        <td>Strade extraurbane secondarie</td>
+                        <td><strong>90</strong></td>
+                        <td>Curve, incroci, accessi laterali non protetti.</td>
+                    </tr>
+                    <tr>
+                        <td>Strade extraurbane principali</td>
+                        <td><strong>110</strong></td>
+                        <td>Carreggiate separate, ma possibili ostacoli imprevisti.</td>
+                    </tr>
+                    <tr>
+                        <td>Autostrada</td>
+                        <td><strong>130</strong></td>
+                        <td>Corsie ampie, nessun incrocio. Il limite massimo consentito dalla fisica umana.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="concept-box" style="border-left-color: #f59e0b;">
+                <h4 style="color: #f59e0b; margin-bottom: 0.5rem;">⚠️ Attenzione</h4>
+                <p class="lesson-text" style="margin-bottom: 0;">
+                    Il limite è la <strong>velocità massima</strong> consentita in condizioni ideali (asfalto asciutto, piena visibilità, veicolo in perfetto stato). In caso di pioggia, nebbia o traffico, la velocità sicura è <em>molto</em> inferiore al limite indicato sul cartello!
+                </p>
+            </div>
+        </section>
+
+        <!-- 3. LO SPAZIO DI FRENATA -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: var(--safety-color);">3. Lo Spazio di Frenata</h2>
+            <p class="lesson-text">
+                Lo <span class="key-term">spazio di frenata</span> è la distanza percorsa dal veicolo dal momento in cui il conducente preme il pedale del freno fino all'arresto completo. Ma non è tutto: prima di frenare, il cervello deve <strong>percepire il pericolo</strong>, <strong>decidere di frenare</strong> e <strong>spostare il piede sull'acceleratore</strong>. Questo intervallo si chiama <span class="key-term">tempo di reazione</span> e dura in media circa \(t_r \approx 1 \, \text{s}\).
+            </p>
+            <p class="lesson-text">
+                La <strong>distanza totale di arresto</strong> è quindi la somma di due componenti:
+            </p>
+
+            <div class="formula-row" style="background: rgba(var(--safety-color-rgb), 0.1); border-color: rgba(var(--safety-color-rgb), 0.3);">
+                <div class="flex-col">
+                    <span style="color: var(--safety-color);">Distanza Totale di Arresto</span>
+                    <span style="font-size: 1.1rem;">\(d_{tot} = d_{reazione} + d_{frenata}\)</span>
+                    <span style="font-size: 0.85rem; color: var(--text-muted);">dove:</span>
+                    <span style="font-size: 1rem;">\(d_{reazione} = v \cdot t_r\)</span>
+                    <span style="font-size: 1rem;">\(d_{frenata} = \dfrac{v^2}{2 \cdot a}\)</span>
+                    <span style="font-size: 0.85rem; color: var(--text-muted);">\(a \approx 8 \, \text{m/s}^2\) su asfalto asciutto</span>
+                </div>
+            </div>
+
+            <p class="lesson-text" style="margin-top: 1.5rem;">
+                La cosa più importante da notare è che lo spazio di frenata dipende dal <strong>quadrato della velocità</strong>. Questo significa che se la velocità raddoppia, lo spazio di frenata <em>quadruplica</em>! Un dettaglio che cambia radicalmente la comprensione del rischio.
+            </p>
+
+            <!-- SIMULAZIONE SPAZIO DI FRENATA -->
+            <div class="operation-card" style="border-left-color: var(--safety-color); margin-top: 2rem;">
+                <h3 style="color: var(--safety-color); margin-bottom: 1.5rem;">🚗 Simulazione: Spazio di Frenata</h3>
+                <p class="lesson-text" style="font-size: 0.95rem; margin-bottom: 1rem;">
+                    Trascina lo slider per cambiare la velocità dell'auto e osserva come cambia drammaticamente la distanza totale di arresto. Clicca <strong>Frena!</strong> per visualizzare la frenata in tempo reale.
+                </p>
+                <div class="grid" style="grid-template-columns: 1fr; gap: 1.5rem;">
+                    <div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.3rem;">
+                            <span style="font-weight: 600;">Velocità:</span>
+                            <span style="font-size: 1.5rem; font-weight: 800; color: var(--safety-color);" id="speed-display">50 km/h</span>
+                        </div>
+                        <input type="range" min="30" max="150" value="50" class="slider-control" id="speed-slider">
+                        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-muted);">
+                            <span>30 km/h</span><span>90 km/h</span><span>150 km/h</span>
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; text-align: center;">
+                        <div style="background: rgba(59, 130, 246, 0.1); padding: 1rem; border-radius: 10px; border: 1px solid rgba(59, 130, 246, 0.2);">
+                            <span style="font-size: 0.8rem; color: #3b82f6; display: block;">Spazio di Reazione</span>
+                            <span id="d-reaction" style="font-size: 1.4rem; font-weight: 800;">13.9 m</span>
+                        </div>
+                        <div style="background: rgba(245, 158, 11, 0.1); padding: 1rem; border-radius: 10px; border: 1px solid rgba(245, 158, 11, 0.2);">
+                            <span style="font-size: 0.8rem; color: #f59e0b; display: block;">Spazio di Frenata</span>
+                            <span id="d-braking" style="font-size: 1.4rem; font-weight: 800;">12.1 m</span>
+                        </div>
+                        <div style="background: rgba(239, 68, 68, 0.1); padding: 1rem; border-radius: 10px; border: 1px solid rgba(239, 68, 68, 0.2);">
+                            <span style="font-size: 0.8rem; color: var(--safety-color); display: block;">Distanza Totale</span>
+                            <span id="d-total" style="font-size: 1.4rem; font-weight: 800; color: var(--safety-color);">26.0 m</span>
+                        </div>
+                    </div>
+                    <div>
+                        <button class="quiz-btn" id="btn-brake" style="width: 100%; padding: 0.8rem; font-size: 1.1rem; font-weight: 700; background: var(--safety-color); color: white; border-color: var(--safety-color); cursor: pointer;">🛑 Frena!</button>
+                    </div>
+                    <canvas id="brakeCanvas" class="simulation-canvas" height="200"></canvas>
+                </div>
+            </div>
+
+            <!-- ESERCIZIO GUIDATO -->
+            <div class="guided-exercise" style="border-color: rgba(var(--safety-color-rgb), 0.4); background: rgba(var(--safety-color-rgb), 0.05); margin-top: 2rem;">
+                <h3 style="color: var(--safety-color);">✏️ Esercizio Guidato: A 50 vs. a 100 km/h</h3>
+                <p class="lesson-text">Un bambino attraversa la strada di sorpresa a 40 metri dalla nostra auto. Ce la facciamo a fermarci in tempo?</p>
+                <ol class="step-list">
+                    <li><strong>A 50 km/h</strong> (\(v = 13.9 \, \text{m/s}\)): Spazio di reazione = \(13.9 \, \text{m}\), Frenata = \(\frac{13.9^2}{2 \times 8} = 12.1 \, \text{m}\). Totale = <strong>26 m</strong>. ✅ Ci fermiamo in tempo con 14 m di margine!</li>
+                    <li><strong>A 100 km/h</strong> (\(v = 27.8 \, \text{m/s}\)): Spazio di reazione = \(27.8 \, \text{m}\), Frenata = \(\frac{27.8^2}{16} = 48.3 \, \text{m}\). Totale = <strong>76 m</strong>. ❌ Impatto inevitabile 36 metri dopo il bambino.</li>
+                    <li>Raddoppiando la velocità, la distanza di arresto è quasi <strong>triplicata</strong>. Ecco perché i 50 km/h nel centro abitato non sono una scelta arbitraria: sono la soglia tra la vita e la morte.</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- 4. LE FRECCE (INDICATORI DI DIREZIONE) -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: var(--safety-color);">4. Perché le Frecce Salvano la Vita</h2>
+            <p class="lesson-text">
+                Gli <span class="key-term">indicatori di direzione</span> — comunemente chiamati "frecce" — sono forse il dispositivo di sicurezza più sottovalutato dell'automobile. Eppure, la mancata segnalazione delle svolte è una delle <strong>prime cause di incidenti</strong> urbani ed extraurbani in Italia (fonte: ISTAT, Report Incidentalità Stradale).
+            </p>
+            <p class="lesson-text">
+                Perché sono così importanti? Perché la guida è un'attività <strong>collettiva</strong>. Ogni istante, decine di conducenti e pedoni intorno a te stanno prendendo decisioni basate su ciò che <em>prevedono</em> tu faccia. Se non attivi la freccia, stai negando informazioni vitali agli altri, e li stai costringendo a reagire in frazioni di secondo anziché prepararsi con anticipo.
+            </p>
+
+            <!-- SIMULAZIONE FRECCE -->
+            <div class="operation-card" style="border-left-color: #f59e0b; margin-top: 2rem;">
+                <h3 style="color: #f59e0b; margin-bottom: 1.5rem;">🚦 Simulazione: Con e Senza Frecce</h3>
+                <p class="lesson-text" style="font-size: 0.95rem; margin-bottom: 1rem;">
+                    Osserva la differenza. La macchina blu sta per svoltare a destra. Nella scena <strong>A</strong> mette la freccia, nella scena <strong>B</strong> no. Guarda come reagisce la moto dietro.
+                </p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div style="text-align: center;">
+                        <span style="display: block; margin-bottom: 0.5rem; color: #10b981; font-weight: 700;">✅ Scena A: Con la freccia</span>
+                        <canvas id="turnCanvasA" class="simulation-canvas" height="280"></canvas>
+                    </div>
+                    <div style="text-align: center;">
+                        <span style="display: block; margin-bottom: 0.5rem; color: #ef4444; font-weight: 700;">❌ Scena B: Senza freccia</span>
+                        <canvas id="turnCanvasB" class="simulation-canvas" height="280"></canvas>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 1rem;">
+                    <button class="quiz-btn" id="btn-turn-sim" style="padding: 0.8rem 2rem; font-size: 1rem; font-weight: 700; background: #f59e0b; color: white; border-color: #f59e0b; cursor: pointer;">▶️ Avvia Simulazione</button>
+                </div>
+            </div>
+
+            <div class="concept-box" style="border-left-color: #10b981; margin-top: 2rem;">
+                <h4 style="color: #10b981; margin-bottom: 0.5rem;">📐 La Matematica delle Frecce</h4>
+                <p class="lesson-text" style="margin-bottom: 0;">
+                    Immagina di viaggiare a 50 km/h (13.9 m/s). Attivare la freccia 3 secondi prima della svolta equivale a regalare a chi ti segue <strong>41.7 metri</strong> (\(13.9 \times 3\)) di margine di informazione anticipata. Senza freccia, quel margine è <strong>zero</strong>: il veicolo dietro deve reagire istantaneamente alla tua frenata improvvisa.
+                </p>
+            </div>
+
+            <!-- DISTANZA DI SICUREZZA -->
+            <h3 class="lesson-title" style="color: var(--safety-color); font-size: 1.3rem; margin-top: 3rem;">📏 La Distanza di Sicurezza</h3>
+            <p class="lesson-text">
+                La <span class="key-term">distanza di sicurezza</span> è lo spazio minimo che un veicolo deve mantenere dal veicolo che lo precede, in modo da potersi fermare in tempo se quest'ultimo frena improvvisamente. Non è una raccomandazione generica: è un obbligo previsto dall'<strong>Art. 149 del Codice della Strada</strong>.
+            </p>
+            <p class="lesson-text">
+                Perché è così importante? Torniamo alla fisica. Abbiamo visto che la distanza totale di arresto comprende lo spazio di reazione più lo spazio di frenata. Se sei <strong>troppo vicino</strong> al veicolo che ti precede, nel tempo che impieghi a reagire (circa 1 secondo) avrai già percorso diversi metri — e a quel punto l'impatto è inevitabile.
+            </p>
+
+            <div class="formula-row" style="background: rgba(var(--safety-color-rgb), 0.1); border-color: rgba(var(--safety-color-rgb), 0.3);">
+                <div class="flex-col">
+                    <span style="color: var(--safety-color);">Regola Pratica della Distanza di Sicurezza</span>
+                    <span style="font-size: 1.1rem;">\(d_{sicurezza} \geq d_{reazione} + d_{frenata} = v \cdot t_r + \dfrac{v^2}{2a}\)</span>
+                    <span style="font-size: 0.85rem; color: var(--text-muted);">In pratica: la distanza di sicurezza deve essere <strong>almeno pari</strong> alla tua distanza totale di arresto</span>
+                </div>
+            </div>
+
+            <p class="lesson-text" style="margin-top: 1.5rem;">
+                Una regola empirica molto usata è la <strong>"regola dei 2 secondi"</strong>: quando il veicolo davanti passa accanto a un punto fisso (ad esempio un cartello), devi contare almeno 2 secondi prima di passare tu stesso dallo stesso punto. Se piove o c'è nebbia, i secondi diventano almeno <strong>4</strong>.
+            </p>
+
+            <table class="speed-table">
+                <thead>
+                    <tr>
+                        <th>Velocità</th>
+                        <th>Distanza in 1 sec (reazione)</th>
+                        <th>Distanza di sicurezza minima</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>50 km/h</td>
+                        <td>13.9 m</td>
+                        <td><strong>~26 m</strong> (asciutto)</td>
+                    </tr>
+                    <tr>
+                        <td>90 km/h</td>
+                        <td>25.0 m</td>
+                        <td><strong>~64 m</strong> (asciutto)</td>
+                    </tr>
+                    <tr>
+                        <td>130 km/h</td>
+                        <td>36.1 m</td>
+                        <td><strong>~118 m</strong> (asciutto)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="concept-box" style="border-left-color: var(--safety-color);">
+                <h4 style="color: var(--safety-color); margin-bottom: 0.5rem;">🚨 Il Dato Allarmante</h4>
+                <p class="lesson-text" style="margin-bottom: 0;">
+                    In autostrada a 130 km/h, la distanza di sicurezza minima è circa <strong>118 metri</strong> — più di un campo di calcio! Eppure è molto comune vedere auto a meno di 20 metri l'una dall'altra. A quella distanza, se il veicolo davanti frena, <strong>non c'è nessuna possibilità di evitare l'impatto</strong>: hai già percorso 36 metri prima ancora di spostare il piede sul freno.
+                </p>
+            </div>
+        </section>
+
+        <!-- 5. NESSUNA ECCEZIONE -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: var(--safety-color);">5. Nessuna Eccezione</h2>
+            <p class="lesson-text">
+                Le regole del Codice della Strada funzionano solo se sono <strong>universali</strong>. Non esistono eccezioni valide. Ogni volta che qualcuno ne viola una, non sta solo rischiando la propria vita: sta <em>imponendo un rischio a persone innocenti</em> che fanno affidamento sul fatto che tutti rispettino le stesse regole.
+            </p>
+
+            <div class="concept-box" style="border-left-color: var(--safety-color);">
+                <h4 style="color: var(--safety-color); margin-bottom: 1rem;">Le giustificazioni più pericolose</h4>
+                <ul style="color: var(--text-muted); font-size: 0.95rem; list-style-type: none; padding-left: 0; line-height: 2;">
+                    <li>🚫 <em>"Tanto qui non passa mai nessuno"</em> — Basta <strong>una volta</strong> perché la statistica diventi tragedia.</li>
+                    <li>🚫 <em>"Sono un guidatore esperto"</em> — La fisica della frenata non migliora con l'esperienza.</li>
+                    <li>🚫 <em>"Sono solo 10 km/h in più"</em> — A 60 km/h anziché 50, lo spazio di frenata aumenta del <strong>40%</strong>.</li>
+                    <li>🚫 <em>"Ho fretta"</em> — Arrivare 2 minuti prima non vale la vita di nessuno.</li>
+                </ul>
+            </div>
+
+            <p class="lesson-text" style="margin-top: 1.5rem;">
+                In Italia, nel 2023, gli incidenti stradali hanno provocato oltre <strong>3.000 vittime</strong> e <strong>224.000 feriti</strong>. Dietro ogni numero c'è una persona, una famiglia, una vita spezzata. La sicurezza stradale non è burocrazia: è <strong>la forma più concreta di rispetto civico</strong> che possiamo dimostrare ogni giorno.
+            </p>
+
+            <div class="info-box" style="margin-top: 2rem; border-left-color: #10b981; background: rgba(16, 185, 129, 0.05);">
+                <h3 style="color: #10b981; margin-bottom: 0.5rem;">💚 Ricorda</h3>
+                <p class="lesson-text" style="font-size: 0.95rem; font-weight: 600; font-style: italic; margin-bottom: 0;">
+                    "Guidare è un privilegio, non un diritto. Ogni volta che sali in auto, tieni tra le mani non solo il volante, ma la responsabilità della vita di chi ti circonda."
+                </p>
+            </div>
+        </section>
+
+        <!-- 6. QUIZ -->
+        <section class="lesson-section quiz-container" id="quiz-finale">
+            <h2 class="lesson-title" style="color: var(--safety-color);">Quiz di Verifica</h2>
+
+            <div class="quiz-question" id="q1">
+                <h3>1. Se raddoppio la velocità, lo spazio di frenata...</h3>
+                <div class="quiz-options">
+                    <button class="quiz-btn" data-status="wrong">A) raddoppia.</button>
+                    <button class="quiz-btn" data-status="correct">B) quadruplica.</button>
+                    <button class="quiz-btn" data-status="wrong">C) resta uguale perché i freni sono più potenti.</button>
+                    <button class="quiz-btn" data-status="wrong">D) triplica.</button>
+                </div>
+            </div>
+
+            <div class="quiz-question" id="q2">
+                <h3>2. Perché è fondamentale usare le frecce prima di svoltare?</h3>
+                <div class="quiz-options">
+                    <button class="quiz-btn" data-status="wrong">A) Perché sennò la multa è molto cara.</button>
+                    <button class="quiz-btn" data-status="correct">B) Perché comunicano l'intenzione di svolta agli altri, dando il tempo di reagire in anticipo.</button>
+                    <button class="quiz-btn" data-status="wrong">C) Perché consumano energia e scaricano la batteria se non usate.</button>
+                    <button class="quiz-btn" data-status="wrong">D) Perché sono obbligatorie solo sulle autostrade.</button>
+                </div>
+            </div>
+
+            <div class="quiz-question" id="q3">
+                <h3>3. Qual è il limite di velocità in un centro abitato?</h3>
+                <div class="quiz-options">
+                    <button class="quiz-btn" data-status="wrong">A) 70 km/h</button>
+                    <button class="quiz-btn" data-status="correct">B) 50 km/h</button>
+                    <button class="quiz-btn" data-status="wrong">C) 90 km/h</button>
+                    <button class="quiz-btn" data-status="wrong">D) 30 km/h</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Ed. Civica.</p>
+    </footer>
+
+    <script src="sicurezza-stradale.js"></script>
+    <script src="../../js/main.js"></script>
+</body>
+
+</html>
