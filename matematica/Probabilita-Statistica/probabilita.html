@@ -191,6 +191,40 @@
             <p><strong>Esempio:</strong> Se lanci una moneta bilanciata, la probabilità di ottenere "Testa" è $1/2$. Se effettui un secondo lancio, il risultato del primo non influenza minimamente il secondo. La probabilità di ottenere <strong>due volte Testa</strong> consecutivamente è:</p>
             <p>$$1/2 \cdot 1/2 = 1/4 = 25\%$$</p>
 
+            <div class="visual-explanation" style="margin: 2rem 0; text-align: center;">
+                <h3>Perché proprio 1 su 4?</h3>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.5rem;">Visualizziamo lo spazio campionario completo di due lanci consecutivi:</p>
+                
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; max-width: 400px; margin: 0 auto; padding: 1rem; background: rgba(0,0,0,0.2); border-radius: 1rem;">
+                    <!-- Testa, Testa -->
+                    <div style="aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(16, 185, 129, 0.15); border: 2px solid #10B981; border-radius: 10px; transition: 0.3s;" title="Favorevole">
+                        <span style="font-size: 1.5rem;">🪙🪙</span>
+                        <strong style="color: #10B981; font-size: 0.8rem; margin-top: 0.5rem;">TESTA-TESTA</strong>
+                        <span style="font-size: 0.7rem; opacity: 0.8;">Favorevole (1)</span>
+                    </div>
+                    <!-- Testa, Croce -->
+                    <div style="aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(239, 68, 68, 0.05); border: 2px solid rgba(239, 68, 68, 0.2); border-radius: 10px; opacity: 0.6;">
+                        <span style="font-size: 1.5rem;">🪙❌</span>
+                        <strong style="font-size: 0.8rem; margin-top: 0.5rem;">TESTA-CROCE</strong>
+                        <span style="font-size: 0.7rem; opacity: 0.8;">Sfavorevole</span>
+                    </div>
+                    <!-- Croce, Testa -->
+                    <div style="aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(239, 68, 68, 0.05); border: 2px solid rgba(239, 68, 68, 0.2); border-radius: 10px; opacity: 0.6;">
+                        <span style="font-size: 1.5rem;">❌🪙</span>
+                        <strong style="font-size: 0.8rem; margin-top: 0.5rem;">CROCE-TESTA</strong>
+                        <span style="font-size: 0.7rem; opacity: 0.8;">Sfavorevole</span>
+                    </div>
+                    <!-- Croce, Croce -->
+                    <div style="aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(239, 68, 68, 0.05); border: 2px solid rgba(239, 68, 68, 0.2); border-radius: 10px; opacity: 0.6;">
+                        <span style="font-size: 1.5rem;">❌❌</span>
+                        <strong style="font-size: 0.8rem; margin-top: 0.5rem;">CROCE-CROCE</strong>
+                        <span style="font-size: 0.7rem; opacity: 0.8;">Sfavorevole</span>
+                    </div>
+                </div>
+                
+                <p style="margin-top: 1.5rem; font-style: italic;">Sui <strong>4 casi possibili</strong> totali, solo <strong>1</strong> è quello cercato (Testa alla prima E Testa alla seconda).</p>
+            </div>
+
             <div class="interactive-box">
                 <h3>Esercizio: Doppio 20!</h3>
                 <p>In D&D, fare un colpo critico richiede un 20 nel dado a 20 facce (1/20). Qual è la probabilità di fare due critici consecutivi? (Scrivi la frazione)</p>
