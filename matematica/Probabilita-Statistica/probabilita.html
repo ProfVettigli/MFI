@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Probabilità: Calcolare l'Incertezza - MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- MathJax -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+            width: fit-content;
+        }
+        
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+        
+        .back-icon {
+            margin-right: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .hero-section {
+            padding: 4rem 0 2rem;
+            text-align: center;
+        }
+
+        .interactive-box {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 4px solid var(--math-color);
+            padding: 1.5rem;
+            border-radius: 0 1rem 1rem 0;
+            margin: 2rem 0;
+        }
+
+        .interactive-box h3 {
+            color: var(--math-color);
+            margin-bottom: 1rem;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        input[type="text"], input[type="number"], select {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 0.8rem 1rem;
+            border-radius: 0.5rem;
+            flex-grow: 1;
+            font-family: inherit;
+        }
+
+        button {
+            background: var(--math-color);
+            border: none;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: transform 0.2s, opacity 0.2s;
+        }
+
+        button:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
+        }
+
+        .feedback {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            display: none;
+            font-weight: 500;
+        }
+
+        .correct {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10B981;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .incorrect {
+            background: rgba(239, 68, 68, 0.1);
+            color: #EF4444;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .math-gradient {
+            background: linear-gradient(135deg, #3B82F6, #60A5FA);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .lesson-section {
+            margin-bottom: 4rem;
+        }
+
+        .formula-box {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            text-align: center;
+            margin: 1.5rem 0;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+<body>
+    <header class="hero-section">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <a href="../probabilita-statistica.html" class="back-button">
+                    <span class="back-icon">&larr;</span> Torna a Probabilità e Statistica
+                </a>
+            </div>
+            <h1 class="hero-title"><span class="math-gradient">La Probabilità</span></h1>
+            <p class="hero-subtitle">Dalle sfere del drago ai giochi gacha: scopri come calcolare l'incertezza e dominare gli eventi casuali.</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- 1. Spazio Campionatorio -->
+        <section class="lesson-section">
+            <h2>1. Spazio Campionatorio</h2>
+            <p>L'insieme di tutti i possibili risultati di un esperimento casuale si chiama <strong>Spazio Campionatorio</strong> ($\Omega$). È la "mappa" di tutto ciò che può accadere.</p>
+            <p><strong>Esempio:</strong> Nel radar cerca-sfere di Bulma, i risultati possibili sono le sfere da 1 a 7 stelle. <br>
+            $$\Omega = \{1, 2, 3, 4, 5, 6, 7\}$$</p>
+            
+            <div class="interactive-box">
+                <h3>Esercizio: L'Esame dei Chunin</h3>
+                <p>Durante la prima prova (Naruto), hai un foglio con 10 domande numerate da 1 a 10. Se ne estrai una a caso, qual è lo spazio campionatorio? (Scrivilo tra parentesi graffe)</p>
+                <div class="input-group">
+                    <input type="text" id="ans-spazio" placeholder="Es: {1, 2, 3...}">
+                    <button onclick="checkSpazio()">Verifica</button>
+                </div>
+                <div id="feed-spazio" class="feedback"></div>
+            </div>
+        </section>
+
+        <!-- 2. Definizione Classica -->
+        <section class="lesson-section">
+            <h2>2. La Definizione Classica</h2>
+            <p>Si usa quando tutti i risultati sono <strong>equiprobabili</strong> (hanno la stessa chance). La probabilità di un evento $E$ è:</p>
+            <div class="formula-box">
+                $$P(E) = \frac{\text{Casi Favorevoli}}{\text{Casi Possibili}}$$
+            </div>
+            <p><strong>Esempio Exodia:</strong> Yugi ha un mazzo di 40 carte. Nel mazzo ci sono <strong>5 pezzi</strong> distinti di Exodia. Qual è la probabilità di pescare <em>un qualsiasi pezzo del proibito</em> alla prima carta pescata?</p>
+            <p>Favorevoli: 5 (i pezzi). Possibili: 40 (le carte).<br>
+            $P(\text{Exodia}) = 5/40 = 12.5\%$.</p>
+
+            <div class="interactive-box">
+                <h3>Esercizio: I Quattro Imperatori</h3>
+                <p>In un mazzo di 50 carte taglia di <em>One Piece</em>, ci sono 4 carte speciali che rappresentano i **Quattro Imperatori (Yonko)**. Tutte le altre 46 sono pirati comuni. Se estrai una carta a caso, qual è la probabilità (in frazione) di trovare uno degli Imperatori?</p>
+                <div class="input-group">
+                    <input type="text" id="ans-classica" placeholder="Es: 1/10">
+                    <button onclick="checkClassica()">Verifica</button>
+                </div>
+                <div id="feed-classica" class="feedback"></div>
+            </div>
+        </section>
+
+        <!-- 3. Eventi Indipendenti -->
+        <section class="lesson-section">
+            <h2>3. Eventi Indipendenti</h2>
+            <p>Due eventi sono indipendenti se il verificarsi di uno non cambia la probabilità dell'altro. In questo caso, per trovare la probabilità che accadano <strong>entrambi</strong> ($A$ AND $B$), si moltiplicano:</p>
+            <div class="formula-box">
+                $$P(A \cap B) = P(A) \cdot P(B)$$
+            </div>
+            <p><strong>Esempio:</strong> Due cloni ombra di Naruto attaccano due nemici diversi. Se ogni clone ha il 50% ($1/2$) di chance di colpire, la probabilità che <em>entrambi</em> vadano a segno è:</p>
+            <p>$$1/2 \cdot 1/2 = 1/4 = 25\%$$</p>
+
+            <div class="interactive-box">
+                <h3>Esercizio: Doppio 20!</h3>
+                <p>In D&D, fare un colpo critico richiede un 20 nel dado a 20 facce (1/20). Qual è la probabilità di fare due critici consecutivi? (Scrivi la frazione)</p>
+                <div class="input-group">
+                    <input type="text" id="ans-indip" placeholder="Es: 1/100">
+                    <button onclick="checkIndip()">Verifica</button>
+                </div>
+                <div id="feed-indip" class="feedback"></div>
+            </div>
+        </section>
+
+        <!-- 4. Probabilità Condizionata -->
+        <section class="lesson-section">
+            <h2>4. Probabilità Condizionata</h2>
+            <p>Come cambia la probabilità di un evento $A$ se sappiamo che si è già verificato un evento $B$? Si indica con $P(A|B)$:</p>
+            <div class="formula-box">
+                $$P(A|B) = \frac{P(A \cap B)}{P(B)}$$
+            </div>
+            <p><strong>Esempio Among Us:</strong> La probabilità base che il giocatore Rosso sia l'impostore è $1/10$. Ma se lo vedi uscire da un condotto (Evento B), la probabilità condizionata che sia lui l'impostore schizza quasi al 100%!</p>
+        </section>
+
+        <!-- 5. Probabilità Bayesiana -->
+        <section class="lesson-section">
+            <h2>5. La Visione Bayesiana</h2>
+            <p>Consiste nell'aggiornare la stima di una "ipotesi" man mano che arrivano nuove "prove". È il metodo del detective per eccellenza.</p>
+            <div class="formula-box">
+                $$P(H|E) = \frac{P(E|H) \cdot P(H)}{P(E)}$$
+            </div>
+            <p><strong>Esempio Death Note:</strong> L stima inizialmente al 5% che Light sia Kira. Ogni volta che Light si comporta in modo sospetto (nuova evidenza $E$), L usa (mentalmente) il teorema di Bayes per aggiornare quel 5% e portarlo sempre più in alto.</p>
+        </section>
+
+        <!-- 6. Definizione Frequentista -->
+        <section class="lesson-section">
+            <h2>6. Definizione Frequentista</h2>
+            <p>Quando non conosciamo il futuro, guardiamo al passato. Se ripetiamo un esperimento $N$ volte e l'evento accade $n$ volte:</p>
+            <p>$$P(E) = \lim_{N\to\infty} \frac{n}{N}$$</p>
+            <p><strong>Esercizio: Farming Raro</strong><br>
+            Hai sconfitto 2000 mostri e ottenuto 10 oggetti leggendari. Qual è la probabilità frequentista stimata (percentuale)?</p>
+            <div class="interactive-box">
+                <div class="input-group">
+                    <input type="number" id="ans-freq" step="0.1" placeholder="Es: 0.5">
+                    <button onclick="checkFreq()">Verifica</button>
+                </div>
+                <div id="feed-freq" class="feedback"></div>
+            </div>
+        </section>
+
+        <!-- 7. Definizione Soggettiva -->
+        <section class="lesson-section">
+            <h2>7. Definizione Soggettiva</h2>
+            <p>È il <strong>grado di fiducia</strong>. Utile per eventi unici (chi vincerà il prossimo campionato?).</p>
+
+            <div class="interactive-box">
+                <h3>Quiz Veloce</h3>
+                <p>La probabilità soggettiva è identica per ogni persona?</p>
+                <div class="input-group">
+                    <select id="ans-sogg">
+                        <option value="">Seleziona...</option>
+                        <option value="si">Sì, è universale.</option>
+                        <option value="no">No, dipende dalle informazioni possedute.</option>
+                    </select>
+                    <button onclick="checkSogg()">Verifica</button>
+                </div>
+                <div id="feed-sogg" class="feedback"></div>
+            </div>
+        </section>
+
+        <!-- Quiz Finale Centralizzato -->
+        <section class="lesson-section">
+            <h2 style="text-align: center; margin-bottom: 2rem;">Verifica le tue Conoscenze</h2>
+            <div id="quiz-area"></div>
+            <div id="quiz-score" style="text-align: center; font-size: 1.5rem; font-weight: 800; margin-top: 2rem;"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Matematica.</p>
+    </footer>
+
+    <script src="../../js/main.js"></script>
+    <script src="probabilita.js"></script>
+</body>
+</html>
