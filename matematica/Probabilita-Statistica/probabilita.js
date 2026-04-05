@@ -128,10 +128,10 @@ function checkSpazio() {
 
 function checkClassica() {
     let ans = document.getElementById('ans-classica').value.replace(/\s/g, '');
-    if (ans === '4/50' || ans === '2/25') {
-        showFeedback('feed-classica', true, "Ottimo lavoro! 4 Imperatori (favorevoli) su 50 pirati nel mazzo (possibili).");
+    if (ans === '4/40' || ans === '1/10') {
+        showFeedback('feed-classica', true, "Ottimo lavoro! 4 Assi (favorevoli) su 40 carte totali (possibili). Pronto per una partita a Scopa?");
     } else {
-        showFeedback('feed-classica', false, "Mancato! Il rapporto è 4 (Imperatori) fratto 50 (carte totali). Riprova!");
+        showFeedback('feed-classica', false, "Sbagliato! Il rapporto è 4 (Assi) fratto 40 (carte totali). Riprova!");
     }
 }
 
