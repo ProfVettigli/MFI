@@ -262,6 +262,80 @@
             <div class="feedback-msg" id="part-feedback"></div>
         </section>
 
+        <!-- ESEMPI AVANZATI DI DIAGRAMMI DI EULERO VENN -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">5. Risolvere Problemi con Eulero-Venn</h2>
+            <p class="lesson-text">I diagrammi di Eulero-Venn sono utilissimi per risolvere problemi logici in cui dobbiamo visualizzare relazioni e intersezioni tra più insiemi complessi.</p>
+
+            <h3 style="margin-top: 1rem; color: var(--text-main);">Esempio 1: Maggiorenni, Patentati e Biondi</h3>
+            <p class="lesson-text">Come si rappresentano mediante diagrammi di Eulero-Venn i seguenti insiemi? <strong>Maggiorenni (M)</strong>, <strong>Patentati (P)</strong> e <strong>Biondi (B)</strong>.</p>
+            <ul style="color: var(--text-muted); font-weight: 300; margin-left: 1.5rem; margin-top: 0.5rem; margin-bottom: 1rem; list-style-type: disc;">
+                <li>Per avere la patente bisogna essere maggiorenni (in Italia), quindi l'insieme dei Patentati è un <strong>sottoinsieme</strong> dei Maggiorenni. (P ⊆ M)</li>
+                <li>Le persone bionde possono essere sia maggiorenni che minorenni, e possono avere o non avere la patente. Quindi l'insieme dei Biondi <strong>interseca</strong> entrambi.</li>
+            </ul>
+            <div style="display: flex; justify-content: center; margin: 2rem 0;">
+                <svg width="300" height="250" viewBox="0 0 300 250">
+                    <!-- M: Maggiorenni (Cerchio grande) -->
+                    <circle cx="120" cy="125" r="90" fill="rgba(59, 130, 246, 0.2)" stroke="#3B82F6" stroke-width="3"/>
+                    <text x="50" y="55" font-family="sans-serif" font-size="16" font-weight="bold" fill="#3B82F6">M (Maggiorenni)</text>
+
+                    <!-- P: Patentati (Sottoinsieme, cerchio piccolo dentro M) -->
+                    <circle cx="100" cy="140" r="40" fill="rgba(16, 185, 129, 0.4)" stroke="#10B981" stroke-width="3"/>
+                    <text x="75" y="145" font-family="sans-serif" font-size="14" font-weight="bold" fill="#10B981">P (Patentati)</text>
+
+                    <!-- B: Biondi (Cerchio che interseca M e P e anche l'esterno) -->
+                    <circle cx="200" cy="125" r="75" fill="rgba(245, 158, 11, 0.3)" stroke="#F59E0B" stroke-width="3"/>
+                    <text x="220" y="80" font-family="sans-serif" font-size="16" font-weight="bold" fill="#F59E0B">B (Biondi)</text>
+                </svg>
+            </div>
+
+            <h3 style="margin-top: 2rem; color: var(--text-main);">Esempio 2: Anime & Manga (Naruto)</h3>
+            <p class="lesson-text">Rappresentiamo: <strong>Ninja (N)</strong>, <strong>Utilizzatori dello Sharingan (S)</strong>, e <strong>Spadaccini (W)</strong>.</p>
+            <ul style="color: var(--text-muted); font-weight: 300; margin-left: 1.5rem; margin-top: 0.5rem; margin-bottom: 1rem; list-style-type: disc;">
+                <li>Lo Sharingan è un'abilità oculare, tutti i suoi utilizzatori conosciuti (come gli Uchiha) sono Ninja. Quindi S ⊆ N.</li>
+                <li>Esistono Ninja Spadaccini (es. Kisame, Zabuza) e persone che non sono Ninja ma usano le spade (es. Samurai del Paese del Ferro). Quindi W interseca N.</li>
+                <li>Ci sono utilizzatori di Sharingan che usano anche la spada (es. Sasuke, Kakashi). Quindi W interseca S (e siccome S è dentro N, l'intersezione è dentro N).</li>
+            </ul>
+            <div style="display: flex; justify-content: center; margin: 2rem 0;">
+                <svg width="350" height="250" viewBox="0 0 350 250">
+                    <!-- N: Ninja -->
+                    <circle cx="130" cy="125" r="100" fill="rgba(139, 92, 246, 0.2)" stroke="#8B5CF6" stroke-width="3"/>
+                    <text x="40" y="50" font-family="sans-serif" font-size="16" font-weight="bold" fill="#8B5CF6">N (Ninja)</text>
+
+                    <!-- S: Sharingan -->
+                    <circle cx="110" cy="140" r="45" fill="rgba(239, 68, 68, 0.3)" stroke="#EF4444" stroke-width="3"/>
+                    <text x="80" y="145" font-family="sans-serif" font-size="14" font-weight="bold" fill="#EF4444">S (Sharingan)</text>
+
+                    <!-- W: Spadaccini -->
+                    <circle cx="220" cy="125" r="80" fill="rgba(107, 114, 128, 0.3)" stroke="#6B7280" stroke-width="3"/>
+                    <text x="250" y="80" font-family="sans-serif" font-size="16" font-weight="bold" fill="#6B7280">W (Spadaccini)</text>
+                </svg>
+            </div>
+
+            <h3 style="margin-top: 2rem; color: var(--text-main);">Esempio 3: Comics (Marvel)</h3>
+            <p class="lesson-text">Rappresentiamo: <strong>Eroi Marvel (E)</strong>, <strong>Mutanti (M)</strong> e <strong>Cyborg/Robot (C)</strong>.</p>
+            <ul style="color: var(--text-muted); font-weight: 300; margin-left: 1.5rem; margin-top: 0.5rem; margin-bottom: 1rem; list-style-type: disc;">
+                <li>I Mutanti (es. X-Men) sono Eroi Marvel, ma non tutti gli Eroi sono mutanti. Quindi M ⊆ E. (Per semplicità escludiamo i villain in questo insieme)</li>
+                <li>I Cyborg o Robot (es. Visione, Cyborg, Ultron) possono essere Eroi Marvel o meno (o di altri universi, es. DC), quindi C interseca E.</li>
+                <li>Esistono mutanti che sono anche cyborg (es. Cable, Wolverine in alcune versioni). Quindi M interseca C.</li>
+            </ul>
+            <div style="display: flex; justify-content: center; margin: 2rem 0;">
+                <svg width="350" height="250" viewBox="0 0 350 250">
+                    <!-- E: Eroi Marvel -->
+                    <circle cx="140" cy="125" r="100" fill="rgba(236, 72, 153, 0.2)" stroke="#EC4899" stroke-width="3"/>
+                    <text x="40" y="50" font-family="sans-serif" font-size="16" font-weight="bold" fill="#EC4899">E (Eroi Marvel)</text>
+
+                    <!-- M: Mutanti -->
+                    <circle cx="120" cy="140" r="50" fill="rgba(14, 165, 233, 0.3)" stroke="#0EA5E9" stroke-width="3"/>
+                    <text x="85" y="145" font-family="sans-serif" font-size="14" font-weight="bold" fill="#0EA5E9">M (Mutanti)</text>
+
+                    <!-- C: Cyborg/Robot -->
+                    <circle cx="230" cy="125" r="80" fill="rgba(168, 162, 158, 0.4)" stroke="#78716C" stroke-width="3"/>
+                    <text x="255" y="80" font-family="sans-serif" font-size="16" font-weight="bold" fill="#78716C">C (Cyborg)</text>
+                </svg>
+            </div>
+        </section>
+
         <!-- QUIZ -->
         <section class="lesson-section quiz-container">
             <h2 class="lesson-title">Quiz di Riepilogo</h2>
