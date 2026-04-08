@@ -288,9 +288,71 @@
             </div>
         </section>
 
+        <!-- COME SONO FATTE LE PAGINE WEB -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #ec4899;">6. Com'è fatta una Pagina Web? L'Anatomia di Internet</h2>
+            <p class="lesson-text">
+                Navigando in sicurezza, avrai notato che le pagine web sono bellissime e piene di pulsanti. Ma cosa c'è "sotto il cofano"? Una pagina web moderna è come un corpo umano, costruito con tre tecnologie fondamentali:
+            </p>
+
+            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
+                <!-- HTML -->
+                <div class="concept-card" style="border-top: 4px solid #e34c26;">
+                    <h3 style="color: #e34c26; margin-bottom: 0.8rem;">🦴 HTML (Ossa)</h3>
+                    <p style="font-size: 0.9rem; line-height: 1.6;">
+                        Significa <em>HyperText Markup Language</em>. Definisce la <strong>struttura</strong> e i contenuti: qui ci va un titolo, qui un paragrafo, qui un'immagine. Senza HTML, la pagina non esisterebbe.
+                    </p>
+                </div>
+                <!-- CSS -->
+                <div class="concept-card" style="border-top: 4px solid #264de4;">
+                    <h3 style="color: #264de4; margin-bottom: 0.8rem;">🎨 CSS (Pelle e Vestiti)</h3>
+                    <p style="font-size: 0.9rem; line-height: 1.6;">
+                        Significa <em>Cascading Style Sheets</em>. Si occupa dello <strong>stile</strong>: i colori, i font, le ombre e la disposizione degli elementi. È ciò che rende una pagina piacevole alla vista.
+                    </p>
+                </div>
+                <!-- JS -->
+                <div class="concept-card" style="border-top: 4px solid #f7df1e;">
+                    <h3 style="color: #f7df1e; margin-bottom: 0.8rem;">🧠 JavaScript (Muscoli)</h3>
+                    <p style="font-size: 0.9rem; line-height: 1.6;">
+                        È il linguaggio di <strong>programmazione</strong>. Gestisce l'interattività: cosa succede quando clicchi un pulsante, le animazioni complesse e lo scambio di dati con il server.
+                    </p>
+                </div>
+            </div>
+
+            <!-- INTERACTIVE WEB BUILDER -->
+            <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 2rem; margin-top: 3rem;">
+                <h3 style="text-align: center; margin-bottom: 2rem;">Laboratorio Interattivo: Costruisci il Bottone</h3>
+                <div style="display: flex; gap: 3rem; align-items: center; justify-content: center; flex-wrap: wrap;">
+                    
+                    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                        <label class="check-container" style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                            <input type="checkbox" id="check-html" checked disabled style="width: 20px; height: 20px;">
+                            <span style="font-size: 1.1rem; color: #e34c26;">Attiva HTML (Struttura)</span>
+                        </label>
+                        <label class="check-container" style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                            <input type="checkbox" id="check-css" style="width: 20px; height: 20px;">
+                            <span style="font-size: 1.1rem; color: #264de4;">Attiva CSS (Stile)</span>
+                        </label>
+                        <label class="check-container" style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                            <input type="checkbox" id="check-js" style="width: 20px; height: 20px;">
+                            <span style="font-size: 1.1rem; color: #f7df1e;">Attiva JavaScript (Logica)</span>
+                        </label>
+                    </div>
+
+                    <div id="preview-area" style="width: 300px; height: 200px; background: rgba(0,0,0,0.3); border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.05); text-align: center; padding: 1rem;">
+                        <p id="preview-text" style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1rem;">Anteprima della Pagina</p>
+                        <!-- THE BUTTON -->
+                        <button id="lab-button" style="all: revert; display: block;">Cliccami</button>
+                        <p id="lab-feedback" style="margin-top: 1rem; font-size: 0.9rem; height: 1.2rem;"></p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
         <!-- QUIZ -->
         <section id="quiz-finale" class="lesson-section quiz-container">
-            <h2 class="lesson-title" style="color: #3b82f6; text-align: center;">Verifica Cognitiva (6 Domande)</h2>
+            <h2 class="lesson-title" style="color: #3b82f6; text-align: center;">Verifica Cognitiva Finale</h2>
             <p class="lesson-text" style="text-align: center; font-size: 0.95rem; margin-bottom: 2rem;">Metti alla prova
                 la tua prudenza sulla navigazione telematica.</p>
             <div id="quiz-area"></div>

@@ -5,11 +5,11 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     
-    /* --- QUIZ (5 questions) --- */
+    /* --- QUIZ (9 questions) --- */
     const quizData = [
         {
             q: "1. Che cos'è fondamentalmente un 'Account' informatico?",
-            a: ["L'insieme dell'hardware fisico presente nella stanza.", "Un programma per calcolare i conti matematici complessi.", "Il proprio spazio logico, protetto, che isola e definisce la tua identità e i tuoi permessi all'interno di un sistema o sito.", "Un virus benevolo del computer."],
+            a: ["L'insieme dell'hardware fisico presente nella stanza.", "Un programa per calcolare i conti matematici complessi.", "Il proprio spazio logico, protetto, che isola e definisce la tua identità e i tuoi permessi all'interno di un sistema o sito.", "Un virus benevolo del computer."],
             c: 2
         },
         {
@@ -36,6 +36,21 @@ document.addEventListener('DOMContentLoaded', () => {
             q: "6. Qual è l'enorme vantaggio dell'Autenticazione a Due Fattori (2FA)?",
             a: ["Rende impossibile dimenticarsi la password della banca.", "Richiede non solo 'qualcosa che sai' (la password) ma anche 'qualcosa che hai' (il tuo smartphone fisico). Se l'hacker ruba la password online, resterà comunque bloccato senza il tuo telefono in mano.", "Raddoppia semplicemente la lunghezza minima della password da 8 a 16 caratteri.", "Evita il surriscaldamento del microprocessore."],
             c: 1
+        },
+        {
+            q: "7. Quale tra questi linguaggi viene paragonato allo 'scheletro' (struttura) di una pagina web?",
+            a: ["CSS", "JavaScript", "HTML (HyperText Markup Language)", "C++"],
+            c: 2
+        },
+        {
+            q: "8. Se voglio cambiare il colore di tutti i titoli della mia pagina in rosa, quale linguaggio devo usare?",
+            a: ["HTML", "CSS (Cascading Style Sheets)", "Python", "SQL"],
+            c: 1
+        },
+        {
+            q: "9. A cosa serve JavaScript all'interno di un sito?",
+            a: ["A definire quanto sono grandi i margini delle immagini.", "A scrivere il testo dei paragrafi.", "A gestire l'interattività e la logica, come far comparire un messaggio quando clicchi un tasto.", "È un antivirus che protegge la navigazione."],
+            c: 2
         }
     ];
 
@@ -45,6 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let answered = 0;
 
     if (quizArea) {
+        quizArea.innerHTML = ""; // Clear existing
         quizData.forEach((data, index) => {
             const card = document.createElement('div');
             card.className = 'quiz-question';
@@ -76,31 +92,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 btn.onclick = () => {
                     if (btn.classList.contains('picked')) {
-                        return; // Non fare niente se questo bottone è già stato cliccato
+                        return;
                     }
-                    
-                    // Verifichiamo la correttezza, stile "trial and error"
                     if (oIdx === data.c) {
                         btn.style.background = "#10B981";
                         btn.style.borderColor = "#10B981";
                         btn.innerHTML += " <strong>✓ Esatto!</strong>";
-                        
-                        // Segniamo la risposta giusta e otteniamo il punto solo se non ci sono stati errori precedenti
-                        if (!card.classList.contains('attempted')) {
-                            score++;
-                        }
-                        
-                        // Disabilita tutti per questa domanda
+                        if (!card.classList.contains('attempted')) score++;
                         const sibs = optionsGroup.children;
                         for (let s of sibs) {
                             s.style.pointerEvents = "none";
                             s.style.opacity = s === btn ? "1" : "0.5";
                         }
-                        
                         answered++;
                         if (answered === quizData.length) {
                             quizScore.innerHTML = `Punteggio Finale: ${score}/${quizData.length}`;
-                            quizScore.style.color = score >= (quizData.length - 1) ? "#10B981" : "#F59E0B";
+                            quizScore.style.color = score >= (quizData.length - 2) ? "#10B981" : "#F59E0B";
                         }
                     } else {
                         btn.style.background = "#EF4444";
@@ -108,15 +115,48 @@ document.addEventListener('DOMContentLoaded', () => {
                         btn.innerHTML += " <strong>✗ Sbagliato, riprova</strong>";
                         btn.classList.add('picked');
                         btn.style.pointerEvents = "none";
-                        card.classList.add('attempted'); // Segna come domanda con errore
+                        card.classList.add('attempted');
                     }
                 };
-
                 optionsGroup.appendChild(btn);
             });
-
             card.appendChild(optionsGroup);
             quizArea.appendChild(card);
         });
+    }
+
+    /* --- WEB BUILDER LAB --- */
+    const checkCss = document.getElementById('check-css');
+    const checkJs = document.getElementById('check-js');
+    const labButton = document.getElementById('lab-button');
+    const labFeedback = document.getElementById('lab-feedback');
+
+    function updateLab() {
+        if (checkCss.checked) {
+            labButton.style.padding = "12px 24px";
+            labButton.style.backgroundColor = "#3b82f6";
+            labButton.style.color = "white";
+            labButton.style.border = "none";
+            labButton.style.borderRadius = "8px";
+            labButton.style.cursor = "pointer";
+            labButton.style.fontWeight = "bold";
+            labButton.style.boxShadow = "0 4px 10px rgba(0,0,0,0.3)";
+        } else {
+            labButton.style = "all: revert;";
+            labButton.style.display = "block";
+        }
+    }
+
+    if (checkCss && checkJs && labButton) {
+        checkCss.onchange = updateLab;
+        labButton.onclick = () => {
+            if (checkJs.checked) {
+                labFeedback.textContent = "JavaScript attivo: Hai cliccato! 🎉";
+                labFeedback.style.color = "#10b981";
+            } else {
+                labFeedback.textContent = "Logica assente: non succede nulla...";
+                labFeedback.style.color = "#9ca3af";
+            }
+        };
     }
 });

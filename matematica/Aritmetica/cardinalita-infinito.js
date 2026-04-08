@@ -182,6 +182,86 @@ function initCardinalita() {
 
     renderHotel();
 
+    /* --- DENSITY EXPLORER --- */
+    const densityPointsDiv = document.getElementById('density-points');
+    const autoDenseBtn = document.getElementById('btn-auto-dense');
+    const resetDenseBtn = document.getElementById('btn-reset-density');
+    const formulaDiv = document.getElementById('density-formula');
+    
+    let points = [0, 1]; // Start with 0 and 1
+    
+    function renderDensity() {
+        if(!densityPointsDiv) return;
+        densityPointsDiv.innerHTML = "";
+        
+        points.sort((a,b) => a-b);
+        
+        points.forEach((p, i) => {
+            const point = document.createElement('div');
+            point.style.position = "absolute";
+            point.style.left = `${p * 100}%`;
+            point.style.top = "50%";
+            point.style.width = "12px";
+            point.style.height = "12px";
+            point.style.background = "#10B981";
+            point.style.borderRadius = "50%";
+            point.style.transform = "translate(-50%, -50%)";
+            point.style.cursor = "pointer";
+            point.style.boxShadow = "0 0 10px rgba(16, 185, 129, 0.5)";
+            point.title = `x = ${p}`;
+            
+            // Text label for some points
+            if (p === 0 || p === 1 || points.length < 10) {
+                const label = document.createElement('span');
+                label.style.position = "absolute";
+                label.style.top = "20px";
+                label.style.left = "50%";
+                label.style.transform = "translateX(-50%)";
+                label.style.fontSize = "0.8rem";
+                label.textContent = p.toFixed(2);
+                point.appendChild(label);
+            }
+            
+            densityPointsDiv.appendChild(point);
+        });
+    }
+
+    if (autoDenseBtn) {
+        autoDenseBtn.onclick = () => {
+            if (points.length > 50) {
+                formulaDiv.textContent = "È troppo denso per vederlo, ma continua all'infinito!";
+                autoDenseBtn.disabled = true;
+                return;
+            }
+            
+            const newPoints = [];
+            for (let i = 0; i < points.length - 1; i++) {
+                const mid = (points[i] + points[i+1]) / 2;
+                newPoints.push(mid);
+            }
+            
+            points = [...points, ...newPoints];
+            renderDensity();
+            
+            const p1 = points[0];
+            const p2 = points[1];
+            formulaDiv.innerHTML = `Trovo il punto medio: \\( \\frac{${p1.toFixed(2)} + ${p2.toFixed(2)}}{2} = ${((p1+p2)/2).toFixed(2)} \\)`;
+            // Trigger MathJax if present, otherwise just keep it as text
+            if (window.MathJax) MathJax.typeset();
+        };
+    }
+
+    if (resetDenseBtn) {
+        resetDenseBtn.onclick = () => {
+            points = [0, 1];
+            autoDenseBtn.disabled = false;
+            formulaDiv.textContent = "Scegli due punti per trovare il medio";
+            renderDensity();
+        };
+    }
+
+    renderDensity();
+
     /* --- QUIZ GENERATION --- */
     const quizData = [
         {

@@ -215,6 +215,39 @@
                 4) 3/1 <br>
                 ...le conteremo TUTTE, assegnando a ciascuna frazione il suo unico numero identificativo Naturale!
             </p>
+
+            <!-- SUBSECTION: OVUNQUE DENSO -->
+            <div style="margin-top: 3rem; padding: 2rem; background: rgba(16, 185, 129, 0.05); border-radius: 12px; border: 1px dashed #10B981;">
+                <h3 style="color: #10B981; margin-bottom: 1rem;">2.1 Il concetto di "Ovunque Denso"</h3>
+                <p class="lesson-text">
+                    C'è una differenza fondamentale tra i numeri Naturali e quelli Razionali: la <strong>densità</strong>. 
+                </p>
+                <p class="lesson-text" style="font-size: 0.95rem;">
+                    Se prendi due numeri naturali consecutivi, come 2 e 3, in mezzo non c'è "niente". L'insieme dei naturali è <em>discreto</em>. 
+                    Ma i Razionali sono <strong>ovunque densi</strong>: tra due frazioni qualsiasi, non importa quanto siano vicine, ne puoi trovare sempre un'altra (e quindi infinite altre!).
+                </p>
+
+                <div class="map-box" style="background: rgba(0,0,0,0.2); border: 2px solid #10B981;">
+                    <p style="color: #10B981; font-weight: bold; margin-bottom: 1.5rem;">Esploratore di Densità</p>
+                    <div id="density-line-container" style="position: relative; height: 100px; margin: 2rem 0; background: rgba(255,255,255,0.05); border-radius: 50px; display: flex; align-items: center; padding: 0 40px;">
+                        <div style="position: absolute; left: 40px; top: 50%; transform: translateY(-50%); width: calc(100% - 80px); height: 2px; background: #10B981; opacity: 0.3;"></div>
+                        <div id="density-points" style="position: relative; width: 100%; height: 100%;">
+                            <!-- Points generated here -->
+                        </div>
+                    </div>
+                    <div id="density-formula" style="font-family: 'serif'; font-size: 1.5rem; margin-bottom: 1.5rem; color: #FCD34D; min-height: 2rem;">
+                        Scegli due punti per trovare il medio
+                    </div>
+                    <button class="btn-gen" id="btn-reset-density" style="background: #475569; margin-right: 1rem;">Reset</button>
+                    <button class="btn-gen" id="btn-auto-dense" style="background: #10B981;">Riempi all'infinito</button>
+                </div>
+
+                <div style="margin-top: 2rem; padding: 1rem; background: rgba(255, 255, 255, 0.02); border-left: 4px solid #FCD34D; font-style: italic;">
+                    <p class="lesson-text" style="margin-bottom: 0;">
+                        <strong>Curiosità Matematica (e non):</strong> In matematica, i razionali sono ovunque densi sulla retta reale. Gli scienziati hanno però osservato che esiste un altro insieme avente la stessa proprietà: l'insieme delle <strong>persone stupide</strong>. Non importa quanto tu cerchi di restringere il campo o di isolarti, ne troverai sempre almeno una tra te e il tuo prossimo obiettivo.
+                    </p>
+                </div>
+            </div>
         </section>
 
         <!-- HILBERT HOTEL -->

@@ -261,6 +261,119 @@
             </div>
         </section>
 
+        <!-- CONVERSIONI -->
+        <section class="lesson-section" style="background: rgba(16, 185, 129, 0.05); padding: 2.5rem; border-radius: 20px; border: 1px solid rgba(16, 185, 129, 0.2);">
+            <h2 class="lesson-title" style="color: var(--cinematica-color);">1.1 Conversioni e Sistemi di Misura</h2>
+            <p class="lesson-text">
+                Oltre al Sistema Internazionale (SI), nella vita quotidiana usiamo spesso altre unità di misura. È fondamentale saperle convertire per non commettere errori di calcolo!
+            </p>
+
+            <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 2rem;">
+                <div class="data-card" style="text-align: left; background: rgba(255,255,255,0.02);">
+                    <h3 style="color: #60A5FA; margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.5rem;"><span>📏</span> Lunghezza: Metri vs Pollici</h3>
+                    <p class="lesson-text" style="font-size: 0.95rem; line-height: 1.6;">
+                        Anche se il metro è lo standard, i <strong>pollici (inches)</strong> sono molto usati, ad esempio per la diagonale degli schermi. 
+                        <br><br>
+                        <span style="color: #FCD34D; font-weight: bold; font-size: 1.1rem; border-bottom: 1px dashed #FCD34D;">1 pollice (") = 2.54 cm = 0.0254 m</span>
+                        <br><br>
+                        <em>Esempio:</em> Un monitor da 24" ha una diagonale di circa \(24 \times 2.54 = 60.96 \, cm\).
+                    </p>
+                </div>
+
+                <div class="data-card" style="text-align: left; background: rgba(255,255,255,0.02);">
+                    <h3 style="color: #F87171; margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.5rem;"><span>🚀</span> Velocità: m/s vs km/h</h3>
+                    <p class="lesson-text" style="font-size: 0.95rem; line-height: 1.6;">
+                        In fisica usiamo i \(m/s\), ma il contachilometri dell'auto segna \(km/h\). Come passare dall'uno all'altro?
+                        <br><br>
+                        Ricorda il "numero magico": <strong style="font-size: 1.3rem; color: #10B981;">3.6</strong>.
+                        <br><br>
+                        • Per passare da <strong>m/s</strong> a <strong>km/h</strong> &rarr; <span style="background: rgba(16, 185, 129, 0.1); padding: 2px 6px; border-radius: 4px;">moltiplica per 3.6</span>.
+                        <br>
+                        • Per passare da <strong>km/h</strong> a <strong>m/s</strong> &rarr; <span style="background: rgba(239, 68, 68, 0.1); padding: 2px 6px; border-radius: 4px;">dividi per 3.6</span>.
+                    </p>
+                </div>
+            </div>
+
+            <!-- INTERACTIVE CONVERTER -->
+            <div class="simulator-container" style="margin-top: 3rem; border: 2px solid var(--cinematica-color); background: rgba(0,0,0,0.4);">
+                <h3 style="text-align: center; margin-bottom: 2rem; color: var(--cinematica-color);">Calcolatore di Conversione Rapida</h3>
+                <div style="display: flex; justify-content: center; align-items: center; gap: 2rem; flex-wrap: wrap;">
+                    <div class="control-group" style="width: 250px;">
+                        <label class="control-label" style="text-align: center; display: block; margin-bottom: 0.5rem;">Metri al secondo (m/s)</label>
+                        <input type="number" id="input-ms" value="1" step="any" style="background: rgba(255,255,255,0.05); border: 2px solid #4a5568; color: #10B981; padding: 15px; border-radius: 12px; font-size: 1.5rem; width: 100%; text-align: center; font-weight: 800; outline: none; transition: border-color 0.3s;">
+                    </div>
+                    <div style="font-size: 3rem; color: var(--cinematica-color); animation: bounce 2s infinite ease-in-out;">⇄</div>
+                    <div class="control-group" style="width: 250px;">
+                        <label class="control-label" style="text-align: center; display: block; margin-bottom: 0.5rem;">Kilometri orari (km/h)</label>
+                        <input type="number" id="input-kmh" value="3.6" step="any" style="background: rgba(255,255,255,0.05); border: 2px solid #4a5568; color: #F87171; padding: 15px; border-radius: 12px; font-size: 1.5rem; width: 100%; text-align: center; font-weight: 800; outline: none; transition: border-color 0.3s;">
+                    </div>
+                </div>
+                <div id="conv-logic-display" style="margin-top: 2rem; text-align: center; font-family: 'Inter', sans-serif; color: var(--text-muted); font-size: 1.1rem; background: rgba(255,255,255,0.02); padding: 1rem; border-radius: 8px;">
+                    Perché 3.6? Ci sono 1000m in 1km e 3600s in 1h. <br>
+                    <span style="color: #FCD34D;">\(1000/3600 = 1/3.6\)</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- STRUMENTI DI MISURA -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">1.2 Gli Strumenti del Fisico</h2>
+            <p class="lesson-text">
+                Per misurare posizione, tempo e velocità abbiamo bisogno di strumenti specifici. Ogni strumento di misura è caratterizzato da alcune proprietà fondamentali:
+            </p>
+
+            <div class="info-box" style="background: rgba(255, 255, 255, 0.05); border-left-color: #FCD34D; margin-bottom: 3rem;">
+                <h3 style="color: #FCD34D; margin-bottom: 1rem; font-size: 1.2rem;">Proprietà degli Strumenti</h3>
+                <ul style="list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+                    <li><strong style="color: var(--cinematica-color);">Portata:</strong> Il valore massimo che lo strumento può misurare.</li>
+                    <li><strong style="color: var(--cinematica-color);">Sensibilità:</strong> La più piccola variazione di grandezza che lo strumento può rilevare.</li>
+                    <li><strong style="color: var(--cinematica-color);">Accuratezza:</strong> La capacità dello strumento di fornire un valore vicino a quello reale.</li>
+                    <li><strong style="color: var(--cinematica-color);">Prontezza:</strong> La velocità con cui lo strumento risponde a una variazione della grandezza.</li>
+                </ul>
+            </div>
+
+            <div class="grid" style="gap: 2rem;">
+                <!-- METRO -->
+                <div class="card physics-card" style="border-top: 4px solid #3B82F6;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">📏</div>
+                    <h3 class="card-title">Il Metro (Asta Metrica)</h3>
+                    <p class="card-desc" style="margin-bottom: 1.5rem;">Utilizzato per misurare la <strong>posizione</strong> e lo <strong>spazio percorso</strong> (\(s\)).</p>
+                    <ul style="text-align: left; font-size: 0.9rem; color: var(--text-muted); line-height: 1.8;">
+                        <li><strong>Esempio:</strong> Metro a nastro da cantiere.</li>
+                        <li><strong>Portata:</strong> Tipicamente \(3\,m\) o \(5\,m\).</li>
+                        <li><strong>Sensibilità:</strong> \(1\,mm\) (la tacca più piccola).</li>
+                        <li><strong>Accuratezza:</strong> Alta per misure statiche.</li>
+                    </ul>
+                </div>
+
+                <!-- CRONOMETRO -->
+                <div class="card physics-card" style="border-top: 4px solid #8B5CF6;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">⏱️</div>
+                    <h3 class="card-title">Il Cronometro</h3>
+                    <p class="card-desc" style="margin-bottom: 1.5rem;">Indispensabile per misurare l'<strong>intervallo di tempo</strong> (\(\Delta t\)).</p>
+                    <ul style="text-align: left; font-size: 0.9rem; color: var(--text-muted); line-height: 1.8;">
+                        <li><strong>Esempio:</strong> Cronometro digitale professionale.</li>
+                        <li><strong>Portata:</strong> Spesso fino a \(99\) ore, \(59\) min, \(59\) sec.</li>
+                        <li><strong>Sensibilità:</strong> \(0.01\,s\) o addirittura \(0.001\,s\).</li>
+                        <li><strong>Accuratezza:</strong> Molto elevata, basata su oscillatori al quarzo.</li>
+                    </ul>
+                </div>
+
+                <!-- TACHIMETRO -->
+                <div class="card physics-card" style="border-top: 4px solid #EF4444;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🏎️</div>
+                    <h3 class="card-title">Il Tachimetro</h3>
+                    <p class="card-desc" style="margin-bottom: 1.5rem;">Misura la <strong>velocità istantanea</strong> (\(v\)) di un veicolo in movimento.</p>
+                    <ul style="text-align: left; font-size: 0.9rem; color: var(--text-muted); line-height: 1.8;">
+                        <li><strong>Esempio:</strong> Tachimetro analogico o digitale dell'auto.</li>
+                        <li><strong>Portata:</strong> Solitamente fino a \(220-260 \, km/h\).</li>
+                        <li><strong>Sensibilità:</strong> \(1 \, km/h\) o \(5 \, km/h\) (se analogico).</li>
+                        <li><strong>Accuratezza:</strong> Generalmente tarato per segnare una velocità leggermente superiore a quella reale per sicurezza.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
         <!-- MOTO RETTILINEO UNIFORME -->
         <section class="lesson-section">
             <h2 class="lesson-title">2. Moto Rettilineo Uniforme (MRU)</h2>

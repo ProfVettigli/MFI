@@ -5,32 +5,67 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     
-    /* --- QUIZ FINALE --- */
+    /* --- QUIZ FINALE (6 domande) --- */
     const quizData = [
         {
-            q: "1. Cos'è lo spazio campionatorio Ω?",
-            a: ["L'insieme di tutti i possibili risultati di un esperimento.", "La somma delle probabilità di tutti gli eventi.", "Il numero di volte che un evento si è verificato.", "L'area riservata all'allenamento dei Sayan."],
+            q: "1. Cosa rappresenta il simbolo Ω (Omega)?",
+            a: [
+                "L'insieme di tutti i possibili risultati di un esperimento.",
+                "La somma delle probabilità di tutti gli eventi.",
+                "Il numero di volte che un evento si è verificato.",
+                "La probabilità massima raggiungibile."
+            ],
             c: 0
         },
         {
             q: "2. Quando si usa la definizione classica di probabilità?",
-            a: ["Quando gli eventi hanno diversa probabilità.", "Quando tutti gli eventi sono equiprobabili (come un dado equo).", "Solo nei casi di vita o di morte.", "Quando non abbiamo dati storici."],
+            a: [
+                "Quando gli eventi hanno diversa probabilità.",
+                "Quando tutti gli eventi sono equiprobabili (come un dado equo).",
+                "Solo nei casi di vita o di morte.",
+                "Quando non abbiamo dati storici."
+            ],
             c: 1
         },
         {
-            q: "3. Se due eventi sono INDIPENDENTI, come calcoliamo la probabilità che accadano entrambi?",
-            a: ["Sommando le loro probabilità.", "Sottraendo la probabilità dell'uno dall'altro.", "Moltiplicando le loro probabilità.", "Dividendo la probabilità maggiore per la minore."],
+            q: "3. Se A e B sono eventi INDIPENDENTI, quanto vale P(A ∩ B)?",
+            a: [
+                "P(A) + P(B)",
+                "P(A) − P(B)",
+                "P(A) · P(B)",
+                "P(A) / P(B)"
+            ],
             c: 2
         },
         {
-            q: "4. Qual è la probabilità condizionata P(A|B)?",
-            a: ["La probabilità che A accada sapendo che B si è già verificato.", "La probabilità che A e B non accadano mai.", "La probabilità soggettiva di A.", "La probabilità che B accada sapendo che A si è verificato."],
+            q: "4. Cosa indica la notazione P(A|B)?",
+            a: [
+                "La probabilità di A, sapendo che B si è già verificato.",
+                "La probabilità che A e B accadano insieme.",
+                "La probabilità di A diviso la probabilità di B.",
+                "La probabilità che B accada dopo A."
+            ],
             c: 0
         },
         {
-            q: "5. Cosa rappresenta il teorema di Bayes?",
-            a: ["Un modo per calcolare quante carte ha Yugi nel mazzo.", "Lo schema per contare le stelle di Bulma.", "Un metodo rigoroso per aggiornare le proprie credenze alla luce di nuove prove.", "La formula base per sommare due eventi certi."],
+            q: "5. Il teorema di Bayes permette di:",
+            a: [
+                "Calcolare quante carte ha Yugi nel mazzo.",
+                "Sommare le probabilità di eventi incompatibili.",
+                "Aggiornare le proprie credenze alla luce di nuove prove.",
+                "Calcolare la probabilità di eventi certi."
+            ],
             c: 2
+        },
+        {
+            q: "6. Se P(E) = 0.4, quanto vale P(Ē), la probabilità dell'evento complementare?",
+            a: [
+                "0.4",
+                "0.6",
+                "1.4",
+                "0"
+            ],
+            c: 1
         }
     ];
 
@@ -117,15 +152,47 @@ function showFeedback(elementId, isCorrect, message) {
     feedbackEl.className = isCorrect ? 'feedback correct' : 'feedback incorrect';
 }
 
-function checkSpazio() {
-    let ans = document.getElementById('ans-spazio').value.replace(/\s/g, '');
-    if (ans === '{1,2,3,4,5,6,7,8,9,10}' || ans === '1,2,3,4,5,6,7,8,9,10') {
-        showFeedback('feed-spazio', true, "Esatto! Lo spazio campionatorio Ω include ogni singola domanda.");
+/* --- 1. NOTAZIONE --- */
+function checkNotazione() {
+    const answers = {
+        'not-1': 'a',   // Ω = insieme risultati
+        'not-2': 'b',   // P(A ∩ B) = entrambi
+        'not-3': 'b',   // P(A|B) = dato
+        'not-4': 'b'    // P(Ē) = 0.7
+    };
+    let correct = 0;
+    const total = Object.keys(answers).length;
+
+    for (const [id, expected] of Object.entries(answers)) {
+        const el = document.getElementById(id);
+        if (el.value === expected) {
+            correct++;
+            el.style.borderColor = '#10B981';
+            el.style.boxShadow = '0 0 8px rgba(16, 185, 129, 0.3)';
+        } else {
+            el.style.borderColor = '#EF4444';
+            el.style.boxShadow = '0 0 8px rgba(239, 68, 68, 0.3)';
+        }
+    }
+
+    if (correct === total) {
+        showFeedback('feed-notazione', true, `Perfetto! ${correct}/${total} — Padroneggi il linguaggio della probabilità!`);
     } else {
-        showFeedback('feed-spazio', false, "Non proprio. Ricorda di elencare tutti i risultati tra parentesi graffe: {1, 2, ..., 10}");
+        showFeedback('feed-notazione', false, `${correct}/${total} corretti. I campi in rosso sono da rivedere. Rileggi le card qui sopra e riprova!`);
     }
 }
 
+/* --- 2. SPAZIO CAMPIONATORIO --- */
+function checkSpazio() {
+    let ans = document.getElementById('ans-spazio').value.replace(/\s/g, '');
+    if (ans === '{1,2,3,4,5,6,7,8,9,10,11,12}' || ans === '1,2,3,4,5,6,7,8,9,10,11,12') {
+        showFeedback('feed-spazio', true, "Esatto! Lo spazio campionatorio Ω include tutte le 12 Poké Ball possibili.");
+    } else {
+        showFeedback('feed-spazio', false, "Non proprio. Ricorda di elencare tutti i risultati tra parentesi graffe: {1, 2, ..., 12}");
+    }
+}
+
+/* --- 3. DEFINIZIONE CLASSICA --- */
 function checkClassica() {
     let ans = document.getElementById('ans-classica').value.replace(/\s/g, '');
     if (ans === '4/40' || ans === '1/10') {
@@ -135,15 +202,39 @@ function checkClassica() {
     }
 }
 
+/* --- 4. EVENTI INDIPENDENTI --- */
 function checkIndip() {
     let ans = document.getElementById('ans-indip').value.replace(/\s/g, '');
     if (ans === '1/400') {
-        showFeedback('feed-indip', true, "Fantastico! (1/20) * (1/20) = 1/400. Hai appena tirato un colpo critico devastante!");
+        showFeedback('feed-indip', true, "Fantastico! (1/20) × (1/20) = 1/400. Hai appena tirato un colpo critico devastante!");
     } else {
-        showFeedback('feed-indip', false, "Ricorda: devi moltiplicare le probabilità individuali (1/20 * 1/20).");
+        showFeedback('feed-indip', false, "Ricorda: devi moltiplicare le probabilità individuali (1/20 × 1/20).");
     }
 }
 
+/* --- 5a. PROBABILITÀ CONDIZIONATA --- */
+function checkCondiz() {
+    let ans = document.getElementById('ans-condiz').value.replace(/\s/g, '');
+    if (ans === '1/3') {
+        showFeedback('feed-condiz', true, "Perfetto! Tra i 3 numeri pari {2, 4, 6}, solo uno è il 6. Quindi P(6|pari) = 1/3.");
+    } else {
+        showFeedback('feed-condiz', false, "Non proprio. Sapendo che è pari, i casi possibili si riducono a {2, 4, 6}. Di questi, quanti sono 6? Riprova!");
+    }
+}
+
+/* --- 5b. TEOREMA DI BAYES --- */
+function checkBayes() {
+    let ans = document.getElementById('ans-bayes').value.replace(/\s/g, '').replace(',', '.');
+    let num = parseFloat(ans);
+    // Accetta 80, 80%, 4/5, 0.8
+    if (num === 80 || ans === '4/5' || num === 0.8) {
+        showFeedback('feed-bayes', true, "Esatto! P(Scatola B | Shiny) = 80%. La scatola con più shiny è la più probabile!");
+    } else {
+        showFeedback('feed-bayes', false, "Non proprio. Usa il Teorema di Bayes: P(B|Shiny) = P(Shiny|B)·P(B) / P(Shiny). Puoi anche aprire la soluzione guidata qui sopra!");
+    }
+}
+
+/* --- 6. FREQUENTISTA --- */
 function checkFreq() {
     let ans = parseFloat(document.getElementById('ans-freq').value.replace(',', '.'));
     if (ans === 0.5) {
@@ -153,6 +244,7 @@ function checkFreq() {
     }
 }
 
+/* --- 7. SOGGETTIVA --- */
 function checkSogg() {
     let ans = document.getElementById('ans-sogg').value;
     if (ans === 'no') {

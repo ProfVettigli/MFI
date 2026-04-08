@@ -125,6 +125,157 @@
             margin: 1.5rem 0;
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
+
+        /* --- Notation Symbol Cards --- */
+        .symbol-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.2rem;
+            margin: 2rem 0;
+        }
+
+        .symbol-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 1rem;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .symbol-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--math-color);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.1);
+        }
+
+        .symbol-icon {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--math-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .symbol-card h4 {
+            margin-bottom: 0.4rem;
+            color: #fff;
+            font-size: 0.95rem;
+        }
+
+        .symbol-card p {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+            margin: 0;
+        }
+
+        .symbol-example {
+            font-style: italic;
+            margin-top: 0.5rem !important;
+            font-size: 0.78rem !important;
+            color: rgba(255,255,255,0.4) !important;
+        }
+
+        /* --- Notation Quiz --- */
+        .notation-quiz-row {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .notation-quiz-row label {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .notation-quiz-row select {
+            max-width: 400px;
+        }
+
+        /* --- Contingency Table --- */
+        .contingency-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            text-align: center;
+            font-size: 0.95rem;
+        }
+
+        .contingency-table th,
+        .contingency-table td {
+            padding: 0.8rem 0.6rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .contingency-table thead th {
+            background: rgba(59, 130, 246, 0.15);
+            color: #60A5FA;
+            font-weight: 700;
+        }
+
+        .contingency-table tbody th {
+            background: rgba(59, 130, 246, 0.08);
+            font-weight: 600;
+            text-align: left;
+            padding-left: 1rem;
+        }
+
+        .contingency-table tfoot td {
+            background: rgba(255, 255, 255, 0.04);
+            font-weight: 700;
+        }
+
+        .contingency-table .highlight-cell {
+            background: rgba(16, 185, 129, 0.15);
+            color: #10B981;
+            font-weight: 700;
+        }
+
+        /* --- Sub-section header --- */
+        .sub-section {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .sub-section h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        /* --- Details / Solution box --- */
+        details {
+            margin-top: 1.2rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 0.8rem;
+            overflow: hidden;
+        }
+
+        details summary {
+            cursor: pointer;
+            padding: 1rem 1.2rem;
+            font-weight: 600;
+            color: var(--math-color);
+            transition: background 0.2s;
+        }
+
+        details summary:hover {
+            background: rgba(59, 130, 246, 0.08);
+        }
+
+        details .solution-content {
+            padding: 1rem 1.2rem 1.2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            line-height: 1.8;
+        }
+
+        details .solution-content .step {
+            margin-bottom: 0.8rem;
+            padding-left: 1rem;
+            border-left: 2px solid rgba(59, 130, 246, 0.3);
+        }
     </style>
 </head>
 <body>
@@ -141,16 +292,119 @@
     </header>
 
     <main class="container">
-        <!-- 1. Spazio Campionatorio -->
+
+        <!-- ============================================ -->
+        <!-- 1. IL LINGUAGGIO DELLA PROBABILITÀ           -->
+        <!-- ============================================ -->
         <section class="lesson-section">
-            <h2>1. Spazio Campionatorio</h2>
+            <h2>1. Il Linguaggio della Probabilità</h2>
+            <p>Prima di iniziare a calcolare, impariamo i <strong>simboli</strong> che i matematici usano per scrivere le formule. Sono pochi e, una volta memorizzati, rendono tutto più chiaro.</p>
+
+            <div class="symbol-grid">
+                <!-- Ω -->
+                <div class="symbol-card">
+                    <div class="symbol-icon">Ω</div>
+                    <h4>Omega</h4>
+                    <p>Spazio campionario: l'insieme di <em>tutti</em> i risultati possibili.</p>
+                    <p class="symbol-example">Dado: Ω = {1,2,3,4,5,6}</p>
+                </div>
+                <!-- P(E) -->
+                <div class="symbol-card">
+                    <div class="symbol-icon">P(E)</div>
+                    <h4>Probabilità</h4>
+                    <p>Un numero tra 0 e 1 che misura quanto è "probabile" l'evento E.</p>
+                    <p class="symbol-example">P(Testa) = 0.5</p>
+                </div>
+                <!-- ∩ -->
+                <div class="symbol-card">
+                    <div class="symbol-icon">∩</div>
+                    <h4>Intersezione (AND)</h4>
+                    <p>"A <strong>e</strong> B accadono entrambi."</p>
+                    <p class="symbol-example">P(A ∩ B) = entrambi veri</p>
+                </div>
+                <!-- ∪ -->
+                <div class="symbol-card">
+                    <div class="symbol-icon">∪</div>
+                    <h4>Unione (OR)</h4>
+                    <p>"Accade A <strong>oppure</strong> B (o entrambi)."</p>
+                    <p class="symbol-example">P(A ∪ B) = almeno uno</p>
+                </div>
+                <!-- P(A|B) -->
+                <div class="symbol-card">
+                    <div class="symbol-icon">P(A|B)</div>
+                    <h4>Condizionata</h4>
+                    <p>"Probabilità di A, <em>sapendo che B è già accaduto</em>."</p>
+                    <p class="symbol-example">La barra "|" si legge "dato"</p>
+                </div>
+                <!-- Ē -->
+                <div class="symbol-card">
+                    <div class="symbol-icon">Ē</div>
+                    <h4>Complementare</h4>
+                    <p>"L'evento E <strong>non</strong> accade." Vale sempre: P(Ē) = 1 − P(E).</p>
+                    <p class="symbol-example">P(non Testa) = 1 − 0.5 = 0.5</p>
+                </div>
+            </div>
+
+            <div class="interactive-box">
+                <h3>Esercizio: Conosci i Simboli?</h3>
+                <p>Rispondi a tutte e 4 le domande, poi premi <strong>Verifica</strong>.</p>
+
+                <div class="notation-quiz-row">
+                    <label>1. Il simbolo Ω rappresenta:</label>
+                    <select id="not-1">
+                        <option value="">Seleziona...</option>
+                        <option value="a">L'insieme di tutti i risultati possibili</option>
+                        <option value="b">La probabilità di un evento singolo</option>
+                        <option value="c">Il numero totale di esperimenti</option>
+                    </select>
+                </div>
+                <div class="notation-quiz-row">
+                    <label>2. L'espressione P(A ∩ B) indica la probabilità che:</label>
+                    <select id="not-2">
+                        <option value="">Seleziona...</option>
+                        <option value="a">Accada A oppure B</option>
+                        <option value="b">Accadano sia A che B</option>
+                        <option value="c">A sia la causa di B</option>
+                    </select>
+                </div>
+                <div class="notation-quiz-row">
+                    <label>3. La notazione P(A|B) rappresenta:</label>
+                    <select id="not-3">
+                        <option value="">Seleziona...</option>
+                        <option value="a">La probabilità di A diviso B</option>
+                        <option value="b">La probabilità di A dato che B è avvenuto</option>
+                        <option value="c">La probabilità che A e B siano incompatibili</option>
+                    </select>
+                </div>
+                <div class="notation-quiz-row">
+                    <label>4. Se P(E) = 0.3, la probabilità complementare P(Ē) vale:</label>
+                    <select id="not-4">
+                        <option value="">Seleziona...</option>
+                        <option value="a">0.3</option>
+                        <option value="b">0.7</option>
+                        <option value="c">1.3</option>
+                    </select>
+                </div>
+
+                <div style="margin-top: 1rem;">
+                    <button onclick="checkNotazione()">Verifica Tutto</button>
+                </div>
+                <div id="feed-notazione" class="feedback"></div>
+            </div>
+        </section>
+
+        <!-- ============================================ -->
+        <!-- 2. SPAZIO CAMPIONATORIO                      -->
+        <!-- ============================================ -->
+        <section class="lesson-section">
+            <h2>2. Spazio Campionatorio</h2>
             <p>L'insieme di tutti i possibili risultati di un esperimento casuale si chiama <strong>Spazio Campionatorio</strong> ($\Omega$). È la "mappa" di tutto ciò che può accadere.</p>
             <p><strong>Esempio:</strong> Nel radar cerca-sfere di Bulma, i risultati possibili sono le sfere da 1 a 7 stelle. <br>
             $$\Omega = \{1, 2, 3, 4, 5, 6, 7\}$$</p>
             
             <div class="interactive-box">
-                <h3>Esercizio: L'Esame dei Chunin</h3>
-                <p>Durante la prima prova (Naruto), hai un foglio con 10 domande numerate da 1 a 10. Se ne estrai una a caso, qual è lo spazio campionatorio? (Scrivilo tra parentesi graffe)</p>
+                <h3>Esercizio: Starter Pokémon</h3>
+                <p>Il Professor Oak ti mostra una scatola con 12 Poké Ball numerate da 1 a 12, ciascuna contenente uno starter diverso. Se ne peschi una a caso, qual è lo spazio campionatorio? (Scrivilo tra parentesi graffe)</p>
                 <div class="input-group">
                     <input type="text" id="ans-spazio" placeholder="Es: {1, 2, 3...}">
                     <button onclick="checkSpazio()">Verifica</button>
@@ -159,9 +413,11 @@
             </div>
         </section>
 
-        <!-- 2. Definizione Classica -->
+        <!-- ============================================ -->
+        <!-- 3. DEFINIZIONE CLASSICA                      -->
+        <!-- ============================================ -->
         <section class="lesson-section">
-            <h2>2. La Definizione Classica</h2>
+            <h2>3. La Definizione Classica</h2>
             <p>Si usa quando tutti i risultati sono <strong>equiprobabili</strong> (hanno la stessa chance). La probabilità di un evento $E$ è:</p>
             <div class="formula-box">
                 $$P(E) = \frac{\text{Casi Favorevoli}}{\text{Casi Possibili}}$$
@@ -169,6 +425,9 @@
             <p><strong>Esempio Exodia:</strong> Yugi ha un mazzo di 40 carte. Nel mazzo ci sono <strong>5 pezzi</strong> distinti di Exodia. Qual è la probabilità di pescare <em>un qualsiasi pezzo del proibito</em> alla prima carta pescata?</p>
             <p>Favorevoli: 5 (i pezzi). Possibili: 40 (le carte).<br>
             $P(\text{Exodia}) = 5/40 = 12.5\%$.</p>
+
+            <p style="margin-top: 1.5rem;"><strong>E il complementare?</strong> Se la probabilità di pescare Exodia è $P = 5/40$, la probabilità di <strong>non</strong> pescarlo (evento complementare $\bar{E}$) è:</p>
+            <p>$$P(\bar{E}) = 1 - P(E) = 1 - \frac{5}{40} = \frac{35}{40} = 87.5\%$$</p>
 
             <div class="interactive-box">
                 <h3>Esercizio: Carte Napoletane</h3>
@@ -181,13 +440,16 @@
             </div>
         </section>
 
-        <!-- 3. Eventi Indipendenti -->
+        <!-- ============================================ -->
+        <!-- 4. EVENTI INDIPENDENTI                       -->
+        <!-- ============================================ -->
         <section class="lesson-section">
-            <h2>3. Eventi Indipendenti</h2>
+            <h2>4. Eventi Indipendenti</h2>
             <p>Due eventi sono indipendenti se il verificarsi di uno non cambia la probabilità dell'altro. In questo caso, per trovare la probabilità che accadano <strong>entrambi</strong> ($A$ AND $B$), si moltiplicano:</p>
             <div class="formula-box">
                 $$P(A \cap B) = P(A) \cdot P(B)$$
             </div>
+            <p>Nota la notazione: il simbolo $\cap$ ("intersezione") si legge "e" — significa che <em>entrambi</em> gli eventi devono accadere.</p>
             <p><strong>Esempio:</strong> Se lanci una moneta bilanciata, la probabilità di ottenere "Testa" è $1/2$. Se effettui un secondo lancio, il risultato del primo non influenza minimamente il secondo. La probabilità di ottenere <strong>due volte Testa</strong> consecutivamente è:</p>
             <p>$$1/2 \cdot 1/2 = 1/4 = 25\%$$</p>
 
@@ -236,34 +498,141 @@
             </div>
         </section>
 
-        <!-- 4. Probabilità Condizionata -->
+        <!-- ============================================ -->
+        <!-- 5. CONDIZIONATA + BAYES (UNITI)              -->
+        <!-- ============================================ -->
         <section class="lesson-section">
-            <h2>4. Probabilità Condizionata</h2>
-            <p>Come cambia la probabilità di un evento $A$ se sappiamo che si è già verificato un evento $B$? Si indica con $P(A|B)$:</p>
+            <h2>5. Probabilità Condizionata e Teorema di Bayes</h2>
+            <p>Fino ad ora abbiamo calcolato la probabilità "in assoluto". Ma nella vita reale, spesso <strong>abbiamo già un'informazione</strong> che cambia le carte in tavola. Questa sezione introduce due strumenti potentissimi collegati tra loro.</p>
+
+            <!-- 5a. Probabilità Condizionata -->
+            <h3 style="color: var(--math-color); margin-top: 2rem;">5a. La Probabilità Condizionata</h3>
+            <p>Come cambia la probabilità di un evento $A$ se sappiamo che si è già verificato un evento $B$? La scriviamo $P(A|B)$ e si legge <em>"probabilità di A <strong>dato</strong> B"</em>:</p>
             <div class="formula-box">
                 $$P(A|B) = \frac{P(A \cap B)}{P(B)}$$
             </div>
-            <p><strong>Esempio Among Us:</strong> La probabilità base che il giocatore Rosso sia l'impostore è $1/10$. Ma se lo vedi uscire da un condotto (Evento B), la probabilità condizionata che sia lui l'impostore schizza quasi al 100%!</p>
-        </section>
+            <p>Traduzione: la probabilità che accadano <strong>entrambi</strong> (numeratore) diviso la probabilità di quello che <strong>già sappiamo</strong> essere accaduto (denominatore).</p>
 
-        <!-- 5. Probabilità Bayesiana -->
-        <section class="lesson-section">
-            <h2>5. La Visione Bayesiana</h2>
-            <p>Consiste nell'aggiornare la stima di una "ipotesi" man mano che arrivano nuove "prove". È il metodo del detective per eccellenza.</p>
-            <div class="formula-box">
-                $$P(H|E) = \frac{P(E|H) \cdot P(H)}{P(E)}$$
+            <p><strong>Esempio Among Us:</strong> In una partita con 10 giocatori (8 crewmate e 2 impostori), la probabilità "base" che un giocatore sia l'impostore è $2/10 = 20\%$. Ma se lo vedi uscire da un condotto (solo gli impostori possono farlo!), quell'informazione cambia tutto: $P(\text{Impostore} | \text{Condotto}) = 100\%$.</p>
+
+            <p style="margin-top: 1.5rem;"><strong>Vediamo un esempio numerico con una tabella.</strong> Immaginiamo una classe di 30 studenti:</p>
+
+            <table class="contingency-table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>🎮 Videogiochi</th>
+                        <th>No Videogiochi</th>
+                        <th>Totale</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>⚽ Sport</th>
+                        <td class="highlight-cell">6</td>
+                        <td>6</td>
+                        <td>12</td>
+                    </tr>
+                    <tr>
+                        <th>No Sport</th>
+                        <td>12</td>
+                        <td>6</td>
+                        <td>18</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td><strong>Totale</strong></td>
+                        <td><strong>18</strong></td>
+                        <td><strong>12</strong></td>
+                        <td><strong>30</strong></td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <p>18 studenti giocano ai videogiochi, 12 fanno sport, e <strong>6 fanno entrambi</strong> (cella evidenziata in verde). Se uno studente scelto a caso gioca ai videogiochi, quale probabilità che faccia anche sport?</p>
+            <p>$$P(\text{Sport} | \text{Videogiochi}) = \frac{P(\text{Sport} \cap \text{Videogiochi})}{P(\text{Videogiochi})} = \frac{6/30}{18/30} = \frac{6}{18} = \frac{1}{3}$$</p>
+            <p>La probabilità "base" che uno studente faccia sport era $12/30 = 40\%$. Sapendo che gioca ai videogiochi scende a $1/3 \approx 33\%$.</p>
+
+            <div class="interactive-box">
+                <h3>Esercizio: Dado Truccato</h3>
+                <p>Lanci un dado a 6 facce regolare (Ω = {1,2,3,4,5,6}). Ti dicono che il risultato è un <strong>numero pari</strong> (evento B). Qual è la probabilità che sia uscito un <strong>6</strong> (evento A), <em>sapendo</em> che è pari? Scrivi la risposta come frazione.</p>
+                <p style="font-size: 0.85rem; color: var(--text-muted);">Suggerimento: i numeri pari sono {2, 4, 6}. Quanti di questi sono 6?</p>
+                <div class="input-group">
+                    <input type="text" id="ans-condiz" placeholder="Es: 1/6">
+                    <button onclick="checkCondiz()">Verifica</button>
+                </div>
+                <div id="feed-condiz" class="feedback"></div>
             </div>
-            <p><strong>Esempio Death Note:</strong> L stima inizialmente al 5% che Light sia Kira. Ogni volta che Light si comporta in modo sospetto (nuova evidenza $E$), L usa (mentalmente) il teorema di Bayes per aggiornare quel 5% e portarlo sempre più in alto.</p>
+
+            <!-- 5b. Teorema di Bayes -->
+            <div class="sub-section">
+                <h3 style="color: var(--math-color);">5b. Il Teorema di Bayes: Invertire la Domanda</h3>
+                <p>La probabilità condizionata ci dice $P(A|B)$. Ma cosa succede se conosciamo $P(B|A)$ e vogliamo trovare $P(A|B)$? Il <strong>Teorema di Bayes</strong> ci permette esattamente di <em>invertire</em> la direzione:</p>
+                <div class="formula-box">
+                    $$P(A|B) = \frac{P(B|A) \cdot P(A)}{P(B)}$$
+                </div>
+                <p>In parole semplici: <strong>aggiorno le mie credenze</strong> su un'ipotesi $A$ alla luce di una nuova prova $B$. È il metodo del detective per eccellenza.</p>
+
+                <p><strong>Esempio Death Note:</strong> L stima inizialmente al 5% che Light sia Kira ($P(\text{Kira}) = 0.05$). Ogni volta che Light si comporta in modo sospetto (nuova evidenza $E$), L usa mentalmente il teorema di Bayes per aggiornare quel 5% e portarlo sempre più in alto.</p>
+
+                <p style="margin-top: 1.5rem;"><strong>Esempio numerico — Pokémon Shiny:</strong></p>
+                <p>Hai due scatole scelte dall'avversario:</p>
+                <ul>
+                    <li><strong>Scatola A:</strong> 2 Pokémon shiny e 8 normali → $P(\text{Shiny}|A) = 2/10$</li>
+                    <li><strong>Scatola B:</strong> 8 Pokémon shiny e 2 normali → $P(\text{Shiny}|B) = 8/10$</li>
+                </ul>
+                <p>Scegli una scatola a caso ($P(A) = P(B) = 1/2$) e peschi un Pokémon: <strong>è shiny!</strong> Qual è la probabilità di aver pescato dalla Scatola B?</p>
+
+                <details>
+                    <summary>💡 Soluzione Guidata</summary>
+                    <div class="solution-content">
+                        <div class="step">
+                            <strong>Step 1 — Dati noti:</strong><br>
+                            $P(\text{Shiny}|A) = 2/10 = 0.2$ &nbsp;|&nbsp; $P(\text{Shiny}|B) = 8/10 = 0.8$<br>
+                            $P(A) = P(B) = 0.5$
+                        </div>
+                        <div class="step">
+                            <strong>Step 2 — Probabilità totale di pescare uno shiny:</strong><br>
+                            $P(\text{Shiny}) = P(\text{Shiny}|A) \cdot P(A) + P(\text{Shiny}|B) \cdot P(B)$<br>
+                            $= 0.2 \cdot 0.5 + 0.8 \cdot 0.5 = 0.1 + 0.4 = 0.5$
+                        </div>
+                        <div class="step">
+                            <strong>Step 3 — Teorema di Bayes:</strong><br>
+                            $P(B|\text{Shiny}) = \frac{P(\text{Shiny}|B) \cdot P(B)}{P(\text{Shiny})} = \frac{0.8 \cdot 0.5}{0.5} = \frac{0.4}{0.5} = 0.8$
+                        </div>
+                        <div class="step" style="border-left-color: #10B981;">
+                            <strong>Risposta:</strong> C'è l'<strong>80%</strong> di probabilità di aver pescato dalla Scatola B. Intuitivamente: la Scatola B ha molti più shiny, quindi è molto più plausibile.
+                        </div>
+                    </div>
+                </details>
+
+                <div class="interactive-box" style="margin-top: 1.5rem;">
+                    <h3>Esercizio: Da quale scatola viene?</h3>
+                    <p>Usando l'esempio delle due scatole Pokémon qui sopra: hai pescato uno <strong>shiny</strong>. Qual è la probabilità (in percentuale, es: "80") di aver scelto la <strong>Scatola B</strong>?</p>
+                    <div class="input-group">
+                        <input type="text" id="ans-bayes" placeholder="Es: 50">
+                        <button onclick="checkBayes()">Verifica</button>
+                    </div>
+                    <div id="feed-bayes" class="feedback"></div>
+                </div>
+            </div>
         </section>
 
-        <!-- 6. Definizione Frequentista -->
+        <!-- ============================================ -->
+        <!-- 6. DEFINIZIONE FREQUENTISTA                  -->
+        <!-- ============================================ -->
         <section class="lesson-section">
             <h2>6. Definizione Frequentista</h2>
             <p>Quando non conosciamo il futuro, guardiamo al passato. Se ripetiamo un esperimento $N$ volte e l'evento accade $n$ volte:</p>
-            <p>$$P(E) = \lim_{N\to\infty} \frac{n}{N}$$</p>
-            <p><strong>Esercizio: Farming Raro</strong><br>
-            Hai sconfitto 2000 mostri e ottenuto 10 oggetti leggendari. Qual è la probabilità frequentista stimata (percentuale)?</p>
+            <div class="formula-box">
+                $$P(E) = \lim_{N\to\infty} \frac{n}{N}$$
+            </div>
+            <p>In pratica: più esperimenti facciamo, più la frequenza relativa si <strong>stabilizza</strong> attorno alla probabilità "vera". Questo è il fondamento della statistica.</p>
+
             <div class="interactive-box">
+                <h3>Esercizio: Farming Raro</h3>
+                <p>Hai sconfitto 2000 mostri in un gioco RPG e ottenuto 10 oggetti leggendari. Qual è la probabilità frequentista stimata (percentuale)?</p>
                 <div class="input-group">
                     <input type="number" id="ans-freq" step="0.1" placeholder="Es: 0.5">
                     <button onclick="checkFreq()">Verifica</button>
@@ -272,10 +641,13 @@
             </div>
         </section>
 
-        <!-- 7. Definizione Soggettiva -->
+        <!-- ============================================ -->
+        <!-- 7. DEFINIZIONE SOGGETTIVA                    -->
+        <!-- ============================================ -->
         <section class="lesson-section">
             <h2>7. Definizione Soggettiva</h2>
-            <p>È il <strong>grado di fiducia</strong>. Utile per eventi unici (chi vincerà il prossimo campionato?).</p>
+            <p>È il <strong>grado di fiducia</strong> personale che assegniamo a un evento, basato sulle informazioni che possediamo. Utile per eventi unici e irripetibili: "Chi vincerà il prossimo campionato del mondo?", "Pioverà domani?".</p>
+            <p>Due persone diverse possono assegnare probabilità soggettive diverse allo stesso evento, perché possiedono <strong>informazioni diverse</strong>.</p>
 
             <div class="interactive-box">
                 <h3>Quiz Veloce</h3>
@@ -292,7 +664,9 @@
             </div>
         </section>
 
-        <!-- Quiz Finale Centralizzato -->
+        <!-- ============================================ -->
+        <!-- QUIZ FINALE                                  -->
+        <!-- ============================================ -->
         <section class="lesson-section">
             <h2 style="text-align: center; margin-bottom: 2rem;">Verifica le tue Conoscenze</h2>
             <div id="quiz-area"></div>

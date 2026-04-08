@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistica Descrittiva - MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- MathJax -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+            width: fit-content;
+        }
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+        .back-icon {
+            margin-right: 0.5rem;
+            font-size: 1.2rem;
+        }
+        .hero-section {
+            padding: 4rem 0 2rem;
+            text-align: center;
+        }
+        .stat-gradient {
+            background: linear-gradient(135deg, #8B5CF6, #EC4899);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        /* --- Lesson Sections --- */
+        .lesson-section {
+            margin-bottom: 4rem;
+        }
+        .formula-box {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            text-align: center;
+            margin: 1.5rem 0;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .interactive-box {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 4px solid #8B5CF6;
+            padding: 1.5rem;
+            border-radius: 0 1rem 1rem 0;
+            margin: 2rem 0;
+        }
+        .interactive-box h3 {
+            color: #8B5CF6;
+            margin-bottom: 1rem;
+        }
+        .input-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        input[type="text"], input[type="number"], select {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 0.8rem 1rem;
+            border-radius: 0.5rem;
+            flex-grow: 1;
+            font-family: inherit;
+            font-size: 0.95rem;
+        }
+        button {
+            background: #8B5CF6;
+            border: none;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: transform 0.2s, opacity 0.2s;
+            font-family: inherit;
+        }
+        button:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
+        }
+        .feedback {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            display: none;
+            font-weight: 500;
+        }
+        .correct {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10B981;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+        .incorrect {
+            background: rgba(239, 68, 68, 0.1);
+            color: #EF4444;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        /* --- Data Table --- */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            text-align: center;
+            font-size: 0.95rem;
+        }
+        .data-table th, .data-table td {
+            padding: 0.7rem 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .data-table thead th {
+            background: rgba(139, 92, 246, 0.15);
+            color: #A78BFA;
+            font-weight: 700;
+        }
+        .data-table tbody td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        /* --- Canvas Charts --- */
+        .chart-container {
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .chart-container h4 {
+            text-align: center;
+            color: #A78BFA;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+        .chart-container canvas {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+        }
+
+        /* --- Live Playground --- */
+        .playground {
+            background: rgba(139, 92, 246, 0.05);
+            border: 1px solid rgba(139, 92, 246, 0.15);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+        .playground h3 {
+            color: #A78BFA;
+            margin-bottom: 0.5rem;
+        }
+        .playground p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        .playground-input-row {
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        .playground-input-row input {
+            flex-grow: 1;
+            min-width: 200px;
+        }
+        .playground-results {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .result-card {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 0.8rem;
+            padding: 1rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .result-card .result-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.3rem;
+        }
+        .result-card .result-value {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #A78BFA;
+        }
+
+        /* --- Chart Grid --- */
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        /* --- Sub sections --- */
+        .sub-section {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .sub-section h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: #A78BFA;
+        }
+
+        /* --- Details --- */
+        details {
+            margin-top: 1.2rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 0.8rem;
+            overflow: hidden;
+        }
+        details summary {
+            cursor: pointer;
+            padding: 1rem 1.2rem;
+            font-weight: 600;
+            color: #A78BFA;
+            transition: background 0.2s;
+        }
+        details summary:hover {
+            background: rgba(139, 92, 246, 0.08);
+        }
+        details .solution-content {
+            padding: 1rem 1.2rem 1.2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            line-height: 1.8;
+        }
+
+        /* --- Concept Cards --- */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.2rem;
+            margin: 2rem 0;
+        }
+        .concept-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+            transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+        }
+        .concept-card:hover {
+            transform: translateY(-4px);
+            border-color: #8B5CF6;
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.1);
+        }
+        .concept-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        .concept-card h4 {
+            color: #fff;
+            font-size: 1rem;
+            margin-bottom: 0.4rem;
+        }
+        .concept-card p {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+            margin: 0;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .chart-grid {
+                grid-template-columns: 1fr;
+            }
+            .playground-results {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="hero-section">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <a href="../probabilita-statistica.html" class="back-button">
+                    <span class="back-icon">&larr;</span> Torna a Probabilità e Statistica
+                </a>
+            </div>
+            <h1 class="hero-title"><span class="stat-gradient">Statistica Descrittiva</span></h1>
+            <p class="hero-subtitle">Trasforma numeri grezzi in conoscenza: impara a sintetizzare, visualizzare e interpretare i dati come un vero Data Analyst.</p>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- ============================================ -->
+        <!-- 1. INTRODUZIONE                              -->
+        <!-- ============================================ -->
+        <section class="lesson-section">
+            <h2>1. Che cos'è la Statistica Descrittiva?</h2>
+            <p>La statistica descrittiva è l'arte di <strong>riassumere</strong> un insieme di dati con pochi numeri significativi e rappresentazioni grafiche chiare. Invece di guardare centinaia di valori, usiamo <strong>indicatori sintetici</strong> per capire al volo di che dati si tratta.</p>
+            <p style="margin-top: 1rem;">Immagina di aver raccolto i punteggi di 20 giocatori in una partita di Mario Kart. Elencarli tutti è scomodo: serve un modo per dire "in media si è segnato X punti, i dati sono sparsi così tanto" ecc.</p>
+
+            <p style="margin-top: 1.5rem;"><strong>Useremo questi dati di esempio</strong> lungo tutta la lezione (voti di un compito in classe di una 3ª superiore):</p>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Studente</th>
+                        <th>Anna</th><th>Marco</th><th>Luca</th><th>Sara</th><th>Giulia</th>
+                        <th>Tom</th><th>Elena</th><th>Davi</th><th>Chiara</th><th>Leo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Voto</strong></td>
+                        <td>7</td><td>5</td><td>8</td><td>6</td><td>7</td>
+                        <td>9</td><td>7</td><td>4</td><td>8</td><td>7</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="font-size: 0.9rem; color: var(--text-muted);">Dataset: <strong>{4, 5, 6, 7, 7, 7, 7, 8, 8, 9}</strong> (ordinato)</p>
+        </section>
+
+        <!-- ============================================ -->
+        <!-- 2. INDICI DI POSIZIONE CENTRALE              -->
+        <!-- ============================================ -->
+        <section class="lesson-section">
+            <h2>2. Indici di Posizione Centrale</h2>
+            <p>Sono numeri che indicano il "centro" dei dati. Ce ne sono tre fondamentali:</p>
+
+            <div class="concept-grid">
+                <div class="concept-card">
+                    <div class="concept-icon">📐</div>
+                    <h4>Media Aritmetica</h4>
+                    <p>Somma di tutti i valori diviso il numero di valori. Sensibile ai valori estremi.</p>
+                </div>
+                <div class="concept-card">
+                    <div class="concept-icon">🎯</div>
+                    <h4>Mediana</h4>
+                    <p>Il valore che divide i dati ordinati in due metà uguali. Resistente agli outlier.</p>
+                </div>
+                <div class="concept-card">
+                    <div class="concept-icon">🏆</div>
+                    <h4>Moda</h4>
+                    <p>Il valore che compare più spesso nel dataset. Può non essere unica.</p>
+                </div>
+            </div>
+
+            <!-- MEDIA -->
+            <div class="sub-section">
+                <h3>📐 La Media Aritmetica</h3>
+                <p>La <strong>media</strong> è il "baricentro" dei dati. Si calcola sommando tutti i valori e dividendo per quanti sono:</p>
+                <div class="formula-box">
+                    $$\bar{x} = \frac{\sum_{i=1}^{n} x_i}{n} = \frac{x_1 + x_2 + \dots + x_n}{n}$$
+                </div>
+                <p>Dove $\bar{x}$ si legge "x con la barra" o "x media", $n$ è il numero di dati, e $\sum$ (sigma maiuscola) significa "somma".</p>
+
+                <p style="margin-top: 1rem;"><strong>Esempio con i nostri voti:</strong></p>
+                <p>$$\bar{x} = \frac{4 + 5 + 6 + 7 + 7 + 7 + 7 + 8 + 8 + 9}{10} = \frac{68}{10} = 6.8$$</p>
+                <p>La media della classe è <strong>6.8</strong>.</p>
+
+                <p style="margin-top: 1rem; color: var(--text-muted); font-size: 0.9rem;">⚠️ <strong>Attenzione agli outlier:</strong> Se uno studente avesse preso 1 invece di 9, la media scenderebbe a 6.0. Un singolo valore estremo la sposta molto!</p>
+            </div>
+
+            <!-- MEDIA PONDERATA -->
+            <div class="sub-section">
+                <h3>⚖️ La Media Ponderata</h3>
+                <p>Nella media aritmetica tutti i valori hanno la stessa importanza. Ma nella vita reale, <strong>non tutti i dati pesano allo stesso modo</strong>. La <strong>media ponderata</strong> assegna un <em>peso</em> a ciascun valore:</p>
+                <div class="formula-box">
+                    $$\bar{x}_p = \frac{\sum_{i=1}^{n} w_i \cdot x_i}{\sum_{i=1}^{n} w_i} = \frac{w_1 x_1 + w_2 x_2 + \dots + w_n x_n}{w_1 + w_2 + \dots + w_n}$$
+                </div>
+                <p>Dove $w_i$ è il <strong>peso</strong> associato al valore $x_i$. Più alto è il peso, più quel valore conta nel risultato finale.</p>
+
+                <p style="margin-top: 1.5rem;"><strong>Esempio concreto — Voti scolastici:</strong></p>
+                <p>In molte scuole, le verifiche scritte "pesano" più delle interrogazioni orali. Immaginiamo che un professore assegni questi pesi:</p>
+
+                <table class="data-table" style="max-width: 550px; margin: 1.5rem auto;">
+                    <thead>
+                        <tr><th>Tipo di prova</th><th>Voto ($x_i$)</th><th>Peso ($w_i$)</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>📝 Scritto</td><td>7</td><td>3</td></tr>
+                        <tr><td>🗣️ Orale</td><td>8</td><td>2</td></tr>
+                        <tr><td>🔬 Laboratorio</td><td>9</td><td>1</td></tr>
+                    </tbody>
+                </table>
+
+                <p><strong>Media semplice (senza pesi):</strong></p>
+                <p>$$\bar{x} = \frac{7 + 8 + 9}{3} = \frac{24}{3} = 8.0$$</p>
+
+                <p style="margin-top: 1rem;"><strong>Media ponderata (con pesi):</strong></p>
+                <p>$$\bar{x}_p = \frac{7 \cdot 3 + 8 \cdot 2 + 9 \cdot 1}{3 + 2 + 1} = \frac{21 + 16 + 9}{6} = \frac{46}{6} \approx 7.67$$</p>
+
+                <p style="margin-top: 1rem;">La media ponderata è <strong>7.67</strong>, <em>più bassa</em> della media semplice (8.0), perché il voto più basso (7, lo scritto) ha il peso maggiore (3). Il voto dello scritto "conta il triplo" rispetto al laboratorio!</p>
+
+                <p style="margin-top: 1.2rem; color: var(--text-muted); font-size: 0.9rem;">💡 <strong>Caso speciale:</strong> Se tutti i pesi fossero uguali ($w_1 = w_2 = \dots = w_n$), la media ponderata diventerebbe esattamente la media aritmetica semplice.</p>
+
+                <div class="interactive-box" style="margin-top: 1.5rem;">
+                    <h3>Esercizio: Danno Medio nell'RPG</h3>
+                    <p>In un gioco di ruolo, il tuo personaggio ha tre attacchi con danni e frequenze d'uso diversi:</p>
+                    <ul style="margin: 0.5rem 0 0.8rem 1.5rem; line-height: 1.8;">
+                        <li>⚔️ <strong>Attacco base:</strong> 10 danni — usato <strong>5</strong> volte</li>
+                        <li>🔥 <strong>Attacco fuoco:</strong> 25 danni — usato <strong>3</strong> volte</li>
+                        <li>⚡ <strong>Attacco fulmine:</strong> 40 danni — usato <strong>2</strong> volte</li>
+                    </ul>
+                    <p>Qual è il <strong>danno medio ponderato</strong> per attacco? (arrotonda a un decimale)</p>
+                    <div class="input-group">
+                        <input type="number" id="ans-ponderata" step="0.1" placeholder="Danno medio = ?">
+                        <button onclick="checkPonderata()">Verifica</button>
+                    </div>
+                    <div id="feed-ponderata" class="feedback"></div>
+
+                    <details style="margin-top: 1rem;">
+                        <summary>💡 Soluzione Guidata</summary>
+                        <div class="solution-content">
+                            <p><strong>Numeratore:</strong> $(10 \cdot 5) + (25 \cdot 3) + (40 \cdot 2) = 50 + 75 + 80 = 205$</p>
+                            <p><strong>Denominatore:</strong> $5 + 3 + 2 = 10$</p>
+                            <p><strong>Media ponderata:</strong> $205 / 10 = \mathbf{20.5}$ danni per attacco</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+
+            <!-- MEDIANA -->
+            <div class="sub-section">
+                <h3>🎯 La Mediana</h3>
+                <p>La <strong>mediana</strong> è il valore centrale quando i dati sono ordinati. Se $n$ è dispari, è il valore in posizione $(n+1)/2$. Se $n$ è pari, è la media dei due valori centrali.</p>
+
+                <p style="margin-top: 1rem;"><strong>Esempio:</strong> Dati ordinati: {4, 5, 6, 7, <strong>7, 7</strong>, 7, 8, 8, 9} — $n = 10$ (pari), i due centrali sono il 5° e il 6°:</p>
+                <p>$$\text{Mediana} = \frac{7 + 7}{2} = 7$$</p>
+                <p>La mediana è <strong>7</strong>, leggermente più alta della media (6.8): ciò indica che i voti bassi (4, 5) "tirano giù" la media ma non la mediana.</p>
+            </div>
+
+            <!-- MODA -->
+            <div class="sub-section">
+                <h3>🏆 La Moda</h3>
+                <p>La <strong>moda</strong> è semplicemente il valore che appare <em>più spesso</em>. Nel nostro dataset: il 7 compare 4 volte, più di ogni altro valore. Dunque la <strong>moda = 7</strong>.</p>
+                <p style="margin-top: 0.5rem; color: var(--text-muted); font-size: 0.9rem;">Se due valori avessero la stessa frequenza massima, i dati si dicono <strong>bimodali</strong>.</p>
+            </div>
+
+            <!-- ESERCIZIO -->
+            <div class="interactive-box">
+                <h3>Esercizio: Loot Drop</h3>
+                <p>In 8 run di un dungeon, hai ottenuto queste monete d'oro: <strong>{10, 15, 10, 20, 25, 10, 30, 20}</strong>.</p>
+                <p>Calcola media, mediana e moda.</p>
+                <div class="input-group">
+                    <input type="text" id="ans-media" placeholder="Media = ?">
+                    <input type="text" id="ans-mediana" placeholder="Mediana = ?">
+                    <input type="text" id="ans-moda" placeholder="Moda = ?">
+                </div>
+                <div style="margin-top: 0.8rem;">
+                    <button onclick="checkDescriptors()">Verifica</button>
+                </div>
+                <div id="feed-descriptors" class="feedback"></div>
+
+                <details style="margin-top: 1rem;">
+                    <summary>💡 Soluzione Guidata</summary>
+                    <div class="solution-content">
+                        <p><strong>Dati ordinati:</strong> {10, 10, 10, 15, 20, 20, 25, 30}</p>
+                        <p><strong>Media:</strong> $(10+10+10+15+20+20+25+30)/8 = 140/8 = 17.5$</p>
+                        <p><strong>Mediana:</strong> $n=8$ (pari) → media del 4° e 5° valore = $(15+20)/2 = 17.5$</p>
+                        <p><strong>Moda:</strong> 10 appare 3 volte → Moda = 10</p>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <!-- ============================================ -->
+        <!-- 3. INDICI DI DISPERSIONE                     -->
+        <!-- ============================================ -->
+        <section class="lesson-section">
+            <h2>3. Indici di Dispersione</h2>
+            <p>Gli indici di posizione ci dicono "dove stanno" i dati, ma non <em>quanto sono sparsi</em>. Due classi possono avere media identica (es. 7) ma una con tutti 7 e l'altra con voti da 2 a 10. Servono quindi gli <strong>indici di dispersione</strong>.</p>
+
+            <!-- RANGE / SEMIDISPERSIONE -->
+            <div class="sub-section">
+                <h3>📏 Range e Semidispersione</h3>
+                <p>Il modo più semplice per misurare la dispersione:</p>
+                <div class="formula-box">
+                    $$\text{Range} = x_{\max} - x_{\min}$$
+                    <br>
+                    $$\text{Semidispersione} = \frac{x_{\max} - x_{\min}}{2}$$
+                </div>
+                <p><strong>Esempio:</strong> Nei nostri voti, $x_{\max} = 9$, $x_{\min} = 4$:</p>
+                <p>$$\text{Range} = 9 - 4 = 5 \qquad \text{Semidispersione} = \frac{5}{2} = 2.5$$</p>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">Il range è facile da calcolare ma sensibile agli outlier: un singolo voto estremo lo altera molto.</p>
+            </div>
+
+            <!-- SCARTO QUADRATICO MEDIO / DEVIAZIONE STANDARD -->
+            <div class="sub-section">
+                <h3>📊 Varianza e Deviazione Standard</h3>
+                <p>Per una misura di dispersione più robusta, usiamo la <strong>varianza</strong> (σ²) e la sua radice quadrata, la <strong>deviazione standard</strong> (σ), anche detta <em>scarto quadratico medio</em>.</p>
+
+                <div class="formula-box">
+                    $$s^2 = \frac{\sum_{i=1}^{n} (x_i - \bar{x})^2}{n-1} \qquad\qquad s = \sqrt{s^2}$$
+                </div>
+
+                <p><strong>Procedimento passo passo</strong> con i nostri voti ($\bar{x} = 6.8$):</p>
+                <ol style="margin: 1rem 0 1rem 1.5rem; line-height: 2;">
+                    <li>Calcola lo <strong>scarto</strong> di ogni valore dalla media: $(x_i - \bar{x})$</li>
+                    <li><strong>Eleva</strong> al quadrato ogni scarto (per rendere tutto positivo)</li>
+                    <li>Calcola la somma dei quadrati e dividi per <strong>$(n-1)$</strong> → questa è la varianza campionaria $s^2$</li>
+                    <li>Prendi la <strong>radice quadrata</strong> → questa è la deviazione standard $s$</li>
+                </ol>
+
+                <div class="interactive-box" style="border-color: #f59e0b; background: rgba(245, 158, 11, 0.03);">
+                    <h3>💡 Perché usiamo il QUADRATO?</h3>
+                    <p>Potresti chiederti: <em>"Perché non sommiamo semplicemente gli scarti così come sono?"</em></p>
+                    <p style="margin-top: 0.5rem;"><strong>La Somma Zero:</strong> Una proprietà fondamentale della media è che la somma degli scarti semplici è <strong>sempre zero</strong>! I valori sopra la media annullano esattamente quelli sotto la media: $\sum (x_i - \bar{x}) = 0$.</p>
+                    <p style="margin-top: 0.5rem;">Il quadrato risolve questo problema rendendo tutti i valori <strong>positivi</strong> e penalizzando maggiormente gli errori grandi (Outlier).</p>
+                </div>
+
+                <div class="interactive-box" style="border-color: #10b981; background: rgba(16, 185, 129, 0.03);">
+                    <h3>🤔 Perché dividiamo per $n-1$ e non per $n$?</h3>
+                    <p>Si chiama <strong>Correzione di Bessel</strong>. In statistica, quasi sempre lavoriamo su un <em>campione</em> (una parte dei dati) e vogliamo stimare la variabilità dell'intera <em>popolazione</em>.</p>
+                    <ul style="margin-top: 0.5rem;">
+                        <li>Usando $n$, la varianza tenderebbe a essere <strong>sottostimata</strong> (perché il campione è "meno vario" del mondo reale).</li>
+                        <li>Dividendo per <strong>$n-1$</strong>, correggiamo questo errore (bias), ottenendo una stima più onesta e precisa.</li>
+                    </ul>
+                </div>
+
+                <table class="data-table" style="max-width: 600px; margin-left: auto; margin-right: auto;">
+                    <thead>
+                        <tr><th>$x_i$</th><th>$x_i - \bar{x}$</th><th>$(x_i - \bar{x})^2$</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>4</td><td>−2.8</td><td>7.84</td></tr>
+                        <tr><td>5</td><td>−1.8</td><td>3.24</td></tr>
+                        <tr><td>6</td><td>−0.8</td><td>0.64</td></tr>
+                        <tr><td>7</td><td>+0.2</td><td>0.04</td></tr>
+                        <tr><td>7</td><td>+0.2</td><td>0.04</td></tr>
+                        <tr><td>7</td><td>+0.2</td><td>0.04</td></tr>
+                        <tr><td>7</td><td>+0.2</td><td>0.04</td></tr>
+                        <tr><td>8</td><td>+1.2</td><td>1.44</td></tr>
+                        <tr><td>8</td><td>+1.2</td><td>1.44</td></tr>
+                        <tr><td>9</td><td>+2.2</td><td>4.84</td></tr>
+                    </tbody>
+                </table>
+
+                <p style="margin-top: 1rem;">$$s^2 = \frac{19.6}{10-1} = \frac{19.6}{9} \approx 2.18$$</p>
+                <p>$$s = \sqrt{2.18} \approx 1.48$$</p>
+                <p>La deviazione standard corretta è <strong>1.48</strong>: stimiamo che i voti della popolazione si discostino dalla media di circa 1.48 punti.</p>
+            </div>
+
+            <!-- ESERCIZIO DISPERSIONE -->
+            <div class="interactive-box">
+                <h3>Esercizio: Dispersione del Loot</h3>
+                <p>Usando sempre i dati delle monete d'oro: <strong>{10, 10, 10, 15, 20, 20, 25, 30}</strong> (media = 17.5):</p>
+                <p>Calcola il Range e la Semidispersione.</p>
+                <div class="input-group">
+                    <input type="number" id="ans-range" placeholder="Range = ?">
+                    <input type="number" id="ans-semidisp" step="0.5" placeholder="Semidispersione = ?">
+                </div>
+                <div style="margin-top: 0.8rem;">
+                    <button onclick="checkDispersione()">Verifica</button>
+                </div>
+                <div id="feed-dispersione" class="feedback"></div>
+            </div>
+        </section>
+
+        <!-- ============================================ -->
+        <!-- 4. LABORATORIO DATI INTERATTIVO              -->
+        <!-- ============================================ -->
+        <section class="lesson-section">
+            <h2>4. Laboratorio Dati</h2>
+            <p>Inserisci i tuoi dati separati da virgola e osserva tutti gli indicatori calcolarsi in tempo reale!</p>
+
+            <div class="playground">
+                <h3>🔬 Calcolatore Interattivo</h3>
+                <p>Scrivi una serie di numeri separati da virgola (es: 3, 7, 5, 9, 7, 2, 8)</p>
+                <div class="playground-input-row">
+                    <input type="text" id="playground-input" placeholder="Es: 4, 5, 6, 7, 7, 7, 7, 8, 8, 9" value="4, 5, 6, 7, 7, 7, 7, 8, 8, 9">
+                    <button onclick="calcolaPlayground()">Calcola</button>
+                </div>
+                <div class="playground-results" id="playground-results">
+                    <div class="result-card"><div class="result-label">Media</div><div class="result-value" id="pg-media">—</div></div>
+                    <div class="result-card"><div class="result-label">Mediana</div><div class="result-value" id="pg-mediana">—</div></div>
+                    <div class="result-card"><div class="result-label">Moda</div><div class="result-value" id="pg-moda">—</div></div>
+                    <div class="result-card"><div class="result-label">Range</div><div class="result-value" id="pg-range">—</div></div>
+                    <div class="result-card"><div class="result-label">Semidispers.</div><div class="result-value" id="pg-semidisp">—</div></div>
+                    <div class="result-card"><div class="result-label">Dev. Standard (σ)</div><div class="result-value" id="pg-sigma">—</div></div>
+                </div>
+
+                <!-- Charts from playground data -->
+                <div class="chart-grid" style="margin-top: 2rem;">
+                    <div class="chart-container">
+                        <h4>📊 Grafico a Barre (frequenze)</h4>
+                        <canvas id="pg-bar-chart" width="400" height="280"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h4>🥧 Grafico a Torta</h4>
+                        <canvas id="pg-pie-chart" width="400" height="280"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================ -->
+        <!-- 5. RAPPRESENTAZIONI GRAFICHE                 -->
+        <!-- ============================================ -->
+        <section class="lesson-section">
+            <h2>5. Rappresentazioni Grafiche</h2>
+            <p>I numeri parlano, ma un buon grafico <strong>grida</strong>. Ogni tipo di grafico è adatto a situazioni diverse.</p>
+
+            <!-- GRAFICO A BARRE -->
+            <div class="sub-section">
+                <h3>📊 Grafico a Barre</h3>
+                <p>Usato per confrontare <strong>categorie</strong> o <strong>frequenze</strong> di valori discreti. Ogni barra rappresenta una categoria e la sua altezza il conteggio (o frequenza).</p>
+                <p><strong>Quando usarlo:</strong> quando i dati sono <em>categorici</em> o <em>discreti</em> (voti scolastici, generi musicali preferiti, ecc.).</p>
+
+                <div class="chart-container">
+                    <h4>Frequenza dei voti nella classe</h4>
+                    <canvas id="bar-chart-example" width="500" height="300"></canvas>
+                </div>
+            </div>
+
+            <!-- ISTOGRAMMA -->
+            <div class="sub-section">
+                <h3>📈 Istogramma</h3>
+                <p>Simile al grafico a barre, ma le barre sono <strong>adiacenti</strong> (senza spazio) perché rappresentano <strong>intervalli continui</strong> (classi). L'area di ciascuna barra è proporzionale alla frequenza.</p>
+                <p><strong>Differenza chiave:</strong> Il grafico a barre confronta categorie separate; l'istogramma rappresenta dati continui raggruppati in classi.</p>
+
+                <div class="chart-container">
+                    <h4>Distribuzione dei tempi (secondi) per completare un livello</h4>
+                    <canvas id="histogram-example" width="500" height="300"></canvas>
+                </div>
+            </div>
+
+            <!-- GRAFICO A TORTA -->
+            <div class="sub-section">
+                <h3>🥧 Grafico a Torta (Areogramma)</h3>
+                <p>Mostra le <strong>proporzioni</strong> di un tutto. L'angolo di ogni fetta è proporzionale alla percentuale del valore.</p>
+                <p><strong>Quando usarlo:</strong> quando vuoi mostrare come un totale si <em>divide in parti</em> (es: distribuzione dei generi in una classe, quote di mercato).</p>
+
+                <div class="chart-container">
+                    <h4>Distribuzione dei voti nella classe</h4>
+                    <canvas id="pie-chart-example" width="400" height="300"></canvas>
+                </div>
+            </div>
+
+            <!-- BOX PLOT & PERCENTILI -->
+            <div class="sub-section">
+                <h3>📦 Box Plot (Diagramma a Scatola) e Percentili</h3>
+                <p>Il box plot è uno dei grafici più potenti della statistica: in un colpo d'occhio mostra <strong>centro, dispersione e outlier</strong> di un dataset. Per capirlo, dobbiamo prima conoscere i <strong>percentili</strong>.</p>
+
+                <div class="sub-section" style="border-top: none; margin-top: 1.5rem; padding-top: 0;">
+                    <h4 style="color: #EC4899; margin-bottom: 0.8rem;">🎯 Cosa sono i Percentili?</h4>
+                    <p>Un <strong>percentile</strong> è il valore sotto il quale cade una certa percentuale dei dati. I più importanti sono i <strong>quartili</strong>, che dividono i dati ordinati in 4 parti uguali:</p>
+                    
+                    <div class="concept-grid" style="grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); margin: 1.5rem 0;">
+                        <div class="concept-card" style="border-color: rgba(236, 72, 153, 0.3);">
+                            <div class="concept-icon">Q₁</div>
+                            <h4>1° Quartile</h4>
+                            <p><strong>25° percentile.</strong> Il 25% dei dati sta sotto Q₁.</p>
+                        </div>
+                        <div class="concept-card" style="border-color: rgba(236, 72, 153, 0.3);">
+                            <div class="concept-icon">Q₂</div>
+                            <h4>2° Quartile</h4>
+                            <p><strong>50° percentile</strong> = la Mediana. Metà dei dati sta sotto Q₂.</p>
+                        </div>
+                        <div class="concept-card" style="border-color: rgba(236, 72, 153, 0.3);">
+                            <div class="concept-icon">Q₃</div>
+                            <h4>3° Quartile</h4>
+                            <p><strong>75° percentile.</strong> Il 75% dei dati sta sotto Q₃.</p>
+                        </div>
+                        <div class="concept-card" style="border-color: rgba(236, 72, 153, 0.3);">
+                            <div class="concept-icon">IQR</div>
+                            <h4>Range Interquartile</h4>
+                            <p><strong>IQR = Q₃ − Q₁.</strong> La "larghezza" del 50% centrale dei dati.</p>
+                        </div>
+                    </div>
+
+                    <p><strong>Esempio con i nostri voti</strong> (ordinati): {4, 5, <strong style="color:#EC4899;">6, 7</strong>, <strong style="color:#A78BFA;">7, 7</strong>, <strong style="color:#EC4899;">7, 8</strong>, 8, 9}</p>
+                    <ul style="margin: 0.8rem 0 0 1.5rem; line-height: 2;">
+                        <li><strong>Q₁</strong> = mediana della metà inferiore {4, 5, 6, 7, 7} = <strong>6</strong></li>
+                        <li><strong>Q₂</strong> (Mediana) = $(7+7)/2$ = <strong>7</strong></li>
+                        <li><strong>Q₃</strong> = mediana della metà superiore {7, 7, 8, 8, 9} = <strong>8</strong></li>
+                        <li><strong>IQR</strong> = $Q_3 - Q_1 = 8 - 6 = $ <strong>2</strong></li>
+                    </ul>
+                </div>
+
+                <div class="sub-section" style="border-top: none; margin-top: 1.5rem; padding-top: 0;">
+                    <h4 style="color: #EC4899; margin-bottom: 0.8rem;">📦 Anatomia del Box Plot</h4>
+                    <p>Ogni box plot è composto da 5 elementi chiave:</p>
+                    <ol style="margin: 0.8rem 0 1rem 1.5rem; line-height: 2;">
+                        <li><strong>Baffo sinistro (whisker):</strong> dal valore minimo (o fino a Q₁ − 1.5·IQR) al bordo della scatola</li>
+                        <li><strong>Bordo sinistro della scatola:</strong> Q₁ (25° percentile)</li>
+                        <li><strong>Linea interna:</strong> Q₂ = Mediana (50° percentile)</li>
+                        <li><strong>Bordo destro della scatola:</strong> Q₃ (75° percentile)</li>
+                        <li><strong>Baffo destro (whisker):</strong> dal bordo della scatola al valore massimo (o fino a Q₃ + 1.5·IQR)</li>
+                    </ol>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">⚠️ I valori che cadono <strong>oltre i baffi</strong> (fuori da Q₁ − 1.5·IQR e Q₃ + 1.5·IQR) sono considerati <strong>outlier</strong> e vengono mostrati come punti isolati.</p>
+                </div>
+
+                <div class="chart-container">
+                    <h4>Box Plot dei voti della classe</h4>
+                    <canvas id="boxplot-example" width="500" height="220"></canvas>
+                </div>
+
+                <div class="interactive-box">
+                    <h3>Esercizio: Leggi il Box Plot</h3>
+                    <p>Guardando il box plot qui sopra, rispondi:</p>
+
+                    <div style="margin-bottom: 1rem;">
+                        <label style="font-weight: 600; display: block; margin-bottom: 0.3rem;">1. Qual è il valore della mediana (Q₂)?</label>
+                        <input type="number" id="ans-bp-mediana" placeholder="Q₂ = ?" style="max-width: 200px;">
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <label style="font-weight: 600; display: block; margin-bottom: 0.3rem;">2. Qual è il Range Interquartile (IQR = Q₃ − Q₁)?</label>
+                        <input type="number" id="ans-bp-iqr" placeholder="IQR = ?" style="max-width: 200px;">
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <label style="font-weight: 600; display: block; margin-bottom: 0.3rem;">3. Il 50% centrale dei voti è compreso tra quale intervallo?</label>
+                        <div class="input-group" style="max-width: 300px;">
+                            <input type="number" id="ans-bp-low" placeholder="Da..." style="max-width: 100px;">
+                            <span style="align-self: center; font-weight: 600;"> a </span>
+                            <input type="number" id="ans-bp-high" placeholder="A..." style="max-width: 100px;">
+                        </div>
+                    </div>
+                    <button onclick="checkBoxPlot()">Verifica</button>
+                    <div id="feed-boxplot" class="feedback"></div>
+                </div>
+            </div>
+
+            <!-- ESERCIZIO GRAFICI -->
+            <div class="interactive-box">
+                <h3>Esercizio: Quale Grafico?</h3>
+                <p>Per ciascuna situazione, scegli il grafico più adatto:</p>
+
+                <div style="margin-bottom: 1rem;">
+                    <label style="font-weight: 600; display: block; margin-bottom: 0.3rem;">1. "Confrontare le vendite mensili di un negozio per i 12 mesi dell'anno"</label>
+                    <select id="ans-grafico-1">
+                        <option value="">Seleziona...</option>
+                        <option value="barre">Grafico a barre</option>
+                        <option value="torta">Grafico a torta</option>
+                        <option value="istogramma">Istogramma</option>
+                    </select>
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <label style="font-weight: 600; display: block; margin-bottom: 0.3rem;">2. "Mostrare la percentuale di studenti per ciascun voto finale"</label>
+                    <select id="ans-grafico-2">
+                        <option value="">Seleziona...</option>
+                        <option value="barre">Grafico a barre</option>
+                        <option value="torta">Grafico a torta</option>
+                        <option value="istogramma">Istogramma</option>
+                    </select>
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <label style="font-weight: 600; display: block; margin-bottom: 0.3rem;">3. "Distribuire le altezze degli alunni in classi da 5 cm (150-155, 155-160, ...)"</label>
+                    <select id="ans-grafico-3">
+                        <option value="">Seleziona...</option>
+                        <option value="barre">Grafico a barre</option>
+                        <option value="torta">Grafico a torta</option>
+                        <option value="istogramma">Istogramma</option>
+                    </select>
+                </div>
+                <button onclick="checkGrafici()">Verifica</button>
+                <div id="feed-grafici" class="feedback"></div>
+            </div>
+        </section>
+
+        <!-- ============================================ -->
+        <!-- 6. DISPERSIONE, INTERPOLAZIONE, ESTRAPOL.    -->
+        <!-- ============================================ -->
+        <section class="lesson-section">
+            <h2>6. Diagramma di Dispersione, Interpolazione ed Estrapolazione</h2>
+            <p>Finora abbiamo analizzato <strong>una sola variabile</strong>. Ma spesso ci interessa capire se <strong>due variabili</strong> sono collegate. Il diagramma di dispersione (scatter plot) è lo strumento perfetto.</p>
+
+            <!-- SCATTER PLOT -->
+            <div class="sub-section">
+                <h3>🔵 Diagramma di Dispersione (Scatter Plot)</h3>
+                <p>Ogni punto del grafico rappresenta una coppia di valori $(x, y)$. Se i punti formano un andamento (es. crescente), le variabili sono <strong>correlate</strong>.</p>
+
+                <p style="margin-top: 1rem;"><strong>Esempio:</strong> Ore di studio (X) vs Voto all'esame (Y) per 8 studenti:</p>
+                <table class="data-table" style="max-width: 600px; margin-left: auto; margin-right: auto;">
+                    <thead>
+                        <tr><th>Ore di studio</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Voto</strong></td><td>4</td><td>5</td><td>5.5</td><td>6</td><td>7</td><td>7.5</td><td>8</td><td>9</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="chart-container">
+                    <h4>Correlazione: Ore di Studio vs Voto</h4>
+                    <canvas id="scatter-chart" width="500" height="350"></canvas>
+                </div>
+            </div>
+
+            <!-- INTERPOLAZIONE -->
+            <div class="sub-section">
+                <h3>📏 Interpolazione</h3>
+                <p>L'<strong>interpolazione</strong> consiste nel trovare un modello (tipicamente una retta) che "passa attraverso" o "si avvicina al meglio" ai dati osservati. La retta più comune è la <strong>retta di regressione</strong>.</p>
+                <p>Permette di stimare un valore <strong>all'interno</strong> dell'intervallo dei dati conosciuti.</p>
+                <p style="margin-top: 1rem;"><strong>Esempio:</strong> La retta nel grafico sopra dice che con <strong>5.5 ore</strong> di studio (valore non osservato ma dentro l'intervallo 2-9), ci aspettiamo un voto di circa <strong>6.5</strong>.</p>
+            </div>
+
+            <!-- ESTRAPOLAZIONE -->
+            <div class="sub-section">
+                <h3>🔮 Estrapolazione</h3>
+                <p>L'<strong>estrapolazione</strong> consiste nel predire un valore <strong>fuori</strong> dall'intervallo dei dati osservati, prolungando il modello.</p>
+                <p style="margin-top: 0.5rem; color: var(--text-muted);">⚠️ <strong>Attenzione:</strong> L'estrapolazione è rischiosa! Il modello potrebbe non essere valido fuori dal range dei dati. Esempio: la retta potrebbe dire che con 20 ore di studio il voto è 14, ma il massimo è 10!</p>
+
+                <p style="margin-top: 1rem;"><strong>Nel grafico sopra:</strong> la parte tratteggiata della retta (oltre le 9 ore) è estrapolazione — previsione fuori dai dati, da usare con cautela.</p>
+            </div>
+
+            <!-- ESERCIZIO SCATTER -->
+            <div class="interactive-box">
+                <h3>Esercizio: Leggi il Grafico</h3>
+                <p>Guardando il diagramma di dispersione qui sopra, se uno studente studia <strong>5 ore</strong>, che voto ci aspettiamo dalla retta di interpolazione? (arrotonda a un decimale)</p>
+                <div class="input-group">
+                    <input type="number" id="ans-interp" step="0.1" placeholder="Voto stimato = ?">
+                    <button onclick="checkInterp()">Verifica</button>
+                </div>
+                <div id="feed-interp" class="feedback"></div>
+            </div>
+
+            <!-- MINIMI QUADRATI E R^2 -->
+            <div class="sub-section">
+                <h3>📉 Retta di Regressione (Minimi Quadrati)</h3>
+                <p>Ma come si calcola <em>esattamente</em> la retta migliore? Si usa il metodo dei <strong>Minimi Quadrati</strong>. L'obiettivo è minimizzare la somma dei quadrati degli <strong>errori</strong> (o residui).</p>
+                
+                <div class="formula-box">
+                    <p>Un <strong>residuo</strong> $e_i$ è la distanza verticale tra il punto reale e la retta:</p>
+                    $$e_i = y_i - \hat{y}_i$$
+                    <p style="margin-top: 1rem;">Minimizziamo: $S = \sum (y_i - \hat{y}_i)^2$</p>
+                </div>
+
+                <h4>Indice di Determinazione ($R^2$)</h4>
+                <p>L'indice $R^2$ ci dice "quanto bene" la retta spiega i dati. Varia tra 0 e 1:</p>
+                <ul>
+                    <li><strong>$R^2 = 1$</strong>: I punti sono tutti esattamente sulla retta (correlazione perfetta).</li>
+                    <li><strong>$R^2 = 0$</strong>: La retta non spiega nulla, i dati sono sparsi a caso.</li>
+                    <li><strong>$0.7 < R^2 < 1$</strong>: Correlazione forte.</li>
+                </ul>
+
+                <div class="playground" style="margin-top: 2rem;">
+                    <h3>🧪 Analisi dei Residui e $R^2$</h3>
+                    <p>Visualizza graficamente gli errori (linee rosse) e l'affidabilità del modello per i dati dell'esempio precedente:</p>
+                    <div class="chart-container">
+                        <canvas id="regression-analysis-chart" width="560" height="380"></canvas>
+                    </div>
+                    <div id="regression-stats" style="background: rgba(0,0,0,0.3); padding: 1.5rem; border-radius: 0.8rem; margin-top: 1rem; font-family: monospace; font-size: 0.95rem; border: 1px solid rgba(255,255,255,0.05);">
+                        <!-- Dati inseriti da JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================ -->
+        <!-- QUIZ FINALE                                  -->
+        <!-- ============================================ -->
+        <section class="lesson-section">
+            <h2 style="text-align: center; margin-bottom: 2rem;">Verifica le tue Conoscenze</h2>
+            <div id="quiz-area"></div>
+            <div id="quiz-score" style="text-align: center; font-size: 1.5rem; font-weight: 800; margin-top: 2rem;"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Matematica.</p>
+    </footer>
+
+    <script src="../../js/main.js"></script>
+    <script src="statistica.js"></script>
+</body>
+</html>

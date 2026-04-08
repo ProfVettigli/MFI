@@ -4,6 +4,29 @@ function toggleSolution(id) {
     el.style.display = el.style.display === 'none' ? 'block' : 'none';
 }
 
+// --- 0. Unit Conversion Logic ---
+const inputMs = document.getElementById('input-ms');
+const inputKmh = document.getElementById('input-kmh');
+
+if (inputMs && inputKmh) {
+    inputMs.addEventListener('input', () => {
+        const val = parseFloat(inputMs.value);
+        if (!isNaN(val)) {
+            inputKmh.value = (val * 3.6).toFixed(2).replace(/\.00$/, '');
+        } else {
+            inputKmh.value = "";
+        }
+    });
+    inputKmh.addEventListener('input', () => {
+        const val = parseFloat(inputKmh.value);
+        if (!isNaN(val)) {
+            inputMs.value = (val / 3.6).toFixed(2).replace(/\.00$/, '');
+        } else {
+            inputMs.value = "";
+        }
+    });
+}
+
 // --- 1. MRU Simulation ---
 let mruTimer = null;
 let mruStartTime = 0;
