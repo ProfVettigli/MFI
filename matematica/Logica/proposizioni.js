@@ -320,4 +320,130 @@ document.addEventListener('DOMContentLoaded', () => {
 
     renderQuiz();
 
+    /* =========================================================
+       RIDDLE LOGIC (TWO GUARDS)
+       ========================================================= */
+    const guardA = document.getElementById('guard-a');
+    const guardB = document.getElementById('guard-b');
+    const qSelector = document.getElementById('question-selector');
+    const gResponse = document.getElementById('guard-response');
+    const doorSelector = document.getElementById('door-selector');
+    const feedback = document.getElementById('riddle-feedback');
+
+    // Randomly assign one guard as the honest one
+    let honestGuard = Math.random() > 0.5 ? 'guard-a' : 'guard-b';
+    let safetyDoor = Math.random() > 0.5 ? 1 : 2;
+    let selectedGuard = null;
+    let questionAsked = false;
+    let askedQuestionType = null;
+
+    function handleGuardClick(guardId) {
+        if (questionAsked) return;
+        selectedGuard = guardId;
+        
+        // highlight border
+        guardA.style.borderColor = "transparent";
+        guardB.style.borderColor = "transparent";
+        document.getElementById(guardId).style.borderColor = "var(--math-color)";
+        
+        qSelector.style.display = "block";
+        gResponse.textContent = `Hai scelto di parlare alla ${guardId === 'guard-a' ? 'Guardia A' : 'Guardia B'}. Cosa vuoi chiedere?`;
+    }
+
+    if(guardA && guardB) {
+        guardA.addEventListener('click', () => handleGuardClick('guard-a'));
+        guardB.addEventListener('click', () => handleGuardClick('guard-b'));
+
+        document.querySelectorAll('.riddle-q').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (questionAsked) return;
+                questionAsked = true;
+                const qType = btn.getAttribute('data-q');
+                askedQuestionType = qType;
+                let answer = "";
+
+                const isSelectedHonest = (selectedGuard === honestGuard);
+
+                if (qType === 'door') {
+                    // Ask "Which is the door to freedom?"
+                    if (isSelectedHonest) {
+                        answer = `La Guardia sorride e risponde: "È la PORTA ${safetyDoor}".`;
+                    } else {
+                        // Liar points to the trap
+                        answer = `La Guardia ti guarda truce e risponde: "È la PORTA ${safetyDoor === 1 ? 2 : 1}".`;
+                    }
+                } else if (qType === 'other') {
+                    // Ask "What would the OTHER say?" (The winner question)
+                    // If honest: "He would point to the wrong door" (Honest tells the truth about the lie)
+                    // If liar: "He would point to the wrong door" (Liar lies about the truth - points to trap)
+                    // BOTH point to the TRAP!
+                    answer = `La Guardia risponde con sicurezza: "L'altro ti direbbe che la libertà è dietro la PORTA ${safetyDoor === 1 ? 2 : 1}".`;
+                } else if (qType === 'self') {
+                    // Ask "Do you tell the truth?"
+                    // Honest says Yes. Liar says Yes (lying about that too).
+                    answer = `La Guardia risponde prontamente: "Certamente, dico sempre la Verità".`;
+                }
+
+                gResponse.innerHTML = `<span style="color:var(--text-main)">Domanda posta!</span><br>${answer}`;
+                qSelector.style.display = "none";
+                doorSelector.style.display = "block";
+            });
+        });
+
+        document.querySelectorAll('.btn-door').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const doorNum = parseInt(btn.id.replace('door-', ''));
+                if (doorNum === safetyDoor) {
+                    if (askedQuestionType === 'other') {
+                        feedback.textContent = "ECCELLENTE! Hai usato la logica dell'implicazione e della negazione per trovare la libertà. Sei salvo!";
+                        feedback.style.color = "var(--physics-color)";
+                    } else {
+                        feedback.textContent = "Hai trovato la porta giusta... ma è stata TUTTA FORTUNA! Con quella domanda non potevi avere la certezza matematica. 🍀";
+                        feedback.style.color = "#F59E0B";
+                    }
+                    btn.style.background = "var(--physics-color)";
+                } else {
+                    feedback.textContent = "AHI... la porta conduceva a una trappola! Forse dovresti ripassare le proposizioni logiche...";
+                    feedback.style.color = "#EF4444";
+                    btn.style.background = "#EF4444";
+                }
+                // Disable doors
+                document.querySelectorAll('.btn-door').forEach(d => d.disabled = true);
+
+                // Add Reset Button
+                const resetBtn = document.createElement('button');
+                resetBtn.textContent = 'Riprova la Sfida';
+                resetBtn.className = 'quiz-btn';
+                resetBtn.style.marginTop = '1.5rem';
+                resetBtn.style.background = 'var(--math-color)';
+                resetBtn.style.color = 'white';
+                resetBtn.style.width = 'auto';
+                resetBtn.style.margin = '1.5rem auto 0 auto';
+                
+                resetBtn.onclick = () => {
+                    // Reset Logic
+                    questionAsked = false;
+                    askedQuestionType = null;
+                    selectedGuard = null;
+                    gResponse.textContent = "(Clicca su una guardia per parlarle...)";
+                    feedback.textContent = "";
+                    doorSelector.style.display = "none";
+                    qSelector.style.display = "none";
+                    guardA.style.borderColor = "transparent";
+                    guardB.style.borderColor = "transparent";
+                    
+                    document.querySelectorAll('.btn-door').forEach(d => {
+                        d.disabled = false;
+                        d.style.background = "#5D4037"; // Reset original color
+                    });
+
+                    // Re-randomize
+                    honestGuard = Math.random() > 0.5 ? 'guard-a' : 'guard-b';
+                    safetyDoor = Math.random() > 0.5 ? 1 : 2;
+                };
+                feedback.appendChild(resetBtn);
+            });
+        });
+    }
+
 });

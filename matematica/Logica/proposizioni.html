@@ -347,6 +347,50 @@
             </div>
         </section>
 
+        <!-- RIDDLE SECTION -->
+        <section class="lesson-section" style="border-top: 4px solid var(--math-color); background: rgba(59, 130, 246, 0.05);">
+            <h2 class="lesson-title">Sfida Finale: L'Indovinello delle Due Guardie</h2>
+            <p class="lesson-text">Applichiamo la logica pura! Ti trovi davanti a due guardie che sorvegliano due porte: una porta verso la libertà, l'altra verso una trappola mortale. <br>
+            <strong>Le regole:</strong> Una guardia dice sempre la <strong>VERITÀ</strong>, l'altra <strong>MENTE</strong> sempre. Non sai chi sia chi. Puoi fare <strong>UNA SOLA DOMANDA</strong> a una sola guardia.</p>
+            
+            <div id="riddle-area" style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 2rem; margin-top: 2rem; text-align: center;">
+                <div style="display: flex; justify-content: space-around; gap: 2rem; flex-wrap: wrap; margin-bottom: 2rem;">
+                    <!-- Guardia 1 -->
+                    <div class="guard-box" id="guard-a" style="flex: 1; min-width: 150px; cursor: pointer; padding: 1rem; border-radius: 10px; border: 2px solid transparent; transition: all 0.3s;">
+                        <div style="font-size: 4rem;">👮‍♂️</div>
+                        <h4 style="margin: 0.5rem 0;">Guardia A</h4>
+                    </div>
+                    <!-- Guardia 2 -->
+                    <div class="guard-box" id="guard-b" style="flex: 1; min-width: 150px; cursor: pointer; padding: 1rem; border-radius: 10px; border: 2px solid transparent; transition: all 0.3s;">
+                        <div style="font-size: 4rem;">👮‍♀️</div>
+                        <h4 style="margin: 0.5rem 0;">Guardia B</h4>
+                    </div>
+                </div>
+
+                <div id="question-selector" style="display: none;">
+                    <p style="margin-bottom: 1rem; font-weight: 600;">Scegli la domanda da porre:</p>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem; max-width: 500px; margin: 0 auto;">
+                        <button class="quiz-btn riddle-q" data-q="door">"Qual è la porta per la libertà?"</button>
+                        <button class="quiz-btn riddle-q" data-q="other">"Cosa mi risponderebbe l'ALTRA guardia se le chiedessi qual è la porta per la libertà?"</button>
+                        <button class="quiz-btn riddle-q" data-q="self">"Tu dici la verità?"</button>
+                    </div>
+                </div>
+
+                <div id="guard-response" style="margin-top: 1.5rem; min-height: 60px; font-style: italic; color: var(--math-color); font-size: 1.2rem;">
+                    (Clicca su una guardia per parlarle...)
+                </div>
+
+                <div id="door-selector" style="display: none; margin-top: 2rem;">
+                    <p style="margin-bottom: 1rem; font-weight: 600; color: #FBBF24;">Ora scegli la Porta!</p>
+                    <div style="display: flex; justify-content: center; gap: 2rem;">
+                        <button class="btn-door" id="door-1" style="width: 80px; height: 120px; background: #5D4037; border: 4px solid #3E2723; border-radius: 5px; cursor: pointer; color: white; font-weight: bold;">PORTA 1</button>
+                        <button class="btn-door" id="door-2" style="width: 80px; height: 120px; background: #5D4037; border: 4px solid #3E2723; border-radius: 5px; cursor: pointer; color: white; font-weight: bold;">PORTA 2</button>
+                    </div>
+                    <div id="riddle-feedback" style="margin-top: 1rem; font-weight: bold;"></div>
+                </div>
+            </div>
+        </section>
+
         <!-- QUIZ -->
         <section class="lesson-section quiz-container">
             <h2 class="lesson-title">Quiz di Riepilogo</h2>
