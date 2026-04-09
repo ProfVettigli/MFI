@@ -73,7 +73,8 @@
                 </a>
             </div>
             <h1 style="font-size: clamp(3rem, 6vw, 5rem); font-weight: 800; margin-bottom: 1.5rem;">L'Entropia e la
-                <span style="color: var(--physics-color);">Freccia del Tempo</span></h1>
+                <span style="color: var(--physics-color);">Freccia del Tempo</span>
+            </h1>
             <p style="font-size: 1.25rem; color: var(--text-muted); max-width: 800px; line-height: 1.6;">
                 Dal calore dei motori al disordine cosmico, fino ai bit di informazione: scopri la grandezza che
                 definisce il destino dell'Universo.
@@ -189,6 +190,30 @@
                 <div style="text-align: center; margin: 2rem 0; font-size: 1.5rem; color: #a855f7;">
                     \(P(k) = \binom{N}{k} p^k (1-p)^{N-k}\)
                 </div>
+
+                <!-- Grafico Binomiale Interattivo -->
+                <div class="interactive-chart-container"
+                    style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 2rem; margin: 2rem 0;">
+                    <h4 style="color: white; margin-bottom: 1.5rem; text-align: center;">Evoluzione della Distribuzione
+                        (aumentando N)</h4>
+                    <div style="margin-bottom: 2rem;">
+                        <canvas id="binomial-chart" style="width: 100%; height: 300px;"></canvas>
+                    </div>
+                    <div style="max-width: 500px; margin: 0 auto;">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; color: var(--text-muted);">
+                            <span>N. Molecole (N): <strong id="n-value-display"
+                                    style="color: #a855f7;">10</strong></span>
+                            <span>Probabilità (p): 0.5</span>
+                        </div>
+                        <input type="range" id="n-slider" min="2" max="200" step="2" value="10"
+                            style="width: 100%; accent-color: #a855f7;">
+                    </div>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); text-align: center; margin-top: 1rem;">
+                        Trascina lo slider per vedere come la distribuzione diventa più "stretta e alta" intorno al
+                        valore 50/50 (N/2).
+                    </p>
+                </div>
                 <div class="info-box" style="border-left-color: #a855f7;">
                     <p class="lesson-text" style="font-size: 0.95rem; margin: 0;">
                         Quando \(N\) è piccolo (es. 4 palline), lo stato "tutte a sinistra" è raro ma possibile. Ma
@@ -251,19 +276,32 @@
 
         <!-- FRECCIA DEL TEMPO E SHANNON -->
         <section class="lesson-section">
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;">
+            <div style="display: grid; grid-template-columns: 1fr; gap: 4rem;">
                 <div>
                     <h2 class="lesson-title">5. La Freccia del Tempo</h2>
                     <p class="lesson-text">
-                        Le equazioni della meccanica sono reversibili: una pallina che rimbalza sembra "giusta" anche se
-                        il video viene mandato all'indietro. Tuttavia, un sistema di miliardi di molecole non torna mai
-                        indietro spontaneamente.
+                        A livello microscopico, le leggi della fisica sono <strong>reversibili</strong>. Prendiamo la seconda legge di Newton:
                     </p>
+                    <div style="text-align: center; margin: 1.5rem 0; font-size: 1.5rem; color: #3b82f6;">
+                        \(F = m \cdot a = m \frac{d^2x}{dt^2}\)
+                    </div>
                     <p class="lesson-text">
-                        L'Entropia introduce l'<strong>asimmetria temporale</strong>: l'universo evolve da stati a bassa
-                        probabilità (ordine) a stati ad alta probabilità (disordine). Questo "senso unico" è ciò che noi
-                        percepiamo come lo scorrere del tempo. Senza l'entropia, non ci sarebbe differenza tra passato e
-                        futuro.
+                        Se sostituiamo il tempo \(t\) con \(-t\), l'accelerazione (che è una derivata seconda) non cambia segno perché \((-dt)^2 = dt^2\). L'equazione rimane identica! Lo stesso vale per la <strong>conservazione dell'energia</strong> e della <strong>quantità di moto</strong>: non hanno una "preferenza" per il futuro rispetto al passato.
+                    </p>
+
+                    <div style="background: rgba(59, 130, 246, 0.05); padding: 2rem; border-radius: 20px; border: 1px solid rgba(59, 130, 246, 0.2); margin: 2rem 0;">
+                        <h4 style="color: #3b82f6; margin-bottom: 1rem; text-align: center;">Simulazione: Reversibilità Macroscopica</h4>
+                        <canvas id="reversing-ball-canvas" style="width: 100%; height: 150px; background: #0f172a; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);"></canvas>
+                        <div style="display: flex; justify-content: center; gap: 1rem; margin-top: 1rem;">
+                            <button id="btn-invert-time" class="control-btn" style="background: #3b82f6; font-size: 0.8rem;">Inverti Freccia del Tempo</button>
+                        </div>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); text-align: center; margin-top: 1rem;">
+                            In assenza di attrito (entropia trascurabile), se registrassi questa palla e mandassi il video a ritroso, non saresti in grado di distinguere il passato dal futuro!
+                        </p>
+                    </div>
+
+                    <p class="lesson-text">
+                        Tuttavia, nella vita reale l'aumento di entropia è ovunque. L'Entropia introduce l'<strong>asimmetria temporale</strong>: l'universo evolve da stati a bassa probabilità (ordine) a stati ad alta probabilità (disordine). Questo "senso unico" statistico è ciò che noi percepiamo come lo scorrere del tempo. Senza entropia, non ci sarebbe differenza tra "ieri" e "domani".
                     </p>
                 </div>
                 <div>
@@ -278,9 +316,25 @@
                     </div>
                     <p class="lesson-text" style="font-size: 0.9rem;">
                         In questa equazione, l'entropia misura il grado di <strong>sorpresa</strong>: se un evento è
-                        certo (\(p=1\)), l'entropia è zero (nessuna informazione nuova). Se l'evento è incerto,
-                        l'entropia è massima. Comunicare significa ridurre l'entropia del ricevente!
+                        certo (\(p=1\)), l'entropia è zero. Comunicare significa ridurre l'entropia del ricevente!
                     </p>
+
+                    <h4 style="color: #10b981; margin: 1.5rem 0 1rem;">Applicazioni del Futuro:</h4>
+                    <div style="display: grid; grid-template-columns: 1fr; gap: 1rem;">
+                        <div style="background: rgba(16, 185, 129, 0.05); padding: 1rem; border-radius: 10px; border: 1px solid rgba(16, 185, 129, 0.2);">
+                            <strong style="color: #10b981;">• Compressione (ZIP/MP3):</strong> Più bassa è l'entropia di un file, più spazio possiamo risparmiare eliminando le ridondanze.
+                        </div>
+                        <div style="background: rgba(16, 185, 129, 0.05); padding: 1rem; border-radius: 10px; border: 1px solid rgba(16, 185, 129, 0.2);">
+                            <strong style="color: #10b981;">• Password Sicure:</strong> Una password "casuale" ha alta entropia, rendendola invulnerabile agli attacchi di forza bruta.
+                        </div>
+                        <div style="background: rgba(16, 185, 129, 0.05); padding: 1rem; border-radius: 10px; border: 1px solid rgba(16, 185, 129, 0.2);">
+                            <strong style="color: #10b981;">• AI e Big Data:</strong> Gli algoritmi usano il "guadagno di informazione" (basato sull'entropia) per decidere quali dati sono più rilevanti.
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 2rem; padding: 1rem; border: 1px dashed rgba(16, 185, 129, 0.4); border-radius: 12px; font-size: 0.85rem; color: var(--text-muted);">
+                        <strong>Lo sapevi?</strong> Il <em>Principio di Landauer</em> afferma che cancellare un singolo bit di informazione dissipa inevitabilmente una quantità minima di calore (\(k_B T \ln 2\)). L'informazione è letteralmente fisica!
+                    </div>
                 </div>
             </div>
         </section>

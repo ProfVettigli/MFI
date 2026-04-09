@@ -120,6 +120,179 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 
+    /* --- BINOMIAL DISTRIBUTION CHART --- */
+    const binomialCanvas = document.getElementById('binomial-chart');
+    if (binomialCanvas) {
+        const bCtx = binomialCanvas.getContext('2d');
+        const nSlider = document.getElementById('n-slider');
+        const nDisplay = document.getElementById('n-value-display');
+
+        // Precompute log factorials for stability
+        const maxN = 200;
+        const logFactorial = new Array(maxN + 1).fill(0);
+        for (let i = 2; i <= maxN; i++) {
+            logFactorial[i] = logFactorial[i - 1] + Math.log(i);
+        }
+
+        function getBinomialProb(n, k) {
+            // P(k) = (n! / (k! * (n-k)!)) * 0.5^n
+            // log(P(k)) = log(n!) - log(k!) - log(n-k!) + n * log(0.5)
+            const logP = logFactorial[n] - logFactorial[k] - logFactorial[n - k] + n * Math.log(0.5);
+            return Math.exp(logP);
+        }
+
+        function drawBinomialChart() {
+            const n = parseInt(nSlider.value);
+            nDisplay.textContent = n;
+
+            // Clear and resize if needed
+            binomialCanvas.width = binomialCanvas.parentElement.clientWidth;
+            binomialCanvas.height = 300;
+            const w = binomialCanvas.width;
+            const h = binomialCanvas.height;
+            const padding = 40;
+
+            bCtx.clearRect(0, 0, w, h);
+
+            // Draw Background Grid
+            bCtx.strokeStyle = "rgba(255,255,255,0.05)";
+            bCtx.lineWidth = 1;
+            for(let i=0; i<=4; i++) {
+                let y = padding + (h - 2*padding) * (i/4);
+                bCtx.beginPath();
+                bCtx.moveTo(padding, y);
+                bCtx.lineTo(w - padding, y);
+                bCtx.stroke();
+            }
+
+            const probs = [];
+            let maxProb = 0;
+            for (let k = 0; k <= n; k++) {
+                const p = getBinomialProb(n, k);
+                probs.push(p);
+                if (p > maxProb) maxProb = p;
+            }
+
+            // Normalizzazione: scaliamo il picco per occupare sempre l'80% dell'altezza
+            // Questo permette di visualizzare bene come la curva si "stringe"
+            const yScale = (h - 2 * padding) * 0.8 / (maxProb || 1); 
+
+            bCtx.beginPath();
+            bCtx.strokeStyle = "rgba(168, 85, 247, 1)"; // Purple
+            bCtx.lineWidth = 3;
+            bCtx.lineJoin = "round";
+
+            const step = (w - 2 * padding) / n;
+            
+            probs.forEach((p, k) => {
+                const x = padding + k * step;
+                const y = h - padding - p * yScale;
+                if (k === 0) bCtx.moveTo(x, y);
+                else bCtx.lineTo(x, y);
+
+                // Draw dots for small N
+                if (n < 50) {
+                    const originalFill = bCtx.fillStyle;
+                    bCtx.fillStyle = "rgba(168, 85, 247, 0.5)";
+                    bCtx.beginPath();
+                    bCtx.arc(x, y, 2, 0, Math.PI * 2);
+                    bCtx.fill();
+                    bCtx.fillStyle = originalFill;
+                }
+            });
+            bCtx.stroke();
+
+            // Gradient Fill
+            const gradient = bCtx.createLinearGradient(0, padding, 0, h - padding);
+            gradient.addColorStop(0, "rgba(168, 85, 247, 0.3)");
+            gradient.addColorStop(1, "rgba(168, 85, 247, 0)");
+            bCtx.lineTo(padding + n * step, h - padding);
+            bCtx.lineTo(padding, h - padding);
+            bCtx.fillStyle = gradient;
+            bCtx.fill();
+
+            // Labels
+            bCtx.fillStyle = "rgba(255,255,255,0.5)";
+            bCtx.font = "10px Inter";
+            bCtx.textAlign = "center";
+            bCtx.fillText("0%", padding, h - padding + 15);
+            bCtx.fillText("50%", padding + (w - 2*padding)/2, h - padding + 15);
+            bCtx.fillText("100% (Sinistra)", w - padding, h - padding + 15);
+            
+            bCtx.textAlign = "left";
+            bCtx.fillText("P(k)", padding - 30, padding);
+        }
+
+        nSlider.oninput = drawBinomialChart;
+        window.addEventListener('resize', drawBinomialChart);
+        drawBinomialChart();
+    }
+
+    /* --- REVERSING BALL SIMULATION --- */
+    const revCanvas = document.getElementById('reversing-ball-canvas');
+    if (revCanvas) {
+        const rCtx = revCanvas.getContext('2d');
+        const btnInvert = document.getElementById('btn-invert-time');
+        
+        let ball = {
+            x: 50,
+            y: 0,
+            vx: 4,
+            vy: 0,
+            radius: 10,
+            color: '#3b82f6'
+        };
+
+        let timeMultiplier = 1;
+
+        function updateRev() {
+            revCanvas.width = revCanvas.parentElement.clientWidth;
+            revCanvas.height = 150;
+            ball.y = revCanvas.height / 2;
+
+            ball.x += ball.vx * timeMultiplier;
+
+            // Bounce on x limits
+            if (ball.x + ball.radius > revCanvas.width) {
+                ball.x = revCanvas.width - ball.radius;
+                ball.vx *= -1;
+            }
+            if (ball.x - ball.radius < 0) {
+                ball.x = ball.radius;
+                ball.vx *= -1;
+            }
+
+            // Draw
+            rCtx.clearRect(0, 0, revCanvas.width, revCanvas.height);
+            
+            // Draw axis
+            rCtx.strokeStyle = 'rgba(255,255,255,0.1)';
+            rCtx.beginPath();
+            rCtx.moveTo(0, revCanvas.height / 2);
+            rCtx.lineTo(revCanvas.width, revCanvas.height / 2);
+            rCtx.stroke();
+
+            // Draw ball
+            rCtx.beginPath();
+            rCtx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+            rCtx.fillStyle = ball.color;
+            rCtx.shadowBlur = 15;
+            rCtx.shadowColor = ball.color;
+            rCtx.fill();
+            rCtx.shadowBlur = 0;
+
+            requestAnimationFrame(updateRev);
+        }
+
+        btnInvert.onclick = () => {
+            timeMultiplier *= -1;
+            btnInvert.textContent = timeMultiplier > 0 ? "Inverti Freccia del Tempo" : "Tempo Invertito! (Premi per tornare)";
+            btnInvert.style.background = timeMultiplier > 0 ? "#3b82f6" : "#f59e0b";
+        };
+
+        updateRev();
+    }
+
     /* --- QUIZ ENTROPIA (10 questions) --- */
     const quizData = [
         {
