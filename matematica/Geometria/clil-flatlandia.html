@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLIL: Flatland - Geometria MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        .back-button { display: inline-flex; align-items: center; color: var(--text-muted); text-decoration: none; margin-bottom: 2rem; font-weight: 600; transition: color 0.3s ease, transform 0.3s ease; }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+        .sub-hero { padding: 4rem 0 2rem; text-align: left; }
+        .interactive-container { background: rgba(0,0,0,0.15); padding: 2rem; border-radius: 12px; margin: 2rem 0; display: flex; flex-direction: column; align-items: center; box-shadow: inset 0 0 10px rgba(0,0,0,0.1); }
+        canvas { background: #0f172a; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); max-width: 100%; display: block; margin: 10px auto; border: 1px solid rgba(255,255,255,0.1); }
+        .controls { margin-top: 1.5rem; display: flex; gap: 1rem; }
+        .control-btn { background: #8B5CF6; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-family: 'Inter', sans-serif; font-weight: 600; }
+        .control-btn:hover { opacity: 0.8; }
+        .grid-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; }
+    </style>
+</head>
+<body>
+    <header class="sub-hero">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2.5rem;">
+                <a href="geometria.html" class="back-button" style="margin-bottom: 0;">
+                    <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Back to Geometry
+                </a>
+            </div>
+            <h1 class="sub-hero-title" style="color: #8B5CF6;"> 📖 CLIL: Flatland </h1>
+            <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+                Edwin A. Abbott's masterpiece on spatial dimensions and the limits of the human intellect.
+            </p>
+        </div>
+    </header>
+    <main class="container">
+
+        <!-- 1. L'AUTORE E IL LIBRO -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #8B5CF6;">1. Edwin A. Abbott and the Birth of the Multidimensional Novel</h2>
+            <p class="lesson-text">In the cold London autumn of <strong>1884</strong>, a short book was printed that would make history in geometric and sci-fi popularization: <em>"Flatland: A Romance of Many Dimensions"</em>. It was conceived by the brilliant <strong>Edwin A. Abbott</strong>, a strict theologian and English school headmaster of the Victorian era.</p>
+            <p class="lesson-text">Under the guise of an unrealistic Euclidean tale about interacting polygons (triangles, squares, circles), Abbott conceived the work not only to deconstruct the unyielding educational obstacles linked to the impossibility of imagining "more than three" physical dimensions, but also to weave a ruthless and explosive <strong>classist social satire</strong> aimed at the grotesque customs of the closed civil hierarchy of the time.</p>
+        </section>
+
+        <!-- 2. LA TRAMA DEL LIBRO -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #8B5CF6;">2. The Plot: The Prison of "A Square"</h2>
+            <p class="lesson-text">The autobiographical narrator of the story is simply known as <em>"A Square"</em>. He is happily employed as a respected, educated citizen within <strong>"Flatland"</strong>: a vast two-dimensional universe totally flat like an infinitely large sheet of paper. Within this magical sheet, lines are the working-class women, and the nobility of one's bloodline brutally increases with the genetic addition of an extra side in each successive generation, gradually pointing towards perfect priesthood (the highest "Circles").</p>
+            
+            <div style="background: rgba(139, 92, 246, 0.05); padding: 1.5rem; border-left: 4px solid #8B5CF6; margin: 2rem 0;">
+                <h4 style="color: #8B5CF6; margin-bottom: 0.5rem;">Blind Minds in Alternative Dimensions</h4>
+                <p style="font-size: 0.95rem; color: var(--text-main); margin-bottom: 0.5rem; line-height:1.6;">The entire narrative plays on the inter-dimensional unknown. One night, A Square finds himself trapped in a mystical dream, tragically landing in the dark country of the unidirectional <strong>"Lineland" (A One-Dimensional World)</strong> controlled by obtuse segments. Generously attempting to convince the King that a second transverse flat dimension could materially "exist outside his limited frontal optical segment", he was fiercely accused of witchcraft, heresy, and intellectual idiocy, resulting in his exile. A Square returned to Flatland, arrogant about his presumed "absolute superior completeness", possessing two whole axes of geometric majesty!</p>
+            </div>
+            
+            <p class="lesson-text">But logical karma is terrible: upon the magical arrival of the fateful Millennium, right in that year, literally knocking on a visit to his humble two-dimensional sloping living room, an incomprehensible deity plummeted down: "The Sphere", a divine creature uncomfortably belonging to the unknown three-dimensional hell of Spaceland (the Ocean of the Third Dimension)!</p>
+        </section>
+
+        <!-- 3. ANIMAZIONE INTERATTIVA -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #8B5CF6;">3. Spaceland Enters Flatland: The Genesis of a Growing Circle</h2>
+            <p class="lesson-text">A gigantic 3D Sphere found himself, much like A Square before the King of Lineland, facing the obtuse and unmovable rock opposing the mental opening of an additional dimension. To physically prove his "voluminous" celestial entity to A Square, the Sphere had no choice but to literally dive in, piercing through the restricted two-dimensional plane on which the square lay!</p>
+            <p class="lesson-text">What exactly did A Square see from his viewpoint lying flat and glued to the ground, deprived of the concept of height? <strong>He didn't see a curved falling fireball!</strong> He saw a material Point (the South Pole) magically emerge from the absolute nothingness without any cracking. Suddenly, that ghostly dot expanded under his astonished gaze, abruptly turning into a solid majestic Circumference that thickened radially up to its immense "Equator", before shrinking backwards, gradually dissolving like melted wax, and scattering completely away! Let's analyze this magical leap logically below:</p>
+            
+            <div class="interactive-container">
+                <h3 style="color: #8B5CF6; margin-bottom: 0.5rem; text-align:center;">Logical Lab: Multidimensional Intersection</h3>
+                <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:1rem;text-align:center;max-width:600px;">Press Start to begin the crossing. On the left, we cheekily observe the global universe (The round "Sphere" drops and cuts through the white line "Plane" of Flatland). On the right, we fearfully explore the exact limiting gaze captured by the flattened citizens of the plane from below!</p>
+                <canvas id="flatlandCanvas" width="600" height="300"></canvas>
+                <div class="controls">
+                    <button class="control-btn" id="btnDrop">Start the 3D Sphere Crossing</button>
+                    <button class="control-btn" id="btnFlatReset" style="background:#4b5563;">Rewind Animation</button>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 4. LA QUARTA DIMENSIONE (SPAZIALE MATEMATICA E IPERCUBI) -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #8B5CF6;">4. The Philosophy of the Unknown and the Fourth Spatial Dimension</h2>
+            <p class="lesson-text">Once the Sphere forcibly lifted A Square's mind into the air, spitting him out into the altitude of the real Spaceland and allowing him an ecstatic and all-encompassing epiphany, a consuming doubt sprouted in the heart of the poor Square (becoming an enlightened heretic himself before an idolizing and sickly arrogant Sphere). He dared to ask the three-dimensional Sphere:</p>
+            <div style="padding: 1.5rem; background:rgba(255,255,255,0.03); border-radius:8px; margin: 1rem 0; font-family:serif; font-size:1.1rem; font-style:italic; text-align:center;">
+                "Oh my divine spherical lord... if from a 1D world we moved to 2, and from 2 we majestically arrived at your formal sublimity of 3... why stop miserably and irrationally at this crossroads? Who imposes a blind God that conceals before You or me... a sublime, formidable <strong>Fourth Spatial Extension</strong>?"
+            </div>
+            
+            <p class="lesson-text">Edwin Abbott used the entire novel clearly to tear down skeptical prejudices against super-dimensional mathematics, justified not through visual empiricism but solely via rigorous logic! Not the infamous "Fourth Temporal dimension" decoded with Einstein's progress two decades later, but a purely and entirely physical Fourth spatial Axis! (<strong>Tesseract or Hypercube</strong>). <br>
+            For our stupid mammalian brains, it is intrinsically structurally "impossible" physically and organically to imagine a tetra-dimensional edge perpendicular to the mass. The only cognitive salvation lies in formal logic and inductive analogy: rigorously relying on the previous graph of the fallen Sphere transplanted "one cosmic step" further, the divine rule unequivocally follows!</p>
+            
+            <div class="grid-cards">
+                <div class="card" style="background: rgba(139, 92, 246, 0.05); border: 2px solid #8B5CF6;">
+                    <h4 style="text-align:center; color:#8B5CF6; font-size:1.2rem; margin-bottom:1rem;">The Tesseract (Hypercube) & Soap Bubbles</h4>
+                    <div style="text-align:center; margin-bottom: 2rem;">
+                        <!-- SVG of a Tesseract (Hypercube projection) -->
+                        <svg width="250" height="250" viewBox="0 0 200 200" style="filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.2));">
+                            <!-- Outer Cube -->
+                            <polygon points="40,40 160,40 160,160 40,160" fill="none" stroke="#8B5CF6" stroke-width="2"/>
+                            <!-- Inner Cube (Tesseract core projection) -->
+                            <polygon points="75,75 125,75 125,125 75,125" fill="rgba(252, 211, 77, 0.1)" stroke="#fcd34d" stroke-width="2"/>
+                            <!-- Connections between inner and outer cubes (Tension lines) -->
+                            <line x1="40" y1="40" x2="75" y2="75" stroke="#ea580c" stroke-width="2" stroke-dasharray="3,3"/>
+                            <line x1="160" y1="40" x2="125" y2="75" stroke="#ea580c" stroke-width="2" stroke-dasharray="3,3"/>
+                            <line x1="160" y1="160" x2="125" y2="125" stroke="#ea580c" stroke-width="2" stroke-dasharray="3,3"/>
+                            <line x1="40" y1="160" x2="75" y2="125" stroke="#ea580c" stroke-width="2" stroke-dasharray="3,3"/>
+                        </svg>
+                    </div>
+                    <p style="color:var(--text-main); line-height:1.6; padding: 0 1rem; margin-bottom: 1rem;">
+                        <strong>Visualizing the Impossible:</strong> How can we "visualize" an impossible 4D hyper-solid in our poor 3D world? We can track its cast shadow! Just as a 3D wire cube casts a flat 2D shadow, a 4D Hypercube casts a 3D ambient shadow resembling a "small cube suspended inside a larger cube" (the image above).<br><br>
+                        Astoundingly, our physical nature provides a miracle that replicates this mathematical projection flawlessly using <strong>soap bubbles (bolle di sapone)</strong>! If you build a rigid three-dimensional wireframe cube out of iron wire and submerge it entirely into soapy water, the elastic soap films will instinctively minimize their surface tension. They withdraw inwards stretching symmetrically to form a perfect, suspended <em>inner miniature cubic bubble</em>, anchored to the outer walls. This breathtaking soapy suspension is the exact geometric blueprint of a 4D Hypersolid shadow right in your hands!
+                    </p>
+                </div>
+                <div class="card" style="background: rgba(139, 92, 246, 0.05); border: 2px solid #8B5CF6;">
+                    <h4 style="text-align:center; color:#8B5CF6; font-size:1.2rem; margin-bottom:1rem;">Multidimensional Inductive Logical Analysis</h4>
+                    <p style="color:var(--text-muted); line-height:1.6; padding: 0 1rem;">
+                    <strong>If [3D -> 2D]:</strong> an imposing alien colossus with a curved body (Sphere) crosses gliding over our tiny two-dimensional defensive barrier, it will deceitfully appear among us flat beings initially as a <em>simple glowing round Dot!</em> Magically mutated into a Circle screaming for a radius, it will horribly grow in the living room until it stops as a gigantic Flat Equator, before shrinking contrarily and disappearing for eternity dematerializing...<br><br>
+                    <strong>Then [4D -> 3D]:</strong> a colossal four-dimensional Hyper-Solid (Ex: A Hypersphere... ) should it violently crash plunging downwards into the corporal fabric of our three-dimensional human 3D living room world, would generate a spectral phenomenon! It will deceitfully form magically on the carpet, originating primarily as <em>a Sparkling Dot</em>... exploding lightning-fast as a 3D bubble of "perfect Spheres"! It will dynamically levitate, bursting the room full... only to mysteriously re-compress under its declining appearance, absorbing itself into an invisible puff! We will suffer the trick of the "slice-selected chunks" identically to A Square! 
+                    </p>
+                </div>
+            </div>
+            <p class="lesson-text" style="font-size:1.1rem; color:var(--text-main); margin-top:2rem; font-weight: 600; text-align:center;">At the end of Flatland's narration, the educated hero Square humbly decided to teach, evangelizing the immutable blindness of the polygonal bureaucrats... unfortunately ending up branded by the elite, prebendal circles with a lethal condemnation for sacrilegious and heretical witchcraft, condemned to confinement in the local mental asylum, lost in the isolationism and onyx intolerance of his own blind flat people.</p>
+        </section>
+
+        <!-- QUIZ -->
+        <section class="lesson-section quiz-container">
+            <h2 class="lesson-title" style="text-align: center; color: #8B5CF6;">The Interdimensional Examination Rite</h2>
+            <p class="lesson-text" style="font-size: 0.95rem; text-align: center;">Test your logical free will with the final exam before the equilateral triangle militias arrive.</p>
+            <div id="quiz-area"></div>
+            <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem; font-weight: bold; text-align: center;"></div>
+        </section>
+    </main>
+    <footer><p>&copy; 2026 MFI - Matematica MFI.</p></footer>
+    <script src="clil-flatlandia.js"></script>
+    <script src="../../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teorema Fondamentale dell'Algebra - MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- MathJax -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+            width: fit-content;
+        }
+        
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+
+        .gauss-gradient {
+            background: linear-gradient(135deg, #F59E0B, #EF4444);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero-title { font-size: 3rem; margin-bottom: 1.5rem; }
+
+        .complex-plane-container {
+            background: #0f172a;
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #complex-canvas {
+            background: #020617;
+            border-radius: 12px;
+            cursor: crosshair;
+            max-width: 100%;
+        }
+
+        .formula-card {
+            background: rgba(245, 158, 11, 0.05);
+            border-left: 4px solid #F59E0B;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 0 16px 16px 0;
+        }
+
+        .history-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 2rem;
+            border-radius: 20px;
+            margin-bottom: 3rem;
+        }
+
+        .complex-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            width: 100%;
+        }
+
+        .info-stat {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .info-stat label { display: block; font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem; }
+        .info-stat span { font-family: 'Fira Code', monospace; font-size: 1.4rem; color: #F59E0B; }
+    </style>
+</head>
+<body>
+    <header class="sub-hero">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <a href="algebra.html" class="back-button">
+                    <span class="back-icon">&larr;</span> Torna ad Algebra
+                </a>
+            </div>
+            <h1 class="hero-title">Il Teorema <span class="gauss-gradient">Fondamentale</span></h1>
+            <p class="sub-hero-subtitle">La scoperta che ha aperto le porte ai numeri complessi e svelato l'ordine nascosto nelle equazioni.</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- 1. GAUSS E IL TEOREMA -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">1. Il Principe dei Matematici</h2>
+            <p class="lesson-text">
+                Fino al XVIII secolo, i matematici sapevano che un'equazione di primo grado ha una soluzione e una di secondo grado ne ha due (anche se a volte uguali). Ma cosa accade per un'equazione di grado 100? Esistono sempre le soluzioni?
+                <br><br>
+                Nel 1799, un giovane <strong>Carl Friedrich Gauss</strong>, spesso chiamato il "Principe dei Matematici", diede la risposta definitiva con il <strong>Teorema Fondamentale dell'Algebra</strong>.
+            </p>
+            
+            <div class="formula-card">
+                <p style="font-size: 1.15rem; font-weight: 600; margin-bottom: 0.5rem;">L'Enunciato:</p>
+                <p style="font-size: 1rem; line-height: 1.6;">
+                    Ogni polinomio di grado \(n \ge 1\) con coefficienti complessi possiede <strong>esattamente \(n\) radici</strong> complesse (contando ciascuna con la sua molteplicità).
+                </p>
+            </div>
+            <p class="lesson-text">
+                Questo significa che nel mondo dei <strong>numeri complessi</strong>, nessuna equazione è "impossibile". È fondamentale capire che ciò è vero solo se accettiamo di andare <strong>oltre l'insieme dei numeri reali (\(\mathbb{R}\))</strong>. Finché restiamo "con i piedi per terra", equazioni come \(x^2 + 1 = 0\) non avranno mai soluzione tra i numeri che usiamo per contare le mele. Ma se espandiamo il nostro sguardo all'insieme \(\mathbb{C}\), un intero nuovo universo si rivela.
+            </p>
+        </section>
+
+        <!-- 2. DUELLI MATEMATICI -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">2. Duelli, Sfide e Numeri Impossibili</h2>
+            <p class="lesson-text">
+                Nel Rinascimento italiano, la matematica era uno sport di contatto. I matematici come <strong>Tartaglia</strong> e <strong>Cardano</strong> si sfidavano pubblicamente per risolvere equazioni di terzo grado. Chi perdeva la sfida spesso perdeva il prestigio, il lavoro o i finanziamenti.
+            </p>
+            <div class="history-box">
+                <p style="font-style: italic; color: var(--text-muted); margin-bottom: 1.5rem;">
+                    "Durante questi calcoli, ci si imbatteva spesso in un fantasma: la radice quadrata di un numero negativo (\(\sqrt{-1}\)). Indichiamo questo valore con \(i\), dove \(i = \sqrt{-1}\). Per secoli, questo è stato considerato un errore o un semplice 'trucco' temporaneo."
+                </p>
+                <p class="lesson-text">
+                    Matematici come Bombelli iniziarono a usare questi <strong>numeri immaginari</strong> solo come strumenti di calcolo, chiamandoli sprezzantemente così perché pensavano non potessero esistere nella realtà. Solo con Gauss e Eulero capimmo che questi numeri erano <strong>reali tanto quanto gli altri</strong>, solo situati in una dimensione diversa: il campo dei numeri complessi (\(\mathbb{C}\)).
+                </p>
+            </div>
+        </section>
+
+        <!-- 3. PIANO COMPLESSO -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">3. Il Piano di Argand-Gauss</h2>
+            <p class="lesson-text">
+                Se i numeri reali vivono su una linea retta, i <strong>Numeri Complessi</strong> vivono su un intero piano. Ogni numero complesso \(z\) è composto da due parti:
+                <br><br>
+                $$z = a + bi$$
+                <br>
+                Dove \(a\) è la <strong>Parte Reale</strong> e \(b\) è la <strong>Parte Immaginaria</strong> (legata all'unità \(i\) tale che \(i^2 = -1\)).
+            </p>
+            
+            <div class="complex-plane-container">
+                <h3 style="margin-bottom: 1.5rem; color: #F59E0B;">Simulatore: Visualizza il Numero Complesso</h3>
+                <canvas id="complex-canvas" width="500" height="500"></canvas>
+                
+                <div class="complex-info">
+                    <div class="info-stat">
+                        <label>Parte Reale (a)</label>
+                        <span id="val-real">0.0</span>
+                    </div>
+                    <div class="info-stat">
+                        <label>Parte Immaginaria (bi)</label>
+                        <span id="val-imag">0.0i</span>
+                    </div>
+                </div>
+                <p style="margin-top: 1.5rem; font-size: 0.85rem; color: var(--text-muted);">
+                    Muovi il mouse sul piano per vedere come cambiano le coordinate del numero \(z\).
+                </p>
+            </div>
+        </section>
+
+        <!-- 4. OPERAZIONI CON I NUMERI COMPLESSI -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">4. Sommare e Moltiplicare nel Piano</h2>
+            <p class="lesson-text">
+                Operare con i numeri complessi è sorprendentemente naturale se seguiamo le regole dell'algebra classica, ricordandoci sempre che \(i^2 = -1\).
+            </p>
+
+            <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 2rem;">
+                <div class="card" style="padding: 1.5rem; border-top: 4px solid #3B82F6;">
+                    <h3 style="color: #3B82F6; margin-bottom: 1rem;">La Somma</h3>
+                    <p style="font-size: 0.95rem;">Si sommano le parti reali tra loro e le parti immaginarie tra loro. Geomerticamente, è come sommare due vettori.</p>
+                    <div class="example-math" style="margin-top: 1rem;">
+                        \((a + bi) + (c + di) = (a+c) + (b+d)i\)
+                    </div>
+                </div>
+                <div class="card" style="padding: 1.5rem; border-top: 4px solid #10B981;">
+                    <h3 style="color: #10B981; margin-bottom: 1rem;">Il Prodotto</h3>
+                    <p style="font-size: 0.95rem;">Si usa la proprietà distributiva (il "prodotto incrociato") e si sostituisce \(i^2\) con \(-1\).</p>
+                    <div class="example-math" style="margin-top: 1rem; color: #10B981;">
+                        \((a + bi)(c + di) = (ac - bd) + (ad + bc)i\)
+                    </div>
+                </div>
+            </div>
+
+            <!-- SIMULATORE SOMMA -->
+            <div class="complex-plane-container" style="margin-top: 3rem; border-color: #3B82F6;">
+                <h3 style="margin-bottom: 1rem; color: #3B82F6;">Simulatore: La Geometria della Somma</h3>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">
+                    Trascina i punti <strong>z₁</strong> (Blu) e <strong>z₂</strong> (Verde) per vedere come cambia la loro somma <strong>S</strong> (Giallo).
+                </p>
+                <canvas id="sum-canvas" width="500" height="500"></canvas>
+                
+                <div class="complex-info" style="grid-template-columns: repeat(3, 1fr);">
+                    <div class="info-stat"><label>z₁ (Blu)</label><span id="val-z1" style="color: #3B82F6;">0+0i</span></div>
+                    <div class="info-stat"><label>z₂ (Verde)</label><span id="val-z2" style="color: #10B981;">0+0i</span></div>
+                    <div class="info-stat"><label>Somma (Giallo)</label><span id="val-sum" style="color: #FBBF24;">0+0i</span></div>
+                </div>
+            </div>
+
+            <!-- SIMULATORE PRODOTTO -->
+            <div class="complex-plane-container" style="margin-top: 3rem; border-color: #10B981;">
+                <h3 style="margin-bottom: 1rem; color: #10B981;">Simulatore: La Geometria del Prodotto</h3>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">
+                    Osserva come il prodotto <strong>P</strong> (Verde Smeraldo) nasce dalla <strong>somma degli angoli</strong> e dal <strong>prodotto delle distanze</strong> di z₁ e z₂.
+                </p>
+                <canvas id="prod-canvas" width="500" height="500"></canvas>
+                
+                <div class="complex-info" style="grid-template-columns: repeat(3, 1fr);">
+                    <div class="info-stat"><label>z₁ (Blu)</label><span id="val-p1" style="color: #3B82F6;">0+0i</span></div>
+                    <div class="info-stat"><label>z₂ (Viola)</label><span id="val-p2" style="color: #A855F7;">0+0i</span></div>
+                    <div class="info-stat"><label>Prodotto (Smeraldo)</label><span id="val-prod" style="color: #10B981;">0+0i</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- QUIZ DI RIEPILOGO -->
+        <section class="lesson-section quiz-container" id="quiz-section">
+            <h2 class="lesson-title">Quiz di riepilogo</h2>
+            <p class="lesson-text" style="font-size: 0.95rem;">Metti alla prova quello che hai imparato su Gauss e i numeri complessi.</p>
+            <div id="quiz-area">
+                <!-- Generato da JS -->
+            </div>
+            <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Matematica. Il Teorema Fondamentale e i Numeri Complessi.</p>
+    </footer>
+
+    <!-- JS -->
+    <script src="../../js/main.js"></script>
+    <script src="teorema-fondamentale.js"></script>
+</body>
+</html>

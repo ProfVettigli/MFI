@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Che cos'è l'Informatica? - MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .info-code-box {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 1.5rem;
+            border-radius: 12px;
+            font-family: 'Courier New', Courier, monospace;
+            margin: 2rem 0;
+            border: 1px solid #333;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .keyword { color: #569cd6; }
+        .string { color: #ce9178; }
+        .comment { color: #6a9955; }
+        
+        .pill-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        .pill {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--physics-color);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <header class="lesson-header">
+        <div class="container" style="padding: 4rem 0 2rem;">
+            <div style="text-align: center; margin-bottom: 2.5rem;">
+                <a href="informatica.html" class="back-button" style="margin-bottom: 0;">
+                    <span class="back-icon">&larr;</span> Torna a Informatica
+                </a>
+            </div>
+            <h1 class="lesson-title" style="font-size: clamp(2.2rem, 5vw, 3.5rem); font-weight: 800; margin-bottom: 1rem;">
+                Che cos'è l' <span class="gradient-text" style="background: linear-gradient(135deg, #10B981, #059669);">Informatica?</span>
+            </h1>
+            <p class="lesson-subtitle text-center">
+                La scienza dell'informazione automatizzata: non solo saper usare il computer, ma saper creare con esso.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: var(--physics-color);">1. Definizione e Origini</h2>
+            <p class="lesson-text">
+                Il termine <strong>Informatica</strong> nasce dall'unione di "Informazione" e "Automatica". È lo studio sistematico della memorizzazione, elaborazione e trasmissione dell'informazione.
+            </p>
+            <div class="pill-container">
+                <div class="pill">Algoritmi</div>
+                <div class="pill">Dati</div>
+                <div class="pill">Hardware</div>
+                <div class="pill">Software</div>
+                <div class="pill">Networking</div>
+                <div class="pill">AI</div>
+            </div>
+            <p class="lesson-text">
+                Contrariamente a quanto si pensa, l'informatica non riguarda solo i computer. Come disse Edsger Dijkstra: <i>"L'informatica non riguarda i computer più di quanto l'astronomia riguardi i telescopi."</i>
+            </p>
+        </section>
+
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: var(--physics-color);">2. Il Cuore dell'Informatica: L'Algoritmo</h2>
+            <p class="lesson-text">
+                Un algoritmo è una sequenza finita di passi precisi per risolvere un problema. È come una ricetta di cucina, ma scritta in modo che una macchina possa eseguirla senza ambiguità.
+            </p>
+            <div class="info-code-box">
+                <span class="comment">// Come pensa un programmatore</span><br>
+                <span class="keyword">function</span> risolvereProblema(problema) {<br>
+                &nbsp;&nbsp;<span class="keyword">if</span> (problema.èDifficile) {<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;dividiInProblemiPiùPiccoli();<br>
+                &nbsp;&nbsp;} <span class="keyword">else</span> {<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> soluzioneDiretta;<br>
+                &nbsp;&nbsp;}<br>
+                }
+            </div>
+        </section>
+
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: var(--physics-color);">3. Perché studiarla oggi?</h2>
+            <p class="lesson-text">
+                Oggi l'informatica è la "nuova alfabetizzazione". Capire come funzionano gli algoritmi che governano i social media, le banche e la medicina è fondamentale per essere cittadini consapevoli. Non si tratta di imparare a programmare per diventare programmatori, ma per imparare a <strong>pensare</strong> in modo logico e strutturato (Pensiero Computazionale).
+            </p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Informatica. Architetti del digitale.</p>
+    </footer>
+
+    <script src="../js/main.js"></script>
+</body>
+</html>

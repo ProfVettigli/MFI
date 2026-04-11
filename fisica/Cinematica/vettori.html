@@ -179,6 +179,42 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        .d-pad {
+            display: grid;
+            grid-template-columns: repeat(3, 45px);
+            grid-template-rows: repeat(3, 45px);
+            gap: 6px;
+            margin: 1rem auto;
+            justify-content: center;
+        }
+        .d-pad button {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #ef4444;
+            font-size: 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            font-family: monospace;
+        }
+        .d-pad button:hover {
+            background: rgba(239, 68, 68, 0.3);
+        }
+        .d-pad button:active {
+            background: #ef4444;
+            color: white;
+            transform: scale(0.95);
+        }
+        .d-pad .up { grid-column: 2; grid-row: 1; }
+        .d-pad .left { grid-column: 1; grid-row: 2; }
+        .d-pad .right { grid-column: 3; grid-row: 2; }
+        .d-pad .down { grid-column: 2; grid-row: 3; }
+        .d-pad .center-dot { grid-column: 2; grid-row: 2; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;}
     </style>
 </head>
 
@@ -329,13 +365,22 @@
             <div class="operation-card">
                 <h3>🖱️ Laboratorio: Punta-Coda Interattivo</h3>
                 <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">
-                    Trascina il <strong style="color: #ef4444;">punto rosso</strong> per cambiare il vettore
+                    Trascina o sposta con i tasti il <strong style="color: #ef4444;">punto rosso</strong> per cambiare il vettore
                     \(\vec{b}\).
                     Il vettore <strong style="color: #fbbf24;">giallo</strong> è la risultante \(\vec{r} = \vec{a} +
                     \vec{b}\).
                 </p>
                 <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; align-items: start;">
-                    <canvas id="vectorCanvas" class="vector-canvas"></canvas>
+                    <div>
+                        <canvas id="vectorCanvas" class="vector-canvas"></canvas>
+                        <div class="d-pad">
+                            <button class="up" onclick="moveBDpad(0, -10)">▲</button>
+                            <button class="left" onclick="moveBDpad(-10, 0)">◀</button>
+                            <div class="center-dot">Move</div>
+                            <button class="right" onclick="moveBDpad(10, 0)">▶</button>
+                            <button class="down" onclick="moveBDpad(0, 10)">▼</button>
+                        </div>
+                    </div>
                     <div class="data-display" style="grid-template-columns: 1fr;">
                         <div class="data-card" style="border-left-color: #3b82f6;">
                             <span class="data-label">Vettore \(\vec{a}\) (Fisso)</span>
@@ -385,10 +430,19 @@
             <div class="operation-card">
                 <h3>🖱️ Laboratorio: Metodo del Parallelogrammo</h3>
                 <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">
-                    Trascina il <strong style="color: #ef4444;">punto rosso</strong>. Il parallelogrammo tratteggiato e
+                    Trascina il <strong style="color: #ef4444;">punto rosso</strong> oppure usa i pulsanti. Il parallelogrammo tratteggiato e
                     la diagonale <strong style="color: #fbbf24;">gialla</strong> mostrano la risultante.
                 </p>
-                <canvas id="paraCanvas" class="vector-canvas"></canvas>
+                <div>
+                    <canvas id="paraCanvas" class="vector-canvas"></canvas>
+                    <div class="d-pad">
+                        <button class="up" onclick="moveBDpad(0, -10)">▲</button>
+                        <button class="left" onclick="moveBDpad(-10, 0)">◀</button>
+                        <div class="center-dot">Move</div>
+                        <button class="right" onclick="moveBDpad(10, 0)">▶</button>
+                        <button class="down" onclick="moveBDpad(0, 10)">▼</button>
+                    </div>
+                </div>
             </div>
 
             <div class="info-box">

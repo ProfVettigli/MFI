@@ -352,20 +352,42 @@ function initEvents() {
     }
 }
 
-window.addEventListener('mousemove', e => {
+function handleMove(e) {
+    let clientX = e.clientX;
+    let clientY = e.clientY;
+    
+    if (e.touches && e.touches.length > 0) {
+        clientX = e.touches[0].clientX;
+        clientY = e.touches[0].clientY;
+        if (isDraggingMain || isDraggingPara) e.preventDefault(); // prevent scrolling while dragging
+    }
+    
+    if (clientX === undefined) return;
+
     if (isDraggingMain) {
         const r = canvas.getBoundingClientRect();
-        bTip.x = e.clientX - r.left; bTip.y = e.clientY - r.top;
+        bTip.x = clientX - r.left; bTip.y = clientY - r.top;
         drawAll();
     } else if (isDraggingPara) {
         const r = paraCanvas.getBoundingClientRect();
-        bTip.x = (e.clientX - r.left) + A_TIP.x - ORIGIN.x;
-        bTip.y = (e.clientY - r.top) + A_TIP.y - ORIGIN.y;
+        bTip.x = (clientX - r.left) + A_TIP.x - ORIGIN.x;
+        bTip.y = (clientY - r.top) + A_TIP.y - ORIGIN.y;
         drawAll();
     }
-});
+}
+
+window.addEventListener('mousemove', handleMove);
+window.addEventListener('touchmove', handleMove, {passive: false});
 
 window.addEventListener('mouseup', () => { isDraggingMain = false; isDraggingPara = false; });
+window.addEventListener('touchend', () => { isDraggingMain = false; isDraggingPara = false; });
+
+// D-pad control
+window.moveBDpad = function(dx, dy) {
+    bTip.x += dx;
+    bTip.y += dy;
+    drawAll();
+};
 
 // ═══════════════════════════════════════════════════════
 // QUIZ

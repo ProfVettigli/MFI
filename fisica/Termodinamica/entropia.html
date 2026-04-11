@@ -319,6 +319,27 @@
                         certo (\(p=1\)), l'entropia è zero. Comunicare significa ridurre l'entropia del ricevente!
                     </p>
 
+                    <div
+                        style="background: rgba(16, 185, 129, 0.05); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(16, 185, 129, 0.2); margin: 2rem 0;">
+                        <h4 style="color: #10b981; margin-bottom: 0.8rem;">📏 Misurare l'Incertezza</h4>
+                        <p class="lesson-text" style="font-size: 0.9rem; margin-bottom: 1rem;">
+                            Che cos'è l'<strong>informazione</strong>? Matematicamente, è la misura della <strong>riduzione dell'incertezza</strong>. Se ricevi un messaggio che ti dice qualcosa che già sapevi (es. "Il sole sorgerà"), hai ricevuto zero informazione. Più un evento è raro e imprevedibile, più informazione trasporta quando accade.
+                        </p>
+                        <ul style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.6; list-style: none; padding-left: 0;">
+                            <li>📟 <strong>Bit (Binary Digit):</strong> È l'unità minima. Rappresenta la scelta tra due possibilità (0 o 1, Sì o No).</li>
+                            <li>📦 <strong>Byte:</strong> Un gruppo di <strong>8 bit</strong>. È l'unità base per i caratteri (come una lettera dell'alfabeto).</li>
+                        </ul>
+                        <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(16, 185, 129, 0.2);">
+                            <p style="font-size: 0.8rem; font-weight: 600; color: #10b981; margin-bottom: 0.5rem;">Multipli (Potenze di 2):</p>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; font-size: 0.8rem; color: var(--text-muted);">
+                                <span><strong>1 KB</strong> (Kilobyte) = \(1024\) B</span>
+                                <span><strong>1 MB</strong> (Megabyte) = \(1024\) KB</span>
+                                <span><strong>1 GB</strong> (Gigabyte) = \(1024\) MB</span>
+                                <span><strong>1 TB</strong> (Terabyte) = \(1024\) GB</span>
+                            </div>
+                        </div>
+                    </div>
+
                     <h4 style="color: #10b981; margin: 1.5rem 0 1rem;">Applicazioni del Futuro:</h4>
                     <div style="display: grid; grid-template-columns: 1fr; gap: 1rem;">
                         <div style="background: rgba(16, 185, 129, 0.05); padding: 1rem; border-radius: 10px; border: 1px solid rgba(16, 185, 129, 0.2);">
@@ -335,6 +356,39 @@
                     <div style="margin-top: 2rem; padding: 1rem; border: 1px dashed rgba(16, 185, 129, 0.4); border-radius: 12px; font-size: 0.85rem; color: var(--text-muted);">
                         <strong>Lo sapevi?</strong> Il <em>Principio di Landauer</em> afferma che cancellare un singolo bit di informazione dissipa inevitabilmente una quantità minima di calore (\(k_B T \ln 2\)). L'informazione è letteralmente fisica!
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PARADOSSI E CURIOSITA -->
+        <section class="lesson-section" style="margin-top: 4rem; border: 1px dashed var(--physics-color); padding: 2rem; border-radius: 16px;">
+            <h2 class="lesson-title" style="color: var(--physics-color);">7. L'Invalicabile Secondo Principio e i Suoi Paradossi</h2>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem;">
+                <div style="background: rgba(239, 68, 68, 0.05); padding: 1.5rem; border-radius: 12px; border-left: 4px solid #ef4444;">
+                    <h3 style="color: #ef4444; margin-bottom: 1rem;">Il Diavoletto di Maxwell</h3>
+                    <p class="lesson-text" style="font-size: 0.95rem;">
+                        Ideato, per gioco, dal fisico James Clerk Maxwell nel 1867, immagina un "diavoletto" di guardia a una minuscola porta tra due scatole di gas inizialmente a uguale temperatura. Il demone apre la porta solo per lasciar passare le molecole più lente ("fredde") a sinistra e quelle più veloci ("calde") a destra.
+                    </p>
+                    <p class="lesson-text" style="font-size: 0.95rem;">
+                        Agendo in questo modo, il diavoletto creerebbe dal nulla una differenza di temperatura quantificabile come una compressione termica (le particelle più energetiche vengono portate e "compresse" tra quelle più deboli), trasferendo di fatto calore da un sistema all'altro senza compiere lavoro meccanico. Questo comporterebbe una <strong>diminuzione netta dell'entropia</strong>, il che <strong>violerebbe palesemente il Secondo Principio della Termodinamica</strong>.
+                    </p>
+                    <p class="lesson-text" style="font-size: 0.9rem; font-style: italic; color: var(--text-muted); border-top: 1px solid rgba(239,68,68,0.2); padding-top: 1rem;">
+                        <strong>Come si risolve l'enigma logico?</strong> Osservare, misurare la velocità delle molecole e agire sullo sportello richiede acquisizione di informazione. A causa del <em>Principio di Landauer</em> visto poco fa, il demone dovrà prima o poi "cancellare" la memoria della sua mente per far spazio a nuove molecole: questa cancellazione emette calore e produce più entropia di quanta ne abbia eliminata aprendo la porta!
+                    </p>
+                </div>
+
+                <div style="background: rgba(168, 85, 247, 0.05); padding: 1.5rem; border-radius: 12px; border-left: 4px solid #a855f7;">
+                    <h3 style="color: #a855f7; margin-bottom: 1rem;">Il Teorema del Ritorno di Poincaré</h3>
+                    <p class="lesson-text" style="font-size: 0.95rem;">
+                        Se un gas racchiuso in una scatola si diffonde caoticamente, la statistica ci assicura che le molecole non torneranno mai spontaneamente in un singolo angolo... o forse sì? Nel 1890 <strong>Henri Poincaré</strong> formulò un teorema matematico che ha scosso il mondo della fisica.
+                    </p>
+                    <p class="lesson-text" style="font-size: 0.95rem;">
+                        L'<strong>Eterno Ritorno</strong> stabilisce che ogni sistema dinamico confinato che obbedisce alle leggi della meccanica classica, dopo un tempo sufficientemente lungo, <em>tornerà a uno stato arbitrariamente vicino a quello iniziale</em>! Pertanto, se aspettassimo abbastanza, vedremmo miracolosamente il caffè che si separa dal latte, o un uovo frantumato ricomporsi da solo!
+                    </p>
+                    <p class="lesson-text" style="font-size: 0.9rem; font-style: italic; color: var(--text-muted); border-top: 1px solid rgba(168,85,247,0.2); padding-top: 1rem;">
+                        <strong>C'è però un trucco dimensionale:</strong> il "tempo sufficientemente lungo" (<em>Tempo di Ritorno Poinacaré</em>) per una frazione di milligrammo di materia è spaventosamente grande... grandezze superesponenziali come \(10^{10^{10}}\) anni. Il Big Bang è lontano appena \(1.38 \times 10^{10}\) anni! Quindi l'attuale Universo si sgretolerebbe infinitamente prima che questo evento magico potesse materializzarsi. Il Secondo Principio è tecnicamente salvo a causa del poco tempo vitale a nostra disposizione!
+                    </p>
                 </div>
             </div>
         </section>

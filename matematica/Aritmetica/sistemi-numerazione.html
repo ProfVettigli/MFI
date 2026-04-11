@@ -138,6 +138,15 @@
                 In informatica, le macchine capiscono solo due stati: acceso (1) o spento (0). Questo è il bit. Tutte le
                 foto, i video e i giochi che vedi sono in realtà sequenze di miliardi di zero e uno.
             </p>
+
+            <div
+                style="background: rgba(59, 130, 246, 0.1); border-left: 4px solid #3B82F6; padding: 1.5rem; border-radius: 0 12px 12px 0; margin-bottom: 2rem;">
+                <h4 style="color: #3B82F6; margin-bottom: 0.5rem;">Perché proprio il binario? 🔌</h4>
+                <p class="lesson-text" style="font-size: 0.95rem; margin-bottom: 0;">
+                    Il computer non è "intelligente", è solo molto veloce. Usare solo due stati è il modo più <strong>semplice ed economico</strong> per costruire i circuiti: è molto facile distinguere tra "corrente alta" (ON) e "corrente bassa" (OFF) senza errori. Se dovessimo distinguere 10 livelli diversi di corrente per il sistema decimale, le interferenze renderebbero i calcoli lentissimi e imprecisi!
+                </p>
+            </div>
+
             <div class="converter-box">
                 <h4 style="margin-bottom: 1rem;">Convertitori Binari</h4>
                 <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem;">
@@ -154,19 +163,64 @@
                     </div>
                 </div>
             </div>
+
             <p class="lesson-text">
-                <strong>Come si fa?</strong> Si moltiplica ogni cifra per \(2\) elevato alla sua posizione.
+                <strong>Come si fa?</strong> Si moltiplica ogni cifra per \(2\) elevato alla sua posizione.<br>
                 Es. \(1011 = 1\times 2^3 + 0\times 2^2 + 1\times 2^1 + 1\times 2^0 = 8 + 0 + 2 + 1 = 11\).
             </p>
+
+            <div
+                style="background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.2); padding: 1.5rem; border-radius: 12px; margin-top: 2rem;">
+                <h4 style="color: #10B981; margin-bottom: 1rem;">🎮 Curiosità: Il potere del 2</h4>
+                <p class="lesson-text" style="font-size: 0.95rem;">
+                    Se guardi bene, le <strong>potenze di 2</strong> sono ovunque nel mondo digitale:
+                </p>
+                <ul style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;">
+                    <li><strong>Videogiochi:</strong> Gli stack in <i>Minecraft</i> sono da 64 (\(2^6\)). Il livello finale di <i>Pac-Man</i> è il 256 (\(2^8\)) perché il contatore dei livelli "esplodeva" superata quella cifra!</li>
+                    <li><strong>Memorie:</strong> Hai mai notato che le chiavette USB o le SD sono sempre da 8, 16, 32, 64, 128 o 256 GB? Proprio perché la ram e l'archiviazione sono organizzate fisicamente in righe e colonne indirizzate in binario.</li>
+                    <li><strong>Console:</strong> Forse avrai sentito parlare di console a 8-bit, 16-bit o 64-bit (come il Nintendo 64). Indica quanti dati il processore può elaborare in un colpo solo.</li>
+                </ul>
+            </div>
         </section>
+
 
         <!-- ESADECIMALE -->
         <section class="lesson-section">
             <h2 class="lesson-title">4. Esadecimale (Base 16)</h2>
             <p class="lesson-text">
-                Poiché il binario è troppo lungo per noi umani, usiamo la base 16 per scrivere i codici dei colori HTML
-                o gli indirizzi IP. Arrivati al 9, usiamo le lettere: \(A=10, B=11, C=12, D=13, E=14, F=15\).
+                Poiché il binario è troppo lungo per noi umani (\(255\) in binario è \(11111111\)!), usiamo la base 16.
+                È fondamentale per scrivere i <strong>codici dei colori HTML</strong> o gli indirizzi IP.
+                Arrivati al 9, usiamo le lettere: \(A=10, B=11, C=12, D=13, E=14, F=15\).
             </p>
+
+            <div
+                style="background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); padding: 1.5rem; border-radius: 12px; margin: 1.5rem 0;">
+                <h4 style="color: #A78BFA; margin-bottom: 1rem;">🎨 I Colori del Web</h4>
+                <p class="lesson-text" style="font-size: 0.95rem;">
+                    Un colore su uno schermo è formato da tre canali: <strong>R</strong>ed, <strong>G</strong>reen,
+                    <strong>B</strong>lue (RGB). Ogni canale va da 0 a 255 (ovvero da <code>00</code> a <code>FF</code> in
+                    esadecimale).
+                </p>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                    <div style="text-align: center;">
+                        <div style="background: #FF0000; height: 50px; border-radius: 8px; margin-bottom: 0.5rem; border: 1px solid rgba(255,255,255,0.2);"></div>
+                        <code>#FF0000</code><br><span style="font-size: 0.8rem; opacity: 0.7;">Rosso Puro</span>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="background: #00FF00; height: 50px; border-radius: 8px; margin-bottom: 0.5rem; border: 1px solid rgba(255,255,255,0.2);"></div>
+                        <code>#00FF00</code><br><span style="font-size: 0.8rem; opacity: 0.7;">Verde Puro</span>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="background: #0000FF; height: 50px; border-radius: 8px; margin-bottom: 0.5rem; border: 1px solid rgba(255,255,255,0.2);"></div>
+                        <code>#0000FF</code><br><span style="font-size: 0.8rem; opacity: 0.7;">Blu Puro</span>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="background: #F59E0B; height: 50px; border-radius: 8px; margin-bottom: 0.5rem; border: 1px solid rgba(255,255,255,0.2);"></div>
+                        <code>#F59E0B</code><br><span style="font-size: 0.8rem; opacity: 0.7;">Arancione MFI</span>
+                    </div>
+                </div>
+            </div>
+
             <div class="converter-box">
                 <h4 style="margin-bottom: 1rem;">Convertitori Esadecimali</h4>
                 <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem;">
@@ -183,6 +237,7 @@
                 </div>
             </div>
         </section>
+
 
         <!-- OTTALE -->
         <section class="lesson-section">

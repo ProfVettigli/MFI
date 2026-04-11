@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teorema di Gödel - Lezione Interattiva MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- MathJax -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+        
+        .sub-hero {
+            padding: 4rem 0 2rem;
+            text-align: left;
+        }
+        
+        .sub-hero-title {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="sub-hero">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2.5rem;">
+                <a href="logica.html" class="back-button" style="margin-bottom: 0;">
+                    <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Logica
+                </a>
+            </div>
+            <h1 class="sub-hero-title">Teorema dell'Incompletezza di <span class="gradient-text" style="background: linear-gradient(135deg, #f59e0b, #fbbf24); -webkit-background-clip: text; background-clip: text; color: transparent;">Gödel</span></h1>
+            <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+                Esistono verità matematiche che sono assolutamente vere, ma che <strong>nessuno potrà mai dimostrare</strong>. Scopriamo come Kurt Gödel ha sconvolto la logica moderna, distruggendo il sogno di una matematica perfetta e infallibile.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <!-- Il Sogno di Hilbert -->
+        <section class="lesson-section" style="border-left: 4px solid var(--text-muted);">
+            <h2 class="lesson-title">Il Sogno di Hilbert</h2>
+            <p class="lesson-text">
+                All'inizio del 1900, il grande matematico David Hilbert lanciò una sfida: creare un sistema matematico rigoroso in cui, a partire da alcuni principi base (chiamati <strong>assiomi</strong>), si potesse dimostrare <strong>ogni singola affermazione vera</strong>. Il moto era: <em>"In matematica non c'è ignorabimus. Noi dobbiamo sapere. Noi sapremo."</em>
+            </p>
+            <p class="lesson-text">
+                Tutto sembrava procedere bene, si pensava che la matematica fosse come un grande orologio ad altissima precisione: perfetta, coerente e completa!
+            </p>
+        </section>
+
+        <!-- L'arrivo di Godel -->
+        <section class="lesson-section" style="background: rgba(245, 158, 11, 0.03); border-color: #F59E0B;">
+            <h2 class="lesson-title" style="color: #F59E0B;">L'Ingresso di Kurt Gödel (1931)</h2>
+            <p class="lesson-text">
+                Un giovane logico austriaco, Kurt Gödel, all'età di soli 25 anni smontò definitivamente l'illusione di Hilbert pubblicando il suo <strong>Teorema d'Incompletezza</strong>.
+            </p>
+            <div class="grid" style="grid-template-columns: 1fr; gap: 1.5rem; margin-top: 1.5rem;">
+                <div class="card" style="padding: 1.5rem; background: rgba(0,0,0,0.3); border-left: 4px solid #F59E0B;">
+                    <h3 style="margin-bottom: 0.8rem; color: #F59E0B; font-size: 1.2rem;">L'intuizione di Gödel: "Hackerare" la matematica</h3>
+                    <p style="font-size: 1rem; color: var(--text-main);">
+                        Gödel ebbe un'idea geniale: usò i numeri e le equazioni per <em>parlare della matematica stessa</em>. Assegnò a ogni simbolo logico un numero unico (chiamato oggi <strong>Numero di Gödel</strong>), in modo che le equazioni matematiche potessero "formare delle frasi" esattamente come il codice binario fa con testi e immagini in informatica.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Il Primo Teorema -->
+        <section class="lesson-section" style="border-left: 4px solid var(--math-color);">
+            <h2 class="lesson-title">Il Primo Teorema: La Formula Pienamente Consapevole</h2>
+            <p class="lesson-text">
+                Grazie al suo codice numerico, Gödel riuscì a scrivere una formula matematica ben precisa che, tradotta in linguaggio umano, diceva testualmente:
+            </p>
+            <div style="background: linear-gradient(90deg, rgba(59, 130, 246, 0.1), rgba(16, 185, 129, 0.1)); padding: 2rem; border-radius: 12px; text-align: center; border: 1px solid rgba(255,255,255,0.1); margin: 1.5rem 0; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+                <p style="font-size: 1.8rem; font-weight: 800; color: #F8FAFC; text-transform: uppercase;">
+                    "Io non posso essere dimostrata."
+                </p>
+            </div>
+            
+            <p class="lesson-text">Questo è il <strong>Paradosso del Mentitore</strong> trasformato in matematica rigorosa. Immaginiamo di chiamare questa speciale dichiarazione con la lettera <strong>\( G \)</strong>.</p>
+            
+            <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 2rem 0;">
+                <div style="background: rgba(239, 68, 68, 0.05); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(239, 68, 68, 0.2);">
+                    <h4 style="color: #EF4444; margin-bottom: 0.8rem; font-size: 1.2rem;">Ipotesi 1: Se \( G \) FOSSE FALSA</h4>
+                    <p style="font-size: 0.95rem;">
+                        Se diciamo che "Io non posso essere dimostrata" è un falso, significa che la formula <strong>può essere dimostrata</strong>. <br><br>Ma aspetta! Se possiamo dimostrarla, stiamo dimostrando che una cosa falsa è vera. Questo vorrebbe dire che la matematica è <strong>inconsistente</strong> (piena di bug, si può provare che 2+2=5).
+                    </p>
+                </div>
+
+                <div style="background: rgba(16, 185, 129, 0.05); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(16, 185, 129, 0.2);">
+                    <h4 style="color: #10B981; margin-bottom: 0.8rem; font-size: 1.2rem;">Ipotesi 2: Se \( G \) È VERA</h4>
+                    <p style="font-size: 0.95rem;">
+                        Poiché la matematica deve essere coerente e senza bug, l'unica alternativa è che \( G \) <strong>deve essere vera</strong>. Ma cosa dice \( G \)? "Io non posso essere dimostrata". <br><br>Quindi, \( G \) è vera, ma non avremo mai una dimostrazione passo-passo che ci porti a lei. La matematica è <strong>incompleta</strong>!
+                    </p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Spiegazione Logico-Matematica e Formula -->
+        <section class="lesson-section" style="border-top: 2px dashed rgba(255,255,255,0.1); padding-top: 3rem;">
+            <h2 class="lesson-title">Cosa Significa in formule?</h2>
+            <p class="lesson-text">Ecco come appare il "cuore" del ragionamento scritto coi simboli matematici formali:</p>
+            
+            <div style="background: rgba(0,0,0,0.4); padding: 2rem; border-radius: 12px; margin: 1.5rem 0; text-align: center; font-size: 1.4rem;">
+                \[ G \iff \neg \, \text{Prov}( \ulcorner G \urcorner ) \]
+            </div>
+            
+            <div style="background: rgba(255,255,255,0.02); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin-bottom: 1rem;"><span style="color: #F59E0B; font-weight: bold; font-size: 1.2rem;">\( G \)</span> = La nostra proposizione speciale di Gödel.</li>
+                    <li style="margin-bottom: 1rem;"><span style="color: var(--physics-color); font-weight: bold; font-size: 1.2rem;">\(\iff\)</span> = "Equivale a dire", oppure "Significa".</li>
+                    <li style="margin-bottom: 1rem;"><span style="color: #EF4444; font-weight: bold; font-size: 1.2rem;">\(\neg\) (NON)</span> = Segno di negazione logica. Dichiara che quello che segue è falso.</li>
+                    <li style="margin-bottom: 1rem;"><span style="color: var(--math-color); font-weight: bold; font-size: 1.2rem;">\(\text{Prov}(...)\)</span> = ("Provable") Predicato che sta per: "Esiste una dimostrazione formale nei nostri assiomi matematici".</li>
+                    <li><span style="color: #A855F7; font-weight: bold; font-size: 1.2rem;">\( \ulcorner G \urcorner \)</span> = Il "Numero di codice" identificativo della formula \( G \). È come l'ID nel database.</li>
+                </ul>
+            </div>
+            <p class="lesson-text" style="margin-top: 1.5rem; font-style: italic;">
+                Letti tutti insieme, in linguaggio umano dicono: <em>"L'affermazione \(G\) equivale a dire che non si può dimostrare logicamente il codice numerico di \(G\)."</em>
+            </p>
+        </section>
+
+        <!-- Il Secondo Teorema -->
+        <section class="lesson-section" style="background: rgba(168, 85, 247, 0.05); border-left: 4px solid #A855F7;">
+            <h2 class="lesson-title" style="color: #A855F7;">Il Secondo Teorema: La Macchina non può controllare se stessa</h2>
+            <p class="lesson-text">
+                Non contento di aver appena cambiato la storia, Gödel estrasse un secondo teorema, quasi come conseguenza diretta. 
+            </p>
+            <div style="background: rgba(0,0,0,0.3); border-left: 4px solid #A855F7; padding: 1.5rem; margin: 1rem 0; font-size: 1.15rem; font-style: italic; border-radius: 0 10px 10px 0;">
+                "Nessun sistema formale coerente può dimostrare la propria coerenza."
+            </div>
+            <p class="lesson-text">
+                In parole povere: <strong>La matematica non può dimostrare di non essere buggata dall'interno.</strong> <br><br>
+                Come per l'essere umano, che non può usare la propria ragione per dimostrare che la propria mente non sia pazza (perché essendo pazza, la prova non avrebbe valore!), un sistema matematico non può certificare se stesso dall'interno. Avrai sempre bisogno di uscire dal sistema per guardarlo da una lente "più alta".
+            </p>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Matematica.</p>
+    </footer>
+
+    <!-- JS -->
+    <script src="../../js/main.js"></script>
+</body>
+</html>

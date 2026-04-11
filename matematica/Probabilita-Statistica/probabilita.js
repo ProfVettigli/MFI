@@ -141,6 +141,37 @@ document.addEventListener('DOMContentLoaded', () => {
             quizArea.appendChild(card);
         });
     }
+
+    /* --- PARADOSSO STATISTICO --- */
+    const paradoxBtns = document.querySelectorAll('.paradox-btn');
+    const paradoxFeedback = document.getElementById('paradox-feedback');
+
+    paradoxBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const val = btn.getAttribute('data-val');
+            let msg = "";
+
+            if (val === "25") {
+                msg = `<strong>Hai scelto 25%</strong>. Se la risposta fosse 25%, avresti ragione... ma ci sono DUE opzioni (A e C) che dicono 25%. Quindi scegliendo a caso avresti il 50% di probabilità, rendendo il 25% sbagliato!`;
+            } else if (val === "50") {
+                msg = `<strong>Hai scelto 50%</strong>. Se la risposta fosse 50%, avresti ragione... ma c'è solo UNA opzione (D) che dice 50%. Quindi scegliendo a caso avresti il 25% di probabilità, rendendo il 50% sbagliato!`;
+            } else if (val === "0") {
+                msg = `<strong>Hai scelto 0%</strong>. Se la risposta fosse 0%, non potresti mai indovinare. Ma scegliendo questa opzione a caso (1 su 4) avresti il 25% di probabilità di indovinare, rendendo lo 0% una contraddizione!`;
+            }
+
+            paradoxFeedback.innerHTML = msg;
+            paradoxFeedback.className = 'feedback';
+            paradoxFeedback.style.display = 'block';
+            paradoxFeedback.style.background = 'rgba(236, 72, 153, 0.1)';
+            paradoxFeedback.style.border = '1px solid #EC4899';
+            paradoxFeedback.style.color = '#EC4899';
+            
+            // Highlight selected
+            paradoxBtns.forEach(b => b.style.opacity = "0.6");
+            btn.style.opacity = "1";
+            btn.style.borderColor = "#EC4899";
+        });
+    });
 });
 
 /* --- ESERCIZI INTERMEDI --- */

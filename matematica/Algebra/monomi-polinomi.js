@@ -285,4 +285,51 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    /* =========================================================
+       5. RACCOGLIMENTO A FATTOR COMUNE
+       ========================================================= */
+    const btnCheckCommon = document.getElementById('btn-check-common');
+    const commonInput = document.getElementById('common-factor-input');
+    const commonFeedback = document.getElementById('common-feedback');
+    const factoringStep1 = document.getElementById('factoring-step-1');
+
+    if (btnCheckCommon) {
+        btnCheckCommon.addEventListener('click', () => {
+            const val = commonInput.value.trim().toLowerCase().replace(/\s/g, '');
+            if (val === "4x^2" || val === "4x2") {
+                commonFeedback.textContent = "Corretto! 4x² è il MCD tra 12x³ e 8x². Vedi come il resto rimane in parentesi?";
+                commonFeedback.style.color = "var(--physics-color)";
+                if (factoringStep1) factoringStep1.style.display = "inline";
+                commonInput.style.borderColor = "var(--physics-color)";
+            } else {
+                commonFeedback.textContent = "Non esatto. Cerca il massimo divisore comune per i numeri (12, 8) e la potenza minima delle lettere comuni.";
+                commonFeedback.style.color = "#EF4444";
+                commonInput.style.borderColor = "#EF4444";
+            }
+        });
+    }
+
+    /* =========================================================
+       6. RACCOGLIMENTO PARZIALE
+       ========================================================= */
+    const btnCheckPartial = document.getElementById('btn-check-partial');
+    const partialInput = document.getElementById('partial-answer');
+    const partialFeedback = document.getElementById('partial-feedback');
+
+    if (btnCheckPartial) {
+        btnCheckPartial.addEventListener('click', () => {
+            const val = partialInput.value.trim().toLowerCase().replace(/\s/g, '');
+            if (val === "(x+y)" || val === "x+y") {
+                partialFeedback.textContent = "Esatto! Il binomio comune è (x+y). La scomposizione finale è (2+a)(x+y).";
+                partialFeedback.style.color = "var(--physics-color)";
+                partialInput.style.borderColor = "var(--physics-color)";
+            } else {
+                partialFeedback.textContent = "Riprova. Raggruppa i primi due termini estraendo il 2, e gli ultimi due estraendo la 'a'. Cosa resta?";
+                partialFeedback.style.color = "#EF4444";
+                partialInput.style.borderColor = "#EF4444";
+            }
+        });
+    }
+
 });
+

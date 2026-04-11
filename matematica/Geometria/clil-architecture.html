@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLIL: Geometry in Architecture - MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        .back-button { display: inline-flex; align-items: center; color: var(--text-muted); text-decoration: none; margin-bottom: 2rem; font-weight: 600; transition: color 0.3s ease, transform 0.3s ease; }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+        .sub-hero { padding: 4rem 0 2rem; text-align: left; }
+        .interactive-container { background: rgba(0,0,0,0.15); padding: 2rem; border-radius: 12px; margin: 2rem 0; display: flex; flex-direction: column; align-items: center; box-shadow: inset 0 0 10px rgba(0,0,0,0.1); }
+        .canvas-wrapper { width: 100%; max-width: 600px; border-radius: 8px; overflow: hidden; background: #222; border: 1px solid rgba(255,255,255,0.1); margin: 0 auto;}
+        canvas { display: block; width: 100%; height: auto; }
+        .data-card { background: rgba(0,0,0,0.3); border-radius: 10px; padding: 1rem; border-left: 4px solid var(--text-main); display: flex; flex-direction: column; min-width: 120px; align-items:center; }
+        .data-label { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem; }
+        .lesson-list { padding-left: 1.5rem; margin-bottom: 2rem; }
+        .lesson-list li { margin-bottom: 1rem; font-size: 1.05rem; line-height: 1.6; color: var(--text-main); }
+        .example-box { background: rgba(255,255,255,0.05); border-left: 4px solid #3b82f6; padding: 1.5rem; border-radius: 0 12px 12px 0; margin: 1.5rem 0; line-height: 1.7; }
+        .clil-badge { background: #3b82f6; color: white; padding: 0.3rem 0.6rem; border-radius: 6px; font-size: 0.8rem; font-weight: bold; vertical-align: middle; margin-left: 1rem; text-transform: uppercase; letter-spacing: 1px; }
+        .glossary-box { background: rgba(16, 185, 129, 0.05); border-left: 4px solid #10b981; padding: 1.5rem; border-radius: 0 12px 12px 0; margin-top: 3rem;}
+        .glossary-term { font-weight: bold; color: #10b981; }
+    </style>
+</head>
+<body>
+    <header class="sub-hero">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2.5rem;">
+                <a href="geometria.html" class="back-button" style="margin-bottom: 0;">
+                    <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Geometria
+                </a>
+            </div>
+            <h1 class="sub-hero-title" style="color: #3b82f6;"> 🏛️ Mathematics in Architecture <span class="clil-badge">CLIL English</span></h1>
+            <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+                Discovering how geometry and math shape the most beautiful monuments and squares in the world.
+            </p>
+        </div>
+    </header>
+    <main class="container">
+        
+        <!-- SECTION 1: THE ELLIPSE IN URBAN SPACES -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #3b82f6;">1. The Ellipse in Urban Spaces</h2>
+            <p class="lesson-text">
+                When we walk through historic Italian cities, we often admire grand open spaces called <em>piazzas</em> (squares). Despite the name, the most famous and majestic ones are actually rarely square-shaped! Instead, architects have often used a specific geometric shape we studied in the Conics lesson: the <strong>Ellipse</strong>.
+            </p>
+            <p class="lesson-text">
+                Why use an ellipse? Unlike a circle which draws attention only to a single point (the center), an ellipse features two focal points (<em>foci</em>). This creates a dynamic sense of movement and "embraces" the crowd, making huge spaces feel both monumental and welcoming.
+            </p>
+            
+            <ul class="lesson-list">
+                <li><strong>St. Peter's Square (Rome):</strong> Designed by Gian Lorenzo Bernini, the immense colonnade is a perfect mathematical ellipse. Bernini wanted the colonnade to symbolize the "maternal arms of the Church" embracing the faithful. If you stand exactly on one of the two focal points marked on the ground, the four rows of columns miraculously perfectly align into a single row!</li>
+                <li><strong>Piazza del Plebiscito (Naples):</strong> This vast, breathtaking space is defined by an elegant elliptical sweep. The elliptical colonnade draws the eyes naturally toward the massive dome of the church, acting as a stunning theatrical stage for the city.</li>
+            </ul>
+
+            <div class="interactive-container" style="box-shadow: 0 0 10px rgba(59, 130, 246, 0.2);">
+                <h4 style="color: white; margin-bottom: 1rem;">Interactive: The Elliptical Embrace</h4>
+                <p style="color:rgba(255,255,255,0.7); font-size:0.9rem; margin-bottom:1rem; text-align:center;">Change the eccentricity. See how stretching the ellipse alters the feeling of the "Piazza". Notice the two focal points (F1 and F2).</p>
+                <div class="canvas-wrapper">
+                    <canvas id="archEllCanvas" width="600" height="350"></canvas>
+                </div>
+                <div style="display:flex; gap: 1rem; margin-top: 1.5rem; justify-content:center;">
+                    <div class="data-card" style="border-left-color: #a855f7;">
+                        <span class="data-label">Stretch (Semi-axis a)</span>
+                        <input type="range" id="arch-ell-a" min="150" max="280" value="220" step="10">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: THE GOLDEN RATIO -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #f59e0b;">2. The Golden Ratio (La Sezione Aurea)</h2>
+            <p class="lesson-text">
+                What makes a building look "naturally" beautiful? Many artists and architects have relied on a specific mathematical proportion known as the <strong>Golden Ratio</strong> (or <em>Divine Proportion</em>). Represented by the Greek letter Phi (\( \Phi \)), its value is approximately <strong>1.618</strong>.
+            </p>
+            
+            <div class="example-box" style="border-left-color: #f59e0b;">
+                <strong style="color: #f59e0b; text-transform:uppercase;">📐 The Mathematical Definition</strong><br>
+                The Golden Ratio occurs when you divide a line into two parts: the longer part (\(a\)) and the shorter part (\(b\)), such that the ratio of the whole line (\(a + b\)) to the longer part (\(a\)) is exactly equal to the ratio of the longer part (\(a\)) to the shorter part (\(b\))!
+                <br>
+                <strong>Equation:</strong> \( \frac{a+b}{a} = \frac{a}{b} = \Phi \approx 1.618 \)
+            </div>
+
+            <p class="lesson-text">
+                This divine proportion is not just an abstract number; it appears everywhere in nature (like the spiral of a nautilus shell) and has been intentionally applied in human history:
+            </p>
+            <ul class="lesson-list">
+                <li><strong>The Parthenon (Greece):</strong> Ancient Greeks used Golden Rectangles to establish the perfect width and height of the majestic facade, achieving total aesthetic harmony.</li>
+                <li><strong>Renaissance Art:</strong> Geniuses like Leonardo da Vinci and architects like Le Corbusier in modern times explicitly used \(\Phi\) to dictate the heights of windows, doors, and the physical proportions of their buildings.</li>
+            </ul>
+
+            <div class="interactive-container" style="box-shadow: 0 0 10px rgba(245, 158, 11, 0.2);">
+                <h4 style="color: white; margin-bottom: 1rem;">Interactive: The Golden Rectangle</h4>
+                <p style="color:rgba(255,255,255,0.7); font-size:0.9rem; margin-bottom:1rem; text-align:center;">A Golden Rectangle has a Long Side / Short Side ratio of exactly 1.618. If you cut out a perfect square, the remaining piece is... another Golden Rectangle! Try splitting it!</p>
+                <div class="canvas-wrapper" style="cursor: pointer;" onclick="window.splitGolden()">
+                    <canvas id="goldenCanvas" width="600" height="370"></canvas>
+                </div>
+                <div style="margin-top: 1rem; color: #f59e0b; font-weight: bold; text-align: center;">Click the canvas to cut out squares recursively!</div>
+                <button onclick="window.resetGolden()" class="quiz-btn" style="margin-top: 1rem; padding: 0.5rem 1rem;">Reset</button>
+            </div>
+        </section>
+
+        <!-- GLOSSARY -->
+        <section class="lesson-section">
+            <div class="glossary-box">
+                <h3 style="color: #10b981; margin-bottom: 1rem;">🇬🇧 CLIL Vocabulary & Glossary</h3>
+                <ul style="list-style-type: none; padding-left: 0; line-height: 1.8;">
+                    <li><span class="glossary-term">Square / Piazza:</span> An open public area in a city or town.</li>
+                    <li><span class="glossary-term">Focal point (Focus):</span> A central point of attention or a geometric point used to define a conic section.</li>
+                    <li><span class="glossary-term">Golden Ratio (Divine Proportion):</span> A mathematical ratio (1.618) representing perfect harmonious proportions.</li>
+                    <li><span class="glossary-term">Facade:</span> The principal front or face of a building.</li>
+                    <li><span class="glossary-term">Colonnade:</span> A sequence of columns joined by an entablature.</li>
+                    <li><span class="glossary-term">Embrace:</span> To hold someone closely in one's arms (used metaphorically for Bernini's colonnade).</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- QUIZ -->
+        <section class="lesson-section quiz-container">
+            <h2 class="lesson-title">Comprehension Check</h2>
+            <div id="quiz-area"></div>
+            <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem; font-weight: bold;"></div>
+        </section>
+
+    </main>
+    <footer><p>&copy; 2026 MFI - Matematica MFI.</p></footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- ELLIPSE CANVAS (ARCHITECTURE) ---
+            const cEll = document.getElementById('archEllCanvas');
+            const ellInput = document.getElementById('arch-ell-a');
+            function drawArchEll() {
+                if(!cEll) return;
+                const ctx = cEll.getContext('2d');
+                const W = cEll.width, H = cEll.height;
+                ctx.clearRect(0, 0, W, H);
+                
+                // Draw a simple grid representing the city pavement
+                ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+                for(let x=0; x<W; x+=20){ ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke();}
+                for(let y=0; y<H; y+=20){ ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke();}
+
+                let a = parseInt(ellInput.value);
+                let b = 120; // fixed minor axis for "building limits"
+                let cx = W/2, cy = H/2;
+                
+                // Draw Colonnade (Ellipse outline with dots)
+                ctx.strokeStyle = '#a855f7'; ctx.lineWidth = 4;
+                ctx.beginPath();
+                ctx.ellipse(cx, cy, a, b, 0, 0, Math.PI*2);
+                ctx.stroke();
+
+                ctx.fillStyle = '#fff';
+                for(let t=0; t<Math.PI*2; t+=0.15) {
+                    ctx.beginPath(); ctx.arc(cx + Math.cos(t)*a, cy + Math.sin(t)*b, 3, 0, Math.PI*2); ctx.fill();
+                }
+
+                // Draw Foci
+                let c = Math.sqrt(a*a - b*b);
+                ctx.fillStyle = '#ec4899';
+                ctx.beginPath(); ctx.arc(cx - c, cy, 6, 0, Math.PI*2); ctx.fill();  // Focus 1
+                ctx.beginPath(); ctx.arc(cx + c, cy, 6, 0, Math.PI*2); ctx.fill();  // Focus 2
+                
+                ctx.fillStyle = '#ccc'; ctx.font = "14px 'Inter'";
+                ctx.fillText("F1", cx - c - 10, cy + 20);
+                ctx.fillText("F2", cx + c - 10, cy + 20);
+                ctx.fillText("Colonnade", cx, cy - b - 15);
+            }
+            if(ellInput) ellInput.addEventListener('input', drawArchEll);
+            drawArchEll();
+
+            // --- GOLDEN RECTANGLE CANVAS ---
+            const cGold = document.getElementById('goldenCanvas');
+            const Phi = 1.6180339887;
+            let goldSteps = 0;
+            // The initial maximum rectangle we can fit
+            // Let's use Height = 300, so Width = 300 * 1.618 = 485.4
+            let startW = 340 * Phi;
+            let startH = 340;
+            let startX = (600 - startW)/2;
+            let startY = (370 - startH)/2;
+
+            function drawGolden() {
+                if(!cGold) return;
+                const ctx = cGold.getContext('2d');
+                ctx.clearRect(0,0,cGold.width, cGold.height);
+                
+                let curX = startX, curY = startY, curW = startW, curH = startH;
+                let direction = 0; // 0: cut right, 1: cut bottom, 2: cut left, 3: cut top
+
+                // Draw original
+                ctx.strokeStyle = '#f59e0b'; ctx.lineWidth = 3;
+                ctx.strokeRect(curX, curY, curW, curH);
+
+                const colors = ['rgba(59, 130, 246, 0.4)', 'rgba(236, 72, 153, 0.4)', 'rgba(16, 185, 129, 0.4)', 'rgba(245, 158, 11, 0.4)', 'rgba(168, 85, 247, 0.4)'];
+                
+                for(let i=1; i<=goldSteps; i++) {
+                    let rectS = 0; 
+                    ctx.fillStyle = colors[(i-1) % colors.length];
+                    
+                    if(direction === 0) {
+                        // Cut a square from the left (width is larger than height usually)
+                        rectS = curH;
+                        ctx.fillRect(curX, curY, rectS, rectS);
+                        ctx.strokeRect(curX, curY, rectS, rectS);
+                        curX += rectS; curW -= rectS;
+                    } else if (direction === 1) {
+                        // Cut a square from the top
+                        rectS = curW;
+                        ctx.fillRect(curX, curY, rectS, rectS);
+                        ctx.strokeRect(curX, curY, rectS, rectS);
+                        curY += rectS; curH -= rectS;
+                    } else if (direction === 2) {
+                        // Cut from right
+                        rectS = curH;
+                        ctx.fillRect(curX + curW - rectS, curY, rectS, rectS);
+                        ctx.strokeRect(curX + curW - rectS, curY, rectS, rectS);
+                        curW -= rectS;
+                    } else if (direction === 3) {
+                        // Cut from bottom
+                        rectS = curW;
+                        ctx.fillRect(curX, curY + curH - rectS, rectS, rectS);
+                        ctx.strokeRect(curX, curY + curH - rectS, rectS, rectS);
+                        curH -= rectS;
+                    }
+                    direction = (direction + 1) % 4;
+                }
+            }
+            window.splitGolden = function() {
+                if(goldSteps < 8) { goldSteps++; drawGolden(); }
+            };
+            window.resetGolden = function() { goldSteps = 0; drawGolden(); };
+            drawGolden();
+
+            // --- QUIZ ---
+            const quizData = [
+                { question: "1. Why did Bernini design St. Peter's Square as an ellipse instead of a circle?", options: ["To make it cheaper to construct.", "To create two focal points that mimic the welcoming, embracing 'maternal arms' of the Church.", "Because a circle wouldn't fit inside Rome's walls."], correct: 1 },
+                { question: "2. What is the approximate mathematical value of the Golden Ratio (Phi)?", options: ["3.141", "1.618", "0.999"], correct: 1 },
+                { question: "3. What happens if you cut a perfect square out of a 'Golden Rectangle'?", options: ["You are left with another, smaller Golden Rectangle.", "It becomes a triangle.", "It leaves a perfect circle."], correct: 0 },
+                { question: "4. True or False: The Golden Ratio was only discovered in modern times and never used by ancient Greeks.", options: ["True", "False, it was famously used in Ancient Greek architecture like the Parthenon."], correct: 1 }
+            ];
+
+            const quizArea = document.getElementById('quiz-area');
+            let currentScore = 0; let questionsAnswered = 0;
+
+            if (quizArea) {
+                quizData.forEach((q, qIndex) => {
+                    const qDiv = document.createElement('div'); qDiv.className = 'quiz-question';
+                    const qTitle = document.createElement('h3'); qTitle.textContent = q.question; qDiv.appendChild(qTitle);
+                    const optionsDiv = document.createElement('div'); optionsDiv.className = 'quiz-options';
+
+                    q.options.forEach((optText, optIndex) => {
+                        const btn = document.createElement('button'); btn.className = 'quiz-btn'; btn.textContent = optText;
+                        btn.onclick = () => {
+                            if (btn.classList.contains('correct') || btn.classList.contains('wrong')) return;
+                            if (optIndex === q.correct) {
+                                btn.classList.add('correct');
+                                optionsDiv.querySelectorAll('.quiz-btn').forEach(b => { b.disabled = true; b.style.cursor='default'; });
+                                if (!optionsDiv.querySelector('.wrong')) currentScore++;
+                                questionsAnswered++;
+                                if (questionsAnswered === quizData.length) {
+                                    const scoreEl = document.getElementById('quiz-score');
+                                    scoreEl.textContent = `Final Score: ${currentScore} / ${quizData.length}. Great job!`;
+                                    scoreEl.style.color = currentScore===quizData.length?"#10B981":"#F59E0B";
+                                }
+                            } else { btn.classList.add('wrong'); btn.innerHTML += " <strong>✗ Incorrect</strong>"; btn.disabled = true; }
+                        };
+                        optionsDiv.appendChild(btn);
+                    });
+                    qDiv.appendChild(optionsDiv); quizArea.appendChild(qDiv);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I Numeri Complessi - Algebra MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- MathJax -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+            width: fit-content;
+        }
+        
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+
+        .hero-title { font-size: 3rem; margin-bottom: 1.5rem; }
+
+        .complex-plane-container {
+            background: #0f172a;
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #complex-canvas, #sum-canvas, #prod-canvas {
+            background: #020617;
+            border-radius: 12px;
+            cursor: crosshair;
+            max-width: 100%;
+        }
+
+        .formula-card {
+            background: rgba(245, 158, 11, 0.05);
+            border-left: 4px solid #F59E0B;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 0 16px 16px 0;
+        }
+
+        .complex-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+            width: 100%;
+        }
+
+        .info-stat {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .info-stat label { display: block; font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem; }
+        .info-stat span { font-family: 'Fira Code', monospace; font-size: 1.2rem; color: #F59E0B; }
+
+        .app-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 1.5rem;
+            border-radius: 16px;
+            transition: transform 0.3s ease;
+        }
+        .app-card:hover { transform: translateY(-5px); background: rgba(255,255,255,0.04); }
+        .app-icon { font-size: 2rem; margin-bottom: 1rem; }
+    </style>
+</head>
+<body>
+    <header class="sub-hero">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <a href="algebra.html" class="back-button">
+                    <span class="back-icon">&larr;</span> Torna ad Algebra
+                </a>
+            </div>
+            <h1 class="hero-title">I <span class="gradient-text">Numeri Complessi</span></h1>
+            <p class="sub-hero-subtitle">Benvenuti nella seconda dimensione della matematica: dove l'immaginario diventa reale.</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- 1. DEFINIZIONE -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">1. L'Unità Immaginaria</h2>
+            <p class="lesson-text">
+                Un numero complesso nasce dall'unione di un numero reale e un'unità "speciale", chiamata unità immaginaria, indicata con <strong>i</strong>. La sua caratteristica magica è:
+                <br><br>
+                <div style="text-align: center; font-size: 2rem; color: #F59E0B; margin: 1rem 0;">
+                    \(i = \sqrt{-1} \implies i^2 = -1\)
+                </div>
+            </p>
+            <div class="shortcut-box" style="border-left-color: #F59E0B; background: rgba(245, 158, 11, 0.05); margin-bottom: 2rem;">
+                <p><strong>Nota Storica:</strong> Fu il matematico italiano <strong>Rafael Bombelli</strong> uno dei primi a teorizzare queste quantità nel XVI secolo. All'epoca, e per i secoli successivi, termini come "immaginari" vennero usati come <strong>dispregiativi</strong>, per indicare qualcosa di assurdo o inutile. Oggi sappiamo che questi numeri non hanno nulla di "finto": sono strumenti <strong>indispensabili per descrivere la realtà fisica</strong>, dagli atomi alle onde radio.</p>
+            </div>
+            <p class="lesson-text">
+                Ogni numero complesso \(z\) si scrive nella forma algebrica:
+                <br><br>
+
+                <div style="text-align: center; font-size: 1.5rem;">
+                    \(z = a + bi\)
+                </div>
+            </p>
+            <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                <div class="card" style="padding: 1.2rem; border-left: 4px solid var(--math-color);">
+                    <h4 style="color: var(--math-color);">Parte Reale (a)</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);">È la coordinata sull'asse orizzontale, quella che conosciamo da sempre.</p>
+                </div>
+                <div class="card" style="padding: 1.2rem; border-left: 4px solid #A855F7;">
+                    <h4 style="color: #A855F7;">Parte Immaginaria (b)</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);">È la coordinata sull'asse verticale, legata all'unità \(i\).</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. IL PIANO DI GAUSS -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">2. Il Piano di Argand-Gauss</h2>
+            <p class="lesson-text">
+                Proprio come un punto nel piano ha coordinate \((x, y)\), un numero complesso occupa una posizione precisa nel piano. Muovi il mouse per esplorare:
+            </p>
+            <div class="complex-plane-container">
+                <canvas id="complex-canvas" width="500" height="400"></canvas>
+                <div class="complex-info">
+                    <div class="info-stat"><label>Parte Reale</label><span id="val-real">0.0</span></div>
+                    <div class="info-stat"><label>Parte Immaginaria</label><span id="val-imag">0.0i</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. OPERAZIONI E ESEMPI -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">3. Operazioni Algebriche</h2>
+            <p class="lesson-text">
+                Sommare e moltiplicare numeri complessi segue le regole del calcolo letterale, con la differenza che ogni volta che trovi \(i^2\) devi trasformarlo in \(-1\).
+            </p>
+
+            <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 2rem;">
+                <!-- Esempio Somma -->
+                <div class="card" style="padding: 1.5rem;">
+                    <h4 style="color: #3B82F6; margin-bottom: 1rem;">Esempio: La Somma</h4>
+                    <p style="font-size: 1rem; line-height: 1.8;">
+                        Consideriamo \(z_1 = 3 + 4i\) e \(z_2 = 2 + i\).<br>
+                        \(z_1 + z_2 = (3 + 2) + (4 + 1)i\)<br>
+                        <strong>Risultato: \(5 + 5i\)</strong>
+                    </p>
+                </div>
+                <!-- Esempio Prodotto -->
+                <div class="card" style="padding: 1.5rem;">
+                    <h4 style="color: #10B981; margin-bottom: 1rem;">Esempio: Il Prodotto</h4>
+                    <p style="font-size: 1rem; line-height: 1.8;">
+                        Consideriamo \(z_1 = 2 + 3i\) e \(z_2 = 1 - 2i\).<br>
+                        \(z_1 \cdot z_2 = 2(1) - 2(2i) + 3i(1) - 3i(2i)\)<br>
+                        \(= 2 - 4i + 3i - 6i^2\)<br>
+                        \(= 2 - i - 6(-1) = 2 - i + 6\)<br>
+                        <strong>Risultato: \(8 - i\)</strong>
+                    </p>
+                </div>
+            </div>
+
+            <!-- SIMULATORI -->
+            <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 3rem;">
+                <div class="complex-plane-container" style="border-color: #3B82F6;">
+                    <h4 style="color: #3B82F6; margin-bottom: 1rem;">Geometria della Somma</h4>
+                    <canvas id="sum-canvas" width="400" height="400"></canvas>
+                    <div class="complex-info">
+                        <div class="info-stat"><label>Somma</label><span id="val-sum" style="color: #FBBF24;">0+0i</span></div>
+                    </div>
+                </div>
+                <div class="complex-plane-container" style="border-color: #10B981;">
+                    <h4 style="color: #10B981; margin-bottom: 1rem;">Geometria del Prodotto</h4>
+                    <canvas id="prod-canvas" width="400" height="400"></canvas>
+                    <div class="complex-info">
+                        <div class="info-stat"><label>Prodotto</label><span id="val-prod" style="color: #10B981;">0+0i</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. APPLICAZIONI -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">4. Perché sono importanti?</h2>
+            <p class="lesson-text">I numeri complessi non sono solo "teoria astratta". Senza di loro, il mondo moderno smetterebbe di funzionare.</p>
+            
+            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+                <div class="app-card">
+                    <div class="app-icon">⚡</div>
+                    <h4>Elettrotecnica</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);">La <strong>Corrente Alternata</strong> che alimenta le nostre case si studia usando i numeri complessi (chiamati fasori) per gestire sfasamenti e impedenza.</p>
+                </div>
+                <div class="app-card">
+                    <div class="app-icon">⚛️</div>
+                    <h4>Meccanica Quantistica</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);">L'equazione fondamentale di Schrödinger, che descrive come si muovono le particelle nel mondo dell'infinitamente piccolo, è intrinsecamente complessa.</p>
+                </div>
+                <div class="app-card">
+                    <div class="app-icon">📡</div>
+                    <h4>Segnali e Radio</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);">Il Wi-Fi, il 5G e la compressione MP3 sono possibili grazie alla <strong>Trasformata di Fourier</strong>, basata interamente sui numeri complessi.</p>
+                </div>
+                <div class="app-card">
+                    <div class="app-icon">🌀</div>
+                    <h4>Frattali</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);">L'Insieme di Mandelbrot e i Frattali nascono dall'iterazione di equazioni nel piano complesso, creando infinite forme meravigliose.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- QUIZ DI RIEPILOGO -->
+        <section class="lesson-section quiz-container">
+            <h2 class="lesson-title">Quiz di riepilogo</h2>
+            <p class="lesson-text" style="font-size: 0.95rem;">Metti alla prova la tua comprensione dei numeri complessi.</p>
+            <div id="quiz-area"></div>
+            <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione Algebra.</p>
+    </footer>
+
+    <!-- JS -->
+    <script src="../../js/main.js"></script>
+    <script src="numeri-complessi.js"></script>
+</body>
+</html>

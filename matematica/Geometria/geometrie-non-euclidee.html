@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geometrie Non Euclidee - MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        .back-button { display: inline-flex; align-items: center; color: var(--text-muted); text-decoration: none; margin-bottom: 2rem; font-weight: 600; transition: color 0.3s ease, transform 0.3s ease; }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+        .sub-hero { padding: 4rem 0 2rem; text-align: left; }
+        .interactive-container { background: rgba(0,0,0,0.15); padding: 2rem; border-radius: 12px; margin: 2rem 0; display: flex; flex-direction: column; align-items: center; box-shadow: inset 0 0 10px rgba(0,0,0,0.1); }
+        .canvas-wrapper { width: 100%; max-width: 500px; border-radius: 8px; overflow: hidden; background: #222; border: 1px solid rgba(255,255,255,0.1); margin: 0 auto; position: relative; }
+        canvas { display: block; width: 100%; height: auto; }
+        .data-card { background: rgba(0,0,0,0.3); border-radius: 10px; padding: 1rem; border-left: 4px solid var(--text-main); display: flex; flex-direction: column; min-width: 120px; align-items:center; }
+        .data-label { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem; text-align: center; }
+        .data-value { font-size: 1.25rem; font-weight: 800; color: #fff; margin-top:0.3rem;}
+        .lesson-list { padding-left: 1.5rem; margin-bottom: 2rem; }
+        .lesson-list li { margin-bottom: 1rem; font-size: 1.05rem; line-height: 1.6; color: var(--text-main); }
+        .example-box { background: rgba(255,255,255,0.05); border-left: 4px solid #3b82f6; padding: 1.5rem; border-radius: 0 12px 12px 0; margin: 1.5rem 0; line-height: 1.7; }
+    </style>
+</head>
+<body>
+    <header class="sub-hero">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2.5rem;">
+                <a href="geometria.html" class="back-button" style="margin-bottom: 0;">
+                    <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Geometria
+                </a>
+            </div>
+            <h1 class="sub-hero-title" style="color: #3b82f6;"> 🌀 Geometrie Non Euclidee </h1>
+            <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+                Oltre il foglio di carta: esploriamo gli spazi curvi in cui le rette parallele si incontrano e i triangoli impazziscono.
+            </p>
+        </div>
+    </header>
+    
+    <main class="container">
+        
+        <!-- SECTION 1: IL QUINTO POSTULATO -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #3b82f6;">1. L'Ossessione del Quinto Postulato</h2>
+            <p class="lesson-text">
+                Oltre 2300 anni fa, Euclide fondò l'intera Geometria basandosi su 5 pilastri inscindibili, i <strong>Postulati</strong>. I primi quattro erano brevi, eleganti e super intuitivi (come "tra due punti passa una sola retta"). Il <em>Quinto Postulato</em> (il Postulato delle Parallele), invece, era lungo, macchinoso e sembrava quasi un teorema che andava dimostrato, più che un'assunzione di base.
+            </p>
+            <p class="lesson-text">
+                Esso afferma brutalmente che: <strong>"Data una retta e un punto esterno ad essa, esiste una e una sola retta parallela passante per quel punto"</strong>. Per ben due millenni, le menti più brillanti della storia della matematica si sono ossessionate nel tentativo di dimostrare che questo Quinto Postulato fosse in realtà una conseguenza logica dei primi quattro.
+            </p>
+            
+            <div class="example-box" style="border-left-color: #f59e0b;">
+                <h3 style="color: #f59e0b; margin-bottom: 0.5rem; text-transform:uppercase;">📝 La Dimostrazione per Assurdo</h3>
+                Il metodo d'attacco principale fu uno degli strumenti logici più letali della matematica: la <strong>Dimostrazione per Assurdo</strong>. Come funziona?
+                <ol style="margin-left:1.5rem; margin-top:0.5rem; margin-bottom:0.5rem;">
+                    <li>Assumi <strong>come vera la negazione assoluta</strong> di ciò che vuoi dimostrare.</li>
+                    <li>Sviluppi una catena logica e rigorosa di conseguenze fisiche e matematiche.</li>
+                    <li>Se arrivi a una <strong>contraddizione insensata</strong> (es: 1 = 2), significa che il punto di partenza (la tua negazione) era falsa, e quindi il tuo teorema originale era per forza vero!</li>
+                </ol>
+            </div>
+
+            <p class="lesson-text">
+                Matematici come Lobachevskij, Gauss, Bolyai e Riemann dissero: <em>"Assumiamo per assurdo che il Quinto Postulato sia falso. Immaginiamo insomma che, per un punto esterno, passino ben <strong>INFINITE rette parallele</strong>, oppure che non ne passi <strong>NESSUNA</strong>! Vedrete che cadrà tutto il castello di carte..."</em><br>
+                Ma il castello non cadde. Conducendo la dimostrazione per assurdo, invece di arrivare a una contraddizione distruttiva, questi "folli" finirono per inventare involontariamente dei <strong>Mondi Matematici del tutto nuovi e perfetti</strong>, retti da logiche aliene ma coerenti. Erano nate le Geometrie Non-Euclidee.
+            </p>
+        </section>
+
+        <!-- SECTION 2: I NUOVI MONDI -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #3b82f6;">2. I Tre Universi: Piatto, Sella e Sfera</h2>
+            <p class="lesson-text">
+                Questi tentativi "per assurdo" portarono alla scoperta di tre grandiosi spazi geometrici, distinti dalla loro "curvatura".
+            </p>
+            <div style="display:flex; flex-wrap:wrap; gap:2rem;">
+                <div style="flex:1; min-width:280px; background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 12px; border-top: 4px solid #10b981;">
+                    <h3 style="color: #10b981;">Geometria Euclidea (Parabolica)</h3>
+                    <p class="lesson-text" style="font-size:0.95rem;">È l'universo del "foglio piatto". Curvatura: Nulla (0).<br>Dal punto esterno passa <strong>1 sola parallela</strong>. La somma degli angoli interni del triangolo è per legge esatta: <strong>180°</strong>.</p>
+                </div>
+                <div style="flex:1; min-width:280px; background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 12px; border-top: 4px solid #f59e0b;">
+                    <h3 style="color: #f59e0b;">Geometria Iperbolica</h3>
+                    <p class="lesson-text" style="font-size:0.95rem;">L'universo a forma di "Sella da cavallo". Curvatura: Negativa (< 0). <br>Dal punto esterno passano <strong>infinite parallele</strong> scivolanti. Nei triangoli snodati, la somma interna crolla: <strong>< 180°</strong>.</p>
+                </div>
+                <div style="flex:1; min-width:280px; background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 12px; border-top: 4px solid #ec4899;">
+                    <h3 style="color: #ec4899;">Geometria Ellittica (Es: Sferica)</h3>
+                    <p class="lesson-text" style="font-size:0.95rem;">L'universo avvolto come una "Palla". Curvatura: Positiva (> 0). <br>Dal punto esterno <strong>non esistono parallele</strong> (ogni retta incrocia palesemente l'altra). I triangoli si gonfiano, deformando gli angoli: <strong>> 180°</strong>!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: LA GEOMETRIA DELLA TERRA -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #ec4899;">3. Triangoli sulla Sfera Terrestre</h2>
+            <p class="lesson-text">
+                Sembra tutto fantascienza, ma noi viviamo fisicamente su una superficie Ellittico-Sferica! Sul nostro Pianeta, le "rette" che indicano il percorso più breve (geodetiche) sono i <strong>Meridiani e l'Equatore</strong>.
+            </p>
+            <p class="lesson-text">
+                Pensa a due parallele in Euclideo: non si toccano mai. Ora prendi due Meridiani (ad esempio quello di Greenwich e un altro). Sull'Equatore, essi cadono perfettamente perpendicolari a terra, partono dritti dal suolo sembrando "paralleli". Eppure, camminando verso nord in quello che sembra un binario di treno perfetto, convergeranno inesorabilmente andandosi a <strong>schiantare al Polo Nord</strong>!
+            </p>
+            <div class="example-box" style="border-left-color: #ec4899;">
+                <strong style="color: #ec4899; text-transform:uppercase;">🌍 Un Triangolo Follia (270°)</strong><br>
+                Disegnamo un triangolo sul mappamondo. Partiamo dal Polo Nord giù per il Meridiano di Greenwich sino all'Equatore (90° d'angolo d'impatto). Spostiamoci sull'Equatore verso Ovest di un quarto del globo terrestre (ancora 90° lungo l'Equatore) e risaliamo l'altro Meridiano che batte ai lati verso il Polo Nord per richiuderlo. Arrivati in Cima al polo, convergeremo incrociando l'altro meridiano a 90° esatti. Abbiamo creato un triangolo (tre lati diritti sulla sfera) coi <strong>TUTTI E TRE GLI ANGOLI A 90 GRADI</strong>!<br> Summa angoli: \(90° + 90° + 90° = 270°\)!
+            </div>
+            
+            <h3 style="color: #ec4899; margin-top:2rem;">Il Teorema di Girard</h3>
+            <p class="lesson-text">Il matematico Albert Girard dimostrò che questo "gonfiore" degli angoli oltre i 180 gradi non è a caso. È direttamente proporzionale alla mastodontica <strong>Area</strong> scavata dal triangolo sulla superficie. Sfera piatta = niente gonfiore. Più il triangolo si espande occupando la sfera, più i suoi angoli interni si gonfiano brutalmente. Questo si chiama <em>Eccesso Sferico</em> (\(E\)).</p>
+            <p style="font-size:1.3rem; font-weight:bold; text-align:center; padding:1.5rem; background:rgba(0,0,0,0.3); border-radius:10px;">
+                \( Area = R^2 \cdot (\alpha + \beta + \gamma - \pi) \)
+            </p>
+            <p class="lesson-text" style="font-size:0.9rem; text-align:center; color: var(--text-muted);"><em>(Dove \(\pi\) corrisponde a 180 gradi spaziali in radianti, e \(R\) è il raggio del mondo curvo)</em></p>
+            <div class="example-box" style="border-left-color: #10b981; margin-top: 2rem;">
+                <h3 style="color: #10b981; margin-bottom: 0.5rem; text-transform:uppercase;">🤔 Vuoi vedere la Dimostrazione?</h3>
+                <p class="lesson-text" style="font-size:0.95rem; margin-bottom: 0;">
+                Se sei curioso di immergerti nei "Fusi Sferici" per comprendere matematicamente come si arrivi a questa incredibile formula calcolando le aree sovrapposte, esplora la pazzesca <strong><a href="https://vanderbei.princeton.edu/WebGL/GirardThmProof.html" target="_blank" style="color: #10b981; text-decoration: underline;">Dimostrazione Interattiva 3D del Teorema di Girard</a></strong> messa a disposizione dall'Università di Princeton.
+                </p>
+            </div>
+
+            <div class="interactive-container" style="box-shadow: 0 0 15px rgba(236,72,153,0.15);">
+                <h4 style="color: white; margin-bottom: 1rem;">Animazione: Il Triangolo di Girard</h4>
+                <p style="color:rgba(255,255,255,0.7); font-size:0.9rem; margin-bottom:1rem; text-align:center;">Se la somma degli angoli interni scende a 180°, l'area collassa a Zero (diventa un microscopico punto piatto). Più li alzi otre i 180° totali (\(\pi\) radianti), più l'Area del Triangolo divora il Pianeta!</p>
+                <div class="canvas-wrapper" style="height: 350px;">
+                    <canvas id="girardCanvas" width="500" height="350"></canvas>
+                </div>
+                
+                <div style="display:flex; flex-wrap:wrap; gap: 1rem; margin-top: 1.5rem; justify-content:center; width: 100%;">
+                    <div class="data-card" style="border-left-color: #ef4444;">
+                        <span class="data-label">Angolo &alpha;</span>
+                        <input type="range" id="ang-a" min="60" max="150" value="90" step="1" oninput="window.updateGirard()">
+                        <span id="ang-a-disp" class="data-value" style="font-size: 1rem;">90°</span>
+                    </div>
+                    <div class="data-card" style="border-left-color: #3b82f6;">
+                        <span class="data-label">Angolo &beta;</span>
+                        <input type="range" id="ang-b" min="60" max="150" value="90" step="1" oninput="window.updateGirard()">
+                        <span id="ang-b-disp" class="data-value" style="font-size: 1rem;">90°</span>
+                    </div>
+                    <div class="data-card" style="border-left-color: #10b981;">
+                        <span class="data-label">Angolo &gamma;</span>
+                        <input type="range" id="ang-c" min="60" max="150" value="90" step="1" oninput="window.updateGirard()">
+                        <span id="ang-c-disp" class="data-value" style="font-size: 1rem;">90°</span>
+                    </div>
+                </div>
+
+                <div style="margin-top: 1.5rem; background: #222; padding: 1rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); width: 100%; text-align:center;">
+                    <h3 style="color:#f59e0b; margin-bottom: 0.5rem;" id="sum-disp">Somma Angoli: 270°</h3>
+                    <div style="color: #ec4899; font-size: 1.4rem; font-weight: bold;" id="area-disp">Eccesso Area Sferica: Crescita Enorme!</div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- QUIZ -->
+        <section class="lesson-section quiz-container">
+            <h2 class="lesson-title">Quiz di Riepilogo</h2>
+            <div id="quiz-area"></div>
+            <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem; font-weight: bold;"></div>
+        </section>
+
+    </main>
+    <footer><p>&copy; 2026 MFI - Matematica MFI.</p></footer>
+
+    <script src="geometrie-non-euclidee.js"></script>
+    <script src="../../js/main.js"></script>
+</body>
+</html>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,21 +21,25 @@
             font-weight: 600;
             transition: color 0.3s, transform 0.3s;
         }
+
         .back-button:hover {
             color: var(--text-main);
             transform: translateX(-5px);
         }
+
         .back-icon {
             margin-right: 0.5rem;
             font-size: 1.2rem;
         }
     </style>
 </head>
+
 <body>
     <header class="hero" style="background: linear-gradient(135deg, #7c3aed, #a78bfa);">
         <div class="container">
             <div style="text-align: center; margin-bottom: 2rem;">
-                <a href="../matematica.html" class="back-button" style="color: white; border: none; background: none; margin-bottom: 0;">
+                <a href="../matematica.html" class="back-button"
+                    style="color: white; border: none; background: none; margin-bottom: 0;">
                     <span class="back-icon">&larr;</span> Torna a Matematica
                 </a>
             </div>
@@ -46,81 +51,113 @@
     <main class="container">
         <section class="subjects">
             <div class="grid">
+                <!-- 0. COS'È UNA FUNZIONE -->
+                <a href="cosa-e-una-funzione.html" class="card math-card">
+                    <div class="card-icon">🎯</div>
+                    <h3 class="card-title">Cos'è una funzione?</h3>
+                    <p class="card-desc">Definizione di funzione, modi di rappresentarla, proprietà (iniettiva,
+                        suriettiva, biunivoca) e simmetrie.</p>
+                </a>
+
                 <!-- 0.1 FUNZIONI POLINOMIALI -->
-                <a href="funzioni-polinomiali.html" class="card math-card" style="opacity: 0.6; cursor: default; pointer-events: none;">
+                <a href="funzioni-polinomiali.html" class="card math-card"
+                    style="opacity: 0.6; cursor: default; pointer-events: none;">
                     <div class="card-icon">📈</div>
                     <h3 class="card-title">Funzioni Polinomiali</h3>
-                    <p class="card-desc">Prossimamente: Dal primo grado alle potenze superiori: esplora il comportamento delle funzioni basate sui polinomi.</p>
+                    <p class="card-desc">Prossimamente: Dal primo grado alle potenze superiori: esplora il comportamento
+                        delle funzioni basate sui polinomi.</p>
                 </a>
 
                 <!-- 0.2 RADICE QUADRATA -->
-                <a href="radice-quadrata.html" class="card math-card" style="opacity: 0.6; cursor: default; pointer-events: none;">
+                <a href="radice-quadrata.html" class="card math-card"
+                    style="opacity: 0.6; cursor: default; pointer-events: none;">
                     <div class="card-icon">√</div>
                     <h3 class="card-title">Funzione Radice Quadrata</h3>
-                    <p class="card-desc">Prossimamente: L'inversa del quadrato: domini, grafici e le proprietà della funzione radice.</p>
+                    <p class="card-desc">Prossimamente: L'inversa del quadrato: domini, grafici e le proprietà della
+                        funzione radice.</p>
                 </a>
 
                 <!-- 0.3 VALORE ASSOLUTO -->
-                <a href="valore-assoluto.html" class="card math-card" style="opacity: 0.6; cursor: default; pointer-events: none;">
+                <a href="valore-assoluto.html" class="card math-card"
+                    style="opacity: 0.6; cursor: default; pointer-events: none;">
                     <div class="card-icon">|x|</div>
                     <h3 class="card-title">Funzione Valore Assoluto</h3>
-                    <p class="card-desc">Prossimamente: La funzione che 'positivizza' tutto: scopri il significato geometrico della distanza dallo zero.</p>
+                    <p class="card-desc">Prossimamente: La funzione che 'positivizza' tutto: scopri il significato
+                        geometrico della distanza dallo zero.</p>
                 </a>
 
                 <!-- 1. FUNZIONI GONIOMETRICHE -->
-                <a href="funzioni-goniometriche.html" class="card math-card" style="opacity: 0.6; cursor: default; pointer-events: none;">
+                <a href="funzioni-goniometriche.html" class="card math-card"
+                    style="opacity: 0.6; cursor: default; pointer-events: none;">
                     <div class="card-icon">🌊</div>
                     <h3 class="card-title">Funzioni Goniometriche</h3>
-                    <p class="card-desc">Prossimamente: Seno, coseno e tangente: la danza del cerchio unitario e cosa succede quando dividiamo per l'infinito.</p>
+                    <p class="card-desc">Prossimamente: Seno, coseno e tangente: la danza del cerchio unitario e cosa
+                        succede quando dividiamo per l'infinito.</p>
                 </a>
 
                 <!-- 2. TRIANGOLI RETTANGOLI -->
-                <a href="triangoli-rettangoli.html" class="card math-card" style="opacity: 0.6; cursor: default; pointer-events: none;">
+                <a href="triangoli-rettangoli.html" class="card math-card"
+                    style="opacity: 0.6; cursor: default; pointer-events: none;">
                     <div class="card-icon">📐</div>
                     <h3 class="card-title">Risoluzione di Triangoli Rettangoli</h3>
-                    <p class="card-desc">Prossimamente: Trigonometria pratica: come calcolare i lati e gli angoli di un triangolo usando i teoremi goniometrici.</p>
+                    <p class="card-desc">Prossimamente: Trigonometria pratica: come calcolare i lati e gli angoli di un
+                        triangolo usando i teoremi goniometrici.</p>
                 </a>
 
                 <!-- 3. EQUAZIONI E DISEQUAZIONI GONIOMETRICHE -->
-                <a href="equazioni-goniometriche.html" class="card math-card" style="opacity: 0.6; cursor: default; pointer-events: none;">
+                <a href="equazioni-goniometriche.html" class="card math-card"
+                    style="opacity: 0.6; cursor: default; pointer-events: none;">
                     <div class="card-icon">✏️</div>
                     <h3 class="card-title">Equazioni e Disequazioni Goniometriche</h3>
-                    <p class="card-desc">Prossimamente: Impara a domare le onde: come risolvere equazioni e disequazioni con le funzioni periodiche.</p>
+                    <p class="card-desc">Prossimamente: Impara a domare le onde: come risolvere equazioni e disequazioni
+                        con le funzioni periodiche.</p>
                 </a>
 
                 <!-- 4. APPLICAZIONI GONIOMETRICHE -->
-                <a href="applicazioni-goniometriche.html" class="card math-card" style="opacity: 0.6; cursor: default; pointer-events: none;">
+                <a href="applicazioni-goniometriche.html" class="card math-card"
+                    style="opacity: 0.6; cursor: default; pointer-events: none;">
                     <div class="card-icon">📻</div>
                     <h3 class="card-title">Applicazioni delle Funzioni Goniometriche</h3>
-                    <p class="card-desc">Prossimamente: Moti armonici, onde sonore ed elettromagnetiche: come seno e coseno descrivono il rimo del mondo.</p>
+                    <p class="card-desc">Prossimamente: Moti armonici, onde sonore ed elettromagnetiche: come seno e
+                        coseno descrivono il rimo del mondo.</p>
                 </a>
 
                 <!-- 5. ESPONENZIALI E LOGARITMI -->
-                <a href="esponenziali-logaritmi.html" class="card math-card" style="opacity: 0.6; cursor: default; pointer-events: none;">
+                <a href="esponenziali-logaritmi.html" class="card math-card"
+                    style="opacity: 0.6; cursor: default; pointer-events: none;">
                     <div class="card-icon">📈</div>
                     <h3 class="card-title">Funzioni Esponenziali e Logaritmiche</h3>
-                    <p class="card-desc">Prossimamente: Potenze a crescita rapida e logaritmi 'rallentatori': esplora le proprietà di queste funzioni inverse.</p>
+                    <p class="card-desc">Prossimamente: Potenze a crescita rapida e logaritmi 'rallentatori': esplora le
+                        proprietà di queste funzioni inverse. (esercizio redient evil/the last of us e curiosità chicchi
+                        di riso su scacchiera. quante volte piegare la carta su se stessa per arrivare alla luna e
+                        perchè non si può fare)</p>
                 </a>
 
                 <!-- 6. EQUAZIONI E DISEQUAZIONI ESPONENZIALI -->
-                <a href="equazioni-esponenziali.html" class="card math-card" style="opacity: 0.6; cursor: default; pointer-events: none;">
+                <a href="equazioni-esponenziali.html" class="card math-card"
+                    style="opacity: 0.6; cursor: default; pointer-events: none;">
                     <div class="card-icon">📝</div>
                     <h3 class="card-title">Equazioni e Disequazioni Esponenziali</h3>
-                    <p class="card-desc">Prossimamente: Risolvi i misteri delle potenze variabili: impara a gestire equazioni e disequazioni nel mondo esponenziale.</p>
+                    <p class="card-desc">Prossimamente: Risolvi i misteri delle potenze variabili: impara a gestire
+                        equazioni e disequazioni nel mondo esponenziale.</p>
                 </a>
 
                 <!-- 7. APPLICAZIONI ESPONENZIALI -->
-                <a href="applicazioni-esponenziali.html" class="card math-card" style="opacity: 0.6; cursor: default; pointer-events: none;">
+                <a href="applicazioni-esponenziali.html" class="card math-card"
+                    style="opacity: 0.6; cursor: default; pointer-events: none;">
                     <div class="card-icon">🧫</div>
                     <h3 class="card-title">Applicazioni delle Funzioni Esponenziali</h3>
-                    <p class="card-desc">Prossimamente: Dalla crescita batterica al decadimento radioattivo, fino al calcolo degli interessi bancari: la potenza degli esponenti.</p>
+                    <p class="card-desc">Prossimamente: Dalla crescita batterica al decadimento radioattivo, fino al
+                        calcolo degli interessi bancari: la potenza degli esponenti.</p>
                 </a>
 
                 <!-- 8. L'IDENTITÀ DI EULERO -->
-                <a href="identita-eulero.html" class="card math-card" style="opacity: 0.6; cursor: default; pointer-events: none;">
+                <a href="identita-eulero.html" class="card math-card"
+                    style="opacity: 0.6; cursor: default; pointer-events: none;">
                     <div class="card-icon">✨</div>
                     <h3 class="card-title">L'Identità di Eulero</h3>
-                    <p class="card-desc">Prossimamente: Esplora l'equazione più bella della matematica: dove e, π, i, 1 e 0 si incontrano in una formula magica.</p>
+                    <p class="card-desc">Prossimamente: Esplora l'equazione più bella della matematica: dove e, π, i, 1
+                        e 0 si incontrano in una formula magica.</p>
                 </a>
             </div>
         </section>
@@ -132,4 +169,5 @@
 
     <script src="../../js/main.js"></script>
 </body>
+
 </html>

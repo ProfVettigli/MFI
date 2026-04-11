@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Retta - Geometria MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        .back-button { display: inline-flex; align-items: center; color: var(--text-muted); text-decoration: none; margin-bottom: 2rem; font-weight: 600; transition: color 0.3s ease, transform 0.3s ease; }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+        .sub-hero { padding: 4rem 0 2rem; text-align: left; }
+        .interactive-container { background: rgba(0,0,0,0.15); padding: 2rem; border-radius: 12px; margin: 2rem 0; display: flex; flex-direction: column; align-items: center; box-shadow: inset 0 0 10px rgba(0,0,0,0.1); }
+        .canvas-wrapper { width: 100%; max-width: 500px; border-radius: 8px; overflow: hidden; background: #222; border: 1px solid rgba(255,255,255,0.1); margin: 0 auto;}
+        canvas { display: block; width: 100%; height: auto; }
+        .controls { margin-top: 1.5rem; display: flex; gap: 1rem; }
+        .control-btn { background: #EC4899; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-family: 'Inter', sans-serif; font-weight: 600; transition: 0.2s; }
+        .control-btn:hover { opacity: 0.8; }
+        .data-card { background: rgba(0,0,0,0.3); border-radius: 10px; padding: 1rem; border-left: 4px solid var(--text-main); display: flex; flex-direction: column; min-width: 150px; }
+        .data-label { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem; }
+        .data-value { font-size: 1.25rem; font-weight: 800; color: #fff; margin-top:0.3rem;}
+        .lesson-list { padding-left: 1.5rem; margin-bottom: 2rem; }
+        .lesson-list li { margin-bottom: 1rem; font-size: 1.05rem; line-height: 1.6; color: var(--text-main); }
+        .example-box { background: rgba(255,255,255,0.05); border-left: 4px solid #3b82f6; padding: 1.5rem; border-radius: 0 12px 12px 0; margin: 1.5rem 0; line-height: 1.7; }
+    </style>
+</head>
+<body>
+    <header class="sub-hero">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2.5rem;">
+                <a href="geometria.html" class="back-button" style="margin-bottom: 0;">
+                    <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Geometria
+                </a>
+            </div>
+            <h1 class="sub-hero-title" style="color: #EC4899;"> 📏 La Retta </h1>
+            <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+                Equazioni, pendenze e intersezioni dell'oggetto più importante del piano.
+            </p>
+        </div>
+    </header>
+    <main class="container">
+
+        <!-- Section 1 -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #EC4899;">1. Dalla Proporzionalità Diretta alla Retta</h2>
+            <p class="lesson-text">Cos'è fondamentalmente una retta? È la rappresentazione grafica della forma più semplice di relazione tra due grandezze: la <strong>proporzionalità diretta</strong>. Pensa di comprare delle mele che costano 2€ al chilo. Se compri \(x\) chili, il costo totale \(y\) sarà sempre \(2\) volte \(x\), ovvero \(y = 2x\). Questo "2" è un tasso costante.</p>
+            <div class="interactive-container">
+                <h4 style="color: white; margin-bottom: 1rem;">Costruiamo la Retta coi Punti</h4>
+                <p style="color:rgba(255,255,255,0.7); font-size:0.9rem; margin-bottom:1rem; text-align:center;">Avvia l'animazione. Osserva come calcolando un punto dopo l'altro sulla base della proporzione si generi una densità tale da formare una riga dritta: la nostra Retta passante per l'Origine!</p>
+                <div class="canvas-wrapper">
+                    <canvas id="propCanvas" width="500" height="300"></canvas>
+                </div>
+                
+                <div style="display:flex; gap: 2rem; margin-top: 1.5rem; justify-content:center; width: 100%;">
+                    <div class="data-card" style="border-left-color: #EC4899; text-align: center;">
+                        <span class="data-label">Proporzione (m)</span>
+                        <input type="range" id="prop-m" min="-5" max="5" value="2" step="0.5" oninput="window.updateProp()">
+                        <span id="prop-m-val" class="data-value">2.0</span>
+                    </div>
+                </div>
+
+                <div style="margin-top: 1.5rem; width:100%; max-width: 400px; background: rgba(0,0,0,0.3); border-radius: 8px; padding: 1rem; color: #fff;">
+                    <h4 style="text-align: center; color: #EC4899; margin-bottom: 0.5rem;">Tabella dei Valori</h4>
+                    <table style="width: 100%; border-collapse: collapse; text-align: center;">
+                        <thead>
+                            <tr style="border-bottom: 2px solid rgba(255,255,255,0.2);">
+                                <th style="padding: 0.5rem; width: 50%;">x</th>
+                                <th style="padding: 0.5rem; width: 50%;">y (f(x))</th>
+                            </tr>
+                        </thead>
+                        <tbody id="prop-table-body">
+                            <!-- JS populates points here -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <button class="control-btn" style="margin-top:2rem;" onclick="window.animateProp()">▶️ Disegna Punti!</button>
+            </div>
+        </section>
+
+        <!-- Section 2 -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #EC4899;">2. L'Equazione Esplicita: \(\color{#EC4899}y = mx + q\)</h2>
+            <p class="lesson-text">Molto spesso, nella realtà, c'è un "valore base" di partenza. Se le mele costano 2€ al kg, ma per entrare al mercato paghi un biglietto di 3€, la tua spesa lievita: \(y = 2x + 3\).</p>
+            <ul class="lesson-list">
+                <li><strong>\(\color{#EC4899}m\) (Coefficiente Angolare):</strong> Indica la "pendenza". Regola l'inclinazione: se è positivo la retta sale (pendenza in salita), se negativo scende. Più è ampio come numero (lontano dallo 0), più la retta è ripida!</li>
+                <li><strong>\(\color{#3b82f6}q\) (Intercetta sull'asse Y):</strong> Indica la quota esatta in cui la retta "buca" in verticale l'asse Y. È il nostro valore iniziale quando \(x=0\).</li>
+            </ul>
+
+            <div class="interactive-container">
+                <h4 style="color: white; margin-bottom: 1rem;">Plasma l'Equazione: y = mx + q</h4>
+                <div class="canvas-wrapper">
+                    <canvas id="mqCanvas" width="500" height="300"></canvas>
+                </div>
+                <div style="margin-top:1rem; font-size:1.5rem; font-weight:800; color:#EC4899;" id="mq-eq-display">y = 1x + 2</div>
+                <div style="display:flex; gap: 2rem; margin-top: 1.5rem; justify-content:center; width: 100%;">
+                    <div class="data-card" style="border-left-color: #EC4899; text-align: center;">
+                        <span class="data-label">Pendenza (m)</span>
+                        <input type="range" id="mq-m" min="-5" max="5" value="1" step="0.5" oninput="window.updateMQ()">
+                    </div>
+                    <div class="data-card" style="border-left-color: #3b82f6; text-align: center;">
+                        <span class="data-label">Quota Y (q)</span>
+                        <input type="range" id="mq-q" min="-5" max="5" value="2" step="1" oninput="window.updateMQ()">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3 -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #EC4899;">3. Costruire la Retta passante per Due Punti</h2>
+            <p class="lesson-text">Per il primo assioma della Geometria, se hai due punti \(A(x_1, y_1)\) e \(B(x_2, y_2)\), c'è <strong>una e una sola</strong> retta che li collega. Esiste un metodo elegantissimo per trovarla: basta ricordare che l'equazione generica è \( \color{#EC4899}y = mx + q \). Il nostro vero scopo non è applicare astruse formule a memoria, ma <strong>scoprire i due numeri segreti \(m\) e \(q\)</strong>! Lo facciamo impostando un Sistema in cui costringiamo l'equazione della retta a inglobare simultaneamente le coordinate di A e di B.</p>
+
+            <div class="example-box" style="border-left-color: #10b981;">
+                <strong style="color: #10b981; margin-bottom:0.5rem; display:block; text-transform:uppercase;">📝 Esempio Numerico Svolto</strong>
+                Troviamo l'equazione della retta che passa per i punti <strong>\(A(1, 2)\)</strong> e <strong>\(B(3, 6)\)</strong>. <br>L'obiettivo è risolvere l'anomalia trovando pendenza (\(m\)) e intercetta (\(q\)).<br><br>
+                <strong>Step 1: Impostare il Sistema coi Punti</strong><br>
+                Scriviamo il modello generico \(y = mx + q\) due volte colmando x e y:<br>
+                1) Usiamo \(A(\color{#3b82f6}1\color{#fff}, \color{#ec4899}2\color{#fff})\): \(\implies \color{#ec4899}2\color{#fff} = m(\color{#3b82f6}1\color{#fff}) + q \implies 2 = m + q\)<br>
+                2) Usiamo \(B(\color{#3b82f6}3\color{#fff}, \color{#ec4899}6\color{#fff})\): \(\implies \color{#ec4899}6\color{#fff} = m(\color{#3b82f6}3\color{#fff}) + q \implies 6 = 3m + q\)<br><br>
+                <strong>Step 2: Isolare \(q\) e Risolvere</strong><br>
+                Dalla riga (1), isoliamo istantaneamente la q: \(\implies q = 2 - m\).<br>
+                Ora catapultiamo questo "valore potenziale" di q dentro la riga (2):<br>
+                \(6 = 3m + (2 - m)\)<br>
+                \(6 - 2 = 2m \implies 4 = 2m \implies \)<strong style="color:#EC4899;"> m = 2</strong>.<br><br>
+                <strong>Step 3: Trovare definitivamente \(q\)</strong><br>
+                Torniamo da dove eravamo partiti con l'isolamento: \(q = 2 - m\). <br>Sapendo finalmente che \(m=2\), avremo \(q = 2 - 2 \implies \)<strong style="color:#3b82f6;"> q = 0</strong>.<br><br>
+                Riunendo i risultati formiamo la retta risolutiva: <strong>\(y = 2x\)</strong>. Geniale, no?
+            </div>
+        </section>
+
+        <!-- Section 4 -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #EC4899;">4. Rette Parallele e Perpendicolari</h2>
+            <p class="lesson-text">Tutto il parallelismo si decide da un solo arbitro assoluto: il coefficiente \(m\) (la pendenza).</p>
+            <ul class="lesson-list">
+                <li><strong>Retta Parallela:</strong> Ha la <strong>stessa e identica inclinazione</strong> (\( \color{#EC4899} m_1 = m_2 \)). Viaggiano appaiate all'infinito e si distinguono solo dalla quota \(q\) (es. \(y = 3x\) e \(y = 3x - 5\)).</li>
+                <li><strong>Retta Perpendicolare:</strong> Costruisce un "clash" perfetto a 90°. La pendenza deve essere capovolta (inversa) e col segno opposto (\(m_1 = -\frac{1}{m_2}\)). Esempio: se la retta va su per \(m = 2/3\), la perpendicolare che la taglia andrà all'ingiù con \(m = -3/2\).</li>
+            </ul>
+
+            <div class="example-box" style="border-left-color: #a855f7;">
+                <strong style="color: #a855f7; margin-bottom:0.5rem; display:block; text-transform:uppercase;">📝 Esempio: Tracciare una Perpendicolare</strong>
+                Trova la retta <strong>perpendicolare</strong> alla retta base \(y = 3x + 1\) che colpisca il punto \(P(6, 4)\). Anche qui l'incarico supremo è lo stesso: scoprire m e q del nuovo oggetto!<br><br>
+                <strong>Step 1: Dedurre la Pendenza (m)</strong><br>
+                La retta base ha un coefficiente \(m = 3\). Essendo perpendicolari (angoli perfetti a 90°), la nostra nuova retta dovrà avere pendanza inversa col segno opposto: <strong style="color:#EC4899;">\(m_{\perp} = -\frac{1}{3}\)</strong>.<br><br>
+                <strong>Step 2: Trovare l'intercetta (q)</strong><br>
+                La retta che stiamo forgiando inizia a prendere forma in \(y = -\frac{1}{3}x + q\). Ci manca solo la \(q\) per finire.
+                Troviamola pretendendo che "ubbidisca" alle coordinate di \(P(\color{#3b82f6}6\color{#fff}, \color{#ec4899}4\color{#fff})\). Sostituiamo le direttive X e Y all'interno: <br>
+                \(\color{#ec4899}4\color{#fff} = -\frac{1}{3}(\color{#3b82f6}6\color{#fff}) + q\)<br>
+                \(4 = -2 + q \implies \)<strong style="color:#3b82f6;"> q = 6</strong>.<br><br>
+                I due numeri cardine sono trovati. La rotta finale è scolpita nel marmo: <strong>\(y = -\frac{1}{3}x + 6\)</strong>
+            </div>
+        </section>
+
+        <!-- Section 5 -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #EC4899;">5. Lo Scontro Frontale (Intersezione)</h2>
+            <p class="lesson-text">Due rette prima o poi convergono. Le coordinate (\(x,y\)) del superlativo punto di "Scontro" devono assecondare alla perfezione sia l'equazione della prima linea che della seconda. Esistendo per entrambe contemporaneamente, per trovarle si usa nient'altro che un classico <strong>Sistema di Equazioni Lineari</strong>!</p>
+
+             <div class="example-box" style="border-left-color: #f59e0b;">
+                <strong style="color: #f59e0b; margin-bottom:0.5rem; display:block; text-transform:uppercase;">📝 Esempio: L'impatto tra Due Rette</strong>
+                Cerchiamo scientificamente dove sbatteranno e incroceranno la <strong>Retta Rossa: \(y = 2x - 1\)</strong> e la <strong>Retta Blu: \(y = -x + 5\)</strong>.<br><br>
+                <strong>Step 1: Il Metodo del Confronto (Eguagliare la Y)</strong><br>
+                Nel singolare istante dell'impatto, la 'y' è la stessa per entrambi. Poniamo quindi in parità l'algebra collegata alle due rette:<br>
+                \(\color{#EC4899}2x - 1 \color{#fff}= \color{#3b82f6}-x + 5\)<br><br>
+                <strong>Step 2: Scoprire la Ascissa (X)</strong><br>
+                Portiamo a sinistra della trincea i tizi con la 'x', e a destra i numeri puliti, calcolando l'addizione:<br>
+                \(2x + x = 5 + 1 \implies 3x = 6 \implies \) Dividiamo per 3: <strong>\(\mathbf{x = 2}\)</strong><br><br>
+                <strong>Step 3: Scoprire l'Ordinata (Y)</strong><br>
+                Avendo acchiappato la "x=2", tuffiamola dove preferite. Usiamo nella Rossa:<br>
+                \(y = 2(2) - 1 = 4 - 1 \implies \) <strong>\(\mathbf{y = 3}\)</strong><br><br>
+                Conclusione Spettacolare: si incideranno infallibilmente e irreversibilmente nel Punto <strong>\(P(2, 3)\)</strong>!
+            </div>
+        </section>
+        
+        <section class="lesson-section quiz-container">
+            <h2 class="lesson-title">Quiz di Riepilogo</h2>
+            <p class="lesson-text" style="font-size: 0.95rem;">Testa le tue conoscenze rispondendo a queste sfide.</p>
+            <div id="quiz-area"></div>
+            <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem; font-weight: bold;"></div>
+        </section>
+    </main>
+    <footer><p>&copy; 2026 MFI - Matematica MFI.</p></footer>
+    <script src="retta.js"></script>
+    <script src="../../js/main.js"></script>
+</body>
+</html>

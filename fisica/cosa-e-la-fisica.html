@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Che cos'è la Fisica? - MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .physics-hero {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1200');
+            background-size: cover;
+            background-position: center;
+            border-radius: 20px;
+            padding: 4rem 2rem;
+            margin: 2rem 0;
+            text-align: center;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+        .scale-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        .scale-card {
+            background: rgba(16, 185, 129, 0.05);
+            border: 1px solid rgba(16, 185, 129, 0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+        .scale-card i {
+            font-size: 2.5rem;
+            display: block;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="lesson-header">
+        <div class="container" style="padding: 4rem 0 2rem;">
+            <div style="text-align: center; margin-bottom: 2.5rem;">
+                <a href="fisica.html" class="back-button" style="margin-bottom: 0;">
+                    <span class="back-icon">&larr;</span> Torna a Fisica
+                </a>
+            </div>
+            <h1 class="lesson-title" style="font-size: clamp(2.2rem, 5vw, 3.5rem); font-weight: 800; margin-bottom: 1rem;">
+                Che cos'è la <span class="gradient-text" style="background: linear-gradient(135deg, #10B981, #3B82F6);">Fisica?</span>
+            </h1>
+            <p class="lesson-subtitle text-center">
+                L'indagine sulle leggi fondamentali che governano la materia, l'energia, lo spazio e il tempo.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: var(--physics-color);">1. Cercare il "Perché" delle Cose</h2>
+            <p class="lesson-text">
+                Dalla parola greca <i>physis</i> (natura), la fisica è la scienza che cerca di capire come funziona l'universo ai suoi livelli più elementari. Non si accontenta di osservare, ma vuole prevedere il futuro attraverso modelli matematici.
+            </p>
+            <div class="physics-hero">
+                <h3 style="color: white; margin-bottom: 1rem;">Dall'atomo alle stelle</h3>
+                <p style="color: #cbd5e1; max-width: 700px; margin: 0 auto;">La fisica non ha confini di scala: si occupa dell'infinitamente piccolo (meccanica quantistica) e dell'infinitamente grande (cosmologia).</p>
+            </div>
+        </section>
+
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: var(--physics-color);">2. Le Grandi Domande</h2>
+            <p class="lesson-text">La fisica si divide in grandi aree che cercano di rispondere a domande diverse:</p>
+            <div class="scale-grid">
+                <div class="scale-card">
+                    <span style="font-size: 2.5rem;">🍎</span>
+                    <h4 style="color: var(--physics-color); margin: 1rem 0;">Meccanica Classica</h4>
+                    <p class="lesson-text" style="font-size: 0.9rem;">Come si muovono le auto, i pianeti e perché gli oggetti cadono?</p>
+                </div>
+                <div class="scale-card">
+                    <span style="font-size: 2.5rem;">⚡</span>
+                    <h4 style="color: var(--physics-color); margin: 1rem 0;">Elettromagnetismo</h4>
+                    <p class="lesson-text" style="font-size: 0.9rem;">Cos'è la luce e come fa la corrente a far funzionare i nostri telefoni?</p>
+                </div>
+                <div class="scale-card">
+                    <span style="font-size: 2.5rem;">🌌</span>
+                    <h4 style="color: var(--physics-color); margin: 1rem 0;">Relatività</h4>
+                    <p class="lesson-text" style="font-size: 0.9rem;">Come lo spazio e il tempo si piegano in presenza di grandi masse?</p>
+                </div>
+                <div class="scale-card">
+                    <span style="font-size: 2.5rem;">⚛️</span>
+                    <h4 style="color: var(--physics-color); margin: 1rem 0;">Meccanica Quantistica</h4>
+                    <p class="lesson-text" style="font-size: 0.9rem;">Cosa succede all'interno degli atomi, dove le regole del senso comune non valgono più?</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: var(--physics-color);">3. Il Metodo Sperimentale</h2>
+            <p class="lesson-text">
+                A differenza della matematica pura, la fisica deve superare la prova della realtà. Un'idea può essere bellissima sulla carta, ma se l'esperimento dice il contrario, l'idea è sbagliata. Come disse Richard Feynman: <i>"Non importa quanto sia bella la tua teoria, non importa quanto tu sia intelligente. Se non concorda con l'esperimento, è sbagliata."</i>
+            </p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Fisica. Comprendere la realtà.</p>
+    </footer>
+
+    <script src="../js/main.js"></script>
+</body>
+</html>

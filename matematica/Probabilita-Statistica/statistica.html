@@ -873,6 +873,65 @@
         </section>
 
         <!-- ============================================ -->
+        <!-- 7. INSIDIE E PARADOSSI                       -->
+        <!-- ============================================ -->
+        <section class="lesson-section">
+            <h2>7. Insidie e Paradossi della Statistica</h2>
+            <p>La statistica descrittiva fornisce la potenza per elaborare i dati in maniera rigorosa, ma <strong>l'interpretazione finale richiede sempre intelligenza critica umana</strong>. I numeri non mentono, ma le conclusioni che scegliamo di trarne possono esserci fatali. Vediamo le trappole più celebri.</p>
+
+            <!-- CORRELAZIONE NON IMPLICA CAUSALITA' -->
+            <div class="sub-section">
+                <h3 style="color: #ef4444;">❌ Correlazione NON implica Causalità</h3>
+                <p>Una delle insidie più terribili in cui inciampano di continuo i media di tutto il mondo è assumere che, dal momento che due eventi avvengono matematicamente in parallelo (sono <em>correlati</em>), allora <strong>debbano uno essere la causa dell'altro</strong>.</p>
+                
+                <div style="background: rgba(239, 68, 68, 0.05); padding: 1.5rem; border-radius: 12px; border-left: 4px solid #ef4444; margin: 1.5rem 0;">
+                    <h4 style="color: #ef4444; margin-bottom: 0.5rem;">L'Esempio del Gelato e delle Magliette a Mezze Maniche 🍦👕</h4>
+                    <p style="font-size: 0.95rem; margin-bottom: 0.5rem;">
+                        Analizzando i dati storici emerge, con rigoroso tasso di $R^2$ quasi totale, una spaventosa correlazione tra i mesi di picco di <strong>vendita di gelati</strong> e l'impennata nelle <strong>vendite di magliette a mezze maniche</strong>. Sulla carta il grafico scatta in contemporanea ed è perfetto.
+                    </p>
+                    <p style="font-size: 0.95rem;">
+                        <strong>La Conclusione Errata (causale):</strong> Comprare un gelato causa nelle persone il bisogno fisiologico di comprare magliette a mezze maniche (o viceversa).<br>
+                        <strong>La Verità Interpretativa:</strong> La statistica in questione ignora la presenza di una <em>variabile confondente nascosta</em> non indagata nel modello: il <strong>caldo stagionale</strong>. Quando arriva l'estate le temperature si alzano e le persone, logicamente, comprano sia più gelati per rinfrescarsi, sia magliette leggere al posto dei maglioni in lana. I due eventi non si causano a vicenda, sono determinati entrambi da un terzo macro-fattore atmosferico.
+                    </p>
+                </div>
+
+                <p>Tale meccanismo ci imprime a fuoco per l'intera vita scientifica un precetto vitale in data science: <strong>una metrica d'analisi è un puro fattore informativo, ma le sue conseguenze esulano dalla sterile matematica e richiederanno sempre il senso critico d'interpretazione di dominio.</strong></p>
+            </div>
+
+            <!-- IL BIAS DEL SOPRAVVISSUTO / PARADOSSO DI SIMPSON -->
+            <div class="sub-section">
+                <h3 style="color: #a855f7;">✈️ Paradosso di Simpson e Analisi Visiva: I Bombardieri nella WWII</h3>
+                <p>Alle volte l'assenza stessa di talune misure genera un fenomeno strettamente gemellato al più noto <strong>Paradosso di Simpson</strong>, in merito all'occultamento statistico (in cui l'unione dei macro-campionamenti devia radicalmente il risultato che avremmo isolando i gruppi). Un esempio concreto d'eccellenza, passato storicamente come Bias del Sopravvissuto, vide trionfare il genio statistico sopra agli ingegneri militari della <em>US Air Force</em>.</p>
+
+                <div style="background: rgba(168, 85, 247, 0.05); padding: 1.5rem; border-radius: 12px; border-left: 4px solid #a855f7; margin: 1.5rem 0;">
+                    <h4 style="color: #a855f7; margin-bottom: 0.5rem;">I Fori di Proiettile Misteriosi</h4>
+                    <p style="font-size: 0.95rem; margin-bottom: 0.5rem;">
+                        In piena Seconda Guerra Mondiale, gli analisti vennero incaricati di posizionare armature extra sui bombardieri che rientravano martoriati. Guardando decine di veicoli tornati integri analizzarono la mappa statistica balistica e videro l'addensamento matematico puro: <strong>le ali e il troncone della fusoliera accuminavano l'80% quasi esatto dei buchi. Motori e plance di pilotaggio invece restavano lindi e puri senza danni.</strong>
+                    </p>
+                    <p style="font-size: 0.95rem; margin-bottom: 0.5rem;">
+                        <strong>Prima conclusione matematica:</strong> Uniamo i metalli di corazzamento protettivo alle ali per impedire all'aereo di affondare!<br>
+                    </p>
+                    <p style="font-size: 0.95rem;">
+                        <strong>Abraham Wald e la Lettura Strutturata dei Dati:</strong> Il matematico si ribellò e propose l'istinto anti-intuitivo: <em>Le blindature vanno portate unicamente a motori e cabine, seppure la statistica lì misuri 0 fori.</em> Egli spiegò che la statistica aveva campionato "solamente" gli aerei <em>tornati e perciò sopravvissuti</em>. Significa che un caccia colpito alla fusoliera e ali poteva tranquillamente sopportare il danno. A contrario i veicoli investiti ai polmoni motoristici cadevano nell'oceano, omettendo eternamente i loro dati di danneggiamento ai sondaggi!
+                    </p>
+                </div>
+
+                <div style="background: rgba(168, 85, 247, 0.05); padding: 1.5rem; border-radius: 12px; border-left: 4px solid #a855f7; margin: 1.5rem 0;">
+                    <h4 style="color: #a855f7; margin-bottom: 0.5rem;">Il Mito della Ricchezza e il Cimitero dei Falliti 🎓💸</h4>
+                    <p style="font-size: 0.95rem; margin-bottom: 0.5rem;">
+                        Lo stesso mortale equivoco colpisce gravemente la nostra percezione dei percorsi di fama e successo nel mondo reale. Spesso sentiamo celebrare figure immense e milionarie della Silicon Valley o dello spettacolo che hanno notoriamente <strong>abbandonato precocemente l'università</strong> per fondare le loro aziende dal nulla.
+                    </p>
+                    <p style="font-size: 0.95rem;">
+                        <strong>La Conclusione Errata:</strong> "L'università e lo studio certificato sono inutili per diventare ricchi, basta guardare i CEO di successo! Convien abbandonare gli studi per fondare una startup emergente!"<br>
+                        <strong>La Statistica Nascosta:</strong> Ancora una volta stiamo misurando <em>solo chi "è sopravvissuto"</em> al durissimo percorso del mercato e ha conseguito i riflettori di Hollywood e di Wall Street. Stiamo cancellando impietosamente un cimitero sterminato e silenzioso, composto da decine di migliaia di giovani che hanno provato la medesima rotta incerta, scartando protezioni sicure, che non sono diventati famosi e non entreranno perciò nel calderone dell'intervista statistica. Isolando i dati unicamente sull'élite trionfatrice si producono falsi modelli sociali illogici e pericolosi!
+                    </p>
+                </div>
+                
+                <p>Questi affascinanti aneddoti evidenziano che estrapolare grafici con fiumi sfrenati di valori non serve mai a niente se il ricercatore tralascia clamorosamente le pre-condizioni concettuali, o paradossali visioni d'insieme, dei dataset originali prelevati.</p>
+            </div>
+        </section>
+
+        <!-- ============================================ -->
         <!-- QUIZ FINALE                                  -->
         <!-- ============================================ -->
         <section class="lesson-section">

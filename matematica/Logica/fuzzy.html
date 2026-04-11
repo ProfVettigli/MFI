@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logica Fuzzy - Matematica MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- MathJax -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+            width: fit-content;
+        }
+        
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+
+        .fuzzy-gradient {
+            background: linear-gradient(135deg, #94a3b8, #6366f1);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        /* --- Interactive Slider Section --- */
+        .interactive-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .slider-container {
+            margin: 2rem 0;
+        }
+
+        input[type=range] {
+            width: 100%;
+            max-width: 500px;
+            cursor: pointer;
+        }
+
+        .fuzzy-display {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .logic-panel {
+            padding: 1.5rem;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .truth-val {
+            font-size: 2.5rem;
+            font-weight: 800;
+            font-family: 'Fira Code', monospace;
+            margin: 1rem 0;
+        }
+
+        .nerd-accent {
+            color: #A855F7;
+            font-weight: 700;
+        }
+
+        .vs-box {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 1rem;
+            align-items: center;
+            margin: 2rem 0;
+        }
+
+        .vs-divider {
+            font-weight: 800;
+            color: #EF4444;
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="sub-hero">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <a href="logica.html" class="back-button">
+                    <span class="back-icon">&larr;</span> Torna a Logica
+                </a>
+            </div>
+            <h1 class="sub-hero-title">Logica <span class="fuzzy-gradient">Fuzzy</span></h1>
+            <p class="sub-hero-subtitle">Tra il bianco e il nero esistono infinite sfumature di grigio. Scopri come la matematica cattura la vaghezza del mondo reale.</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- 1. ARISTOTELE E IL BIVARIATO -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">1. L'Eredità di Aristotele</h2>
+            <p class="lesson-text">
+                Per oltre duemila anni, il pensiero occidentale è stato dominato dalla <strong>Logica Aristotelica</strong> (o bivalente). Si basa sul principio del <em>terzo escluso</em>: una proposizione può essere solo <strong>Vera (1)</strong> o <strong>Falsa (0)</strong>. Non esiste una terza via.
+            </p>
+            <div class="card" style="border-left: 4px solid #3B82F6;">
+                <p style="font-style: italic;">"L'acqua è calda."</p>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">In logica classica, se l'acqua è a 39.9°C è "falsa", se è a 40.1°C è "vera" (assumendo una soglia fissa). Una differenza minima cambia tutto drasticamente.</p>
+            </div>
+        </section>
+
+        <!-- 2. LA RIVOLUZIONE FUZZY -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">2. Gradi di Verità</h2>
+            <p class="lesson-text">
+                Nel 1965, <strong>Lotfi Zadeh</strong> propose una logica "sfumata" (fuzzy). In questo sistema, il valore di verità di una frase non è più un intero (0 o 1), ma un numero reale compreso nell'intervallo \([0, 1]\).
+                <br><br>
+                Proviamo con un esempio interattivo: muovi lo slider per cambiare la temperatura dell'acqua e osserva come reagiscono i due tipi di logica.
+            </p>
+
+            <div class="interactive-box">
+                <h3 id="temp-label">Temperatura: 25°C</h3>
+                <div class="slider-container">
+                    <input type="range" id="temp-slider" min="0" max="100" value="25">
+                </div>
+                
+                <div class="fuzzy-display">
+                    <div class="logic-panel">
+                        <span class="stat-label">Logica Classica (Soglia 40°C)</span>
+                        <div id="class-val" class="truth-val" style="color: #EF4444;">FALSO</div>
+                        <p style="font-size: 0.8rem; color: var(--text-muted);">O sei dentro, o sei fuori.</p>
+                    </div>
+                    <div class="logic-panel" style="border-color: #6366f1;">
+                        <span class="stat-label">Logica Fuzzy</span>
+                        <div id="fuzzy-val" class="truth-val" style="color: #6366f1;">0.25</div>
+                        <p style="font-size: 0.8rem; color: var(--text-muted);">Grado di "Calore".</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. ESEMPI NERD -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">3. Nerd Culture: HP e Allineamenti</h2>
+            <p class="lesson-text">
+                Se sei un gamer, utilizzi la logica fuzzy ogni giorno senza saperlo!
+            </p>
+            <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem;">
+                <div class="card">
+                    <h4 class="nerd-accent">Bars di Salute (HP)</h4>
+                    <p style="font-size: 0.9rem;">
+                        In un picchiaduro, non sei solo "vivo" o "morto". Lo stato del tuo personaggio è sfumato: sei <span style="color: #10B981;">In salute</span>, <span style="color: #FBBF24;">Ferito</span> o <span style="color: #EF4444;">In fin di vita</span>. Il colore della barra cambia gradualmente: è logica fuzzy applicata al gameplay!
+                    </p>
+                </div>
+                <div class="card">
+                    <h4 class="nerd-accent">Allineamenti RPG</h4>
+                    <p style="font-size: 0.9rem;">
+                        In D&D, un personaggio "Legale Buono" non è un automa. Può avere sfumature: essere molto legale ma solo "un po'" buono. Il sistema di allineamento è in realtà una <strong>matrice fuzzy</strong> di comportamento etico.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. FUZZY VS PROBABILITÀ -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">4. Fuzzy vs Probabilità: Il grande dubbio</h2>
+            <p class="lesson-text">
+                Spesso si confonde la logica fuzzy con la probabilità. Anche se entrambe usano numeri tra 0 e 1, descrivono cose diverse:
+            </p>
+            
+            <div class="vs-box">
+                <div class="card" style="text-align: center;">
+                    <h4 style="color: #8b5cf6;">Probabilità</h4>
+                    <p style="font-style: italic; margin: 1rem 0;">"C'è il 70% di probabilità che l'acqua sia calda."</p>
+                    <p style="font-size: 0.85rem;">Esprime <strong>incertezza</strong>. Non sappiamo se l'acqua è calda, ma scommettiamo che lo sia.</p>
+                </div>
+                <div class="vs-divider">VS</div>
+                <div class="card" style="text-align: center;">
+                    <h4 style="color: #6366f1;">Logica Fuzzy</h4>
+                    <p style="font-style: italic; margin: 1rem 0;">"L'acqua è calda al grado 0.7."</p>
+                    <p style="font-size: 0.85rem;">Esprime <strong>vaghezza</strong>. Sappiamo esattamente la temperatura, ma "caldo" è un concetto soggettivo.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. APPLICAZIONI -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">5. Dove si usa oggi?</h2>
+            <p class="lesson-text">
+                La logica fuzzy è ovunque la precisione rigida sia controproducente:
+            </p>
+            <ul class="lesson-text" style="margin-left: 2rem; list-style-type: square; color: var(--text-muted);">
+                <li><strong>Elettrodomestici</strong>: Lavatrici che decidono quanto sapone usare in base a quanto l'acqua è "torbida".</li>
+                <li><strong>Automotive</strong>: Sistemi frenanti ABS e cambi automatici che si adattano allo stile di guida.</li>
+                <li><strong>Climatizzazione</strong>: Condizionatori che non si accendono/spengono bruscamente, ma modulano la potenza in modo fluido.</li>
+                <li><strong>AI nei Videogiochi</strong>: Gestione del comportamento dei nemici per renderli più "umani" e meno prevedibili.</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Matematica. Logica e Sistemi Complessi.</p>
+    </footer>
+
+    <!-- JS -->
+    <script src="../../js/main.js"></script>
+    <script src="fuzzy.js"></script>
+</body>
+</html>

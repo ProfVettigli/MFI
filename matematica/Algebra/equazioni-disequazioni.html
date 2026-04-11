@@ -455,9 +455,29 @@
             </div>
         </section>
 
+        <!-- TEOREMA FONDAMENTALE E STORIA -->
+        <section class="lesson-section" style="background: rgba(245, 158, 11, 0.03); border-color: #F59E0B;">
+            <h2 class="lesson-title" style="color: #F59E0B;">5. Oltre il Reale: Il Teorema Fondamentale</h2>
+            <p class="lesson-text">
+                Risolvere un'equazione non è sempre stato semplice come cliccare un tasto. Nel Rinascimento italiano, la matematica era uno sport di contatto: i matematici come <strong>Tartaglia</strong> e <strong>Cardano</strong> si sfidavano in <strong>sfide pubbliche (disfide)</strong> per risolvere equazioni di terzo grado.
+            </p>
+            <p class="lesson-text">
+                Durante queste sfide, si imbattevano spesso in un "fantasma": la radice quadrata di un numero negativo (\(\sqrt{-1}\)). Matematici come l'italiano <strong>Rafael Bombelli</strong> iniziarono a usarli, ma per secoli furono chiamati <strong>"immaginari" in senso dispregiativo</strong>, quasi fossero errori della logica.
+            </p>
+            <p class="lesson-text">
+                Solo nel 1799 <strong>Carl Friedrich Gauss</strong>, il "Principe dei Matematici", diede loro piena dignità dimostrando il <strong>Teorema Fondamentale dell'Algebra</strong>:
+            </p>
+            <div class="shortcut-box" style="border-left-color: #F59E0B; background: rgba(245, 158, 11, 0.05);">
+                <p>Ogni equazione di grado \(n\) ha <strong>esattamente \(n\) soluzioni</strong>, a patto di accettare l'esistenza dei <strong>Numeri Complessi</strong>.</p>
+            </div>
+            <p class="lesson-text">
+                Questo significa che grazie a Gauss sappiamo che nessuna equazione è davvero impossibile: ogni problema ha la sua risposta, a volte nascosta in una dimensione immaginaria che esploreremo nella lezione dedicata ai Numeri Complessi.
+            </p>
+        </section>
+
         <!-- DISEQUAZIONI -->
         <section class="lesson-section">
-            <h2 class="lesson-title">5. Disequazioni: L'Invasione del Segno Negativo</h2>
+            <h2 class="lesson-title">6. Disequazioni: L'Invasione del Segno Negativo</h2>
             <p class="lesson-text">
                 In una <strong>disequazione</strong> non cerchiamo un equilibrio perfetto, ma studiamo quando una parte
                 è <em>maggiore</em> (\(>\)) o <em>minore</em> (\(<\)) di un'altra. </p>
@@ -695,57 +715,25 @@
             s.textContent = "<";
             s.className = "sign-box";
             fb.textContent = "Prova a moltiplicare per -1 e guarda cosa succede...";
-            txt.textContent = "Sulla retta, chi è più \"a sinistra\" è più piccolo.";
             arm.style.transform = "rotate(10deg)";
         }
 
-        // Challenge A
-        function solveIneqA() {
-            const box = document.getElementById('ineq-a-box');
-            box.innerHTML = "\\( x < 6 \\)";
-            if (window.renderMathInElement) {
-                renderMathInElement(box, {
-                    delimiters: [{left: '\\(', right: '\\)', display: false}]
-                });
+        function updateEquationBox(boxId, texString, color) {
+            const box = document.getElementById(boxId);
+            box.style.color = color;
+            box.textContent = "\\( " + texString + " \\)";
+            if (typeof MathJax !== "undefined" && MathJax.typesetPromise) {
+                MathJax.typesetPromise([box]).catch(console.error);
             }
-            box.style.color = "#10B981";
-        }
-        function resetIneqA() {
-            const box = document.getElementById('ineq-a-box');
-            box.innerHTML = "\\( x + 4 < 10 \\)";
-            if (window.renderMathInElement) {
-                renderMathInElement(box, {
-                    delimiters: [{left: '\\(', right: '\\)', display: false}]
-                });
-            }
-            box.style.color = "#fff";
         }
 
+        // Challenge A
+        function solveIneqA() { updateEquationBox('ineq-a-box', 'x < 6', '#10B981'); }
+        function resetIneqA() { updateEquationBox('ineq-a-box', 'x + 4 < 10', '#fff'); }
+
         // Challenge B
-        function solveIneqB() {
-            const box = document.getElementById('ineq-b-box');
-            box.innerHTML = "\\( x \\ge 4 \\)";
-            if (window.renderMathInElement) {
-                renderMathInElement(box, {
-                    delimiters: [
-                        {left: '\\(', right: '\\)', display: false}
-                    ]
-                });
-            }
-            box.style.color = "#10B981";
-        }
-        function resetIneqB() {
-            const box = document.getElementById('ineq-b-box');
-            box.innerHTML = "\\( 3x \\ge 12 \\)";
-            if (window.renderMathInElement) {
-                renderMathInElement(box, {
-                    delimiters: [
-                        {left: '\\(', right: '\\)', display: false}
-                    ]
-                });
-            }
-            box.style.color = "#fff";
-        }
+        function solveIneqB() { updateEquationBox('ineq-b-box', 'x \\ge 4', '#10B981'); }
+        function resetIneqB() { updateEquationBox('ineq-b-box', '3x \\ge 12', '#fff'); }
     </script>
 
     <script src="../../js/main.js"></script>

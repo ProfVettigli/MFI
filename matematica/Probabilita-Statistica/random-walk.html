@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Walk e Moto Browniano - MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- MathJax -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+
+        .simulation-container {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+            backdrop-filter: blur(10px);
+        }
+
+        #rw-canvas {
+            background: #020617;
+            border-radius: 12px;
+            width: 100%;
+            height: 300px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 16px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .stat-value { font-family: 'Fira Code', monospace; font-size: 1.8rem; color: #3B82F6; display: block; margin-top: 0.5rem; }
+        .stat-label { font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 1px; }
+
+        .einstein-box {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(16, 185, 129, 0.1));
+            border-left: 5px solid #3B82F6;
+            padding: 2rem;
+            border-radius: 0 20px 20px 0;
+            margin: 3rem 0;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 400px;
+            width: 100%;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="sub-hero">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <a href="../probabilita-statistica.html" class="back-button">
+                    <span class="back-icon">&larr;</span> Torna a Probabilità
+                </a>
+            </div>
+            <h1 class="hero-title">Random Walk <span class="gradient-text">e Moto Browniano</span></h1>
+            <p class="sub-hero-subtitle">Dal lancio di una moneta all'evidenza degli atomi: la danza del caos.</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- 1. IL PROBLEMA -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">1. La Passeggiata dell'Ubriaco</h2>
+            <p class="lesson-text">
+                Immagina un uomo che deve decidere il prossimo passo lanciando una moneta. Se esce <strong>Testa</strong>, fa un passo avanti (+1); se esce <strong>Croce</strong>, fa un passo indietro (-1). 
+            </p>
+            <div class="simulation-container">
+                <canvas id="manual-canvas" height="150"></canvas>
+                <div class="stats-grid" style="grid-template-columns: 1fr 1fr;">
+                    <div class="stat-card">
+                        <span class="stat-label">Posizione Attuale (x)</span>
+                        <span id="manual-pos" class="stat-value">0</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Lanci</span>
+                        <span id="manual-steps" class="stat-value">0</span>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 2rem; display: flex; gap: 1rem; justify-content: center;">
+                    <button id="btn-coin" class="btn-gen" style="background: var(--math-color);">Lancia Moneta</button>
+                    <button id="btn-coin-10" class="btn-gen" style="background: var(--physics-color);">Lancia 10 Monete</button>
+                    <button id="btn-manual-reset" class="btn-gen" style="background: rgba(255,255,255,0.1);">Reset</button>
+                </div>
+            </div>
+            <p class="lesson-text">
+                All'inizio, gli spostamenti sembrano casuali e imprevedibili. Ma cosa succede se lanciamo migliaia di monete per centinaia di persone contemporaneamente? 
+            </p>
+        </section>
+
+        <!-- 2. LA DISTRIBUZIONE BINOMIALE -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">2. La Legge della Radice Quadrata</h2>
+            <p class="lesson-text">
+                Quando osserviamo una popolazione di "ubriachi", emerge una legge matematica precisa. La distanza tipica dall'origine cresce con la <strong>radice quadrata</strong> dei passi effettuati (\(\sqrt{N}\)).
+            </p>
+            
+            <div class="simulation-container">
+                <h4 style="margin-bottom: 1rem; color: #3B82F6;">Simulazione Statistica (150 Camminatori)</h4>
+                <canvas id="rw-canvas" height="250"></canvas>
+                <div class="chart-wrapper">
+                    <canvas id="distance-chart"></canvas>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-label">Passi Comuni (N)</span>
+                        <span id="steps-count" class="stat-value">0</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Distanza Media (RMS)</span>
+                        <span id="rms-value" class="stat-value">0.00</span>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 2rem;">
+                    <button id="btn-start" class="btn-gen" style="background: var(--math-color);">Avvia Statistica</button>
+                    <button id="btn-reset" class="btn-gen" style="background: rgba(255,255,255,0.1);">Reset</button>
+                </div>
+            </div>
+            
+            <div class="shortcut-box" style="border-left-color: #A855F7; text-align: center; margin-top: 2rem;">
+                <h3 style="color: #A855F7;">Distanza \(\propto \sqrt{N}\)</h3>
+                <p>Se raddoppi il tempo, non raddoppi la distanza: sarai solo \(\sqrt{2} \approx 1.41\) volte più lontano!</p>
+            </div>
+        </section>
+
+        <!-- 3. MOTO BROWNIANO -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">3. Dal Polline agli Atomi</h2>
+            <p class="lesson-text">
+                Nel 1827, il botanico <strong>Robert Brown</strong> osservò al microscopio che i granelli di polline sospesi nell'acqua si muovevano in modo frenetico e irregolare. Non era vita: era il <strong>Moto Browniano</strong>.
+            </p>
+            <div class="einstein-box">
+                <h3 style="margin-bottom: 1rem;">La Soluzione di Einstein (1905)</h3>
+                <p>Fu <strong>Albert Einstein</strong> a risolvere il mistero nel suo "Annus Mirabilis". Egli intuì che il movimento non era causato dal polline stesso, ma da continui, invisibili <strong>urti degli atomi d'acqua</strong> contro il granello.</p>
+                <p style="margin-top: 1rem;">Einstein fornì la prova definitiva dell'esistenza degli atomi calcolando esattamente come la distanza del polline dovesse crescere con la radice del tempo, proprio come una random walk microscopica.</p>
+            </div>
+        </section>
+
+        <!-- 4. APPLICAZIONI IN FINANZA -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">4. Dove lo troviamo oggi?</h2>
+            <p class="lesson-text">Oggi il moto browniano e le random walk sono ovunque:</p>
+            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+                <div class="card" style="padding: 1.5rem; border-top: 4px solid #F59E0B;">
+                    <h4 style="color: #F59E0B; margin-bottom: 0.5rem;">📈 Finanza e Mercati</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);">L'ipotesi del <strong>Mercato Efficiente</strong> suggerisce che i prezzi delle azioni seguano una random walk: il prezzo di domani è imprevedibile basandosi solo su quello di oggi.</p>
+                </div>
+                <div class="card" style="padding: 1.5rem; border-top: 4px solid #10B981;">
+                    <h4 style="color: #10B981; margin-bottom: 0.5rem;">🧬 Biologia</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);">La <strong>diffusione</strong> di sostanze nutritive o di farmaci all'interno delle nostre cellule avviene tramite processi browniani.</p>
+                </div>
+                <div class="card" style="padding: 1.5rem; border-top: 4px solid #3B82F6;">
+                    <h4 style="color: #3B82F6; margin-bottom: 0.5rem;">💻 Informatica</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);">Gli algoritmi di <strong>Google PageRank</strong> e molte simulazioni fisiche nei videogiochi usano cammini aleatori per risolvere problemi complessi.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- QUIZ -->
+        <section class="lesson-section quiz-container">
+            <h2 class="lesson-title">Quiz di Verifica</h2>
+            <div id="quiz-area"></div>
+            <div id="quiz-score" class="feedback-msg" style="margin-top: 2rem;"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Piattaforma Didattica. Esplora le leggi del caso.</p>
+    </footer>
+
+    <!-- JS -->
+    <script src="random-walk.js"></script>
+    <script src="../../js/main.js"></script>
+</body>
+</html>

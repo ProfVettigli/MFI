@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algebra Lineare e Matrici - Matematica MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- MathJax -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+        
+        .sub-hero {
+            padding: 4rem 0 2rem;
+            text-align: left;
+        }
+        
+        .sub-hero-title {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="sub-hero">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2.5rem;">
+                <a href="algebra.html" class="back-button" style="margin-bottom: 0;">
+                    <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Algebra
+                </a>
+            </div>
+            <h1 class="sub-hero-title">Algebra <span class="gradient-text" style="background: linear-gradient(135deg, #3B82F6, #60A5FA); -webkit-background-clip: text; background-clip: text; color: transparent;">Lineare</span></h1>
+            <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+                Il reame in cui la geometria si fonde con le equazioni. Scopri come comprimere intere trasformazioni spaziali, stiramenti e deformazioni in semplici tabelle di numeri: le matrici!
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <!-- ==================== SEZIONE 1: VETTORI ==================== -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #3B82F6;">1. Che cos'è un Vettore?</h2>
+            <p class="lesson-text">
+                Immagina di voler indicare la strada ad un amico. Non basta digli "Cammina per 10 metri". Devi dirgli "Cammina per 10 metri <em>verso Nord</em>". Questa combinazione di <strong>Quantità (Lunghezza) e Direzione</strong> è l'essenza di un vettore!
+            </p>
+            <p class="lesson-text">In Algebra Lineare, possiamo pensare ai vettori in tre modi fondamentalmente equivalenti:</p>
+
+            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+                <div style="background: rgba(59, 130, 246, 0.05); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(59, 130, 246, 0.2);">
+                    <h4 style="color: #3B82F6; margin-bottom: 0.5rem;">🏹 La Visione Fisica</h4>
+                    <p style="font-size: 0.95rem;">Una <strong>freccia</strong> nello spazio. Viene usato in fisica per descrivere la forza elastica, la velocità di un'auto, la gravità. È una spinta in una precisa direzione.</p>
+                </div>
+                <div style="background: rgba(59, 130, 246, 0.05); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(59, 130, 246, 0.2);">
+                    <h4 style="color: #3B82F6; margin-bottom: 0.5rem;">🔢 La Visione Algebrica</h4>
+                    <p style="font-size: 0.95rem;">Un <strong>elenco ordinato di numeri</strong>. Viene scritto tra parentesi quadre, ad esempio \( \begin{bmatrix} 3 \\ 2 \end{bmatrix} \). Significa "fai 3 passi a destra e 2 in alto".</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SEZIONE 2: MATRICI ==================== -->
+        <section class="lesson-section" style="border-left: 4px solid #A855F7;">
+            <h2 class="lesson-title" style="color: #A855F7;">2. La Matrice: Molto più di una tabella</h2>
+            <p class="lesson-text">
+                Al liceo o nei database informatici, una Matrice viene spesso introdotta come un "foglio Excel", una <strong>tabella rigida composta da Righe e Colonne di numeri</strong>. Sebbene sia vero dal punto di vista dello stoccaggio dei dati, per l'Algebra Lineare questo è solo un travestimento furbesco!
+            </p>
+            <p class="lesson-text" style="font-weight: bold; font-size: 1.1rem; color: #C084FC;">
+                La Matrice è una "Macchina Trasforma-Spazio" (Trasformazione Lineare).
+            </p>
+            <p class="lesson-text">
+                Quando moltiplichi un Vettore (una freccia) per una Matrice, la matrice <strong>afferra il vettore e lo sposta!</strong> Può allungarlo, ruotarlo, specchiarlo o schiacciarlo. I numeri scritti dentro la tabella della matrice sono in realtà le <em>istruzioni di volo</em> su dove deve finire la freccia originale.
+            </p>
+
+            <div style="background: rgba(168, 85, 247, 0.05); padding: 1.5rem; border-radius: 12px; margin-top: 2rem;">
+                <h4 style="color: #A855F7; margin-bottom: 0.5rem;">Il Determinante</h4>
+                <p style="font-size: 0.95rem; line-height: 1.7; margin-bottom: 0;">
+                    Ogni "trasformazione" ha un numero segreto calcolabile chiamato <strong>Determinante</strong> (\(\det(A)\)). 
+                    Il determinante ti dice <strong>di quanto la matrice ha allargato o compresso il "Volume" dello spazio generale</strong>.<br>
+                    • Se il determinante è <strong>2</strong>, vuol dire che lo spazio sta raddoppiando di area.<br>
+                    • Se il determinante è <strong>negativo</strong>, vuol dire che lo spazio è stato rovesciato a specchio (come se portassi un guanto destro sulla mano sinistra).<br>
+                    • Se il determinante è <strong>0</strong>, accade un disastro! La matrice deforma lo spazio schiacciandolo in una linea piatta (o un punto), distruggendo ogni informazione di volume (ed è per questo che le matrici con determinante nullo <em>non possono tornare indietro nel tempo</em> "invertendosi").
+                </p>
+            </div>
+        </section>
+
+        <!-- ==================== SEZIONE 3: BASE ==================== -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #F59E0B;">3. Le Basi dello Spazio e il Cambiamento Dinamico</h2>
+            <p class="lesson-text">
+                Abbiamo detto che il vettore \( \begin{bmatrix} 3 \\ 2 \end{bmatrix} \) vuol dire "vai avanti di 3 passi, sali di 2". 
+                Ma "avanti" o "sali" rispetto a cosa? Hanno senso solo perché diamo per scontato l'esistenza di una bussola generale, che in geometria chiamiamo assi \(x\) ed \(y\). 
+            </p>
+            <p class="lesson-text">
+                Gli <strong>Assi o Vettori Standard</strong> (chiamati $i$ ed $j$, i classici passi unitari $\begin{bmatrix}1 \\ 0\end{bmatrix}$ e $\begin{bmatrix}0 \\ 1\end{bmatrix}$) formano una griglia. Questa impalcatura è chiamata <strong>Base</strong>.
+            </p>
+            
+            <div style="display: flex; gap: 1.5rem; flex-wrap: wrap; margin-top: 1.5rem;">
+                <div style="flex: 1; min-width: 280px; background: rgba(245, 158, 11, 0.05); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(245, 158, 11, 0.2);">
+                    <h4 style="color: #F59E0B; margin-bottom: 0.5rem;">Cambio di Prospettiva</h4>
+                    <p style="font-size: 0.95rem; line-height: 1.6;">A volte è utilissimo analizzare il mondo non guardando dritto a croce, ma tracciando assi storti, intrecciati o diagonali. Possiamo creare decine di "Basi alternative" (bussola rovesciata, bussola allungata). Il <strong>Cambiamento di Base</strong> equivale a <em>tradurre lo stesso vettore geografico da una lingua spaziale all'altra</em>.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SEZIONE 4: DIAGONALIZZAZIONE ==================== -->
+        <section class="lesson-section" style="border-left: 4px solid #10B981; background: rgba(16, 185, 129, 0.03);">
+            <h2 class="lesson-title" style="color: #10B981;">4. Il Santo Graal: La Diagonalizzazione</h2>
+            <p class="lesson-text">
+                Moltiplicare due matrici enormi o elevarne una a potenza come $M^{100}$ (per simulare 100 anni che passano) genera miliardi di calcoli mostruosamente caotici, in cui gli assi si incrociano orribilmente generando rotazioni incontrollabili.
+            </p>
+            <p class="lesson-text">
+                Esistono tuttavia delle <strong>Matrici Diagonali</strong>. Sono matrici docili dove tutti i numeri fuori da una diagonale centrale sono zeri. Esse fanno solo una cosa elementare: non storcono, non ruotano e non stritolano, <strong>si limitano semplicemente a scalare ed ingrandire lo spazio ordinatamente!</strong> Calcolare la centesima potenza della matrice diventa facile come premere un pulsante.
+            </p>
+
+            <h3 style="color: #34D399; font-size: 1.2rem; margin-top: 1.5rem;">L'Arte della Diagonalizzazione (Autovalori e Autovettori)</h3>
+            <p class="lesson-text">
+                Ecco la magia assoluta dell'Algebra Lineare. <strong>Ogni Matrice complessa è una matrice diagonale se la osservi inclinandoti con la bussola corretta.</strong>
+            </p>
+            <div style="font-size: 0.95rem; line-height: 1.7; color: var(--text-main); margin-bottom: 1.5rem;">
+                <ul style="padding-left: 1.5rem;">
+                    <li style="margin-bottom: 0.8rem;">Certe matrici deformano brutalmente lo spazio, <strong>ma</strong> lasciano intatte segretamente alcune frecce o assi (non facendole ruotare). Queste incrollabili direzioni si chiamano <strong>Autovettori (Eigenvectors)</strong>.</li>
+                    <li style="margin-bottom: 0.8rem;">Queste frecce speciali si allungano o restringono subendo un tiraggio puramente in-linea o elastico, senza sbandare. Il fattore di tiraggio è chiamato <strong>Autovalore (Eigenvalue, $\lambda$)</strong>.</li>
+                    <li>Scegliendo proprio quegli Autovettori perfetti come nostra <em>nuova Base di navigazione (Cambiamento di Base)</em>, la matrice complessa che vedevamo all'inizio, nella nuova prospettiva, muta meravigliosamente e si raddrizza in una purissima <strong>Matrice Diagonale</strong>.</li>
+                </ul>
+            </div>
+            
+            <p class="lesson-text" style="font-weight: 600; color: #10B981;">
+                Diagonalizzare significa in sunto: cambiare il tuo punto di vista deformato, spostandoti lungo gli "assi naturali del fenomeno (autovettori)", finchè il caos matematico ti appare magicamente semplice ed ordinato a scatola!
+            </p>
+            
+            <div style="background: rgba(16, 185, 129, 0.05); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(16, 185, 129, 0.2); margin-top: 2rem;">
+                <h4 style="color: #10B981; margin-bottom: 1rem; font-size: 1.15rem;">Esempio Pratico: Diagonalizzare una Matrice 2x2</h4>
+                <p style="font-size: 0.95rem; margin-bottom: 0.8rem;">Prendiamo una matrice di trasformazione \( A = \begin{bmatrix} 4 & 2 \\ 1 & 3 \end{bmatrix} \). Questa matrice storpia lo spazio inclinandolo caoticamente. Troviamo la sua vera essenza (diagonalizzandola).</p>
+                
+                <p style="font-size: 0.95rem; font-weight: bold; margin-bottom: 0.2rem; color: var(--text-main);">Passo 1: Trovare gli Autovalori (\(\lambda\))</p>
+                <p style="font-size: 0.95rem; margin-bottom: 1.2rem; line-height: 1.5;">Cerchiamo le costanti di stiramento risolvendo l'equazione del determinante zero \(\det(A - \lambda I) = 0\):
+                <br>\( (4-\lambda)(3-\lambda) - (2 \cdot 1) = 0 \ \Rightarrow \ \lambda^2 - 7\lambda + 10 = 0 \)
+                <br>Le radici (i nostri <em>Autovalori</em> magici) sono: <strong>\(\lambda_1 = 5\)</strong> e <strong>\(\lambda_2 = 2\)</strong>.</p>
+
+                <p style="font-size: 0.95rem; font-weight: bold; margin-bottom: 0.2rem; color: var(--text-main);">Passo 2: Trovare gli Autovettori (Le frecce immobili)</p>
+                <p style="font-size: 0.95rem; margin-bottom: 1.2rem; line-height: 1.5;">Sostituiamo \(\lambda_1 = 5\) in \( (A - \lambda I)\). La matrice diventa \( \begin{bmatrix} -1 & 2 \\ 1 & -2 \end{bmatrix} \). Troviamo le sue coordinate nulle, ottenendo il primo Autovettore: <strong>\( \vec{v}_1 = \begin{bmatrix} 2 \\ 1 \end{bmatrix} \)</strong>.
+                <br>Ripetiamo per \(\lambda_2 = 2\) in \( (A - \lambda I)\). La matrice diventa \( \begin{bmatrix} 2 & 2 \\ 1 & 1 \end{bmatrix} \). Otteniamo il secondo Autovettore: <strong>\( \vec{v}_2 = \begin{bmatrix} -1 \\ 1 \end{bmatrix} \)</strong>.</p>
+                
+                <p style="font-size: 0.95rem; font-weight: bold; margin-bottom: 0.2rem; color: var(--text-main);">Passo 3: La grande Rivelazione (\(D = P^{-1} A P\))</p>
+                <p style="font-size: 0.95rem; margin-bottom: 0; line-height: 1.5;">Incolliamo in piedi gli autovettori per costruire una "Matrice Cambio di Base" \( P = \begin{bmatrix} 2 & -1 \\ 1 & 1 \end{bmatrix} \). 
+                Se osserviamo la vecchia matrice asimmetrica \( A \) passando attraverso l'imbuto di \( P \), essa si purifica in una banalissima <strong>Matrice Diagonale (\(D\))</strong>:
+                <br><br><span style="text-align:center; display:block; font-size:1.25rem; font-weight:bold; color: #34D399;">\( D = P^{-1} \cdot A \cdot P = \begin{bmatrix} 5 & 0 \\ 0 & 2 \end{bmatrix} \)</span>
+                <br>Mistero svelato: nel suo sistema di riferimento naturale, la matrice \(A\) non sta affatto "storcendo" o ruotando le figure! Sta semplicemente <strong>allungando l'asse X di 5 volte</strong> e <strong>allungando l'asse Y di 2 volte</strong> in modo pulitissimo.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Matematica.</p>
+    </footer>
+
+    <!-- JS -->
+    <script src="../../js/main.js"></script>
+</body>
+</html>

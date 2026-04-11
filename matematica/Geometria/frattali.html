@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frattali - MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        .back-button { display: inline-flex; align-items: center; color: var(--text-muted); text-decoration: none; margin-bottom: 2rem; font-weight: 600; transition: color 0.3s ease, transform 0.3s ease; }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+        .sub-hero { padding: 4rem 0 2rem; text-align: left; }
+        .interactive-container { background: rgba(0,0,0,0.15); padding: 2rem; border-radius: 12px; margin: 2rem 0; display: flex; flex-direction: column; align-items: center; box-shadow: inset 0 0 10px rgba(0,0,0,0.1); }
+        .canvas-wrapper { width: 100%; max-width: 600px; border-radius: 8px; overflow: hidden; background: #0f172a; border: 1px solid rgba(255,255,255,0.1); margin: 0 auto; position: relative; }
+        canvas { display: block; width: 100%; height: auto; }
+        .data-card { background: rgba(0,0,0,0.3); border-radius: 10px; padding: 1rem; border-left: 4px solid var(--text-main); display: flex; flex-direction: column; min-width: 140px; align-items:center; }
+        .data-label { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem; text-align: center; }
+        .data-value { font-size: 1.25rem; font-weight: 800; color: #fff; margin-top:0.3rem;}
+        .lesson-list { padding-left: 1.5rem; margin-bottom: 2rem; }
+        .lesson-list li { margin-bottom: 1rem; font-size: 1.05rem; line-height: 1.6; color: var(--text-main); }
+        .example-box { background: rgba(255,255,255,0.05); border-left: 4px solid #3b82f6; padding: 1.5rem; border-radius: 0 12px 12px 0; margin: 1.5rem 0; line-height: 1.7; }
+    </style>
+</head>
+<body>
+    <header class="sub-hero">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2.5rem;">
+                <a href="geometria.html" class="back-button" style="margin-bottom: 0;">
+                    <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Geometria
+                </a>
+            </div>
+            <h1 class="sub-hero-title" style="color: #10b981;"> ❄️ I Frattali </h1>
+            <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+                L'ossessione visiva dell'infinito: esploriamo l'Autosimilarità, le forme di Mandelbrot e l'incredibile matematica della Natura.
+            </p>
+        </div>
+    </header>
+    
+    <main class="container">
+        
+        <!-- SECTION 1: L'AUTOSIMILARITA -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #10b981;">1. Cos'è un Frattale? Il Segreto dell'Autosimilarità</h2>
+            <p class="lesson-text">
+                Immagina di guardare la costa frastagliata dell'Inghilterra dallo spazio. Ora immagina di planare giù con un elicottero: vedrai golfi, scogli e insenature. Se ora ti inginocchi in spiaggia con una lente d'ingrandimento, osserverai sui sassolini le stesse anse e irregolarità dentellate. 
+            </p>
+            <p class="lesson-text">
+                Questa è l'essenza di un Frattale: la <strong>Autosimilarità</strong>. Un frattale è un oggetto geometrico la cui struttura si ripete esatta (o incredibilmente simile) <em>indipendentemente dalla scala a cui lo si osserva</em>. Se ingrandisci all'infinito un dettaglio minuscolo di un frattale, continuerai a vedere la forma dell'intero frattale stesso! È l'infinito catturato dentro uno spazio fisico finito.
+            </p>
+            
+            <div class="interactive-container" style="box-shadow: 0 0 15px rgba(16,185,129,0.2);">
+                <h4 style="color: white; margin-bottom: 1rem;">Animazione: L'Albero Frattale Pitegorico</h4>
+                <p style="color:rgba(255,255,255,0.7); font-size:0.9rem; margin-bottom:1rem; text-align:center;">Un albero reale usa l'Autosimilarità: il tronco si biforca in rami maggiori, che si biforcano in rametti più piccoli... usa lo slider per aumentare le generazioni (Profondità Ricorsiva) e vedrai il vuoto riempirsi creando un albero perfetto!</p>
+                <div class="canvas-wrapper" style="height: 400px; background: #1e293b;">
+                    <canvas id="treeCanvas" width="600" height="400"></canvas>
+                </div>
+                <div style="display:flex; justify-content:center; margin-top: 1.5rem; width:100%;">
+                    <div class="data-card" style="border-left-color: #10b981;">
+                        <span class="data-label">Iterazioni (Profondità)</span>
+                        <input type="range" id="tree-depth" min="1" max="11" value="1" step="1" oninput="window.updateTree()">
+                        <span id="tree-disp" class="data-value" style="font-size: 1rem;">Livello 1 (Tronco)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: DIMENSIONI FRAZIONARIE -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #f59e0b;">2. Il Paradosso delle Dimensioni Frazionarie</h2>
+            <p class="lesson-text">
+                Nella solita Geometria Euclidea classica siamo abituati alle dimensioni intere:
+            </p>
+            <ul class="lesson-list">
+                <li><strong>Dimensione 1 (1D):</strong> Una linea retta.</li>
+                <li><strong>Dimensione 2 (2D):</strong> Un quadrato piatto o un foglio.</li>
+                <li><strong>Dimensione 3 (3D):</strong> Un cubo o una scatola.</li>
+            </ul>
+            <p class="lesson-text">
+                Ma un frattale distrugge tutta questa sicurezza. Prendi il bordo irregolare di un frattale estremo (come la Curva di Koch): si piega su se stesso talmente tante volte con dentellature infinitamente piccole da accartocciarsi ovunque, pur senza diventare mai un "foglio 2D intero". 
+            </p>
+            <div class="example-box" style="border-left-color: #f59e0b;">
+                <h3 style="color: #f59e0b; margin-bottom: 0.5rem;">Cosa succede?</h3>
+                La sua lunghezza matematica calcolata diventa letteralmente INFINITA, tuttavia è rinchiusa in uno spazio finito piccolo! Matematica avanzata (la dimensione di Hausdorff-Besicovitch) ha svelato che questi mostri non sono né 1D né 2D, hanno <strong>Dimensioni con i decimali (Frazionarie)!</strong><br><br>
+                Ad esempio, il leggendario <em>Triangolo di Sierpinski</em> ha una dimensione inquietante di circa <strong>1.585</strong>, mentre la polvere frattale di Cantor ha dimensione <strong>0.63</strong> (meno di una riga vera e propria, ma più corposa di microscopici punti 0D). Da qui il termine derivante dal latino "Fractus" (fratturato, spezzato).
+            </div>
+
+            <div class="interactive-container" style="box-shadow: 0 0 15px rgba(245,158,11,0.2); margin-top:2rem;">
+                <h4 style="color: white; margin-bottom: 1rem;">Animazione: Il Triangolo di Sierpinski</h4>
+                <p style="color:rgba(255,255,255,0.7); font-size:0.9rem; margin-bottom:1rem; text-align:center;">Costruire il Sierpinski è affascinante: prendi un triangolo e "svuotalo" togliendo un triangolo capovolto dal centro. Ripeti l'operazione all'infinito su quelli restanti! Muovi lo slider iterativo per notare un paradosso estremo: l'Area scappa via tendendo verso lo Zero, mentre i bordi si moltiplicano rendendo il Perimetro infinito!</p>
+                <div class="canvas-wrapper" style="height: 350px; background: #0f172a;">
+                    <canvas id="sierCanvas" width="500" height="350"></canvas>
+                </div>
+                <div style="display:flex; justify-content:center; margin-top: 1.5rem; width:100%;">
+                    <div class="data-card" style="border-left-color: #f59e0b;">
+                        <span class="data-label">Passi di Scavo (Vuoto)</span>
+                        <input type="range" id="sier-depth" min="0" max="8" value="0" step="1" oninput="window.updateSierpinski()">
+                        <span id="sier-disp" class="data-value" style="font-size: 1rem;">Livello 0 (Triangolo Pieno)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: INSIEME DI MANDELBROT -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #a855f7;">3. Il Re dei Frattali: L'Insieme di Mandelbrot</h2>
+            <p class="lesson-text">
+                L'Insieme di Mandelbrot è l'immagine matematica più ipnotica ed iconica del cosmo. Sebbene al computer generi un paesaggio allucinante fatto di fulmini, antenne e minuscoli "insetti" sparsi in isole nerissime che si ripetono in eterno allo zoom, la regola fondante per crearlo è scioccantemente banale ed infantile:
+            </p>
+            <p style="font-size:1.5rem; font-weight:bold; text-align:center; padding:1rem; background:rgba(0,0,0,0.3); border-radius:10px;">
+                \( Z_{n+1} = (Z_n)^2 + c \)
+            </p>
+            <p class="lesson-text">
+                Tutto funziona prendendo dei Numeri Complessi (numeri con una parte immaginaria legata al piano 2D cartesiano). Prendi un punto sulla griglia \((c)\). Trattalo in un processo a catena infinita (<em>ciclo di feedback</em>): lo elevi al quadrato e lo risommi a se stesso all'infinito.
+                Se il numero "esplode" schizzando via verso l'infinito, coloriamo quel pixel di grigio o oro. Se il numero, invece, rimane stabile intrappolato attorno allo zero all'infinito, abbiamo un pixel "Prigioniero"! <strong>Tutti i punti prigionieri stabili vengono ricolorati di Nero Pece.</strong> L'insieme dei pixel Neri è proprio il frattale di Mandelbrot!
+            </p>
+
+            <div class="interactive-container" style="box-shadow: 0 0 15px rgba(168,85,247,0.2);">
+                <h4 style="color: white; margin-bottom: 1rem;">Generatore Mandelbrot in Tempo Reale</h4>
+                <p style="color:rgba(255,255,255,0.7); font-size:0.9rem; margin-bottom:1rem; text-align:center;">Lascia calcolare al tuo computer la prigione numerica in tempo reale sui singoli pixel. Le chiazze scure sono i numeri che sono "sopravvissuti".</p>
+                <div class="canvas-wrapper" style="height: 300px; background:#000;">
+                    <canvas id="mandelCanvas" width="450" height="300"></canvas>
+                </div>
+                <button class="quiz-btn" style="margin-top: 1rem;" onclick="window.drawMandelbrot()">Ricalcola Frattale</button>
+            </div>
+        </section>
+
+        <!-- SECTION 4: NATURA -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #3b82f6;">4. I Codici Frattali in Natura</h2>
+            <p class="lesson-text">
+                Potresti pensare che tutto questo sia solo uno psicotico gioco di computer. Sbagliato, i frattali sono l'algoritmo di compressione preferito Madre Natura. La natura non ha una memoria hard-disk infinita per ricordarsi dove posizionare ogni singola radice o cellula; piuttosto, usa un "algoritmo iterativo" frattale (una piccola regola che si ripete su se stessa in scala sempre più piccola) per generare meraviglie macroscopiche complicate senza sforzo cognitivo.
+            </p>
+            <ul class="lesson-list">
+                <li><strong>I Fiocchi di Neve:</strong> L'architettura perfetta dei cristalli di ghiaccio che cadono dal cielo cresce esattamente sfruttando ripetizioni frattali simmetriche come il leggendario <em>Fiocco di Neve di Koch</em>.</li>
+                <li><strong>Il Broccolo Romanesco:</strong> È forse l'esempio biologico più palese. Ogni singola piccola pigna del cavolfiore romanesco è l'esatta replica in miniatura dell'intera testa del broccolo macroscopica!</li>
+                <li><strong>Fulmini e Polmoni:</strong> Le scariche elettriche nei fulmini si biforcano in modo frattale, e lo stesso sistema (ispirato agli alberi) è impiegato dai bronchi umani per massimizzare la superificie di assorbimento d'aria rimpicciolandola nel limitato petto umano. L'Area enorme racchiusa in spazio Finito, ricordi?</li>
+            </ul>
+        </section>
+
+        <!-- QUIZ -->
+        <section class="lesson-section quiz-container">
+            <h2 class="lesson-title">Quiz: Maestro del Caos</h2>
+            <div id="quiz-area"></div>
+            <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem; font-weight: bold;"></div>
+        </section>
+
+    </main>
+    <footer><p>&copy; 2026 MFI - Matematica MFI.</p></footer>
+
+    <script src="frattali.js"></script>
+    <script src="../../js/main.js"></script>
+</body>
+</html>

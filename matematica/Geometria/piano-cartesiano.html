@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Piano Cartesiano - Geometria MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        .back-button { display: inline-flex; align-items: center; color: var(--text-muted); text-decoration: none; margin-bottom: 2rem; font-weight: 600; transition: color 0.3s ease, transform 0.3s ease; }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+        .sub-hero { padding: 4rem 0 2rem; text-align: left; }
+        .interactive-container { background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 12px; margin: 1.5rem 0; border: 1px solid rgba(255,255,255,0.05); }
+        .canvas-wrapper { display: flex; justify-content: center; overflow: hidden;}
+        canvas { background: #0f172a; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); max-width: 100%; cursor: crosshair; touch-action: none; }
+        .data-display { display: grid; gap: 1rem; margin-top: 1rem; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+        .data-card { background: rgba(255,255,255,0.03); padding: 1rem; border-radius: 8px; border-left: 4px solid #8B5CF6; display: flex; flex-direction: column; }
+        .data-label { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+        .data-value { font-size: 1.2rem; font-weight: bold; color: #fff; margin-top: 0.2rem; }
+        .d-pad { display: grid; grid-template-columns: repeat(3, 40px); grid-template-rows: repeat(3, 40px); gap: 5px; justify-content: center; }
+        .d-pad button { background: rgba(139, 92, 246, 0.15); border: 1px solid rgba(139, 92, 246, 0.3); color: #8B5CF6; border-radius: 8px; cursor: pointer; transition: all 0.2s; font-family: monospace; font-size: 1rem; }
+        .d-pad button:hover { background: rgba(139, 92, 246, 0.3); }
+        .d-pad button:active { background: #8B5CF6; color: white; transform: scale(0.95); }
+        .d-pad .up { grid-column: 2; grid-row: 1; }
+        .d-pad .left { grid-column: 1; grid-row: 2; }
+        .d-pad .right { grid-column: 3; grid-row: 2; }
+        .d-pad .down { grid-column: 2; grid-row: 3; }
+        .d-pad-blue button { background: rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.3); color: #3b82f6; }
+        .d-pad-blue button:active { background: #3b82f6; color: white; }
+        .d-pad-red button { background: rgba(239, 68, 68, 0.15); border-color: rgba(239, 68, 68, 0.3); color: #ef4444; }
+        .d-pad-red button:active { background: #ef4444; color: white; }
+        .example-box { background: rgba(255,255,255,0.03); border-left: 4px solid #10b981; padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0; font-family: monospace; font-size: 0.95rem; line-height: 1.8; }
+        .btn-group { display: flex; gap: 1rem; justify-content: center; margin-bottom: 1rem; flex-wrap: wrap; }
+        .btn-sym { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; transition: 0.3s; }
+        .btn-sym.active { background: #8B5CF6; border-color: #8B5CF6; }
+    </style>
+</head>
+<body>
+    <header class="sub-hero">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2.5rem;">
+                <a href="geometria.html" class="back-button" style="margin-bottom: 0;">
+                    <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Geometria
+                </a>
+            </div>
+            <h1 class="sub-hero-title" style="color: #8B5CF6;">Il Piano Cartesiano</h1>
+            <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+                Ascisse, ordinate e il grande matrimonio tra Algebra e Geometria.
+            </p>
+        </div>
+    </header>
+    <main class="container">
+        
+        <!-- SECTION 1 -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #8B5CF6;">1. Descartes e il Punto (x, y)</h2>
+            <p class="lesson-text">Nel 1637, il filosofo e matematico René Descartes (Cartesio) ebbe l'intuizione che cambiò il mondo: affiancare due rette numerate perpendicolari per trasformare la geometria in equazioni. L'asse orizzontale è l'<strong>asse delle ascisse (Asse X)</strong>, e quello verticale è l'<strong>asse delle ordinate (Asse Y)</strong>.</p>
+            <p class="lesson-text">Ogni punto nel piano è un "indirizzo" esatto composto da due numeri, chiamati <strong>coordinate \((x, y)\)</strong>, a partire dall'Origine \((0,0)\).</p>
+            
+            <div class="interactive-container">
+                <h3 style="color: #8B5CF6; margin-bottom: 0.5rem;">🖱️ Esplora: Le Coordinate</h3>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">Trascina il punto bianco nel piano per tracciarne le coordinate \((x, y)\) oppure usa le frecce.</p>
+                <div style="display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center; align-items: center; width: 100%;">
+                    <div class="canvas-wrapper">
+                        <canvas id="pointCanvas" width="400" height="300"></canvas>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                        <div class="d-pad">
+                            <button class="up" onclick="movePoint(0, 1)">▲</button>
+                            <button class="left" onclick="movePoint(-1, 0)">◀</button>
+                            <button class="right" onclick="movePoint(1, 0)">▶</button>
+                            <button class="down" onclick="movePoint(0, -1)">▼</button>
+                        </div>
+                        <div class="data-card" style="border-left-color: #fff; align-items: center; min-width: 150px;">
+                            <span class="data-label">Punto P</span>
+                            <span id="point-coords" class="data-value">(0, 0)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2 -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #8B5CF6;">2. Punto Medio di un Segmento</h2>
+            <p class="lesson-text">Se tracciamo un segmento tra due punti \(A\) e \(B\), come troviamo il punto \(M\) esattamente a metà strada? Calcolando la <strong>media aritmetica</strong> delle rispettive coordinate x e y degli estremi.</p>
+            <div class="formula-box" style="background: rgba(255,255,255,0.02); padding: 1.5rem; text-align: center; border-radius: 12px; margin: 1.5rem 0;">
+                \[ x_M = \frac{x_A + x_B}{2} \qquad y_M = \frac{y_A + y_B}{2} \]
+            </div>
+            
+            <div class="example-box">
+                <div style="color: #10b981; font-weight: bold; margin-bottom: 0.5rem; text-transform: uppercase;">📝 Esempio Svolto:</div>
+                Trova il punto medio M del segmento che unisce \( A(-4, 2) \) e \( B(2, -6) \).
+                <br><br>
+                1. Calcoliamo la \(x\) di M (media delle ascisse):<br>
+                &nbsp;&nbsp;&nbsp;\( x_M = \frac{-4 + 2}{2} = \frac{-2}{2} = -1 \)<br>
+                2. Calcoliamo la \(y\) di M (media delle ordinate):<br>
+                &nbsp;&nbsp;&nbsp;\( y_M = \frac{2 + (-6)}{2} = \frac{-4}{2} = -2 \)<br>
+                <br>
+                <strong>Risultato:</strong> Il punto medio è \( M(-1, -2) \).
+            </div>
+
+            <div class="interactive-container">
+                <h3 style="color: #10b981; margin-bottom: 0.5rem;">🖱️ Laboratorio: Il Punto Medio</h3>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">Usa i pulsanti (o trascina) per muovere A e B. M (verde) rimarrà esattamente al centro!</p>
+                
+                <div style="display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center; align-items: center; width: 100%;">
+                    <div class="canvas-wrapper">
+                        <canvas id="midCanvas" width="400" height="300"></canvas>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <div style="display: flex; gap: 1rem; align-items: center;">
+                            <div class="d-pad d-pad-blue">
+                                <button class="up" onclick="moveMidA(0, 1)">▲</button>
+                                <button class="left" onclick="moveMidA(-1, 0)">◀</button>
+                                <button class="right" onclick="moveMidA(1, 0)">▶</button>
+                                <button class="down" onclick="moveMidA(0, -1)">▼</button>
+                            </div>
+                            <div class="data-card" style="border-left-color: #3b82f6; min-width: 120px;">
+                                <span class="data-label">Punto A</span><span id="mid-a-coords" class="data-value">(0, 0)</span>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 1rem; align-items: center;">
+                            <div class="d-pad d-pad-red">
+                                <button class="up" onclick="moveMidB(0, 1)">▲</button>
+                                <button class="left" onclick="moveMidB(-1, 0)">◀</button>
+                                <button class="right" onclick="moveMidB(1, 0)">▶</button>
+                                <button class="down" onclick="moveMidB(0, -1)">▼</button>
+                            </div>
+                            <div class="data-card" style="border-left-color: #ef4444; min-width: 120px;">
+                                <span class="data-label">Punto B</span><span id="mid-b-coords" class="data-value">(0, 0)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="data-display" style="grid-template-columns: 1fr; width: 100%; max-width: 300px; margin-top: 1.5rem;">
+                    <div class="data-card" style="border-left-color: #10b981; align-items:center;">
+                        <span class="data-label">Punto Medio M</span><span id="mid-m-coords" class="data-value">(0, 0)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3 -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #8B5CF6;">3. La Distanza tra Due Punti</h2>
+            <p class="lesson-text">Il segmento obliquo \(AB\) forma insieme alle coordinate la diagonale di un rettangolo! Misuriamo la lunghezza sfruttando il <strong>Teorema di Pitagora</strong>. L'ipotenusa è la distanza cercata, e i cateti sono le variazioni sulle ascisse \(\Delta x = (x_B - x_A)\) e \(\Delta y = (y_B - y_A)\).</p>
+            <div class="formula-box" style="background: rgba(255,255,255,0.02); padding: 1.5rem; text-align: center; border-radius: 12px; margin: 1.5rem 0;">
+                \[ d = \sqrt{(x_B - x_A)^2 + (y_B - y_A)^2} \]
+            </div>
+            
+            <div class="example-box" style="border-left-color:#fbbf24;">
+                <div style="color: #fbbf24; font-weight: bold; margin-bottom: 0.5rem; text-transform: uppercase;">📝 Esempio Svolto:</div>
+                Calcola la distanza tra i punti \( C(1, 2) \) e \( D(4, 6) \).
+                <br><br>
+                1. Calcoliamo i "cateti" (le differenze tra le coordinate):<br>
+                &nbsp;&nbsp;&nbsp;\( \Delta x = 4 - 1 = 3 \)<br>
+                &nbsp;&nbsp;&nbsp;\( \Delta y = 6 - 2 = 4 \)<br>
+                2. Applichiamo il Teorema di Pitagora (la somma dei quadrati):<br>
+                &nbsp;&nbsp;&nbsp;\( d = \sqrt{3^2 + 4^2} = \sqrt{9 + 16} = \sqrt{25} \)<br>
+                <br>
+                <strong>Risultato:</strong> La distanza tra i punti è \( d = 5 \).
+            </div>
+
+            <div class="interactive-container">
+                <h3 style="color: #fbbf24; margin-bottom: 0.5rem;">🖱️ Simulazione: Il Teorema di Pitagora in Azione</h3>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">Sposta liberamente \(A\) (blu) e \(B\) (rosso). Esplora i cateti tratteggiati per svelare l'ipotenusa.</p>
+                <div style="display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center; align-items: center; width: 100%;">
+                    <div class="canvas-wrapper">
+                        <canvas id="distCanvas" width="400" height="300"></canvas>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <div style="display: flex; gap: 1rem; align-items: center;">
+                            <div class="d-pad d-pad-blue">
+                                <button class="up" onclick="moveDistA(0, 1)">▲</button>
+                                <button class="left" onclick="moveDistA(-1, 0)">◀</button>
+                                <button class="right" onclick="moveDistA(1, 0)">▶</button>
+                                <button class="down" onclick="moveDistA(0, -1)">▼</button>
+                            </div>
+                            <div class="data-card" style="border-left-color: #3b82f6; min-width: 120px;">
+                                <span class="data-label">Cateto X (Δx)</span><span id="dist-dx" class="data-value">0</span>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 1rem; align-items: center;">
+                            <div class="d-pad d-pad-red">
+                                <button class="up" onclick="moveDistB(0, 1)">▲</button>
+                                <button class="left" onclick="moveDistB(-1, 0)">◀</button>
+                                <button class="right" onclick="moveDistB(1, 0)">▶</button>
+                                <button class="down" onclick="moveDistB(0, -1)">▼</button>
+                            </div>
+                            <div class="data-card" style="border-left-color: #ef4444; min-width: 120px;">
+                                <span class="data-label">Cateto Y (Δy)</span><span id="dist-dy" class="data-value">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="data-display" style="grid-template-columns: 1fr; width: 100%; max-width: 300px; margin-top: 1.5rem;">
+                    <div class="data-card" style="border-left-color: #fbbf24; align-items:center;"><span class="data-label">Ipotenusa (Distanza)</span><span id="dist-val" class="data-value">0</span></div>
+                </div>
+            </div>
+
+            <div style="background: rgba(168, 85, 247, 0.05); padding: 1.5rem; border-radius: 12px; border-left: 4px solid #a855f7; margin-top: 2rem;">
+                <h3 style="color: #a855f7; margin-bottom: 0.5rem;">🌐 Dalla tavola piatta allo Spazio 3D</h3>
+                <p style="font-size: 0.95rem;">
+                    Il nostro piano (fatto di x, y) serve alla carta e agli schermi limitati. Il mondo reale in cui tu ti muovi ed esplori, ha anche la <em>Profondità</em>! Aggiungendo un formidabile terzo asse ortogonale (l'<strong>asse Z</strong>), entriamo nello Spazio cartesiano. Ogni punto ingloba un numero per la profondità \((x, y, z)\). Questa è la matematica di base essenziale alla grafica dei videogame tridimensionali!<br>
+                    Grazie alla modularità pitagorica e alle tre dimensioni, la formula della Distanza fra due entità si estende fluidamente a tre cateti:
+                    \[ d_{3D} = \sqrt{\Delta x^2 + \Delta y^2 + \Delta z^2} \]
+                </p>
+            </div>
+        </section>
+
+        <!-- SECTION 4 -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #8B5CF6;">4. Trasformazioni sul Piano</h2>
+            <p class="lesson-text">Le figure nel piano non possono muoversi da sole: per farle spostare o girare modifichiamo algebricamente le loro posizioni. È il trucco che anima ogni elemento sullo schermo nei videogiochi: applichiamo delle <em>Trasformazioni Geometriche</em> ricalcolando le \((x,y)\)!</p>
+            
+            <h3 style="color: #3b82f6; margin-bottom: 0.5rem; margin-top:2rem;">➡️ 4.1. Traslazione</h3>
+            <p class="lesson-text" style="font-size: 0.95rem;">È uno scivolamento rigido verso su/giù o destra/sinistra. Vuoi muovere il tuo "avatar" sulla mappa? Sommi un valore alle \(x\) e un valore costante alle \(y\). <br><strong>Formula:</strong> \((x', y') = (x + v_x, y + v_y)\)</p>
+            
+            <div class="interactive-container">
+                <h4 style="color: white; margin-bottom: 1rem;">Animazione: Traslazione di un Triangolo</h4>
+                <div class="canvas-wrapper">
+                    <canvas id="transCanvas" width="500" height="300"></canvas>
+                </div>
+                <div style="display: flex; gap: 2rem; margin-top: 1.5rem; flex-wrap: wrap; justify-content: center; width: 100%;">
+                    <div class="data-card" style="border-left-color: #3b82f6; text-align: center; flex: 1; min-width:200px;">
+                        <span class="data-label">Vettore Orizzontale (vx)</span>
+                        <input type="range" id="vx-range" min="-10" max="10" value="0" step="1" oninput="window.updateTrans()">
+                        <span id="vx-val" class="data-value">0</span>
+                    </div>
+                    <div class="data-card" style="border-left-color: #ef4444; text-align: center; flex: 1; min-width:200px;">
+                        <span class="data-label">Vettore Verticale (vy)</span>
+                        <input type="range" id="vy-range" min="-10" max="10" value="0" step="1" oninput="window.updateTrans()">
+                        <span id="vy-val" class="data-value">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="color: #fbbf24; margin-bottom: 0.5rem; margin-top:3rem;">🔄 4.2. Rotazione: La magia di Seno e Coseno</h3>
+            <p class="lesson-text" style="font-size: 0.95rem;">Ruotando una figura, facciamo girare i suoi punti attorno all'Origine come se fossero fissati alla lancetta di un orologio gigante. Per ricalcolare con precisione i punti inclinati servono le funzioni circolari: il <strong>Seno (\(\sin\))</strong> e il <strong>Coseno (\(\cos\))</strong>.</p>
+            
+            <div class="example-box" style="border-left-color: #a855f7;">
+                <strong style="color: #a855f7; display: block; margin-bottom: 0.5rem; text-transform: uppercase;">Cosa sono intuitivamente Seno e Coseno?</strong>
+                Immagina che la lancetta dell'orologio sia il braccio robotico lungo 1 metro di una grande giostra.<br><br>
+                Se accendi una forte luce dall'alto, il <strong>Coseno</strong> rappresenta esattamente la lunghezza dell'ombra del braccio robotico proiettata a terra (l'asse Orizzontale X). La massima ombra si ha a braccio sdraiato (0 gradi), e si annulla a braccio in su.<br>
+                Se accendi una luce laterale, il <strong>Seno</strong> rappresenta l'ombra stampata in altezza sul muro (sull'asse Verticale Y). Più ruoti in alto il braccio, più il Seno si allunga!<br><br>
+                <strong>Ruotare il telaio di tutta una figura</strong> di un angolo \(\theta\) significa ricalcolare e miscelare le nuove \(x, y\) dei punti appoggiandosi alle percentuali di ombra (Seni e Coseni) associate a quell'inclinazione:
+                <br>&nbsp;&nbsp;\(x' = x \cdot \cos(\theta) - y \cdot \sin(\theta)\)
+                <br>&nbsp;&nbsp;\(y' = x \cdot \sin(\theta) + y \cdot \cos(\theta)\)
+            </div>
+
+            <div class="interactive-container">
+                <h4 style="color: white; margin-bottom: 1rem;">Animazione: Rotazione attorno all'Origine</h4>
+                <div class="canvas-wrapper">
+                    <canvas id="rotCanvas" width="500" height="300"></canvas>
+                </div>
+                <div class="data-card" style="border-left-color: #fbbf24; text-align: center; margin-top: 1.5rem; width: 100%; max-width:400px;">
+                    <span class="data-label">Angolo di Rotazione (&#952;)</span>
+                    <input type="range" id="rot-range" min="0" max="360" value="0" step="1" oninput="window.updateRot()">
+                    <div style="display:flex; align-items:center; justify-content:center; gap:0.5rem; margin-top:0.5rem;">
+                        <input type="number" id="rot-num" min="0" max="360" value="0" style="width: 70px; text-align: center; background: rgba(0,0,0,0.2); color: #fff; border: 1px solid rgba(255,255,255,0.1); border-radius: 4px; font-size: 1.1rem; font-weight: bold; padding: 0.2rem;" oninput="window.updateRotNum()"> 
+                        <span style="font-size: 1.2rem; color: #fff; font-weight:bold;">°</span>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="color: #ef4444; margin-bottom: 0.5rem; margin-top:3rem;">🪞 4.3. Simmetria (Riflessione)</h3>
+            <p class="lesson-text" style="font-size: 0.95rem;">È l'effetto di uno specchio. Matematicamente basta cambiare il segno numerico. Una riflessione lungo l'Asse Y specchia "destra-sinistra" invertendo le ascisse \( (x \rightarrow -x) \).</p>
+            
+            <div class="interactive-container">
+                <h4 style="color: white; margin-bottom: 1rem;">Esplora: Le Simmetrie nel Piano</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem; text-align:center;">Seleziona un bottone per vedere come la figura originaria (A) si specchia ottenendo l'immagine (A').</p>
+                
+                <div class="btn-group">
+                    <button class="btn-sym active" onclick="setSymmetry('Y', this)">Riflessione Asse Y (x → -x)</button>
+                    <button class="btn-sym" onclick="setSymmetry('X', this)">Riflessione Asse X (y → -y)</button>
+                    <button class="btn-sym" onclick="setSymmetry('O', this)">Riflessione all'Origine (x,y → -x,-y)</button>
+                </div>
+
+                <div class="canvas-wrapper" style="margin-top: 1rem;">
+                    <canvas id="symCanvas" width="500" height="300"></canvas>
+                </div>
+            </div>
+
+            <h3 style="color: #10b981; margin-bottom: 0.5rem; margin-top:3rem;">✨ 4.4. Cosa significa "Essere Simmetrico"?</h3>
+            <p class="lesson-text" style="font-size: 0.95rem;">Nel linguaggio comune, "simmetrico" ci fa pensare allo specchio. In matematica, il concetto è molto più potente! Si dice che un oggetto possiede una simmetria se, <strong>dopo avergli applicato una Trasformazione Geometrica</strong> (come una rotazione, traslazione o riflessione), <strong>il suo aspetto finale è visivamente identico e perfettamente sovrapponibile a com'era prima di muoverlo.</strong></p>
+            <p class="lesson-text" style="font-size: 0.95rem;">Pensa ad un cerchio: in qualsiasi modo tu lo ruoti attorno al suo centro, sembrerà sempre fermo. Ha infinite simmetrie rotazionali! E i poligoni? Ruota un quadrato di esattamente 90° e non noterai che si è mosso. Gira un triangolo equilatero di 120° (cioè 360 diviso 3) e combacerà perfettamente. Se provi a girare un triangolo di 60°, invece, lo vedrai sottosopra!</p>
+
+            <div class="interactive-container">
+                <h4 style="color: white; margin-bottom: 1rem;">Laboratorio: La Simmetria Nascosta</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem; text-align:center;">Scegli una figura e gira la rotella. Quando i contorni dell'ombra grigia combaciano perfettamente con la figura riempita, hai trovato una rotazione simmetrica!</p>
+                
+                <div class="btn-group">
+                    <button class="btn-sym active" onclick="setPolyObj('square', this)">Quadrato (Simmetrie a 90°)</button>
+                    <button class="btn-sym" onclick="setPolyObj('triangle', this)">Triangolo Equilatero (Simmetrie a 120°)</button>
+                </div>
+
+                <div class="canvas-wrapper" style="margin-top: 1rem;">
+                    <canvas id="shapeSymCanvas" width="400" height="300"></canvas>
+                </div>
+
+                <div class="data-card" style="border-left-color: #10b981; text-align: center; margin-top: 1.5rem; width: 100%; max-width:400px;">
+                    <span class="data-label">Test di Rotazione Continua (&#952;)</span>
+                    <input type="range" id="poly-rot-range" min="0" max="360" value="0" step="1" oninput="window.updatePolyRot()">
+                    <div style="display:flex; align-items:center; justify-content:center; gap:0.5rem; margin-top:0.5rem;">
+                        <input type="number" id="poly-rot-num" min="0" max="360" value="0" style="width: 70px; text-align: center; background: rgba(0,0,0,0.2); color: #fff; border: 1px solid rgba(255,255,255,0.1); border-radius: 4px; font-size: 1.1rem; font-weight: bold; padding: 0.2rem;" oninput="window.updatePolyRotNum()"> 
+                        <span style="font-size: 1.2rem; color: #fff; font-weight:bold;">°</span>
+                    </div>
+                    <div id="sym-status" style="margin-top: 0.5rem; font-weight:bold; color:#10b981; opacity:0; transition:0.3s;">È SIMMETRICO! ✨</div>
+                </div>
+            </div>
+            
+        </section>
+        <section class="lesson-section quiz-container">
+            <h2 class="lesson-title">Quiz di Verifica</h2>
+            <div id="quiz-area"></div>
+            <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem; font-weight: bold;"></div>
+        </section>
+    </main>
+    <footer><p>&copy; 2026 MFI - Matematica MFI.</p></footer>
+    <script src="piano-cartesiano.js"></script>
+    <script src="../../js/main.js"></script>
+</body>
+</html>

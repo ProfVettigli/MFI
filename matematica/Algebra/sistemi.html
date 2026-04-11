@@ -338,6 +338,28 @@
                     </div>
                 </details>
             </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3 style="color: var(--physics-color);">Indovinello del Gestral (Expedition 33)</h3>
+                <p style="font-size: 1.1rem; margin: 1rem 0;"><em>Nel videogioco <strong>Clair Obscur: Expedition 33</strong>, un evento letale chiamato "Gommage" fa svanire nel nulla coloro la cui età è maggiore o uguale a un certo numero dipinto dalla Paintress (numero che cala di 1 ogni anno). Se l'anno in corso il monolite segna 33, un Gestral sfida il tuo passaggio chiedendo: "Se io fossi un cucciolo umano di 2 anni, a che età subirei il mio Gommage?"</em></p>
+                
+                <details style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 8px; cursor: pointer;">
+                    <summary style="font-weight: bold; color: var(--text-main);">Mostra la Soluzione (Il Sistema)</summary>
+                    <div style="margin-top: 1rem;">
+                        <p>Possiamo impostare un sistema per gli anni trascorsi, ovvero la variabile (il tempo) \(t\), analizzando le due grandezze in gioco: l'età (\(A\)) e il numero sul monolite (\(N\)).</p>
+                        <div class="sys-box">
+                            <span class="sys-bracket">{</span>
+                            <div class="sys-eqs">
+                                <div>\(A = 2 + t\)</div>
+                                <div>\(N = 33 - t\)</div>
+                            </div>
+                        </div>
+                        <p>Il Gommage colpisce quando l'età raggiunge il varco fatale per cui \(A \ge N\). Utilizzando il metodo del confronto (uguagliando i membri delle espressioni per trovare quando le due quantità si "incrociano") si ottiene:</p>
+                        <p style="text-align: center; font-size: 1.2rem; font-weight: bold; margin: 1rem 0;">\(2 + t = 33 - t \Rightarrow 2t = 31 \Rightarrow t = 15,5\)</p>
+                        <p>Tra 15 anni l'età sarà 17 ed il numero sarà sceso a 18 (Si sopravvive perché \(17 < 18\)). L'anno successivo (\(t=16\)), si compiranno \(A = 18\) anni, ma il numero della divinità sarà a quel punto sceso a \(N = 17\). La condizione per il gommage (\(18 \ge 17\)) è così soddisfatta e si sparisce proprio al compimento della maggiore età!<br>Nota di fine gioco: se rispondi 17, il gioco te la fa passare per buona senza opporsi... prima di confessarti apertamente di non esser capace di contare!</p>
+                    </div>
+                </details>
+            </div>
         </section>
 
         <!-- 7. DISEQUAZIONI -->

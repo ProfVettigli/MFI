@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serie e Successioni - Matematica MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- MathJax -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+        
+        .sub-hero {
+            padding: 4rem 0 2rem;
+            text-align: left;
+        }
+        
+        .sub-hero-title {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .fib-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.2);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .fib-canvas {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            max-width: 100%;
+        }
+
+        .controls {
+            margin-top: 1.5rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .control-btn {
+            background: var(--math-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+        .control-btn:hover { background: #EAB308; }
+
+    </style>
+</head>
+<body>
+    <header class="sub-hero">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2.5rem;">
+                <a href="aritmetica.html" class="back-button" style="margin-bottom: 0;">
+                    <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Aritmetica
+                </a>
+            </div>
+            <h1 class="sub-hero-title">Serie e <span class="gradient-text" style="background: linear-gradient(135deg, #F59E0B, #EAB308); -webkit-background-clip: text; background-clip: text; color: transparent;">Successioni</span></h1>
+            <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+                Cosa succede quando sommiamo infiniti numeri? Possiamo ottenere un risultato finito? Scopriamo l'ordine matematico dentro l'infinito, le spirali della natura e la magia delle frequenze musicali.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <!-- ==================== SEZIONE 1: SUCCESSIONI VS SERIE ==================== -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #F59E0B;">1. Successione vs Serie</h2>
+            <p class="lesson-text">
+                Spesso nel linguaggio comune confondiamo questi due termini, ma in matematica indicano due concetti precisi e molto diversi:
+            </p>
+            
+            <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 2rem; margin: 2rem 0;">
+                <div style="background: rgba(59, 130, 246, 0.05); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(59, 130, 246, 0.2);">
+                    <h3 style="color: #3B82F6; margin-bottom: 0.8rem; font-size: 1.3rem;">La Successione</h3>
+                    <p style="font-size: 0.95rem; line-height: 1.7;">
+                        È semplicemente una <strong>lista ordinata (spesso infinita) di numeri</strong>, chiamati <em>termini</em>, che seguono una certa regola. Si indicano separati da virgola.
+                    </p>
+                    <div style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 8px; text-align: center; margin-top: 1rem; font-family: monospace; font-size: 1.1rem;">
+                        1, 2, 3, 4, 5, 6, ...
+                    </div>
+                </div>
+
+                <div style="background: rgba(245, 158, 11, 0.05); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(245, 158, 11, 0.2);">
+                    <h3 style="color: #F59E0B; margin-bottom: 0.8rem; font-size: 1.3rem;">La Serie</h3>
+                    <p style="font-size: 0.95rem; line-height: 1.7;">
+                        È l'operazione in cui prendiamo tutti i termini di una successione infinita e proviamo a <strong>sommarli tutti tra di loro</strong> sostituendo le virgole con dei più.
+                    </p>
+                    <div style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 8px; text-align: center; margin-top: 1rem; font-family: monospace; font-size: 1.1rem; color: #FCD34D;">
+                        1 + 2 + 3 + 4 + 5 + 6 + ...
+                    </div>
+                </div>
+            </div>
+            <p class="lesson-text" style="font-style: italic; color: var(--text-muted); text-align: center;">
+                L'operazione della "Serie" (somma infinita) si indica matematicamente con la bellissima lettera greca Sigma: <strong style="font-size: 1.5rem;">∑</strong>
+            </p>
+        </section>
+
+        <!-- ==================== SEZIONE 2: FIBONACCI ==================== -->
+        <section class="lesson-section" style="border-left: 4px solid var(--math-color);">
+            <h2 class="lesson-title">2. L'Esempio perfetto: La Successione di Fibonacci</h2>
+            <p class="lesson-text">
+                Una delle successioni più famose al mondo fu scoperta dal pisano Leonardo Fibonacci nel 1202 per studiare un indovinello matematico sulla riproduzione dei conigli. La regola è di una bellezza disarmante: <strong>"Ogni numero della successione è la somma dei due numeri precedenti"</strong>.
+            </p>
+            <div style="background: linear-gradient(90deg, rgba(245, 158, 11, 0.1), transparent); padding: 1.5rem; border-radius: 12px; border-left: 4px solid #F59E0B; font-size: 1.4rem; letter-spacing: 2px; text-align: center; margin: 2rem 0; font-family: 'Fira Code', monospace; font-weight: bold;">
+                1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89...
+            </div>
+            
+            <h3 style="color: var(--math-color); font-size: 1.4rem; margin-top: 2.5rem; margin-bottom: 1rem;">La Sezione Aurea e le Costruzioni Geometriche</h3>
+            <p class="lesson-text">
+                Se provate a dividere un numero di Fibonacci per quello che lo precede (ad es. 55 ÷ 34, o 89 ÷ 55) otterrete un numero che si avvicina sempre di più a <strong>1,61803...</strong>. Questo numero magico è chiamato <strong>Sezione Aurea (Phi, $\Phi$)</strong>. È il numero che il cervello umano percepisce istintivamente come "Bello" e "Armonioso".
+            </p>
+            <p class="lesson-text">
+                La natura adora questa successione. Dal numero di petali di una margherita (spesso 34 o 55) alla disposizione dei semi del girasole, fino ai rami degli alberi. In architettura, il Partenone e le piramidi Egizie si basano su proporzioni auree!
+            </p>
+            <div style="background: rgba(245, 158, 11, 0.05); padding: 1.2rem; border-radius: 12px; margin: 1.5rem 0; font-size: 0.95rem; border: 1px solid rgba(245, 158, 11, 0.2);">
+                <strong style="color: #F59E0B;">Curiosità geometrica: Il Pentagono Segreto</strong><br>
+                La sezione aurea nasconde un altro segreto affascinante sganciato dai numeri di Fibonacci. Provate a disegnare un <strong>Pentagono Regolare</strong> e al suo interno tracciate tutte le diagonali fino a formare una stella (il celebre <em>pentagramma pitagorico</em>). Se calcolate il rapporto matematico tra la linea di una diagonale ed il lato del pentagono, otterrete sempre, senza margini di errore, esattamente la <strong>Sezione Aurea ($1,618...$)</strong>!
+            </div>
+            <p class="lesson-text">
+                Se disegniamo dei quadrati affiancati aventi come lato i numeri di Fibonacci, possiamo tracciare al loro interno la famosissima <strong>Spirale Aurea</strong> o <em>Spirale Logaritmica</em>, l'esatta forma della conchiglia del Nautilus e delle galassie a spirale!
+            </p>
+
+            <div class="fib-container">
+                <h4 style="margin-bottom: 1rem; color: #F59E0B;">Disegna la Spirale di Fibonacci</h4>
+                <canvas id="fibCanvas" width="600" height="400" class="fib-canvas"></canvas>
+                <div class="controls">
+                    <button class="control-btn" id="btnStep">Aggiungi uno Step</button>
+                    <button class="control-btn" id="btnReset" style="background:#475569;">Reset</button>
+                    <span id="fibStatus" style="font-weight:bold; width:200px;">Valore attuale: 1</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SEZIONE 3: CONVERGENZA ==================== -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #10B981;">3. La Convergenza: Limitare l'infinito</h2>
+            <p class="lesson-text">
+                Ora, passiamo alle <strong>SERIE</strong> (la somma infinita dei termini). Immaginiamo di voler sommare infiniti numeri. Il buonsenso esplode: se io continuo ad aggiungere qualcosa, all'infinito, il totale non dovrebbe diventare Infinito per forza?
+            </p>
+            <p class="lesson-text" style="font-weight: 600;">
+                No! Se i numeri che aggiungo diventano "piccoli" sempre più in fretta, la somma si ferma magicamente su un numero esatto. In questo caso diciamo che <strong>la serie CONVERGE</strong>.
+            </p>
+
+            <div class="grid" style="grid-template-columns: 1fr; gap: 1rem; margin-top: 1.5rem;">
+                <div style="background: rgba(16, 185, 129, 0.05); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(16, 185, 129, 0.2);">
+                    <h4 style="color: #10B981; margin-bottom: 0.8rem; font-size: 1.2rem;">L'Esempio classico: La Serie Geometrica in formato Torta</h4>
+                    <p style="font-size: 0.95rem; line-height: 1.7;">
+                        Immagina di avere una torta di compleanno. <br>
+                        Il primo giorno ne mangi <strong>metà</strong> (1/2). <br>
+                        Il secondo giorno mangi <strong>metà della metà rimasta</strong> (1/4). <br>
+                        Il terzo giorno, <strong>metà del rimasuglio</strong> (1/8). E così via... <br><br>
+                        Tu potrai fare questa operazione per <em>infiniti</em> giorni. Aggiungerai sempre un nuovo pezzettino al totale mangiato. Ma è evidente fisicamente: non mangerai <em>mai</em> più di 1 singola torta!
+                    </p>
+                    <div style="text-align: center; font-size: 1.5rem; margin-top: 1.5rem; color: #6EE7B7;">
+                        \[ \frac{1}{2} + \frac{1}{4} + \frac{1}{8} + \frac{1}{16} + ... = 1 \]
+                    </div>
+                </div>
+            </div>
+            
+            <p class="lesson-text" style="margin-top: 1.5rem;">
+                D'altro canto, la serie diverge (ovvero esplode ad Infinito) se i termini non tendono a zero o ci tendono troppo lentamente, come la Serie Armonica: \(1 + \frac{1}{2} + \frac{1}{3} + \frac{1}{4}... = \infty\)
+            </p>
+        </section>
+
+        <!-- ==================== SEZIONE 4: CURIOSITA' TIKTOK ==================== -->
+        <section class="lesson-section" style="border-left: 4px solid #EF4444; background: rgba(239, 68, 68, 0.03);">
+            <h2 class="lesson-title" style="color: #EF4444;">🧠 Paradosso: La somma di tutti i numeri fa -1/12?</h2>
+            <p class="lesson-text">
+                Se scorrete su TikTok o YouTube, troverete un teorema bizzarro reso famoso dal genio indiano Srinivasa Ramanujan e dalla teoria delle stringhe in fisica quantistica. Afferma un concetto sconvolgente:
+            </p>
+            <div style="text-align: center; font-size: 1.8rem; margin: 1.5rem 0; font-weight: 800; color: #FCA5A5;">
+                \[ 1 + 2 + 3 + 4 + 5 + ... = -\frac{1}{12} \]
+            </div>
+            
+            <p class="lesson-text">Come è possibile che sommando numeri enormi positivi si ottenga un numero negativo piccolo a frazione?</p>
+            <div style="background: rgba(0,0,0,0.3); padding: 1.5rem; border-radius: 12px;">
+                <p style="margin-bottom: 0.8rem; font-weight: 600;">La "Falsa" dimostrazione intuitiva (passaggi celebri):</p>
+                <div style="font-family: monospace; font-size: 1.1rem; line-height: 1.8; color: #94A3B8;">
+                    Diamo per finto che:<br>
+                    <strong>A</strong> = 1 - 1 + 1 - 1 + 1 ... = 1/2 (Serie di Grandi)<br>
+                    <strong>B</strong> = 1 - 2 + 3 - 4 + 5 ... = 1/4<br>
+                    <strong>S</strong> = 1 + 2 + 3 + 4 + 5 ... (La nostra somma infinita)<br><br>
+                    
+                    Se facciamo la sottrazione <strong>B - S</strong> :<br>
+                    B - S = (1 - 2 + 3 - 4) - (1 + 2 + 3 + 4...)<br>
+                    B - S = (1-1) + (-2-2) + (3-3) + (-4-4)...<br>
+                    B - S = 0 - 4 + 0 - 8 + 0 - 12...<br>
+                    B - S = -4(1 + 2 + 3...)<br>
+                    Essendo la parentesi tonda proprio = S<br>
+                    <strong>B - S = -4S</strong>    =>    B = -3S    =>    1/4 = -3S    =>    <strong>S = -1/12</strong>
+                </div>
+            </div>
+            <p class="lesson-text" style="margin-top: 1rem; color: #FCA5A5;">
+                <strong>Spoiler Matematico:</strong> In analisi standard questa serie diverge ad infinito (\(+\infty\)). Il valore di Ramanujan (-1/12) proviene dal prolungamento analitico della funzone Zeta di Riemann. Cioè usiamo regole valide per le "vere" somme convergenti applicate prepotentemente dove non si dovrebbe! Tuttavia, questo risultato fittizio è fondamentale e perfetto per il calcolo dell'<em>effetto Casimir</em> nella fisica delle particelle! Da impazzire!
+            </p>
+        </section>
+
+        <!-- ==================== SEZIONE 5: TRASFORMATE E MUSICA ==================== -->
+        <section class="lesson-section" style="border-left: 4px solid #A855F7;">
+            <h2 class="lesson-title" style="color: #A855F7;">4. L'utilità Reale: Disegnare con le Serie</h2>
+            <p class="lesson-text">
+                Perché sforzarci di cercare serie convergenti? Perché grazie al Teorema di Taylor e alle espansioni in serie, i computer possono calcolare le radici quadrate o i seni/coseni. Il computer non sa fare il coseno, sa solo moltiplicare e sommare! Quindi <strong>trasforma</strong> la funzione in una <strong>scia infinita polinomiale da sommare</strong>.
+            </p>
+
+            <h3 style="color: #C084FC; font-size: 1.3rem; margin-top: 2rem;">Le Serie di Fourier e la Musica (MP3 / JPEG)</h3>
+            <p class="lesson-text">
+                Il matematico Jean-Baptiste Joseph Fourier ha spinto le serie oltre l'inimmaginabile: ha dimostrato che <strong>qualsiasi segnale / onda / scarabocchio al mondo può essere replicato sommando insieme infinite onde perfette (seni e coseni) di diverse altezze (frequenze)!</strong>
+            </p>
+
+            <div style="display: flex; gap: 1.5rem; flex-wrap: wrap; margin-top: 1.5rem;">
+                <div style="flex: 1; min-width: 280px; background: rgba(168, 85, 247, 0.05); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(168, 85, 247, 0.2);">
+                    <h4 style="color: #A855F7; margin-bottom: 0.5rem;">🎵 Come funziona Shazam / MP3?</h4>
+                    <p style="font-size: 0.95rem; line-height: 1.6;">Quando parli al microfono, si genera un'onda caotica. Il chip del telefono (tramite la Trasformata di Fourier) scompone quell'onda in una grande "Somma Numerica" di frequenze pure (la nota Do a volume 3 + la nota Mi a volume 1, ecc.). Buttando via le frequenze che l'orecchio umano non sente, il file si comprime (nascita dell'MP3!).</p>
+                </div>
+                <div style="flex: 1; min-width: 280px; background: rgba(168, 85, 247, 0.05); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(168, 85, 247, 0.2);">
+                    <h4 style="color: #A855F7; margin-bottom: 0.5rem;">🖼️ Immagini JPEG</h4>
+                    <p style="font-size: 0.95rem; line-height: 1.6;">Esatto, anche per tagliare il peso spaventoso delle fotografie digitali si usa una variante delle serie di Fourier. La foto viene ridotta ad un blocco di colori primari visti come frequenze visuali (spaziali), convertiti da una serie (Discrete Cosine Transform)! Le serie mandano avanti il mondo del Web.</p>
+                </div>
+            </div>
+            
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Matematica.</p>
+    </footer>
+
+    <!-- JS -->
+    <script src="serie.js"></script>
+    <script src="../../js/main.js"></script>
+</body>
+</html>

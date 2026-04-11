@@ -244,6 +244,11 @@
                 <li>Si <strong>sommano</strong> gli esponenti delle variabili uguali (proprietà delle potenze!)</li>
             </ul>
 
+            <div class="shortcut-box" style="border-left-color: #F59E0B; background: rgba(245, 158, 11, 0.05); margin-top: 2rem;">
+                <h4 style="color: #F59E0B;">La Proprietà Distributiva</h4>
+                <p>La moltiplicazione tra polinomi non è altro che l'applicazione ripetuta della <strong>proprietà distributiva</strong>. Significa che ogni "pezzo" della prima parentesi deve andare a trovare ed essere moltiplicato per ogni "pezzo" della seconda parentesi.</p>
+            </div>
+
             <div class="op-demo">
                 <strong style="color: #60A5FA;">Esempio:</strong> <br><br>
                 \((2x + 3)(x - 4)\) <br><br>
@@ -305,6 +310,49 @@
             <button id="btn-check-mult" class="btn-gen" style="background: var(--math-color);">Verifica Prodotto</button>
             <div id="mult-feedback" class="feedback-msg" style="margin-top: 1rem; font-size: 1.1rem;"></div>
         </section>
+
+        <!-- RACCOGLIMENTO A FATTOR COMUNE -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">7. Raccoglimento a Fattor Comune</h2>
+            <p class="lesson-text">
+                Il <strong>raccoglimento a fattor comune</strong> (o messa in evidenza) è l'operazione <strong>inversa della moltiplicazione</strong>. Se moltiplicare significa "distribuire", raccogliere significa "estrarre" ciò che i termini hanno in comune.
+            </p>
+            <div class="card" style="padding: 1.5rem; margin-bottom: 2rem; border-left: 4px solid #10B981;">
+                <p><strong>Moltiplicazione:</strong> \(2x(x + 3) = 2x^2 + 6x\)</p>
+                <p style="margin-top: 0.5rem; color: #10B981;"><strong>Raccoglimento:</strong> \(2x^2 + 6x = 2x(x + 3)\)</p>
+            </div>
+
+            <p class="lesson-text"><strong>Esercizio Interattivo:</strong> Trova il Massimo Comune Divisore (MCD) tra i termini del polinomio \(12x^3 + 8x^2\).</p>
+            
+            <div class="calc-row">
+                <div style="font-size: 1.2rem; font-family:serif; margin-right: 1rem;">\(12x^3 + 8x^2 = \dots\)</div>
+                <input type="text" id="common-factor-input" placeholder="Qual è il fattore comune?" style="max-width: 200px;">
+                <span id="factoring-step-1" style="font-size: 1.2rem; display: none;"> \((3x + 2)\)</span>
+            </div>
+            <button id="btn-check-common" class="btn-gen" style="background: var(--physics-color);">Verifica Fattore</button>
+            <div id="common-feedback" class="feedback-msg"></div>
+        </section>
+
+        <!-- RACCOGLIMENTO PARZIALE -->
+        <section class="lesson-section" style="border-top: 2px solid rgba(255,255,255,0.05);">
+            <h2 class="lesson-title">8. Raccoglimento Parziale</h2>
+            <p class="lesson-text">
+                A volte non tutti i termini hanno qualcosa in comune. In questo caso possiamo raggrupparli a coppie (o gruppi) per far emergere un fattore comune "nascosto".
+            </p>
+            <div class="op-demo" style="font-size: 1rem;">
+                <p>Esempio: \(ax + ay + bx + by\)</p>
+                <p>1. Raccolgo \(a\) dai primi due e \(b\) dagli ultimi due: \(a(x+y) + b(x+y)\)</p>
+                <p>2. Ora noto che \((x+y)\) è in comune: <strong>\((a+b)(x+y)\)</strong></p>
+            </div>
+
+            <p class="lesson-text"><strong>Sfida di Logica:</strong> Prova a scomporre \(2x + 2y + ax + ay\). Qual è il binomio che apparirà in entrambe le parentesi?</p>
+            <div class="calc-row">
+                <input type="text" id="partial-answer" placeholder="Es. (x+y)" style="max-width: 250px;">
+                <button id="btn-check-partial" class="btn-gen" style="background: var(--physics-color);">Verifica</button>
+            </div>
+            <div id="partial-feedback" class="feedback-msg"></div>
+        </section>
+
 
         <!-- QUIZ -->
         <section class="lesson-section quiz-container">

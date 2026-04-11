@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strutture Algebriche - Algebra MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- MathJax -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+            width: fit-content;
+        }
+        
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+
+        .algebra-gradient {
+            background: linear-gradient(135deg, #3B82F6, #60A5FA);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .history-card {
+            background: rgba(59, 130, 246, 0.05);
+            border-left: 4px solid #3B82F6;
+            padding: 2rem;
+            border-radius: 0 16px 16px 0;
+            margin: 2rem 0;
+        }
+
+        /* --- Detailed Sections --- */
+        .structure-detail {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin: 3rem 0;
+            border-top: 4px solid #3B82F6;
+        }
+
+        .closure-box {
+            background: rgba(16, 185, 129, 0.05);
+            border-left: 4px solid #10B981;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .example-math {
+            font-family: 'Fira Code', monospace;
+            background: rgba(0,0,0,0.3);
+            padding: 1rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+            color: #FBBF24;
+            display: block;
+        }
+
+        .property-tag {
+            display: inline-block;
+            background: rgba(59, 130, 246, 0.1);
+            color: #60A5FA;
+            padding: 0.2rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .math-sym { color: #3B82F6; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <header class="sub-hero">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <a href="algebra.html" class="back-button">
+                    <span class="back-icon">&larr;</span> Torna ad Algebra
+                </a>
+            </div>
+            <h1 class="sub-hero-title">Le <span class="algebra-gradient">Strutture</span> Algebriche</h1>
+            <p class="sub-hero-subtitle">Esploriamo nel dettaglio i mondi matematici dove le regole definiscono la realtà.</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- 1. STORIA -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">1. Quando i numeri divennero simboli: Al-Khwarizmi</h2>
+            <p class="lesson-text">
+                Immagina di essere a Baghdad nel IX secolo, all'apice dell'Età dell'Oro islamica. Al centro di questo fermento culturale brilla la <strong>Casa della Sapienza</strong> (<em>Bayt al-Hikma</em>), una biblioteca e centro di ricerca dove scienziati da tutto il mondo traducono e sviluppano la sapienza greca, indiana e persiana.
+            </p>
+            
+            <div class="history-card">
+                <h4 style="margin-bottom: 1.5rem; color: #3B82F6;">Muhammad ibn Musa al-Khwarizmi</h4>
+                <p style="font-size: 0.95rem; line-height: 1.6;">
+                    È qui che lavora <strong>Al-Khwarizmi</strong>. Il suo capolavoro, <em>Al-Kitāb al-mukhtaṣar fī ḥisāb al-jabr wa-l-muqābala</em>, definisce due operazioni fondamentali per risolvere le equazioni:
+                    <br><br>
+                    • <strong>Al-Jabr</strong> ("Restaurazione"): lo spostamento di un termine negativo da un membro all'altro per renderlo positivo. Da questa parola deriva il termine <strong>Algebra</strong>.
+                    <br>• <strong>Al-Muqabala</strong> ("Bilanciamento"): la cancellazione di termini uguali in entrambi i lati dell'equazione.
+                </p>
+                <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.1);">
+                    <p style="font-size: 0.9rem;">
+                        <strong>Curiosità:</strong> Il nome stesso del matematico, latinizzato in <em>Algoritmi</em>, ha dato origine alla parola <strong>Algoritmo</strong>. Inoltre, a lui dobbiamo l'introduzione in Occidente del sistema decimale e dello zero, tratti dai testi indiani, che hanno rivoluzionato il modo in cui contiamo.
+                    </p>
+                </div>
+            </div>
+            <p class="lesson-text">
+                Senza il suo lavoro, oggi non avremmo né le equazioni né i computer. Al-Khwarizmi ha trasformato l'aritmetica concreta in una scienza teorica basata su regole universali.
+            </p>
+        </section>
+
+        <!-- 2. CONCETTO DI CHIUSURA -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">2. Il Concetto di Chiusura</h2>
+            <p class="lesson-text">
+                Prima di analizzare le strutture, dobbiamo comprendere una proprietà fondamentale: la <strong>Chiusura</strong>.
+            </p>
+            <div class="closure-box">
+                <p style="font-size: 1.1rem; font-weight: 600; color: #10B981;">Definizione:</p>
+                <p>Un insieme è <strong>chiuso</strong> rispetto a un'operazione se, applicando quell'operazione a due elementi dell'insieme, il risultato appartiene <em>ancora</em> a quell'insieme.</p>
+                
+                <div class="example-math">
+                    Esempi con i Numeri:<br>
+                    • <strong>(ℕ, +) è chiuso:</strong> 3 + 5 = 8. (8 è un numero naturale ✅)<br>
+                    • <strong>(ℕ, -) NON è chiuso:</strong> 2 - 10 = -8. (-8 NON è naturale ❌)<br>
+                    • <strong>(ℤ, -) è chiuso:</strong> -2 - 10 = -12. (-12 è un intero ✅)
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. SEMIANELLO -->
+        <div class="structure-detail">
+            <h2 class="lesson-title">3. Il Semianello (Semiring)</h2>
+            <p class="lesson-text">
+                Rappresenta la struttura più semplice che gestisce sia somme che prodotti. L'esempio perfetto è l'insieme dei <strong>Numeri Naturali</strong> \(\mathbb{N} = \{0, 1, 2, ...\}\). In questa struttura, le operazioni devono rispettare quattro "regole d'oro":
+            </p>
+            
+            <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.5rem;">
+                <!-- Associatività -->
+                <div class="card" style="padding: 1rem; border-left: 2px solid #3B82F6;">
+                    <h4 style="color: #3B82F6; font-size: 0.9rem;">Associatività</h4>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">L'ordine in cui esegui le operazioni non cambia il risultato.</p>
+                    <code class="math-concept">(2+3)+4 = 2+(3+4) = 9</code>
+                </div>
+                <!-- Commutatività -->
+                <div class="card" style="padding: 1rem; border-left: 2px solid #3B82F6;">
+                    <h4 style="color: #3B82F6; font-size: 0.9rem;">Commutatività (+)</h4>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">Cambiando l'ordine degli addendi, la somma non cambia.</p>
+                    <code class="math-concept">5 + 10 = 10 + 5 = 15</code>
+                </div>
+                <!-- Elemento Neutro -->
+                <div class="card" style="padding: 1rem; border-left: 2px solid #FBBF24;">
+                    <h4 style="color: #FBBF24; font-size: 0.9rem;">Elemento Neutro</h4>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">Esiste un numero che "non fa nulla": lo 0 per la somma e l'1 per il prodotto.</p>
+                    <code class="math-concept">a + 0 = a | a × 1 = a</code>
+                </div>
+                <!-- Distributività -->
+                <div class="card" style="padding: 1rem; border-left: 2px solid #10B981;">
+                    <h4 style="color: #10B981; font-size: 0.9rem;">Distributività</h4>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">Il prodotto si "distribuisce" su ogni termine della somma.</p>
+                    <code class="math-concept">2 × (3 + 4) = 2×3 + 2×4 = 14</code>
+                </div>
+            </div>
+
+            <p class="lesson-text" style="margin-top: 1.5rem;">
+                In un semianello puoi sommare e moltiplicare all'infinito senza mai uscire dall'insieme (è chiuso per entrambe). Tuttavia, è una struttura "limitata" perché <strong>non puoi sempre tornare indietro</strong>: non esiste il concetto generale di sottrazione (manca l'inverso additivo).
+            </p>
+        </div>
+
+        <!-- 4. ANELLO -->
+        <div class="structure-detail" style="border-top-color: #F59E0B;">
+            <h2 class="lesson-title" style="color: #F59E0B;">4. L'Anello (Ring)</h2>
+            <p class="lesson-text">
+                L'anello è un'estensione del semianello. L'esempio classico sono i <strong>Numeri Interi</strong> \(\mathbb{Z}\).
+            </p>
+            <div style="margin: 1.5rem 0;">
+                <span class="property-tag" style="background: rgba(245, 158, 11, 0.1); color: #F59E0B;">Inverso Additivo (\(-a\))</span>
+                <span class="property-tag" style="background: rgba(245, 158, 11, 0.1); color: #F59E0B;">Chiusura per Sottrazione</span>
+            </div>
+            <p class="lesson-text">
+                Qui compare la magia dell'<strong>elemento opposto</strong>. Per ogni numero \(a\), esiste un \(-a\) tale che \(a + (-a) = 0\). Questo rende l'anello un sistema dove la sottrazione è sempre possibile e il risultato è sempre un elemento dell'anello.
+                <br><br>
+                <em>Attenzione:</em> Non puoi ancora dividere liberamente! Ad esempio, \(3 / 2 = 1.5\), che non è un numero intero.
+            </p>
+        </div>
+
+        <!-- 5. CAMPO -->
+        <div class="structure-detail" style="border-top-color: #10B981;">
+            <h2 class="lesson-title" style="color: #10B981;">5. Il Campo (Field)</h2>
+            <p class="lesson-text">
+                Il campo è la struttura "democratica" per eccellenza: permette tutte le operazioni fondamentali. Esempi: <strong>Razionali</strong> (\(\mathbb{Q}\)) e <strong>Reali</strong> (\(\mathbb{R}\)).
+            </p>
+            <div style="margin: 1.5rem 0;">
+                <span class="property-tag" style="background: rgba(16, 185, 129, 0.1); color: #10B981;">Inverso Moltiplicativo (\(a^{-1}\))</span>
+                <span class="property-tag" style="background: rgba(16, 185, 129, 0.1); color: #10B981;">Chiusura per Divisione</span>
+            </div>
+            <p class="lesson-text">
+                In un campo, ogni elemento diverso da zero ha un <strong>reciproco</strong>. Ciò significa che la divisione è un'operazione interna: se dividi due numeri reali, otterrai sempre un numero reale. È la struttura che sta alla base della maggior parte dell'analisi matematica.
+            </p>
+        </div>
+
+        <!-- 6. SPAZI VETTORIALI -->
+        <div class="structure-detail" style="border-top-color: #A855F7;">
+            <h2 class="lesson-title" style="color: #A855F7;">6. Spazi Vettoriali e Linearità</h2>
+            <p class="lesson-text">
+                Mentre le altre strutture riguardano un solo insieme, lo <strong>Spazio Vettoriale</strong> descrive come un insieme di <em>vettori</em> interagisce con un insieme di <em>scalari</em> (solitamente un campo come \(\mathbb{R}\)).
+            </p>
+            <div class="closure-box" style="border-color: #A855F7; background: rgba(168, 85, 247, 0.05);">
+                <p>La <strong>Linearità</strong> si fonda su due regole di chiusura:</p>
+                <ul class="lesson-text" style="list-style: none;">
+                    <li>1. <strong>Somma:</strong> Se prendo due vettori \(u, v\), la loro somma \(u+v\) deve essere ancora un vettore dello spazio.</li>
+                    <li>2. <strong>Prodotto:</strong> Se moltiplico un vettore \(u\) per un numero (scalare) \(c\), il risultato \(c \cdot u\) deve essere ancora un vettore dello spazio.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- QUIZ DI RIEPILOGO -->
+        <section class="lesson-section quiz-container">
+            <h2 class="lesson-title">Quiz di riepilogo</h2>
+            <p class="lesson-text" style="font-size: 0.95rem;">Metti alla prova la tua comprensione delle strutture algebriche.</p>
+            <div id="quiz-area">
+                <!-- Il quiz verrà generato via JS -->
+            </div>
+            <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Matematica. Strutture Algebriche ed Astrazione.</p>
+    </footer>
+
+    <!-- JS -->
+    <script src="../../js/main.js"></script>
+    <script src="strutture-algebriche.js"></script>
+</body>
+</html>

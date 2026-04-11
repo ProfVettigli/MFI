@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Le Coniche - Geometria MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        .back-button { display: inline-flex; align-items: center; color: var(--text-muted); text-decoration: none; margin-bottom: 2rem; font-weight: 600; transition: color 0.3s ease, transform 0.3s ease; }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+        .sub-hero { padding: 4rem 0 2rem; text-align: left; }
+        .interactive-container { background: rgba(0,0,0,0.15); padding: 2rem; border-radius: 12px; margin: 2rem 0; display: flex; flex-direction: column; align-items: center; box-shadow: inset 0 0 10px rgba(0,0,0,0.1); }
+        .canvas-wrapper { width: 100%; max-width: 500px; border-radius: 8px; overflow: hidden; background: #222; border: 1px solid rgba(255,255,255,0.1); margin: 0 auto;}
+        canvas { display: block; width: 100%; height: auto; }
+        .data-card { background: rgba(0,0,0,0.3); border-radius: 10px; padding: 1rem; border-left: 4px solid var(--text-main); display: flex; flex-direction: column; min-width: 120px; align-items:center; }
+        .data-label { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem; }
+        .lesson-list { padding-left: 1.5rem; margin-bottom: 2rem; }
+        .lesson-list li { margin-bottom: 1rem; font-size: 1.05rem; line-height: 1.6; color: var(--text-main); }
+        .example-box { background: rgba(255,255,255,0.05); border-left: 4px solid #3b82f6; padding: 1.5rem; border-radius: 0 12px 12px 0; margin: 1.5rem 0; line-height: 1.7; }
+    </style>
+</head>
+<body>
+    <header class="sub-hero">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2.5rem;">
+                <a href="geometria.html" class="back-button" style="margin-bottom: 0;">
+                    <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Geometria
+                </a>
+            </div>
+            <h1 class="sub-hero-title" style="color: #14B8A6;"> ⭕ Le Coniche </h1>
+            <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+                Dal sezionamento di un cono nascono le traiettorie dell'intero cosmo.
+            </p>
+        </div>
+    </header>
+    <main class="container">
+        <!-- SECTION 1: ORIGINE DELLE CONICHE -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #14B8A6;">1. Cos'è un Cono in Matematica?</h2>
+            <p class="lesson-text">In geometria analitica, il <strong>Cono</strong> non è il classico cappellino da festa tagliato a metà, ma è una figura formata da <em>due falde</em> (nappe) opposte che si innalzano e si abbassano da un singolo vertice centrale come una gigantesca clessidra estesa all'infinito.</p>
+            <p class="lesson-text">Le "Coniche" nascono proprio dal taglio (la <em>sezione</em>) di questo solido utilizzando un piano dritto. A seconda dell'<strong>inclinazione</strong> con cui affettiamo la clessidra, otteniamo dei "rimasugli" sui bordi del foglio: circonferenze, ellissi, parabole o iperboli. Ecco in prospettiva le forme prodotte:</p>
+
+            <div class="interactive-container">
+                <h4 style="color: white; margin-bottom: 1rem;">Animazione: Il Piano e le Sezioni (Prospettiva 3D)</h4>
+                <p style="color:rgba(255,255,255,0.7); font-size:0.9rem; margin-bottom:1rem; text-align:center;">Muovi lo slider per inclinare il piano rispetto all'asse centrale del cono.</p>
+                <div class="canvas-wrapper" style="max-width: 400px; background: #111;">
+                    <canvas id="coneCanvas" width="400" height="400"></canvas>
+                </div>
+                <div style="margin-top:1rem; font-size:1.5rem; font-weight:800; color:#14B8A6; text-align:center;" id="cone-res-display">Circonferenza</div>
+                
+                <div style="display:flex; justify-content:center; width: 100%; margin-top:1.5rem;">
+                    <div class="data-card" style="border-left-color: #f59e0b; width: 80%;">
+                        <span class="data-label">Inclinazione del Taglio</span>
+                        <input type="range" id="cone-angle" min="0" max="90" value="0" step="1" oninput="window.updateCone()">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: CIRCONFERENZA -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #14B8A6;">2. La Circonferenza</h2>
+            <p class="lesson-text">Ottenuta da un taglio perfettamente orizzontale al cono. Il luogo dei punti che mantengono una distanza costante (detta <em>raggio</em>) da un punto fisso centrale (il <em>centro</em>). Esploriamo le due forme che la descrivono.</p>
+            
+            <div style="background: rgba(20, 184, 166, 0.05); padding: 1.5rem; border-radius: 12px; border-left: 4px solid #14B8A6; margin-bottom: 2rem;">
+                <h3 style="color: #14B8A6; margin-bottom: 0.5rem;">Le Due Identità Algebraiche</h3>
+                <p style="margin-bottom: 1rem;">
+                    <strong>Forma Esplicita/Canonica (del Centro):</strong><br>
+                    \[ (x - x_c)^2 + (y - y_c)^2 = r^2 \]
+                    Intuitiva, pura: si leggono immediatamente le coordinate del centro \((x_c, y_c)\) e il raggio \(r\).
+                </p>
+                <p>
+                    <strong>Forma Generale:</strong><br>
+                    \[ x^2 + y^2 + ax + by + c = 0 \]
+                    Si estraggono i dati in questo modo:<br>
+                    Centro: \( C\left(-\frac{a}{2}, -\frac{b}{2}\right) \) | Raggio: \( r = \sqrt{(x_c)^2 + (y_c)^2 - c} \)
+                </p>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 4rem;">
+                <div class="interactive-container" style="margin: 0; box-shadow: 0 0 15px rgba(236,72,153,0.1);">
+                    <h4 style="color: white; margin-bottom: 1rem;">Forma Canonica</h4>
+                    <div class="canvas-wrapper">
+                        <canvas id="circCanCanvas" width="500" height="300"></canvas>
+                    </div>
+                    <div style="margin-top:1rem; font-size:1.3rem; font-weight:800; color:#ec4899; text-align:center;" id="circ-can-eq-display">(x - 0)² + (y - 0)² = 9</div>
+                    
+                    <div style="display:flex; gap: 1rem; margin-top: 1.5rem; flex-wrap:wrap; justify-content:center; width: 100%;">
+                        <div class="data-card" style="border-left-color: #3b82f6;"><span class="data-label">Centro X</span><input type="range" id="circ-can-x" min="-10" max="10" value="0" step="1" oninput="window.updateCircCan()"></div>
+                        <div class="data-card" style="border-left-color: #10b981;"><span class="data-label">Centro Y</span><input type="range" id="circ-can-y" min="-10" max="10" value="0" step="1" oninput="window.updateCircCan()"></div>
+                        <div class="data-card" style="border-left-color: #ec4899;"><span class="data-label">Raggio</span><input type="range" id="circ-can-r" min="1" max="15" value="3" step="1" oninput="window.updateCircCan()"></div>
+                    </div>
+                </div>
+
+                <div class="interactive-container" style="margin: 0;">
+                    <h4 style="color: white; margin-bottom: 1rem;">Forma Generale</h4>
+                    <div class="canvas-wrapper">
+                        <canvas id="circCanvas" width="500" height="300"></canvas>
+                    </div>
+                    <div style="margin-top:1rem; font-size:1.3rem; font-weight:800; color:#14B8A6; text-align:center;" id="circ-eq-display">x² + y² + 0x + 0y - 9 = 0</div>
+                    <div style="margin-top:0.5rem; font-size:1rem; color:#f59e0b; text-align:center;" id="circ-stats-display">Centro(0, 0) | Raggio = 3.0</div>
+
+                    <div style="display:flex; gap: 1rem; margin-top: 1.5rem; flex-wrap:wrap; justify-content:center; width: 100%;">
+                        <div class="data-card" style="border-left-color: #3b82f6;"><span class="data-label">Param. a</span><input type="range" id="circ-a" min="-20" max="20" value="0" step="1" oninput="window.updateCirc()"></div>
+                        <div class="data-card" style="border-left-color: #ec4899;"><span class="data-label">Param. b</span><input type="range" id="circ-b" min="-20" max="20" value="0" step="1" oninput="window.updateCirc()"></div>
+                        <div class="data-card" style="border-left-color: #f59e0b;"><span class="data-label">Param. c</span><input type="range" id="circ-c" min="-40" max="25" value="-9" step="1" oninput="window.updateCirc()"></div>
+                    </div>
+                    <div id="circ-error" style="color:#ef4444; font-weight:bold; opacity:0; margin-top:1rem; transition:0.3s;">Nessuna Circonferenza Reale!</div>
+                </div>
+            </div>
+
+            <h3 style="color: #3b82f6; margin-top:3rem;">Sistemi e Intersezioni</h3>
+            <p class="lesson-text">Per scoprire i punti di incontro tra una retta e una circonferenza, si devono impostare le due equazioni in un <strong>Sistema</strong>. Tramite il metodo di <em>sostituzione</em>, prendiamo la \(y\) della retta e la sostituiamo nell'equazione della circonferenza. Otterremo un'equazione di secondo grado di cui dovremo <strong>calcolare il Discriminante \(\Delta\)</strong>:</p>
+            <ul class="lesson-list">
+                <li><strong>\(\Delta > 0\):</strong> Secante. 2 punti d'intersezione.</li>
+                <li><strong>\(\Delta = 0\):</strong> Tangente. 1 solo punto (le due soluzioni coincidono).</li>
+                <li><strong>\(\Delta < 0\):</strong> Esterna. 0 punti (nessuna soluzione reale).</li>
+            </ul>
+
+            <div class="interactive-container" style="box-shadow: 0 0 10px rgba(59,130,246,0.2);">
+                <h4 style="color: white; margin-bottom: 1rem;">Animazione: La Retta e la Circonferenza</h4>
+                <div class="canvas-wrapper">
+                    <canvas id="circLineCanvas" width="500" height="300"></canvas>
+                </div>
+                <div style="margin-top:1rem; font-size:1.1rem; font-weight:bold; color:#fff;" id="circ-line-status">Stato: Secante</div>
+                <div style="display:flex; gap: 1rem; margin-top: 1rem; justify-content:center;">
+                    <div class="data-card"><span class="data-label">Quota Retta (q)</span><input type="range" id="line-q" min="-10" max="10" value="2" step="0.5" oninput="window.updateCircLine()"></div>
+                </div>
+            </div>
+
+            <div class="example-box" style="border-left-color: #3b82f6;">
+                <strong style="color: #3b82f6; text-transform:uppercase;">📝 Esempio: Sostituzione Lineare</strong><br>
+                Circonferenza <strong>\( x^2 + y^2 = 25 \)</strong> e retta orizzontale <strong>\( y = 3 \)</strong>.<br>
+                Sostituendo la \(y=3\) nell'equazione del cerchio:<br>
+                \( x^2 + (3)^2 = 25 \implies x^2 + 9 = 25 \implies x^2 = 16 \).<br>
+                Le due soluzioni di \(x^2=16\) sono \(x_1=4\) e \(x_2=-4\). Trovando soluzioni reali, calcoliamo i due punti d'impatto <strong>A(4, 3)</strong> e <strong>B(-4, 3)</strong>.
+            </div>
+
+            <p class="lesson-text">Lo stesso principio del <strong>Sistema e Sostituzione</strong> si applica per trovare i punti di scontro tra due circonferenze:</p>
+
+            <div class="interactive-container" style="box-shadow: 0 0 10px rgba(245,158,11,0.2);">
+                <h4 style="color: white; margin-bottom: 1rem;">Animazione: Due Circonferenze</h4>
+                <div class="canvas-wrapper">
+                    <canvas id="twoCircCanvas" width="500" height="300"></canvas>
+                </div>
+                <div style="margin-top:1rem; font-size:1.1rem; font-weight:bold; color:#fff;" id="two-circ-status">Stato: Secanti</div>
+                <div style="display:flex; gap: 1rem; margin-top: 1rem; justify-content:center;">
+                    <div class="data-card"><span class="data-label">Sposta Centro C2 (X)</span><input type="range" id="circ2-x" min="-15" max="15" value="5" step="0.5" oninput="window.updateTwoCirc()"></div>
+                </div>
+            </div>
+
+            <div class="example-box" style="border-left-color: #f59e0b;">
+                <strong style="color: #f59e0b; text-transform:uppercase;">📝 Esempio: Sostituzione tra due circonferenze</strong><br>
+                Troviamo i punti d'incontro tra:<br> 
+                1) \( x^2 + y^2 - 4x - 6y + 8 = 0 \)<br>
+                2) \( x^2 + y^2 - 8x - 2y + 12 = 0 \)<br><br>
+                Mettiamole a sistema. Anziché isolare una \(x^2\) o \(y^2\) (che creerebbe enormi calcoli radicali), il metodo più intelligente per la sostituzione è sottrarre l'equazione (2) dalla (1) membro a membro. Così le incognite al quadrato spariscono:<br>
+                \( (x^2 - x^2) + (y^2 - y^2) + (-4x + 8x) + (-6y + 2y) + (8 - 12) = 0 \implies 4x - 4y - 4 = 0 \).<br>
+                Semplificando otteniamo l'espressione <strong>\( y = x - 1 \)</strong>.<br>
+                Abbiamo isolato la \(y\). A questo punto torniamo al nostro sistema e applichiamo una pura <em>sostituzione</em> di \(y = x - 1\) nella primissima equazione. Otterrete i due punti d'incontro!
+            </div>
+        </section>
+
+        <!-- SECTION 3: ELLISSE & IPERBOLE -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #14B8A6;">3. Ellisse e Iperbole: Allungare e Spezzare</h2>
+            <p class="lesson-text">Modificando la simmetria del cerchio appaiono due coniche gestite dai semiasse \(a\) e \(b\): l'ellisse (racchiusa) e l'iperbole (aperta).</p>
+            
+            <div style="display:flex; flex-direction:column; gap:4rem;">
+                <div style="flex:1;">
+                    <h3 style="color: #a855f7;">L'Ellisse</h3>
+                    <p class="lesson-text" style="font-size:0.95rem;">Rispetto alla circonferenza che ha un solo centro, l'ellisse possiede due punti fondamentali chiamati <strong>Fuochi</strong>. Si può disegnare fisicamente col celebre "metodo del giardiniere": si piantano due spilli nel foglio esattamente nelle posizioni dei fuochi, vi si lega intorno alle teste un anello di filo inelastico (più lungo della distanza tra i chiodi) e, spingendo la punta della matita per tendere il filo come un triangolo, si traccia l'intera curva continua trascinando la matita pur mantenendo il filo costantemente in tensione.<br><br>Il suo scheletro è retto dall'equazione:<br><span style="font-size:1.2rem; font-weight:bold; display:block; margin: 0.5rem 0;">\[ \frac{x^2}{a^2} + \frac{y^2}{b^2} = 1 \]</span> L'allungamento dell'ellisse è misurato da una grandezza universale: l'<strong>Eccentricità (\(e\))</strong>. Essa rappresenta matematicamente il <strong>rapporto geometrico tra la distanza focale e l'asse maggiore</strong> (\( e = \frac{c}{a} \)). Varia da 0 a quasi 1: se i due fuochi si fondono al centro (\(e = 0\)), l'ellisse decade nella perfezione di una Circonferenza! Più separiamo i due fuochi spingendoli verso gli estremi opposti del perimetro (\(e \to 1\)), più la figura si manifesterà schiacciata e oblunga (i sassi cosmici e le lontane comete hanno eccentricità estreme).</p>
+                    <div class="interactive-container" style="box-shadow: 0 0 10px rgba(168,85,247,0.2);">
+                        <h4 style="color: white; margin-bottom: 1rem;">Animazione: Plasma l'Ellisse</h4>
+                        <div class="canvas-wrapper"><canvas id="ellCanvas" width="500" height="300"></canvas></div>
+                        <div style="display:flex; gap: 1rem; margin-top: 1rem; justify-content:center;">
+                            <div class="data-card"><span class="data-label">Semiasse a (X)</span><input type="range" id="ell-a" min="1" max="10" value="6" step="1" oninput="window.updateEll()"></div>
+                            <div class="data-card"><span class="data-label">Semiasse b (Y)</span><input type="range" id="ell-b" min="1" max="10" value="3" step="1" oninput="window.updateEll()"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="flex:1;">
+                    <h3 style="color: #ef4444;">L'Iperbole</h3>
+                    <p class="lesson-text" style="font-size:0.95rem;">Differisce dall'ellisse geometricamente solo per un segno. È spaccata a metà e respinta verso i limiti dell'infinito asintotico.<br><span style="font-size:1.2rem; font-weight:bold; color:#ef4444;">\[ \frac{x^2}{a^2} - \frac{y^2}{b^2} = 1 \]</span></p>
+                    <div class="interactive-container" style="box-shadow: 0 0 10px rgba(239,68,68,0.2);">
+                        <h4 style="color: white; margin-bottom: 1rem;">Animazione: Plasma l'Iperbole (Rami e Asintoti)</h4>
+                        <div class="canvas-wrapper"><canvas id="hypCanvas" width="500" height="300"></canvas></div>
+                        <div style="display:flex; gap: 1rem; margin-top: 1rem; justify-content:center;">
+                            <div class="data-card"><span class="data-label">Vertici (a)</span><input type="range" id="hyp-a" min="1" max="8" value="3" step="1" oninput="window.updateHyp()"></div>
+                            <div class="data-card"><span class="data-label">Pendenza (b)</span><input type="range" id="hyp-b" min="1" max="8" value="2" step="1" oninput="window.updateHyp()"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: PARABOLA -->
+        <section class="lesson-section" style="margin-bottom: 4rem;">
+            <h2 class="lesson-title" style="color: #14B8A6;">4. La Parabola</h2>
+            <p class="lesson-text">Un taglio diagonale parallelo al fianco del cono genera l'orbita balistica. La formula: <span style="color:#EC4899; font-weight:bold; font-size:1.2rem;">y = ax² + bx + c</span></p>
+
+            <div class="interactive-container">
+                <h4 style="color: white; margin-bottom: 1rem;">Animazione: La Parabola</h4>
+                <div class="canvas-wrapper"><canvas id="parabCanvas" width="500" height="300"></canvas></div>
+                <div style="margin-top:1rem; font-size:1.3rem; font-weight:800; color:#3b82f6;" id="parab-eq-display">y = 1x² + 0x + 0</div>
+                <div style="margin-top:0.5rem; font-size:1rem; color:#f59e0b;" id="parab-stats-display">Vertice (0.0 , 0.0)</div>
+
+                <div style="display:flex; gap: 1rem; margin-top: 1.5rem; flex-wrap:wrap; justify-content:center; width: 100%;">
+                    <div class="data-card" style="border-left-color: #3b82f6;"><span class="data-label">Apertura (a)</span><input type="range" id="parab-a" min="-5" max="5" value="1" step="0.5" oninput="window.updateParab()"></div>
+                    <div class="data-card" style="border-left-color: #10b981;"><span class="data-label">Spost. (b)</span><input type="range" id="parab-b" min="-10" max="10" value="0" step="1" oninput="window.updateParab()"></div>
+                    <div class="data-card" style="border-left-color: #ec4899;"><span class="data-label">Quota (c)</span><input type="range" id="parab-c" min="-10" max="10" value="0" step="1" oninput="window.updateParab()"></div>
+                </div>
+            </div>
+
+            <ul class="lesson-list">
+                <li><strong>Il Vertice:</strong> Ascissa piana: \( x_V = -\frac{b}{2a} \), Altezza: \( y_V = -\frac{\Delta}{4a} \). Ma cos'è questo <strong>\(\Delta\) (Delta)</strong>? È il <em>Discriminante</em> ed è calcolato come \(\Delta = b^2 - 4ac\). Esso ci garantisce quante intersezioni tangibili avverranno sull'asse delle X.</li>
+                <li><strong>Il Fuoco:</strong> Levita internamente alla concavità. Coordinate: \(( -\frac{b}{2a}, \frac{1-\Delta}{4a} )\).</li>
+            </ul>
+
+            <div style="background: rgba(168, 85, 247, 0.05); padding: 1.5rem; border-radius: 12px; border-left: 4px solid #a855f7;">
+                <h3 style="color: #a855f7; margin-bottom: 0.5rem;">CURIOSITÀ: Fari, Antenne e Ologrammi (Il Mirage Toy)</h3>
+                <p style="font-size: 0.95rem;">
+                    La parabola tridimensionale è chiamata <strong>Paraboloide</strong>. Ogni raggio che la colpisce in modo asse-parallelo viene per legge riflesso in un unico punto focale centrale: il <strong>Fuoco</strong>! Questo principio geometrico guida il riflettore di ogni antenna satellitare che intrappola i segnali stellari e il fanale di automobile che trasforma una piccola lampadina nel fuoco in un raggio parallelo accecante lungo tutta l'autostrada.
+                    <br><br>
+                    <strong>Il fantasma 3D!</strong> Un gioco noto come "Mirascope 3D Toy" connette faccia a faccia <em>due</em> paraboloidi a specchio. Posando una moneta nel Fuoco dello specchio sul fondo, la luce si incrocia riemergendo dal foro superiore e generando un <strong>ologramma</strong> perfetto e tangibile fluttuante nell'aria, per quanto illusorio!
+                </p>
+            </div>
+        </section>
+        
+        <section class="lesson-section quiz-container">
+            <h2 class="lesson-title">Quiz di Riepilogo</h2>
+            <div id="quiz-area"></div>
+            <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem; font-weight: bold;"></div>
+        </section>
+    </main>
+    <footer><p>&copy; 2026 MFI - Matematica MFI.</p></footer>
+    <script src="coniche.js"></script>
+    <script src="../../js/main.js"></script>
+</body>
+</html>

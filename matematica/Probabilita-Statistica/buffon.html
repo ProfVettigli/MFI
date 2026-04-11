@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buffon's Needle - CLIL - MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- MathJax -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+            width: fit-content;
+        }
+        
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+        
+        .hero-section {
+            padding: 4rem 0 2rem;
+            text-align: center;
+        }
+
+        .buffon-gradient {
+            background: linear-gradient(135deg, #10B981, #3B82F6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .clil-badge {
+            display: inline-block;
+            background: rgba(59, 130, 246, 0.2);
+            border: 1px solid #3B82F6;
+            color: #60A5FA;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        /* --- Simulation Area --- */
+        #buffon-canvas {
+            background: #0f172a;
+            border-radius: 16px;
+            width: 100%;
+            height: 400px;
+            display: block;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            cursor: crosshair;
+        }
+
+        .sim-panel {
+            display: grid;
+            grid-template-columns: 1fr 280px;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .stats-sidebar {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            margin-bottom: 0.3rem;
+            display: block;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            font-family: 'Fira Code', monospace;
+            color: var(--physics-color);
+        }
+
+        .pi-estimate {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--physics-color);
+            padding: 1rem;
+            border-radius: 12px;
+            margin-top: auto;
+        }
+
+        .pi-value {
+            font-size: 2.22rem;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+        }
+
+        .controls {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-sim {
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary { background: var(--physics-color); color: white; }
+        .btn-secondary { background: #475569; color: white; }
+        
+        @media (max-width: 768px) {
+            .sim-panel { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header class="hero-section">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <a href="../probabilita-statistica.html" class="back-button">
+                    <span class="back-icon">&larr;</span> Back to Probability and Statistics
+                </a>
+            </div>
+            <div class="clil-badge">CLIL Lesson</div>
+            <h1 class="hero-title"><span class="buffon-gradient">Buffon's</span> Needle</h1>
+            <p class="hero-subtitle">How to estimate the value of Pi by dropping a simple needle on the floor: a magical encounter between geometry and probability.</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- 1. HISTORICAL CONTEXT -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">1. Historical Context</h2>
+            <p class="lesson-text">
+                In 1777, the French naturalist and mathematician <strong>Georges-Louis Leclerc, Comte de Buffon</strong>, proposed a problem that seemed simple yet was revolutionary. It was the first documented example of <strong>geometric probability</strong>: a way to calculate probability based not on counting discrete items (like dice or cards), but on continuous measures like lengths and areas.
+            </p>
+            <div class="card" style="border-left: 4px solid var(--physics-color); background: rgba(16, 185, 129, 0.05);">
+                <p style="font-size: 0.95rem; font-style: italic;">
+                    "Imagine a floor made of parallel wooden strips. If you drop a needle, what is the probability that it will cross a line between two strips?"
+                </p>
+            </div>
+        </section>
+
+        <!-- 2. THE MATHEMATICS -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">2. The Mathematics of the Needle</h2>
+            <p class="lesson-text">
+                Let's define two fundamental variables:
+                <br>• \(l\) = Length of the needle.
+                <br>• \(d\) = Distance between the lines on the floor.
+            </p>
+            <p class="lesson-text">
+                If the needle is shorter than the distance between the lines (\(l \le d\)), the probability \(P\) that it crosses a line is given by:
+            </p>
+            <div style="background: rgba(255,255,255,0.02); padding: 2rem; border-radius: 20px; text-align: center; margin: 2rem 0;">
+                <div style="font-size: 2.2rem; font-family: 'Fira Code', monospace; color: var(--physics-color);">
+                    $$P = \frac{2l}{\pi d}$$
+                </div>
+            </div>
+            <p class="lesson-text">
+                This formula is extraordinary because it contains \(\pi\) (Pi), a number we usually associate with circles, and not with straight parallel lines and needles!
+            </p>
+        </section>
+
+        <!-- 3. INTERACTIVE LAB -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">3. Laboratory: Drop the Needles</h2>
+            <p class="lesson-text">
+                We can use this probability "backwards" to estimate the value of \(\pi\). The more needles we drop, the more accurate our estimate will become (according to the Law of Large Numbers).
+            </p>
+
+            <div class="sim-panel">
+                <div class="canvas-wrapper">
+                    <canvas id="buffon-canvas"></canvas>
+                    <div class="controls">
+                        <button id="btn-drop-1" class="btn-sim btn-primary">+1 Needle</button>
+                        <button id="btn-drop-100" class="btn-sim btn-primary">+100 Needles</button>
+                        <button id="btn-drop-1000" class="btn-sim btn-primary" style="background: #3B82F6;">+1000 Needles</button>
+                        <button id="btn-reset" class="btn-sim btn-secondary">Reset</button>
+                    </div>
+                </div>
+
+                <div class="stats-sidebar">
+                    <div class="stat-item">
+                        <span class="stat-label">Total Drops (\(N\))</span>
+                        <span class="stat-value" id="val-total">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Crossings (\(h\))</span>
+                        <span class="stat-value" id="val-hits" style="color: #3B82F6;">0</span>
+                    </div>
+                    <div class="stat-item pi-estimate">
+                        <span class="stat-label">Pi Estimate</span>
+                        <div class="pi-value" id="val-pi">---</div>
+                        <p style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.5rem;">
+                            Formula: \(\pi \approx \frac{2lN}{hd}\)
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. WHY IT MATTERS -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">4. Why is it important?</h2>
+            <p class="lesson-text">
+                Buffon's Needle is not just a mathematical trick. it is the ancestor of one of the most powerful techniques in modern science: the <strong>Monte Carlo Method</strong>.
+                <br><br>
+                Instead of solving impossible equations or counting every single possibility, we use <strong>randomness</strong> and simulation to approximate exact results.
+            </p>
+            <ul class="lesson-text" style="margin-left: 2rem; list-style-type: disc;">
+                <li>Designing radiation shields for spacecraft.</li>
+                <li>Predicting financial market trends.</li>
+                <li>Developing Artificial Intelligence and Deep Learning.</li>
+                <li>Simulating vaccine behavior in the human body.</li>
+            </ul>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Mathematics. CLIL Module: Geometric Probability.</p>
+    </footer>
+
+    <!-- JS -->
+    <script src="../../js/main.js"></script>
+    <script src="buffon.js"></script>
+</body>
+</html>

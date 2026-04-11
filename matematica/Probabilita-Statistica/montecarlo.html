@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metodo Monte Carlo - MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- MathJax -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+            width: fit-content;
+        }
+        
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+        
+        .hero-section {
+            padding: 4rem 0 2rem;
+            text-align: center;
+        }
+
+        .mc-gradient {
+            background: linear-gradient(135deg, #F59E0B, #EF4444);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .simulation-container {
+            background: #0f172a;
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        canvas {
+            background: #0b0f19;
+            border-radius: 12px;
+            width: 100%;
+            display: block;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 1rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-val {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #FBBF24;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            display: block;
+            margin-bottom: 0.2rem;
+        }
+
+        .controls {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: #FBBF24;
+            color: #000;
+            font-size: 0.9rem;
+        }
+
+        .btn-action:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        .btn-run { background: #10B981; color: white; }
+        .btn-reset { background: #475569; color: white; }
+
+        .formula-card {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1.5rem 0;
+            border-left: 4px solid #F59E0B;
+        }
+    </style>
+</head>
+<body>
+    <header class="hero-section">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <a href="../probabilita-statistica.html" class="back-button">
+                    <span class="back-icon">&larr;</span> Torna a Probabilità e Statistica
+                </a>
+            </div>
+            <h1 class="hero-title">Il Metodo <span class="mc-gradient">Monte Carlo</span></h1>
+            <p class="hero-subtitle">Utilizzare il caos e la casualità per risolvere problemi deterministici complessi.</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- 1. STORIA -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">1. Origini e Storia</h2>
+            <p class="lesson-text">
+                Il nome "Monte Carlo" fu coniato da Nicholas Metropolis in onore del Casinò dove il prozio di Stanislaw Ulam amava giocare. Il metodo nacque per la necessità di risolvere integrali complessi durante il Progetto Manhattan, usando il calcolo probabilistico anziché formule analitiche impossibili.
+            </p>
+        </section>
+
+        <!-- 2. AREA DEL LAGO -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #3B82F6;">2. Caso di Studio: L'Area del Lago</h2>
+            <p class="lesson-text">
+                Immagina di voler misurare l'area di un lago dalla forma irregolare. Non puoi usare la geometria classica. <br>
+                Puoi però circondare il lago con un rettangolo di terra di cui conosci perfettamente l'area (\(A_{terra}\)). Se lanci \(N\) sassi in modo casuale e uniforme in tutto il rettangolo, e conti quanti sassi \(H\) cadono effettivamente nel lago, otterrai un rapporto:
+            </p>
+            
+            <div class="formula-card" style="border-color: #3B82F6;">
+                <div style="font-size: 1.2rem; text-align: center;">
+                    $$\frac{H}{N} = \frac{\text{Area Lago}}{\text{Area Terra}} \implies \text{Area Lago} = \text{Area Terra} \times \frac{H}{N}$$
+                </div>
+            </div>
+
+            <div class="simulation-container">
+                <canvas id="lake-canvas" height="350"></canvas>
+                <div class="controls">
+                    <button class="btn-action" onclick="lakeSim.drop(1)">+1 Sasso</button>
+                    <button class="btn-action" onclick="lakeSim.drop(10)">+10 Sassi</button>
+                    <button class="btn-action" onclick="lakeSim.drop(100)">+100 Sassi</button>
+                    <button id="btn-lake-run" class="btn-action btn-run" onclick="lakeSim.toggleRun()">Esegui Continuo</button>
+                    <button class="btn-action btn-reset" onclick="lakeSim.reset()">Reset</button>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-label">Sassi Lanciati (\(N\))</span>
+                        <span class="stat-val" id="lake-n">0</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Nel Lago (\(H\))</span>
+                        <span class="stat-val" id="lake-h" style="color: #3B82F6;">0</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Frazione Area</span>
+                        <span class="stat-val" id="lake-result">0.00%</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. PI GRECO -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #EF4444;">3. Stimare il Pi Greco</h2>
+            <p class="lesson-text">
+                Un'applicazione classica è la stima di \(\pi\). Consideriamo un cerchio di raggio \(r\) iscritto in un quadrato di lato \(2r\).
+                Sappiamo che:
+                <br>• Area Cerchio = \(\pi r^2\)
+                <br>• Area Quadrato = \(4r^2\)
+            </p>
+
+            <div class="formula-card" style="border-color: #EF4444;">
+                <div style="font-size: 1.2rem; text-align: center;">
+                    $$\frac{\text{Punti nel Cerchio}}{\text{Punti Totali}} = \frac{\pi r^2}{4r^2} = \frac{\pi}{4} \implies \pi = 4 \times \frac{H}{N}$$
+                </div>
+            </div>
+
+            <div class="simulation-container">
+                <canvas id="pi-canvas" height="350"></canvas>
+                <div class="controls">
+                    <button class="btn-action" onclick="piSim.drop(1)">+1 Lancio</button>
+                    <button class="btn-action" onclick="piSim.drop(10)">+10 Lanci</button>
+                    <button class="btn-action" onclick="piSim.drop(100)">+100 Lanci</button>
+                    <button id="btn-pi-run" class="btn-action btn-run" onclick="piSim.toggleRun()">Esegui Continuo</button>
+                    <button class="btn-action btn-reset" onclick="piSim.reset()">Reset</button>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-label">Lanci Totali (\(N\))</span>
+                        <span class="stat-val" id="pi-n">0</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Nel Cerchio (\(H\))</span>
+                        <span class="stat-val" id="pi-h" style="color: #EF4444;">0</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">\(\pi\) Stimato</span>
+                        <span class="stat-val" id="pi-result">0.000</span>
+                    </div>
+                    <div class="stat-card" style="background: rgba(239, 68, 68, 0.1);">
+                        <span class="stat-label">Errore Relativo</span>
+                        <span class="stat-val" id="pi-error" style="color: #EF4444;">0%</span>
+                    </div>
+                </div>
+
+                <div style="margin-top: 2rem;">
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">Andamento Errore:</p>
+                    <canvas id="pi-error-canvas" height="100"></canvas>
+                    <div style="background: rgba(239, 68, 68, 0.05); padding: 1.2rem; border-radius: 12px; margin-top: 1rem; border-left: 2px solid #EF4444; font-size: 0.9rem;">
+                        <strong>Perché l'errore diminuisce come \(1/\sqrt{N}\)?</strong> 
+                        <br>Immagina ogni lancio come un "tiro alla fune". Ogni lancio casuale può allontanare o avvicinare la stima al valore vero. Statisticamente, il "rumore" accumulato cresce solo con la radice quadrata del numero di prove. Dividendo poi per il numero totale di prove \(N\) per fare la media, l'errore cala con la velocità di \(\frac{\sqrt{N}}{N} = \frac{1}{\sqrt{N}}\). 
+                        <br><br>
+                        <strong>Conseguenza Pratica:</strong> Poiché l'errore dipende dalla radice di \(N\), per <strong>dimezzare l'errore</strong> dobbiamo <strong>quadruplicare i lanci</strong> (\(2^2 = 4\)). Se volessimo un errore 10 volte più piccolo, dovremmo lanciare 100 volte più sassi!
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. TRATTAZIONE FORMALE -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">4. Formalizzazione Matematica</h2>
+            <p class="lesson-text">
+                Il Metodo Monte Carlo è una tecnica numerica per approssimare il valore di un <strong>integrale definito</strong> tramite campionamento casuale. Si basa su due pilastri della probabilità: la <strong>Legge dei Grandi Numeri</strong> e il <strong>Teorema del Limite Centrale</strong>.
+            </p>
+
+            <div class="card" style="border-left: 4px solid var(--math-color); background: rgba(255, 255, 255, 0.02);">
+                <h4 style="color: var(--math-color); margin-bottom: 1rem;">L'Integrale come Valore Atteso</h4>
+                <p style="font-size: 0.9rem;">
+                    Se vogliamo calcolare l'integrale di una funzione \(f(x)\) su un dominio \(\Omega\) di misura \(V\), possiamo interpretarlo come il valore atteso della funzione moltiplicato per il volume:
+                </p>
+                <div style="font-size: 1.3rem; margin: 1.5rem 0; text-align: center;">
+                    $$I = \int_{\Omega} f(x) dx \approx V \cdot \frac{1}{N} \sum_{i=1}^N f(x_i)$$
+                </div>
+                <p style="font-size: 0.85rem; color: var(--text-muted);">
+                    Dove \(x_i\) sono punti scelti uniformemente e casualmente all'interno di \(\Omega\). Al crescere di \(N\), la media campionaria converge al valore vero dell'integrale quasi certamente (LLN).
+                </p>
+            </div>
+
+            <div class="card" style="border-left: 4px solid #F59E0B; background: rgba(255, 255, 255, 0.02); margin-top: 1.5rem;">
+                <h4 style="color: #F59E0B; margin-bottom: 1rem;">L'Errore e la Varianza</h4>
+                <p style="font-size: 0.9rem;">
+                    Secondo il Teorema del Limite Centrale, la distribuzione dell'errore per \(N\) grande tende a una normale. L'incertezza \(\epsilon\) della stima è proporzionale a:
+                </p>
+                <div style="font-size: 1.2rem; margin: 1rem 0; text-align: center;">
+                    $$\epsilon \approx \frac{\sigma}{\sqrt{N}}$$
+                </div>
+                <p style="font-size: 0.85rem; color: var(--text-muted);">
+                    Dove \(\sigma\) è la deviazione standard della funzione. Nota che l'errore Monte Carlo non dipende dalla <em>dimensione</em> dello spazio, motivo per cui è imbattibile per calcolare integrali in molte dimensioni (dove i metodi classici come Simpson falliscono).
+                </p>
+            </div>
+        </section>
+
+        <!-- 5. APPLICAZIONI -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">5. Perché è così importante?</h2>
+            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+                <!-- ... existing cards handled by logic ... -->
+                <div class="card" style="border-top: 3px solid #3B82F6;">
+                    <h4 style="color: #3B82F6; margin-bottom: 0.5rem;">💰 Finanza</h4>
+                    <p style="font-size: 0.85rem;">Simulare migliaia di scenari di mercato per calcolare il rischio.</p>
+                </div>
+                <div class="card" style="border-top: 3px solid #EC4899;">
+                    <h4 style="color: #EC4899; margin-bottom: 0.5rem;">🏥 Fisica Medica</h4>
+                    <p style="font-size: 0.85rem;">Simulare il percorso delle radiazioni per cure tumorali precise.</p>
+                </div>
+                <div class="card" style="border-top: 3px solid #10B981;">
+                    <h4 style="color: #10B981; margin-bottom: 0.5rem;">⚛️ Fisica</h4>
+                    <p style="font-size: 0.85rem;">Simulare le collisioni subatomiche al CERN.</p>
+                </div>
+                <div class="card" style="border-top: 3px solid #F59E0B;">
+                    <h4 style="color: #F59E0B; margin-bottom: 0.5rem;">🌍 Clima</h4>
+                    <p style="font-size: 0.85rem;">Prevedere l'evoluzione atmosferica su scale secolari.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Matematica.</p>
+    </footer>
+
+    <!-- JS -->
+    <script src="../../js/main.js"></script>
+    <script src="montecarlo.js"></script>
+</body>
+</html>

@@ -624,11 +624,22 @@
         <!-- ============================================ -->
         <section class="lesson-section">
             <h2>6. Definizione Frequentista</h2>
-            <p>Quando non conosciamo il futuro, guardiamo al passato. Se ripetiamo un esperimento $N$ volte e l'evento accade $n$ volte:</p>
+            <p>Quando non conosciamo la teoria matematica dietro un evento, guardiamo al passato sperimentale. Se ripetiamo un esperimento $N$ volte e l'evento accade $n$ volte:</p>
             <div class="formula-box">
                 $$P(E) = \lim_{N\to\infty} \frac{n}{N}$$
             </div>
-            <p>In pratica: più esperimenti facciamo, più la frequenza relativa si <strong>stabilizza</strong> attorno alla probabilità "vera". Questo è il fondamento della statistica.</p>
+            
+            <div style="background: rgba(139, 92, 246, 0.05); padding: 1.5rem; border-radius: 12px; border-left: 4px solid #8B5CF6; margin: 1.5rem 0;">
+                <h4 style="color: #A78BFA; margin-bottom: 0.5rem;">Cosa significa quel "$lim$" misterioso?</h4>
+                <p style="font-size: 0.95rem; margin-bottom: 0.5rem;">
+                    Il simbolo $\lim_{N\to\infty}$ si legge <em>"limite per N che tende all'infinito"</em>. Non farti spaventare dalla notazione: il concetto è molto intuitivo, e in statistica prende il nome di <strong>Legge dei Grandi Numeri</strong>.
+                </p>
+                <p style="font-size: 0.95rem; margin-bottom: 0;">
+                    Immagina di lanciare una moneta vera: se la lanci solo 10 volte ($N=10$), potresti casualmente ottenere 8 Teste e 2 Croci (una frequenza dell'80% per Testa, ben lontana dal 50% matematico). Ma se ti mettessi a lanciarla un milione di volte, o un miliardo di volte, l'incidenza della fortuna scomparirebbe. Quel simbolo dice proprio questo: <strong>man mano che i tuoi tentativi ($N$) diventano un numero incredibilmente immenso (tendono all'infinito), la banale percentuale dei tuoi successi si fisserà definitivamente, smettendo di variare, diventando la probabilità assoluta dell'evento.</strong>
+                </p>
+            </div>
+
+            <p>In pratica: più esperimenti facciamo, più la frequenza relativa si <strong>stabilizza</strong> attorno alla probabilità "vera". Questo è il fondamento pratico della logica statistica in ambito aziendale.</p>
 
             <div class="interactive-box">
                 <h3>Esercizio: Farming Raro</h3>
@@ -661,6 +672,44 @@
                     <button onclick="checkSogg()">Verifica</button>
                 </div>
                 <div id="feed-sogg" class="feedback"></div>
+            </div>
+        </section>
+
+        <!-- ============================================ -->
+        <!-- 8. UN PARADOSSO STATISTICO                   -->
+        <!-- ============================================ -->
+        <section class="lesson-section" style="border-left: 4px solid #EC4899; background: rgba(236, 72, 153, 0.03);">
+            <h2 style="color: #EC4899;">8. Un Paradosso Statistico: L'Autoreferenzialità</h2>
+            <p>Per concludere il nostro viaggio nella probabilità, mettiamo alla prova il tuo cervello con un rompicapo che sfida le leggi della logica e della statistica. È un classico esempio di <strong>paradosso autoreferenziale</strong>.</p>
+            
+            <div class="interactive-box" style="border-color: #EC4899; background: rgba(0,0,0,0.2);">
+                <h3 style="color: #EC4899; font-size: 1.2rem; margin-bottom: 1.5rem; line-height: 1.4; text-align: center;">
+                    "Se scegli una risposta a questa domanda a caso, qual è la probabilità di indovinare quella esatta?"
+                </h3>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; max-width: 600px; margin: 0 auto;">
+                    <button class="quiz-btn paradox-btn" data-val="25">A: 25%</button>
+                    <button class="quiz-btn paradox-btn" data-val="0">B: 0%</button>
+                    <button class="quiz-btn paradox-btn" data-val="25">C: 25%</button>
+                    <button class="quiz-btn paradox-btn" data-val="50">D: 50%</button>
+                </div>
+                
+                <div id="paradox-feedback" class="feedback" style="margin-top: 1.5rem; line-height: 1.6; border-radius: 12px; padding: 1.5rem;">
+                    <!-- Feedback dinamico -->
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 2rem; border-top: 2px solid #EC4899; background: rgba(236, 72, 153, 0.05);">
+                <h4 style="color: #EC4899; margin-bottom: 1rem;">Perché è un Paradosso?</h4>
+                <p class="lesson-text" style="font-size: 0.95rem;">
+                    Il problema nasce dal fatto che la risposta corretta è "incatenata" al processo di scelta:<br><br>
+                    1. <strong>Se pensi che la risposta sia 25%</strong>: siccome ci sono 4 opzioni, una scelta casuale darebbe il 25% di probabilità. Ma ci sono DUE opzioni (A e C) che dicono "25%". Quindi la probabilità di sceglierne una corretta è 2 su 4, ovvero il <strong>50%</strong>.<br>
+                    2. <strong>Se allora la risposta è 50%</strong>: c'è solo un'opzione (D) che dice "50%". Quindi la probabilità di sceglierla a caso è 1 su 4, ovvero il <strong>25%</strong>. (Siamo punto e a capo!)<br>
+                    3. <strong>Se pensi che la risposta sia 0%</strong>: se 0% è l'unica risposta corretta, allora scegliendola a caso (1 su 4) avresti il 25% di probabilità di indovinare, contraddicendo lo "0%".
+                </p>
+                <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px; font-style: italic; border-left: 3px solid #EC4899;">
+                    <strong>Come fornire una risposta?</strong> Tecnicamente non si può fornire una risposta numerica corretta in questo sistema chiuso. È un esempio di come l'autoreferenzialità (una domanda che parla di se stessa) possa mandare in "crash" la logica formale e la probabilità classica. L'unico modo per uscirne è ammettere che la domanda è logicamente <em>indecidibile</em>.
+                </div>
             </div>
         </section>
 

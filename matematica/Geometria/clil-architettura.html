@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLIL: Architecture - Geometria MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        .back-button { display: inline-flex; align-items: center; color: var(--text-muted); text-decoration: none; margin-bottom: 2rem; font-weight: 600; transition: color 0.3s ease, transform 0.3s ease; }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+        .sub-hero { padding: 4rem 0 2rem; text-align: left; }
+        .interactive-container { background: rgba(0,0,0,0.15); padding: 2rem; border-radius: 12px; margin: 2rem 0; display: flex; flex-direction: column; align-items: center; box-shadow: inset 0 0 10px rgba(0,0,0,0.1); }
+        canvas { background: #fff; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); max-width: 100%; }
+        .controls { margin-top: 1.5rem; display: flex; gap: 1rem; }
+        .control-btn { background: #3B82F6; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-family: 'Inter', sans-serif; font-weight: 600; }
+        .control-btn:hover { opacity: 0.8; }
+    </style>
+</head>
+<body>
+    <header class="sub-hero">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2.5rem;">
+                <a href="geometria.html" class="back-button" style="margin-bottom: 0;">
+                    <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Geometria
+                </a>
+            </div>
+            <h1 class="sub-hero-title" style="color: #3B82F6;"> 🏛️ CLIL: Architecture </h1>
+            <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+                Classical temples, Renaissance perspective, and Parametric algorithms.
+            </p>
+        </div>
+    </header>
+    <main class="container">
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #3B82F6;">1. The Classical Heritage</h2>
+            <p class="lesson-text">Greek architecture heavily relied on geometric harmony, specifically the Golden Ratio (circa 1.618), to scale temples like the Parthenon. Later, the Renaissance brought Linear Perspective into cupolas.</p>
+        </section>
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #3B82F6;">2. Modern Algorithmic Design</h2>
+            <p class="lesson-text">Today, architects utilize advanced Parametric Computer Scripts. By changing pure math numbers, the entire organic, curved 3D model transforms autonomously without drawing a single line manually.</p>
+            <div class="interactive-container">
+                <h3 style="color: #3B82F6; margin-bottom: 1rem;">Linguaggio Interattivo</h3>
+                <canvas id="mainCanvas" width="600" height="400"></canvas>
+                <div class="controls">
+                    <button class="control-btn" id="btnInteract">Attiva/Interagisci</button>
+                    <button class="control-btn" id="btnReset" style="background:#64748b;">Reset</button>
+                </div>
+            </div>
+        </section>
+        
+        <section class="lesson-section quiz-container">
+            <h2 class="lesson-title">Quiz di Riepilogo</h2>
+            <p class="lesson-text" style="font-size: 0.95rem;">Testa le tue conoscenze rispondendo a queste domande.</p>
+            <div id="quiz-area"></div>
+            <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem; font-weight: bold;"></div>
+        </section>
+    </main>
+    <footer><p>&copy; 2026 MFI - Matematica MFI.</p></footer>
+    <script src="clil-architettura.js"></script>
+    <script src="../../js/main.js"></script>
+</body>
+</html>
