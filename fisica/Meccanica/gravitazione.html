@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gravitazione Universale — Meccanica | MFI</title>
+    <meta name="description" content="Lezione interattiva sulla gravitazione universale, Keplero, orbite, catenarie ed epicicli.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+        onload="renderMathInElement(document.body);"></script>
+
+    <style>
+        :root {
+            --grav-color: #f59e0b; /* Amber */
+            --kep-color: #3b82f6; /* Blue */
+            --cat-color: #10b981; /* Green */
+            --epi-color: #8b5cf6; /* Purple */
+        }
+
+        .sub-hero { padding: 4rem 0 2.5rem; text-align: left; }
+        .sub-hero-title { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; margin-bottom: 1rem; }
+
+        .lesson-section {
+            margin-bottom: 3rem; padding: 2.5rem;
+            border-radius: 1rem; border: 1px solid rgba(255,255,255,0.06);
+            background: var(--surface-color, rgba(255,255,255,0.03));
+            scroll-margin-top: 4rem;
+        }
+        .lesson-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 1.2rem; }
+        .lesson-text { color: var(--text-muted); line-height: 1.8; margin-bottom: 1.1rem; font-size: 1.02rem; }
+
+        /* Boxes */
+        .info-box {
+            background: rgba(245,158,11,0.07);
+            border-left: 4px solid var(--grav-color);
+            border-radius: 0 0.75rem 0.75rem 0;
+            padding: 1.25rem 1.5rem; margin: 1.5rem 0;
+        }
+        .info-box.kep { border-left-color: var(--kep-color); background: rgba(59,130,246,0.07); }
+        .info-box.epi { border-left-color: var(--epi-color); background: rgba(139,92,246,0.07); }
+        .info-box.center { text-align: center; }
+
+        /* Callouts */
+        .callout {
+            display: flex; gap: 1rem; align-items: flex-start;
+            background: rgba(245,158,11,0.07); border: 1px solid rgba(245,158,11,0.25);
+            border-radius: 0.75rem; padding: 1.2rem 1.5rem; margin: 1.5rem 0;
+        }
+        .callout-icon { font-size: 1.5rem; flex-shrink: 0; }
+        .callout p { margin: 0; color: var(--text-muted); font-size: 0.97rem; line-height: 1.7; }
+        .callout p strong { color: #fcd34d; }
+        .callout.blue { background: rgba(59,130,246,0.07); border-color: rgba(59,130,246,0.25); }
+        .callout.blue p strong { color: #93c5fd; }
+
+        /* Canvases */
+        .canvas-wrap {
+            background: rgba(0,0,0,0.3); border-radius: 10px;
+            padding: 1rem; margin: 1.5rem 0; text-align: center;
+        }
+        canvas { display: block; margin: 0 auto; max-width: 100%; border-radius: 6px; }
+
+        /* Controls */
+        .controls-row { display: flex; gap: 1rem; flex-wrap: wrap; align-items: flex-end; margin-bottom: 1rem; justify-content: center; }
+        .ctrl-group { display: flex; flex-direction: column; gap: 0.3rem; }
+        .ctrl-group label { color: var(--text-muted); font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .ctrl-group input[type=range] {
+            -webkit-appearance: none; width: 160px; height: 6px;
+            background: rgba(245,158,11,0.25); border-radius: 3px; outline: none;
+        }
+        .ctrl-group input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none; width: 16px; height: 16px;
+            border-radius: 50%; background: var(--grav-color); cursor: pointer;
+        }
+        .ctrl-group input[type=checkbox] { transform: scale(1.2); }
+
+        .btn-action {
+            background: rgba(245,158,11,0.2); border: 1px solid var(--grav-color);
+            color: #fcd34d; padding: 0.6rem 1.3rem; border-radius: 6px;
+            cursor: pointer; font-family: inherit; font-size: 0.95rem;
+            transition: all 0.2s; align-self: center;
+        }
+        .btn-action:hover { background: rgba(245,158,11,0.35); transform: translateY(-1px); }
+
+        .solution-box { background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.07); border-radius: 1rem; padding: 1.5rem; margin: 1.5rem 0; }
+        .solution-box h4 { color: #fbbf24; font-size: 1rem; margin-bottom: 1rem; }
+        .step { display: flex; gap: 1rem; margin-bottom: 0.85rem; align-items: flex-start; }
+        .step-num { background: linear-gradient(135deg,var(--grav-color),var(--kep-color)); color: white; font-weight: 800; font-size: 0.8rem; min-width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .step-body { color: var(--text-muted); font-size: 0.97rem; line-height: 1.7; }
+
+        @media(max-width:768px){ .lesson-section{padding:1.5rem;} }
+    </style>
+</head>
+<body>
+
+    <header class="sub-hero">
+        <div class="container">
+            <div style="text-align:center; margin-bottom:2rem;">
+                <a href="../meccanica.html" class="back-button" style="margin-bottom:0;">
+                    <span class="back-icon">←</span> Meccanica
+                </a>
+            </div>
+            <h1 class="sub-hero-title">🪐 Gravitazione <span class="gradient-text">Universale</span></h1>
+            <p style="font-size:1.1rem;color:var(--text-muted);max-width:750px;font-weight:300;line-height:1.7;">
+                Dal moto dei pianeti all'equilibrio di un ponte sospeso: scopriamo come la massa curva il destino dell'universo.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- 1. Legge di gravitazione e Principio d'equivalenza -->
+        <section class="lesson-section" id="sec-legge">
+            <h2 class="lesson-title">1. 🍎 La Legge di Gravitazione Universale di Newton</h2>
+            <p class="lesson-text">
+                Newton unificò la fisica celeste e quella terrestre con una singola, elegante equazione. Ogni corpo dotato di massa nell'universo attira ogni altro corpo con una forza diretta lungo la linea che unisce i loro centri.
+            </p>
+            <div class="info-box center">
+                \[ F = G \frac{m_1 m_2}{r^2} \]
+                <p style="margin:0.75rem 0 0;color:var(--text-muted);font-size:0.95rem;">
+                    dove \(G \approx 6.674 \times 10^{-11} \, \text{N}\cdot\text{m}^2/\text{kg}^2\) è la costante di gravitazione universale, \(m_1\) e \(m_2\) sono le masse dei corpi, e \(r\) è la distanza tra i loro centri.
+                </p>
+            </div>
+            <div class="callout blue">
+                <span class="callout-icon">⚖️</span>
+                <div>
+                    <p><strong>Il Principio di Equivalenza tra massa inerziale e gravitazionale</strong></p>
+                    <p>Nella formula \(F=ma\), la massa \(m\) misura l'<em>inerzia</em> (resistenza all'accelerazione). Nella formula di Newton \(F = G \frac{Mm}{r^2}\), la massa \(m\) misura la "carica" gravitazionale. Perché questi due concetti, così diversi, hanno esattamente lo stesso valore numerico? Questo mistero, che Newton accettò ma non spiegò, implica che nel vuoto tutti i corpi cadono con la stessa accelerazione (\(a = g = GM/r^2\), indipendentemente da \(m\)). Questo è il <strong>Principio di Equivalenza</strong>, che secoli dopo porterà Einstein a concepire la gravità non come una forza, ma come una curvatura dello spaziotempo.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Orbite e Keplero -->
+        <section class="lesson-section" id="sec-orbite">
+            <h2 class="lesson-title">2. 🛰️ Le Orbite e le Leggi di Keplero</h2>
+            <p class="lesson-text">
+                Come fa un satellite a rimanere in orbita attorno alla Terra senza cadere? In un'orbita circolare, la forza gravitazionale funge esattamente da forza centripeta, necessaria a mantenere il corpo in rotazione.
+            </p>
+            <div class="solution-box">
+                <h4>📐 Uguagliare Gravità e Forza Centripeta</h4>
+                <div class="step"><div class="step-num">1</div><div class="step-body">
+                    Forza di Gravità: \( F_g = G \frac{Mm}{r^2} \)
+                </div></div>
+                <div class="step"><div class="step-num">2</div><div class="step-body">
+                    Forza Centripeta: \( F_c = m \frac{v^2}{r} \)
+                </div></div>
+                <div class="step"><div class="step-num">3</div><div class="step-body">
+                    Uguagliandole (\(F_g = F_c\)):
+                    \[ G \frac{Mm}{r^2} = m \frac{v^2}{r} \implies v^2 = \frac{GM}{r} \implies v = \sqrt{\frac{GM}{r}} \]
+                    Questa è la <strong>velocità orbitale</strong> necessaria per mantenere un'orbita circolare di raggio \(r\).
+                </div></div>
+            </div>
+            <h3 style="color:var(--kep-color); margin-top: 2rem;">La Terza Legge di Keplero</h3>
+            <p class="lesson-text">
+                Sapendo che la velocità in un'orbita circolare è \(v = \frac{2\pi r}{T}\) (dove \(T\) è il periodo orbitale), sostituendo otteniamo:
+            </p>
+            <div class="info-box kep center">
+                \[ \frac{r^3}{T^2} = \frac{GM}{4\pi^2} = \text{costante} \]
+                <p style="margin:0.75rem 0 0;color:var(--text-muted);font-size:0.95rem;">Il cubo del semiasse maggiore diviso il quadrato del periodo è costante per tutti i pianeti dello stesso sistema. <strong>3a Legge di Keplero.</strong></p>
+            </div>
+
+            <h3 style="color:var(--kep-color); margin-top:2rem;">1a Legge di Keplero — Le orbite sono ellissi</h3>
+            <p class="lesson-text">Risolvendo le equazioni di Newton con la forza \(F\propto 1/r^2\), si dimostra che le traiettorie possibili sono coniche (ellissi, parabole, iperboli). Per i pianeti legati al Sole, la traiettoria è un'<strong>ellisse</strong> con il Sole in uno dei due fuochi. La somma delle distanze da un punto dell'ellisse ai due fuochi è costante: \(r_1 + r_2 = 2a\).</p>
+            <div class="canvas-wrap">
+                <canvas id="kep1-canvas" width="580" height="280"></canvas>
+                <p style="color:var(--text-muted);font-size:0.82rem;margin-top:0.5rem;">☀️ = Sole (fuoco). Trascina il cursore per vedere r₁+r₂=2a costante.</p>
+            </div>
+
+            <h3 style="color:var(--kep-color); margin-top:2rem;">2a Legge di Keplero — Aree uguali in tempi uguali</h3>
+            <p class="lesson-text">Uguagliando gravità e forza centripeta, il momento angolare del pianeta si conserva (nessun momento esterno). Questo implica che il raggio vettore pianeta-Sole spazza <strong>aree uguali in tempi uguali</strong>: il pianeta va più veloce quando è vicino al Sole (perielio) e più lento all'afelio.</p>
+            <div class="canvas-wrap">
+                <canvas id="kep2-canvas" width="580" height="280"></canvas>
+                <p style="color:var(--text-muted);font-size:0.82rem;margin-top:0.5rem;">Le aree colorate (spazzate in intervalli di tempo uguali) hanno la stessa superficie.</p>
+            </div>
+        </section>
+
+        <!-- 2b. Satellite interattivo -->
+        <section class="lesson-section" id="sec-satellite">
+            <h2 class="lesson-title">3. 🛰️ Simulatore Orbita Satellitare</h2>
+            <p class="lesson-text">Lancia un satellite con diverse velocità iniziali e osserva come cambia l'orbita. Velocità troppo bassa → cade sul pianeta. Velocità giusta → orbita circolare. Velocità superiore a quella di fuga → lascia il sistema.</p>
+            <div class="canvas-wrap">
+                <canvas id="sat-canvas" width="580" height="380"></canvas>
+            </div>
+            <div class="controls-row">
+                <div class="ctrl-group">
+                    <label>Velocità iniziale (v/v_orb)</label>
+                    <input type="range" id="sat-v" min="0.3" max="1.8" value="1.0" step="0.05">
+                    <span id="sat-v-val" style="color:var(--grav-color);font-weight:700;">1.00×</span>
+                </div>
+                <button class="btn-action" onclick="launchSat()">🚀 Lancia</button>
+                <button class="btn-action" onclick="resetSat()" style="background:rgba(255,255,255,0.05);border-color:rgba(255,255,255,0.2);color:rgba(255,255,255,0.6);">Reset</button>
+            </div>
+            <div id="sat-info" style="text-align:center;color:var(--text-muted);font-size:0.9rem;margin-top:0.5rem;"></div>
+        </section>
+
+        <!-- 3. Gli Epicicli -->
+        <section class="lesson-section" id="sec-epicicli">
+            <h2 class="lesson-title">3. 🌀 Il modello Tolemaico e gli Epicicli</h2>
+            <p class="lesson-text">
+                Prima di Keplero (che introdusse le orbite ellittiche col Sole in un fuoco), il moto retrogrado dei pianeti come Marte veniva spiegato col sistema geocentrico di Tolomeo usando gli <strong>epicicli</strong>: circonferenze i cui centri ruotano su altre circonferenze (deferenti).
+            </p>
+            <div class="callout" style="background:rgba(139,92,246,0.07);border-color:rgba(139,92,246,0.25);">
+                <span class="callout-icon">💡</span>
+                <p style="color:var(--text-muted);">
+                    <strong style="color:#c4b5fd;">Fisica vs Matematica:</strong> Da un punto di vista puramente matematico e cinematico, la combinazione di sufficienti epicicli può approssimare <em>qualsiasi</em> orbita chiusa (è l'analogo geometrico della Trasformata di Fourier per curve 2D!). Tuttavia, da un punto di vista <strong>fisico-dinamico</strong>, il modello Tolemaico richiede interazioni inesistenti e centri di rotazione vuoti. Il modello eliocentrico di Keplero-Newton spiega le stesse osservazioni astronomiche usando una singola legge causale fisica: la gravitazione universale.
+                </p>
+            </div>
+            
+            <div class="canvas-wrap">
+                <canvas id="epi-canvas" width="600" height="400"></canvas>
+                <div class="controls-row" style="margin-top: 1rem;">
+                    <button class="btn-action" onclick="toggleEpi()" id="btn-epi">Pausa / Riprendi</button>
+                    <div class="ctrl-group">
+                        <label>Velocità Epiciclo</label>
+                        <input type="range" id="epi-speed" min="-5" max="5" value="3" step="0.5">
+                    </div>
+                    <div class="ctrl-group" style="flex-direction:row; align-items:center; gap:0.5rem; margin-top:1rem;">
+                        <input type="checkbox" id="epi-trace" checked>
+                        <label style="margin:0;">Mostra traccia</label>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. La Catenaria -->
+        <section class="lesson-section" id="sec-catenaria">
+            <h2 class="lesson-title">4. 🌉 La Catenaria: Geometria della Gravità</h2>
+            <p class="lesson-text">
+                Oltre alle orbite, la gravità determina forme peculiari anche sulla Terra. Se prendiamo una fune inestensibile e omogenea, e la sospendiamo per i suoi estremi lasciandola pendere sotto l'effetto del proprio peso, quale curva assumerà? 
+            </p>
+            <p class="lesson-text">
+                Galileo pensava fosse una parabola. In realtà, è una <strong>catenaria</strong> (dal latino <em>catena</em>), la cui equazione matematica coinvolge il coseno iperbolico:
+            </p>
+            <div class="info-box center" style="border-left-color:var(--cat-color);">
+                \[ y = a \cosh\left(\frac{x}{a}\right) = \frac{a}{2} \left( e^{x/a} + e^{-x/a} \right) \]
+            </div>
+            <p class="lesson-text">
+                Questa forma distribuisce la tensione in modo che ogni segmento di fune sia in perfetto equilibrio tra il proprio peso e la tensione ai capi. Capovolgendo questa curva, si ottiene la forma ottimale per un arco autoportante (usato nell'architettura, come nel Gateway Arch di St. Louis o nella cupola della cattedrale di St. Paul).
+            </p>
+
+            <div class="canvas-wrap" style="background:#1e293b;">
+                <canvas id="cat-canvas" width="600" height="300"></canvas>
+                <div class="controls-row" style="margin-top: 1rem;">
+                    <div class="ctrl-group">
+                        <label>Distanza Punti (x)</label>
+                        <input type="range" id="cat-dist" min="100" max="500" value="300">
+                    </div>
+                    <div class="ctrl-group">
+                        <label>Lunghezza fune (L)</label>
+                        <input type="range" id="cat-len" min="100" max="600" value="400">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quiz -->
+        <section class="lesson-section" id="sec-quiz">
+            <h2 class="lesson-title" style="color:var(--grav-color);">6. 🧠 Verifica Finale</h2>
+            <p class="lesson-text">Metti alla prova la tua comprensione della gravitazione universale e delle leggi di Keplero!</p>
+            <div style="background:rgba(0,0,0,0.15);border-radius:1rem;padding:1.5rem;">
+                <div id="quiz-area"></div>
+                <div id="quiz-score" style="text-align:center;font-weight:700;color:var(--grav-color);font-size:1.1rem;margin-top:1rem;min-height:1.5rem;"></div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI — Meccanica: Gravitazione Universale.</p>
+    </footer>
+
+    <script>
+        // --- EPICICLI SIMULATOR ---
+        const epiCanvas = document.getElementById('epi-canvas');
+        const epiCtx = epiCanvas.getContext('2d');
+        let epiAngle = 0;
+        let isEpiRunning = true;
+        let trace = [];
+
+        function toggleEpi() {
+            isEpiRunning = !isEpiRunning;
+        }
+
+        function drawEpiciclo() {
+            if (isEpiRunning) epiAngle += 0.01;
+            const cx = epiCanvas.width / 2;
+            const cy = epiCanvas.height / 2;
+            const rDeferente = 100;
+            const rEpiciclo = 40;
+            const speedRatio = parseFloat(document.getElementById('epi-speed').value);
+            const showTrace = document.getElementById('epi-trace').checked;
+
+            epiCtx.clearRect(0, 0, epiCanvas.width, epiCanvas.height);
+
+            // Deferente
+            epiCtx.beginPath();
+            epiCtx.arc(cx, cy, rDeferente, 0, Math.PI * 2);
+            epiCtx.strokeStyle = 'rgba(255,255,255,0.2)';
+            epiCtx.stroke();
+
+            // Centro (Terra)
+            epiCtx.beginPath();
+            epiCtx.arc(cx, cy, 6, 0, Math.PI * 2);
+            epiCtx.fillStyle = '#3b82f6';
+            epiCtx.fill();
+
+            // Posizione centro epiciclo
+            const ex = cx + rDeferente * Math.cos(epiAngle);
+            const ey = cy + rDeferente * Math.sin(epiAngle);
+
+            // Epiciclo
+            epiCtx.beginPath();
+            epiCtx.arc(ex, ey, rEpiciclo, 0, Math.PI * 2);
+            epiCtx.strokeStyle = 'rgba(255,255,255,0.4)';
+            epiCtx.stroke();
+
+            // Posizione pianeta
+            const px = ex + rEpiciclo * Math.cos(epiAngle * speedRatio);
+            const py = ey + rEpiciclo * Math.sin(epiAngle * speedRatio);
+
+            if (isEpiRunning && showTrace) {
+                trace.push({x: px, y: py});
+                if (trace.length > 500) trace.shift();
+            } else if (!showTrace) {
+                trace = [];
+            }
+
+            // Draw Trace
+            if (showTrace && trace.length > 0) {
+                epiCtx.beginPath();
+                epiCtx.moveTo(trace[0].x, trace[0].y);
+                for (let i = 1; i < trace.length; i++) {
+                    epiCtx.lineTo(trace[i].x, trace[i].y);
+                }
+                epiCtx.strokeStyle = '#8b5cf6';
+                epiCtx.lineWidth = 2;
+                epiCtx.stroke();
+                epiCtx.lineWidth = 1;
+            }
+
+            // Draw Pianeta
+            epiCtx.beginPath();
+            epiCtx.arc(px, py, 5, 0, Math.PI * 2);
+            epiCtx.fillStyle = '#ef4444';
+            epiCtx.fill();
+
+            // Raggio di congiunzione
+            epiCtx.beginPath();
+            epiCtx.moveTo(cx, cy);
+            epiCtx.lineTo(ex, ey);
+            epiCtx.lineTo(px, py);
+            epiCtx.strokeStyle = 'rgba(255,255,255,0.5)';
+            epiCtx.stroke();
+
+            requestAnimationFrame(drawEpiciclo);
+        }
+        drawEpiciclo();
+
+        // --- CATENARIA SIMULATOR ---
+        // Trova 'a' per una data distanza e lunghezza, approssimazione
+        function findA(w, L) {
+            if (L <= w) return null; // Impossibile
+            let a = 100;
+            for (let i = 0; i < 20; i++) {
+                let f = 2 * a * Math.sinh(w / (2 * a)) - L;
+                let df = 2 * Math.sinh(w / (2 * a)) - (w / a) * Math.cosh(w / (2 * a));
+                a = a - f / df;
+            }
+            return a;
+        }
+
+        const catCanvas = document.getElementById('cat-canvas');
+        const catCtx = catCanvas.getContext('2d');
+
+        function drawCatenaria() {
+            let w = parseFloat(document.getElementById('cat-dist').value);
+            let L = parseFloat(document.getElementById('cat-len').value);
+            
+            // Adjust len input to always be at least slightly larger than dist
+            const lenInput = document.getElementById('cat-len');
+            if (L <= w) {
+                lenInput.value = w + 1;
+                L = w + 1;
+            }
+            lenInput.min = w + 1;
+
+            const a = findA(w, L);
+            if (!a) return;
+
+            catCtx.clearRect(0, 0, catCanvas.width, catCanvas.height);
+            const cx = catCanvas.width / 2;
+            const cy = 50; // Punto di sospensione Y
+
+            catCtx.beginPath();
+            let first = true;
+            for (let x = -w/2; x <= w/2; x += 1) {
+                // y = a * cosh(x/a) - a (spostato per partire da y=0 agli estremi)
+                // y_suspension = a * cosh((w/2)/a)
+                const y_offset = a * Math.cosh((w/2) / a);
+                const y = a * Math.cosh(x / a);
+                
+                const drawX = cx + x;
+                const drawY = cy + (y_offset - y); // capovolgi asse Y e adatta ai punti
+
+                if (first) {
+                    catCtx.moveTo(drawX, cy); // Partiamo sempre da cy esatto
+                    first = false;
+                } else {
+                    catCtx.lineTo(drawX, cy + (y_offset - y));
+                }
+            }
+            catCtx.strokeStyle = '#10b981';
+            catCtx.lineWidth = 3;
+            catCtx.stroke();
+
+            // Punti di sospensione
+            catCtx.fillStyle = '#fbbf24';
+            catCtx.beginPath(); catCtx.arc(cx - w/2, cy, 6, 0, Math.PI*2); catCtx.fill();
+            catCtx.beginPath(); catCtx.arc(cx + w/2, cy, 6, 0, Math.PI*2); catCtx.fill();
+
+            // Linea retta di base (tensione teorica)
+            catCtx.strokeStyle = 'rgba(255,255,255,0.2)';
+            catCtx.lineWidth = 1;
+            catCtx.beginPath(); catCtx.moveTo(cx - w/2, cy); catCtx.lineTo(cx + w/2, cy); catCtx.stroke();
+        }
+
+        document.getElementById('cat-dist').addEventListener('input', drawCatenaria);
+        document.getElementById('cat-len').addEventListener('input', drawCatenaria);
+        drawCatenaria();
+
+        // --- KEPLER 1a LEGGE ---
+        (function(){
+            const c=document.getElementById('kep1-canvas');
+            if(!c)return;
+            const ctx=c.getContext('2d');
+            const W=c.width,H=c.height,cx=W/2,cy=H/2;
+            const a=200,b=130; // semiassi
+            const f=Math.sqrt(a*a-b*b); // distanza fuochi
+            let ang=0;
+            function frame(){
+                ang+=0.008;
+                ctx.clearRect(0,0,W,H);
+                // ellisse
+                ctx.save();ctx.translate(cx,cy);
+                ctx.beginPath();ctx.ellipse(0,0,a,b,0,0,Math.PI*2);
+                ctx.strokeStyle='rgba(59,130,246,0.5)';ctx.lineWidth=1.5;ctx.stroke();
+                // fuochi
+                ctx.beginPath();ctx.arc(-f,0,8,0,Math.PI*2);ctx.fillStyle='#fbbf24';ctx.fill();
+                ctx.fillStyle='rgba(255,255,255,0.4)';ctx.font='12px Inter';ctx.textAlign='center';
+                ctx.fillText('☀️',-f,18);
+                ctx.beginPath();ctx.arc(f,0,4,0,Math.PI*2);ctx.fillStyle='rgba(255,255,255,0.2)';ctx.fill();
+                ctx.fillText('F₂',f,18);
+                // pianeta sull'ellisse (parametricamente)
+                const px=a*Math.cos(ang), py=b*Math.sin(ang);
+                // linee ai fuochi
+                ctx.setLineDash([4,3]);
+                ctx.strokeStyle='rgba(59,130,246,0.7)';ctx.lineWidth=1.5;
+                ctx.beginPath();ctx.moveTo(-f,0);ctx.lineTo(px,py);ctx.stroke();
+                ctx.strokeStyle='rgba(239,68,68,0.7)';
+                ctx.beginPath();ctx.moveTo(f,0);ctx.lineTo(px,py);ctx.stroke();
+                ctx.setLineDash([]);
+                // r1, r2
+                const r1=Math.hypot(px+f,py),r2=Math.hypot(px-f,py);
+                ctx.fillStyle='#93c5fd';ctx.font='bold 12px Inter';ctx.textAlign='left';
+                ctx.fillText(`r₁=${r1.toFixed(0)}`,10,-H/2+20);
+                ctx.fillStyle='#fca5a5';
+                ctx.fillText(`r₂=${r2.toFixed(0)}`,10,-H/2+38);
+                ctx.fillStyle='#6ee7b7';
+                ctx.fillText(`r₁+r₂=${(r1+r2).toFixed(0)} = 2a=${(2*a).toFixed(0)}`,10,-H/2+56);
+                // pianeta
+                ctx.beginPath();ctx.arc(px,py,7,0,Math.PI*2);
+                ctx.fillStyle='#ef4444';ctx.fill();
+                ctx.restore();
+                requestAnimationFrame(frame);
+            }
+            frame();
+        })();
+
+        // --- KEPLER 2a LEGGE ---
+        (function(){
+            const c=document.getElementById('kep2-canvas');
+            if(!c)return;
+            const ctx=c.getContext('2d');
+            const W=c.width,H=c.height,cx=W/2,cy=H/2;
+            const a=190,b=120;
+            const f=Math.sqrt(a*a-b*b);
+            // usa angolo eccentrico E per moto kepleriano reale
+            let E=0,prevPts=[];
+            const colors=['rgba(59,130,246,0.35)','rgba(239,68,68,0.35)','rgba(16,185,129,0.35)'];
+            const dt=0.04, sampleStep=0.5, samplesPerArea=30;
+            let stepCount=0, areaIndex=0, areas=[[],[],[]];
+            function ellipsePos(E){return{x:a*Math.cos(E),y:b*Math.sin(E)};}
+            function frame(){
+                // velocità kepleriana: dE/dt ∝ 1/(1-e·cosE), e=f/a
+                const e=f/a;
+                const dE=dt/(1-e*Math.cos(E))*0.08;
+                E+=dE;
+                if(E>Math.PI*2)E-=Math.PI*2;
+                stepCount++;
+                const pos=ellipsePos(E);
+                // accumula punti per le aree
+                if(stepCount%1===0) areas[areaIndex].push({...pos});
+                if(areas[areaIndex].length>=samplesPerArea){areaIndex=(areaIndex+1)%3;areas[areaIndex]=[];}
+                ctx.clearRect(0,0,W,H);
+                ctx.save();ctx.translate(cx,cy);
+                // ellisse
+                ctx.beginPath();ctx.ellipse(0,0,a,b,0,0,Math.PI*2);
+                ctx.strokeStyle='rgba(59,130,246,0.4)';ctx.lineWidth=1.5;ctx.stroke();
+                // Sole
+                ctx.beginPath();ctx.arc(-f,0,8,0,Math.PI*2);ctx.fillStyle='#fbbf24';ctx.fill();
+                // aree
+                for(let i=0;i<3;i++){
+                    const pts=areas[i]; if(pts.length<2) continue;
+                    ctx.beginPath();ctx.moveTo(-f,0);ctx.lineTo(pts[0].x,pts[0].y);
+                    for(let j=1;j<pts.length;j++) ctx.lineTo(pts[j].x,pts[j].y);
+                    ctx.lineTo(-f,0);ctx.closePath();
+                    ctx.fillStyle=colors[i];ctx.fill();
+                }
+                // pianeta
+                ctx.beginPath();ctx.arc(pos.x,pos.y,7,0,Math.PI*2);ctx.fillStyle='#ef4444';ctx.fill();
+                // linea fuoco-pianeta
+                ctx.beginPath();ctx.moveTo(-f,0);ctx.lineTo(pos.x,pos.y);
+                ctx.strokeStyle='rgba(255,255,255,0.4)';ctx.lineWidth=1;ctx.stroke();
+                ctx.fillStyle='rgba(255,255,255,0.5)';ctx.font='11px Inter';ctx.textAlign='left';
+                const d=Math.hypot(pos.x+f,pos.y);
+                ctx.fillText(d<a*(1-e)+20?'← Perielio: v massima':'',pos.x+10,pos.y);
+                ctx.restore();
+                requestAnimationFrame(frame);
+            }
+            frame();
+        })();
+
+        // --- SATELLITE SIMULATOR ---
+        (function(){
+            const c=document.getElementById('sat-canvas');
+            if(!c)return;
+            const ctx=c.getContext('2d');
+            const W=c.width,H=c.height,cx=W/2,cy=H/2;
+            const GM=1e5, Rp=30;
+            let sat={x:0,y:0,vx:0,vy:0}, running=false, trail=[], animId=null;
+            function vorb(r){return Math.sqrt(GM/r);}
+            window.launchSat=function(){
+                cancelAnimationFrame(animId);
+                const vFactor=parseFloat(document.getElementById('sat-v').value);
+                const r0=120;
+                const v0=vorb(r0)*vFactor;
+                sat={x:r0,y:0,vx:0,vy:-v0};
+                trail=[]; running=true;
+                document.getElementById('sat-v-val').textContent=vFactor.toFixed(2)+'×';
+                const vesc=Math.sqrt(2*GM/r0);
+                let tipo;
+                if(v0>=vesc) tipo='Iperbolica (fuga!)';
+                else if(vFactor>0.99&&vFactor<1.01) tipo='Circolare';
+                else if(v0<vorb(r0)*0.5) tipo='Traiettoria di caduta';
+                else tipo='Ellittica';
+                document.getElementById('sat-info').textContent=`Velocità: ${v0.toFixed(1)} — Orbita: ${tipo}`;
+                loop();
+            };
+            window.resetSat=function(){
+                cancelAnimationFrame(animId);running=false;trail=[];
+                ctx.clearRect(0,0,W,H);drawPlanet();
+                document.getElementById('sat-info').textContent='';
+            };
+            function gravity(x,y){const r=Math.hypot(x,y);const f=-GM/(r*r*r);return{ax:f*x,ay:f*y};}
+            function step(dt){
+                const g=gravity(sat.x,sat.y);
+                sat.vx+=g.ax*dt;sat.vy+=g.ay*dt;
+                sat.x+=sat.vx*dt;sat.y+=sat.vy*dt;
+            }
+            function drawPlanet(){
+                ctx.beginPath();ctx.arc(cx,cy,Rp,0,Math.PI*2);
+                const gr=ctx.createRadialGradient(cx-8,cy-8,2,cx,cy,Rp);
+                gr.addColorStop(0,'#60a5fa');gr.addColorStop(1,'#1d4ed8');
+                ctx.fillStyle=gr;ctx.fill();
+                ctx.strokeStyle='rgba(255,255,255,0.2)';ctx.lineWidth=1;ctx.stroke();
+            }
+            function loop(){
+                if(!running){return;}
+                for(let i=0;i<8;i++) step(0.15);
+                const r=Math.hypot(sat.x,sat.y);
+                if(r<Rp+2){running=false;document.getElementById('sat-info').textContent='💥 Il satellite è atterrato sul pianeta!';}
+                if(r>W){running=false;document.getElementById('sat-info').textContent='🚀 Il satellite ha lasciato il sistema!';}
+                trail.push({x:sat.x,y:sat.y});
+                if(trail.length>600) trail.shift();
+                ctx.clearRect(0,0,W,H);
+                drawPlanet();
+                // trail
+                if(trail.length>1){
+                    ctx.beginPath();ctx.moveTo(cx+trail[0].x,cy+trail[0].y);
+                    for(let i=1;i<trail.length;i++){ctx.lineTo(cx+trail[i].x,cy+trail[i].y);}
+                    ctx.strokeStyle='rgba(245,158,11,0.6)';ctx.lineWidth=1.5;ctx.stroke();
+                }
+                // satellite
+                ctx.beginPath();ctx.arc(cx+sat.x,cy+sat.y,5,0,Math.PI*2);
+                ctx.fillStyle='#f59e0b';ctx.fill();
+                if(running) animId=requestAnimationFrame(loop);
+            }
+            document.getElementById('sat-v').addEventListener('input',function(){document.getElementById('sat-v-val').textContent=parseFloat(this.value).toFixed(2)+'×';});
+            drawPlanet();
+        })();
+
+        // --- QUIZ ---
+        const quizData=[
+            {q:'Cosa fornisce la forza centripeta a un satellite in orbita circolare?',opts:['La forza centrifuga','La forza di gravità','La spinta del motore','La forza di Coriolis'],ans:1,exp:'In orbita circolare, la forza gravitazionale è esattamente uguale alla forza centripeta necessaria. Non c'è bisogno di motori: la velocità tangenziale fa sì che il satellite "cada" continuamente attorno al pianeta.'},
+            {q:'La velocità orbitale circolare a distanza r è:',opts:['v = GM/r','v = √(GM/r)','v = √(2GM/r)','v = GM/r²'],ans:1,exp:'Uguagliando F_g = F_c si ottiene v² = GM/r, quindi v = √(GM/r). Nota: la velocità di fuga è √(2GM/r), esattamente √2 volte maggiore.'},
+            {q:'La 2ª Legge di Keplero (legge delle aree) deriva da:',opts:['La conservazione dell\'energia','La conservazione del momento angolare','La conservazione della massa','La seconda legge di Newton'],ans:1,exp:'Poiché la forza gravitazionale è diretta verso il Sole, il suo momento torcente rispetto al Sole è zero → il momento angolare L = r × mv è costante → aree uguali in tempi uguali.'},
+            {q:'Se la massa di un pianeta raddoppia, la velocità orbitale di un suo satellite alla stessa distanza:',opts:['Dimezza','Rimane uguale','Aumenta di √2','Raddoppia'],ans:2,exp:'v = √(GM/r). Se M raddoppia, v = √(G·2M/r) = √2 · √(GM/r), quindi aumenta di un fattore √2 ≈ 1.41.'},
+            {q:'Un corpo ha massa inerziale m_i e massa gravitazionale m_g. Il Principio di Equivalenza afferma che:',opts:['m_i > m_g sempre','m_i = m_g con precisione sperimentale','m_i < m_g sempre','m_i e m_g non hanno relazione'],ans:1,exp:'Esperimenti da Galileo a Eötvös (e oggi con i satelliti) mostrano che m_i = m_g con una precisione di 1 parte su 10¹². Questo fatto misterioso è alla base della Relatività Generale di Einstein.'},
+            {q:'La catenaria è:',opts:['Una parabola (come Galileo pensava)','Il grafico di cosh(x/a)','Una semicirconferenza','Una retta']  ,ans:1,exp:'La catenaria y = a·cosh(x/a) fu scoperta da Leibniz, Huygens e Bernoulli nel 1691. Si differenzia dalla parabola perché ogni segmento è in equilibrio con la tensione e il peso distribuito uniformemente lungo la fune (non lungo l\'asse x).'},
+        ];
+        let qScore=0,qAns=0;
+        function loadQuiz(){
+            document.getElementById('quiz-area').innerHTML=quizData.map((q,i)=>`
+                <div class="quiz-question" style="margin-bottom:2rem;">
+                    <h3 style="color:var(--text-main);font-size:1rem;font-weight:600;margin-bottom:0.8rem;">${i+1}. ${q.q}</h3>
+                    <div style="display:flex;flex-direction:column;gap:0.5rem;">
+                        ${q.opts.map((o,j)=>`<button class="quiz-btn" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:var(--text-main);padding:0.75rem 1rem;border-radius:0.5rem;cursor:pointer;text-align:left;font-size:0.95rem;transition:all 0.2s;font-family:inherit;" onmouseover="if(!this.disabled)this.style.background='rgba(245,158,11,0.15)'" onmouseout="if(!this.disabled)this.style.background='rgba(255,255,255,0.04)'" onclick="checkQ(${i},${j},this)">${o}</button>`).join('')}
+                    </div>
+                    <div id="qexp-${i}" style="display:none;margin-top:0.6rem;font-size:0.87rem;color:#6ee7b7;background:rgba(16,185,129,0.07);padding:0.7rem 1rem;border-radius:8px;"></div>
+                </div>`).join('');
+        }
+        window.checkQ=function(qi,oi,btn){
+            const btns=btn.parentElement.querySelectorAll('.quiz-btn');
+            btns.forEach(b=>{b.disabled=true;});
+            if(oi===quizData[qi].ans){btn.style.background='rgba(16,185,129,0.2)';btn.style.borderColor='#10b981';btn.style.color='#6ee7b7';qScore++;}
+            else{btn.style.background='rgba(239,68,68,0.2)';btn.style.borderColor='#ef4444';btn.style.color='#fca5a5';
+                btns[quizData[qi].ans].style.background='rgba(16,185,129,0.2)';btns[quizData[qi].ans].style.borderColor='#10b981';btns[quizData[qi].ans].style.color='#6ee7b7';}
+            document.getElementById('qexp-'+qi).textContent='💡 '+quizData[qi].exp;
+            document.getElementById('qexp-'+qi).style.display='block';
+            qAns++;
+            if(qAns===quizData.length){
+                const pct=Math.round(qScore/quizData.length*100);
+                document.getElementById('quiz-score').textContent=`Punteggio: ${qScore}/${quizData.length} (${pct}%). ${pct===100?'🏆 Perfetto!':pct>=75?'🚀 Ottimo!':pct>=50?'📚 Buono, rileggi la lezione!':'🔄 Rileggi la lezione sulla gravitazione!'}`;
+            }
+        };
+        document.addEventListener('DOMContentLoaded', loadQuiz);
+        // Se DOMContentLoaded è già passato
+        if(document.readyState==='complete'||document.readyState==='interactive') loadQuiz();
+
+    </script>
+</body>
+</html>
