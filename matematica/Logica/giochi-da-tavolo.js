@@ -4,6 +4,141 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+
+    /* --- SUDOKU 4x4 MINI PUZZLE --- */
+    const sudokuGrid = document.getElementById('sudoku-grid');
+    if (sudokuGrid) {
+        // Puzzle: 0 = empty cell. Solution: row-major order.
+        // The puzzle:
+        //  _  3  _  1
+        //  1  _  3  _
+        //  _  1  _  3
+        //  3  _  1  _
+        const puzzle = [
+            0, 3, 0, 1,
+            1, 0, 3, 0,
+            0, 1, 0, 3,
+            3, 0, 1, 0
+        ];
+        const solution = [
+            2, 3, 4, 1,
+            1, 4, 3, 2,
+            4, 1, 2, 3,
+            3, 2, 1, 4
+        ];
+
+        let cells = [];
+
+        function buildGrid() {
+            sudokuGrid.innerHTML = '';
+            cells = [];
+            puzzle.forEach((val, idx) => {
+                const row = Math.floor(idx / 4);
+                const col = idx % 4;
+                const div = document.createElement('div');
+                div.className = 'sudoku-cell';
+
+                // Add thick borders for 2x2 box separation
+                if (col === 1) div.classList.add('border-right-thick');
+                if (row === 1) div.classList.add('border-bottom-thick');
+
+                if (val !== 0) {
+                    // Fixed cell
+                    div.classList.add('fixed');
+                    div.textContent = val;
+                    cells.push({ el: div, fixed: true, value: val });
+                } else {
+                    // Editable cell
+                    div.classList.add('editable');
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.maxLength = 1;
+                    input.inputMode = 'numeric';
+                    input.setAttribute('aria-label', `Riga ${row + 1}, Colonna ${col + 1}`);
+                    input.addEventListener('input', (e) => {
+                        let v = e.target.value.replace(/[^1-4]/g, '');
+                        e.target.value = v;
+                        div.classList.remove('error', 'correct');
+                        clearFeedback();
+                    });
+                    input.addEventListener('keydown', (e) => {
+                        // Allow navigation with arrow keys
+                        const curIdx = cells.indexOf(cells.find(c => c.el === div));
+                        let targetIdx = -1;
+                        if (e.key === 'ArrowRight') targetIdx = curIdx + 1;
+                        if (e.key === 'ArrowLeft') targetIdx = curIdx - 1;
+                        if (e.key === 'ArrowDown') targetIdx = curIdx + 4;
+                        if (e.key === 'ArrowUp') targetIdx = curIdx - 4;
+                        if (targetIdx >= 0 && targetIdx < 16 && cells[targetIdx]) {
+                            const targetCell = cells[targetIdx];
+                            const targetInput = targetCell.el.querySelector('input');
+                            if (targetInput) targetInput.focus();
+                        }
+                    });
+                    div.appendChild(input);
+                    cells.push({ el: div, fixed: false, input: input });
+                }
+                sudokuGrid.appendChild(div);
+            });
+        }
+
+        function clearFeedback() {
+            const fb = document.getElementById('sudoku-feedback');
+            if (fb) { fb.textContent = ''; fb.style.color = ''; }
+        }
+
+        function checkSolution() {
+            const fb = document.getElementById('sudoku-feedback');
+            let allFilled = true;
+            let allCorrect = true;
+
+            cells.forEach((cell, idx) => {
+                cell.el.classList.remove('error', 'correct');
+                let userVal;
+                if (cell.fixed) {
+                    userVal = cell.value;
+                } else {
+                    userVal = parseInt(cell.input.value);
+                    if (!userVal || isNaN(userVal)) {
+                        allFilled = false;
+                        return;
+                    }
+                }
+                if (userVal !== solution[idx]) {
+                    allCorrect = false;
+                    if (!cell.fixed) cell.el.classList.add('error');
+                } else {
+                    if (!cell.fixed) cell.el.classList.add('correct');
+                }
+            });
+
+            if (!allFilled) {
+                fb.textContent = '⚠️ Completa tutte le celle prima di controllare!';
+                fb.style.color = '#fbbf24';
+            } else if (allCorrect) {
+                fb.textContent = '🎉 Perfetto! Hai risolto il Sudoku!';
+                fb.style.color = '#10b981';
+            } else {
+                fb.textContent = '❌ Ci sono degli errori (celle in rosso). Riprova!';
+                fb.style.color = '#ef4444';
+            }
+        }
+
+        function resetGrid() {
+            cells.forEach(cell => {
+                cell.el.classList.remove('error', 'correct');
+                if (!cell.fixed) cell.input.value = '';
+            });
+            clearFeedback();
+        }
+
+        buildGrid();
+
+        const checkBtn = document.getElementById('sudoku-check');
+        const resetBtn = document.getElementById('sudoku-reset');
+        if (checkBtn) checkBtn.addEventListener('click', checkSolution);
+        if (resetBtn) resetBtn.addEventListener('click', resetGrid);
+    }
     
     /* --- QUIZ: GIOCHI DA TAVOLO E AI (5 questions) --- */
     const quizData = [

@@ -123,9 +123,70 @@
             </div>
         </section>
 
-        <!-- ==================== SEZIONE 4: DIAGONALIZZAZIONE ==================== -->
+        <!-- ==================== SEZIONE 4: BASI ORTONORMALI ==================== -->
+        <section class="lesson-section" style="border-left: 4px solid #EC4899;">
+            <h2 class="lesson-title" style="color: #EC4899;">4. Basi Ortonormali: La Bussola Perfetta</h2>
+            <p class="lesson-text">
+                Nella sezione precedente abbiamo visto che possiamo scegliere diversi "sistemi di riferimento" (basi) per descrivere lo spazio. Ma non tutte le basi sono ugualmente comode! Immagina di dover misurare una stanza con un metro storto e un altro metro piegato: otterresti risultati confusi. Le <strong>Basi Ortonormali</strong> sono l'equivalente matematico di metri perfettamente dritti, perpendicolari e della stessa lunghezza.
+            </p>
+
+            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+                <div style="background: rgba(236, 72, 153, 0.05); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(236, 72, 153, 0.2);">
+                    <h4 style="color: #EC4899; margin-bottom: 0.5rem;">📐 Ortogonale = Perpendicolare</h4>
+                    <p style="font-size: 0.95rem; line-height: 1.6;">Due vettori sono <strong>ortogonali</strong> quando formano un angolo di 90°, esattamente come gli assi \(x\) e \(y\) sul piano cartesiano. In formule, due vettori \(\vec{u}\) e \(\vec{v}\) sono ortogonali quando il loro <strong>prodotto scalare è nullo</strong>: \( \vec{u} \cdot \vec{v} = 0 \). Pensalo così: se cammini verso Est, non ti avvicini neanche un millimetro a Nord. Le due direzioni non "si parlano".</p>
+                </div>
+                <div style="background: rgba(236, 72, 153, 0.05); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(236, 72, 153, 0.2);">
+                    <h4 style="color: #EC4899; margin-bottom: 0.5rem;">📏 Normale = Lunghezza Unitaria</h4>
+                    <p style="font-size: 0.95rem; line-height: 1.6;">Un vettore si dice <strong>normalizzato</strong> (o unitario) quando la sua lunghezza (norma) è esattamente 1. Per normalizzare qualsiasi vettore basta dividere ciascuna componente per la sua norma: \( \hat{u} = \frac{\vec{u}}{\|\vec{u}\|} \). È come prendere una freccia qualunque e ridimensionarla in modo che "un passo" equivalga sempre alla stessa distanza.</p>
+                </div>
+            </div>
+
+            <p class="lesson-text" style="font-weight: bold; font-size: 1.1rem; color: #F472B6;">
+                Una Base Ortonormale è quindi un insieme di vettori che sono tutti perpendicolari tra loro e tutti di lunghezza 1.
+            </p>
+
+            <p class="lesson-text">
+                L'esempio più semplice e familiare è proprio la <strong>Base Standard</strong> che già conosciamo:
+            </p>
+            <p style="text-align: center; font-size: 1.2rem; margin: 1.5rem 0; color: var(--text-main);">
+                \( \hat{e}_1 = \begin{bmatrix} 1 \\ 0 \end{bmatrix}, \quad \hat{e}_2 = \begin{bmatrix} 0 \\ 1 \end{bmatrix} \)
+            </p>
+            <p class="lesson-text">
+                Verifica rapida: il prodotto scalare \( \hat{e}_1 \cdot \hat{e}_2 = (1)(0) + (0)(1) = 0 \) ✅ (sono perpendicolari) e la norma di ognuno è \( \sqrt{1^2 + 0^2} = 1 \) ✅ (sono unitari). Perfetto!
+            </p>
+
+            <div style="background: rgba(236, 72, 153, 0.05); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(236, 72, 153, 0.2); margin-top: 2rem;">
+                <h4 style="color: #EC4899; margin-bottom: 1rem; font-size: 1.15rem;">🔧 Come costruirne una: Il Processo di Gram-Schmidt</h4>
+                <p style="font-size: 0.95rem; line-height: 1.7; margin-bottom: 1rem;">Data una base qualsiasi (magari storta e disordinata), esiste una procedura sistematica per "raddrizzarla" in una base ortonormale. Si chiama <strong>Processo di Gram-Schmidt</strong> e funziona in due passi ripetuti:</p>
+                <ol style="font-size: 0.95rem; line-height: 1.7; padding-left: 1.5rem; margin-bottom: 1rem;">
+                    <li style="margin-bottom: 0.6rem;"><strong>Ortogonalizza:</strong> prendi il prossimo vettore della base originale e sottrai da esso tutte le componenti che "puntano" nelle direzioni dei vettori già corretti. La formula chiave è: \( \vec{u}_k = \vec{v}_k - \sum_{i=1}^{k-1} \text{proj}_{\vec{u}_i}(\vec{v}_k) \), dove la proiezione è \( \text{proj}_{\vec{u}}(\vec{v}) = \frac{\vec{v} \cdot \vec{u}}{\vec{u} \cdot \vec{u}} \vec{u} \).</li>
+                    <li><strong>Normalizza:</strong> dividi ogni vettore risultante per la sua lunghezza per portarlo a norma 1.</li>
+                </ol>
+                <p style="font-size: 0.95rem; line-height: 1.7; margin-bottom: 0;">Il risultato? Una base linda, pulita e perfettamente rettangolare, qualunque fosse il disordine di partenza!</p>
+            </div>
+
+            <div style="display: flex; gap: 1.5rem; flex-wrap: wrap; margin-top: 2rem;">
+                <div style="flex: 1; min-width: 280px; background: rgba(236, 72, 153, 0.05); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(236, 72, 153, 0.2);">
+                    <h4 style="color: #EC4899; margin-bottom: 0.5rem;">⭐ Perché sono così speciali?</h4>
+                    <p style="font-size: 0.95rem; line-height: 1.6;">Con una base ortonormale, i calcoli diventano magicamente semplici:</p>
+                    <ul style="font-size: 0.95rem; line-height: 1.7; padding-left: 1.2rem;">
+                        <li style="margin-bottom: 0.4rem;"><strong>Proiettare</strong> un vettore su un asse diventa un semplice prodotto scalare, senza divisioni complicate.</li>
+                        <li style="margin-bottom: 0.4rem;"><strong>Le coordinate</strong> di un punto si trovano istantaneamente: la componente lungo \(\hat{e}_i\) è semplicemente \( \vec{v} \cdot \hat{e}_i \).</li>
+                        <li style="margin-bottom: 0.4rem;"><strong>Le matrici di cambio base</strong> ortonormali hanno una proprietà prodigiosa: la loro inversa è semplicemente la trasposta! \( Q^{-1} = Q^T \). Si dice che sono <em>ortogonali</em>.</li>
+                        <li>In ambito computazionale, sono <strong>numericamente stabili</strong>: non amplificano gli errori di arrotondamento.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="background: linear-gradient(135deg, rgba(236, 72, 153, 0.08), rgba(168, 85, 247, 0.08)); padding: 1.5rem; border-radius: 12px; margin-top: 2rem;">
+                <h4 style="color: #EC4899; margin-bottom: 0.5rem;">💡 Curiosità: Oltre la geometria</h4>
+                <p style="font-size: 0.95rem; line-height: 1.7; margin-bottom: 0;">Le basi ortonormali non vivono solo nel piano o nello spazio 3D! In <strong>meccanica quantistica</strong> gli stati di una particella formano basi ortonormali in spazi a dimensione infinita. Nella <strong>compressione JPEG</strong> delle immagini, i coseni (funzioni periodiche ortogonali) vengono usati come base ortonormale per rappresentare i pixel in modo efficiente. Anche il riconoscimento vocale del tuo smartphone sfrutta basi ortonormali di frequenze sonore per capire cosa stai dicendo!</p>
+            </div>
+        </section>
+
+        <!-- ==================== SEZIONE 5: DIAGONALIZZAZIONE ==================== -->
         <section class="lesson-section" style="border-left: 4px solid #10B981; background: rgba(16, 185, 129, 0.03);">
-            <h2 class="lesson-title" style="color: #10B981;">4. Il Santo Graal: La Diagonalizzazione</h2>
+            <h2 class="lesson-title" style="color: #10B981;">5. Il Santo Graal: La Diagonalizzazione</h2>
             <p class="lesson-text">
                 Moltiplicare due matrici enormi o elevarne una a potenza come $M^{100}$ (per simulare 100 anni che passano) genera miliardi di calcoli mostruosamente caotici, in cui gli assi si incrociano orribilmente generando rotazioni incontrollabili.
             </p>

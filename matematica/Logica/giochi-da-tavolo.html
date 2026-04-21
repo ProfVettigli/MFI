@@ -35,6 +35,71 @@
             text-align: center;
             margin: 2rem 0;
         }
+
+        .sudoku-cell {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+            font-family: 'Fira Code', monospace;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            transition: background 0.2s, box-shadow 0.2s;
+            box-sizing: border-box;
+        }
+
+        .sudoku-cell.fixed {
+            background: rgba(255, 255, 255, 0.06);
+            color: #93c5fd;
+            cursor: default;
+        }
+
+        .sudoku-cell.editable {
+            background: rgba(0, 0, 0, 0.25);
+            color: #fff;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .sudoku-cell.editable:hover {
+            background: rgba(59, 130, 246, 0.12);
+            box-shadow: inset 0 0 0 2px rgba(59, 130, 246, 0.4);
+        }
+
+        .sudoku-cell.editable:focus-within {
+            background: rgba(59, 130, 246, 0.18);
+            box-shadow: inset 0 0 0 2px #3b82f6;
+        }
+
+        .sudoku-cell.error {
+            background: rgba(239, 68, 68, 0.15) !important;
+            box-shadow: inset 0 0 0 2px rgba(239, 68, 68, 0.6) !important;
+        }
+
+        .sudoku-cell.correct {
+            background: rgba(16, 185, 129, 0.15) !important;
+            box-shadow: inset 0 0 0 2px rgba(16, 185, 129, 0.4) !important;
+        }
+
+        .sudoku-cell input {
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            border: none;
+            color: #fff;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+            font-family: 'Fira Code', monospace;
+            outline: none;
+            caret-color: #3b82f6;
+        }
+
+        /* Thick borders for box separation (2x2 in 4x4 grid) */
+        .sudoku-cell.border-right-thick { border-right: 3px solid rgba(255, 255, 255, 0.4); }
+        .sudoku-cell.border-bottom-thick { border-bottom: 3px solid rgba(255, 255, 255, 0.4); }
     </style>
 </head>
 
@@ -148,6 +213,91 @@
                 ogni convenzione logica codificata nei millenni passati dai maestri di Go per seguire percorsi e schemi
                 che gli esseri umani non avevano mai visto prima.
             </p>
+        </section>
+
+        <!-- SUDOKU -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">4. Il Sudoku: Logica Pura senza Matematica</h2>
+            <p class="lesson-text">
+                Esiste un gioco che non richiede né dadi, né avversari, né conoscenze matematiche… eppure è uno dei più
+                potenti esercizi di <strong>ragionamento logico deduttivo</strong> mai inventati. Si chiama
+                <strong>Sudoku</strong>.
+            </p>
+
+            <div style="background: rgba(251, 191, 36, 0.05); padding: 1.5rem; border-radius: 12px; border-left: 3px solid #fbbf24; margin: 2rem 0;">
+                <h4 style="color: #fbbf24; margin-bottom: 0.5rem; font-size: 1.1rem;">📜 Breve Storia del Sudoku</h4>
+                <p style="font-size: 0.95rem; margin: 0; line-height: 1.6;">
+                    Nonostante il nome giapponese, il Sudoku ha origini occidentali. Il concetto risale ai
+                    <strong>Quadrati Latini</strong> studiati dal grande matematico svizzero <strong>Leonhard Euler</strong>
+                    nel XVIII secolo. La versione moderna fu ideata nel 1979 dall'architetto americano
+                    <strong>Howard Garns</strong> e pubblicata sulla rivista <em>Dell Pencil Puzzles &amp; Word Games</em>
+                    con il nome "Number Place".
+                    <br><br>
+                    Il gioco arrivò in Giappone nel 1984, dove la casa editrice Nikoli lo ribattezzò
+                    <strong>数独 (Sūdoku)</strong>, abbreviazione di <em>"Sūji wa dokushin ni kagiru"</em> che significa
+                    "le cifre devono essere singole" (cioè non ripetute). La vera esplosione globale avvenne nel 2004,
+                    quando il giornale britannico <em>The Times</em> iniziò a pubblicarlo quotidianamente, trasformandolo
+                    in un fenomeno mondiale.
+                </p>
+            </div>
+
+            <h3 style="color: #3b82f6; margin-bottom: 0.5rem; margin-top: 2rem;">📐 Le Regole</h3>
+            <p class="lesson-text" style="font-size: 0.95rem;">
+                Le regole del Sudoku sono straordinariamente semplici. Si gioca su una griglia <strong>9×9</strong>
+                suddivisa in 9 sotto-griglie (o "box") di <strong>3×3</strong>. Alcune celle contengono già un numero
+                (gli "indizi"). L'obiettivo è riempire tutte le celle vuote con i numeri da 1 a 9 rispettando
+                <strong>tre vincoli contemporaneamente</strong>:
+            </p>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin: 1.5rem 0;">
+                <div style="background: rgba(59, 130, 246, 0.08); padding: 1.2rem; border-radius: 10px; text-align: center;">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">↔️</div>
+                    <div style="font-weight: 700; color: #3b82f6; margin-bottom: 0.3rem;">Regola della Riga</div>
+                    <p style="font-size: 0.85rem; margin: 0; color: var(--text-muted);">Ogni <strong>riga</strong> deve contenere tutti i numeri da 1 a 9 senza ripetizioni.</p>
+                </div>
+                <div style="background: rgba(16, 185, 129, 0.08); padding: 1.2rem; border-radius: 10px; text-align: center;">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">↕️</div>
+                    <div style="font-weight: 700; color: #10b981; margin-bottom: 0.3rem;">Regola della Colonna</div>
+                    <p style="font-size: 0.85rem; margin: 0; color: var(--text-muted);">Ogni <strong>colonna</strong> deve contenere tutti i numeri da 1 a 9 senza ripetizioni.</p>
+                </div>
+                <div style="background: rgba(168, 85, 247, 0.08); padding: 1.2rem; border-radius: 10px; text-align: center;">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">⬜</div>
+                    <div style="font-weight: 700; color: #a855f7; margin-bottom: 0.3rem;">Regola del Box</div>
+                    <p style="font-size: 0.85rem; margin: 0; color: var(--text-muted);">Ogni <strong>sotto-griglia 3×3</strong> deve contenere tutti i numeri da 1 a 9 senza ripetizioni.</p>
+                </div>
+            </div>
+
+            <p class="lesson-text" style="font-size: 0.95rem;">
+                Nota bene: nonostante si usino numeri, il Sudoku <strong>non è un gioco aritmetico</strong>! I numeri sono
+                semplici simboli. Si potrebbero sostituire con lettere, colori o emoji: la logica rimarrebbe identica. La
+                chiave è la <strong>deduzione per eliminazione</strong>: per ogni cella vuota, ci si chiede
+                <em>"quale numero NON può stare qui?"</em> fino a trovare l'unica possibilità.
+            </p>
+
+            <div class="interactive-container" style="margin-top: 2rem;">
+                <h4 style="color: white; margin-bottom: 0.5rem;">🧩 Prova: Mini-Sudoku 4×4</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem; text-align: center;">
+                    Inserisci i numeri da <strong>1 a 4</strong> nelle celle vuote. Ogni riga, colonna e box 2×2 deve
+                    contenere ogni numero esattamente una volta. Clicca una cella e digita il numero!
+                </p>
+
+                <div style="display: flex; justify-content: center; margin-bottom: 1rem;">
+                    <div id="sudoku-grid" style="display: inline-grid; grid-template-columns: repeat(4, 60px); grid-template-rows: repeat(4, 60px); gap: 0; border: 3px solid rgba(255,255,255,0.4); border-radius: 4px;">
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                    <button id="sudoku-check" class="btn-sym" style="background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.4); color: #10b981;">✓ Controlla Soluzione</button>
+                    <button id="sudoku-reset" class="btn-sym" style="background: rgba(239, 68, 68, 0.15); border-color: rgba(239, 68, 68, 0.4); color: #ef4444;">↺ Ricomincia</button>
+                </div>
+                <div id="sudoku-feedback" style="text-align: center; margin-top: 1rem; font-weight: bold; font-size: 1.1rem; min-height: 1.5em; transition: 0.3s;"></div>
+            </div>
+
+            <div class="quote-box" style="margin-top: 2rem; border-left-color: #fbbf24; background: rgba(251, 191, 36, 0.05); color: #fde68a;">
+                Il Sudoku dimostra che la logica non è solo roba da computer o da filosofi: è una capacità umana
+                fondamentale. Ogni volta che elimini un'opzione impossibile e trovi l'unica soluzione, stai facendo
+                esattamente ciò che fanno i grandi scienziati: ragionare per esclusione.
+            </div>
         </section>
 
         <!-- QUIZ -->

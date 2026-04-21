@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conservazione dell'Energia — Meccanica | MFI</title>
+    <meta name="description" content="Lezione interattiva sulla conservazione dell'energia: dall'analogia di Feynman ai giocattoli nascosti, al lavoro, all'energia cinetica, potenziale e al pendolo balistico.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+        onload="renderMathInElement(document.body);"></script>
+
+    <style>
+        :root {
+            --energy-color: #f59e0b;
+            --energy-glow: rgba(245,158,11,0.4);
+            --kinetic-color: #ef4444;
+            --potential-color: #3b82f6;
+            --elastic-color: #10b981;
+            --work-color: #a78bfa;
+        }
+
+        .sub-hero {
+            padding: 4rem 0 2.5rem;
+            text-align: left;
+        }
+        .sub-hero-title {
+            font-size: clamp(2.2rem, 4vw, 3.2rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        /* ===== SECTION ===== */
+        .lesson-section {
+            margin-bottom: 3rem;
+            padding: 2.5rem;
+            border-radius: 1rem;
+            border: 1px solid rgba(255,255,255,0.06);
+            background: var(--surface-color, rgba(255,255,255,0.03));
+            scroll-margin-top: 4rem;
+        }
+        .lesson-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 1.2rem; }
+        .lesson-text { color: var(--text-muted); line-height: 1.8; margin-bottom: 1.1rem; font-size: 1.02rem; }
+
+        /* ===== INFO / FORMULA BOX ===== */
+        .info-box {
+            background: rgba(245,158,11,0.07);
+            border-left: 4px solid var(--energy-color);
+            border-radius: 0 0.75rem 0.75rem 0;
+            padding: 1.25rem 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .info-box.kinetic { border-left-color: var(--kinetic-color); background: rgba(239,68,68,0.07); }
+        .info-box.potential { border-left-color: var(--potential-color); background: rgba(59,130,246,0.07); }
+        .info-box.elastic { border-left-color: var(--elastic-color); background: rgba(16,185,129,0.07); }
+        .info-box.work { border-left-color: var(--work-color); background: rgba(167,139,250,0.07); }
+
+        /* ===== CALLOUT ===== */
+        .callout {
+            display: flex; gap: 1rem; align-items: flex-start;
+            background: rgba(245,158,11,0.07);
+            border: 1px solid rgba(245,158,11,0.22);
+            border-radius: 0.75rem; padding: 1.2rem 1.5rem; margin: 1.5rem 0;
+        }
+        .callout-icon { font-size: 1.5rem; flex-shrink: 0; }
+        .callout p { margin: 0; color: var(--text-muted); font-size: 0.97rem; line-height: 1.7; }
+        .callout p strong { color: #fcd34d; }
+        .callout.blue { background: rgba(59,130,246,0.07); border-color: rgba(59,130,246,0.22); }
+        .callout.blue p strong { color: #93c5fd; }
+        .callout.red { background: rgba(239,68,68,0.07); border-color: rgba(239,68,68,0.22); }
+        .callout.red p strong { color: #fca5a5; }
+        .callout.green { background: rgba(16,185,129,0.07); border-color: rgba(16,185,129,0.22); }
+        .callout.green p strong { color: #6ee7b7; }
+        .callout.purple { background: rgba(167,139,250,0.07); border-color: rgba(167,139,250,0.22); }
+        .callout.purple p strong { color: #c4b5fd; }
+
+        /* ===== FMA QUOTE ===== */
+        .fma-box {
+            background: linear-gradient(135deg, rgba(220,38,38,0.12), rgba(120,0,0,0.15));
+            border: 1px solid rgba(220,38,38,0.35);
+            border-radius: 1rem; padding: 1.75rem 2rem; margin: 2rem 0;
+            position: relative; overflow: hidden;
+        }
+        .fma-box::before {
+            content: '⚗️';
+            position: absolute; right: 1rem; bottom: 0.5rem;
+            font-size: 5rem; opacity: 0.08;
+        }
+        .fma-quote { font-size: 1.2rem; font-style: italic; color: var(--text-main); line-height: 1.7; margin-bottom: 0.5rem; }
+        .fma-author { font-size: 0.85rem; color: rgba(255,255,255,0.4); }
+
+        /* ===== FEYNMAN BOX ===== */
+        .feynman-box {
+            background: rgba(245,158,11,0.06);
+            border: 2px dashed rgba(245,158,11,0.3);
+            border-radius: 1rem; padding: 1.75rem 2rem; margin: 2rem 0;
+            position: relative; overflow: hidden;
+        }
+        .feynman-box::after {
+            content: '🧸';
+            position: absolute; right: 1.5rem; bottom: 1rem;
+            font-size: 4rem; opacity: 0.15;
+        }
+        .toy-grid {
+            display: grid; grid-template-columns: repeat(auto-fit,minmax(180px,1fr));
+            gap: 1rem; margin-top: 1.25rem;
+        }
+        .toy-card {
+            background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 0.75rem; padding: 1.1rem; text-align: center;
+        }
+        .toy-card .toy-icon { font-size: 2.2rem; margin-bottom: 0.4rem; }
+        .toy-card p { color: var(--text-muted); font-size: 0.85rem; margin: 0; }
+
+        /* ===== INTERACTIVE ===== */
+        .sim-container {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 1rem; padding: 2rem; margin: 1.5rem 0;
+        }
+        .sim-container h3 { color: var(--energy-color); margin-bottom: 1.2rem; }
+        .controls-row {
+            display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: flex-end; margin-bottom: 1rem;
+        }
+        .ctrl-group { display: flex; flex-direction: column; gap: 0.3rem; }
+        .ctrl-group label { color: var(--text-muted); font-size: 0.83rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .ctrl-group input[type=number] {
+            background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.15);
+            color: white; padding: 0.5rem 0.7rem; border-radius: 6px;
+            font-family: inherit; font-size: 1rem; width: 100px;
+        }
+        .ctrl-group input[type=range] {
+            -webkit-appearance: none; width: 160px; height: 6px;
+            background: rgba(245,158,11,0.25); border-radius: 3px; outline: none;
+        }
+        .ctrl-group input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none; width: 16px; height: 16px;
+            border-radius: 50%; background: var(--energy-color); cursor: pointer;
+        }
+        .btn-action {
+            background: rgba(245,158,11,0.2); border: 1px solid var(--energy-color);
+            color: #fcd34d; padding: 0.6rem 1.4rem; border-radius: 6px;
+            cursor: pointer; font-family: inherit; font-size: 0.95rem;
+            transition: all 0.2s; align-self: flex-end;
+        }
+        .btn-action:hover { background: rgba(245,158,11,0.35); transform: translateY(-1px); }
+        .result-box {
+            background: rgba(0,0,0,0.3); border-radius: 8px;
+            padding: 1.2rem 1.5rem; min-height: 60px;
+            font-size: 0.97rem; color: var(--text-muted);
+        }
+        .result-box .val { color: var(--energy-color); font-weight: 700; font-size: 1.1rem; }
+        .result-box .row { display: block; margin: 0.2rem 0; }
+
+        /* ===== CANVAS ===== */
+        .canvas-wrap {
+            background: rgba(0,0,0,0.3); border-radius: 10px;
+            padding: 1rem; margin: 1rem 0; text-align: center;
+        }
+        canvas { display: block; margin: 0 auto; max-width: 100%; border-radius: 6px; }
+
+        /* ===== ENERGY BARS ===== */
+        .energy-display {
+            display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap;
+        }
+        .ebar {
+            flex: 1; min-width: 120px; background: rgba(0,0,0,0.3);
+            border-radius: 8px; padding: 0.75rem 1rem; text-align: center;
+        }
+        .ebar-label { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-muted); margin-bottom: 0.4rem; }
+        .ebar-track { height: 10px; background: rgba(255,255,255,0.08); border-radius: 5px; margin: 0.4rem 0; overflow: hidden; }
+        .ebar-fill { height: 100%; border-radius: 5px; transition: width 0.15s; }
+        .ebar-val { font-size: 0.9rem; font-weight: 700; }
+
+        /* ===== EXERCISE SOLVED ===== */
+        .solution-box {
+            background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 1rem; padding: 1.5rem; margin: 1.5rem 0;
+        }
+        .solution-box h4 { color: #fbbf24; font-size: 1rem; margin-bottom: 1rem; }
+        .step { display: flex; gap: 1rem; margin-bottom: 0.85rem; align-items: flex-start; }
+        .step-num {
+            background: linear-gradient(135deg,#f59e0b,#ef4444);
+            color: white; font-weight: 800; font-size: 0.8rem;
+            min-width: 28px; height: 28px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        }
+        .step-body { color: var(--text-muted); font-size: 0.97rem; line-height: 1.7; }
+
+        /* ===== QUIZ ===== */
+        .quiz-question { margin-bottom: 2rem; }
+        .quiz-question h3 { color: var(--text-main); font-size: 1rem; font-weight: 600; margin-bottom: 0.8rem; }
+        .quiz-options { display: flex; flex-direction: column; gap: 0.5rem; }
+        .quiz-btn {
+            background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+            color: var(--text-main); padding: 0.75rem 1rem; border-radius: 0.5rem;
+            cursor: pointer; text-align: left; font-size: 0.95rem;
+            transition: all 0.2s; font-family: inherit;
+        }
+        .quiz-btn:hover:not(:disabled) { background: rgba(245,158,11,0.15); border-color: var(--energy-color); }
+        .quiz-btn.correct { background: rgba(16,185,129,0.2)!important; border-color: #10b981!important; color: #6ee7b7; }
+        .quiz-btn.wrong { background: rgba(239,68,68,0.2)!important; border-color: #ef4444!important; color: #fca5a5; }
+        .quiz-btn:disabled { cursor: not-allowed; }
+        .quiz-score-msg { text-align: center; font-weight: 700; color: var(--energy-color); font-size: 1.1rem; margin-top: 1rem; min-height: 1.5rem; }
+
+        /* ===== TOC ===== */
+        .toc {
+            background: rgba(245,158,11,0.05);
+            border: 1px solid rgba(245,158,11,0.2);
+            border-radius: 1rem; padding: 1.5rem 2rem; margin: 1.5rem 0 2.5rem;
+        }
+        .toc h3 { color: var(--energy-color); margin-bottom: 0.75rem; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.07em; }
+        .toc ol { padding-left: 1.2rem; }
+        .toc li { margin-bottom: 0.35rem; }
+        .toc a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+        .toc a:hover { color: var(--energy-color); }
+
+        @media (max-width: 768px) {
+            .lesson-section { padding: 1.5rem; }
+            .controls-row { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="sub-hero">
+        <div class="container">
+            <div style="text-align:center; margin-bottom:2rem;">
+                <a href="../meccanica.html" class="back-button" style="margin-bottom:0;">
+                    <span class="back-icon">←</span> Meccanica
+                </a>
+            </div>
+            <h1 class="sub-hero-title">⚡ Conservazione dell'<span class="gradient-text">Energia</span></h1>
+            <p style="font-size:1.1rem; color:var(--text-muted); max-width:750px; font-weight:300; line-height:1.7;">
+                Dai giocattoli nascosti di Feynman al pendolo balistico dei detective balistici: l'energia non si crea né si distrugge, si trasforma.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <nav class="toc">
+            <h3>📋 Indice della lezione</h3>
+            <ol>
+                <li><a href="#sec-energia">Cos'è l'Energia? L'analogia di Feynman</a></li>
+                <li><a href="#sec-lavoro">Il Lavoro: forza × spostamento</a></li>
+                <li><a href="#sec-cinetica">Energia Cinetica</a></li>
+                <li><a href="#sec-potenziale">Energia Potenziale Gravitazionale — Lancio verticale</a></li>
+                <li><a href="#sec-elastica">Energia Potenziale Elastica — Lancio con molla</a></li>
+                <li><a href="#sec-pendolo">Pendolo Balistico</a></li>
+                <li><a href="#sec-quiz">Verifica finale</a></li>
+            </ol>
+        </nav>
+
+        <!-- ================================================================ -->
+        <!-- 1. COS'È L'ENERGIA -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-energia">
+            <h2 class="lesson-title">1. 🧸 Cos'è l'Energia? L'analogia di Feynman</h2>
+
+            <p class="lesson-text">
+                L'<strong>energia</strong> è una delle grandezze più fondamentali della fisica — eppure è stranamente difficile da definire. Non è una sostanza, non si vede, non si tocca. Allora cos'è?
+            </p>
+            <p class="lesson-text">
+                Il fisico Richard Feynman, premio Nobel 1965, propose un'analogia brillante per spiegare l'energia ai suoi studenti:
+            </p>
+
+            <div class="feynman-box">
+                <h3 style="color:var(--energy-color); margin-bottom:0.75rem;">🔬 L'Analogia di Feynman</h3>
+                <p class="lesson-text" style="font-style:italic;">
+                    Immaginate un bambino che ha 28 blocchi LEGO. La mamma li conta ogni sera: ce ne sono sempre 28. Un giorno ne trovano solo 27 — ma poi li ricontano e uno era nascosto sotto il tappeto. Un altro giorno 25, ma ne trovano due nella vasca da bagno. Non importa dove siano, in buca, nell'acqua sporca, addirittura invisibili nella pellicola di sapone — <strong>se si sa come misurarli, la somma è sempre 28</strong>.
+                </p>
+                <p class="lesson-text">
+                    Ecco l'energia: <strong>non sappiamo "cosa" sia</strong>, ma sappiamo che il numero totale rimane costante nel tempo, purché teniamo conto di tutte le sue forme. Ogni "forma nascosta" che scopriamo è una nuova forma di energia.
+                </p>
+                <div class="toy-grid">
+                    <div class="toy-card"><div class="toy-icon">🏃</div><p>Energia<br><strong>Cinetica</strong><br>blocchi in mano</p></div>
+                    <div class="toy-card"><div class="toy-icon">🏔️</div><p>Energia<br><strong>Potenziale</strong><br>blocchi in alto</p></div>
+                    <div class="toy-card"><div class="toy-icon">🌡️</div><p>Energia<br><strong>Termica</strong><br>blocchi caldi</p></div>
+                    <div class="toy-card"><div class="toy-icon">⚡</div><p>Energia<br><strong>Elettrica</strong><br>blocchi in filo</p></div>
+                    <div class="toy-card"><div class="toy-icon">☢️</div><p>Energia<br><strong>Nucleare</strong><br>blocchi nell'atomo</p></div>
+                </div>
+            </div>
+
+            <!-- FMA Quote -->
+            <div class="fma-box">
+                <p class="fma-quote">
+                    "Humans cannot gain anything without first giving something in return. To obtain, something of equal value must be lost. That is alchemy's First Law of Equivalent Exchange."
+                </p>
+                <p class="fma-author">— <strong>Alphonse Elric</strong>, <em>Fullmetal Alchemist</em></p>
+                <p class="lesson-text" style="margin-top:1rem; font-style:normal; color:var(--text-muted);">
+                    In fisica questo principio si chiama <strong>Conservazione dell'Energia</strong>: in un sistema isolato, l'energia totale rimane costante. Non si crea e non si distrugge — si trasforma da una forma all'altra. Il Principio di Hess degli alchimisti di Arakawa è, sorprendentemente, fisica corretta.
+                </p>
+            </div>
+
+            <div class="callout">
+                <span class="callout-icon">📏</span>
+                <p><strong>Unità di misura:</strong> l'energia si misura in <strong>Joule (J)</strong>, dove \(1\,\text{J} = 1\,\text{kg}\cdot\text{m}^2/\text{s}^2\). Un Joule è circa l'energia necessaria per sollevare una mela di 100 g di un metro.</p>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 2. IL LAVORO -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-lavoro">
+            <h2 class="lesson-title">2. ⚙️ Il Lavoro: il collegamento tra forza ed energia</h2>
+
+            <p class="lesson-text">
+                Per trasferire energia a un oggetto, serve una <strong>forza</strong> applicata per un certo <strong>spostamento</strong>. Il prodotto di queste due grandezze si chiama <strong>lavoro</strong>:
+            </p>
+
+            <div class="info-box work">
+                \[ W = \vec{F} \cdot \vec{s} = F\,s\,\cos\theta \]
+                <p style="margin:0.75rem 0 0; color:var(--text-muted); font-size:0.95rem;">
+                    dove \(\theta\) è l'angolo tra la direzione della forza e lo spostamento. Il lavoro è un <strong>prodotto scalare</strong>: è un numero, non un vettore.
+                </p>
+            </div>
+
+            <p class="lesson-text">
+                Questo è matematicamente il <strong>prodotto scalare</strong> tra i vettori \(\vec{F}\) e \(\vec{s}\):
+                \[ W = \vec{F}\cdot\vec{s} = F_x s_x + F_y s_y + F_z s_z \]
+                Il prodotto scalare "prende" solo la componente della forza nella direzione dello spostamento — l'unica componente che "fa lavoro".
+            </p>
+
+            <div class="toy-grid" style="margin:1.5rem 0;">
+                <div class="toy-card">
+                    <div class="toy-icon">✅</div>
+                    <p><strong style="color:#6ee7b7;">\(\theta = 0°\)</strong><br>Spingo nella direzione del moto:<br>\(W = Fs\) (massimo)</p>
+                </div>
+                <div class="toy-card">
+                    <div class="toy-icon">➡️</div>
+                    <p><strong style="color:#fcd34d;">\(\theta = 90°\)</strong><br>Forza perpendicolare al moto:<br>\(W = 0\) (nessun lavoro!)</p>
+                </div>
+                <div class="toy-card">
+                    <div class="toy-icon">❌</div>
+                    <p><strong style="color:#fca5a5;">\(\theta = 180°\)</strong><br>Forza opposta al moto:<br>\(W = -Fs\) (lavoro negativo)</p>
+                </div>
+            </div>
+
+            <div class="callout purple">
+                <span class="callout-icon">💡</span>
+                <p><strong>Esempio pratico:</strong> quando cammini portando una borsa pesante in orizzontale, la forza che eserciti <em>verso l'alto</em> (per contrastare la gravità) è perpendicolare allo spostamento <em>orizzontale</em> → il <strong>lavoro della tua mano è zero</strong>! Eppure ti stanci. Perché? Perché i tuoi muscoli consumano energia chimica anche per mantenere una forza costante — ma questa non viene trasferita meccanicamente alla borsa.</p>
+            </div>
+
+            <!-- Calcolatore lavoro -->
+            <div class="sim-container">
+                <h3>⚙️ Calcolatore del Lavoro</h3>
+                <div class="controls-row">
+                    <div class="ctrl-group">
+                        <label>Forza F (N)</label>
+                        <input type="number" id="w-F" value="50" min="0" step="1">
+                    </div>
+                    <div class="ctrl-group">
+                        <label>Spostamento s (m)</label>
+                        <input type="number" id="w-s" value="10" min="0" step="0.5">
+                    </div>
+                    <div class="ctrl-group">
+                        <label>Angolo θ (°)</label>
+                        <input type="number" id="w-theta" value="30" min="0" max="180" step="5">
+                    </div>
+                    <button class="btn-action" onclick="calcWork()">Calcola</button>
+                </div>
+                <div class="result-box" id="res-work">Inserisci i valori e clicca Calcola.</div>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 3. ENERGIA CINETICA -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-cinetica">
+            <h2 class="lesson-title">3. 🏃 Energia Cinetica</h2>
+
+            <p class="lesson-text">
+                L'<strong>energia cinetica</strong> è l'energia che un corpo possiede in virtù del suo <em>movimento</em>. Maggiore è la massa e la velocità, maggiore è l'energia cinetica.
+            </p>
+
+            <div class="info-box kinetic">
+                \[ E_k = \frac{1}{2}mv^2 \]
+                <p style="margin:0.75rem 0 0; color:var(--text-muted); font-size:0.95rem;">
+                    dove \(m\) è la massa [kg] e \(v\) è la velocità [m/s]. Si misura in Joule [J].
+                </p>
+            </div>
+
+            <p class="lesson-text">
+                La formula si ricava dal <strong>Teorema Lavoro-Energia</strong>: il lavoro netto compiuto su un corpo è uguale alla variazione della sua energia cinetica:
+                \[ W_{\text{netto}} = \Delta E_k = \frac{1}{2}mv_f^2 - \frac{1}{2}mv_i^2 \]
+            </p>
+
+            <h3 style="color:var(--work-color);">Perché c'è ½? — L'area sotto il grafico</h3>
+            <p class="lesson-text">
+                C'è un modo geometrico molto elegante per capire da dove viene il fattore \(\frac{1}{2}\). In un grafico <strong>Forza – spostamento</strong>, il lavoro compiuto da una forza costante è l'<strong>area del rettangolo</strong> sottesa alla curva:
+                \[ W = F \cdot s \quad \text{(area del rettangolo)} \]
+                In un grafico <strong>Forza – velocità</strong> (o equivalentemente velocità – tempo moltiplicato per la massa), una forza che accelera un oggetto da \(0\) a \(v\) produce un andamento <em>lineare</em> di \(F = ma\). L'<strong>area sottesa è un triangolo</strong>, non un rettangolo:
+            </p>
+
+            <div class="canvas-wrap" style="padding:0.75rem;">
+                <canvas id="ek-triangle-canvas" width="560" height="180"></canvas>
+                <p style="text-align:center;color:var(--text-muted);font-size:0.82rem;margin-top:0.4rem;">Grafico Forza–velocità: il lavoro (= \(E_k\)) è l'area del triangolo = ½ · base · altezza</p>
+            </div>
+
+            <p class="lesson-text">
+                L'area del triangolo di base \(v\) e altezza \(mv\) è:
+                \[ E_k = \frac{1}{2} \cdot v \cdot mv = \frac{1}{2}mv^2 \]
+                Questo è esattamente il motivo per cui compare il fattore \(\frac{1}{2}\): l'energia cinetica non è l'intera colonna del grafico, ma solo <em>metà</em> — il triangolo sotto la retta.
+            </p>
+
+            <div class="callout red">
+                <span class="callout-icon">🚗</span>
+                <p><strong>Perché la velocità compare al quadrato?</strong> A 60 km/h hai 4× l'energia cinetica di 30 km/h. Raddoppiare la velocità <em>quadruplica</em> l'energia da dissipare in frenata — ecco perché la distanza di frenata cresce molto più velocemente della velocità.</p>
+            </div>
+
+            <!-- Simulatore cinetica -->
+            <div class="sim-container">
+                <h3>🏎️ Simulatore Energia Cinetica</h3>
+                <div class="controls-row">
+                    <div class="ctrl-group">
+                        <label>Massa m (kg)</label>
+                        <input type="range" id="ek-m" min="1" max="2000" value="70" oninput="updateEk()">
+                        <span id="ek-m-val" style="color:var(--energy-color);font-weight:700;">70 kg</span>
+                    </div>
+                    <div class="ctrl-group">
+                        <label>Velocità v (m/s)</label>
+                        <input type="range" id="ek-v" min="0" max="50" value="10" step="0.5" oninput="updateEk()">
+                        <span id="ek-v-val" style="color:var(--kinetic-color);font-weight:700;">10 m/s</span>
+                    </div>
+                </div>
+                <div class="result-box" id="res-ek">Trascina gli slider per calcolare l'energia cinetica.</div>
+                <div class="canvas-wrap" style="margin-top:1rem;">
+                    <canvas id="ek-canvas" width="620" height="60"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 4. ENERGIA POTENZIALE GRAVITAZIONALE -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-potenziale">
+            <h2 class="lesson-title">4. 🏔️ Energia Potenziale Gravitazionale — Il lancio verticale</h2>
+
+            <p class="lesson-text">
+                L'<strong>energia potenziale gravitazionale</strong> è l'energia che un corpo possiede in virtù della sua <em>posizione</em> in un campo gravitazionale. Più in alto è, più energia ha "accumulata" — pronta ad essere convertita in cinetica non appena cade.
+            </p>
+
+            <div class="info-box potential">
+                \[ E_p = mgh \]
+                <p style="margin:0.75rem 0 0; color:var(--text-muted); font-size:0.95rem;">
+                    dove \(m\) è la massa [kg], \(g = 9.81\,\text{m/s}^2\) è l'accelerazione di gravità, \(h\) è l'altezza rispetto al riferimento scelto [m].
+                </p>
+            </div>
+
+            <div class="callout" style="background:rgba(251,146,60,0.07);border-color:rgba(251,146,60,0.25);">
+                <span class="callout-icon">🌍</span>
+                <p style="color:var(--text-muted);"><strong style="color:#fb923c;">Attenzione: questa formula vale solo per h piccole!</strong> \(E_p = mgh\) è un'approssimazione valida soltanto quando \(h\) è molto piccola rispetto al raggio della Terra (\(R_\oplus \approx 6\,371\,\text{km}\)). In questo regime, la forza di gravità può essere considerata <em>costante</em> (\ g \approx 9.81\,\text{m/s}^2\).<br><br>
+                Se l'altezza diventa comparabile con \(R_\oplus\) (razzi, satelliti, viaggi spaziali), la gravità di Newton ci dice che la forza cala con il quadrato della distanza:
+                \[ F_g = G\frac{Mm}{r^2} \]
+                In quel caso l'energia potenziale gravitazionale esatta è:
+                \[ E_p = -G\frac{Mm}{r} \quad (\text{con } r = R_\oplus + h) \]
+                e non è più possibile usare la comoda formula lineare \(mgh\).</p>
+            </div>
+
+            <h3 style="color:#60a5fa;">La Conservazione nel Lancio Verticale</h3>
+            <p class="lesson-text">
+                Lanciamo un oggetto di massa \(m\) verso l'alto con velocità iniziale \(v_0\). Ignorando l'attrito dell'aria, l'<strong>energia meccanica totale si conserva</strong>:
+            </p>
+            <div class="info-box" style="text-align:center;">
+                \[ E_{\text{tot}} = E_k + E_p = \frac{1}{2}mv^2 + mgh = \text{costante} \]
+            </div>
+
+            <p class="lesson-text">All'altezza massima \(h_{\max}\), la velocità è zero (\(E_k = 0\)), quindi tutta l'energia è potenziale:</p>
+            <div class="info-box potential">
+                \[ \frac{1}{2}mv_0^2 = mgh_{\max} \implies h_{\max} = \frac{v_0^2}{2g} \]
+            </div>
+
+            <!-- Esercizio guidato -->
+            <div class="solution-box">
+                <h4>✏️ Esempio: La pallina di tennis</h4>
+                <div class="step"><div class="step-num">📋</div><div class="step-body">Una pallina da tennis (\(m = 58\,\text{g} = 0.058\,\text{kg}\)) viene lanciata verticalmente verso l'alto con \(v_0 = 20\,\text{m/s}\). Calcolare: a) l'altezza massima raggiunta; b) la velocità a \(h = 10\,\text{m}\).</div></div>
+                <div class="step"><div class="step-num">a</div><div class="step-body">
+                    Altezza massima (\(v_f = 0\)):
+                    \[ h_{\max} = \frac{v_0^2}{2g} = \frac{(20)^2}{2 \cdot 9.81} = \frac{400}{19.62} \approx \mathbf{20.4\,\text{m}} \]
+                </div></div>
+                <div class="step"><div class="step-num">b</div><div class="step-body">
+                    A \(h = 10\,\text{m}\), usando conservazione:
+                    \[ \frac{1}{2}mv_0^2 = \frac{1}{2}mv^2 + mgh \implies v = \sqrt{v_0^2 - 2gh} = \sqrt{400 - 196.2} \approx \mathbf{14.3\,\text{m/s}} \]
+                </div></div>
+            </div>
+
+            <!-- Simulatore lancio verticale -->
+            <div class="sim-container">
+                <h3>🎯 Simulatore Lancio Verticale</h3>
+                <div class="controls-row">
+                    <div class="ctrl-group">
+                        <label>Massa m (kg)</label>
+                        <input type="number" id="lv-m" value="0.5" min="0.01" step="0.1">
+                    </div>
+                    <div class="ctrl-group">
+                        <label>Velocità iniziale v₀ (m/s)</label>
+                        <input type="number" id="lv-v0" value="15" min="1" step="1">
+                    </div>
+                    <button class="btn-action" onclick="runLancioV()">Simula</button>
+                </div>
+                <div class="result-box" id="res-lv">Inserisci i parametri e clicca Simula.</div>
+                <div class="canvas-wrap">
+                    <canvas id="lv-canvas" width="640" height="300"></canvas>
+                </div>
+                <div class="energy-display">
+                    <div class="ebar">
+                        <div class="ebar-label">Cinetica Ek</div>
+                        <div class="ebar-track"><div class="ebar-fill" id="bar-ek-lv" style="background:var(--kinetic-color);width:100%;"></div></div>
+                        <div class="ebar-val" id="val-ek-lv" style="color:var(--kinetic-color);">—</div>
+                    </div>
+                    <div class="ebar">
+                        <div class="ebar-label">Potenziale Ep</div>
+                        <div class="ebar-track"><div class="ebar-fill" id="bar-ep-lv" style="background:var(--potential-color);width:0%;"></div></div>
+                        <div class="ebar-val" id="val-ep-lv" style="color:var(--potential-color);">—</div>
+                    </div>
+                    <div class="ebar">
+                        <div class="ebar-label">Totale E</div>
+                        <div class="ebar-track"><div class="ebar-fill" id="bar-et-lv" style="background:var(--energy-color);width:100%;"></div></div>
+                        <div class="ebar-val" id="val-et-lv" style="color:var(--energy-color);">—</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 5. ENERGIA POTENZIALE ELASTICA -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-elastica">
+            <h2 class="lesson-title">5. 🌀 Energia Potenziale Elastica — Lancio con molla</h2>
+
+            <p class="lesson-text">
+                Una molla compressa (o estesa) immagazzina energia. Questa è l'<strong>energia potenziale elastica</strong>, descritta dalla legge di Hooke:
+            </p>
+
+            <div class="info-box elastic">
+                \[ E_{el} = \frac{1}{2}kx^2 \]
+                <p style="margin:0.75rem 0 0; color:var(--text-muted); font-size:0.95rem;">
+                    dove \(k\) è la costante elastica della molla [N/m] e \(x\) è la compressione (o estensione) rispetto alla posizione di equilibrio [m].
+                </p>
+            </div>
+
+            <h3 style="color:#6ee7b7;">Lancio verticale con molla</h3>
+            <p class="lesson-text">
+                Una molla compressa di \(x\) lancia verticalmente verso l'alto una massa \(m\). Partendo fermi (touta l'energia è elastica), la conversione è:
+                \[ \frac{1}{2}kx^2 = \frac{1}{2}mv_{\text{distacco}}^2 \implies v_{\text{distacco}} = x\sqrt{\frac{k}{m}} \]
+                Poi, come nel caso precedente, la velocità di distacco si converte in altezza:
+                \[ h_{\max} = \frac{v_{\text{distacco}}^2}{2g} = \frac{kx^2}{2mg} \]
+            </p>
+
+            <div class="callout green">
+                <span class="callout-icon">🎮</span>
+                <p><strong>Esempio reale:</strong> le catapulte medievali, i flipper dei videogiochi, le pistole a molla dei Nerf e persino le valvole dei motori a combustione interna sfruttano l'energia potenziale elastica. Ed è anche il principio del salto in lungo con l'elastico per il bungee jumping: l'elastico immagazzina energia cinetica e la restituisce.</p>
+            </div>
+
+            <!-- Simulatore molla -->
+            <div class="sim-container">
+                <h3>🌀 Simulatore Lancio con Molla</h3>
+                <div class="controls-row">
+                    <div class="ctrl-group">
+                        <label>Massa m (kg)</label>
+                        <input type="number" id="sp-m" value="0.2" min="0.01" step="0.05">
+                    </div>
+                    <div class="ctrl-group">
+                        <label>Costante k (N/m)</label>
+                        <input type="number" id="sp-k" value="800" min="10" step="50">
+                    </div>
+                    <div class="ctrl-group">
+                        <label>Compressione x (m)</label>
+                        <input type="number" id="sp-x" value="0.15" min="0.01" step="0.01">
+                    </div>
+                    <button class="btn-action" onclick="runSpring()">Lancia!</button>
+                </div>
+                <div class="result-box" id="res-spring">Inserisci i parametri e clicca Lancia!</div>
+                <div class="canvas-wrap">
+                    <canvas id="spring-canvas" width="640" height="300"></canvas>
+                </div>
+                <div class="energy-display">
+                    <div class="ebar">
+                        <div class="ebar-label">Elastica Eel</div>
+                        <div class="ebar-track"><div class="ebar-fill" id="bar-el-sp" style="background:var(--elastic-color);width:100%;"></div></div>
+                        <div class="ebar-val" id="val-el-sp" style="color:var(--elastic-color);">—</div>
+                    </div>
+                    <div class="ebar">
+                        <div class="ebar-label">Cinetica Ek</div>
+                        <div class="ebar-track"><div class="ebar-fill" id="bar-ek-sp" style="background:var(--kinetic-color);width:0%;"></div></div>
+                        <div class="ebar-val" id="val-ek-sp" style="color:var(--kinetic-color);">—</div>
+                    </div>
+                    <div class="ebar">
+                        <div class="ebar-label">Potenziale Ep</div>
+                        <div class="ebar-track"><div class="ebar-fill" id="bar-ep-sp" style="background:var(--potential-color);width:0%;"></div></div>
+                        <div class="ebar-val" id="val-ep-sp" style="color:var(--potential-color);">—</div>
+                    </div>
+                    <div class="ebar">
+                        <div class="ebar-label">Totale</div>
+                        <div class="ebar-track"><div class="ebar-fill" id="bar-et-sp" style="background:var(--energy-color);width:100%;"></div></div>
+                        <div class="ebar-val" id="val-et-sp" style="color:var(--energy-color);">—</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 6. PENDOLO BALISTICO -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-pendolo">
+            <h2 class="lesson-title">6. 🎯 Il Pendolo Balistico</h2>
+
+            <p class="lesson-text">
+                Il <strong>pendolo balistico</strong> è un apparato storico usato per misurare la velocità dei proiettili prima dell'era degli strumenti elettronici. Fu inventato da <strong>Benjamin Robins</strong> nel 1742 e usa intelligentemente <em>due</em> leggi di conservazione in sequenza.
+            </p>
+
+            <h3 style="color:var(--energy-color);">Come funziona</h3>
+            <p class="lesson-text">
+                Un proiettile di massa \(m\) e velocità \(v_0\) si conficca in un blocco di legno di massa \(M\) appeso come un pendolo. Il sistema — proiettile + blocco — oscilla verso l'alto di un'altezza \(h\).
+            </p>
+
+            <div class="callout blue">
+                <span class="callout-icon">⚠️</span>
+                <p><strong>Attenzione:</strong> si usano <em>due</em> leggi di conservazione diverse in due fasi distinte:
+                <br>• <strong>Fase 1 (urto):</strong> conservazione della <strong>quantità di moto</strong> (l'urto è anelastico — si perde energia cinetica per deformazione).
+                <br>• <strong>Fase 2 (oscillazione):</strong> conservazione dell'<strong>energia meccanica</strong> (nessun attrito → tutta la cinetica diventa potenziale).
+                </p>
+            </div>
+
+            <h3 style="color:#60a5fa;">Le due fasi — equazioni</h3>
+
+            <div class="solution-box">
+                <h4>📐 Derivazione completa</h4>
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <div class="step-body">
+                        <strong>Urto (conservazione quantità di moto):</strong><br>
+                        \[ mv_0 = (m+M)V \implies V = \frac{m\,v_0}{m+M} \]
+                        \(V\) è la velocità del sistema composto subito dopo l'urto.
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <div class="step-body">
+                        <strong>Oscillazione (conservazione energia meccanica):</strong><br>
+                        \[ \frac{1}{2}(m+M)V^2 = (m+M)gh \implies V = \sqrt{2gh} \]
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">3</div>
+                    <div class="step-body">
+                        <strong>Combinando le due:</strong><br>
+                        \[ v_0 = \frac{m+M}{m}\sqrt{2gh} \]
+                        Misurando solo \(m\), \(M\) e l'alzata \(h\) del pendolo, si ricava esattamente la velocità del proiettile!
+                    </div>
+                </div>
+            </div>
+
+            <!-- Simulatore pendolo balistico -->
+            <div class="sim-container">
+                <h3>🎯 Calcolatore Pendolo Balistico</h3>
+                <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:1rem;">Inserisci i dati misurati in laboratorio per ricavare la velocità del proiettile.</p>
+                <div class="controls-row">
+                    <div class="ctrl-group">
+                        <label>Massa proiettile m (g)</label>
+                        <input type="number" id="pb-m" value="10" min="0.1" step="0.5">
+                    </div>
+                    <div class="ctrl-group">
+                        <label>Massa blocco M (g)</label>
+                        <input type="number" id="pb-M" value="500" min="10" step="10">
+                    </div>
+                    <div class="ctrl-group">
+                        <label>Alzata h (cm)</label>
+                        <input type="number" id="pb-h" value="12" min="0.1" step="0.5">
+                    </div>
+                    <button class="btn-action" onclick="calcBallistic()">Calcola v₀</button>
+                </div>
+                <div class="result-box" id="res-ballistic">Inserisci i dati e clicca Calcola.</div>
+                <div class="canvas-wrap">
+                    <canvas id="ballistic-canvas" width="640" height="280"></canvas>
+                </div>
+            </div>
+
+            <div class="callout">
+                <span class="callout-icon">🔬</span>
+                <p><strong>Applicazioni storiche:</strong> il pendolo balistico è stato usato per il test dei moschetti militari nel '700 e '800. Oggi lo stesso principio — misurare l'energia trasferita a un bersaglio — viene usato nel design dei proiettili per caccia e autodifesa, e nei test di sicurezza balistica dei giubbotti antiproiettile.</p>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 7. QUIZ -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-quiz">
+            <h2 class="lesson-title" style="color:var(--energy-color);">7. 🧠 Verifica Finale</h2>
+            <p class="lesson-text">Metti alla prova la tua comprensione della conservazione dell'energia!</p>
+            <div style="background:rgba(0,0,0,0.15);border-radius:1rem;padding:1.5rem;">
+                <div id="quiz-area"></div>
+                <div class="quiz-score-msg" id="quiz-score"></div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI — Meccanica: Conservazione dell'Energia.</p>
+    </footer>
+
+    <script>
+    const g = 9.81;
+
+    // ============================================================
+    //  UTILITY
+    // ============================================================
+    const fmtJ = v => v >= 1000 ? (v/1000).toFixed(2)+' kJ' : v.toFixed(2)+' J';
+    const fmtN = v => v.toFixed(2);
+
+    // ============================================================
+    //  LAVORO
+    // ============================================================
+    function calcWork() {
+        const F = parseFloat(document.getElementById('w-F').value);
+        const s = parseFloat(document.getElementById('w-s').value);
+        const theta = parseFloat(document.getElementById('w-theta').value);
+        const res = document.getElementById('res-work');
+        if([F,s,theta].some(isNaN) || F<0 || s<0) { res.innerHTML='Valori non validi.'; return; }
+        const W = F * s * Math.cos(theta * Math.PI/180);
+        const sign = W > 0 ? 'positivo → la forza <strong>trasferisce energia</strong> all\'oggetto' :
+                     W < 0 ? 'negativo → la forza <strong>toglie energia</strong> all\'oggetto (freno)' :
+                             'nullo → la forza <strong>non trasferisce energia</strong>';
+        res.innerHTML = `
+            <span class="row">Formula: <em>W = F·s·cos θ = ${fmtN(F)}·${fmtN(s)}·cos(${theta}°) = ${fmtN(F)}·${fmtN(s)}·${Math.cos(theta*Math.PI/180).toFixed(4)}</em></span>
+            <span class="row">Lavoro: <span class="val">W = ${fmtJ(Math.abs(W))}</span></span>
+            <span class="row">Lavoro ${sign}.</span>
+        `;
+    }
+
+    // ============================================================
+    //  ENERGIA CINETICA SLIDER
+    // ============================================================
+    function updateEk() {
+        const m = parseFloat(document.getElementById('ek-m').value);
+        const v = parseFloat(document.getElementById('ek-v').value);
+        document.getElementById('ek-m-val').textContent = m >= 1000 ? (m/1000).toFixed(1)+' t' : m+' kg';
+        document.getElementById('ek-v-val').textContent = v+' m/s  (' + (v*3.6).toFixed(1)+' km/h)';
+        const Ek = 0.5 * m * v * v;
+        const res = document.getElementById('res-ek');
+        let example = '';
+        if(m < 5 && v < 5) example = '→ circa come una palla da bowling lanciata lentamente';
+        else if(m < 2000 && v < 15) example = '→ circa come un ciclista';
+        else if(m >= 1000 && v >= 14) example = '→ circa come un\'auto a 50 km/h';
+        res.innerHTML = `<span class="row">Ek = ½ · ${m} kg · (${v} m/s)² = <span class="val">${fmtJ(Ek)}</span> ${example}</span>`;
+        drawEkBar(Ek);
+    }
+
+    function drawEkBar(Ek) {
+        const c = document.getElementById('ek-canvas');
+        const ctx = c.getContext('2d');
+        const W = c.width, H = c.height;
+        ctx.clearRect(0,0,W,H);
+        const maxEk = 0.5 * 2000 * 50 * 50; // max possible
+        const pct = Math.min(Ek/maxEk, 1);
+        ctx.fillStyle = 'rgba(255,255,255,0.05)';
+        ctx.fillRect(10, 15, W-20, 30);
+        const g = ctx.createLinearGradient(10,0,W-20,0);
+        g.addColorStop(0,'#ef4444'); g.addColorStop(1,'#f97316');
+        ctx.fillStyle = g;
+        ctx.fillRect(10, 15, (W-20)*pct, 30);
+        ctx.fillStyle = 'rgba(255,255,255,0.6)'; ctx.font='12px Inter'; ctx.textAlign='center';
+        ctx.fillText(fmtJ(Ek), W/2, 57);
+    }
+
+    // ============================================================
+    //  LANCIO VERTICALE
+    // ============================================================
+    let lvAnim = null;
+
+    function runLancioV() {
+        cancelAnimationFrame(lvAnim);
+        const m  = parseFloat(document.getElementById('lv-m').value);
+        const v0 = parseFloat(document.getElementById('lv-v0').value);
+        if([m,v0].some(isNaN)||m<=0||v0<=0){document.getElementById('res-lv').innerHTML='Valori non validi.';return;}
+        const hmax = v0*v0/(2*g);
+        const Etot = 0.5*m*v0*v0;
+        document.getElementById('res-lv').innerHTML =
+            `<span class="row">Energia totale: <span class="val">${fmtJ(Etot)}</span></span>
+             <span class="row">Altezza massima: <span class="val">${hmax.toFixed(2)} m</span></span>
+             <span class="row">Velocità iniziale: <span class="val">${v0.toFixed(1)} m/s</span></span>`;
+        animateLancioV(m, v0, hmax, Etot);
+    }
+
+    function animateLancioV(m, v0, hmax, Etot) {
+        const c = document.getElementById('lv-canvas');
+        const ctx = c.getContext('2d');
+        const W = c.width, H = c.height;
+        const padB = 40, padT = 20;
+        const drawH = H - padB - padT;
+        let t = 0, dt = 0.04;
+        const tUp = v0/g;
+
+        function frame() {
+            ctx.clearRect(0,0,W,H);
+            // ground
+            ctx.fillStyle='rgba(255,255,255,0.1)'; ctx.fillRect(0,H-padB,W,padB);
+            ctx.fillStyle='rgba(255,255,255,0.3)'; ctx.font='11px Inter'; ctx.textAlign='left';
+            ctx.fillText('h = 0',5,H-padB+14);
+            ctx.textAlign='right'; ctx.fillText('h = '+hmax.toFixed(1)+' m',W-5,padT+14);
+            // h axis label
+            ctx.textAlign='left'; ctx.fillStyle='rgba(255,255,255,0.2)';
+            ctx.fillRect(30,padT,2,drawH);
+
+            const tLooped = t % (2*tUp + 0.5);
+            const tPhase = tLooped <= 2*tUp ? tLooped : 2*tUp;
+            const h = Math.max(0, v0*tPhase - 0.5*g*tPhase*tPhase);
+            const v = v0 - g*tPhase;
+            const Ek = 0.5*m*v*v;
+            const Ep = m*g*h;
+            const py = padT + drawH*(1 - h/hmax);
+
+            // trajectory dots
+            for(let tt=0; tt<=tPhase; tt+=0.1){
+                const hh = Math.max(0, v0*tt - 0.5*g*tt*tt);
+                const ppx = 80 + (tt/(2*tUp))*(W-100);
+                const ppy = padT + drawH*(1-hh/hmax);
+                ctx.fillStyle='rgba(245,158,11,0.3)'; ctx.fillRect(ppx,ppy,2,2);
+            }
+            // ball
+            const bx = 80 + Math.min(tLooped/(2*tUp),1)*(W-100);
+            ctx.beginPath(); ctx.arc(bx,py,12,0,Math.PI*2);
+            ctx.fillStyle='#f59e0b'; ctx.fill();
+            ctx.strokeStyle='#fcd34d'; ctx.lineWidth=2; ctx.stroke();
+            // h label
+            ctx.fillStyle='rgba(255,255,255,0.5)'; ctx.font='11px Inter'; ctx.textAlign='left';
+            ctx.fillText('h='+h.toFixed(1)+'m', bx+15, py+4);
+
+            // energy bars update
+            const pEk = Etot>0?Math.min(Ek/Etot,1)*100:0;
+            const pEp = Etot>0?Math.min(Ep/Etot,1)*100:0;
+            document.getElementById('bar-ek-lv').style.width = pEk+'%';
+            document.getElementById('bar-ep-lv').style.width = pEp+'%';
+            document.getElementById('bar-et-lv').style.width = '100%';
+            document.getElementById('val-ek-lv').textContent = fmtJ(Ek);
+            document.getElementById('val-ep-lv').textContent = fmtJ(Ep);
+            document.getElementById('val-et-lv').textContent = fmtJ(Etot);
+
+            t += dt;
+            lvAnim = requestAnimationFrame(frame);
+        }
+        frame();
+    }
+
+    // ============================================================
+    //  MOLLA
+    // ============================================================
+    let spAnim = null;
+
+    function runSpring() {
+        cancelAnimationFrame(spAnim);
+        const m = parseFloat(document.getElementById('sp-m').value);
+        const k = parseFloat(document.getElementById('sp-k').value);
+        const x = parseFloat(document.getElementById('sp-x').value);
+        const res = document.getElementById('res-spring');
+        if([m,k,x].some(isNaN)||m<=0||k<=0||x<=0){res.innerHTML='Valori non validi.';return;}
+        const Eel = 0.5*k*x*x;
+        const vd = x*Math.sqrt(k/m);
+        const hmax = vd*vd/(2*g);
+        res.innerHTML=`<span class="row">Energia elastica iniziale: <span class="val">${fmtJ(Eel)}</span></span>
+            <span class="row">Velocità di distacco: <span class="val">${vd.toFixed(2)} m/s</span></span>
+            <span class="row">Altezza massima: <span class="val">${hmax.toFixed(2)} m</span></span>`;
+        animateSpring(m, k, x, Eel, vd, hmax);
+    }
+
+    function animateSpring(m, k, x, Eel, vd, hmax) {
+        const c = document.getElementById('spring-canvas');
+        const ctx = c.getContext('2d');
+        const W = c.width, H = c.height;
+        const padB = 40, padT = 20;
+        const drawH = H - padB - padT;
+        let t = 0, dt = 0.04;
+        const tUp = vd/g;
+
+        function frame() {
+            ctx.clearRect(0,0,W,H);
+            ctx.fillStyle='rgba(255,255,255,0.1)'; ctx.fillRect(0,H-padB,W,padB);
+
+            const tLooped = t % (2*tUp + 0.6);
+            const tPhase = Math.min(tLooped, 2*tUp);
+            const h = Math.max(0, vd*tPhase - 0.5*g*tPhase*tPhase);
+            const v = vd - g*tPhase;
+            const Ek = 0.5*m*v*v;
+            const Ep = m*g*h;
+
+            // Draw spring at ground while h=0 (phase 0)
+            const bx = W/2;
+            const by = padT + drawH*(1 - h/Math.max(hmax,1));
+            // spring coils
+            if(h < 0.05) {
+                ctx.strokeStyle='#10b981'; ctx.lineWidth=2;
+                for(let i=0;i<6;i++){
+                    const sy = H-padB - i*8;
+                    ctx.beginPath(); ctx.moveTo(bx-12,sy); ctx.lineTo(bx+12,sy-4); ctx.stroke();
+                }
+            }
+            // trajectory
+            for(let tt=0;tt<=tPhase;tt+=0.05){
+                const hh=Math.max(0,vd*tt-0.5*g*tt*tt);
+                const ppy=padT+drawH*(1-hh/Math.max(hmax,1));
+                ctx.fillStyle='rgba(245,158,11,0.25)'; ctx.fillRect(bx,ppy,2,2);
+            }
+            // ball
+            ctx.beginPath(); ctx.arc(bx, by, 14, 0, Math.PI*2);
+            const grd = ctx.createRadialGradient(bx,by,2,bx,by,14);
+            grd.addColorStop(0,'#fcd34d'); grd.addColorStop(1,'#f59e0b');
+            ctx.fillStyle=grd; ctx.fill();
+            ctx.fillStyle='rgba(255,255,255,0.5)'; ctx.font='11px Inter'; ctx.textAlign='left';
+            ctx.fillText('h='+h.toFixed(2)+'m  v='+Math.abs(v).toFixed(1)+'m/s', bx+18, by+4);
+
+            // bars
+            const pEk = Eel>0?Math.min(Ek/Eel,1)*100:0;
+            const pEp = Eel>0?Math.min(Ep/Eel,1)*100:0;
+            const pEl = Eel>0?Math.min(Math.max(0,Eel-Ek-Ep)/Eel,0)*100:0; // after distacco = 0
+            document.getElementById('bar-el-sp').style.width = (t<0.1?100:0)+'%';
+            document.getElementById('bar-ek-sp').style.width = pEk+'%';
+            document.getElementById('bar-ep-sp').style.width = pEp+'%';
+            document.getElementById('bar-et-sp').style.width = '100%';
+            document.getElementById('val-el-sp').textContent = t<0.1?fmtJ(Eel):'0 J';
+            document.getElementById('val-ek-sp').textContent = fmtJ(Ek);
+            document.getElementById('val-ep-sp').textContent = fmtJ(Ep);
+            document.getElementById('val-et-sp').textContent = fmtJ(Eel);
+
+            t += dt;
+            spAnim = requestAnimationFrame(frame);
+        }
+        frame();
+    }
+
+    // ============================================================
+    //  PENDOLO BALISTICO
+    // ============================================================
+    function calcBallistic() {
+        const m = parseFloat(document.getElementById('pb-m').value)/1000;  // g→kg
+        const Mb = parseFloat(document.getElementById('pb-M').value)/1000;
+        const h = parseFloat(document.getElementById('pb-h').value)/100;     // cm→m
+        const res = document.getElementById('res-ballistic');
+        if([m,Mb,h].some(isNaN)||m<=0||Mb<=0||h<=0){res.innerHTML='Valori non validi.';return;}
+
+        const V = Math.sqrt(2*g*h);          // velocità post-urto
+        const v0 = (m+Mb)/m * V;             // velocità proiettile
+        const Ek_before = 0.5*m*v0*v0;
+        const Ek_after  = 0.5*(m+Mb)*V*V;
+        const lostPct    = ((Ek_before - Ek_after)/Ek_before*100).toFixed(1);
+
+        res.innerHTML=`
+            <span class="row">Fase 1 — Velocità sistema post-urto: V = √(2g·h) = √(2·9.81·${h.toFixed(3)}) = <span class="val">${V.toFixed(3)} m/s</span></span>
+            <span class="row">Fase 2 — Velocità proiettile: v₀ = (m+M)/m · V = ${((m+Mb)/m).toFixed(3)} · ${V.toFixed(3)} = <span class="val">${v0.toFixed(2)} m/s = ${(v0*3.6).toFixed(1)} km/h</span></span>
+            <span class="row">Energia cinetica prima dell'urto: ${fmtJ(Ek_before)}</span>
+            <span class="row">Energia cinetica dopo l'urto: ${fmtJ(Ek_after)}</span>
+            <span class="row" style="color:#fca5a5;">Energia persa per deformazione (calore/suono): ${(Ek_before-Ek_after).toFixed(2)} J (${lostPct}%)</span>
+        `;
+        drawBallistic(h, v0, V, m, Mb);
+    }
+
+    function drawBallistic(h, v0, V, m, Mb) {
+        const c = document.getElementById('ballistic-canvas');
+        const ctx = c.getContext('2d');
+        const W = c.width, H = c.height;
+        ctx.clearRect(0,0,W,H);
+
+        // ceiling
+        ctx.fillStyle='rgba(255,255,255,0.1)'; ctx.fillRect(0,0,W,20);
+        // floor
+        ctx.fillStyle='rgba(255,255,255,0.07)'; ctx.fillRect(0,H-30,W,30);
+
+        const L = 160; // pendulum length px
+        const cx = W*0.55, cy = 20;
+        const hPx = Math.min(h/0.3*100, L-30);
+
+        // rope
+        ctx.strokeStyle='rgba(255,255,255,0.35)'; ctx.lineWidth=2;
+        ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(cx, cy+L); ctx.stroke();
+        // rope swung
+        const angle = Math.acos((L-hPx)/L);
+        const sx = cx + L*Math.sin(angle), sy = cy + L*Math.cos(angle);
+        ctx.setLineDash([4,3]);
+        ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(sx,sy); ctx.stroke();
+        ctx.setLineDash([]);
+
+        // block at rest
+        ctx.fillStyle='#854d0e'; ctx.strokeStyle='#f59e0b'; ctx.lineWidth=2;
+        ctx.beginPath(); ctx.roundRect(cx-25, cy+L-20, 50, 38, 6); ctx.fill(); ctx.stroke();
+        ctx.fillStyle='rgba(255,255,255,0.7)'; ctx.font='bold 11px Inter'; ctx.textAlign='center';
+        ctx.fillText('M='+(Mb*1000).toFixed(0)+'g', cx, cy+L+7);
+
+        // block swung
+        ctx.fillStyle='rgba(133,77,14,0.5)'; ctx.strokeStyle='rgba(245,158,11,0.5)'; ctx.lineWidth=1.5;
+        ctx.beginPath(); ctx.roundRect(sx-25, sy-20, 50, 38, 6); ctx.fill(); ctx.stroke();
+        ctx.font='10px Inter'; ctx.fillStyle='rgba(255,255,255,0.4)';
+        ctx.fillText('h='+((h)*100).toFixed(1)+'cm', sx, sy+24);
+
+        // h arrow
+        ctx.strokeStyle='#60a5fa'; ctx.lineWidth=1.5;
+        ctx.beginPath(); ctx.moveTo(sx+35, sy); ctx.lineTo(sx+35, cy+L); ctx.stroke();
+        ctx.fillStyle='#60a5fa'; ctx.textAlign='left';
+        ctx.fillText('h', sx+38, (sy+cy+L)/2+4);
+
+        // bullet
+        ctx.fillStyle='#ef4444';
+        ctx.beginPath(); ctx.ellipse(cx-120, cy+L+8, 18, 7, 0, 0, Math.PI*2); ctx.fill();
+        ctx.fillStyle='#fca5a5'; ctx.font='10px Inter'; ctx.textAlign='center';
+        ctx.fillText('m='+( m*1000).toFixed(0)+'g', cx-120, cy+L+28);
+        // arrow
+        ctx.strokeStyle='#ef4444'; ctx.lineWidth=2;
+        ctx.beginPath(); ctx.moveTo(cx-100, cy+L+8); ctx.lineTo(cx-27, cy+L+8);
+        ctx.moveTo(cx-32, cy+L+4); ctx.lineTo(cx-27, cy+L+8); ctx.lineTo(cx-32, cy+L+12);
+        ctx.stroke();
+        ctx.fillStyle='#fca5a5'; ctx.font='11px Inter'; ctx.textAlign='center';
+        ctx.fillText('v₀='+v0.toFixed(1)+' m/s', cx-62, cy+L-8);
+    }
+
+    // ============================================================
+    //  QUIZ
+    // ============================================================
+    const quizData = [
+        {
+            q: "Secondo l'analogia di Feynman, l'energia è paragonata a:",
+            opts:["Una forza misteriosa","Blocchi LEGO sempre in numero costante ma nascosti in posti diversi","Un fluido che scorre","La velocità di un oggetto"],
+            ans:1, exp:"Feynman usava i blocchi di Dennis come analogia: il numero totale rimane costante (legge di conservazione), anche se alcuni sembrano 'sparire' — in realtà si nascondono in forme diverse (calore, chimica, deformazione...)."
+        },
+        {
+            q: "Il lavoro W = F·s·cos θ è nullo quando:",
+            opts:["θ = 0° (forza parallela allo spostamento)","θ = 45°","θ = 90° (forza perpendicolare allo spostamento)","Quando la forza è molto grande"],
+            ans:2, exp:"cos(90°) = 0, quindi W = 0. La forza perpendicolare non trasferisce energia nella direzione del moto — come quando porti la borsa della spesa orizzontalmente: la forza verso l'alto non fa lavoro meccanico sull'oggetto."
+        },
+        {
+            q: "Se la velocità di un'auto raddoppia (da v a 2v), la sua energia cinetica:",
+            opts:["Raddoppia","Triplica","Quadruplica","Rimane uguale"],
+            ans:2, exp:"Ek = ½mv² → se v diventa 2v: Ek_nuova = ½m(2v)² = 4·(½mv²) = 4Ek. La dipendenza dal quadrato della velocità è il motivo per cui la distanza di frenata quadruplica quando si raddoppia la velocità."
+        },
+        {
+            q: "Un oggetto viene lanciato verso l'alto con v₀ = 10 m/s. Qual è l'altezza massima raggiunta? (g = 10 m/s²)",
+            opts:["1 m","5 m","10 m","20 m"],
+            ans:1, exp:"h_max = v₀²/(2g) = 100/20 = 5 m. All'altezza massima tutta l'energia cinetica iniziale (½mv₀²) si è convertita in energia potenziale (mgh_max)."
+        },
+        {
+            q: "Nel pendolo balistico, durante la FASE 1 (urto) si conserva:",
+            opts:["L'energia meccanica","La quantità di moto","Entrambe","Nessuna delle due"],
+            ans:1, exp:"Durante l'urto anelastico (proiettile che si conficca nel blocco) si conserva la quantità di moto mv = (m+M)V. L'energia cinetica NON si conserva: parte viene dissipata per deformazione, calore e suono."
+        },
+        {
+            q: "L'energia potenziale elastica è E_el = ½kx². Se comprimo la molla del doppio (2x), l'energia:",
+            opts:["Raddoppia","Quadruplica","Rimane uguale","Diminuisce"],
+            ans:1, exp:"E_el = ½k(2x)² = ½k·4x² = 4·(½kx²). Come l'energia cinetica, cresce col quadrato della variabile (la compressione x). Raddoppiare la compressione quadruplica l'energia immagazzinata."
+        },
+        {
+            q: "Nella formula del pendolo balistico v₀ = (m+M)/m · √(2gh), cosa misura h?",
+            opts:["La lunghezza del pendolo","L'altezza massima raggiunta dal sistema blocco+proiettile","La profondità di penetrazione del proiettile","L'altezza del proiettile prima dello sparo"],
+            ans:1, exp:"h è l'alzata del pendolo dopo l'urto. Misurando questa altezza (facilmente misurabile con un righello) e conoscendo le masse, si può risalire alla velocità del proiettile usando la conservazione dell'energia meccanica nella fase di oscillazione."
+        },
+        {
+            q: "Quale affermazione è corretta per un sistema isolato?",
+            opts:["L'energia cinetica si conserva sempre","L'energia potenziale si conserva sempre","L'energia meccanica totale si conserva solo in assenza di forze non conservative (attrito)","L'energia totale si perde gradualmente"],
+            ans:2, exp:"In presenza di attrito o altre forze dissipative, l'energia meccanica (Ek + Ep) non si conserva — si converte in calore. Ma l'energia TOTALE (meccanica + termica + altro) si conserva sempre. Il principio vale solo per l'energia meccanica in sistemi conservativi."
+        }
+    ];
+
+    let score=0, answered=0;
+
+    function loadQuiz(){
+        document.getElementById('quiz-area').innerHTML = quizData.map((q,i)=>`
+            <div class="quiz-question">
+                <h3>${i+1}. ${q.q}</h3>
+                <div class="quiz-options">
+                    ${q.opts.map((o,j)=>`<button class="quiz-btn" onclick="checkQ(${i},${j},this)">${o}</button>`).join('')}
+                </div>
+                <div id="qexp-${i}" style="display:none;margin-top:0.6rem;font-size:0.87rem;color:#6ee7b7;background:rgba(16,185,129,0.07);padding:0.7rem 1rem;border-radius:8px;"></div>
+            </div>`).join('');
+    }
+
+    window.checkQ = function(qi,oi,btn){
+        const btns = btn.parentElement.querySelectorAll('.quiz-btn');
+        btns.forEach(b=>b.disabled=true);
+        if(oi===quizData[qi].ans){btn.classList.add('correct');score++;}
+        else{btn.classList.add('wrong');btns[quizData[qi].ans].classList.add('correct');}
+        const exp=document.getElementById('qexp-'+qi);
+        exp.textContent='💡 '+quizData[qi].exp;
+        exp.style.display='block';
+        answered++;
+        if(answered===quizData.length){
+            const pct=Math.round(score/quizData.length*100);
+            document.getElementById('quiz-score').textContent=
+                `Punteggio: ${score}/${quizData.length} (${pct}%). ${
+                pct===100?'🏆 Perfetto! Sei un esperto del lavoro e dell\'energia!':
+                pct>=75?'🚀 Ottimo! Hai capito il principio di conservazione.':
+                pct>=50?'📚 Buono! Rileggi le sezioni sul lavoro e sul pendolo balistico.':
+                '🔄 Rileggi la lezione — l\'energia ti aspetta!'}`;
+        }
+    };
+
+    // ============================================================
+    //  KINETIC ENERGY TRIANGLE CHART
+    // ============================================================
+    function drawEkTriangle() {
+        const c = document.getElementById('ek-triangle-canvas');
+        if (!c) return;
+        const ctx = c.getContext('2d');
+        const W = c.width, H = c.height;
+        ctx.clearRect(0, 0, W, H);
+
+        const padL = 70, padB = 45, padT = 20, padR = 30;
+        const gW = W - padL - padR, gH = H - padT - padB;
+
+        // axes
+        ctx.strokeStyle = 'rgba(255,255,255,0.3)'; ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(padL, padT); ctx.lineTo(padL, padT + gH); ctx.lineTo(padL + gW, padT + gH);
+        ctx.stroke();
+
+        // axis labels
+        ctx.fillStyle = 'rgba(255,255,255,0.5)'; ctx.font = '13px Inter';
+        ctx.textAlign = 'center';
+        ctx.fillText('velocità  v', padL + gW / 2, H - 5);
+        ctx.save(); ctx.translate(16, padT + gH / 2); ctx.rotate(-Math.PI / 2);
+        ctx.fillText('Forza  F = mv/t', 0, 0); ctx.restore();
+
+        // tick marks
+        ctx.fillStyle = 'rgba(255,255,255,0.35)'; ctx.font = '11px Inter'; ctx.textAlign = 'center';
+        ctx.fillText('0', padL - 8, padT + gH + 4);
+        ctx.fillText('v', padL + gW, padT + gH + 14);
+        ctx.textAlign = 'right';
+        ctx.fillText('mv', padL - 6, padT + 8);
+
+        // dashed guide lines (rectangle)
+        ctx.setLineDash([5, 4]);
+        ctx.strokeStyle = 'rgba(255,255,255,0.12)'; ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(padL + gW, padT + gH); ctx.lineTo(padL + gW, padT);
+        ctx.moveTo(padL, padT); ctx.lineTo(padL + gW, padT);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // rectangle fill (ghost — full area)
+        ctx.fillStyle = 'rgba(239,68,68,0.08)';
+        ctx.fillRect(padL, padT, gW, gH);
+
+        // triangle fill (Ek area)
+        ctx.fillStyle = 'rgba(239,68,68,0.28)';
+        ctx.beginPath();
+        ctx.moveTo(padL, padT + gH);       // origin
+        ctx.lineTo(padL + gW, padT + gH);  // top-right base
+        ctx.lineTo(padL + gW, padT);       // top corner (F=mv at v=v)
+        ctx.closePath();
+        ctx.fill();
+
+        // triangle border
+        ctx.strokeStyle = '#ef4444'; ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.moveTo(padL, padT + gH);
+        ctx.lineTo(padL + gW, padT + gH);
+        ctx.lineTo(padL + gW, padT);
+        ctx.closePath();
+        ctx.stroke();
+
+        // diagonal label
+        ctx.fillStyle = '#fca5a5'; ctx.font = 'italic 12px Inter'; ctx.textAlign = 'center';
+        ctx.save();
+        ctx.translate(padL + gW * 0.62, padT + gH * 0.45);
+        ctx.rotate(-Math.atan(gH / gW));
+        ctx.fillText('F = m·a·t/t = mv (lineare!)', 0, 0);
+        ctx.restore();
+
+        // Ek label inside triangle
+        ctx.fillStyle = '#ef4444'; ctx.font = 'bold 14px Inter'; ctx.textAlign = 'center';
+        ctx.fillText('E  =  ½mv²', padL + gW * 0.72, padT + gH * 0.75);
+        ctx.font = '11px Inter'; ctx.fillStyle = 'rgba(255,255,255,0.35)';
+        ctx.fillText('(area triangolo = ½ · base · altezza)', padL + gW * 0.72, padT + gH * 0.88);
+
+        // "½" annotation arrow
+        ctx.strokeStyle = 'rgba(255,255,255,0.2)'; ctx.lineWidth = 1; ctx.setLineDash([3, 3]);
+        ctx.beginPath();
+        ctx.moveTo(padL + gW * 0.1, padT + gH * 0.5);
+        ctx.lineTo(padL + gW * 0.1, padT + gH);
+        ctx.stroke(); ctx.setLineDash([]);
+        ctx.fillStyle = 'rgba(255,255,255,0.3)'; ctx.font = '11px Inter'; ctx.textAlign = 'left';
+        ctx.fillText('½ del rettangolo', padL + gW * 0.12, padT + gH * 0.5 + 4);
+    }
+
+    document.addEventListener('DOMContentLoaded', ()=>{
+        updateEk();
+        loadQuiz();
+        drawBallistic(0.12, 260, 1.53, 0.01, 0.5);
+        drawEkTriangle();
+    });
+    </script>
+    <script src="../../js/main.js"></script>
+</body>
+</html>

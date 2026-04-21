@@ -44,7 +44,7 @@
         <!-- 1. ANGOLI -->
         <section class="lesson-section">
             <h2 class="lesson-title" style="color: #10B981;">1. Che cos'è un Angolo?</h2>
-            <p class="lesson-text">Prima di formare figure chiuse, dobbiamo curvare. Un <strong>angolo</strong> è la porzione di piano compresa tra due semirette (dette lati) che hanno la stessa origine (vetrice). Un angolo quantifica "quanto devi girare la visuale" per guardare dal primo al secondo asse misurandolo in "Gradi" o "Radianti". La sua grandezza determina una severa classificazione:</p>
+            <p class="lesson-text">Prima di studiare le figure chiuse, è fondamentale capire cosa si intende per <strong>angolo</strong>: la porzione di piano compresa tra due semirette (dette lati) che partono dallo stesso punto (il vertice). Un angolo misura di quanto bisogna ruotare una semiretta sull'altra, e si esprime in gradi o radianti. In base alla sua ampiezza si distinguono tre casi fondamentali:</p>
             <div class="grid-cards">
                 <div class="card" style="padding: 1.5rem; background: rgba(255,255,255,0.03);">
                     <h4 style="color: #3B82F6; margin-bottom: 1rem; text-align: center;">Angolo Acuto</h4>
@@ -72,7 +72,7 @@
                 </div>
                 <div class="card" style="padding: 1.5rem; background: rgba(255,255,255,0.03);">
                     <h4 style="color: #10B981; margin-bottom: 1rem; text-align: center;">Angolo Ottuso</h4>
-                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem; text-align: center;">Tra 90° e 180° (spalancato)</p>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem; text-align: center;">Tra 90° e 180° (aperto)</p>
                     <div class="svg-container">
                         <svg width="150" height="100" viewBox="0 0 150 100">
                             <line x1="80" y1="90" x2="140" y2="90" stroke="#10B981" stroke-width="3"/>
@@ -88,9 +88,9 @@
         <!-- 2. POLIGONI -->
         <section class="lesson-section">
             <h2 class="lesson-title" style="color: #10B981;">2. Poligoni, Area e "Triangolazione"</h2>
-            <p class="lesson-text">Un <strong>Poligono</strong> ("molti angoli") è un territorio delimitato da una catena chiusa di segmenti retti. Prima di sviscerare le forme, occorre sigillare due concetti di misurazione capitali: il <strong>Perimetro</strong> e l'<strong>Area</strong>. Il Perimetro (simbolo $P$) è semplicemente la somma aritmetica lineare ("di spago") della lunghezza del recinto che confina la figura verso l'esterno. L'Area ($A$), di contro, calcola chirurgicamente la quantità pura di <em>spazio superficiale bidimensionale abitabile e calpestabile</em> catturato all'interno dei confini.</p>
-            <p class="lesson-text">Curiosamente, per i matematici qualunque poligono esistente (anche con milioni di lati storti) non è nient'altro che <em>una somma di Triangoli incollati</em>. Tramite il processo di <strong>triangolazione</strong> noi possiamo spezzare un ennagono tracciando linee dai vertici verso l'interno, ricavando comodissimi triangoli standard. Ecco perché lo studio della geometria focalizza un'ossessione viscerale quasi esclusivamente solo sul magico Triangolo!</p>
-            <p class="lesson-text">Una magnifica particolarità di tutti i poligoni "Regolari" (quelli simmetrici coi lati identici) è che i loro angoli esterni, unendosi e collassando all'indietro, sommano infallibilmente all'angolo giro (360°).</p>
+            <p class="lesson-text">Un <strong>poligono</strong> («molti angoli») è una figura piana delimitata da una catena chiusa di segmenti. Prima di esplorare le singole forme, è utile definire due misure fondamentali: il <strong>perimetro</strong> ($P$), ovvero la somma delle lunghezze di tutti i lati, e l'<strong>area</strong> ($A$), che misura la quantità di superficie racchiusa all'interno della figura.</p>
+            <p class="lesson-text">Una proprietà notevole dei poligoni è che qualsiasi di essi — per quanti lati abbia — può essere suddiviso in triangoli unendo i vertici con diagonali interne: è il processo di <strong>triangolazione</strong>. Questo spiega perché il triangolo occupa un posto centrale nello studio della geometria: comprendere il triangolo significa comprendere tutti i poligoni.</p>
+            <p class="lesson-text">Un'ulteriore proprietà elegante dei poligoni <strong>regolari</strong> (lati e angoli tutti uguali) è che la somma dei loro angoli esterni vale sempre esattamente 360°, indipendentemente dal numero di lati.</p>
             
             <div class="interactive-container">
                 <h3 style="color: #10B981; margin-bottom: 0.5rem;">Grafico: Analisi Angoli Esterni Regolari</h3>
@@ -105,43 +105,109 @@
 
         <!-- 3. TRIANGOLO -->
         <section class="lesson-section">
-            <h2 class="lesson-title" style="color: #10B981;">3. Sua Maestà il Triangolo: Classificazione e Altezze</h2>
-            <p class="lesson-text">I triangoli si possono classificare brutalmente in due modi: in base alla misura della loro scorza (i lati) o l'inclinatura dei perni (gli angoli).</p>
+            <h2 class="lesson-title" style="color: #10B981;">3. Il Triangolo: Classificazione e Altezze</h2>
+            <p class="lesson-text">I triangoli si possono classificare secondo due criteri indipendenti: in base alla lunghezza dei lati oppure in base all'ampiezza degli angoli interni.</p>
             
             <div style="display:flex; flex-wrap:wrap; gap: 2rem; margin: 1rem 0;">
                 <div style="flex: 1; min-width: 280px; background: rgba(255,255,255,0.02); padding: 1.5rem; border-radius: 8px;">
                     <h3 style="color: #3B82F6; margin-bottom: 0.5rem;">Criterio dei Lati</h3>
                     <ul style="color: var(--text-muted); line-height: 1.8;">
-                        <li><strong>Equilatero:</strong> Le tre mura sono identiche (tutti i lati uguali). Causa tre angoli interni di ferro a 60°.</li>
-                        <li><strong>Isoscele:</strong> Almeno due lati ("gambe") perfettamente gemelli, creano specularità.</li>
-                        <li><strong>Scaleno:</strong> Tutti diversi, è il puro caos dimensionale.</li>
+                        <li><strong>Equilatero:</strong> Tutti e tre i lati sono uguali. Di conseguenza, anche tutti e tre gli angoli interni sono uguali e misurano 60°.</li>
+                        <li><strong>Isoscele:</strong> Almeno due lati sono uguali. I due angoli alla base dei lati uguali sono anch'essi uguali tra loro.</li>
+                        <li><strong>Scaleno:</strong> Tutti e tre i lati hanno lunghezze diverse, e tutti e tre gli angoli sono diversi tra loro.</li>
                     </ul>
                 </div>
                 <div style="flex: 1; min-width: 280px; background: rgba(255,255,255,0.02); padding: 1.5rem; border-radius: 8px;">
                     <h3 style="color: #F59E0B; margin-bottom: 0.5rem;">Criterio degli Angoli</h3>
                     <ul style="color: var(--text-muted); line-height: 1.8;">
-                        <li><strong>Rettangolo:</strong> Ospita al suo interno un superbo angolo di 90° esatti.</li>
-                        <li><strong>Acutangolo:</strong> Tutti gli agoli all'interno sono 'pungenti' e minori di 90°.</li>
-                        <li><strong>Ottusangolo:</strong> La bestia ribassata: ha un angolo spanciato palesemente maggiore di 90°.</li>
+                        <li><strong>Rettangolo:</strong> Contiene un angolo interno di esattamente 90° (angolo retto).</li>
+                        <li><strong>Acutangolo:</strong> Tutti e tre gli angoli interni sono minori di 90° (angoli acuti).</li>
+                        <li><strong>Ottusangolo:</strong> Ha un angolo interno maggiore di 90° (angolo ottuso).</li>
                     </ul>
                 </div>
             </div>
-            
+
+            <!-- PROPRIETÀ: SOMMA ANGOLI INTERNI = 180° -->
+            <div style="margin-top: 2rem;">
+                <p class="lesson-text" style="font-size: 1.15rem; margin-bottom: 0.8rem;">
+                    <strong>Proprietà fondamentale: la somma degli angoli interni</strong>
+                </p>
+                <p class="lesson-text">
+                    In <strong>qualsiasi</strong> triangolo — scaleno, isoscele, equilatero, rettangolo, ottusangolo —
+                    la somma dei tre angoli interni è sempre uguale a <strong>un angolo piatto, cioè 180°</strong>.
+                </p>
+
+                <div style="display: flex; flex-wrap: wrap; gap: 2rem; align-items: center; margin: 1.5rem 0;">
+
+                    <!-- SVG dimostrazione -->
+                    <div style="flex: 1; min-width: 280px; text-align: center;">
+                        <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.5rem;">
+                            Dimostrazione con la retta parallela al lato di base
+                        </p>
+                        <canvas id="proof180Canvas" width="340" height="210"
+                                style="display:block; margin:0 auto; max-width:100%; border-radius:8px; background:rgba(255,255,255,0.02);"></canvas>
+                    </div>
+
+                    <!-- Formula e spiegazione -->
+                    <div style="flex: 1; min-width: 260px;">
+                        <p style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 1rem;">
+                            <strong>Dimostrazione:</strong> traccia per il vertice $A$ una retta parallela alla base $BC$.
+                            Gli angoli <span style="color:#EF4444;">β'</span> e <span style="color:#8B5CF6;">γ'</span>
+                            che si formano sulla retta parallela sono
+                            <em>angoli alterni interni</em> rispetto agli angoli
+                            <span style="color:#EF4444;">β</span> e <span style="color:#8B5CF6;">γ</span> del triangolo,
+                            quindi sono uguali. Poiché
+                            <span style="color:#EF4444;">β'</span>, <span style="color:#3B82F6;">α</span>,
+                            <span style="color:#8B5CF6;">γ'</span> formano insieme un angolo piatto sulla retta,
+                            si ha:
+                        </p>
+
+                        <!-- Formula -->
+                        <div style="text-align:center; padding: 1rem; background: rgba(16,185,129,0.06);
+                                    border-radius: 10px; border: 1px solid rgba(16,185,129,0.25);">
+                            <span style="font-size: 1.4rem; font-weight: 800; color: #10B981;">
+                                $\alpha + \beta + \gamma = 180°$
+                            </span>
+                        </div>
+
+                        <!-- Conseguenze -->
+                        <div style="margin-top: 1.2rem; display: flex; flex-direction: column; gap: 0.5rem;">
+                            <div style="background: rgba(59,130,246,0.06); border-radius: 8px; padding: 0.7rem 1rem;
+                                        border-left: 3px solid #3B82F6; font-size: 0.88rem; color: var(--text-muted);">
+                                <strong style="color:#3B82F6;">Equilatero:</strong>
+                                i tre angoli sono uguali → ciascuno misura $180° / 3 = 60°$
+                            </div>
+                            <div style="background: rgba(245,158,11,0.06); border-radius: 8px; padding: 0.7rem 1rem;
+                                        border-left: 3px solid #F59E0B; font-size: 0.88rem; color: var(--text-muted);">
+                                <strong style="color:#F59E0B;">Rettangolo:</strong>
+                                un angolo è 90°, quindi la somma degli altri due è $180° - 90° = 90°$
+                            </div>
+                            <div style="background: rgba(139,92,246,0.06); border-radius: 8px; padding: 0.7rem 1rem;
+                                        border-left: 3px solid #8B5CF6; font-size: 0.88rem; color: var(--text-muted);">
+                                <strong style="color:#8B5CF6;">Angolo esterno:</strong>
+                                un angolo esterno del triangolo è uguale alla <em>somma</em> dei due angoli interni non adiacenti
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <p class="lesson-text" style="font-size: 1.2rem; margin-top:2rem;"><strong>Il Segreto dell'Altezza</strong></p>
-            <p class="lesson-text">Nei libri, l'<strong>altezza</strong> è tracciata spesso in verticale sbattendo in basso. La verità è che un triangolo fluttua nello spazio universale e non capisce i nostri limitati concetti terrestri di "Alto" o "Basso"! In geometria formale si chiama altezza <em>la retta perpendicolare tracciata da un vertice al lato opposto (che in quest'ottica funge da base per qual vertice)</em>. Se il triangolo è dolorosamente "ottusangolo", l'altezza cadrà letteralmente al di fuori della forma e colpirà a martello un'estensione immaginaria del suolo inesistente sottostante.</p>
+
+            <p class="lesson-text">Spesso nei testi scolastici l'<strong>altezza</strong> è disegnata verticalmente, ma questa è solo una convenzione grafica. In geometria, l'altezza relativa a un lato (detto <em>base</em>) è il segmento perpendicolare tracciato dal vertice opposto a quella base. Un triangolo può essere orientato in qualsiasi modo nello spazio: l'altezza è sempre e comunque una perpendicolare. Nel caso di un triangolo ottusangolo, l'altezza relativa ad alcuni lati cade al di fuori del triangolo, sul prolungamento della base.</p>
             
             <div class="interactive-container" style="margin-top:1rem;">
                 <h3 style="color: #10B981; margin-bottom: 0.5rem;">Grafico: Le Tre Altezze Esplorate</h3>
-                <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:1rem;text-align:center;">Premi il pulsante per scambiare il "Lato" considerato come base inferiore. Se scegliamo un lato confinato in un angolo "ottuso", l'altezza cadrà atterrando esternamente nel vuoto geometrico!</p>
+                <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:1rem;text-align:center;">Premi il pulsante per cambiare il lato che funge da base. Quando la base è adiacente all'angolo ottuso, l'altezza corrispondente cade all'esterno del triangolo.</p>
                 <canvas id="heightCanvas" width="500" height="300"></canvas>
                 <div class="controls">
-                    <button class="control-btn" id="btnHeightToggle" style="background:#EF4444;">Cambia la Base Terrestre</button>
+                    <button class="control-btn" id="btnHeightToggle" style="background:#EF4444;">Cambia la Base</button>
                 </div>
             </div>
 
             <div style="background: rgba(16, 185, 129, 0.05); padding: 1.5rem; border-left: 4px solid #10B981; margin-top: 2rem;">
                 <h4 style="color: #10B981; margin-bottom: 0.5rem;">L'Area del Triangolo (La metà del Parallelogramma)</h4>
-                <p style="font-size: 0.95rem; color: var(--text-main); margin-bottom: 0.5rem; line-height:1.6;">Aver finalmente svelato il faticoso concetto dell'Altezza ($h$) calante in perpendicolare verso il suolo della Base ($b$) consente di sbloccare il calcolo totale dello spazio abitabile ($Area$) della figura. Visualizza un triangolo asimmetrico e affiancagli un clone rovesciato per originare a colpo d'occhio un recinto di <em>parallelogramma</em> perfetto ($A = b \cdot h$). Appurato che il solido originale è esattamente e soltanto la metà spaccata in diagonale di quel parallelogramma intero, per calcolarne l'uso ricaviamo l'eterna formula:</p>
+                <p style="font-size: 0.95rem; color: var(--text-main); margin-bottom: 0.5rem; line-height:1.6;">Conoscendo l'altezza $h$ relativa alla base $b$, è possibile calcolare l'area del triangolo con un ragionamento semplice: affiancando al triangolo una sua copia specchiata si forma un parallelogramma di area $b \cdot h$. Il triangolo è esattamente la metà di quel parallelogramma, da cui si ricava la formula:</p>
                 <div style="text-align:center; padding:1rem;">
                     <span style="font-size:1.5rem; color:#10B981; font-weight:800; background:rgba(255,255,255,0.04); padding: 0.8rem 1.5rem; border-radius: 8px; border: 1px solid rgba(16, 185, 129, 0.2);">Area = $ \frac{b \cdot h}{2} $</span>
                 </div>
@@ -150,15 +216,15 @@
 
         <!-- 4. CENTRI E 180 GRADI -->
         <section class="lesson-section">
-            <h2 class="lesson-title" style="color: #10B981;">4. I Punti Magici (Centri) e la Legge dei 180°</h2>
-            <p class="lesson-text">Esiste una legge implacabile nel nostro reame geometrico: la somma dei tre angoli strappata all'interno di <strong>qualsiasi</strong> triangolo darà sempre vita a un pacchetto di proporzioni pari esattamente a <strong>180 gradi</strong>. (Ciò si dimostra tracciando mentalmente una riga ausiliaria parallela infinita sopra la punta del triangolo, scoprendo al volo gli angoli "alterni interni" combaciare al millimetro!).</p>
-            <p class="lesson-text">Incredibilmente, tracciando linee simmetriche e bisettrici lungo lo scheletro della figura geometrica, incrociamo tre punti gravitazionali e notevoli pazzeschi:</p>
+            <h2 class="lesson-title" style="color: #10B981;">4. I Punti Notevoli e la Proprietà dei 180°</h2>
+            <p class="lesson-text">Una proprietà fondamentale dei triangoli è che la somma dei tre angoli interni vale sempre esattamente <strong>180°</strong>, qualunque sia la forma del triangolo. Questo si dimostra tracciando una retta parallela alla base passante per il vertice opposto: gli angoli alterni interni rivelano immediatamente che i tre angoli del triangolo si completano a 180°.</p>
+            <p class="lesson-text">Tracciando particolari linee all'interno di un triangolo — mediane, bisettrici e altezze — si individuano tre punti <strong>notevoli</strong> con proprietà geometriche straordinarie:</p>
             
             <div class="grid-cards">
                 <!-- INCENTRO -->
                 <div class="card" style="padding: 1.5rem; background: rgba(255,255,255,0.03);">
                     <h4 style="color: #EC4899; margin-bottom: 0.5rem; text-align: center;">Incentro</h4>
-                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem; text-align: justify;">Punto d'incontro delle <strong>Bisettrici</strong> (che tagliano a metà gli angoli). È il centro vitale capace di inscrivere un magico cerchio perfetto costretto dentro il triangolo.</p>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem; text-align: justify;">Punto d'incontro delle tre <strong>bisettrici</strong> degli angoli interni. È equidistante dai tre lati del triangolo ed è il centro del cerchio inscritto, ossia il più grande cerchio che sta interamente all'interno del triangolo.</p>
                     <div class="svg-container">
                         <svg width="200" height="150" viewBox="0 0 200 150">
                             <!-- Triangolo -->
@@ -177,7 +243,7 @@
                 <!-- CIRCONCENTRO -->
                 <div class="card" style="padding: 1.5rem; background: rgba(255,255,255,0.03);">
                     <h4 style="color: #8B5CF6; margin-bottom: 0.5rem; text-align: center;">Circoncentro</h4>
-                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem; text-align: justify;">Punto d'incontro degli <strong>Assi</strong> perimetrali ortogonali. Permette di tracciare agilmente l'immenso Cerchio Esterno Circoscritto che ingloba tutti i vertici.</p>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem; text-align: justify;">Punto d'incontro dei tre <strong>assi dei lati</strong> (le perpendicolari nei punti medi di ciascun lato). È equidistante dai tre vertici ed è il centro del cerchio circoscritto, che passa esattamente per tutti e tre i vertici.</p>
                     <div class="svg-container">
                         <svg width="200" height="150" viewBox="0 0 200 150">
                             <!-- Cerchio Circoscritto r=55, cx=110, cy=80 -->
@@ -197,7 +263,7 @@
                 <!-- ORTOCENTRO -->
                 <div class="card" style="padding: 1.5rem; background: rgba(255,255,255,0.03);">
                     <h4 style="color: #EF4444; margin-bottom: 0.5rem; text-align: center;">Ortocentro</h4>
-                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem; text-align: justify;">Il crocevia geometrico d'impatto distruttivo in cui si sgretolano perpendicolarmente e s'incrociano tra loro proprio le tre <strong>Altezze</strong> del triangolo.</p>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem; text-align: justify;">Punto d'incontro delle tre <strong>altezze</strong> del triangolo. Nel triangolo acutangolo cade all'interno; nel rettangolo coincide con il vertice dell'angolo retto; nell'ottusangolo cade all'esterno del triangolo.</p>
                     <div class="svg-container">
                         <svg width="200" height="150" viewBox="0 0 200 150">
                             <!-- Triangolo -->
@@ -216,36 +282,102 @@
 
         <!-- 5. CONGRUENZA -->
         <section class="lesson-section">
-            <h2 class="lesson-title" style="color: #10B981;">5. Congruenza ed Extra-Triangoli Misticizzati</h2>
-            <p class="lesson-text">Due figure si definiscono <strong>"Congruenti"</strong> se, tramite manovre o piegature note tecnicamente come 'Movimenti Rigidi' (rotazioni, traslazioni, specchi...), i loro atomi risultano combaciare alla perfezione sovrapponendosi identicamente. Contengono dimensioni equivalenti, differendo solo dal punto effimero in cui sostano momentaneamente nello spazio.</p>
-            <p class="lesson-text">Non serve consumare fatica misurando tutto: possediamo tre solidi "Criteri di Congruenza" che attestano l'identità istantanea tra due triangoli tramite sole 3 informazioni accertate:</p>
+            <h2 class="lesson-title" style="color: #10B981;">5. Congruenza e Criteri per i Triangoli</h2>
+            <p class="lesson-text">Due figure si dicono <strong>congruenti</strong> se è possibile farle coincidere perfettamente tramite movimenti rigidi (traslazioni, rotazioni e riflessioni), senza deformarle. Hanno quindi le stesse misure in tutti i loro elementi, e differiscono soltanto per la posizione nello piano.</p>
+            <p class="lesson-text">Per i triangoli non è necessario misurare tutti i sei elementi (tre lati e tre angoli): esistono tre <strong>criteri di congruenza</strong> che, a partire da sole tre misure, garantiscono la congruenza completa:</p>
             <ul style="color: var(--text-muted); line-height: 1.8;">
-                <li><strong>Primo Criterio (LAL):</strong> Lati-Angolo-Lato. Evidenziano identità se mostrano due lati combacianti con l'esatto angolo formatosi intrappolato in mezzo.</li>
-                <li><strong>Secondo Criterio (ALA):</strong> Angolo-Lato-Angolo. Identità con due angoli uguali ed il lato intermedio che fa da asse.</li>
-                <li><strong>Terzo Criterio (LLL):</strong> Lato-Lato-Lato. Se i tre fili sono equivalenti, senza appello i triangoli sono copie ingegneristiche accertate.</li>
+                <li><strong>Primo Criterio (LAL):</strong> Lato-Angolo-Lato. Due triangoli sono congruenti se hanno due lati uguali e uguale l'angolo compreso tra essi.</li>
+                <li><strong>Secondo Criterio (ALA):</strong> Angolo-Lato-Angolo. Due triangoli sono congruenti se hanno due angoli uguali e uguale il lato compreso tra essi.</li>
+                <li><strong>Terzo Criterio (LLL):</strong> Lato-Lato-Lato. Se i tre lati corrispondenti sono uguali, i due triangoli sono necessariamente congruenti.</li>
             </ul>
 
             <div style="background: rgba(59, 130, 246, 0.05); padding: 1.5rem; border-left: 4px solid #3B82F6; margin: 2rem 0;">
-                <h4 style="color: #3B82F6; margin-bottom: 1rem;">Dimostrazione Spettacolare per l'Isoscele</h4>
-                <p style="font-size: 0.95rem; color: var(--text-main); margin-bottom: 0.5rem; line-height:1.6;">Prendiamo un bellissimo <strong>Triangolo Isoscele</strong> simmetrico, con le classiche due "gambe oblunghe uguali". Tracciamo ora l'<strong>Altezza</strong> calando dal vertice alto. La struttura si fende originando <em>due triangolini minori</em> affiancati.</p>
-                <p style="font-size: 0.95rem; color: var(--text-muted); line-height:1.6;">Entrambi condividono l'Altezza mortale come muro comune (un lato identico), hanno le due ipotenuse equivalenti (essendo origini dell'Isoscele) e nascondono due angoli retti specchiati a 90° alla base. Usando i rigidi criteri logici della Congruenza, possiamo affermare che i due triangolini sono gemelli genetici prefetti! La logica conclusione? Le due metà separate del segmento inferiore risultano dimensionalmente sovrapponibili! Per logica conseguenza, in un Isoscele l'Altezza ha svelato il grande trucco agendo simultaneamente anche come affilata <strong>Mediana</strong> (dividendo in due la base) e <strong>Bisettrice</strong>.</p>
+                <h4 style="color: #3B82F6; margin-bottom: 1rem;">Proprietà notevole del triangolo isoscele</h4>
+                <p style="font-size: 0.95rem; color: var(--text-main); margin-bottom: 0.5rem; line-height:1.6;">Consideriamo un <strong>triangolo isoscele</strong> con i due lati uguali. Tracciamo l'altezza dal vertice compreso tra i due lati uguali: il triangolo viene diviso in due triangoli minori affiancati.</p>
+                <p style="font-size: 0.95rem; color: var(--text-muted); line-height:1.6;">I due triangoli risultanti condividono l'altezza come lato comune, hanno le due ipotenuse uguali (i lati uguali dell'isoscele) e due angoli retti alla base. Per il primo criterio di congruenza (LAL) i due triangoli sono congruenti. Ne segue che la base viene divisa in due parti uguali. In un triangolo isoscele, l'altezza condotta dal vertice principale è dunque anche <strong>mediana</strong> (dimezza la base) e <strong>bisettrice</strong> dell'angolo al vertice.</p>
+            </div>
+        </section>
+
+        <!-- 5b. LABORATORIO CRITERI DI CONGRUENZA -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #10B981;">5b. Laboratorio: Criteri di Congruenza</h2>
+            <p class="lesson-text">
+                Seleziona un criterio di congruenza per visualizzare due triangoli che lo soddisfano.
+                Gli elementi che <strong>garantiscono</strong> la congruenza sono evidenziati in colore;
+                quelli che rimangono liberi sono mostrati in grigio.
+                Usa lo slider per modificare la forma del triangolo e osservare come entrambi si aggiornano
+                rimanendo sempre congruenti.
+            </p>
+
+            <!-- TAB BAR -->
+            <div style="display: flex; gap: 0.75rem; margin: 1.5rem 0 0; flex-wrap: wrap;">
+                <button class="control-btn congruence-tab active-tab" id="tabLAL"
+                        style="background:#3B82F6; min-width:120px;">▶ LAL</button>
+                <button class="control-btn congruence-tab" id="tabALA"
+                        style="background:#64748b; min-width:120px;">▶ ALA</button>
+                <button class="control-btn congruence-tab" id="tabLLL"
+                        style="background:#64748b; min-width:120px;">▶ LLL</button>
+            </div>
+
+            <!-- DESCRIZIONE CRITERIO -->
+            <div id="congruence-desc" style="background: rgba(59,130,246,0.07); border-left: 4px solid #3B82F6;
+                 padding: 1rem 1.4rem; border-radius: 0 10px 10px 0; margin: 1rem 0;">
+                <p id="congruence-desc-text" style="margin:0; font-size:0.95rem; color: var(--text-main); line-height:1.6;"></p>
+            </div>
+
+            <!-- CANVAS -->
+            <div class="interactive-container" style="margin-top: 0.5rem;">
+                <h3 style="color: #10B981; margin-bottom: 0.5rem; text-align:center;">Visualizzazione interattiva</h3>
+                <p style="color:var(--text-muted); font-size:0.9rem; text-align:center; margin-bottom:1rem;">
+                    Gli elementi <span style="color:#10B981; font-weight:700;">colorati</span> sono quelli vincola la congruenza. Trascina il vertice libero del triangolo sinistro per modificarne la forma.
+                </p>
+                <canvas id="congruenceCanvas" width="580" height="300" style="cursor:crosshair;"></canvas>
+                <div style="margin-top:1.2rem; display:flex; align-items:center; gap:1rem; flex-wrap:wrap; justify-content:center;">
+                    <label style="color:var(--text-muted); font-size:0.9rem;">Modifica il triangolo:</label>
+                    <input type="range" id="congruenceSlider" min="20" max="160" value="90"
+                           style="width:220px; accent-color:#10B981;">
+                    <span id="congruenceSliderVal" style="color:#10B981; font-weight:700; min-width:40px;">90°</span>
+                </div>
+                <div class="controls" style="margin-top:1rem;">
+                    <button class="control-btn" id="btnCongruenceReset" style="background:#64748b;">↺ Reset</button>
+                </div>
+            </div>
+
+            <!-- LEGENDA -->
+            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(170px,1fr)); gap:1rem; margin-top:1.5rem;">
+                <div style="background:rgba(59,130,246,0.07); border:1px solid rgba(59,130,246,0.2);
+                            border-radius:10px; padding:1rem; text-align:center;">
+                    <div style="width:32px; height:4px; background:#3B82F6; margin: 0 auto 0.5rem; border-radius:2px;"></div>
+                    <p style="margin:0; font-size:0.85rem; color:var(--text-muted);">Lato uguale nei due triangoli</p>
+                </div>
+                <div style="background:rgba(239,68,68,0.07); border:1px solid rgba(239,68,68,0.2);
+                            border-radius:10px; padding:1rem; text-align:center;">
+                    <div style="width:32px; height:4px; background:#EF4444; margin: 0 auto 0.5rem; border-radius:2px;"></div>
+                    <p style="margin:0; font-size:0.85rem; color:var(--text-muted);">Angolo uguale nei due triangoli</p>
+                </div>
+                <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08);
+                            border-radius:10px; padding:1rem; text-align:center;">
+                    <div style="width:32px; height:4px; background:#64748b; margin: 0 auto 0.5rem; border-radius:2px;"></div>
+                    <p style="margin:0; font-size:0.85rem; color:var(--text-muted);">Elemento determinato (non fissato)</p>
+                </div>
             </div>
         </section>
 
         <!-- 6. PITAGORA -->
+
         <section class="lesson-section">
             <div class="flex-container">
                 <div class="text-wrap">
-                    <h2 class="lesson-title" style="color: #10B981;">6. Il Teorema di Pitagora Inondante</h2>
-                    <p class="lesson-text">In un triangolo rettangolo, la somma dimensionale esatta delle aree squadrate sovrastanti i due cateti colmerà matematicamente il riquadro proiettato sulla spaccata obliqua centrale. Ovvero l'Ipotenusa: $A^2 + B^2 = C^2$.</p>
-                    <p class="lesson-text">La pitagorica devota greca idolatrava l'universo in modo integro. Esplorando un cateto banale basato sulla traccia "1", constatarono l'Ipotenusa balzare a "Radice Quadrata di 2": il caos assoluto irrazionale. I decimali $1.41421...$ implosero i sogni perfetti pitagorici, spingendoli a silurare in mare l'avanguardista Ippaso, scopritore maledetto reo dell'orribile dissacrante invenzione.</p>
+                    <h2 class="lesson-title" style="color: #10B981;">6. Il Teorema di Pitagora</h2>
+                    <p class="lesson-text">In un triangolo rettangolo, la somma dei quadrati dei due cateti è uguale al quadrato dell'ipotenusa. Se i cateti misurano $a$ e $b$ e l'ipotenusa misura $c$, si ha: $a^2 + b^2 = c^2$.</p>
+                    <p class="lesson-text">La scuola pitagorica credeva che tutti i rapporti geometrici potessero essere espressi come frazioni di numeri interi. Quando un allievo di nome Ippaso applicò il teorema a un triangolo rettangolo isoscele con cateto di lunghezza 1, scoprì che l'ipotenusa misura $\sqrt{2} = 1.41421\ldots$, un numero irrazionale. La scoperta scosse profondamente le fondamenta della dottrina pitagorica: secondo alcune fonti antiche, Ippaso fu esiliato dalla scuola per aver rivelato questa verità scomoda.</p>
                 </div>
                 
                 <div class="interactive-container" style="flex: 1; min-width: 300px; margin: 0; align-self: flex-start;">
-                    <h3 style="color: #10B981; margin-bottom: 0.5rem; text-align: center;">Animazione Idrodinamica</h3>
+                    <h3 style="color: #10B981; margin-bottom: 0.5rem; text-align: center;">Dimostrazione visiva</h3>
                     <canvas id="mainCanvas" width="300" height="300"></canvas>
                     <div class="controls" style="justify-content: center;">
-                        <button class="control-btn" id="btnInteract" style="background:#EF4444;">Travasa Area</button>
+                        <button class="control-btn" id="btnInteract" style="background:#EF4444;">Anima l'area</button>
                         <button class="control-btn" id="btnReset" style="background:#64748b;">Reset</button>
                     </div>
                 </div>
@@ -254,16 +386,15 @@
 
         <!-- 7. CIRCONFERENZA E PI GRECO -->
         <section class="lesson-section">
-            <h2 class="lesson-title" style="color: #10B981;">7. La Circonferenza e l'abisso di Pi Greco</h2>
-            <p class="lesson-text">Per i matematici greci, il <strong>Cerchio</strong> era ritenuta l'entità geometrica mistica più vicina alla perfezione divina. Per tracciarlo a terra, ci si ancora rigidamente a un punto fisso (il <em>Centro</em>) e si fissa la distanza da mantenere ad esso inalterata (il <em>Raggio</em>, ovvero $r$): l'incedere fluido rotante genera la <strong>Circonferenza</strong>. Con "cerchio" s'intende quindi il ventre materico ricolmo, mentre la circonferenza non è altro che il nudo guscio perimetrale ad anello vuoto.</p>
-            <p class="lesson-text">Ben presto gli antichi studiosi s'accorsero di un rompicapo fenomenologico mostruoso ed emblematico. Presa e srotolata mentalmente all'aperto la crosta della linea di perimetro (Circonferenza), e sovrapponendoci geometricamente tanti segmenti di corda lunghi quanto la spaccata che attraversa per intero il centro (il Diametro assiale, $d=2r$), scoprirono incocciando che vi si intersecavano <strong>esattamente tre diametri e un piccolissimo pezzettino infinitesimo di avanzo snervante</strong>.</p>
+            <h2 class="lesson-title" style="color: #10B981;">7. La Circonferenza e Pi Greco</h2>
+            <p class="lesson-text">Per i matematici greci, il <strong>cerchio</strong> rappresentava la figura geometrica più perfetta. Si ottiene fissando un punto (il <em>centro</em>) e una distanza costante da esso (il <em>raggio</em> $r$): l'insieme di tutti i punti a quella distanza dal centro forma la <strong>circonferenza</strong>. Il cerchio è la regione di piano delimitata dalla circonferenza, mentre la circonferenza stessa è solo il suo contorno.</p>
+            <p class="lesson-text">Gli antichi matematici si accorsero presto di qualcosa di sorprendente: se si «srotola» mentalmente la circonferenza e la si confronta con il diametro ($d = 2r$), si scopre che la lunghezza della circonferenza contiene il diametro <strong>poco più di tre volte</strong>, con un avanzo preciso e costante per qualsiasi cerchio.</p>
             
             <div style="background: rgba(16, 185, 129, 0.05); padding: 1.5rem; border-left: 4px solid #10B981; margin: 2rem 0; display:flex; flex-wrap:wrap; gap: 2rem;">
                 <div style="flex:2; min-width: 250px;">
                     <h4 style="color: #10B981; margin-bottom: 0.5rem;">Un Numero Irrazionale Sfuggente</h4>
-                    <p style="font-size: 0.95rem; color: var(--text-main); line-height:1.6; margin-bottom: 0.5rem;">Il rapporto scaturito perennemente tra perimetro e diametro di un qualsiasi cerchio dell'universo è la fatidica e logorante Costante di Archimede, celebre come <strong>Pi Greco ($\pi$)</strong>.</p>
-                    <p style="font-size: 0.95rem; color: var(--text-muted); line-height:1.6;">Le intelligenze dei potenti calcolatori cibernetici ci confermano che quel pezzetto minuscolo di avanzo si propaga illimitatamente, ammontando alla proporzione mistica di $3.14159...$ <br>
-                    Il problema sbalorditivo e inappellabile è che <strong>il Pi Greco è un Numero Irrazionale e Trascendente</strong>. Significa senza sconto che la sua coda sterminata decimarle fluttua sbriciolandosi all'infinito dell'ingegneria, senza mai manifestare uno schema numerico apparente né tantomeno una ripetizione ritmica ciclica logica (il celeberrimo "periodo") che blocchi il conteggio. L'enigma non termina qui: siffatta creatura numerica è talmente maledetta a livello di calcolo analitico da <em>stroncare brutalmente il poter esser condensata e riassunta sotto le sembianze confortanti di una comoda frazione fra due banali e discreti numeri interi</em>. Nessuna radice fissa o numero naturale riesce a inglobare l'essenza di un cerchio rotatorio! La geometria traccia i confini curvi solo sfruttando calcolistiche approssimazioni asintotiche illimitate.</p>
+                    <p style="font-size: 0.95rem; color: var(--text-main); line-height:1.6; margin-bottom: 0.5rem;">Il rapporto costante tra la lunghezza della circonferenza e il suo diametro è la celebre costante <strong>Pi Greco ($\pi$)</strong>, nota anche come costante di Archimede.</p>
+                    <p style="font-size: 0.95rem; color: var(--text-muted); line-height:1.6;">I moderni calcolatori hanno verificato che $\pi = 3.14159\ldots$ e che le sue cifre decimali si estendono all'infinito senza mai ripetersi con un periodo regolare. <strong>$\pi$ è un numero irrazionale e trascendente</strong>: questo significa che non può essere espresso come frazione di due numeri interi, e che non è radice di nessun polinomio a coefficienti interi. La sua natura rende impossibile rappresentarlo in forma esatta con un numero finito di simboli algebrici ordinari.</p>
                 </div>
                 <div style="flex:1; min-width: 200px; display:flex; flex-direction:column; justify-content:center; gap: 1rem;">
                     <div style="background:rgba(255,255,255,0.04); padding:1.5rem; border-radius:8px; text-align:center; border: 1px solid rgba(16, 185, 129, 0.2);">
@@ -276,27 +407,516 @@
                     </div>
                 </div>
             </div>
-            <p class="lesson-text" style="margin-top: 1.5rem;">È questa sua natura genetica ed irrazionale intorbidata nelle formule elementari ad aver generato una delle più grandi frustrazioni tecnologiche della speculazione umana:</p>
+            <p class="lesson-text" style="margin-top: 1.5rem;">È proprio questa natura irrazionale e trascendente di $\pi$ ad essere alla radice di uno dei problemi geometrici più famosi della storia:</p>
         </section>
 
         <!-- 8. COSTRUZIONI CON RIGA E COMPASSO E QUADRATURA DEL CERCHIO -->
         <section class="lesson-section">
-            <h2 class="lesson-title" style="color: #10B981;">8. Rige e Compassi: L'Impossibile Quadratura del Cerchio</h2>
-            <p class="lesson-text">La geometria antica esigeva un canone estetico severissimo. Secondo i Greci, la "Geometria Vera" andava tracciata avvalendosi esclusivamente di due soli sacri rudimenti fisici: <strong>la riga non graduata</strong> (utile per tracciare una retta estesa all'infinito tra due punti, senza misurarne la lunghezza centrimetrica) e <strong>il compasso</strong> (utile solo per generare cerchi o estrapolare raggi tra un punto e l'altro).</p>
-            <p class="lesson-text">Quest'ostruzione limitava rigorosamente le procedure a due sole operazioni algebriche nascoste: la risoluzione visiva di equazioni Lineari (costruite con rette) oppure di equazioni Quadratiche (curve del grado di due create col disco rotante). Questo set di regole ferree scatenò il famoso enigma greco della <strong>Quadratura del Cerchio</strong>.</p>
+            <h2 class="lesson-title" style="color: #10B981;">8. Riga e Compasso: L'Impossibile Quadratura del Cerchio</h2>
+            <p class="lesson-text">La geometria greca antica imponeva un vincolo preciso: le costruzioni geometriche dovevano essere eseguite usando esclusivamente <strong>la riga non graduata</strong> (per tracciare rette passanti per due punti) e <strong>il compasso</strong> (per disegnare cerchi e riportare distanze). Nessun altro strumento era ammesso.</p>
+            <p class="lesson-text">Questo vincolo corrisponde algebricamente alla possibilità di risolvere solo equazioni lineari (con la riga) e quadratiche (con il compasso). All'interno di queste regole nacque il celebre problema della <strong>Quadratura del Cerchio</strong>.</p>
             
             <div style="background: rgba(16, 185, 129, 0.05); padding: 1.5rem; border-left: 4px solid #10B981; margin: 2rem 0;">
                 <h4 style="color: #10B981; margin-bottom: 1rem;">La Sfida Irrisolvibile</h4>
-                <p style="font-size: 0.95rem; color: var(--text-main); margin-bottom: 0.5rem; line-height:1.6;">L'antico rompicapo richiedeva geometricamente di <strong>costruire un quadrato avente Esattamente la medesima Area di un cerchio dato in partenza</strong>, usufruendo per l'appunto solamente di colpi di riga base e giri circolari di banale compasso.</p>
-                <p style="font-size: 0.95rem; color: var(--text-muted); line-height:1.6;">Algebricamente, se il cerchio ha per raggio $R=1$, l'Area risulta essere $\pi$. Allora, il lato necessario e imposto del nostro desiderato riquadro da tracciare a terra corrisponderebbe inappellabilmente alla misura mostruosa $\sqrt{\pi}$.<br><br>Geni come Archimede e Leonardo da Vinci tentarono l'arrampicata per secoli senza esito algoritmico, costretti ad afferrare dolorose approssimazioni visive. Fu solo nel lontanissimo anno 1882 che il matematico <em>Ferdinand von Lindemann</em> svelò finalmente la straziante condanna di morte celata del quesito originale: Lindemann appurò analiticamente che il celebre fattore $\pi$ rientra nella specie innata dei numeri <strong>Trascendenti</strong> (non derivabili dalle misere radici algebriche per polinomi a valori interi). Poiché la secolare coppia riga-compasso non genera nient'altro visivamente che banali sistemi equazionali algebrici inferiori, risulta <strong>strutturalmente del tutto e intrinsecamente matematicamente "Impossibile" tracciare su foglio fisico tale spigoloso quadraturo senza avvalersi d'infiniti atti</strong>.</p>
+                <p style="font-size: 0.95rem; color: var(--text-main); margin-bottom: 0.5rem; line-height:1.6;">Il problema chiedeva di <strong>costruire, con sola riga e compasso, un quadrato avente la stessa area di un cerchio dato</strong>.</p>
+                <p style="font-size: 0.95rem; color: var(--text-muted); line-height:1.6;">Se il cerchio ha raggio $R = 1$, la sua area è $\pi$. Il lato del quadrato cercato dovrebbe quindi misurare $\sqrt{\pi}$. Matematici come Archimede e, secoli dopo, Leonardo da Vinci cercarono una costruzione esatta, trovando ogni volta solo approssimazioni.<br><br>La risposta definitiva arrivò solo nel <strong>1882</strong>, quando il matematico tedesco <em>Ferdinand von Lindemann</em> dimostrò che $\pi$ è un numero <strong>trascendente</strong>, cioè non è radice di alcun polinomio a coefficienti interi. Poiché riga e compasso possono costruire solo lunghezze ottenibili attraverso equazioni algebriche, costruire $\sqrt{\pi}$ con questi strumenti è <strong>matematicamente impossibile</strong>.</p>
             </div>
         </section>
 
         <!-- 9. API ED ESAGONI -->
         <section class="lesson-section">
-            <h2 class="lesson-title" style="color: #10B981;">9. Apologia e Ingegneria (Le Api e gli Esagoni)</h2>
-            <p class="lesson-text">L'ottimizzazione sfiora la geometria e la natura. Il lavoro biologico metabolico per secernere preziosissima cera d'alveare risulta altissimo: le Api hanno pertanto affilato l'urgenza imminente di generare le celle voluminose esigendo lo stipamento per minor chilometrico riassetto di perimetro recintato.</p>
-            <p class="lesson-text">L'<strong>Esagono Regolare</strong> detiene legalmente il sommo trono strutturale contro un inutile quadrato o triangolo asfissiato. "Il Teorema del Favo" (attestato dal geniale e sudato Thomas Hales) convalida analiticamente come la pavimentazione in esagoni regali ottimizzi la zona d'uso immagazzinando stratosferico volume senza la benché flebile perdita d'incarto laterale ceroso. Pura ingegneristica estetica geometrica.</p>
+            <h2 class="lesson-title" style="color: #10B981;">9. Le Api e gli Esagoni: Matematica in Natura</h2>
+            <p class="lesson-text">
+                Produrre cera è un processo dispendioso per le api: un'ape deve consumare circa <strong>8 grammi di miele</strong>
+                per produrre <strong>1 grammo di cera</strong>. L'alveare deve quindi costruire celle che contengano
+                il massimo volume di miele usando la minor quantità possibile di cera, ossia di perimetro.
+                La domanda geometrica che le api hanno «risolto» per evoluzione è:
+            </p>
+            <div style="background: rgba(16,185,129,0.08); border-left: 4px solid #10B981; padding: 1.2rem 1.5rem; border-radius: 0 10px 10px 0; margin: 1.5rem 0;">
+                <p style="margin:0; font-size: 1.05rem; color: var(--text-main);">
+                    <em>«Qual è il modo più efficiente di suddividere un piano in celle di uguale area,
+                    usando il minor perimetro totale possibile?»</em>
+                </p>
+            </div>
+            <p class="lesson-text">
+                La risposta è l'<strong>esagono regolare</strong>. Questo risultato, intuitivamente noto da secoli,
+                è stato dimostrato matematicamente solo nel <strong>1999</strong> da Thomas C. Hales con una
+                dimostrazione rigorosa nota come <strong>Teorema del Favo</strong> (<em>Honeycomb Conjecture</em>).
+            </p>
+
+            <!-- CONFRONTO TRE PAVIMENTAZIONI -->
+            <h3 style="color: #10B981; margin: 2rem 0 1rem;">Confronto tra Pavimentazioni Regolari</h3>
+            <p class="lesson-text">
+                Esistono solo <strong>tre poligoni regolari</strong> che riescono a ricoprire il piano senza lasciare
+                spazi vuoti (<em>tassellazione regolare</em>): il triangolo equilatero, il quadrato e l'esagono regolare.
+                Per una stessa area coperta, quale usa meno perimetro (= meno cera)?
+            </p>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin: 1.5rem 0;">
+
+                <!-- TRIANGOLO -->
+                <div class="card" style="padding: 1.5rem; background: rgba(59,130,246,0.05); border: 1px solid rgba(59,130,246,0.2); text-align: center;">
+                    <h4 style="color: #3B82F6; margin-bottom: 0.5rem;">🔺 Triangolo Equilatero</h4>
+                    <svg width="160" height="160" viewBox="0 0 160 160" style="display:block; margin: 0.5rem auto; background: transparent;">
+                        <!-- 9 triangoli equilateri che tassellano (s≈30) -->
+                        <g fill="rgba(59,130,246,0.12)" stroke="#3B82F6" stroke-width="1.5">
+                            <!-- riga 1 -->
+                            <polygon points="10,140 40,88 70,140"/>
+                            <polygon points="40,88 70,140 100,88"/>
+                            <polygon points="70,140 100,88 130,140"/>
+                            <!-- riga 1 invertiti -->
+                            <polygon points="40,88 70,140 40,140"/> <!-- già incluso, ignora -->
+                            <polygon points="40,88 70,88 70,140"/>
+                            <polygon points="70,88 100,88 70,140"/>  <!-- già presente -->
+                            <polygon points="100,88 130,88 130,140"/>
+                            <!-- riga 2 -->
+                            <polygon points="10,88 40,36 70,88"/>
+                            <polygon points="40,36 70,88 100,36"/>
+                            <polygon points="70,88 100,36 130,88"/>
+                            <!-- riga 2 invertiti -->
+                            <polygon points="40,36 70,36 70,88"/>
+                            <polygon points="70,36 100,36 70,88"/>
+                            <polygon points="100,36 130,36 130,88"/>
+                        </g>
+                    </svg>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0.5rem 0 0;">
+                        Area 1 cella = \(\frac{\sqrt{3}}{4}l^2\)<br>
+                        <strong style="color:#3B82F6;">Efficienza: bassa</strong><br>
+                        Angoli interni: 60°
+                    </p>
+                </div>
+
+                <!-- QUADRATO -->
+                <div class="card" style="padding: 1.5rem; background: rgba(245,158,11,0.05); border: 1px solid rgba(245,158,11,0.2); text-align: center;">
+                    <h4 style="color: #F59E0B; margin-bottom: 0.5rem;">⬛ Quadrato</h4>
+                    <svg width="160" height="160" viewBox="0 0 160 160" style="display:block; margin: 0.5rem auto; background: transparent;">
+                        <g fill="rgba(245,158,11,0.12)" stroke="#F59E0B" stroke-width="1.5">
+                            <rect x="10" y="10" width="35" height="35"/>
+                            <rect x="45" y="10" width="35" height="35"/>
+                            <rect x="80" y="10" width="35" height="35"/>
+                            <rect x="115" y="10" width="35" height="35"/>
+                            <rect x="10" y="45" width="35" height="35"/>
+                            <rect x="45" y="45" width="35" height="35"/>
+                            <rect x="80" y="45" width="35" height="35"/>
+                            <rect x="115" y="45" width="35" height="35"/>
+                            <rect x="10" y="80" width="35" height="35"/>
+                            <rect x="45" y="80" width="35" height="35"/>
+                            <rect x="80" y="80" width="35" height="35"/>
+                            <rect x="115" y="80" width="35" height="35"/>
+                            <rect x="10" y="115" width="35" height="35"/>
+                            <rect x="45" y="115" width="35" height="35"/>
+                            <rect x="80" y="115" width="35" height="35"/>
+                            <rect x="115" y="115" width="35" height="35"/>
+                        </g>
+                    </svg>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0.5rem 0 0;">
+                        Area 1 cella = \(l^2\)<br>
+                        <strong style="color:#F59E0B;">Efficienza: media</strong><br>
+                        Angoli interni: 90°
+                    </p>
+                </div>
+
+                <!-- ESAGONO -->
+                <div class="card" style="padding: 1.5rem; background: rgba(16,185,129,0.05); border: 2px solid rgba(16,185,129,0.4); text-align: center;">
+                    <h4 style="color: #10B981; margin-bottom: 0.5rem;">⬡ Esagono Regolare ✅</h4>
+                    <svg width="160" height="160" viewBox="0 0 160 160" style="display:block; margin: 0.5rem auto; background: transparent;">
+                        <g fill="rgba(16,185,129,0.15)" stroke="#10B981" stroke-width="1.5">
+                            <!-- Favo 3×3 approssimato, lato ≈ 28, offset per tassellazione -->
+                            <!-- esagono: centro cx,cy, lato r=22 -->
+                            <!-- riga 0: y=38 -->
+                            <polygon points="80,16 99,27 99,49 80,60 61,49 61,27"/>
+                            <!-- riga 0 adiacenti orizzontali -->
+                            <polygon points="118,16 137,27 137,49 118,60 99,49 99,27"/>
+                            <polygon points="42,16 61,27 61,49 42,60 23,49 23,27"/>
+                            <!-- riga 1: y=60+19=79 (offset +22 e shift x=19) -->
+                            <polygon points="99,60 118,71 118,93 99,104 80,93 80,71"/>
+                            <polygon points="61,60 80,71 80,93 61,104 42,93 42,71"/>
+                            <polygon points="137,60 156,71 156,93 137,104 118,93 118,71"/>
+                            <polygon points="23,60 42,71 42,93 23,104 4,93 4,71"/>
+                            <!-- riga 2 -->
+                            <polygon points="80,104 99,115 99,137 80,148 61,137 61,115"/>
+                            <polygon points="118,104 137,115 137,137 118,148 99,137 99,115"/>
+                            <polygon points="42,104 61,115 61,137 42,148 23,137 23,115"/>
+                        </g>
+                    </svg>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0.5rem 0 0;">
+                        Area 1 cella = \(\frac{3\sqrt{3}}{2}l^2\)<br>
+                        <strong style="color:#10B981;">Efficienza: massima ✅</strong><br>
+                        Angoli interni: 120°
+                    </p>
+                </div>
+            </div>
+
+            <!-- TABELLA CONFRONTO -->
+            <h3 style="color: #10B981; margin: 2rem 0 1rem;">Perché l'Esagono Vince: i Numeri</h3>
+            <p class="lesson-text">
+                Per confrontare le tre forme in modo equo, calcoliamo il rapporto
+                <strong>perimetro / area</strong> per ciascuna cella, a parità di lato \(l = 1\).
+                Più il rapporto è <em>basso</em>, meno perimetro (= cera) serve per racchiudere la stessa area.
+            </p>
+
+            <div style="overflow-x: auto; margin: 1.5rem 0;">
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.95rem; color: var(--text-muted);">
+                    <thead>
+                        <tr style="background: rgba(16,185,129,0.1); color: #10B981;">
+                            <th style="padding: 0.8rem 1rem; text-align: left; border-bottom: 2px solid rgba(16,185,129,0.3);">Figura</th>
+                            <th style="padding: 0.8rem 1rem; text-align: center; border-bottom: 2px solid rgba(16,185,129,0.3);">Perimetro (lato \(l=1\))</th>
+                            <th style="padding: 0.8rem 1rem; text-align: center; border-bottom: 2px solid rgba(16,185,129,0.3);">Area</th>
+                            <th style="padding: 0.8rem 1rem; text-align: center; border-bottom: 2px solid rgba(16,185,129,0.3);">Rapporto P/A</th>
+                            <th style="padding: 0.8rem 1rem; text-align: center; border-bottom: 2px solid rgba(16,185,129,0.3);">Efficienza</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+                            <td style="padding: 0.8rem 1rem;"><span style="color:#3B82F6; font-weight:600;">🔺 Triangolo Equilatero</span></td>
+                            <td style="padding: 0.8rem 1rem; text-align: center;">\(3l = 3\)</td>
+                            <td style="padding: 0.8rem 1rem; text-align: center;">\(\frac{\sqrt{3}}{4} \approx 0.433\)</td>
+                            <td style="padding: 0.8rem 1rem; text-align: center; font-weight: 700; color: #EF4444;">6.93</td>
+                            <td style="padding: 0.8rem 1rem; text-align: center;">🔴 Bassa</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+                            <td style="padding: 0.8rem 1rem;"><span style="color:#F59E0B; font-weight:600;">⬛ Quadrato</span></td>
+                            <td style="padding: 0.8rem 1rem; text-align: center;">\(4l = 4\)</td>
+                            <td style="padding: 0.8rem 1rem; text-align: center;">\(l^2 = 1\)</td>
+                            <td style="padding: 0.8rem 1rem; text-align: center; font-weight: 700; color: #F59E0B;">4.00</td>
+                            <td style="padding: 0.8rem 1rem; text-align: center;">🟡 Media</td>
+                        </tr>
+                        <tr style="background: rgba(16,185,129,0.05);">
+                            <td style="padding: 0.8rem 1rem;"><span style="color:#10B981; font-weight:600;">⬡ Esagono Regolare</span></td>
+                            <td style="padding: 0.8rem 1rem; text-align: center;">\(6l = 6\)</td>
+                            <td style="padding: 0.8rem 1rem; text-align: center;">\(\frac{3\sqrt{3}}{2} \approx 2.598\)</td>
+                            <td style="padding: 0.8rem 1rem; text-align: center; font-weight: 700; color: #10B981;">2.31 ✅</td>
+                            <td style="padding: 0.8rem 1rem; text-align: center;">🟢 Massima</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- PERCHÉ 120°? -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 2rem 0; align-items: start;">
+                <div style="background: rgba(255,255,255,0.03); padding: 1.5rem; border-radius: 10px; border: 1px solid rgba(16,185,129,0.2);">
+                    <h4 style="color: #10B981; margin-bottom: 0.8rem;">🔑 Il Segreto: Gli Angoli da 120°</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.7;">
+                        L'esagono regolare ha angoli interni di <strong>120°</strong>. Quando tre esagoni si incontrano
+                        in un vertice, i loro angoli si sommano esattamente a \(3 \times 120° = 360°\):
+                        il piano viene ricoperto <em>perfettamente</em>, senza spazi vuoti né sovrapposizioni.
+                        <br><br>
+                        Questo accade anche per il quadrato (\(4 \times 90° = 360°\)) e per il triangolo
+                        (\(6 \times 60° = 360°\)), ma l'esagono — con solo 3 celle per vertice — minimizza
+                        il perimetro totale condiviso.
+                    </p>
+                </div>
+                <div style="text-align: center;">
+                    <svg width="200" height="200" viewBox="0 0 200 200" style="display:block; margin: 0 auto;">
+                        <!-- Tre esagoni che si incontrano in un punto centrale -->
+                        <!-- Centro: 100,100 -->
+                        <!-- Esagono in alto: centro 100,62 -->
+                        <polygon points="100,38 122,50 122,74 100,86 78,74 78,50"
+                                 fill="rgba(16,185,129,0.15)" stroke="#10B981" stroke-width="2"/>
+                        <!-- Esagono in basso-sinistra: centro 69,114 -->
+                        <polygon points="69,90 91,102 91,126 69,138 47,126 47,102"
+                                 fill="rgba(59,130,246,0.15)" stroke="#3B82F6" stroke-width="2"/>
+                        <!-- Esagono in basso-destra: centro 131,114 -->
+                        <polygon points="131,90 153,102 153,126 131,138 109,126 109,102"
+                                 fill="rgba(245,158,11,0.15)" stroke="#F59E0B" stroke-width="2"/>
+                        <!-- Punto centrale -->
+                        <circle cx="100" cy="86" r="4" fill="white"/>
+                        <!-- Archi angoli -->
+                        <text x="82" y="82" fill="#10B981" font-size="11" font-weight="bold">120°</text>
+                        <text x="82" y="106" fill="#3B82F6" font-size="11" font-weight="bold">120°</text>
+                        <text x="103" y="106" fill="#F59E0B" font-size="11" font-weight="bold">120°</text>
+                        <text x="60" y="165" fill="rgba(255,255,255,0.5)" font-size="12">3 × 120° = 360°</text>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- GRAFICO INTERATTIVO: COSTRUZIONE DEL FAVO -->
+            <div class="interactive-container" style="margin-top: 1.5rem;">
+                <h3 style="color: #10B981; margin-bottom: 0.5rem; text-align: center;">
+                    🐝 Laboratorio: Costruisci il Favo
+                </h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem; text-align: center;">
+                    Premi il pulsante per aggiungere celle esagonali una alla volta e osserva come il favo cresce
+                    senza sprechi. Il contatore mostra in tempo reale quanto perimetro condiviso viene risparmiato.
+                </p>
+                <canvas id="honeyCanvas" width="560" height="280"></canvas>
+                <div style="display: flex; justify-content: center; gap: 1rem; margin-top: 1rem; flex-wrap: wrap;">
+                    <div style="background: rgba(0,0,0,0.2); padding: 0.6rem 1.2rem; border-radius: 8px; text-align: center; min-width: 140px;">
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">Celle costruite</div>
+                        <div id="honey-cells" style="font-size: 1.3rem; font-weight: 800; color: #10B981;">0</div>
+                    </div>
+                    <div style="background: rgba(0,0,0,0.2); padding: 0.6rem 1.2rem; border-radius: 8px; text-align: center; min-width: 140px;">
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">Lati condivisi</div>
+                        <div id="honey-shared" style="font-size: 1.3rem; font-weight: 800; color: #3B82F6;">0</div>
+                    </div>
+                    <div style="background: rgba(0,0,0,0.2); padding: 0.6rem 1.2rem; border-radius: 8px; text-align: center; min-width: 140px;">
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">Cera risparmiata</div>
+                        <div id="honey-saved" style="font-size: 1.3rem; font-weight: 800; color: #F59E0B;">0%</div>
+                    </div>
+                </div>
+                <div class="controls" style="margin-top: 1rem;">
+                    <button class="control-btn" id="btnHoneyAdd">➕ Aggiungi Cella</button>
+                    <button class="control-btn" id="btnHoneyAuto">▶ Costruzione Automatica</button>
+                    <button class="control-btn" id="btnHoneyReset" style="background:#64748b;">↺ Reset</button>
+                </div>
+            </div>
+
+            <!-- TEOREMA DEL FAVO -->
+            <div style="background: rgba(16,185,129,0.06); border: 1px solid rgba(16,185,129,0.25); border-radius: 12px; padding: 1.5rem; margin-top: 2rem;">
+                <h4 style="color: #10B981; margin-bottom: 0.8rem;">📜 Il Teorema del Favo (Honeycomb Conjecture)</h4>
+                <p style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.7; margin: 0;">
+                    Il matematico <strong>Thomas C. Hales</strong> (Università del Michigan) ha dimostrato
+                    rigorosamente nel <strong>1999</strong> che, tra tutte le possibili tassellazioni del piano con
+                    celle di uguale area, la <strong>struttura esagonale regolare minimizza il perimetro totale</strong>.
+                    La congettura era nota sin dall'antichità — il naturalista romano <em>Marco Terenzio Varrone</em>
+                    la citò già nel <strong>36 a.C.</strong> — ma la sua dimostrazione formale ha richiesto quasi
+                    duemila anni. Le api, spinte dalla pressione evolutiva, hanno «trovato» questa soluzione
+                    ottimale decine di milioni di anni prima di noi.
+                </p>
+            </div>
+
+            <!-- IL PROBLEMA IN 3D: APERTO -->
+            <div style="margin-top: 2.5rem;">
+                <h3 style="color: #a78bfa; margin-bottom: 1rem; display:flex; align-items:center; gap: 0.6rem;">
+                    <span style="font-size:1.4rem;">🔬</span> Il Problema in 3 Dimensioni: ancora irrisolto
+                </h3>
+                <p class="lesson-text">
+                    Il successo in 2D solleva immediatamente una domanda naturale: esiste un analogo in
+                    <strong>tre dimensioni</strong>? Come suddividere lo spazio in celle di uguale volume
+                    usando la minima superficie totale? Questo problema — noto come
+                    <strong>Problema di Kelvin</strong> — è ad oggi un
+                    <strong style="color:#a78bfa;">problema aperto in matematica</strong>.
+                </p>
+
+                <!-- BANNER PROBLEMA APERTO -->
+                <div style="background: linear-gradient(135deg, rgba(167,139,250,0.12), rgba(139,92,246,0.08));
+                            border: 2px solid rgba(167,139,250,0.4); border-radius: 14px;
+                            padding: 1.4rem 1.6rem; margin: 1.5rem 0;
+                            display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap;">
+                    <span style="font-size: 2.5rem; flex-shrink:0;">❓</span>
+                    <div>
+                        <h4 style="color: #a78bfa; margin: 0 0 0.4rem;">Problema Aperto — nessuna dimostrazione ancora esistente</h4>
+                        <p style="margin: 0; font-size: 0.9rem; color: var(--text-muted); line-height: 1.6;">
+                            A differenza del caso 2D (risolto da Hales nel 1999), non esiste ancora
+                            <strong>nessuna dimostrazione matematica</strong> di quale struttura 3D
+                            minimizzi la superficie per volume unitario. Sappiamo che la struttura di
+                            Weaire-Phelan è al momento la
+                            <em>migliore conosciuta</em>, ma nessuno ha dimostrato che non ne esista
+                            una ancora più efficiente.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- STORIA: KELVIN 1887 -->
+                <h4 style="color: #10B981; margin: 2rem 0 0.8rem;">📅 La Congettura di Kelvin (1887)</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: start;">
+                    <div>
+                        <p style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.7;">
+                            Lord <strong>William Thomson</strong> (noto come Lord Kelvin), uno dei più grandi
+                            fisici del XIX secolo, propose nel <strong>1887</strong> la sua congettura:
+                            la struttura 3D ottimale sarebbe il <strong>ottaedro troncato</strong>
+                            (o <em>tetrakaidecaedron</em>), un poliedro a 14 facce (8 esagonali + 6 quadrate)
+                            con le facce leggermente curve.
+                        </p>
+                        <p style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.7;">
+                            Questa struttura replicava nello spazio periodicamente come un cristallo, e per
+                            oltre <strong>100 anni</strong> fu considerata la soluzione ottimale, senza che
+                            nessuno riuscisse a trovarla di meglio né — soprattutto — a dimostrarla.
+                        </p>
+                    </div>
+                    <!-- SVG: ottaedro troncato schematico -->
+                    <div style="text-align:center;">
+                        <svg width="200" height="190" viewBox="0 0 200 190" style="display:block; margin: 0 auto;">
+                            <defs>
+                                <style>.kline{stroke:#8B5CF6;stroke-width:1.8;fill:none;}
+                                .kface6{fill:rgba(139,92,246,0.13);stroke:#8B5CF6;stroke-width:1.5;}
+                                .kface4{fill:rgba(167,139,250,0.2);stroke:#a78bfa;stroke-width:1.5;}</style>
+                            </defs>
+                            <!-- Proiezione frontale stilizzata dell'ottaedro troncato -->
+                            <!-- Faccia esagonale frontale -->
+                            <polygon class="kface6"
+                                points="100,30 132,48 132,84 100,102 68,84 68,48"/>
+                            <!-- Faccia quadrata superiore (prospettiva) -->
+                            <polygon class="kface4"
+                                points="100,30 132,48 148,30 116,12"/>
+                            <!-- Faccia quadrata destra -->
+                            <polygon class="kface4"
+                                points="132,48 148,30 148,66 132,84"/>
+                            <!-- Faccia esagonale destra (parziale, prospettiva) -->
+                            <polygon class="kface6"
+                                points="132,84 148,66 148,102 132,120 116,120 100,102"/>
+                            <!-- Faccia inferiore quadrata -->
+                            <polygon class="kface4"
+                                points="100,102 132,120 116,138 84,138"/>
+                            <!-- Linee di profilo -->
+                            <line class="kline" x1="100" y1="30" x2="116" y2="12"/>
+                            <line class="kline" x1="116" y1="12" x2="148" y2="30"/>
+                            <line class="kline" x1="148" y1="30" x2="148" y2="66"/>
+                            <line class="kline" x1="148" y1="66" x2="148" y2="102"/>
+                            <line class="kline" x1="148" y1="102" x2="132" y2="120"/>
+                            <line class="kline" x1="132" y1="120" x2="116" y2="138"/>
+                            <line class="kline" x1="116" y1="138" x2="84" y2="138"/>
+                            <line class="kline" x1="84" y1="138" x2="68" y2="120"/>
+                            <line class="kline" x1="68" y1="120" x2="52" y2="102"/>
+                            <line class="kline" x1="52" y1="102" x2="52" y2="66"/>
+                            <line class="kline" x1="52" y1="66" x2="68" y2="48"/>
+                            <!-- Linee tratteggiate posteriori -->
+                            <line x1="52" y1="66" x2="68" y2="48" stroke="#8B5CF6" stroke-width="1" stroke-dasharray="4,3"/>
+                            <!-- Etichetta -->
+                            <text x="100" y="170" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="11">Ottaedro Troncato (Kelvin)</text>
+                            <text x="100" y="183" text-anchor="middle" fill="rgba(139,92,246,0.8)" font-size="10">14 facce: 8 esonali + 6 quadrate</text>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- WEAIRE-PHELAN 1994 -->
+                <h4 style="color: #f59e0b; margin: 2rem 0 0.8rem;">⚡ La Struttura di Weaire-Phelan (1994): il miglior record attuale</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: start;">
+                    <div>
+                        <p style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.7;">
+                            Nel <strong>1994</strong>, i fisici irlandesi <strong>Denis Weaire</strong> e
+                            <strong>Robert Phelan</strong> (Trinity College, Dublino) usarono una simulazione
+                            al computer e scoprirono una struttura che supera la congettura di Kelvin:
+                            la <em>struttura di Weaire-Phelan</em>.
+                        </p>
+                        <p style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.7;">
+                            È composta da <strong>due tipi di celle</strong> con uguale volume:
+                        </p>
+                        <ul style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.8; padding-left: 1.2rem;">
+                            <li>2 <strong>dodecaedri pentagonali irregolari</strong> (12 facce, tutte pentagonali)</li>
+                            <li>6 <strong>tetrakaidecaedri</strong> (14 facce: 2 esagonali + 12 pentagonali)</li>
+                        </ul>
+                        <p style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.7; margin-top:0.8rem;">
+                            Rispetto alla struttura di Kelvin, Weaire-Phelan ha una superficie totale
+                            inferiore di circa <strong>0.3%</strong>. Sembra poco, ma in termini matematici
+                            è un miglioramento reale, che ha abbattuto la congettura di Kelvin dopo 107 anni.
+                        </p>
+                    </div>
+                    <!-- SVG: confronto superfici -->
+                    <div>
+                        <div style="background: rgba(0,0,0,0.2); border-radius: 10px; padding: 1.2rem;">
+                            <p style="font-size: 0.82rem; color: var(--text-muted); margin: 0 0 0.8rem; text-align:center;">
+                                Rapporto superficie/volume (normalizzato)
+                            </p>
+                            <!-- Barra Kelvin -->
+                            <div style="margin-bottom: 0.8rem;">
+                                <div style="display:flex; justify-content:space-between; font-size:0.82rem; color:var(--text-muted); margin-bottom:0.3rem;">
+                                    <span>Kelvin (ottaedro troncato)</span><span style="color:#8B5CF6;">5.3063</span>
+                                </div>
+                                <div style="background:rgba(255,255,255,0.07); border-radius:4px; height:18px; overflow:hidden;">
+                                    <div style="width:100%; height:100%; background:rgba(139,92,246,0.5); border-radius:4px;"></div>
+                                </div>
+                            </div>
+                            <!-- Barra Weaire-Phelan -->
+                            <div style="margin-bottom: 0.8rem;">
+                                <div style="display:flex; justify-content:space-between; font-size:0.82rem; color:var(--text-muted); margin-bottom:0.3rem;">
+                                    <span>Weaire-Phelan</span><span style="color:#f59e0b;">5.2888 ✅</span>
+                                </div>
+                                <div style="background:rgba(255,255,255,0.07); border-radius:4px; height:18px; overflow:hidden;">
+                                    <div style="width:99.7%; height:100%; background:rgba(245,158,11,0.55); border-radius:4px;"></div>
+                                </div>
+                            </div>
+                            <p style="font-size:0.78rem; color:rgba(255,255,255,0.3); margin:0.6rem 0 0; text-align:center;">
+                                Meno superficie = meno "parete" per unità di volume → struttura più efficiente
+                            </p>
+                        </div>
+
+                        <!-- Curiosità olimpiadi -->
+                        <div style="background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.25);
+                                    border-radius: 10px; padding: 1rem; margin-top: 1rem;">
+                            <p style="margin:0; font-size:0.85rem; color:var(--text-muted); line-height:1.6;">
+                                🏊 <strong style="color:#f59e0b;">Olimpiadi di Pechino 2008:</strong>
+                                il progetto architettonico del celebre
+                                <em>Water Cube</em> (il cubo dell'acqua, piscina olimpica) si ispirò
+                                visivamente proprio alla struttura di Weaire-Phelan come motivo
+                                decorativo della facciata.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PERCHÉ È IMPORTANTE -->
+                <h4 style="color: #10B981; margin: 2rem 0 0.8rem;">🧪 Perché risolverlo sarebbe importante</h4>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-top: 0.5rem;">
+                    <div style="background: rgba(16,185,129,0.05); border: 1px solid rgba(16,185,129,0.2); border-radius: 10px; padding: 1.1rem;">
+                        <div style="font-size:1.5rem; margin-bottom:0.5rem;">🫧</div>
+                        <h5 style="color:#10B981; margin: 0 0 0.4rem;">Fisica delle Schiume</h5>
+                        <p style="font-size:0.85rem; color:var(--text-muted); margin:0; line-height:1.6;">
+                            Le schiume (shampoo, birra, cemento cellulare) sono letteralmente
+                            aggregati di bolle che cercano di minimizzare l'energia superficiale.
+                            Conoscere la struttura 3D ottimale permetterebbe di progettare
+                            materiali più resistenti e leggeri.
+                        </p>
+                    </div>
+                    <div style="background: rgba(59,130,246,0.05); border: 1px solid rgba(59,130,246,0.2); border-radius: 10px; padding: 1.1rem;">
+                        <div style="font-size:1.5rem; margin-bottom:0.5rem;">🦴</div>
+                        <h5 style="color:#3B82F6; margin: 0 0 0.4rem;">Biologia e Medicina</h5>
+                        <p style="font-size:0.85rem; color:var(--text-muted); margin:0; line-height:1.6;">
+                            Il tessuto osseo trabecolare ha una microstruttura a celle che
+                            massimizza la resistenza meccanica minimizzando la massa.
+                            Stampare impianti ossei con la geometria ottimale migliorebbe
+                            protesi e scaffold biomedici.
+                        </p>
+                    </div>
+                    <div style="background: rgba(167,139,250,0.05); border: 1px solid rgba(167,139,250,0.2); border-radius: 10px; padding: 1.1rem;">
+                        <div style="font-size:1.5rem; margin-bottom:0.5rem;">🏗️</div>
+                        <h5 style="color:#a78bfa; margin: 0 0 0.4rem;">Ingegneria dei Materiali</h5>
+                        <p style="font-size:0.85rem; color:var(--text-muted); margin:0; line-height:1.6;">
+                            I materiali "cellular" (alluminio espanso, nido d'ape 3D) vengono
+                            usati nell'industria aerospaziale e automobilistica per strutture
+                            ultraleggere. Una geometria ottimale riduce il peso a parità
+                            di rigidità strutturale.
+                        </p>
+                    </div>
+                    <div style="background: rgba(239,68,68,0.05); border: 1px solid rgba(239,68,68,0.2); border-radius: 10px; padding: 1.1rem;">
+                        <div style="font-size:1.5rem; margin-bottom:0.5rem;">💻</div>
+                        <h5 style="color:#EF4444; margin: 0 0 0.4rem;">Matematica Pura e Teoria</h5>
+                        <p style="font-size:0.85rem; color:var(--text-muted); margin:0; line-height:1.6;">
+                            Il problema è strettamente legato alla teoria della
+                            <em>superficie minima</em>, alla geometria differenziale e alla
+                            topologia. La sua soluzione richiederebbe nuovi strumenti matematici
+                            applicabili ad altri problemi aperti.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- STATO ATTUALE -->
+                <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1);
+                            border-radius: 12px; padding: 1.4rem; margin-top: 2rem;">
+                    <h4 style="color: rgba(255,255,255,0.7); margin: 0 0 1rem;">📊 Stato attuale della ricerca</h4>
+                    <table style="width:100%; border-collapse:collapse; font-size:0.88rem; color:var(--text-muted);">
+                        <thead>
+                            <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                                <th style="padding:0.6rem 0.8rem; text-align:left; color:rgba(255,255,255,0.5);">Anno</th>
+                                <th style="padding:0.6rem 0.8rem; text-align:left; color:rgba(255,255,255,0.5);">Risultato</th>
+                                <th style="padding:0.6rem 0.8rem; text-align:left; color:rgba(255,255,255,0.5);">Autori</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                                <td style="padding:0.6rem 0.8rem; color:#8B5CF6; font-weight:600;">1887</td>
+                                <td style="padding:0.6rem 0.8rem;">L'ottaedro troncato è proposto come ottimo 3D</td>
+                                <td style="padding:0.6rem 0.8rem;">Lord Kelvin</td>
+                            </tr>
+                            <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                                <td style="padding:0.6rem 0.8rem; color:#f59e0b; font-weight:600;">1994</td>
+                                <td style="padding:0.6rem 0.8rem;">Struttura Weaire-Phelan: −0.3% di superficie vs. Kelvin. <strong style="color:#f59e0b;">Record attuale</strong></td>
+                                <td style="padding:0.6rem 0.8rem;">Weaire &amp; Phelan</td>
+                            </tr>
+                            <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                                <td style="padding:0.6rem 0.8rem; color:#10B981; font-weight:600;">1999</td>
+                                <td style="padding:0.6rem 0.8rem;">Problema 2D risolto definitivamente (esagono ottimale)</td>
+                                <td style="padding:0.6rem 0.8rem;">Thomas C. Hales</td>
+                            </tr>
+                            <tr>
+                                <td style="padding:0.6rem 0.8rem; color:#EF4444; font-weight:600;">Oggi</td>
+                                <td style="padding:0.6rem 0.8rem;">Nessuna struttura 3D ottimale dimostrata. Weaire-Phelan è il miglior candidato noto, ma la prova manca.</td>
+                                <td style="padding:0.6rem 0.8rem;">— problema aperto —</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </section>
 
         <!-- 10. ORIGAMI (La Curiosità Piegata) -->

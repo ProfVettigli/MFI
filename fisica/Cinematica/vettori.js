@@ -211,10 +211,12 @@ const crossAngleVal = document.getElementById('cross-angle-val');
 const crossResInfo = document.getElementById('cross-res-info');
 
 function project3D(x, y, z, scale = 1, cx = 0, cy = 0) {
-    const cos30 = Math.cos(Math.PI / 6);
-    const sin30 = Math.sin(Math.PI / 6);
-    const px = (x - y) * cos30;
-    const py = (x + y) * sin30 - z;
+    // Proiezione obliqua cabinet: X→destra, Y→alto-sinistra, Z→alto
+    // Questo garantisce che la rotazione antioraria visiva (a→b in su) 
+    // corrisponda al cross product +Z (verso l'alto), coerente con la 
+    // regola della mano destra percepita dallo spettatore.
+    const px = x - y * 0.5;
+    const py = -y * 0.5 - z;
     return { x: cx + px * scale, y: cy + py * scale };
 }
 
@@ -224,15 +226,16 @@ function drawCrossLab() {
     const W = crossCanvas.width, H = crossCanvas.height;
     ctx.clearRect(0, 0, W, H);
     
-    // Origin for 3D projection
-    const origin = { x: W / 2.2, y: H / 2 + 30 };
-    const scale = 80;
+    // Origin for 3D projection — spostata a destra e leggermente giù
+    // per lasciare spazio al vettore Z che punta verso l'alto
+    const origin = { x: W / 2, y: H * 0.6 };
+    const scale = 75;
     
     const angleDeg = parseFloat(crossAngleSlider.value);
     if(crossAngleVal) crossAngleVal.innerText = angleDeg + '°';
     const angleRad = angleDeg * Math.PI / 180;
     
-    // Draw XY Plane (ground)
+    // Draw XY Plane (piano orizzontale)
     ctx.beginPath();
     const p1 = project3D(2, 2, 0, scale, origin.x, origin.y);
     const p2 = project3D(-2, 2, 0, scale, origin.x, origin.y);
@@ -251,8 +254,8 @@ function drawCrossLab() {
     // Draw axes
     const axX = project3D(2, 0, 0, scale, origin.x, origin.y);
     const axY = project3D(0, 2, 0, scale, origin.x, origin.y);
-    const axZ = project3D(0, 0, 2, scale, origin.x, origin.y);
-    const axZneg = project3D(0, 0, -2, scale, origin.x, origin.y);
+    const axZ = project3D(0, 0, 2.2, scale, origin.x, origin.y);
+    const axZneg = project3D(0, 0, -0.5, scale, origin.x, origin.y);
     
     ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
     ctx.lineWidth = 1;
@@ -261,22 +264,33 @@ function drawCrossLab() {
     ctx.beginPath(); ctx.moveTo(origin.x, origin.y); ctx.lineTo(axY.x, axY.y); ctx.stroke();
     ctx.beginPath(); ctx.moveTo(axZneg.x, axZneg.y); ctx.lineTo(axZ.x, axZ.y); ctx.stroke();
     ctx.setLineDash([]);
+
+    // Etichette assi
+    ctx.save();
+    ctx.fillStyle = 'rgba(255,255,255,0.35)';
+    ctx.font = '13px Inter, sans-serif';
+    ctx.fillText('X', axX.x + 6, axX.y + 4);
+    ctx.fillText('Y', axY.x - 16, axY.y - 4);
+    ctx.fillText('Z', axZ.x + 4, axZ.y - 4);
+    ctx.restore();
     
     // Vectors
     const a = { x: 1.5, y: 0, z: 0 };
     const b = { x: 1.5 * Math.cos(angleRad), y: 1.5 * Math.sin(angleRad), z: 0 };
-    // Cross product: a x b = (0, 0, ax*by - ay*bx)
-    const cross = { x: 0, y: 0, z: (a.x * b.y - a.y * b.x) * 0.7 };
+    // Cross product: a × b = (0, 0, ax·by − ay·bx)
+    const crossZ = (a.x * b.y - a.y * b.x) * 0.7;
+    const cross = { x: 0, y: 0, z: crossZ };
     
     const pa = project3D(a.x, a.y, a.z, scale, origin.x, origin.y);
     const pb = project3D(b.x, b.y, b.z, scale, origin.x, origin.y);
     const pcross = project3D(cross.x, cross.y, cross.z, scale, origin.x, origin.y);
     
-    // Draw Arc for angle
+    // Draw Arc for angle (ruota da a verso b nel piano XY)
     ctx.beginPath();
     ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
     ctx.lineWidth = 2;
-    for(let t = 0; t <= angleRad; t += 0.05) {
+    const arcStep = angleRad >= 0 ? 0.05 : -0.05;
+    for(let t = 0; Math.abs(t) <= Math.abs(angleRad); t += arcStep) {
         const pt = project3D(Math.cos(t)*0.5, Math.sin(t)*0.5, 0, scale, origin.x, origin.y);
         if(t === 0) ctx.moveTo(pt.x, pt.y);
         else ctx.lineTo(pt.x, pt.y);

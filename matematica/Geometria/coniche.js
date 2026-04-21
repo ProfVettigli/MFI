@@ -338,6 +338,177 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if(cPar) drawParab();
 
+    // --- THREE POINT CIRCUMSCRIBED CIRCLE ---
+    const c3P = document.getElementById('threePointCircCanvas');
+    let cityPoints = [
+        { px: -5, py: 3 },  // "Roma"
+        { px: 4, py: 5 },   // "Milano"
+        { px: 2, py: -3 }   // "Napoli"
+    ];
+    const cityNames = ['Roma', 'Milano', 'Napoli'];
+    const cityColors = ['#ef4444', '#3b82f6', '#10b981'];
+    let draggedCity = null;
+
+    function circumcircle(p1, p2, p3) {
+        // Returns { cx, cy, r } or null if collinear
+        let ax = p1.px, ay = p1.py;
+        let bx = p2.px, by = p2.py;
+        let cx = p3.px, cy = p3.py;
+        let D = 2 * (ax * (by - cy) + bx * (cy - ay) + cx * (ay - by));
+        if (Math.abs(D) < 1e-10) return null; // collinear
+        let ux = ((ax * ax + ay * ay) * (by - cy) + (bx * bx + by * by) * (cy - ay) + (cx * cx + cy * cy) * (ay - by)) / D;
+        let uy = ((ax * ax + ay * ay) * (cx - bx) + (bx * bx + by * by) * (ax - cx) + (cx * cx + cy * cy) * (bx - ax)) / D;
+        let r = Math.sqrt((ax - ux) ** 2 + (ay - uy) ** 2);
+        return { cx: ux, cy: uy, r: r };
+    }
+
+    function draw3PCirc() {
+        if (!c3P) return;
+        const ctx = c3P.getContext('2d');
+        const W = c3P.width, H = c3P.height;
+        ctx.clearRect(0, 0, W, H);
+        drawGrid(ctx, W, H);
+
+        let cc = circumcircle(cityPoints[0], cityPoints[1], cityPoints[2]);
+        let warnEl = document.getElementById('collinear-warning');
+        let ccEl = document.getElementById('circumcenter-coords');
+        let crEl = document.getElementById('circumradius-val');
+
+        if (!cc) {
+            // Collinear: draw just the points and warning
+            if (warnEl) warnEl.style.opacity = '1';
+            if (ccEl) ccEl.textContent = '—';
+            if (crEl) crEl.textContent = '∞';
+        } else {
+            if (warnEl) warnEl.style.opacity = '0';
+            if (ccEl) ccEl.textContent = `(${cc.cx.toFixed(1)}, ${cc.cy.toFixed(1)})`;
+            if (crEl) crEl.textContent = cc.r.toFixed(2);
+
+            // Draw circumscribed circle
+            let centerPx = toPx(W, H, cc.cx, cc.cy);
+            ctx.beginPath();
+            ctx.arc(centerPx.x, centerPx.y, cc.r * GridSize, 0, Math.PI * 2);
+            ctx.strokeStyle = '#14B8A6';
+            ctx.lineWidth = 2.5;
+            ctx.setLineDash([]);
+            ctx.stroke();
+
+            // Draw perpendicular bisectors (dashed, subtle)
+            ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+            ctx.lineWidth = 1;
+            ctx.setLineDash([4, 4]);
+            for (let i = 0; i < 3; i++) {
+                let j = (i + 1) % 3;
+                let mx = (cityPoints[i].px + cityPoints[j].px) / 2;
+                let my = (cityPoints[i].py + cityPoints[j].py) / 2;
+                let mPx = toPx(W, H, mx, my);
+                // Draw line from midpoint to circumcenter
+                ctx.beginPath();
+                ctx.moveTo(mPx.x, mPx.y);
+                ctx.lineTo(centerPx.x, centerPx.y);
+                ctx.stroke();
+            }
+            ctx.setLineDash([]);
+
+            // Draw circumcenter point
+            ctx.fillStyle = '#14B8A6';
+            ctx.beginPath();
+            ctx.arc(centerPx.x, centerPx.y, 5, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = 'rgba(255,255,255,0.6)';
+            ctx.font = '600 11px Inter, sans-serif';
+            ctx.textAlign = 'left';
+            ctx.fillText('Circocentro', centerPx.x + 8, centerPx.y - 8);
+
+            // Draw radius lines (dashed, from center to each city)
+            ctx.strokeStyle = 'rgba(236, 72, 153, 0.25)';
+            ctx.lineWidth = 1;
+            ctx.setLineDash([3, 5]);
+            for (let i = 0; i < 3; i++) {
+                let cp = toPx(W, H, cityPoints[i].px, cityPoints[i].py);
+                ctx.beginPath();
+                ctx.moveTo(centerPx.x, centerPx.y);
+                ctx.lineTo(cp.x, cp.y);
+                ctx.stroke();
+            }
+            ctx.setLineDash([]);
+        }
+
+        // Draw connecting line segments between the 3 cities (triangle)
+        ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        for (let i = 0; i < 3; i++) {
+            let p = toPx(W, H, cityPoints[i].px, cityPoints[i].py);
+            if (i === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y);
+        }
+        ctx.closePath();
+        ctx.stroke();
+
+        // Draw city points and labels
+        const cityGlowColors = ['rgba(239,68,68,0.2)', 'rgba(59,130,246,0.2)', 'rgba(16,185,129,0.2)'];
+        for (let i = 0; i < 3; i++) {
+            let p = toPx(W, H, cityPoints[i].px, cityPoints[i].py);
+            // Outer glow
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, 12, 0, Math.PI * 2);
+            ctx.fillStyle = cityGlowColors[i];
+            ctx.fill();
+            // Inner point
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, 7, 0, Math.PI * 2);
+            ctx.fillStyle = cityColors[i];
+            ctx.fill();
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            // Label
+            ctx.fillStyle = '#fff';
+            ctx.font = '700 12px Inter, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText(cityNames[i], p.x, p.y - 16);
+        }
+    }
+
+    if (c3P) {
+        draw3PCirc();
+        function handleDrag3P(e) {
+            if (!c3P) return;
+            const r = c3P.getBoundingClientRect();
+            let ex = e.clientX || (e.touches && e.touches.length > 0 ? e.touches[0].clientX : 0);
+            let ey = e.clientY || (e.touches && e.touches.length > 0 ? e.touches[0].clientY : 0);
+            if (!ex && !ey) return;
+            let mx = ex - r.left, my = ey - r.top;
+            // Scale for CSS sizing
+            mx = mx * (c3P.width / r.width);
+            my = my * (c3P.height / r.height);
+
+            if (e.type === 'mousedown' || e.type === 'touchstart') {
+                draggedCity = null;
+                let minDist = Infinity;
+                for (let i = 0; i < 3; i++) {
+                    let p = toPx(c3P.width, c3P.height, cityPoints[i].px, cityPoints[i].py);
+                    let d = (mx - p.x) ** 2 + (my - p.y) ** 2;
+                    if (d < 400 && d < minDist) { minDist = d; draggedCity = i; }
+                }
+            }
+            if (draggedCity !== null && (e.buttons === 1 || e.touches)) {
+                let coords_px = (mx - c3P.width / 2) / GridSize;
+                let coords_py = (c3P.height / 2 - my) / GridSize;
+                cityPoints[draggedCity].px = Math.round(coords_px * 2) / 2;
+                cityPoints[draggedCity].py = Math.round(coords_py * 2) / 2;
+                draw3PCirc();
+                if (e.cancelable) e.preventDefault();
+            }
+        }
+        c3P.addEventListener('mousedown', handleDrag3P);
+        c3P.addEventListener('mousemove', handleDrag3P);
+        c3P.addEventListener('touchstart', handleDrag3P, { passive: false });
+        c3P.addEventListener('touchmove', handleDrag3P, { passive: false });
+        window.addEventListener('mouseup', () => draggedCity = null);
+        window.addEventListener('touchend', () => draggedCity = null);
+    }
+
     // QUIZ
     const quizData = [
         { question: "1. Che cos'è il cono in geometria analitica e da dove derivano le 'Coniche'?", options: ["Il perimetro di un cerchio chiuso che si espande.", "Un solido tridimensionale infinito formato da due falde opposte, sezionato da un piano d'inclinazione variabile.", "Un singolo triangolo rotante nel 3D."], correct: 1 },

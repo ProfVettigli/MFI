@@ -164,6 +164,41 @@
                 Semplificando otteniamo l'espressione <strong>\( y = x - 1 \)</strong>.<br>
                 Abbiamo isolato la \(y\). A questo punto torniamo al nostro sistema e applichiamo una pura <em>sostituzione</em> di \(y = x - 1\) nella primissima equazione. Otterrete i due punti d'incontro!
             </div>
+
+            <h3 style="color: #14B8A6; margin-top:3rem;">🏙️ Per Tre Punti Passa Sempre una Circonferenza</h3>
+            <p class="lesson-text">Ecco un risultato potente e sorprendente della geometria: <strong>dati tre punti qualsiasi non allineati, esiste sempre una e una sola circonferenza che passa esattamente per tutti e tre</strong>. Questa si chiama <strong>circonferenza circoscritta</strong>.</p>
+
+            <div style="background: rgba(20, 184, 166, 0.05); padding: 1.5rem; border-radius: 12px; border-left: 4px solid #14B8A6; margin: 2rem 0;">
+                <h4 style="color: #14B8A6; margin-bottom: 0.5rem;">🗺️ Le Tre Città sulla Cartina</h4>
+                <p style="font-size: 0.95rem;">
+                    Immagina di aprire una cartina geografica e di scegliere <strong>tre città qualsiasi</strong> — ad esempio Roma, Milano e Napoli. Per quanto possano essere disposte in modo irregolare, sarà <em>sempre</em> possibile trovare un unico cerchio perfetto che tocca esattamente tutte e tre le città!
+                </p>
+                <p style="font-size: 0.95rem; margin-top: 0.8rem;">
+                    Il centro di questa circonferenza si chiama <strong>circocentro</strong> e coincide con il punto di incontro degli <strong>assi dei segmenti</strong> (gli assi delle rette che connettono a due a due le tre città). Esso è equidistante da ognuna delle tre città — proprio come un ripetitore telefonico posizionato strategicamente per coprire tre antenne alla stessa distanza.
+                </p>
+                <p style="font-size: 0.95rem; margin-top: 0.8rem;">
+                    ⚠️ <strong>Unica eccezione:</strong> se i tre punti sono perfettamente allineati (sulla stessa retta), la "circonferenza" dovrebbe avere raggio infinito — e quindi non esiste come curva chiusa. Proprio per questo si richiede che i tre punti non siano collineari.
+                </p>
+            </div>
+
+            <div class="interactive-container" style="box-shadow: 0 0 10px rgba(20, 184, 166, 0.2);">
+                <h4 style="color: white; margin-bottom: 1rem;">🖱️ Laboratorio: Trova la Circonferenza per 3 Città</h4>
+                <p style="color:rgba(255,255,255,0.7); font-size:0.9rem; margin-bottom:1rem; text-align:center;">Trascina le tre città <span style="color:#ef4444;">●</span> <span style="color:#3b82f6;">●</span> <span style="color:#10b981;">●</span> nel piano e osserva come la circonferenza unica si aggiorna in tempo reale.</p>
+                <div class="canvas-wrapper">
+                    <canvas id="threePointCircCanvas" width="500" height="350"></canvas>
+                </div>
+                <div style="display: flex; gap: 1rem; margin-top: 1rem; justify-content: center; flex-wrap: wrap;">
+                    <div class="data-card" style="border-left-color: #14B8A6; min-width: 180px;">
+                        <span class="data-label">Circocentro</span>
+                        <span style="font-weight: bold; color: #14B8A6; font-size: 1.1rem;" id="circumcenter-coords">(0, 0)</span>
+                    </div>
+                    <div class="data-card" style="border-left-color: #ec4899; min-width: 120px;">
+                        <span class="data-label">Raggio</span>
+                        <span style="font-weight: bold; color: #ec4899; font-size: 1.1rem;" id="circumradius-val">0</span>
+                    </div>
+                </div>
+                <div id="collinear-warning" style="color:#ef4444; font-weight:bold; opacity:0; margin-top:1rem; transition:0.3s; text-align:center;">⚠️ I tre punti sono allineati: nessuna circonferenza finita!</div>
+            </div>
         </section>
 
         <!-- SECTION 3: ELLISSE & IPERBOLE -->

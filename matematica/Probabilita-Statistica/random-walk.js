@@ -242,7 +242,149 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* =========================================================
-       4. QUIZ
+       4. SIMULAZIONE CATENA DI MARKOV (METEO 3 STATI)
+       ========================================================= */
+    const STATES = [
+        { name: 'Sole',    icon: '☀️', color: '#F59E0B' },
+        { name: 'Pioggia', icon: '🌧️', color: '#3B82F6' },
+        { name: 'Nebbia',  icon: '🌫️', color: '#94A3B8' }
+    ];
+    // Matrice di transizione P[da][a]
+    const P = [
+        [0.70, 0.20, 0.10],
+        [0.30, 0.50, 0.20],
+        [0.25, 0.35, 0.40]
+    ];
+
+    let markovState = 0;
+    let markovDay   = 1;
+    let markovCounts = [1, 0, 0]; // giorno 1 parte dal sole
+
+    const markovChartEl = document.getElementById('markov-chart');
+    const markovIconEl  = document.getElementById('markov-state-icon');
+    const markovNameEl  = document.getElementById('markov-state-name');
+    const markovDayEl   = document.getElementById('markov-day');
+
+    function markovTransition() {
+        const row = P[markovState];
+        const r   = Math.random();
+        let cum = 0;
+        for (let i = 0; i < row.length; i++) {
+            cum += row[i];
+            if (r < cum) { markovState = i; break; }
+        }
+        markovDay++;
+        markovCounts[markovState]++;
+    }
+
+    function markovUpdateUI() {
+        const s = STATES[markovState];
+        if (markovIconEl) markovIconEl.textContent = s.icon;
+        if (markovNameEl) { markovNameEl.textContent = s.name; markovNameEl.style.color = s.color; }
+        if (markovDayEl)  markovDayEl.textContent = 'Giorno ' + markovDay;
+        const total = markovCounts.reduce((a,b)=>a+b, 0);
+        [0,1,2].forEach(i => {
+            const el = document.getElementById('markov-count-' + i);
+            if (el) el.textContent = markovCounts[i];
+        });
+        const totEl = document.getElementById('markov-total');
+        if (totEl) totEl.textContent = total;
+        if (markovChartEl) drawMarkovChart(total);
+    }
+
+    function drawMarkovChart(total) {
+        const canvas = markovChartEl;
+        const ctx = canvas.getContext('2d');
+        const w = canvas.width = canvas.offsetWidth;
+        const h = canvas.height = 180;
+        ctx.clearRect(0, 0, w, h);
+        ctx.fillStyle = '#020617'; ctx.fillRect(0, 0, w, h);
+
+        const stationary = [0.533, 0.300, 0.167]; // distribuzione stazionaria teorica
+        const barW = Math.floor(w / 3) - 20;
+        const maxH = h - 60;
+
+        STATES.forEach((s, i) => {
+            const empFrac  = total > 0 ? markovCounts[i] / total : 0;
+            const theoFrac = stationary[i];
+            const x = i * (w / 3) + 10;
+
+            // Barra teorica (trasparente)
+            ctx.fillStyle = s.color + '33';
+            ctx.fillRect(x, h - 40 - theoFrac * maxH, barW, theoFrac * maxH);
+            ctx.strokeStyle = s.color + '88';
+            ctx.lineWidth = 1;
+            ctx.strokeRect(x, h - 40 - theoFrac * maxH, barW, theoFrac * maxH);
+
+            // Barra empirica (piena)
+            ctx.fillStyle = s.color + 'CC';
+            ctx.fillRect(x, h - 40 - empFrac * maxH, barW, empFrac * maxH);
+
+            // Etichetta percentuale
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 13px Inter, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText((empFrac * 100).toFixed(1) + '%', x + barW / 2, h - 42 - empFrac * maxH - 4);
+
+            // Nome stato
+            ctx.fillStyle = s.color;
+            ctx.font = '12px Inter, sans-serif';
+            ctx.fillText(s.icon + ' ' + s.name, x + barW / 2, h - 20);
+
+            // Teorica label
+            ctx.fillStyle = '#64748B';
+            ctx.font = '10px Inter, sans-serif';
+            ctx.fillText('teorico: ' + (theoFrac * 100).toFixed(0) + '%', x + barW / 2, h - 6);
+        });
+
+        // Legenda
+        ctx.fillStyle = '#475569';
+        ctx.font = '10px Inter, sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText('█ Misurato   □ Stazionaria Teorica', 10, 14);
+    }
+
+    function markovInit(startState) {
+        markovState  = startState;
+        markovDay    = 1;
+        markovCounts = [0, 0, 0];
+        markovCounts[startState] = 1;
+        markovUpdateUI();
+    }
+
+    if (markovChartEl) {
+        // Pulsanti di avvio con stato iniziale
+        document.querySelectorAll('.markov-start-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                markovInit(parseInt(btn.dataset.state));
+            });
+        });
+
+        const stepBtn    = document.getElementById('markov-step');
+        const run100Btn  = document.getElementById('markov-run-100');
+        const run1000Btn = document.getElementById('markov-run-1000');
+        const resetBtn   = document.getElementById('markov-reset');
+
+        stepBtn?.addEventListener('click', () => {
+            markovTransition();
+            markovUpdateUI();
+        });
+        run100Btn?.addEventListener('click', () => {
+            for (let i = 0; i < 100; i++) markovTransition();
+            markovUpdateUI();
+        });
+        run1000Btn?.addEventListener('click', () => {
+            for (let i = 0; i < 1000; i++) markovTransition();
+            markovUpdateUI();
+        });
+        resetBtn?.addEventListener('click', () => markovInit(0));
+
+        // Init di default
+        markovInit(0);
+    }
+
+    /* =========================================================
+       5. QUIZ
        ========================================================= */
     const quizData = [
         {
@@ -264,11 +406,29 @@ document.addEventListener('DOMContentLoaded', () => {
             question: "4. Cosa sostiene l'ipotesi del 'Mercato Efficiente' in finanza?",
             options: ["Che le azioni salgono sempre", "Che i prezzi seguono una Random Walk e sono imprevedibili", "Che i computer decidono tutto"],
             correct: 1, feedback: "Esatto! È l'idea che il mercato incorpori subito ogni notizia, rendendo i movimenti futuri casuali."
+        },
+        {
+            question: "5. La Random Walk 1D è una catena di Markov perché...",
+            options: [
+                "...la posizione al passo N+1 dipende solo dalla posizione al passo N, non dall'intera storia.",
+                "...il cammino è completamente deterministo.",
+                "...la distanza cresce sempre in modo regolare."
+            ],
+            correct: 0, feedback: "Esattamente! Questa è la proprietà di Markov: il futuro dipende solo dallo stato presente."
+        },
+        {
+            question: "6. La 'distribuzione stazionaria' di una catena di Markov è...",
+            options: [
+                "La distribuzione dello stato iniziale.",
+                "La distribuzione di probabilità a lungo termine degli stati, indipendente dal punto di partenza.",
+                "La distribuzione solo se la catena è simmetrica."
+            ],
+            correct: 1, feedback: "Corretto! È il vettore π tale che πP = π. Il PageRank di Google è proprio questo per il grafo del web."
         }
     ];
 
     const quizArea = document.getElementById('quiz-area');
-    const scoreEl = document.getElementById('quiz-score');
+    const scoreEl  = document.getElementById('quiz-score');
     let answered = 0; let score = 0;
 
     if (quizArea) {

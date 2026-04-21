@@ -409,6 +409,352 @@ document.addEventListener('DOMContentLoaded', () => {
         drawShapeSym();
     };
 
+    // 8. AMBULANCE MIRROR CANVAS
+    const cAmb = document.getElementById('ambulanceCanvas');
+    function drawAmbulance() {
+        if(!cAmb) return;
+        const ctx = cAmb.getContext('2d');
+        const W = cAmb.width, H = cAmb.height;
+        ctx.clearRect(0, 0, W, H);
+
+        const text = (document.getElementById('mirror-input') || {}).value || 'AMBULANZA';
+        const halfW = W / 2;
+        const panelPad = 10;
+
+        // --- Left Panel: "Scritta reale sull'ambulanza" (mirrored text, as printed on the vehicle) ---
+        ctx.save();
+        // Panel background
+        ctx.fillStyle = '#0f172a';
+        ctx.fillRect(panelPad, panelPad, halfW - panelPad * 2, H - panelPad * 2);
+        ctx.strokeStyle = 'rgba(239, 68, 68, 0.4)';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(panelPad, panelPad, halfW - panelPad * 2, H - panelPad * 2);
+
+        // Label
+        ctx.fillStyle = 'rgba(239, 68, 68, 0.7)';
+        ctx.font = '600 11px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('SCRITTA SULL\'AMBULANZA', halfW / 2, 30);
+
+        // Mirrored text (as printed on the real ambulance)
+        ctx.save();
+        ctx.translate(halfW / 2, H / 2 + 5);
+        ctx.scale(-1, 1);
+        ctx.fillStyle = '#ef4444';
+        ctx.font = '800 36px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(text, 0, 0);
+        ctx.restore();
+
+        // Small ambulance icon cross
+        ctx.fillStyle = 'rgba(239, 68, 68, 0.3)';
+        ctx.fillRect(halfW / 2 - 10, H - 40, 20, 4);
+        ctx.fillRect(halfW / 2 - 2, H - 48, 4, 20);
+
+        ctx.restore();
+
+        // --- Mirror divider ---
+        ctx.save();
+        ctx.setLineDash([6, 4]);
+        ctx.strokeStyle = 'rgba(255,255,255,0.25)';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(halfW, 5);
+        ctx.lineTo(halfW, H - 5);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Mirror bar label
+        ctx.fillStyle = 'rgba(255,255,255,0.5)';
+        ctx.font = '600 10px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.save();
+        ctx.translate(halfW, H / 2);
+        ctx.rotate(-Math.PI / 2);
+        ctx.fillText('🪞 SPECCHIO', 0, -8);
+        ctx.restore();
+        ctx.restore();
+
+        // --- Right Panel: "Nello specchietto retrovisore" (normal, readable text) ---
+        ctx.save();
+        // Panel background - slight blue tint for "mirror"
+        ctx.fillStyle = '#0c1425';
+        ctx.fillRect(halfW + panelPad, panelPad, halfW - panelPad * 2, H - panelPad * 2);
+        ctx.strokeStyle = 'rgba(59, 130, 246, 0.4)';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(halfW + panelPad, panelPad, halfW - panelPad * 2, H - panelPad * 2);
+
+        // Rounded mirror corners effect
+        ctx.fillStyle = 'rgba(59, 130, 246, 0.04)';
+        ctx.fillRect(halfW + panelPad + 2, panelPad + 2, halfW - panelPad * 2 - 4, H - panelPad * 2 - 4);
+
+        // Label
+        ctx.fillStyle = 'rgba(59, 130, 246, 0.7)';
+        ctx.font = '600 11px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('NELLO SPECCHIETTO RETROVISORE', halfW + halfW / 2, 30);
+
+        // Normal text (as seen reflected in the rearview mirror)
+        ctx.fillStyle = '#3b82f6';
+        ctx.font = '800 36px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(text, halfW + halfW / 2, H / 2 + 5);
+
+        // Checkmark
+        ctx.fillStyle = 'rgba(16, 185, 129, 0.6)';
+        ctx.font = '600 11px Inter, sans-serif';
+        ctx.fillText('✓ Leggibile!', halfW + halfW / 2, H - 32);
+
+        ctx.restore();
+    }
+    if(cAmb) drawAmbulance();
+    window.drawAmbulance = drawAmbulance;
+
+    // 9. GAUSS SHOELACE FORMULA CANVAS
+    const cGauss = document.getElementById('gaussCanvas');
+    let gaussPts = [ {px:-3,py:-2}, {px:4,py:-2}, {px:5,py:3}, {px:-1,py:4} ];
+    let draggedGauss = null;
+
+    function shoelaceArea(pts) {
+        let sum = 0;
+        for(let i = 0; i < pts.length; i++) {
+            let j = (i+1) % pts.length;
+            sum += pts[i].px * pts[j].py - pts[j].px * pts[i].py;
+        }
+        return Math.abs(sum) / 2;
+    }
+
+    function drawGauss() {
+        if(!cGauss) return;
+        const ctx = cGauss.getContext('2d');
+        const W = cGauss.width, H = cGauss.height;
+        ctx.clearRect(0,0,W,H);
+        drawGrid(ctx, W, H);
+
+        // Fill polygon
+        ctx.beginPath();
+        let first = toPixels(W, H, gaussPts[0].px, gaussPts[0].py);
+        ctx.moveTo(first.x, first.y);
+        for(let i=1; i<gaussPts.length; i++) {
+            let p = toPixels(W, H, gaussPts[i].px, gaussPts[i].py);
+            ctx.lineTo(p.x, p.y);
+        }
+        ctx.closePath();
+        ctx.fillStyle = 'rgba(139, 92, 246, 0.2)';
+        ctx.fill();
+        ctx.strokeStyle = '#8B5CF6';
+        ctx.lineWidth = 2.5;
+        ctx.stroke();
+
+        // Draw "shoelace" cross-lines (visual aid)
+        ctx.lineWidth = 1;
+        ctx.setLineDash([3, 4]);
+        for(let i=0; i<gaussPts.length; i++) {
+            let j = (i+1) % gaussPts.length;
+            let pi = toPixels(W, H, gaussPts[i].px, gaussPts[i].py);
+            let pj = toPixels(W, H, gaussPts[j].px, gaussPts[j].py);
+            // x_i -> y_{i+1} diagonal
+            ctx.strokeStyle = 'rgba(59, 130, 246, 0.3)';
+            ctx.beginPath(); ctx.moveTo(pi.x, pi.y); ctx.lineTo(pj.x, pj.y); ctx.stroke();
+        }
+        ctx.setLineDash([]);
+
+        // Draw vertices
+        const colors = ['#ef4444','#3b82f6','#10b981','#fbbf24','#ec4899'];
+        for(let i=0; i<gaussPts.length; i++) {
+            let p = toPixels(W, H, gaussPts[i].px, gaussPts[i].py);
+            ctx.beginPath(); ctx.arc(p.x, p.y, 7, 0, Math.PI*2);
+            ctx.fillStyle = colors[i % colors.length]; ctx.fill();
+            ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
+            // Label
+            ctx.fillStyle = '#fff'; ctx.font = '700 11px Inter, sans-serif'; ctx.textAlign = 'center';
+            ctx.fillText(`P${i+1}(${gaussPts[i].px},${gaussPts[i].py})`, p.x, p.y - 14);
+        }
+
+        // Update displays
+        let area = shoelaceArea(gaussPts);
+        let areaEl = document.getElementById('gauss-area');
+        let nEl = document.getElementById('gauss-n');
+        if(areaEl) areaEl.textContent = area % 1 === 0 ? area.toFixed(0) : area.toFixed(1);
+        if(nEl) nEl.textContent = gaussPts.length;
+    }
+
+    if(cGauss) {
+        drawGauss();
+        function handleDragGauss(e) {
+            const r = cGauss.getBoundingClientRect();
+            let ex = e.clientX || (e.touches && e.touches.length > 0 ? e.touches[0].clientX : 0);
+            let ey = e.clientY || (e.touches && e.touches.length > 0 ? e.touches[0].clientY : 0);
+            if(!ex && !ey) return;
+            let mx = (ex - r.left) * (cGauss.width / r.width);
+            let my = (ey - r.top) * (cGauss.height / r.height);
+            if(e.type === 'mousedown' || e.type === 'touchstart') {
+                draggedGauss = null;
+                for(let i=0; i<gaussPts.length; i++) {
+                    let p = toPixels(cGauss.width, cGauss.height, gaussPts[i].px, gaussPts[i].py);
+                    if((mx-p.x)**2 + (my-p.y)**2 < 400) { draggedGauss = i; break; }
+                }
+            }
+            if(draggedGauss !== null && (e.buttons === 1 || e.touches)) {
+                let c = toCoords(cGauss.width, cGauss.height, mx, my);
+                gaussPts[draggedGauss].px = Math.round(c.px);
+                gaussPts[draggedGauss].py = Math.round(c.py);
+                drawGauss();
+                if(e.cancelable) e.preventDefault();
+            }
+        }
+        cGauss.addEventListener('mousedown', handleDragGauss); cGauss.addEventListener('mousemove', handleDragGauss);
+        cGauss.addEventListener('touchstart', handleDragGauss, {passive:false}); cGauss.addEventListener('touchmove', handleDragGauss, {passive:false});
+        window.addEventListener('mouseup', () => draggedGauss = null); window.addEventListener('touchend', () => draggedGauss = null);
+    }
+
+    window.setGaussShape = function(type) {
+        if(type === 'triangle') gaussPts = [{px:-4,py:-3},{px:5,py:-2},{px:1,py:4}];
+        else if(type === 'quad') gaussPts = [{px:-3,py:-2},{px:4,py:-2},{px:5,py:3},{px:-1,py:4}];
+        else gaussPts = [{px:0,py:5},{px:5,py:2},{px:3,py:-4},{px:-3,py:-4},{px:-5,py:2}];
+        document.querySelectorAll('#gauss-btn-tri,#gauss-btn-quad,#gauss-btn-penta').forEach(b => b.classList.remove('active'));
+        let id = type === 'triangle' ? 'gauss-btn-tri' : type === 'quad' ? 'gauss-btn-quad' : 'gauss-btn-penta';
+        document.getElementById(id).classList.add('active');
+        drawGauss();
+    };
+
+    // 10. PICK'S THEOREM CANVAS
+    const cPick = document.getElementById('pickCanvas');
+    let pickPts = [{px:1,py:1},{px:7,py:1},{px:8,py:5},{px:2,py:6}];
+    let draggedPick = null;
+
+    function gcd(a, b) { a = Math.abs(a); b = Math.abs(b); while(b){let t=b;b=a%b;a=t;} return a; }
+
+    function countBoundary(pts) {
+        let B = 0;
+        for(let i = 0; i < pts.length; i++) {
+            let j = (i+1) % pts.length;
+            let dx = Math.abs(pts[j].px - pts[i].px);
+            let dy = Math.abs(pts[j].py - pts[i].py);
+            B += gcd(dx, dy);
+        }
+        return B;
+    }
+
+    function pointInPolygon(px, py, poly) {
+        let inside = false;
+        for(let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+            let xi = poly[i].px, yi = poly[i].py;
+            let xj = poly[j].px, yj = poly[j].py;
+            if((yi > py) !== (yj > py) && px < (xj - xi) * (py - yi) / (yj - yi) + xi) {
+                inside = !inside;
+            }
+        }
+        return inside;
+    }
+
+    function pointOnSegment(px, py, x1, y1, x2, y2) {
+        // Check if (px,py) is on segment (x1,y1)-(x2,y2)
+        let cross = (px - x1) * (y2 - y1) - (py - y1) * (x2 - x1);
+        if(Math.abs(cross) > 1e-9) return false;
+        return Math.min(x1,x2) <= px && px <= Math.max(x1,x2) && Math.min(y1,y2) <= py && py <= Math.max(y1,y2);
+    }
+
+    function isOnBoundary(px, py, poly) {
+        for(let i = 0; i < poly.length; i++) {
+            let j = (i+1) % poly.length;
+            if(pointOnSegment(px, py, poly[i].px, poly[i].py, poly[j].px, poly[j].py)) return true;
+        }
+        return false;
+    }
+
+    function drawPick() {
+        if(!cPick) return;
+        const ctx = cPick.getContext('2d');
+        const W = cPick.width, H = cPick.height;
+        ctx.clearRect(0,0,W,H);
+        drawGrid(ctx, W, H);
+
+        // Fill polygon
+        ctx.beginPath();
+        let first = toPixels(W, H, pickPts[0].px, pickPts[0].py);
+        ctx.moveTo(first.x, first.y);
+        for(let i=1; i<pickPts.length; i++) {
+            let p = toPixels(W, H, pickPts[i].px, pickPts[i].py);
+            ctx.lineTo(p.x, p.y);
+        }
+        ctx.closePath();
+        ctx.fillStyle = 'rgba(16, 185, 129, 0.15)';
+        ctx.fill();
+        ctx.strokeStyle = '#10b981';
+        ctx.lineWidth = 2.5;
+        ctx.stroke();
+
+        // Find bounding box for lattice points
+        let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+        pickPts.forEach(p => { minX = Math.min(minX, p.px); maxX = Math.max(maxX, p.px); minY = Math.min(minY, p.py); maxY = Math.max(maxY, p.py); });
+        minX = Math.floor(minX) - 1; maxX = Math.ceil(maxX) + 1;
+        minY = Math.floor(minY) - 1; maxY = Math.ceil(maxY) + 1;
+
+        let I = 0, B = 0;
+        // Draw and classify lattice points
+        for(let x = minX; x <= maxX; x++) {
+            for(let y = minY; y <= maxY; y++) {
+                let onB = isOnBoundary(x, y, pickPts);
+                let inP = !onB && pointInPolygon(x, y, pickPts);
+                if(onB || inP) {
+                    let pp = toPixels(W, H, x, y);
+                    ctx.beginPath(); ctx.arc(pp.x, pp.y, onB ? 4.5 : 4, 0, Math.PI*2);
+                    if(onB) { ctx.fillStyle = '#fbbf24'; B++; }
+                    else { ctx.fillStyle = '#3b82f6'; I++; }
+                    ctx.fill();
+                }
+            }
+        }
+
+        // Draw polygon vertices on top
+        for(let i=0; i<pickPts.length; i++) {
+            let p = toPixels(W, H, pickPts[i].px, pickPts[i].py);
+            ctx.beginPath(); ctx.arc(p.x, p.y, 6, 0, Math.PI*2);
+            ctx.fillStyle = '#10b981'; ctx.fill();
+            ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
+        }
+
+        let area = I + B / 2 - 1;
+        let iEl = document.getElementById('pick-i');
+        let bEl = document.getElementById('pick-b');
+        let aEl = document.getElementById('pick-area');
+        if(iEl) iEl.textContent = I;
+        if(bEl) bEl.textContent = B;
+        if(aEl) aEl.textContent = area % 1 === 0 ? area.toFixed(0) : area.toFixed(1);
+    }
+
+    if(cPick) {
+        drawPick();
+        function handleDragPick(e) {
+            const r = cPick.getBoundingClientRect();
+            let ex = e.clientX || (e.touches && e.touches.length > 0 ? e.touches[0].clientX : 0);
+            let ey = e.clientY || (e.touches && e.touches.length > 0 ? e.touches[0].clientY : 0);
+            if(!ex && !ey) return;
+            let mx = (ex - r.left) * (cPick.width / r.width);
+            let my = (ey - r.top) * (cPick.height / r.height);
+            if(e.type === 'mousedown' || e.type === 'touchstart') {
+                draggedPick = null;
+                for(let i=0; i<pickPts.length; i++) {
+                    let p = toPixels(cPick.width, cPick.height, pickPts[i].px, pickPts[i].py);
+                    if((mx-p.x)**2 + (my-p.y)**2 < 400) { draggedPick = i; break; }
+                }
+            }
+            if(draggedPick !== null && (e.buttons === 1 || e.touches)) {
+                let c = toCoords(cPick.width, cPick.height, mx, my);
+                pickPts[draggedPick].px = Math.round(c.px);
+                pickPts[draggedPick].py = Math.round(c.py);
+                drawPick();
+                if(e.cancelable) e.preventDefault();
+            }
+        }
+        cPick.addEventListener('mousedown', handleDragPick); cPick.addEventListener('mousemove', handleDragPick);
+        cPick.addEventListener('touchstart', handleDragPick, {passive:false}); cPick.addEventListener('touchmove', handleDragPick, {passive:false});
+        window.addEventListener('mouseup', () => draggedPick = null); window.addEventListener('touchend', () => draggedPick = null);
+    }
+
     // QUIZ
     const quizData = [
         { question: "1. Come si trova il Punto Medio di un segmento AB?", options: ["Sommando le x e sottraendo le y", "Calcolando la radice quadrata tra x e y", "Facendo la media aritmetica delle coordinate x e y", "Dividendo la distanza per 3"], correct: 2 },

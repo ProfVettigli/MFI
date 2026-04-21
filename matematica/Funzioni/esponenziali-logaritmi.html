@@ -1,0 +1,1787 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Funzioni Esponenziali e Logaritmiche - MFI</title>
+    <meta name="description" content="Esplora le funzioni esponenziali e logaritmiche: definizioni, grafici interattivi, proprietà con esempi numerici, curiosità sulla crescita esplosiva e proprietà dei logaritmi.">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- MathJax -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        /* ===== LESSON HEADER ===== */
+        .lesson-header {
+            background: linear-gradient(135deg, #1a0533 0%, #0d1f3c 50%, #0B0E14 100%);
+            padding: 5rem 0 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .lesson-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -20%;
+            width: 60%;
+            height: 200%;
+            background: radial-gradient(ellipse, rgba(139,92,246,0.15) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        .lesson-header::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            right: -10%;
+            width: 50%;
+            height: 150%;
+            background: radial-gradient(ellipse, rgba(59,130,246,0.12) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        .lesson-title-main {
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 1rem;
+        }
+        .lesson-subtitle-main {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            max-width: 650px;
+            margin: 0 auto;
+            font-weight: 300;
+        }
+
+        /* ===== TOC ===== */
+        .toc {
+            background: rgba(139,92,246,0.06);
+            border: 1px solid rgba(139,92,246,0.2);
+            border-radius: 1rem;
+            padding: 1.5rem 2rem;
+            margin: 2rem 0;
+        }
+        .toc h3 { color: #a78bfa; margin-bottom: 1rem; font-size: 1rem; text-transform: uppercase; letter-spacing: 0.08em; }
+        .toc ol { padding-left: 1.2rem; }
+        .toc li { margin-bottom: 0.4rem; }
+        .toc a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+        .toc a:hover { color: #a78bfa; }
+
+        /* ===== SECTIONS ===== */
+        .lesson-section {
+            margin-bottom: 3rem;
+            background: var(--surface-color);
+            padding: 2.5rem;
+            border-radius: 1rem;
+            border: 1px solid rgba(255,255,255,0.06);
+            scroll-margin-top: 4rem;
+        }
+        .section-number {
+            display: inline-block;
+            background: linear-gradient(135deg, #7c3aed, #3b82f6);
+            color: white;
+            font-weight: 800;
+            font-size: 0.85rem;
+            padding: 0.2rem 0.7rem;
+            border-radius: 20px;
+            margin-bottom: 0.75rem;
+        }
+        .lesson-section h2 {
+            color: var(--text-main);
+            margin-bottom: 1.25rem;
+            font-size: 1.7rem;
+            font-weight: 700;
+        }
+        .lesson-section h3 {
+            color: #a78bfa;
+            margin-bottom: 0.75rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        .lesson-text {
+            margin-bottom: 1.2rem;
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            line-height: 1.75;
+        }
+
+        /* ===== DEFINITION BOX ===== */
+        .definition-box {
+            background: rgba(124,58,237,0.08);
+            border-left: 4px solid #7c3aed;
+            border-radius: 0 0.75rem 0.75rem 0;
+            padding: 1.25rem 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .definition-box strong { color: #c4b5fd; }
+
+        /* ===== CANVAS GRAPHS ===== */
+        .graph-container {
+            background: rgba(0,0,0,0.35);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .graph-container canvas {
+            display: block;
+            margin: 0 auto;
+            border-radius: 8px;
+        }
+        .graph-controls {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+        .ctrl-btn {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.12);
+            color: var(--text-main);
+            padding: 0.5rem 1.1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .ctrl-btn:hover, .ctrl-btn.active {
+            background: rgba(124,58,237,0.3);
+            border-color: #7c3aed;
+            color: #c4b5fd;
+        }
+        .graph-legend {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 0.75rem;
+            font-size: 0.9rem;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .legend-dot {
+            width: 20px;
+            height: 3px;
+            border-radius: 2px;
+        }
+
+        /* ===== PROPERTY CARDS ===== */
+        .prop-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.25rem;
+            margin: 1.5rem 0;
+        }
+        .prop-card {
+            background: rgba(0,0,0,0.25);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 0.875rem;
+            padding: 1.5rem;
+            transition: border-color 0.25s;
+        }
+        .prop-card:hover { border-color: rgba(139,92,246,0.4); }
+        .prop-card h4 {
+            color: #c4b5fd;
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+            font-weight: 700;
+        }
+        .prop-formula {
+            background: rgba(124,58,237,0.1);
+            border-radius: 8px;
+            padding: 0.6rem 1rem;
+            margin: 0.6rem 0;
+            font-size: 1.05rem;
+            text-align: center;
+        }
+        .numeric-example {
+            background: rgba(16,185,129,0.08);
+            border: 1px solid rgba(16,185,129,0.2);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            margin-top: 0.75rem;
+            font-size: 0.95rem;
+        }
+        .numeric-example strong { color: #6ee7b7; }
+
+        /* ===== LOG PROP TABLE ===== */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+        }
+        .comparison-table th {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 2px solid rgba(255,255,255,0.1);
+        }
+        .comparison-table td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            vertical-align: top;
+        }
+        .comparison-table tr:last-child td { border-bottom: none; }
+        .th-exp { color: #fb923c; }
+        .th-log { color: #34d399; }
+        .th-prop { color: var(--text-muted); }
+        .cell-exp { color: #fed7aa; }
+        .cell-log { color: #a7f3d0; }
+
+        /* ===== INTERACTIVE DEMOS ===== */
+        .demo-box {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin: 1.5rem 0;
+        }
+        .demo-box h3 {
+            color: #fbbf24;
+            margin-bottom: 1rem;
+        }
+        .slider-group {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+        .slider-group label { color: var(--text-muted); min-width: 90px; font-size: 0.95rem; }
+        .slider-group input[type=range] {
+            -webkit-appearance: none;
+            width: 180px;
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            outline: none;
+        }
+        .slider-group input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #7c3aed;
+            cursor: pointer;
+        }
+        .slider-val {
+            color: #c4b5fd;
+            font-weight: 700;
+            min-width: 40px;
+        }
+        .big-number {
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 800;
+            color: #fbbf24;
+            text-align: center;
+            margin: 1rem 0;
+            letter-spacing: -0.02em;
+        }
+        .story-text {
+            color: var(--text-muted);
+            font-size: 1rem;
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        /* ===== CHESSBOARD ===== */
+        #chessboard {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 2px;
+            max-width: 380px;
+            margin: 1rem auto;
+            border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            padding: 4px;
+        }
+        .chess-cell {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            font-size: 0.55rem;
+            font-weight: 700;
+            transition: background 0.4s, color 0.4s;
+            background: rgba(255,255,255,0.04);
+            color: rgba(255,255,255,0.2);
+        }
+        .chess-cell.filled {
+            background: rgba(251,191,36,0.25);
+            color: #fbbf24;
+        }
+        .chess-cell.active {
+            background: rgba(251,191,36,0.7);
+            color: #000;
+            box-shadow: 0 0 8px rgba(251,191,36,0.6);
+        }
+
+        /* ===== PAPER FOLD ===== */
+        .paper-visual {
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 0.4rem;
+            height: 140px;
+            margin: 1rem 0;
+        }
+        .paper-bar {
+            background: linear-gradient(to top, #4f46e5, #818cf8);
+            border-radius: 4px 4px 0 0;
+            transition: height 0.5s ease, width 0.3s;
+            min-height: 2px;
+        }
+
+        /* ===== QUIZ ===== */
+        .quiz-wrapper {
+            background: rgba(0,0,0,0.15);
+            border-radius: 1rem;
+            padding: 1.5rem;
+        }
+        .quiz-question {
+            margin-bottom: 2rem;
+        }
+        .quiz-question h3 {
+            color: var(--text-main);
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+        .quiz-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: var(--text-main);
+            padding: 0.85rem 1.2rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            text-align: left;
+            font-size: 0.98rem;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        .quiz-btn:hover:not(:disabled) { background: rgba(124,58,237,0.15); border-color: #7c3aed; }
+        .quiz-btn.correct { background: rgba(16,185,129,0.25) !important; border-color: #10b981 !important; color: #6ee7b7; }
+        .quiz-btn.wrong { background: rgba(239,68,68,0.2) !important; border-color: #ef4444 !important; color: #fca5a5; }
+        .quiz-btn:disabled { cursor: not-allowed; }
+        .quiz-score-msg {
+            text-align: center;
+            font-weight: 700;
+            color: #a78bfa;
+            font-size: 1.1rem;
+            margin-top: 1rem;
+            min-height: 1.5rem;
+        }
+
+        /* ===== HIGHLIGHTS / CALLOUTS ===== */
+        .callout {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+            background: rgba(59,130,246,0.07);
+            border: 1px solid rgba(59,130,246,0.2);
+            border-radius: 0.75rem;
+            padding: 1.2rem 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .callout-icon { font-size: 1.5rem; flex-shrink: 0; }
+        .callout p { margin: 0; font-size: 0.98rem; color: var(--text-muted); }
+        .callout p strong { color: #93c5fd; }
+
+        .callout-warn {
+            background: rgba(245,158,11,0.07);
+            border-color: rgba(245,158,11,0.25);
+        }
+        .callout-warn p strong { color: #fcd34d; }
+
+        /* Table of graph props */
+        .props-list {
+            list-style: none;
+            padding: 0;
+            margin: 1rem 0;
+        }
+        .props-list li {
+            display: flex;
+            gap: 0.75rem;
+            padding: 0.6rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.98rem;
+            color: var(--text-muted);
+        }
+        .props-list li:last-child { border-bottom: none; }
+        .props-list li .prop-label {
+            color: #c4b5fd;
+            font-weight: 600;
+            min-width: 140px;
+        }
+
+        @media (max-width: 768px) {
+            .lesson-section { padding: 1.5rem; }
+            .prop-grid { grid-template-columns: 1fr; }
+            .comparison-table { font-size: 0.85rem; }
+            .lesson-header { padding: 3rem 0 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="lesson-header">
+        <div class="container" style="text-align:center; position:relative; z-index:1;">
+            <div style="margin-bottom:2rem;">
+                <a href="funzioni.html" class="back-button" style="color:#a78bfa; justify-content:center;">
+                    <span class="back-icon">←</span> Torna a Funzioni Elementari
+                </a>
+            </div>
+            <h1 class="lesson-title-main">
+                Funzioni <span class="gradient-text">Esponenziali</span> e <span class="gradient-text">Logaritmiche</span>
+            </h1>
+            <p class="lesson-subtitle-main">
+                La crescita più rapida che esista e il suo contrario: dai chicchi di riso sugli scacchi al logaritmo che "rallenta" tutto.
+            </p>
+        </div>
+    </header>
+
+    <main class="container" style="padding-top:2.5rem; padding-bottom:5rem;">
+
+        <!-- TOC -->
+        <nav class="toc">
+            <h3>📋 Indice della lezione</h3>
+            <ol>
+                <li><a href="#sec-def-exp">Definizione di funzione esponenziale</a></li>
+                <li><a href="#sec-grafico-exp">Il grafico: crescita e decrescita</a></li>
+                <li><a href="#sec-prop-grafiche-exp">Proprietà del grafico esponenziale</a></li>
+                <li><a href="#sec-prop-esponenti">Proprietà degli esponenti con esempi numerici</a></li>
+                <li><a href="#sec-carta">Curiosità: piegare la carta fino alla Luna</a></li>
+                <li><a href="#sec-scacchi">Curiosità: i chicchi di riso sugli scacchi</a></li>
+                <li><a href="#sec-resident-evil">Curiosità: l'apocalisse zombie di Resident Evil</a></li>
+                <li><a href="#sec-def-log">Definizione di logaritmo e il numero <em>e</em></a></li>
+                <li><a href="#sec-grafico-log">Il grafico logaritmico e le sue proprietà</a></li>
+                <li><a href="#sec-prop-log">Proprietà dei logaritmi con esempi numerici</a></li>
+                <li><a href="#sec-quiz">Metti alla prova le tue conoscenze</a></li>
+            </ol>
+        </nav>
+
+        <!-- ================================================================ -->
+        <!-- 1. DEFINIZIONE ESPONENZIALE -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-def-exp">
+            <div class="section-number">Sezione 1</div>
+            <h2>Definizione di funzione esponenziale</h2>
+            <p class="lesson-text">
+                Una <strong>funzione esponenziale</strong> è una funzione della forma:
+            </p>
+            <div class="definition-box">
+                <p style="font-size:1.15rem; text-align:center; margin-bottom:0.5rem;">
+                    \[ f(x) = a^x \]
+                </p>
+                <p style="color:var(--text-muted); font-size:0.98rem;">
+                    dove <strong>\(a\)</strong> è la <strong>base</strong>, con \(a > 0\) e \(a \neq 1\), e <strong>\(x\)</strong> è l'esponente (la variabile indipendente).
+                </p>
+            </div>
+            <p class="lesson-text">
+                La caratteristica fondamentale è che la <em>variabile è all'esponente</em>, non alla base. Questo la distingue completamente da una funzione potenza come \(x^2\), dove la variabile è alla base.
+            </p>
+
+            <div class="prop-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+                <div class="prop-card" style="border-top:3px solid #818cf8;">
+                    <h4>📌 Dominio</h4>
+                    <p style="color:var(--text-muted); font-size:0.95rem;">
+                        \(\mathbb{R}\) — tutti i numeri reali. \(a^x\) è definita per ogni valore di \(x\).
+                    </p>
+                </div>
+                <div class="prop-card" style="border-top:3px solid #34d399;">
+                    <h4>📌 Codominio</h4>
+                    <p style="color:var(--text-muted); font-size:0.95rem;">
+                        \((0, +\infty)\) — il risultato è sempre positivo, mai zero né negativo.
+                    </p>
+                </div>
+                <div class="prop-card" style="border-top:3px solid #fb923c;">
+                    <h4>📌 Punto fisso</h4>
+                    <p style="color:var(--text-muted); font-size:0.95rem;">
+                        Qualunque base si usi, \(a^0 = 1\). Il grafico passa sempre per \((0, 1)\).
+                    </p>
+                </div>
+            </div>
+
+            <div class="callout">
+                <span class="callout-icon">🔑</span>
+                <p>Perché \(a \neq 1\)? Perché \(1^x = 1\) per ogni \(x\): sarebbe una funzione costante, non esponenziale. E perché \(a > 0\)? Per evitare basi negative che produrrebbero valori immaginari (es. \((-4)^{1/2}\)).</p>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 2. GRAFICO INTERATTIVO -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-grafico-exp">
+            <div class="section-number">Sezione 2</div>
+            <h2>Il grafico: crescita e decrescita</h2>
+            <p class="lesson-text">
+                Il comportamento del grafico dipende interamente dalla base \(a\). Usa i pulsanti per confrontare funzioni diverse:
+            </p>
+
+            <div class="graph-container">
+                <canvas id="expCanvas" width="680" height="340" style="max-width:100%;"></canvas>
+                <div class="graph-controls">
+                    <button class="ctrl-btn active" onclick="toggleExpCurve('2', this)">a = 2</button>
+                    <button class="ctrl-btn active" onclick="toggleExpCurve('3', this)">a = 3</button>
+                    <button class="ctrl-btn active" onclick="toggleExpCurve('05', this)">a = 0.5</button>
+                    <button class="ctrl-btn active" onclick="toggleExpCurve('03', this)">a = 0.3</button>
+                    <button class="ctrl-btn active" onclick="toggleExpCurve('e', this)">a = e ≈ 2.718</button>
+                </div>
+                <div class="graph-legend" id="expLegend"></div>
+            </div>
+
+            <p class="lesson-text">Osservazioni chiave:</p>
+            <ul class="props-list">
+                <li>
+                    <span class="prop-label">a &gt; 1 (crescente)</span>
+                    <span>La funzione cresce: più \(x\) aumenta, più \(a^x\) sale rapidamente. Man mano che \(x \to -\infty\), la curva si avvicina all'asse \(x\) senza mai toccarlo.</span>
+                </li>
+                <li>
+                    <span class="prop-label">0 &lt; a &lt; 1 (decrescente)</span>
+                    <span>La funzione decresce: più \(x\) aumenta, più \(a^x\) si avvicina a zero. Man mano che \(x \to +\infty\), la curva tende asintoticamente all'asse \(x\).</span>
+                </li>
+                <li>
+                    <span class="prop-label">Asintoto orizzontale</span>
+                    <span>L'asse \(x\) (retta \(y = 0\)) è un <em>asintoto orizzontale</em> — la curva si avvicina ma non lo raggiunge mai.</span>
+                </li>
+            </ul>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 3. PROPRIETÀ GRAFICHE -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-prop-grafiche-exp">
+            <div class="section-number">Sezione 3</div>
+            <h2>Proprietà del grafico esponenziale</h2>
+
+            <div class="prop-grid">
+                <div class="prop-card">
+                    <h4>📍 Passaggio per (0, 1)</h4>
+                    <p style="color:var(--text-muted); font-size:0.95rem;">Qualunque sia la base, \(a^0 = 1\). Il grafico attraversa sempre il punto \((0,1)\) sull'asse y.</p>
+                </div>
+                <div class="prop-card">
+                    <h4>📍 Sempre positiva</h4>
+                    <p style="color:var(--text-muted); font-size:0.95rem;">\(a^x > 0\) per ogni \(x \in \mathbb{R}\). Il grafico sta tutto nel semipiano \(y > 0\).</p>
+                </div>
+                <div class="prop-card">
+                    <h4>📍 Iniettiva e biettiva su \((0,+\infty)\)</h4>
+                    <p style="color:var(--text-muted); font-size:0.95rem;">La funzione è strettamente monotona (crescente o decrescente), quindi iniettiva: a ogni valore di \(y\) corrisponde un solo \(x\). Da ciò deriva l'esistenza dell'inversa: il logaritmo.</p>
+                </div>
+                <div class="prop-card">
+                    <h4>📍 Asintoto orizzontale</h4>
+                    <p style="color:var(--text-muted); font-size:0.95rem;">Se \(a>1\): \(\lim_{x\to-\infty} a^x = 0\). Se \(0 &lt; a &lt; 1\): \(\lim_{x\to+\infty} a^x = 0\). In entrambi i casi l'asse delle \(x\) è asintoto.</p>
+                </div>
+                <div class="prop-card">
+                    <h4>📍 Simmetria tra a e 1/a</h4>
+                    <p style="color:var(--text-muted); font-size:0.95rem;">I grafici di \(a^x\) e \((1/a)^x\) sono simmetrici rispetto all'asse \(y\): uno è il ribaltamento orizzontale dell'altro.</p>
+                </div>
+                <div class="prop-card">
+                    <h4>📍 Continua e derivabile</h4>
+                    <p style="color:var(--text-muted); font-size:0.95rem;">La funzione esponenziale è continua e derivabile su tutto \(\mathbb{R}\). La derivata di \(e^x\) è \(e^x\) stessa: unica funzione uguale alla propria derivata!</p>
+                    <p style="color:rgba(255,255,255,0.3); font-size:0.78rem; margin-top:0.5rem; font-style:italic;">📌 Nota: il concetto di <em>derivata</em> appartiene all'Analisi Matematica — un argomento affascinante che approfondiremo il prossimo anno.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 4. PROPRIETÀ DEGLI ESPONENTI -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-prop-esponenti">
+            <div class="section-number">Sezione 4</div>
+            <h2>Proprietà degli esponenti — con esempi numerici</h2>
+            <p class="lesson-text">
+                Queste regole algebriche fondamentali valgono per qualsiasi base \(a > 0, a \neq 1\) e per esponenti reali.
+            </p>
+
+            <div class="prop-grid">
+                <!-- P1 -->
+                <div class="prop-card">
+                    <h4>① Prodotto di potenze con la stessa base</h4>
+                    <div class="prop-formula">\[a^m \cdot a^n = a^{m+n}\]</div>
+                    <p style="color:var(--text-muted); font-size:0.9rem; margin:0.5rem 0;">Moltiplicando due potenze con la stessa base, si <em>sommano</em> gli esponenti.</p>
+                    <div class="numeric-example">
+                        <strong>Esempio:</strong> \(2^3 \cdot 2^4 = 2^{3+4} = 2^7 = 128\)<br>
+                        Verifica: \(8 \times 16 = 128\) ✓
+                    </div>
+                </div>
+
+                <!-- P2 -->
+                <div class="prop-card">
+                    <h4>② Quoziente di potenze con la stessa base</h4>
+                    <div class="prop-formula">\[\frac{a^m}{a^n} = a^{m-n}\]</div>
+                    <p style="color:var(--text-muted); font-size:0.9rem; margin:0.5rem 0;">Dividendo, si <em>sottraggono</em> gli esponenti.</p>
+                    <div class="numeric-example">
+                        <strong>Esempio:</strong> \(\dfrac{3^5}{3^2} = 3^{5-2} = 3^3 = 27\)<br>
+                        Verifica: \(\dfrac{243}{9} = 27\) ✓
+                    </div>
+                </div>
+
+                <!-- P3 -->
+                <div class="prop-card">
+                    <h4>③ Potenza di una potenza</h4>
+                    <div class="prop-formula">\[(a^m)^n = a^{m \cdot n}\]</div>
+                    <p style="color:var(--text-muted); font-size:0.9rem; margin:0.5rem 0;">Elevando una potenza ad un altro esponente, si <em>moltiplicano</em>.</p>
+                    <div class="numeric-example">
+                        <strong>Esempio:</strong> \((2^3)^4 = 2^{3 \times 4} = 2^{12} = 4096\)<br>
+                        Verifica: \(8^4 = 4096\) ✓
+                    </div>
+                </div>
+
+                <!-- P4 -->
+                <div class="prop-card">
+                    <h4>④ Prodotto di basi diverse, stesso esponente</h4>
+                    <div class="prop-formula">\[a^n \cdot b^n = (a \cdot b)^n\]</div>
+                    <p style="color:var(--text-muted); font-size:0.9rem; margin:0.5rem 0;">Stessa potenza si distribuisce sul prodotto.</p>
+                    <div class="numeric-example">
+                        <strong>Esempio:</strong> \(3^2 \cdot 5^2 = (3 \cdot 5)^2 = 15^2 = 225\)<br>
+                        Verifica: \(9 \times 25 = 225\) ✓
+                    </div>
+                </div>
+
+                <!-- P5 -->
+                <div class="prop-card">
+                    <h4>⑤ Quoziente di basi diverse, stesso esponente</h4>
+                    <div class="prop-formula">\[\frac{a^n}{b^n} = \left(\frac{a}{b}\right)^n\]</div>
+                    <p style="color:var(--text-muted); font-size:0.9rem; margin:0.5rem 0;">Come il prodotto, ma per il rapporto.</p>
+                    <div class="numeric-example">
+                        <strong>Esempio:</strong> \(\dfrac{6^3}{2^3} = \left(\dfrac{6}{2}\right)^3 = 3^3 = 27\)<br>
+                        Verifica: \(\dfrac{216}{8} = 27\) ✓
+                    </div>
+                </div>
+
+                <!-- P6 -->
+                <div class="prop-card">
+                    <h4>⑥ Esponente zero</h4>
+                    <div class="prop-formula">\[a^0 = 1 \quad (a \neq 0)\]</div>
+                    <p style="color:var(--text-muted); font-size:0.9rem; margin:0.5rem 0;">Qualsiasi base (non nulla) elevata a zero dà 1. Deriva dalla ②: \(a^n / a^n = a^0 = 1\).</p>
+                    <div class="numeric-example">
+                        <strong>Esempi:</strong> \(5^0 = 1\), \(1000^0 = 1\), \(\pi^0 = 1\)
+                    </div>
+                </div>
+
+                <!-- P7 -->
+                <div class="prop-card">
+                    <h4>⑦ Esponente negativo</h4>
+                    <div class="prop-formula">\[a^{-n} = \frac{1}{a^n}\]</div>
+                    <p style="color:var(--text-muted); font-size:0.9rem; margin:0.5rem 0;">Un esponente negativo equivale a prendere il reciproco.</p>
+                    <div class="numeric-example">
+                        <strong>Esempio:</strong> \(2^{-3} = \dfrac{1}{2^3} = \dfrac{1}{8} = 0.125\)
+                    </div>
+                </div>
+
+                <!-- P8 -->
+                <div class="prop-card">
+                    <h4>⑧ Esponente frazionario</h4>
+                    <div class="prop-formula">\[a^{m/n} = \sqrt[n]{a^m} = \left(\sqrt[n]{a}\right)^m\]</div>
+                    <p style="color:var(--text-muted); font-size:0.9rem; margin:0.5rem 0;">Le radici non sono che potenze con esponente frazionario.</p>
+                    <div class="numeric-example">
+                        <strong>Esempio:</strong> \(8^{2/3} = \left(\sqrt[3]{8}\right)^2 = 2^2 = 4\)
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive property calculator -->
+            <div class="demo-box" style="border-color: rgba(139,92,246,0.3);">
+                <h3 style="color:#c4b5fd;">🧮 Calcolatore interattivo delle proprietà</h3>
+                <p class="lesson-text" style="font-size:0.95rem;">Inserisci base ed esponenti per verificare le proprietà:</p>
+                <div style="display:flex; gap:1rem; flex-wrap:wrap; align-items:center; margin-bottom:1rem;">
+                    <div>
+                        <label style="color:var(--text-muted); font-size:0.9rem; display:block; margin-bottom:0.3rem;">Base (a)</label>
+                        <input type="number" id="calc-base" value="2" min="0.1" max="10" step="0.1"
+                            style="width:80px; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.15); color:white; padding:0.5rem; border-radius:6px; font-size:1rem; font-family:inherit;">
+                    </div>
+                    <div>
+                        <label style="color:var(--text-muted); font-size:0.9rem; display:block; margin-bottom:0.3rem;">Esponente m</label>
+                        <input type="number" id="calc-m" value="3" step="1"
+                            style="width:80px; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.15); color:white; padding:0.5rem; border-radius:6px; font-size:1rem; font-family:inherit;">
+                    </div>
+                    <div>
+                        <label style="color:var(--text-muted); font-size:0.9rem; display:block; margin-bottom:0.3rem;">Esponente n</label>
+                        <input type="number" id="calc-n" value="4" step="1"
+                            style="width:80px; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.15); color:white; padding:0.5rem; border-radius:6px; font-size:1rem; font-family:inherit;">
+                    </div>
+                    <button onclick="runCalc()" class="ctrl-btn" style="margin-top:1.3rem; padding:0.6rem 1.4rem; background:rgba(124,58,237,0.3); border-color:#7c3aed; color:#c4b5fd;">Calcola</button>
+                </div>
+                <div id="calc-result" style="background:rgba(0,0,0,0.3); border-radius:8px; padding:1rem 1.5rem; font-size:0.98rem; color:var(--text-muted); min-height:60px;"></div>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 5. PIEGARE LA CARTA -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-carta">
+            <div class="section-number">Sezione 5</div>
+            <h2>🌕 Curiosità: piegare la carta fino alla Luna</h2>
+            <p class="lesson-text">
+                Un foglio di carta ha uno spessore di circa <strong>0,1 mm</strong>. Se potessimo piegarlo su se stesso, ogni piega raddoppia lo spessore: dopo \(n\) pieghe otteniamo \(0.1 \times 2^n\) mm. La domanda è: <em>quante volte bisognerebbe piegarlo per raggiungere la Luna?</em>
+            </p>
+
+            <div class="callout callout-warn">
+                <span class="callout-icon">🔬</span>
+                <p>La distanza Terra-Luna è circa <strong>384.000 km = 3,84 × 10¹¹ mm</strong>. Nella pratica, un foglio di carta non può essere piegato più di 7-8 volte a causa della resistenza del materiale. Questo esperimento è puramente mentale — ma ci dice qualcosa di profondo sulla crescita esponenziale.</p>
+            </div>
+
+            <div class="demo-box">
+                <h3 style="color:#818cf8;">Simulazione: spessore dopo n piegature</h3>
+
+                <div class="slider-group">
+                    <label>Numero di pieghe</label>
+                    <input type="range" id="folds-slider" min="0" max="50" value="0" oninput="updateFolds(this.value)">
+                    <span class="slider-val" id="folds-val">0</span>
+                </div>
+
+                <div class="big-number" id="folds-height">0,1 mm</div>
+                <p class="story-text" id="folds-compare">Spessore iniziale del foglio.</p>
+
+                <canvas id="foldsCanvas" width="600" height="80" style="display:block; max-width:100%; margin:0 auto; border-radius:8px; background:rgba(0,0,0,0.3);"></canvas>
+                <p style="color:rgba(255,255,255,0.2); font-size:0.75rem; text-align:center; margin-top:0.4rem;">Ogni tacca rappresenta una piega (scala logaritmica visiva)</p>
+            </div>
+
+            <p class="lesson-text" style="margin-top:1.5rem;">
+                Dopo soli <strong>42 pieghe</strong> lo spessore supererebbe la distanza Terra-Luna. Dopo <strong>51 pieghe</strong> raggiungerebbe il Sole. Dopo <strong>101 pieghe</strong> supererebbe l'universo osservabile! Questo è il potere della crescita esponenziale \(2^n\).
+            </p>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 6. SCACCHI -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-scacchi">
+            <div class="section-number">Sezione 6</div>
+            <h2>♟️ La leggenda degli scacchi e il riso</h2>
+
+            <div class="demo-box" style="border-color:rgba(251,191,36,0.2); margin-bottom:1.5rem; background:rgba(0,0,0,0.2);">
+                <h3 style="color:#fcd34d; margin-bottom:0.75rem;">📜 Il retroscena della leggenda</h3>
+                <p style="color:var(--text-muted); font-size:0.98rem; line-height:1.75; margin-bottom:0.75rem;">
+                    Siamo nell'India del VI secolo d.C. Un saggio di nome <strong style="color:#fcd34d;">Sissa</strong> (o, secondo altre versioni, un matematico chiamato Lahur Sessa) inventa il gioco degli scacchi e lo presenta al Grande Re come metafora della guerra e della vita: ogni pezzo ha una funzione, ogni mossa ha una conseguenza.
+                </p>
+                <p style="color:var(--text-muted); font-size:0.98rem; line-height:1.75; margin-bottom:0.75rem;">
+                    Il re, entusiasta, offre al saggio qualsiasi ricompensa desideri — oro, terre, palazzi. Il saggio sorride e risponde con umiltà apparente: <em style="color:#fcd34d;">"Maestà, voglio soltanto del riso. Un chicco sulla prima casella della scacchiera, due sulla seconda, quattro sulla terza — raddoppiando di casella in casella fino all'ultima."</em>
+                </p>
+                <p style="color:var(--text-muted); font-size:0.98rem; line-height:1.75; margin-bottom:0.75rem;">
+                    Il re rise, credendo di cavarsela a buon mercato. I matematici di corte si misero al lavoro, e dopo qualche ora tornarono pallidi: <strong>era impossibile soddisfare la richiesta</strong>. Non esisteva abbastanza riso nel regno, nel continente, né in tutto il mondo allora conosciuto.
+                </p>
+                <p style="color:var(--text-muted); font-size:0.98rem; line-height:1.75;">
+                    La leggenda ha molti finali: in alcuni il saggio rivela di aver voluto solo insegnare una lezione sull'impossibilità di governare senza capire la matematica; in altri il re, umiliato, nomina il saggio primo ministro. Ma il messaggio matematico è universale: <strong style="color:#fcd34d;">la crescita esponenziale inganna l'intuizione anche dei più potenti.</strong>
+                </p>
+            </div>
+
+            <p class="lesson-text">
+                Secondo questa leggenda, l'inventore degli scacchi chiese al re un compenso apparentemente modesto: <strong>un chicco di riso sulla prima casella, due sulla seconda, quattro sulla terza, e così via, raddoppiando ogni volta</strong>. Sulla casella \(k\)-esima ci sono \(2^{k-1}\) chicchi. Quanti chicchi in totale?
+            </p>
+
+            <div class="demo-box">
+                <h3 style="color:#fbbf24;">🎯 Animazione interattiva — riempiamo la scacchiera</h3>
+                <p class="story-text" id="chess-status-text">Premi "Avvia" per riempire la scacchiera casella per casella</p>
+                <div style="display:flex; gap:0.75rem; justify-content:center; margin-bottom:1rem;">
+                    <button class="ctrl-btn" id="chess-start-btn" onclick="startChess()">▶ Avvia</button>
+                    <button class="ctrl-btn" onclick="resetChess()">↺ Ricomincia</button>
+                </div>
+                <div id="chessboard"></div>
+                <div style="text-align:center; margin-top:1rem;">
+                    <p class="story-text">Casella corrente: <span style="color:#fbbf24; font-weight:700;" id="chess-cell-num">—</span> &nbsp;|&nbsp; Chicchi su questa casella: <span style="color:#fbbf24; font-weight:700;" id="chess-cell-grains">—</span></p>
+                    <div class="big-number" id="chess-total" style="font-size:clamp(1.4rem,3vw,2.2rem);">0</div>
+                    <p class="story-text">chicchi totali accumulati</p>
+                </div>
+            </div>
+
+            <p class="lesson-text">
+                La somma totale è \(\sum_{k=0}^{63} 2^k = 2^{64} - 1 = 18.446.744.073.709.551.615\) — circa <strong>18 miliardi di miliardi</strong> di chicchi. Se si potesse costruire una montagna di riso con tutti questi chicchi, sarebbe alta quanto il Monte Everest moltiplicato per migliaia. La produzione mondiale annua di riso è di circa 500 milioni di tonnellate: questa quantità è circa <strong>1.000 volte tutta la produzione mondiale attuale</strong>!
+            </p>
+
+            <div class="callout">
+                <span class="callout-icon">💡</span>
+                <p>La formula \(2^{64} - 1\) sfrutta la proprietà della somma delle potenze di 2: <strong>\(1 + 2 + 4 + \ldots + 2^n = 2^{n+1} - 1\)</strong>. È la stessa formula alla base dei numeri binari nei computer.</p>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 7. RESIDENT EVIL -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-resident-evil">
+            <div class="section-number">Sezione 7</div>
+            <h2>🧟 Resident Evil: quanti giorni per infettare il mondo?</h2>
+            <p class="lesson-text">
+                Nei videogiochi e nei film di <strong>Resident Evil</strong> (e in modo simile in <em>The Last of Us</em>), un virus o fungo mutante si diffonde in modo esponenziale: ogni individuo infetto ne contagia altri, che a loro volta ne contagiano altri ancora. Ma quanto veloce sarebbe un'epidemia del genere nella realtà?
+            </p>
+
+            <div class="demo-box" style="border-color:rgba(239,68,68,0.3); background:rgba(0,0,0,0.25);">
+                <h3 style="color:#f87171;">📊 Scenario: il virus T di Umbrella Corporation</h3>
+                <p style="color:var(--text-muted); font-size:0.95rem; margin-bottom:1rem; line-height:1.75;">
+                    Immaginiamo che il <strong style="color:#f87171;">Virus T</strong> cominci con <strong>1 solo infetto</strong> (paziente zero).
+                    Ogni giorno, ogni infetto riesce a contagiare esattamente <strong>1 altra persona sana</strong>.<br>
+                    La popolazione mondiale è di circa <strong>8.000.000.000</strong> (8 miliardi) di persone.
+                </p>
+                <p style="color:var(--text-muted); font-size:0.95rem; margin-bottom:1rem;">
+                    Dopo \(n\) giorni il numero di infetti è: \(\quad f(n) = 2^n\)
+                </p>
+                <div class="slider-group" style="margin:1.25rem 0;">
+                    <label>Giorni trascorsi</label>
+                    <input type="range" id="zombie-slider" min="0" max="40" value="0" oninput="updateZombie(this.value)">
+                    <span class="slider-val" id="zombie-days">0</span>
+                </div>
+                <div class="big-number" style="color:#f87171;" id="zombie-infected">1</div>
+                <p class="story-text" id="zombie-status">Paziente zero: solo lui è infetto.</p>
+                <div style="background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.2); border-radius:8px; padding:1rem 1.5rem; margin-top:1rem;">
+                    <p style="color:rgba(255,255,255,0.5); font-size:0.88rem; margin:0;">Percentuale popolazione mondiale infettata: <span style="color:#fca5a5; font-weight:700;" id="zombie-pct">~0%</span></p>
+                </div>
+            </div>
+
+            <div class="callout" style="background:rgba(239,68,68,0.07); border-color:rgba(239,68,68,0.25);">
+                <span class="callout-icon">🔢</span>
+                <p>Per trovare <em>quanti giorni bastano</em> per infettare tutti i 8 miliardi, usiamo il <strong style="color:#fca5a5;">logaritmo</strong>:
+                \[2^n = 8{,}000{,}000{,}000 \implies n = \log_2(8\,000\,000\,000) = \frac{\ln(8 \times 10^9)}{\ln 2} \approx \frac{23.8}{0.693} \approx \mathbf{33}\]
+                Soli <strong style="color:#fca5a5;">33 giorni</strong>! Meno di un mese e mezzo per infettare tutti gli 8 miliardi di esseri umani. Questo è il motivo per cui nei film di Resident Evil il mondo collassa così rapidamente. E questo è esattamente perché il logaritmo è lo strumento che ci permette di <em>invertire</em> la crescita esponenziale e rispondere alla domanda "dopo quanti passi raggiungo un certo numero?".</p>
+            </div>
+
+            <p class="lesson-text" style="margin-top:1rem;">
+                Attenzione: questo modello è ovviamente semplificato (nella realtà entrano in gioco immunità, misure di contenimento, mortalità…). Ma la matematica sottostante è la stessa usata negli studi epidemiologici reali, come durante il COVID-19.
+            </p>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 8. DEFINIZIONE LOGARITMO -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-def-log">
+            <div class="section-number">Sezione 8</div>
+            <h2>Definizione di logaritmo e il numero <em>e</em></h2>
+            <p class="lesson-text">
+                Il <strong>logaritmo</strong> è l'operazione inversa dell'esponenziale. Se l'esponenziale risponde a <em>"con questa base, elevo a quest'esponente: quanto ottengo?"</em>, il logaritmo risponde a <em>"a quale esponente devo elevare questa base per ottenere quel numero?"</em>
+            </p>
+
+            <div class="definition-box">
+                <p style="font-size:1.05rem; text-align:center; margin-bottom:0.75rem;">
+                    \[\log_a b = c \quad \Longleftrightarrow \quad a^c = b\]
+                </p>
+                <p style="color:var(--text-muted); font-size:0.98rem; text-align:center;">
+                    con \(a > 0\), \(a \neq 1\), \(b > 0\)
+                </p>
+            </div>
+
+            <p class="lesson-text">Si legge: <em>"il logaritmo in base \(a\) di \(b\) è uguale a \(c\)"</em>. Il risultato \(c\) è l'esponente a cui bisogna elevare \(a\) per ottenere \(b\).</p>
+
+            <!-- BOX: cos'è e -->
+            <div class="demo-box" style="border-color:rgba(52,211,153,0.3); background:rgba(0,0,0,0.2); margin-bottom:1.5rem;">
+                <h3 style="color:#34d399; margin-bottom:0.75rem;">🌀 Cos'è il numero <em>e</em>?</h3>
+                <p style="color:var(--text-muted); font-size:0.97rem; line-height:1.75; margin-bottom:0.75rem;">
+                    Il numero \(e \approx 2.71828...\) è una delle costanti più importanti della matematica, scoperta dal matematico svizzero <strong style="color:#6ee7b7;">Leonhard Euler</strong> nel XVIII secolo (da cui la lettera \(e\)).
+                    È un numero irrazionale e trascendente: le sue cifre decimali non si ripetono mai e non seguono uno schema.
+                </p>
+                <p style="color:var(--text-muted); font-size:0.97rem; line-height:1.75; margin-bottom:0.75rem;">
+                    Una delle sue definizioni più intuitive viene da un problema bancario: se investi <strong>1 euro</strong> a un tasso di interesse del <strong>100% annuo</strong>, alla fine dell'anno hai 2 euro. Ma se il tasso viene calcolato <em>ogni momento</em> (interesse continuo), il capitale diventa:
+                    \[e = \lim_{n \to \infty} \left(1 + \frac{1}{n}\right)^n \approx 2.71828\]
+                </p>
+                <p style="color:var(--text-muted); font-size:0.97rem; line-height:1.75; margin-bottom:0.75rem;">
+                    La funzione \(e^x\) è la funzione esponenziale <strong>per eccellenza</strong>: appare ovunque in natura, dalla crescita batterica al decadimento radioattivo, dalle onde sismiche alla distribuzione delle probabilità. La sua caratteristica magica? <strong style="color:#6ee7b7;">È l'unica funzione uguale alla propria derivata</strong>, il che la rende il "mattone fondamentale" dell'analisi matematica.
+                </p>
+                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap:0.75rem; margin-top:0.5rem;">
+                    <div style="background:rgba(52,211,153,0.08); border-radius:8px; padding:0.75rem 1rem; text-align:center;">
+                        <div style="font-size:1.5rem; font-weight:800; color:#34d399;">e ≈ 2.71828</div>
+                        <div style="font-size:0.82rem; color:rgba(255,255,255,0.4);">Cifre non periodiche all'infinito</div>
+                    </div>
+                    <div style="background:rgba(52,211,153,0.08); border-radius:8px; padding:0.75rem 1rem; text-align:center;">
+                        <div style="font-size:1.1rem; font-weight:700; color:#6ee7b7;">ln(e) = 1</div>
+                        <div style="font-size:0.82rem; color:rgba(255,255,255,0.4);">Il log naturale di e vale sempre 1</div>
+                    </div>
+                    <div style="background:rgba(52,211,153,0.08); border-radius:8px; padding:0.75rem 1rem; text-align:center;">
+                        <div style="font-size:1.1rem; font-weight:700; color:#6ee7b7;">e⁰ = 1</div>
+                        <div style="font-size:0.82rem; color:rgba(255,255,255,0.4);">Come tutte le esponenziali in x=0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="prop-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px,1fr));">
+                <div class="prop-card">
+                    <h4>Esempio 1</h4>
+                    <div class="prop-formula">\[\log_2 8 = 3\]</div>
+                    <p style="color:var(--text-muted); font-size:0.9rem;">Perché \(2^3 = 8\). L'esponente a cui devo elevare 2 per ottenere 8 è 3.</p>
+                </div>
+                <div class="prop-card">
+                    <h4>Esempio 2</h4>
+                    <div class="prop-formula">\[\log_{10} 1000 = 3\]</div>
+                    <p style="color:var(--text-muted); font-size:0.9rem;">Perché \(10^3 = 1000\). Questo è il <em>logaritmo decimale</em> (scritto anche \(\lg\) o \(\log\)).</p>
+                </div>
+                <div class="prop-card">
+                    <h4>Esempio 3</h4>
+                    <div class="prop-formula">\[\ln e^5 = 5\]</div>
+                    <p style="color:var(--text-muted); font-size:0.9rem;">Il <em>logaritmo naturale</em> \(\ln\) è \(\log_e\). \(\ln(e^5) = 5\) perché \(e^5 = e^5\). Fondamentale in analisi.</p>
+                </div>
+            </div>
+
+            <!-- Interactive converter -->
+            <div class="demo-box" style="border-color:rgba(52,211,153,0.3);">
+                <h3 style="color:#34d399;">🔁 Converti: esponenziale ↔ logaritmo</h3>
+                <div style="display:flex; gap:1rem; flex-wrap:wrap; align-items:flex-end;">
+                    <div>
+                        <label style="color:var(--text-muted); font-size:0.85rem; display:block; margin-bottom:0.3rem;">Base (a)</label>
+                        <input type="number" id="log-base" value="2" min="0.01" max="100" step="0.5"
+                            style="width:80px; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.15); color:white; padding:0.5rem; border-radius:6px; font-family:inherit; font-size:1rem;">
+                    </div>
+                    <div>
+                        <label style="color:var(--text-muted); font-size:0.85rem; display:block; margin-bottom:0.3rem;">Numero (b)</label>
+                        <input type="number" id="log-num" value="8" min="0.001" step="1"
+                            style="width:100px; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.15); color:white; padding:0.5rem; border-radius:6px; font-family:inherit; font-size:1rem;">
+                    </div>
+                    <button onclick="runLogCalc()" class="ctrl-btn" style="background:rgba(52,211,153,0.2); border-color:#34d399; color:#6ee7b7;">Calcola</button>
+                </div>
+                <div id="log-result" style="margin-top:1rem; background:rgba(0,0,0,0.3); border-radius:8px; padding:1rem 1.5rem; font-size:1rem; color:var(--text-muted); min-height:55px;"></div>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 9. GRAFICO LOGARITMO -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-grafico-log">
+            <div class="section-number">Sezione 9</div>
+            <h2>Il grafico logaritmico e le sue proprietà</h2>
+            <p class="lesson-text">
+                Il grafico di \(y = \log_a x\) è la <strong>riflessione speculare</strong> (rispetto alla bisettrice \(y = x\)) del grafico di \(y = a^x\). Sono funzioni inverse.
+            </p>
+
+            <div class="graph-container">
+                <canvas id="logCanvas" width="680" height="340" style="max-width:100%;"></canvas>
+                <div class="graph-controls">
+                    <button class="ctrl-btn active" onclick="toggleLogCurve('2', this)">log₂</button>
+                    <button class="ctrl-btn active" onclick="toggleLogCurve('10', this)">log₁₀</button>
+                    <button class="ctrl-btn active" onclick="toggleLogCurve('05', this)">log₀.₅</button>
+                    <button class="ctrl-btn active" onclick="toggleLogCurve('e', this)">ln (logₑ)</button>
+                    <button class="ctrl-btn" id="bisect-btn" onclick="toggleBisect(this)">Mostra y = x</button>
+                </div>
+                <div class="graph-legend" id="logLegend"></div>
+            </div>
+
+            <p class="lesson-text">Proprietà essenziali del grafico di \(\log_a x\):</p>
+            <ul class="props-list">
+                <li>
+                    <span class="prop-label">Dominio</span>
+                    <span>Solo \(x > 0\). Il logaritmo non è definito per numeri negativi o per zero.</span>
+                </li>
+                <li>
+                    <span class="prop-label">Passaggio per (1, 0)</span>
+                    <span>\(\log_a 1 = 0\) per qualsiasi base, perché \(a^0 = 1\). Il grafico interseca sempre l'asse \(x\) in \(x = 1\).</span>
+                </li>
+                <li>
+                    <span class="prop-label">Asintoto verticale</span>
+                    <span>L'asse \(y\) (\(x = 0\)) è un asintoto verticale: la curva si avvicina senza mai toccarlo. \(\log_a x \to -\infty\) quando \(x \to 0^+\) (se \(a>1\)).</span>
+                </li>
+                <li>
+                    <span class="prop-label">a &gt; 1 (crescente)</span>
+                    <span>La funzione cresce, ma molto lentamente: la crescita è sub-lineare. \(\log_a x \to +\infty\) per \(x \to +\infty\), ma in modo estremamente lento.</span>
+                </li>
+                <li>
+                    <span class="prop-label">0 &lt; a &lt; 1 (decrescente)</span>
+                    <span>La funzione decresce: più \(x\) cresce, più il logaritmo diminuisce.</span>
+                </li>
+                <li>
+                    <span class="prop-label">Codominio</span>
+                    <span>Tutto \(\mathbb{R}\): il logaritmo può assumere qualsiasi valore reale.</span>
+                </li>
+            </ul>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 10. PROPRIETÀ DEI LOGARITMI -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-prop-log">
+            <div class="section-number">Sezione 10</div>
+            <h2>Proprietà dei logaritmi — con esempi numerici e confronto</h2>
+            <p class="lesson-text">
+                Ogni proprietà dei logaritmi è il riflesso diretto di una proprietà degli esponenti. Confrontiamole fianco a fianco:
+            </p>
+
+            <div class="callout">
+                <span class="callout-icon">🔗</span>
+                <p>Il logaritmo <em>trasforma</em> moltiplicazioni in addizioni, divisioni in sottrazioni, potenze in prodotti. Storicamente, questa è la ragione per cui i logaritmi furono inventati da Napier nel 1614: velocizzare enormemente i calcoli astronomici!</p>
+            </div>
+
+            <div style="overflow-x:auto;">
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th class="th-prop">Proprietà</th>
+                            <th class="th-exp">⬆ Regola degli esponenti</th>
+                            <th class="th-log">🔢 Proprietà del logaritmo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="color:#c4b5fd; font-weight:600;">① Prodotto</td>
+                            <td class="cell-exp">\(a^m \cdot a^n = a^{m+n}\)<br><span style="font-size:0.82rem;color:rgba(255,255,255,0.3);">Moltiplicare → sommare esponenti</span></td>
+                            <td class="cell-log">\(\log_a(M \cdot N) = \log_a M + \log_a N\)<br><span style="font-size:0.82rem;color:rgba(255,255,255,0.3);">Moltiplicare → sommare logaritmi</span></td>
+                        </tr>
+                        <tr>
+                            <td style="color:#c4b5fd; font-weight:600;">② Quoziente</td>
+                            <td class="cell-exp">\(\dfrac{a^m}{a^n} = a^{m-n}\)<br><span style="font-size:0.82rem;color:rgba(255,255,255,0.3);">Dividere → sottrarre esponenti</span></td>
+                            <td class="cell-log">\(\log_a\!\left(\dfrac{M}{N}\right) = \log_a M - \log_a N\)<br><span style="font-size:0.82rem;color:rgba(255,255,255,0.3);">Dividere → sottrarre logaritmi</span></td>
+                        </tr>
+                        <tr>
+                            <td style="color:#c4b5fd; font-weight:600;">③ Potenza</td>
+                            <td class="cell-exp">\((a^m)^n = a^{m \cdot n}\)<br><span style="font-size:0.82rem;color:rgba(255,255,255,0.3);">Elevare → moltiplicare esponenti</span></td>
+                            <td class="cell-log">\(\log_a(M^k) = k \cdot \log_a M\)<br><span style="font-size:0.82rem;color:rgba(255,255,255,0.3);">Esponente → moltiplicare per lui</span></td>
+                        </tr>
+                        <tr>
+                            <td style="color:#c4b5fd; font-weight:600;">④ Identità</td>
+                            <td class="cell-exp">\(a^1 = a\)<br><span style="font-size:0.82rem;color:rgba(255,255,255,0.3);">Esponente 1 lascia invariata la base</span></td>
+                            <td class="cell-log">\(\log_a a = 1\)<br><span style="font-size:0.82rem;color:rgba(255,255,255,0.3);">Il log della base è sempre 1</span></td>
+                        </tr>
+                        <tr>
+                            <td style="color:#c4b5fd; font-weight:600;">⑤ Zero</td>
+                            <td class="cell-exp">\(a^0 = 1\)<br><span style="font-size:0.82rem;color:rgba(255,255,255,0.3);">Esponente 0 dà sempre 1</span></td>
+                            <td class="cell-log">\(\log_a 1 = 0\)<br><span style="font-size:0.82rem;color:rgba(255,255,255,0.3);">Il log di 1 è sempre 0</span></td>
+                        </tr>
+                        <tr>
+                            <td style="color:#c4b5fd; font-weight:600;">⑥ Inversa</td>
+                            <td class="cell-exp">\(a^{\log_a N} = N\)<br><span style="font-size:0.82rem;color:rgba(255,255,255,0.3);">Esponenziale e log si annullano</span></td>
+                            <td class="cell-log">\(\log_a(a^x) = x\)<br><span style="font-size:0.82rem;color:rgba(255,255,255,0.3);">Logaritmo e esponenziale si annullano</span></td>
+                        </tr>
+                        <tr>
+                            <td style="color:#c4b5fd; font-weight:600;">⑦ Cambio base</td>
+                            <td class="cell-exp" style="color:rgba(255,255,255,0.4); font-style:italic;">—</td>
+                            <td class="cell-log">\(\log_a b = \dfrac{\log_c b}{\log_c a}\)<br><span style="font-size:0.82rem;color:rgba(255,255,255,0.3);">Cambiare base del logaritmo</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- ESEMPI NUMERICI PER OGNI PROPRIETÀ -->
+            <h3 style="margin-top:2rem;">Esempi numerici per ogni proprietà</h3>
+
+            <div class="prop-grid">
+                <!-- L1 -->
+                <div class="prop-card">
+                    <h4>① Prodotto → Somma</h4>
+                    <div class="prop-formula">\[\log_2(4 \cdot 8) = \log_2 4 + \log_2 8\]</div>
+                    <div class="numeric-example">
+                        <strong>Sinistra:</strong> \(\log_2 32 = 5\) (perché \(2^5 = 32\))<br>
+                        <strong>Destra:</strong> \(2 + 3 = 5\) ✓<br>
+                        <span style="color:rgba(255,255,255,0.4);">Deriva da: \(2^2 \cdot 2^3 = 2^{2+3}\)</span>
+                    </div>
+                </div>
+
+                <!-- L2 -->
+                <div class="prop-card">
+                    <h4>② Quoziente → Differenza</h4>
+                    <div class="prop-formula">\[\log_{10}\!\left(\tfrac{1000}{10}\right) = \log_{10} 1000 - \log_{10} 10\]</div>
+                    <div class="numeric-example">
+                        <strong>Sinistra:</strong> \(\log_{10} 100 = 2\)<br>
+                        <strong>Destra:</strong> \(3 - 1 = 2\) ✓<br>
+                        <span style="color:rgba(255,255,255,0.4);">Deriva da: \(10^3 / 10^1 = 10^{3-1}\)</span>
+                    </div>
+                </div>
+
+                <!-- L3 -->
+                <div class="prop-card">
+                    <h4>③ Potenza → Fattore</h4>
+                    <div class="prop-formula">\[\log_2(8^4) = 4 \cdot \log_2 8\]</div>
+                    <div class="numeric-example">
+                        <strong>Sinistra:</strong> \(\log_2 4096 = 12\)<br>
+                        <strong>Destra:</strong> \(4 \times 3 = 12\) ✓<br>
+                        <span style="color:rgba(255,255,255,0.4);">Deriva da: \((2^3)^4 = 2^{12}\)</span>
+                    </div>
+                </div>
+
+                <!-- L4 -->
+                <div class="prop-card">
+                    <h4>④ Log della base = 1</h4>
+                    <div class="prop-formula">\[\log_5 5 = 1, \quad \ln e = 1, \quad \log 10 = 1\]</div>
+                    <div class="numeric-example">
+                        <strong>Perché:</strong> \(5^1 = 5\), \(e^1 = e\), \(10^1 = 10\).<br>
+                        <span style="color:rgba(255,255,255,0.4);">Corrisponde a \(a^1 = a\)</span>
+                    </div>
+                </div>
+
+                <!-- L5 -->
+                <div class="prop-card">
+                    <h4>⑤ Log di 1 = 0</h4>
+                    <div class="prop-formula">\[\log_7 1 = 0, \quad \ln 1 = 0, \quad \log_{10} 1 = 0\]</div>
+                    <div class="numeric-example">
+                        <strong>Perché:</strong> qualsiasi base elevata a 0 dà 1.<br>
+                        <span style="color:rgba(255,255,255,0.4);">Corrisponde a \(a^0 = 1\)</span>
+                    </div>
+                </div>
+
+                <!-- L6 -->
+                <div class="prop-card">
+                    <h4>⑥ Funzioni inverse</h4>
+                    <div class="prop-formula">\[2^{\log_2 5} = 5, \quad \log_3(3^7) = 7\]</div>
+                    <div class="numeric-example">
+                        <strong>Intuizione:</strong> applicare l'esponenziale e poi il log (o viceversa) riporta sempre al numero di partenza.<br>
+                        <span style="color:rgba(255,255,255,0.4);">Come fare e poi disfare: comporra f ∘ f⁻¹ = id</span>
+                    </div>
+                </div>
+
+                <!-- L7 -->
+                <div class="prop-card">
+                    <h4>⑦ Cambio base</h4>
+                    <div class="prop-formula">\[\log_2 10 = \frac{\log_{10} 10}{\log_{10} 2} = \frac{1}{0.301} \approx 3.32\]</div>
+                    <div class="numeric-example">
+                        <strong>Utilizzo:</strong> le calcolatrici calcolano solo \(\log_{10}\) e \(\ln\). Questa formula permette di ricavare qualsiasi logartimo.<br>
+                        <strong>Verifica:</strong> \(2^{3.32} \approx 10\) ✓
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 11. QUIZ -->
+        <!-- ================================================================ -->
+        <section class="lesson-section quiz-container" id="sec-quiz">
+            <div class="section-number">Sezione 11</div>
+            <h2 style="color:var(--math-color);">Sfida le tue conoscenze</h2>
+            <p class="lesson-text">Hai capito le funzioni esponenziali e logaritmiche? Mettiti alla prova!</p>
+            <div class="quiz-wrapper">
+                <div id="quiz-area"></div>
+                <div class="quiz-score-msg" id="quiz-score"></div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>© 2026 MFI — Matematica, Fisica, Informatica.</p>
+    </footer>
+
+    <script>
+    // ============================================================
+    //  EXPONENTIAL GRAPH
+    // ============================================================
+    const EXP_CURVES = {
+        '2':  { base: 2,     color: '#818cf8', label: 'y = 2ˣ',     visible: true },
+        '3':  { base: 3,     color: '#fb923c', label: 'y = 3ˣ',     visible: true },
+        '05': { base: 0.5,   color: '#f472b6', label: 'y = 0.5ˣ',   visible: true },
+        '03': { base: 0.3,   color: '#a3e635', label: 'y = 0.3ˣ',   visible: true },
+        'e':  { base: Math.E,color: '#34d399', label: 'y = eˣ',     visible: true },
+    };
+
+    function toggleExpCurve(key, btn) {
+        EXP_CURVES[key].visible = !EXP_CURVES[key].visible;
+        btn.classList.toggle('active', EXP_CURVES[key].visible);
+        drawExpGraph();
+    }
+
+    function drawExpGraph() {
+        const canvas = document.getElementById('expCanvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const W = canvas.width, H = canvas.height;
+        ctx.clearRect(0, 0, W, H);
+
+        // Background
+        ctx.fillStyle = 'rgba(0,0,0,0.4)';
+        ctx.fillRect(0, 0, W, H);
+
+        // Ranges
+        const xMin = -4, xMax = 4, yMin = -0.5, yMax = 9;
+        const toCanvasX = x => (x - xMin) / (xMax - xMin) * W;
+        const toCanvasY = y => H - (y - yMin) / (yMax - yMin) * H;
+
+        // Grid
+        ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+        ctx.lineWidth = 1;
+        for (let gx = Math.ceil(xMin); gx <= xMax; gx++) {
+            ctx.beginPath(); ctx.moveTo(toCanvasX(gx), 0); ctx.lineTo(toCanvasX(gx), H); ctx.stroke();
+        }
+        for (let gy = 0; gy <= 8; gy++) {
+            ctx.beginPath(); ctx.moveTo(0, toCanvasY(gy)); ctx.lineTo(W, toCanvasY(gy)); ctx.stroke();
+        }
+
+        // Axes
+        ctx.strokeStyle = 'rgba(255,255,255,0.35)';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.moveTo(toCanvasX(xMin), toCanvasY(0)); ctx.lineTo(toCanvasX(xMax), toCanvasY(0)); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(toCanvasX(0), 0); ctx.lineTo(toCanvasX(0), H); ctx.stroke();
+
+        // Axis labels
+        ctx.fillStyle = 'rgba(255,255,255,0.4)';
+        ctx.font = '11px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        for (let gx = Math.ceil(xMin); gx <= xMax; gx++) {
+            if (gx === 0) continue;
+            ctx.fillText(gx, toCanvasX(gx), toCanvasY(0) + 14);
+        }
+        ctx.textAlign = 'right';
+        for (let gy = 1; gy <= 8; gy++) {
+            ctx.fillText(gy, toCanvasX(0) - 4, toCanvasY(gy) + 4);
+        }
+
+        // y = 1 dotted line
+        ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+        ctx.setLineDash([4, 4]);
+        ctx.beginPath(); ctx.moveTo(0, toCanvasY(1)); ctx.lineTo(W, toCanvasY(1)); ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Point (0,1)
+        ctx.fillStyle = 'rgba(255,255,255,0.5)';
+        ctx.beginPath(); ctx.arc(toCanvasX(0), toCanvasY(1), 4, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = 'rgba(255,255,255,0.5)';
+        ctx.font = '11px Inter'; ctx.textAlign = 'left';
+        ctx.fillText('(0, 1)', toCanvasX(0) + 8, toCanvasY(1) - 6);
+
+        // Curves
+        Object.values(EXP_CURVES).forEach(c => {
+            if (!c.visible) return;
+            ctx.strokeStyle = c.color;
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            let first = true;
+            for (let px = 0; px < W; px++) {
+                const x = xMin + (px / W) * (xMax - xMin);
+                const y = Math.pow(c.base, x);
+                if (y > yMax + 1 || y < yMin - 1) { first = true; continue; }
+                const cy = toCanvasY(y);
+                if (first) { ctx.moveTo(px, cy); first = false; }
+                else ctx.lineTo(px, cy);
+            }
+            ctx.stroke();
+        });
+
+        // Legend
+        const legend = document.getElementById('expLegend');
+        if (legend) {
+            legend.innerHTML = Object.entries(EXP_CURVES).map(([k, c]) =>
+                `<div class="legend-item" style="opacity:${c.visible ? 1 : 0.35}">
+                    <div class="legend-dot" style="background:${c.color}"></div>
+                    <span style="color:${c.color}; font-size:0.88rem;">${c.label}</span>
+                </div>`
+            ).join('');
+        }
+    }
+
+    // ============================================================
+    //  LOG GRAPH
+    // ============================================================
+    const LOG_CURVES = {
+        '2':  { base: 2,     color: '#818cf8', label: 'y = log₂(x)',  visible: true },
+        '10': { base: 10,    color: '#fb923c', label: 'y = log₁₀(x)', visible: true },
+        '05': { base: 0.5,   color: '#f472b6', label: 'y = log₀.₅(x)',visible: true },
+        'e':  { base: Math.E,color: '#34d399', label: 'y = ln(x)',     visible: true },
+    };
+    let showBisect = false;
+
+    function toggleLogCurve(key, btn) {
+        LOG_CURVES[key].visible = !LOG_CURVES[key].visible;
+        btn.classList.toggle('active', LOG_CURVES[key].visible);
+        drawLogGraph();
+    }
+    function toggleBisect(btn) {
+        showBisect = !showBisect;
+        btn.classList.toggle('active', showBisect);
+        drawLogGraph();
+    }
+
+    function drawLogGraph() {
+        const canvas = document.getElementById('logCanvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const W = canvas.width, H = canvas.height;
+        ctx.clearRect(0, 0, W, H);
+
+        ctx.fillStyle = 'rgba(0,0,0,0.4)';
+        ctx.fillRect(0, 0, W, H);
+
+        const xMin = -0.5, xMax = 9, yMin = -4, yMax = 5;
+        const toCanvasX = x => (x - xMin) / (xMax - xMin) * W;
+        const toCanvasY = y => H - (y - yMin) / (yMax - yMin) * H;
+
+        // Grid
+        ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+        ctx.lineWidth = 1;
+        for (let gx = 0; gx <= 8; gx++) {
+            ctx.beginPath(); ctx.moveTo(toCanvasX(gx), 0); ctx.lineTo(toCanvasX(gx), H); ctx.stroke();
+        }
+        for (let gy = Math.ceil(yMin); gy <= yMax; gy++) {
+            ctx.beginPath(); ctx.moveTo(0, toCanvasY(gy)); ctx.lineTo(W, toCanvasY(gy)); ctx.stroke();
+        }
+
+        // Bisect
+        if (showBisect) {
+            ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+            ctx.lineWidth = 1.5;
+            ctx.setLineDash([6, 6]);
+            ctx.beginPath();
+            const s = Math.min(xMax, yMax), e = Math.max(xMin, yMin);
+            ctx.moveTo(toCanvasX(e), toCanvasY(e));
+            ctx.lineTo(toCanvasX(s), toCanvasY(s));
+            ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.fillStyle = 'rgba(255,255,255,0.3)';
+            ctx.font = '11px Inter'; ctx.textAlign = 'center';
+            ctx.fillText('y = x', toCanvasX(4.2), toCanvasY(4.5));
+        }
+
+        // Axes
+        ctx.strokeStyle = 'rgba(255,255,255,0.35)';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.moveTo(toCanvasX(xMin), toCanvasY(0)); ctx.lineTo(toCanvasX(xMax), toCanvasY(0)); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(toCanvasX(0), 0); ctx.lineTo(toCanvasX(0), H); ctx.stroke();
+
+        // Labels
+        ctx.fillStyle = 'rgba(255,255,255,0.4)';
+        ctx.font = '11px Inter'; ctx.textAlign = 'center';
+        for (let gx = 1; gx <= 8; gx++) {
+            ctx.fillText(gx, toCanvasX(gx), toCanvasY(0) + 14);
+        }
+        ctx.textAlign = 'right';
+        for (let gy = Math.ceil(yMin); gy <= yMax; gy++) {
+            if (gy === 0) continue;
+            ctx.fillText(gy, toCanvasX(0) - 4, toCanvasY(gy) + 4);
+        }
+
+        // Asintoto verticale
+        ctx.strokeStyle = 'rgba(239,68,68,0.3)';
+        ctx.setLineDash([4, 4]);
+        ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.moveTo(toCanvasX(0), 0); ctx.lineTo(toCanvasX(0), H); ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Point (1, 0)
+        ctx.fillStyle = 'rgba(255,255,255,0.5)';
+        ctx.beginPath(); ctx.arc(toCanvasX(1), toCanvasY(0), 5, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = 'rgba(255,255,255,0.5)';
+        ctx.font = '11px Inter'; ctx.textAlign = 'left';
+        ctx.fillText('(1, 0)', toCanvasX(1) + 8, toCanvasY(0) - 6);
+
+        // Curves
+        Object.values(LOG_CURVES).forEach(c => {
+            if (!c.visible) return;
+            ctx.strokeStyle = c.color;
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            let first = true;
+            for (let px = 0; px < W; px++) {
+                const x = xMin + (px / W) * (xMax - xMin);
+                if (x <= 0) { first = true; continue; }
+                const y = Math.log(x) / Math.log(c.base);
+                if (y > yMax + 1 || y < yMin - 1) { first = true; continue; }
+                const cy = toCanvasY(y);
+                if (first) { ctx.moveTo(px, cy); first = false; }
+                else ctx.lineTo(px, cy);
+            }
+            ctx.stroke();
+        });
+
+        // Legend
+        const legend = document.getElementById('logLegend');
+        if (legend) {
+            legend.innerHTML = Object.entries(LOG_CURVES).map(([k, c]) =>
+                `<div class="legend-item" style="opacity:${c.visible ? 1 : 0.35}">
+                    <div class="legend-dot" style="background:${c.color}"></div>
+                    <span style="color:${c.color}; font-size:0.88rem;">${c.label}</span>
+                </div>`
+            ).join('');
+        }
+    }
+
+    // ============================================================
+    //  PROPERTY CALCULATOR
+    // ============================================================
+    function runCalc() {
+        const a = parseFloat(document.getElementById('calc-base').value);
+        const m = parseFloat(document.getElementById('calc-m').value);
+        const n = parseFloat(document.getElementById('calc-n').value);
+        const res = document.getElementById('calc-result');
+        if (isNaN(a) || isNaN(m) || isNaN(n) || a <= 0) {
+            res.innerHTML = 'Inserisci valori validi (base > 0).';
+            return;
+        }
+        const fmt = v => {
+            if (Math.abs(v) > 1e12) return v.toExponential(3);
+            if (Number.isInteger(v) || Math.abs(v - Math.round(v)) < 1e-9) return Math.round(v).toString();
+            return v.toFixed(4);
+        };
+        // Helper: render base^exp as HTML with superscript
+        const pw = (base, exp) => `${base}<sup>${exp}</sup>`;
+        res.innerHTML = `
+            <strong style="color:#c4b5fd;">① Prodotto:</strong> ${pw(a,m)} &middot; ${pw(a,n)} = ${pw(a, m+n)} = <em style="color:#fbbf24;">${fmt(Math.pow(a,m+n))}</em><br>
+            <strong style="color:#c4b5fd;">② Quoziente:</strong> ${pw(a,m)} / ${pw(a,n)} = ${pw(a, m-n)} = <em style="color:#fbbf24;">${fmt(Math.pow(a,m-n))}</em><br>
+            <strong style="color:#c4b5fd;">③ Potenza di potenza:</strong> (${pw(a,m)})<sup>${n}</sup> = ${pw(a, m*n)} = <em style="color:#fbbf24;">${fmt(Math.pow(a,m*n))}</em><br>
+            <strong style="color:#c4b5fd;">④ Inverso:</strong> ${pw(a,'-'+m)} = 1/${pw(a,m)} = <em style="color:#fbbf24;">${fmt(Math.pow(a,-m))}</em>
+        `;
+    }
+
+    // ============================================================
+    //  LOG CALCULATOR
+    // ============================================================
+    function runLogCalc() {
+        const a = parseFloat(document.getElementById('log-base').value);
+        const b = parseFloat(document.getElementById('log-num').value);
+        const res = document.getElementById('log-result');
+        if (isNaN(a) || isNaN(b) || a <= 0 || a === 1 || b <= 0) {
+            res.innerHTML = 'Inserisci valori validi: base > 0 e ≠ 1, numero > 0.';
+            return;
+        }
+        const logVal = Math.log(b) / Math.log(a);
+        const fmt = v => (Number.isInteger(v) ? v : v.toFixed(6));
+        res.innerHTML = `
+            log<sub>${a}</sub>(${b}) = <strong style="color:#6ee7b7; font-size:1.25rem;">${fmt(logVal)}</strong><br>
+            <span style="font-size:0.9rem; color:rgba(255,255,255,0.4);">Verifica: ${a}^${fmt(logVal)} ≈ ${Math.pow(a, logVal).toFixed(4)} ${Math.abs(Math.pow(a, logVal) - b) < 0.01 ? '✓' : ''}</span>
+        `;
+    }
+
+    // ============================================================
+    //  PAPER FOLDING
+    // ============================================================
+    const MOON_DIST_MM = 3.84e11;
+    const SUN_DIST_MM  = 1.496e14;
+    const OBS_UNIV_MM  = 8.8e29;
+
+    function updateFolds(n) {
+        n = parseInt(n);
+        document.getElementById('folds-val').textContent = n;
+        const thicknessMM = 0.1 * Math.pow(2, n);
+        let label = '';
+        if (thicknessMM < 1) label = `${(thicknessMM).toFixed(4)} mm`;
+        else if (thicknessMM < 1000) label = `${thicknessMM.toFixed(2)} mm`;
+        else if (thicknessMM < 1e6) label = `${(thicknessMM/1000).toFixed(2)} m`;
+        else if (thicknessMM < 1e9) label = `${(thicknessMM/1e6).toFixed(2)} km`;
+        else if (thicknessMM < 1e12) label = `${(thicknessMM/1e9).toFixed(2)} Mln km`;
+        else label = `${thicknessMM.toExponential(3)} mm`;
+
+        document.getElementById('folds-height').textContent = label;
+
+        let compareText = 'Spessore iniziale del foglio (0.1 mm).';
+        if (n === 0) compareText = 'Spessore iniziale del foglio (0.1 mm).';
+        else if (n < 8) compareText = `Impossibile fisicamente: la carta si rompe intorno alla 7ª-8ª piega.`;
+        else if (thicknessMM < 8848000) compareText = `Ancora meno dell'altezza del Monte Everest (8.848 km).`;
+        else if (thicknessMM < MOON_DIST_MM * 0.5) compareText = `🗼 Più alto di qualsiasi edificio umano!`;
+        else if (thicknessMM < MOON_DIST_MM) compareText = `🌕 Quasi alla Luna! (distanza: ~384.000 km)`;
+        else if (thicknessMM < MOON_DIST_MM * 2) compareText = `🌕 Hai superato la Luna! (${(thicknessMM/MOON_DIST_MM).toFixed(1)}× la distanza Luna)`;
+        else if (thicknessMM < SUN_DIST_MM) compareText = `🌕 Raggiunta la Luna ${(thicknessMM/MOON_DIST_MM).toFixed(0)} volte. Direzione Sole...`;
+        else if (thicknessMM < SUN_DIST_MM * 2) compareText = `☀️ Hai raggiunto il Sole! (150 milioni di km)`;
+        else if (thicknessMM < OBS_UNIV_MM) compareText = `🌌 Sei a ${(thicknessMM/SUN_DIST_MM).toFixed(0)} distanze Terra-Sole. Ormai siamo nell'universo!`;
+        else compareText = `🌌 Hai superato l'universo osservabile (8.8 × 10²⁶ m)!`;
+
+        document.getElementById('folds-compare').textContent = compareText;
+
+        // Draw mini bars
+        drawFoldsBars(n);
+    }
+
+    function drawFoldsBars(n) {
+        const canvas = document.getElementById('foldsCanvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const W = canvas.width, H = canvas.height;
+        ctx.clearRect(0, 0, W, H);
+
+        ctx.fillStyle = 'rgba(0,0,0,0)';
+        ctx.fillRect(0, 0, W, H);
+
+        const maxN = 50;
+        const barW = W / maxN - 1;
+
+        for (let i = 0; i <= maxN; i++) {
+            const isFilled = i <= n;
+            const ratio = i / maxN;
+            const hue = 240 + ratio * 100; // blue to orange
+            ctx.fillStyle = isFilled
+                ? `hsl(${hue}, 80%, 60%)`
+                : 'rgba(255,255,255,0.06)';
+            const barH = isFilled ? Math.max(2, (i / maxN) * (H - 10)) : 4;
+            ctx.fillRect(i * (barW + 1) + 1, H - barH, barW, barH);
+        }
+
+        // Labels
+        const milestones = [
+            {n: 8, label: '8: limite fisico'},
+            {n: 42, label: '42: Luna'},
+            {n: 51, label: '51: Sole'},
+        ];
+        ctx.font = '9px Inter';
+        ctx.textAlign = 'center';
+        milestones.forEach(m => {
+            if (m.n <= maxN) {
+                ctx.fillStyle = 'rgba(251,191,36,0.7)';
+                ctx.fillRect(m.n * (barW + 1) + 1, 0, 1, H);
+            }
+        });
+    }
+
+    // ============================================================
+    //  CHESSBOARD
+    // ============================================================
+    let chessInterval = null;
+    let chessCell = 0;
+    let chessTotal = BigInt(0);
+
+    function buildChessboard() {
+        const board = document.getElementById('chessboard');
+        board.innerHTML = '';
+        for (let i = 0; i < 64; i++) {
+            const cell = document.createElement('div');
+            cell.className = 'chess-cell';
+            cell.id = `cc-${i}`;
+            board.appendChild(cell);
+        }
+    }
+
+    function resetChess() {
+        clearInterval(chessInterval);
+        chessInterval = null;
+        chessCell = 0;
+        chessTotal = BigInt(0);
+        buildChessboard();
+        document.getElementById('chess-total').textContent = '0';
+        document.getElementById('chess-cell-num').textContent = '—';
+        document.getElementById('chess-cell-grains').textContent = '—';
+        document.getElementById('chess-status-text').textContent = 'Premi "Avvia" per riempire la scacchiera casella per casella';
+        document.getElementById('chess-start-btn').textContent = '▶ Avvia';
+    }
+
+    function startChess() {
+        const btn = document.getElementById('chess-start-btn');
+        if (chessInterval) {
+            clearInterval(chessInterval);
+            chessInterval = null;
+            btn.textContent = '▶ Riprendi';
+            return;
+        }
+        btn.textContent = '⏸ Pausa';
+
+        if (chessCell >= 64) { resetChess(); return; }
+
+        const speed = chessCell < 32 ? 350 : 80;
+
+        function step() {
+            if (chessCell >= 64) {
+                clearInterval(chessInterval);
+                chessInterval = null;
+                btn.textContent = '✓ Fine';
+                document.getElementById('chess-status-text').textContent = 'Totale raggiunto! 18.446.744.073.709.551.615 chicchi.';
+                return;
+            }
+            // Deactivate previous
+            if (chessCell > 0) {
+                const prev = document.getElementById(`cc-${chessCell-1}`);
+                if (prev) { prev.classList.remove('active'); prev.classList.add('filled'); }
+            }
+            const grains = BigInt(1) << BigInt(chessCell);
+            chessTotal += grains;
+            const cell = document.getElementById(`cc-${chessCell}`);
+            if (cell) {
+                cell.classList.add('active');
+                // Show compact number
+                const g = Number(grains);
+                cell.textContent = g > 999999 ? '∞' : g > 9999 ? '++' : g > 999 ? '+' : g.toString();
+            }
+
+            document.getElementById('chess-cell-num').textContent = chessCell + 1;
+            document.getElementById('chess-cell-grains').textContent = formatBig(grains);
+            document.getElementById('chess-total').textContent = formatBig(chessTotal);
+
+            chessCell++;
+
+            // Adjust speed dynamically
+            if (chessCell === 32) {
+                clearInterval(chessInterval);
+                chessInterval = setInterval(step, 80);
+            }
+            if (chessCell === 50) {
+                clearInterval(chessInterval);
+                chessInterval = setInterval(step, 30);
+            }
+        }
+
+        chessInterval = setInterval(step, speed);
+    }
+
+    function formatBig(n) {
+        const s = n.toString();
+        if (s.length <= 6) return Number(n).toLocaleString('it-IT');
+        return s.slice(0, 4) + '...' + ` (10^${s.length - 1})`;
+    }
+
+    // ============================================================
+    //  QUIZ
+    // ============================================================
+    const quizData = [
+        {
+            question: "Qual è il dominio della funzione f(x) = 3ˣ?",
+            options: ["Solo i numeri positivi", "Tutti i numeri reali ℝ", "Solo i numeri interi", "(0, +∞)"],
+            correct: 1,
+            explanation: "La funzione esponenziale è definita per tutti i reali: 3ˣ esiste per qualsiasi x."
+        },
+        {
+            question: "Se a = 0.4 (con 0 < a < 1), la funzione aˣ è:",
+            options: ["Crescente", "Costante", "Decrescente", "Non definita"],
+            correct: 2,
+            explanation: "Con base tra 0 e 1, l'esponenziale è decrescente: più x cresce, più aˣ si avvicina a zero."
+        },
+        {
+            question: "Quanto vale 2³ · 2⁵ applicando la proprietà del prodotto?",
+            options: ["2¹⁵", "4⁸", "2⁸", "2¹⁰"],
+            correct: 2,
+            explanation: "Prodotto di potenze con la stessa base: 2³ · 2⁵ = 2^(3+5) = 2⁸ = 256."
+        },
+        {
+            question: "log₂(32) = ?",
+            options: ["4", "5", "6", "16"],
+            correct: 1,
+            explanation: "2⁵ = 32, quindi log₂(32) = 5."
+        },
+        {
+            question: "Quale proprietà afferma che log_a(M·N) = log_a M + log_a N?",
+            options: ["Proprietà della potenza", "Proprietà del prodotto", "Proprietà del quoziente", "Cambio di base"],
+            correct: 1,
+            explanation: "È la proprietà del prodotto dei logaritmi: moltiplicare → sommare i logaritmi."
+        },
+        {
+            question: "Quante pieghe di un foglio di carta bastano (teoricamente) per superare la distanza Terra-Luna?",
+            options: ["Circa 100", "Circa 42", "Circa 20", "Circa 10"],
+            correct: 1,
+            explanation: "Dopo 42 pieghe, lo spessore (0.1mm × 2⁴²) supera i 384.000 km della Luna."
+        },
+        {
+            question: "Il logaritmo naturale ln(e³) equivale a:",
+            options: ["e", "3e", "3", "1/3"],
+            correct: 2,
+            explanation: "log_e(e³) = 3, perché logaritmo e esponenziale sono funzioni inverse: ln(eˣ) = x."
+        },
+        {
+            question: "Perché il grafico di aˣ non tocca mai l'asse x?",
+            options: ["Perché aˣ può essere negativo", "Perché aˣ > 0 per ogni x reale", "Perché il dominio esclude zero", "È un errore, lo tocca in x = 0"],
+            correct: 1,
+            explanation: "aˣ è sempre strettamente positivo per ogni x ∈ ℝ. L'asse x è un asintoto orizzontale."
+        },
+        {
+            question: "🧟 Resident Evil: il Virus T parte da 1 infetto. Ogni giorno ogni infetto ne contagia 1. Quanti giorni per infettare tutti gli 8 miliardi di abitanti della Terra?",
+            options: ["Circa 100 giorni", "Circa 33 giorni", "Circa 10 giorni", "Circa 1.000 giorni"],
+            correct: 1,
+            explanation: "Dobbiamo risolvere 2ⁿ = 8.000.000.000. Applicando il logaritmo: n = log₂(8×10⁹) = ln(8×10⁹)/ln(2) ≈ 23.8/0.693 ≈ 33 giorni. Il logaritmo è proprio lo strumento per 'invertire' la crescita esponenziale e trovare l'esponente dato il risultato!"
+        }
+    ];
+
+    let quizScore = 0;
+    let quizAnswered = 0;
+
+    function loadQuiz() {
+        const area = document.getElementById('quiz-area');
+        area.innerHTML = quizData.map((q, i) => `
+            <div class="quiz-question">
+                <h3>${i + 1}. ${q.question}</h3>
+                <div class="quiz-options">
+                    ${q.options.map((opt, j) => `
+                        <button class="quiz-btn" id="qb-${i}-${j}" onclick="checkAnswer(${i}, ${j}, this)">
+                            ${opt}
+                        </button>
+                    `).join('')}
+                </div>
+                <div id="exp-${i}" style="display:none; margin-top:0.75rem; font-size:0.88rem; color:#a78bfa; background:rgba(124,58,237,0.1); padding:0.7rem 1rem; border-radius:8px;"></div>
+            </div>
+        `).join('');
+    }
+
+    window.checkAnswer = function(qIdx, optIdx, btn) {
+        const buttons = btn.parentElement.querySelectorAll('.quiz-btn');
+        buttons.forEach(b => b.disabled = true);
+
+        if (optIdx === quizData[qIdx].correct) {
+            btn.classList.add('correct');
+            quizScore++;
+        } else {
+            btn.classList.add('wrong');
+            buttons[quizData[qIdx].correct].classList.add('correct');
+        }
+
+        const exp = document.getElementById(`exp-${qIdx}`);
+        exp.textContent = `💡 ${quizData[qIdx].explanation}`;
+        exp.style.display = 'block';
+
+        quizAnswered++;
+        if (quizAnswered === quizData.length) {
+            const msg = document.getElementById('quiz-score');
+            const pct = Math.round((quizScore / quizData.length) * 100);
+            msg.textContent = `Hai totalizzato ${quizScore} su ${quizData.length} (${pct}%)! ${pct === 100 ? '🏆 Perfetto! Sei più pericoloso del Virus T!' : pct >= 75 ? '🚀 Ottimo lavoro!' : pct >= 50 ? '📚 Rileggi qualche sezione.' : '🔄 Riprendi la lezione dall\'inizio.'}`;
+        }
+    };
+
+    // ============================================================
+    //  ZOMBIE DEMO
+    // ============================================================
+    function updateZombie(days) {
+        days = parseInt(days);
+        document.getElementById('zombie-days').textContent = days;
+        const WORLD_POP = 8e9;
+        const infected = Math.pow(2, days);
+        const infectedCapped = Math.min(infected, WORLD_POP);
+        const pct = (infectedCapped / WORLD_POP * 100);
+
+        // Format infected number
+        let infStr;
+        if (infected >= WORLD_POP) {
+            infStr = '8.000.000.000 🌍';
+        } else if (infected >= 1e9) {
+            infStr = (infected / 1e9).toFixed(2) + ' miliardi';
+        } else if (infected >= 1e6) {
+            infStr = (infected / 1e6).toFixed(1) + ' milioni';
+        } else if (infected >= 1e3) {
+            infStr = (infected / 1e3).toFixed(1) + ' mila';
+        } else {
+            infStr = Math.round(infected).toString();
+        }
+        document.getElementById('zombie-infected').textContent = infStr;
+
+        let statusText = '';
+        if (days === 0) statusText = 'Paziente zero: solo lui è infetto. Il mondo non sa ancora nulla.';
+        else if (infected < 100) statusText = `Giorno ${days}: ancora pochi casi. Nessun allarme.`;
+        else if (infected < 1e6) statusText = `Giorno ${days}: l'epidemia comincia a far notizia. Livello preoccupazione: medio.`;
+        else if (infected < 1e8) statusText = `🚨 Giorno ${days}: pandemia globale dichiarata! Le città iniziano a essere evacuate.`;
+        else if (infected < WORLD_POP) statusText = `☣️ Giorno ${days}: la civiltà sta collassando. Umbrella Corporation nega ogni responsabilità.`;
+        else statusText = `💀 Giorno ${days}: Game Over. Tutta la popolazione mondiale è infetta. Ci vorranno ${days} giorni = log₂(8×10⁹) ≈ 33 giorni.`;
+
+        document.getElementById('zombie-status').textContent = statusText;
+        const pctStr = infected >= WORLD_POP ? '100%' : pct < 0.0001 ? '< 0.0001%' : pct.toFixed(4) + '%';
+        document.getElementById('zombie-pct').textContent = pctStr;
+    }
+
+    // ============================================================
+    //  INIT
+    // ============================================================
+    document.addEventListener('DOMContentLoaded', () => {
+        drawExpGraph();
+        drawLogGraph();
+        buildChessboard();
+        loadQuiz();
+        updateFolds(0);
+        updateZombie(0);
+        runCalc();
+        runLogCalc();
+
+        // Resize observer for responsive canvases
+        const resizeAll = () => {
+            const expC = document.getElementById('expCanvas');
+            const logC = document.getElementById('logCanvas');
+            if (expC) {
+                const w = Math.min(680, expC.parentElement.clientWidth - 32);
+                expC.width = w; expC.height = Math.round(w * 0.5);
+                drawExpGraph();
+            }
+            if (logC) {
+                const w = Math.min(680, logC.parentElement.clientWidth - 32);
+                logC.width = w; logC.height = Math.round(w * 0.5);
+                drawLogGraph();
+            }
+        };
+        window.addEventListener('resize', resizeAll);
+        resizeAll();
+    });
+    </script>
+
+    <script src="../../js/main.js"></script>
+</body>
+</html>

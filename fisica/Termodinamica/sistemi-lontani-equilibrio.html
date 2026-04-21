@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistemi Lontani dall'Equilibrio - Fisica Moderna MFI</title>
+    <meta name="description"
+        content="Scopri come l'ordine spontaneo emerge dal caos: strutture dissipative, automi cellulari e la complessità come proprietà fondamentale della natura.">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        :root {
+            --eq-color: #14b8a6;
+            --eq-color-rgb: 20, 184, 166;
+            --eq-accent: #06b6d4;
+            --eq-accent-rgb: 6, 182, 212;
+        }
+
+        /* ── Header ─────────────────────────────── */
+        .lesson-header {
+            padding: 4rem 0 2rem;
+            border-bottom: 2px solid rgba(var(--eq-color-rgb), 0.4);
+        }
+
+        .sub-hero-title {
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        /* ── Concept box ─────────────────────────── */
+        .concept-box {
+            background: rgba(var(--eq-color-rgb), 0.05);
+            border-left: 4px solid var(--eq-color);
+            padding: 1.5rem 2rem;
+            margin: 2rem 0;
+            border-radius: 0 12px 12px 0;
+        }
+
+        /* ── Key term pill ───────────────────────── */
+        .key-term {
+            display: inline-block;
+            background: rgba(var(--eq-color-rgb), 0.15);
+            color: var(--eq-color);
+            padding: 0.15rem 0.6rem;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        /* ── Card-style interactive panels ──────── */
+        .sim-card {
+            background: rgba(var(--eq-color-rgb), 0.04);
+            border: 1px solid rgba(var(--eq-color-rgb), 0.25);
+            border-left: 4px solid var(--eq-color);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .sim-card h3 {
+            color: var(--eq-color);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        /* ── Canvas ──────────────────────────────── */
+        canvas {
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: block;
+            width: 100%;
+        }
+
+        /* ── Controls row ────────────────────────── */
+        .controls {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-top: 1rem;
+        }
+
+        .btn {
+            background: var(--eq-color);
+            color: #0f172a;
+            border: none;
+            padding: 0.55rem 1.25rem;
+            border-radius: 8px;
+            font-family: inherit;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.15s;
+        }
+
+        .btn:hover {
+            opacity: 0.85;
+            transform: translateY(-1px);
+        }
+
+        .btn.secondary {
+            background: rgba(var(--eq-color-rgb), 0.12);
+            color: var(--eq-color);
+            border: 1px solid rgba(var(--eq-color-rgb), 0.3);
+        }
+
+        .btn.danger {
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        /* ── Slider ──────────────────────────────── */
+        .slider-row {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .slider-row label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            min-width: 110px;
+        }
+
+        input[type=range] {
+            -webkit-appearance: none;
+            appearance: none;
+            flex: 1;
+            min-width: 120px;
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.1);
+            outline: none;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--eq-color);
+            cursor: pointer;
+            box-shadow: 0 0 8px rgba(var(--eq-color-rgb), 0.5);
+        }
+
+        .slider-val {
+            font-weight: 700;
+            color: var(--eq-color);
+            min-width: 40px;
+            text-align: right;
+        }
+
+        /* ── Stat chips ──────────────────────────── */
+        .stat-row {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .stat-chip {
+            flex: 1;
+            min-width: 110px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            padding: 0.8rem;
+            text-align: center;
+        }
+
+        .stat-chip span {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            display: block;
+        }
+
+        .stat-chip strong {
+            font-size: 1.4rem;
+            color: var(--eq-color);
+        }
+
+        /* ── Rule selector (1-D CA) ──────────────── */
+        .rule-grid {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+        }
+
+        .rule-bit {
+            width: 44px;
+            height: 44px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            cursor: pointer;
+            border: 2px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.03);
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .rule-bit.on {
+            background: var(--eq-color);
+            border-color: var(--eq-color);
+            color: #0f172a;
+        }
+
+        .rule-bit.off {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* ── Examples highlight grid ─────────────── */
+        .example-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.2rem;
+            margin: 2rem 0;
+        }
+
+        .example-card {
+            background: rgba(var(--eq-color-rgb), 0.04);
+            border: 1px solid rgba(var(--eq-color-rgb), 0.15);
+            border-radius: 14px;
+            padding: 1.4rem;
+        }
+
+        .example-card .icon {
+            font-size: 2.2rem;
+            margin-bottom: 0.8rem;
+            display: block;
+        }
+
+        .example-card h4 {
+            color: var(--eq-color);
+            font-size: 1rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .example-card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.55;
+        }
+
+        /* ── Timeline for history of field ──────── */
+        .timeline {
+            list-style: none;
+            padding: 0;
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 22px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--eq-color), transparent);
+        }
+
+        .timeline li {
+            padding: 0 0 1.8rem 58px;
+            position: relative;
+        }
+
+        .timeline li::before {
+            content: attr(data-year);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(var(--eq-color-rgb), 0.15);
+            border: 2px solid var(--eq-color);
+            color: var(--eq-color);
+            font-size: 0.62rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            line-height: 1.1;
+        }
+
+        .timeline li h4 {
+            color: var(--text-main);
+            font-size: 1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .timeline li p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* ── Quiz ────────────────────────────────── */
+        .quiz-container {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 2rem;
+            border-radius: 1rem;
+        }
+
+        .quiz-question {
+            margin-bottom: 2rem;
+        }
+
+        .quiz-question h3 {
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+        }
+
+        .quiz-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-main);
+            padding: 0.9rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            text-align: left;
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .quiz-btn:hover:not(:disabled) {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .quiz-btn.correct {
+            background: var(--eq-color) !important;
+            color: #0f172a;
+            border-color: var(--eq-color);
+            font-weight: 600;
+        }
+
+        .quiz-btn.wrong {
+            background: #ef4444 !important;
+            color: #fff;
+            border-color: #ef4444;
+        }
+
+        .quiz-btn:disabled {
+            cursor: not-allowed;
+        }
+
+        /* ── Rule presets ────────────────────────── */
+        .preset-row {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .preset-btn {
+            background: rgba(var(--eq-color-rgb), 0.1);
+            border: 1px solid rgba(var(--eq-color-rgb), 0.3);
+            color: var(--eq-color);
+            border-radius: 8px;
+            padding: 0.4rem 0.9rem;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .preset-btn:hover {
+            background: rgba(var(--eq-color-rgb), 0.2);
+        }
+
+        .preset-btn.active {
+            background: var(--eq-color);
+            color: #0f172a;
+        }
+
+        /* ── GoL canvas wrapper ──────────────────── */
+        #gol-wrap {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+
+        #gol-canvas {
+            cursor: crosshair;
+        }
+
+        #gol-gen-label {
+            position: absolute;
+            top: 10px;
+            left: 12px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            color: var(--eq-color);
+            font-weight: 700;
+        }
+
+        /* ── Section border accent ───────────────── */
+        .lesson-section {
+            border-left-color: var(--eq-color) !important;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ══════════════ HEADER ══════════════ -->
+    <header class="lesson-header">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <a href="../fisica-moderna.html" class="back-button" style="margin-bottom: 0;">
+                    <span class="back-icon">&larr;</span> Fisica Moderna
+                </a>
+            </div>
+            <div
+                style="display:inline-block; background:rgba(var(--eq-color-rgb),0.12); color:var(--eq-color); padding:0.3rem 0.9rem; border-radius:20px; font-weight:800; font-size:0.78rem; margin-bottom:1rem; text-transform:uppercase; letter-spacing:1px;">
+                Fisica Moderna · Complessità</div>
+            <h1 class="sub-hero-title">
+                Sistemi <span class="gradient-text"
+                    style="background: linear-gradient(135deg, #14b8a6, #06b6d4); -webkit-background-clip: text; background-clip: text; color: transparent;">Lontani
+                    dall'Equilibrio</span>
+            </h1>
+            <p
+                style="font-size: 1.15rem; color: var(--text-muted); max-width: 830px; font-weight: 300; margin-top: 0.5rem;">
+                Il caos puro non è la norma dell'universo: nella natura lontana dall'equilibrio, l'ordine emerge
+                spontaneamente come struttura stabile. Scopri perché cellule biologiche e automi matematici obbediscono
+                alle stesse leggi.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- ══ SEZ 1: COSA SONO ══════════════════════════ -->
+        <section class="lesson-section" style="border-left: 4px solid var(--eq-color);">
+            <h2 class="lesson-title" style="color: var(--eq-color);">1. Che cos'è un Sistema Lontano dall'Equilibrio?
+            </h2>
+            <p class="lesson-text">
+                La termodinamica classica studia i sistemi <em>all'equilibrio</em>: una pentola d'acqua a temperatura
+                uniforme, un gas che ha smesso di espandersi, un cristallo perfetto a temperatura zero. In questi
+                sistemi tutto è fermo, predicibile, noioso.
+            </p>
+            <p class="lesson-text">
+                Ma la vita reale raramente è all'equilibrio. Un <span class="key-term">sistema lontano
+                    dall'equilibrio</span> è un sistema aperto che riceve continuamente energia o materia dall'esterno,
+                la dissipa al suo interno, e la espelle come calore o entropia verso l'ambiente circostante. Il flusso
+                continuo di energia lo mantiene lontano dello stato di riposo.
+            </p>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 2rem 0; flex-wrap: wrap;">
+                <div class="concept-box" style="margin: 0;">
+                    <h4 style="color: var(--eq-color); margin-bottom: 0.6rem;">⚖️ Sistema all'Equilibrio</h4>
+                    <p style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.6;">Nessun flusso netto di
+                        energia. Lo stato è stabile e massimizza l'entropia. <strong>Esempio:</strong> una tazza di
+                        caffè freddata a temperatura ambiente — nessun movimento, struttura uniforme, massima noia.</p>
+                </div>
+                <div class="concept-box" style="margin: 0; border-left-color: #06b6d4;">
+                    <h4 style="color: #06b6d4; margin-bottom: 0.6rem;">⚡ Sistema Lontano dall'Equilibrio</h4>
+                    <p style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.6;">Flusso continuo di
+                        energia in ingresso e in uscita. Il sistema rimane stabile grazie alla dissipazione.
+                        <strong>Esempio:</strong> il tuo stesso corpo — 37 °C costanti, complessità biologica mantenuta
+                        dall'energia dei cibi.</p>
+                </div>
+            </div>
+
+            <p class="lesson-text">
+                La chiave concettuale è questa: <strong>un sistema lontano dall'equilibrio può ridurre spontaneamente la
+                    propria entropia locale</strong>, creando ordine e struttura — a patto di esportare ancora più
+                entropia verso l'esterno. Non viola il Secondo Principio della Termodinamica: semplicemente lo applica
+                al sistema globale (sistema + ambiente), non al solo sistema locale.
+            </p>
+
+            <div class="concept-box" style="border-left-color: #a855f7;">
+                <h4 style="color: #a855f7; margin-bottom: 0.5rem;">🧠 Il paradosso di Prigogine</h4>
+                <p style="font-size: 0.95rem; line-height: 1.7; margin-bottom: 0;">
+                    Ilya Prigogine (Premio Nobel per la Chimica 1977) scoprì che i sistemi lontani dall'equilibrio non
+                    tendono al disordine massimo: al contrario, sviluppano spontaneamente strutture ordinate, chiamate
+                    <strong>strutture dissipative</strong>. Il paradosso apparente è che più energicamente un sistema
+                    dissipa (strapazza l'entropia verso l'esterno), più si auto-organizza al suo interno. L'ordine nasce
+                    dal flusso, non nonostante esso.
+                </p>
+            </div>
+        </section>
+
+        <!-- ══ SEZ 2: ESEMPI CONCRETI ════════════════════ -->
+        <section class="lesson-section" style="border-left: 4px solid #06b6d4;">
+            <h2 class="lesson-title" style="color: #06b6d4;">2. Esempi Concreti in Natura</h2>
+            <p class="lesson-text">
+                Le strutture dissipative non sono eccezioni esotiche: sono la norma. Ecco i fenomeni più eloquenti,
+                dall'atmosfera alla biologia.
+            </p>
+
+            <div class="example-grid">
+                <div class="example-card">
+                    <span class="icon">🌪️</span>
+                    <h4>Il Tornado e l'Uragano</h4>
+                    <p>Enormi vorticità atmosferiche mantenute dal gradiente termico tra oceano caldo e stratosfera
+                        fredda. La struttura ordinata a spirale del tornado è una struttura dissipativa: consuma energia
+                        termica, la converte in energia cinetica rotazionale, e smette di esistere appena il gradiente
+                        svanisce.</p>
+                </div>
+                <div class="example-card">
+                    <span class="icon">🕯️</span>
+                    <h4>La Fiamma di una Candela</h4>
+                    <p>Una fiamma è uno degli esempi più semplici: struttura stabile e riconoscibile (forma conica, zone
+                        di combustione ben definite) che esiste <em>solo</em> grazie al flusso continuo di cera +
+                        ossigeno. Spegni il flusso, la struttura scompare istantaneamente.</p>
+                </div>
+                <div class="example-card">
+                    <span class="icon">🌊</span>
+                    <h4>Celle di Bénard</h4>
+                    <p>Quando si riscalda un fluido dal basso oltre una soglia critica, emergono spontaneamente colonne
+                        di convezione perfettamente simmetriche a forma esagonale — le <em>celle di Bénard</em>. Da un
+                        fluido caotico nasce un pattern geometrico perfetto, grazie al flusso di calore.</p>
+                </div>
+                <div class="example-card">
+                    <span class="icon">🧬</span>
+                    <h4>La Cellula Vivente</h4>
+                    <p>La vita stessa è una struttura dissipativa. Una cellula mantiene la sua organizzazione interna
+                        (membrane, proteine, DNA) sfruttando l'energia chimica (ATP). Interrompi l'apporto energetico e
+                        in poche ore la struttura si disintegra nell'equilibrio termodinamico — la morte.</p>
+                </div>
+                <div class="example-card">
+                    <span class="icon">🧪</span>
+                    <h4>Reazione di Belousov-Zhabotinsky</h4>
+                    <p>Una soluzione chimica che, anziché raggiungere l'equilibrio in modo monotono, produce
+                        spontaneamente <strong>onde spiralanti colorate</strong> che si propagano con periodicità
+                        precisa. Un orologio chimico: ordine spaziotemporale emergente da reazioni molecolari caotiche.
+                    </p>
+                </div>
+                <div class="example-card">
+                    <span class="icon">🌍</span>
+                    <h4>L'Atmosfera Terrestre</h4>
+                    <p>Il clima globale è un sistema lontano dall'equilibrio guidato dal flusso solare. Il risultato non
+                        è calore uniforme, ma strutture ordinate stabili: correnti a getto, monsoni, trade winds —
+                        pattern planetari riproducibili anno dopo anno.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ══ SEZ 3: L'ORDINE CHE EMERGE: AUTOMI ═══════ -->
+        <section class="lesson-section" style="border-left: 4px solid #a855f7;">
+            <h2 class="lesson-title" style="color: #a855f7;">3. Come Nasce l'Ordine: Automi Cellulari</h2>
+            <p class="lesson-text">
+                I sistemi fisici mostrano che l'ordine emergente non richiede un "progetto" centrale: bastano
+                <strong>regole locali semplici applicate su larga scala</strong>. Il matematico John von Neumann (1940s)
+                dimostrò questo concetto inventando gli <span class="key-term">automi cellulari</span>: griglie di celle
+                che evolvono nel tempo seguendo regole rigide che coinvolgono solo il vicinato immediato di ogni cella.
+            </p>
+            <p class="lesson-text">
+                Il risultato sorprendente? Da regole elementari emergono comportamenti di complessità arbitraria:
+                strutture periodiche, strutture che si muovono, strutture che si auto-replicano. È una metafora perfetta
+                dei sistemi fisici lontani dall'equilibrio: la complessità globale è proprietà emergente delle
+                interazioni locali.
+            </p>
+
+            <div class="concept-box" style="border-left-color: #a855f7;">
+                <h4 style="color: #a855f7; margin-bottom: 0.5rem;">📐 Definizione formale</h4>
+                <p style="font-size: 0.95rem; line-height: 1.7; margin-bottom: 0;">
+                    Un automa cellulare (CA) è definito da: (1) una <strong>griglia</strong> di celle che possono
+                    trovarsi in un insieme finito di stati; (2) una <strong>regola di aggiornamento</strong> che calcola
+                    il nuovo stato di ogni cella in base allo stato attuale e delle celle vicine; (3) un
+                    <strong>aggiornamento sincrono</strong> — tutte le celle cambiano stato simultaneamente ad ogni
+                    passo temporale.
+                </p>
+            </div>
+
+            <!-- ======== SIMULAZIONE 1: 1-D AUTOMA CELLULARE ======== -->
+            <div class="sim-card" style="border-color: rgba(168,85,247,0.3); border-left-color: #a855f7;">
+                <h3 style="color: #a855f7;">🧮 Simulazione: Automa 1D — Wolfram's Elementary CA</h3>
+                <p class="lesson-text" style="font-size: 0.95rem; margin-bottom: 1rem;">
+                    L'automa elementare di Wolfram vive su una riga di celle binarie (⬛ morta / 🟩 viva). La regola
+                    specifica, per ognuna delle 8 possibili triplette di vicinato, se la cella centrale diventa viva o
+                    morta. Ci sono 2⁸ = <strong>256 possibili regole</strong>. Ognuna produce un universo completamente
+                    diverso dalla stessa singola cella iniziale.
+                    <br><br>
+                    Clicca sui bit per comporre la tua regola, o scegli un preset famoso, poi clicca
+                    <strong>Avvia</strong>.
+                </p>
+
+                <div class="preset-row" id="ca1d-presets">
+                    <button class="preset-btn" data-rule="30" onclick="setRule1D(30)">Regola
+                        30<br><small>Caotica</small></button>
+                    <button class="preset-btn" data-rule="90" onclick="setRule1D(90)">Regola
+                        90<br><small>Frattale</small></button>
+                    <button class="preset-btn" data-rule="110" onclick="setRule1D(110)">Regola
+                        110<br><small>Universale</small></button>
+                    <button class="preset-btn" data-rule="184" onclick="setRule1D(184)">Regola
+                        184<br><small>Traffico</small></button>
+                    <button class="preset-btn" data-rule="150" onclick="setRule1D(150)">Regola
+                        150<br><small>Simmetrica</small></button>
+                </div>
+
+                <!-- Rule bit editor -->
+                <div style="margin-bottom: 0.5rem; font-size: 0.85rem; color: var(--text-muted);">
+                    Pattern di vicinato → nuovo stato della cella centrale:
+                </div>
+                <div style="display:flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.3rem;">
+                    <span
+                        style="font-size:0.75rem; color:var(--text-muted); min-width:44px; text-align:center;">■■■</span>
+                    <span
+                        style="font-size:0.75rem; color:var(--text-muted); min-width:44px; text-align:center;">■■□</span>
+                    <span
+                        style="font-size:0.75rem; color:var(--text-muted); min-width:44px; text-align:center;">■□■</span>
+                    <span
+                        style="font-size:0.75rem; color:var(--text-muted); min-width:44px; text-align:center;">■□□</span>
+                    <span
+                        style="font-size:0.75rem; color:var(--text-muted); min-width:44px; text-align:center;">□■■</span>
+                    <span
+                        style="font-size:0.75rem; color:var(--text-muted); min-width:44px; text-align:center;">□■□</span>
+                    <span
+                        style="font-size:0.75rem; color:var(--text-muted); min-width:44px; text-align:center;">□□■</span>
+                    <span
+                        style="font-size:0.75rem; color:var(--text-muted); min-width:44px; text-align:center;">□□□</span>
+                </div>
+                <div class="rule-grid" id="rule-bits"></div>
+                <div style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1rem;">
+                    Numero di regola: <strong id="rule-number" style="color:#a855f7; font-size:1.1rem;">30</strong>
+                </div>
+
+                <canvas id="ca1d-canvas" height="280" style="background:#0f172a;"></canvas>
+
+                <div class="controls">
+                    <button class="btn" onclick="startCA1D()">▶ Avvia</button>
+                    <button class="btn secondary" onclick="pauseCA1D()">⏸ Pausa</button>
+                    <button class="btn danger" onclick="resetCA1D()">↺ Reset</button>
+                    <div class="slider-row" style="flex:1; min-width:200px;">
+                        <label>Velocità:</label>
+                        <input type="range" id="ca1d-speed" min="1" max="20" value="8"
+                            oninput="updateCA1DSpeed(this.value)">
+                        <span class="slider-val" id="ca1d-speed-val">8</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ══ SEZ 4: GIOCO DELLA VITA ════════════════════ -->
+        <section class="lesson-section" style="border-left: 4px solid #ec4899;">
+            <h2 class="lesson-title" style="color: #ec4899;">4. Il Gioco della Vita di Conway</h2>
+            <p class="lesson-text">
+                Nel 1970, il matematico John Horton Conway propose un automa cellulare 2D che divenne immediatamente
+                leggendario: il <span class="key-term">Game of Life</span>. Le sue regole sono di una semplicità
+                disarmante:
+            </p>
+
+            <div class="example-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px,1fr));">
+                <div class="example-card" style="border-color: rgba(236,72,153,0.25);">
+                    <span class="icon">☠️</span>
+                    <h4 style="color:#ec4899;">Sovrappopolazione</h4>
+                    <p>Una cella <strong>viva</strong> con <strong>4 o più</strong> vicini vivi muore per
+                        sovrappopolazione.</p>
+                </div>
+                <div class="example-card" style="border-color: rgba(236,72,153,0.25);">
+                    <span class="icon">🏜️</span>
+                    <h4 style="color:#ec4899;">Isolamento</h4>
+                    <p>Una cella <strong>viva</strong> con <strong>meno di 2</strong> vicini vivi muore per isolamento.
+                    </p>
+                </div>
+                <div class="example-card" style="border-color: rgba(236,72,153,0.25);">
+                    <span class="icon">🌱</span>
+                    <h4 style="color:#ec4899;">Nascita</h4>
+                    <p>Una cella <strong>morta</strong> con esattamente <strong>3</strong> vicini vivi torna in vita.
+                    </p>
+                </div>
+                <div class="example-card" style="border-color: rgba(236,72,153,0.25);">
+                    <span class="icon">✅</span>
+                    <h4 style="color:#ec4899;">Sopravvivenza</h4>
+                    <p>Una cella <strong>viva</strong> con <strong>2 o 3</strong> vicini vivi sopravvive alla
+                        generazione successiva.</p>
+                </div>
+            </div>
+
+            <p class="lesson-text">
+                Da queste 4 regole emergono <strong>strutture stabili</strong> (blocchi, beehive),
+                <strong>oscillatori</strong> (strutture che pulsano periodicamente), e addirittura
+                <strong>glider</strong> — strutture che si muovono autonomamente attraverso la griglia all'infinito. Nel
+                1970 fu scoperto il <em>Glider Gun</em>, una struttura che genera glider in continuazione. Nel 1982 fu
+                dimostrato che il Game of Life è <strong>Turing-completo</strong>: è possibile costruire, con celle vive
+                e morte, un computer universale.
+            </p>
+
+            <div class="concept-box" style="border-left-color: #ec4899;">
+                <h4 style="color: #ec4899; margin-bottom: 0.5rem;">🔗 Connessione con i sistemi fisici</h4>
+                <p style="font-size: 0.95rem; line-height: 1.7; margin-bottom: 0;">
+                    Il Game of Life è una metafora matematica perfetta dei sistemi lontani dall'equilibrio: parte da
+                    condizioni iniziali casuali (alta "temperatura" = disordine) e converge verso strutture stabili,
+                    oscillatori e strutture propaganti — esattamente come i sistemi fisici reali trovano attrattori
+                    stabili nella loro evoluzione dinamica. La differenza con la fisica reale? L'energia qui è la
+                    "densità di celle vive": strutture a bassa densità muoiono (isolamento), quelle ad alta densità
+                    muoiono (sovrappopolazione), solo quelle a densità intermedia sopravvivono — un'analogia con i
+                    potenziali di Landau nelle transizioni di fase.
+                </p>
+            </div>
+
+            <!-- ======== SIMULAZIONE 2: GAME OF LIFE ======== -->
+            <div class="sim-card" style="border-color: rgba(236,72,153,0.3); border-left-color: #ec4899;">
+                <h3 style="color: #ec4899;">🎮 Simulazione Interattiva: Game of Life</h3>
+                <p class="lesson-text" style="font-size: 0.95rem; margin-bottom: 1rem;">
+                    Clicca/trascina sulla griglia per disegnare celle vive, poi premi <strong>Avvia</strong>. Prova i
+                    pattern famosi con i pulsanti qui sotto!
+                </p>
+
+                <div class="preset-row" id="gol-presets">
+                    <button class="preset-btn" onclick="golPreset('random')">🎲 Casuale</button>
+                    <button class="preset-btn" onclick="golPreset('glider')">🚀 Glider</button>
+                    <button class="preset-btn" onclick="golPreset('blinker')">💡 Blinker</button>
+                    <button class="preset-btn" onclick="golPreset('pulsar')">⭐ Pulsar</button>
+                    <button class="preset-btn" onclick="golPreset('gosper')">🔫 Glider Gun</button>
+                    <button class="preset-btn" onclick="golPreset('rpentomino')">🦕 R-Pentomino</button>
+                </div>
+
+                <div id="gol-wrap">
+                    <canvas id="gol-canvas" height="460"></canvas>
+                    <span id="gol-gen-label">Gen: 0</span>
+                </div>
+
+                <div class="stat-row">
+                    <div class="stat-chip">
+                        <span>Generazione</span>
+                        <strong id="gol-gen">0</strong>
+                    </div>
+                    <div class="stat-chip">
+                        <span>Celle Vive</span>
+                        <strong id="gol-alive">0</strong>
+                    </div>
+                    <div class="stat-chip">
+                        <span>Celle Morte</span>
+                        <strong id="gol-dead">0</strong>
+                    </div>
+                    <div class="stat-chip">
+                        <span>Densità</span>
+                        <strong id="gol-density">0%</strong>
+                    </div>
+                </div>
+
+                <div class="controls">
+                    <button class="btn" id="gol-start-btn" onclick="golToggle()">▶ Avvia</button>
+                    <button class="btn danger" onclick="golClear()">↺ Pulisci</button>
+                    <button class="btn secondary" onclick="golStep()">⏭ Passo</button>
+                    <div class="slider-row" style="flex:1; min-width:200px;">
+                        <label>Velocità:</label>
+                        <input type="range" id="gol-speed" min="1" max="30" value="10"
+                            oninput="updateGolSpeed(this.value)">
+                        <span class="slider-val" id="gol-speed-val">10</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ══ SEZ 5: STORIA ══════════════════════════════ -->
+        <section class="lesson-section" style="border-left: 4px solid var(--eq-color);">
+            <h2 class="lesson-title" style="color: var(--eq-color);">5. Una Breve Storia della Complessità</h2>
+            <ul class="timeline">
+                <li data-year="1945">
+                    <h4>von Neumann & Automi Cellulari</h4>
+                    <p>John von Neumann studia la possibilità di macchine auto-replicanti, inventando il concetto di
+                        automa cellulare. Dimostra che una macchina può costruire una copia di sé stessa usando sole
+                        regole locali.</p>
+                </li>
+                <li data-year="1952">
+                    <h4>Turing e la Morfogenesi</h4>
+                    <p>Alan Turing pubblica "The Chemical Basis of Morphogenesis": dimostra matematicamente che da due
+                        sostanze chimiche che diffondono e reagiscono possono emergere spontaneamente pattern spaziali
+                        stabili (macchie del leopardo, spirali delle lumache). È la prima teoria formale di
+                        auto-organizzazione biologica.</p>
+                </li>
+                <li data-year="1969">
+                    <h4>Prigogine: Strutture Dissipative</h4>
+                    <p>Ilya Prigogine sviluppa la teoria termodinamica delle strutture dissipative, mostrando che i
+                        sistemi aperti lontani dall'equilibrio sviluppano spontaneamente ordine. Nel 1977 vince il
+                        Premio Nobel per la Chimica.</p>
+                </li>
+                <li data-year="1970">
+                    <h4>Conway: Game of Life</h4>
+                    <p>John Conway pubblica il Game of Life su Scientific American. Diventa immediatamente virale nella
+                        comunità accademica: milioni di ore di calcolo spese per scoprire pattern sempre più complessi.
+                        Nel 1982 viene dimostrata la Turing-completezza.</p>
+                </li>
+                <li data-year="1984">
+                    <h4>Fondazione del Santa Fe Institute</h4>
+                    <p>Nasce il primo istituto dedicato alla scienza della complessità, con fisici, matematici,
+                        economisti e biologi che studiano insieme i sistemi adattativi complessi: mercati finanziari,
+                        ecosistemi, sistemi immunitari, reti neurali.</p>
+                </li>
+                <li data-year="2002">
+                    <h4>Wolfram: "A New Kind of Science"</h4>
+                    <p>Stephen Wolfram pubblica un testo mastodontico sostenendo che gli automi cellulari — e non le
+                        equazioni differenziali — siano il linguaggio naturale della fisica. La Regola 110 viene
+                        dimostrata essere Turing-completa, aprendo la porta a una nuova visione computazionale della
+                        natura.</p>
+                </li>
+            </ul>
+        </section>
+
+        <!-- ══ SEZ 6: QUIZ ══════════════════════════════ -->
+        <section class="lesson-section quiz-container" id="quiz-finale" style="border-left: 4px solid var(--eq-color);">
+            <h2 class="lesson-title" style="color: var(--eq-color);">Quiz di Verifica</h2>
+
+            <div class="quiz-question" id="q1">
+                <h3>1. Un sistema lontano dall'equilibrio può ridurre la sua entropia locale. Perché questo non viola il
+                    Secondo Principio della Termodinamica?</h3>
+                <div class="quiz-options">
+                    <button class="quiz-btn" data-status="wrong">A) Perché i sistemi biologici sono esclusi dal Secondo
+                        Principio.</button>
+                    <button class="quiz-btn" data-status="correct">B) Perché riduce l'entropia locale esportando una
+                        quantità ancora maggiore di entropia verso l'ambiente, aumentando l'entropia totale del
+                        sistema+ambiente.</button>
+                    <button class="quiz-btn" data-status="wrong">C) Perché il Secondo Principio si applica solo a gas
+                        ideali, non a sistemi complessi.</button>
+                    <button class="quiz-btn" data-status="wrong">D) Perché il flusso energetico annulla temporaneamente
+                        il Secondo Principio.</button>
+                </div>
+            </div>
+
+            <div class="quiz-question" id="q2">
+                <h3>2. Quale delle seguenti NON è una struttura dissipativa?</h3>
+                <div class="quiz-options">
+                    <button class="quiz-btn" data-status="wrong">A) Un uragano atlantico.</button>
+                    <button class="quiz-btn" data-status="wrong">B) La cellula biologica in vita.</button>
+                    <button class="quiz-btn" data-status="correct">C) Un cristallo di ghiaccio in un congelatore a
+                        temperatura costante.</button>
+                    <button class="quiz-btn" data-status="wrong">D) La reazione di Belousov-Zhabotinsky.</button>
+                </div>
+            </div>
+
+            <div class="quiz-question" id="q3">
+                <h3>3. Nel Game of Life, una cella morta con esattamente 3 vicini vivi:</h3>
+                <div class="quiz-options">
+                    <button class="quiz-btn" data-status="wrong">A) Rimane morta.</button>
+                    <button class="quiz-btn" data-status="correct">B) Diventa viva nella generazione successiva
+                        (nascita).</button>
+                    <button class="quiz-btn" data-status="wrong">C) Muore per sovrappopolazione.</button>
+                    <button class="quiz-btn" data-status="wrong">D) L'evoluzione dipende dal colore della
+                        cella.</button>
+                </div>
+            </div>
+
+            <div class="quiz-question" id="q4">
+                <h3>4. Wolfram scoprì che la Regola 110 degli automi elementari 1D è Turing-completa. Cosa significa?
+                </h3>
+                <div class="quiz-options">
+                    <button class="quiz-btn" data-status="wrong">A) La regola è la più semplice possibile.</button>
+                    <button class="quiz-btn" data-status="wrong">B) La regola può girarsi su sé stessa generando un loop
+                        infinito.</button>
+                    <button class="quiz-btn" data-status="correct">C) La regola può simulare qualsiasi calcolo
+                        computazionale, equivalentemente a un computer universale.</button>
+                    <button class="quiz-btn" data-status="wrong">D) La regola converge sempre a una struttura periodica
+                        stabile.</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Fisica Moderna · Sistemi Lontani dall'Equilibrio.</p>
+    </footer>
+
+    <script src="../../js/main.js"></script>
+    <script>
+        /* ═══════════════════════════════════════════════════════
+           QUIZ
+        ═══════════════════════════════════════════════════════ */
+        document.querySelectorAll('.quiz-options').forEach(opts => {
+            opts.querySelectorAll('.quiz-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    if (opts.querySelector('.correct, .wrong')) return;
+                    opts.querySelectorAll('.quiz-btn').forEach(b => {
+                        b.disabled = true;
+                        b.classList.add(b.dataset.status);
+                    });
+                });
+            });
+        });
+
+        /* ═══════════════════════════════════════════════════════
+           1-D ELEMENTARY CELLULAR AUTOMATON (Wolfram)
+        ═══════════════════════════════════════════════════════ */
+        let ca1dRule = 30;
+        let ca1dRunning = false;
+        let ca1dInterval = null;
+        let ca1dCells = [];
+        let ca1dRow = 0;
+        const CA1D_ROWS = 140;
+        const CA1D_CELL_SIZE = 4;
+
+        const ca1dCanvas = document.getElementById('ca1d-canvas');
+        const ca1dCtx = ca1dCanvas.getContext('2d');
+
+        function initCA1DCanvas() {
+            const w = ca1dCanvas.parentElement.clientWidth;
+            ca1dCanvas.width = w;
+            ca1dCanvas.height = CA1D_ROWS * CA1D_CELL_SIZE;
+            ca1dCtx.fillStyle = '#0f172a';
+            ca1dCtx.fillRect(0, 0, ca1dCanvas.width, ca1dCanvas.height);
+        }
+
+        function resetCA1D() {
+            pauseCA1D();
+            ca1dRow = 0;
+            const cols = Math.floor(ca1dCanvas.width / CA1D_CELL_SIZE);
+            ca1dCells = new Array(cols).fill(0);
+            ca1dCells[Math.floor(cols / 2)] = 1;
+            initCA1DCanvas();
+            renderCA1DRow();
+        }
+
+        function renderCA1DRow() {
+            const cols = ca1dCells.length;
+            for (let c = 0; c < cols; c++) {
+                ca1dCtx.fillStyle = ca1dCells[c] ? '#14b8a6' : '#0f172a';
+                ca1dCtx.fillRect(c * CA1D_CELL_SIZE, ca1dRow * CA1D_CELL_SIZE, CA1D_CELL_SIZE - 1, CA1D_CELL_SIZE - 1);
+            }
+        }
+
+        function stepCA1D() {
+            if (ca1dRow >= CA1D_ROWS - 1) { pauseCA1D(); return; }
+            const cols = ca1dCells.length;
+            const next = new Array(cols).fill(0);
+            for (let c = 0; c < cols; c++) {
+                const l = ca1dCells[(c - 1 + cols) % cols];
+                const m = ca1dCells[c];
+                const r = ca1dCells[(c + 1) % cols];
+                const idx = (l << 2) | (m << 1) | r;
+                next[c] = (ca1dRule >> idx) & 1;
+            }
+            ca1dCells = next;
+            ca1dRow++;
+            renderCA1DRow();
+        }
+
+        function startCA1D() {
+            if (ca1dRunning) return;
+            ca1dRunning = true;
+            const speed = parseInt(document.getElementById('ca1d-speed').value);
+            ca1dInterval = setInterval(stepCA1D, Math.round(1000 / speed));
+        }
+
+        function pauseCA1D() {
+            ca1dRunning = false;
+            clearInterval(ca1dInterval);
+        }
+
+        function updateCA1DSpeed(v) {
+            document.getElementById('ca1d-speed-val').textContent = v;
+            if (ca1dRunning) { pauseCA1D(); startCA1D(); }
+        }
+
+        /* Rule bit UI */
+        function buildRuleBits() {
+            const container = document.getElementById('rule-bits');
+            container.innerHTML = '';
+            for (let i = 7; i >= 0; i--) {
+                const b = document.createElement('div');
+                b.className = 'rule-bit ' + ((ca1dRule >> i) & 1 ? 'on' : 'off');
+                b.textContent = (ca1dRule >> i) & 1 ? '■' : '□';
+                b.dataset.bit = i;
+                b.onclick = () => toggleBit(i);
+                container.appendChild(b);
+            }
+            document.getElementById('rule-number').textContent = ca1dRule;
+        }
+
+        function toggleBit(bit) {
+            ca1dRule ^= (1 << bit);
+            buildRuleBits();
+            resetCA1D();
+            updatePresetHighlight();
+        }
+
+        function setRule1D(n) {
+            ca1dRule = n;
+            buildRuleBits();
+            resetCA1D();
+            updatePresetHighlight();
+        }
+
+        function updatePresetHighlight() {
+            document.querySelectorAll('#ca1d-presets .preset-btn').forEach(b => {
+                b.classList.toggle('active', parseInt(b.dataset.rule) === ca1dRule);
+            });
+        }
+
+        /* ═══════════════════════════════════════════════════════
+           GAME OF LIFE (2-D)
+        ═══════════════════════════════════════════════════════ */
+        const GOL_CELL = 9;
+        let golRunning = false;
+        let golInterval = null;
+        let golGeneration = 0;
+        let golGrid = [];
+        let golRows = 0, golCols = 0;
+        let golDrawing = false;
+        let golDrawState = 1;
+        let golSpeed = 10;
+
+        const golCanvas = document.getElementById('gol-canvas');
+        const golCtx = golCanvas.getContext('2d');
+
+        function initGolCanvas() {
+            const w = golCanvas.parentElement.clientWidth;
+            golCanvas.width = w;
+            golCanvas.height = 460;
+            golCols = Math.floor(w / GOL_CELL);
+            golRows = Math.floor(460 / GOL_CELL);
+            golGrid = Array.from({ length: golRows }, () => new Uint8Array(golCols));
+            golGeneration = 0;
+            updateGolStats();
+            renderGol();
+        }
+
+        function renderGol() {
+            golCtx.fillStyle = '#080f1a';
+            golCtx.fillRect(0, 0, golCanvas.width, golCanvas.height);
+            // grid lines
+            golCtx.strokeStyle = 'rgba(255,255,255,0.03)';
+            golCtx.lineWidth = 0.5;
+            for (let r = 0; r < golRows; r++) {
+                golCtx.beginPath();
+                golCtx.moveTo(0, r * GOL_CELL);
+                golCtx.lineTo(golCanvas.width, r * GOL_CELL);
+                golCtx.stroke();
+            }
+            for (let c = 0; c < golCols; c++) {
+                golCtx.beginPath();
+                golCtx.moveTo(c * GOL_CELL, 0);
+                golCtx.lineTo(c * GOL_CELL, golCanvas.height);
+                golCtx.stroke();
+            }
+            // cells
+            for (let r = 0; r < golRows; r++) {
+                for (let c = 0; c < golCols; c++) {
+                    if (golGrid[r][c]) {
+                        golCtx.fillStyle = '#14b8a6';
+                        golCtx.shadowColor = '#14b8a6';
+                        golCtx.shadowBlur = 4;
+                        golCtx.fillRect(c * GOL_CELL + 1, r * GOL_CELL + 1, GOL_CELL - 2, GOL_CELL - 2);
+                        golCtx.shadowBlur = 0;
+                    }
+                }
+            }
+        }
+
+        function golStep() {
+            const next = Array.from({ length: golRows }, () => new Uint8Array(golCols));
+            for (let r = 0; r < golRows; r++) {
+                for (let c = 0; c < golCols; c++) {
+                    let n = 0;
+                    for (let dr = -1; dr <= 1; dr++) {
+                        for (let dc = -1; dc <= 1; dc++) {
+                            if (dr === 0 && dc === 0) continue;
+                            const nr = (r + dr + golRows) % golRows;
+                            const nc = (c + dc + golCols) % golCols;
+                            n += golGrid[nr][nc];
+                        }
+                    }
+                    if (golGrid[r][c]) {
+                        next[r][c] = (n === 2 || n === 3) ? 1 : 0;
+                    } else {
+                        next[r][c] = (n === 3) ? 1 : 0;
+                    }
+                }
+            }
+            golGrid = next;
+            golGeneration++;
+            renderGol();
+            updateGolStats();
+        }
+
+        function updateGolStats() {
+            let alive = 0;
+            for (let r = 0; r < golRows; r++) for (let c = 0; c < golCols; c++) alive += golGrid[r][c];
+            const total = golRows * golCols;
+            document.getElementById('gol-gen').textContent = golGeneration;
+            document.getElementById('gol-alive').textContent = alive.toLocaleString();
+            document.getElementById('gol-dead').textContent = (total - alive).toLocaleString();
+            document.getElementById('gol-density').textContent = total ? (alive / total * 100).toFixed(1) + '%' : '0%';
+            document.getElementById('gol-gen-label').textContent = 'Gen: ' + golGeneration;
+        }
+
+        function golToggle() {
+            if (golRunning) {
+                golRunning = false;
+                clearInterval(golInterval);
+                document.getElementById('gol-start-btn').textContent = '▶ Avvia';
+            } else {
+                golRunning = true;
+                golInterval = setInterval(golStep, Math.round(1000 / golSpeed));
+                document.getElementById('gol-start-btn').textContent = '⏸ Pausa';
+            }
+        }
+
+        function golClear() {
+            if (golRunning) golToggle();
+            golGrid = Array.from({ length: golRows }, () => new Uint8Array(golCols));
+            golGeneration = 0;
+            updateGolStats();
+            renderGol();
+        }
+
+        function updateGolSpeed(v) {
+            golSpeed = parseInt(v);
+            document.getElementById('gol-speed-val').textContent = v;
+            if (golRunning) { clearInterval(golInterval); golInterval = setInterval(golStep, Math.round(1000 / golSpeed)); }
+        }
+
+        /* Drawing on canvas */
+        function golCanvasXY(e) {
+            const rect = golCanvas.getBoundingClientRect();
+            const scaleX = golCanvas.width / rect.width;
+            const scaleY = golCanvas.height / rect.height;
+            const cx = e.touches ? e.touches[0].clientX : e.clientX;
+            const cy = e.touches ? e.touches[0].clientY : e.clientY;
+            const c = Math.floor((cx - rect.left) * scaleX / GOL_CELL);
+            const r = Math.floor((cy - rect.top) * scaleY / GOL_CELL);
+            return [r, c];
+        }
+
+        function golDraw(e) {
+            e.preventDefault();
+            const [r, c] = golCanvasXY(e);
+            if (r >= 0 && r < golRows && c >= 0 && c < golCols) {
+                golGrid[r][c] = golDrawState;
+                renderGol();
+                updateGolStats();
+            }
+        }
+
+        golCanvas.addEventListener('mousedown', e => {
+            const [r, c] = golCanvasXY(e);
+            if (r >= 0 && r < golRows && c >= 0 && c < golCols) {
+                golDrawState = golGrid[r][c] ? 0 : 1;
+                golDrawing = true;
+                golDraw(e);
+            }
+        });
+        golCanvas.addEventListener('mousemove', e => { if (golDrawing) golDraw(e); });
+        document.addEventListener('mouseup', () => golDrawing = false);
+        golCanvas.addEventListener('touchstart', e => { const [r, c] = golCanvasXY(e); if (r >= 0 && r < golRows && c >= 0 && c < golCols) { golDrawState = golGrid[r][c] ? 0 : 1; golDrawing = true; golDraw(e); } }, { passive: false });
+        golCanvas.addEventListener('touchmove', e => { if (golDrawing) golDraw(e); }, { passive: false });
+        document.addEventListener('touchend', () => golDrawing = false);
+
+        /* Presets */
+        function golPreset(name) {
+            golClear();
+            const cr = Math.floor(golRows / 2);
+            const cc = Math.floor(golCols / 2);
+
+            function set(coords) { coords.forEach(([r, c]) => { const rr = cr + r, rc = cc + c; if (rr >= 0 && rr < golRows && rc >= 0 && rc < golCols) golGrid[rr][rc] = 1; }); }
+
+            switch (name) {
+                case 'random':
+                    for (let r = 0; r < golRows; r++) for (let c = 0; c < golCols; c++) golGrid[r][c] = Math.random() < 0.3 ? 1 : 0;
+                    break;
+                case 'glider':
+                    set([[0, 1], [1, 2], [2, 0], [2, 1], [2, 2]]);
+                    break;
+                case 'blinker':
+                    set([[0, -1], [0, 0], [0, 1]]);
+                    break;
+                case 'pulsar':
+                    [[-6, -4], [-6, -3], [-6, -2], [-6, 2], [-6, 3], [-6, 4],
+                    [-4, -6], [-4, -1], [-4, 1], [-4, 6],
+                    [-3, -6], [-3, -1], [-3, 1], [-3, 6],
+                    [-2, -6], [-2, -1], [-2, 1], [-2, 6],
+                    [-1, -4], [-1, -3], [-1, -2], [-1, 2], [-1, 3], [-1, 4],
+                    [1, -4], [1, -3], [1, -2], [1, 2], [1, 3], [1, 4],
+                    [2, -6], [2, -1], [2, 1], [2, 6],
+                    [3, -6], [3, -1], [3, 1], [3, 6],
+                    [4, -6], [4, -1], [4, 1], [4, 6],
+                    [6, -4], [6, -3], [6, -2], [6, 2], [6, 3], [6, 4]].forEach(([r, c]) => { const rr = cr + r, rc = cc + c; if (rr >= 0 && rr < golRows && rc >= 0 && rc < golCols) golGrid[rr][rc] = 1; });
+                    break;
+                case 'gosper':
+                    // Gosper Glider Gun
+                    [[5, 1], [5, 2], [6, 1], [6, 2],
+                    [5, 11], [6, 11], [7, 11], [4, 12], [8, 12], [3, 13], [9, 13], [3, 14], [9, 14],
+                    [6, 15], [4, 16], [8, 16], [5, 17], [6, 17], [7, 17], [6, 18],
+                    [3, 21], [4, 21], [5, 21], [3, 22], [4, 22], [5, 22], [2, 23], [6, 23],
+                    [1, 25], [2, 25], [6, 25], [7, 25],
+                    [3, 35], [4, 35], [3, 36], [4, 36]].forEach(([r, c]) => { const rr = cr - 10 + r, rc = 5 + c; if (rr >= 0 && rr < golRows && rc >= 0 && rc < golCols) golGrid[rr][rc] = 1; });
+                    break;
+                case 'rpentomino':
+                    set([[0, 0], [0, 1], [-1, 1], [1, 0], [-1, 0]]);
+                    break;
+            }
+            renderGol();
+            updateGolStats();
+        }
+
+        /* ═══════════════════════════════════════════════════════
+           INIT
+        ═══════════════════════════════════════════════════════ */
+        window.addEventListener('load', () => {
+            buildRuleBits();
+            initCA1DCanvas();
+            resetCA1D();
+            setRule1D(30);
+
+            initGolCanvas();
+            golPreset('random');
+        });
+
+        window.addEventListener('resize', () => {
+            const wasRunning1D = ca1dRunning;
+            const wasRunningGoL = golRunning;
+            if (wasRunning1D) pauseCA1D();
+            if (wasRunningGoL) { clearInterval(golInterval); golRunning = false; document.getElementById('gol-start-btn').textContent = '▶ Avvia'; }
+            initCA1DCanvas();
+            resetCA1D();
+            if (wasRunning1D) startCA1D();
+            initGolCanvas();
+            golPreset('random');
+        });
+    </script>
+</body>
+
+</html>

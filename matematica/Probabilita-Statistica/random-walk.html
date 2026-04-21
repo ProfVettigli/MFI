@@ -189,6 +189,186 @@
             </div>
         </section>
 
+        <!-- 5. CATENE DI MARKOV -->
+        <section class="lesson-section" style="border-left: 4px solid #A855F7;">
+            <h2 class="lesson-title" style="color: #A855F7;">5. Catene di Markov: il Futuro non Ricorda il Passato</h2>
+            <p class="lesson-text">
+                La Random Walk che abbiamo studiato appartiene a una grande famiglia di processi matematici chiamati <strong>Catene di Markov</strong>. Per capirle, partiamo da una domanda: <em>per prevedere dove sarà l'ubriaco al prossimo passo, hai bisogno di sapere tutta la sua storia?</em>
+            </p>
+            <p class="lesson-text">
+                La risposta è <strong>no</strong>. Ti basta sapere dov'è <em>adesso</em>. Tutta la storia precedente — quanti passi ha fatto, da dove è partito — è irrilevante per il passo futuro. Questa proprietà ha un nome preciso:
+            </p>
+
+            <div style="background: linear-gradient(135deg, rgba(168,85,247,0.08), rgba(236,72,153,0.06)); border: 1px solid rgba(168,85,247,0.3); border-radius: 16px; padding: 2rem; margin: 2rem 0; text-align: center;">
+                <h3 style="color: #A855F7; margin-bottom: 1rem;">🔮 La Proprietà di Markov</h3>
+                <p style="font-size: 1.05rem; line-height: 1.7; margin-bottom: 0.8rem;">
+                    <em>«Il futuro dipende dal presente, ma non dipende da come si è arrivati al presente.»</em>
+                </p>
+                <p style="font-size: 0.92rem; color: var(--text-muted); margin-bottom: 0;">
+                    In termini probabilistici: \( P(X_{n+1} = s \mid X_n, X_{n-1}, \ldots, X_0) = P(X_{n+1} = s \mid X_n) \).<br>
+                    La probabilità dello stato futuro dipende <strong>solo dallo stato presente</strong>, non dall'intera storia.
+                </p>
+            </div>
+
+            <!-- Esempi concreti -->
+            <h3 style="color: #A855F7; font-size: 1.2rem; margin-bottom: 1.2rem;">Esempi Concreti</h3>
+            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.2rem; margin-bottom: 2rem;">
+                <div style="background: rgba(168,85,247,0.05); border: 1px solid rgba(168,85,247,0.2); border-radius: 14px; padding: 1.4rem;">
+                    <span style="font-size: 2rem;">🌤️</span>
+                    <h4 style="color: #A855F7; margin: 0.6rem 0 0.4rem;">Il Meteo</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.55;">Se oggi è soleggiato, la probabilità di pioggia domani dipende solo dal meteo di <em>oggi</em>, non da quello della settimana scorsa. Il meteo è (approssimativamente) markoviano.</p>
+                </div>
+                <div style="background: rgba(168,85,247,0.05); border: 1px solid rgba(168,85,247,0.2); border-radius: 14px; padding: 1.4rem;">
+                    <span style="font-size: 2rem;">🎮</span>
+                    <h4 style="color: #A855F7; margin: 0.6rem 0 0.4rem;">I Videogiochi RPG</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.55;">Un personaggio nemico prende decisioni basandosi solo sulla propria <em>situazione attuale</em> (vita rimasta, distanza dal giocatore) — non sulla storia di tutti i turni precedenti. È una macchina di Markov.</p>
+                </div>
+                <div style="background: rgba(168,85,247,0.05); border: 1px solid rgba(168,85,247,0.2); border-radius: 14px; padding: 1.4rem;">
+                    <span style="font-size: 2rem;">📜</span>
+                    <h4 style="color: #A855F7; margin: 0.6rem 0 0.4rem;">La Generazione di Testo</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.55;">Un sistema markoviano semplice prevede la prossima parola basandosi solo sull'ultima (o sulle ultime poche). I primi chatbot funzionavano così — e le versioni moderne ne sono un'evoluzione.</p>
+                </div>
+                <div style="background: rgba(168,85,247,0.05); border: 1px solid rgba(168,85,247,0.2); border-radius: 14px; padding: 1.4rem;">
+                    <span style="font-size: 2rem;">🧬</span>
+                    <h4 style="color: #A855F7; margin: 0.6rem 0 0.4rem;">Mutazioni del DNA</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.55;">In biologia evolutiva, i modelli di sostituzione nucleotidica (come una base A diventa G) sono spesso markoviani: la probabilità di mutazione dipende solo dal nucleotide corrente.</p>
+                </div>
+            </div>
+
+            <!-- Connessione con Random Walk -->
+            <div style="background: rgba(59,130,246,0.06); border-left: 4px solid #3B82F6; padding: 1.5rem 2rem; border-radius: 0 12px 12px 0; margin-bottom: 2rem;">
+                <h4 style="color: #3B82F6; margin-bottom: 0.6rem;">🔗 La Random Walk È una Catena di Markov!</h4>
+                <p style="font-size: 0.95rem; line-height: 1.7; margin-bottom: 0;">
+                    La passeggiata dell'ubriaco che abbiamo simulato è esattamente una catena di Markov su \(\mathbb{Z}\) con stati = posizioni intere. Gli stati sono tutte le posizioni possibili \(\{\ldots, -2, -1, 0, 1, 2, \ldots\}\) e le probabilità di transizione sono semplici: da qualunque posizione \(x\), il camminatore va a \(x+1\) con probabilità \(\frac{1}{2}\) e a \(x-1\) con probabilità \(\frac{1}{2}\). Il risultato al passo \(n+1\) dipende <strong>solo dalla posizione al passo \(n\)</strong>. La storia precedente non conta.
+                </p>
+            </div>
+
+            <!-- La matrice di transizione -->
+            <h3 style="color: #A855F7; font-size: 1.2rem; margin: 2rem 0 1rem;">La Matrice di Transizione</h3>
+            <p class="lesson-text">
+                Una catena di Markov con un numero finito di stati si descrive completamente con una <span style="display:inline-block; background:rgba(168,85,247,0.15); color:#A855F7; padding:0.1rem 0.5rem; border-radius:6px; font-weight:600;">matrice di transizione \(P\)</span>. Ogni elemento \(P_{ij}\) rappresenta la probabilità di passare dallo stato \(i\) allo stato \(j\) in un singolo passo. Ogni riga somma a 1 (qualcosa deve succedere).
+            </p>
+            <p class="lesson-text">
+                Esempio: un modello meteo semplificato con tre stati — ☀️ Sole, 🌧️ Pioggia, 🌫️ Nebbia:
+            </p>
+            <div style="overflow-x: auto; margin: 1.5rem 0;">
+                <table style="border-collapse: collapse; min-width: 380px; font-size: 0.9rem; margin: 0 auto;">
+                    <thead>
+                        <tr>
+                            <th style="padding: 0.7rem 1rem; background: rgba(168,85,247,0.15); color: #A855F7; border: 1px solid rgba(168,85,247,0.2);">Da \ A →</th>
+                            <th style="padding: 0.7rem 1rem; background: rgba(168,85,247,0.15); color: #F59E0B; border: 1px solid rgba(168,85,247,0.2);">☀️ Sole</th>
+                            <th style="padding: 0.7rem 1rem; background: rgba(168,85,247,0.15); color: #3B82F6; border: 1px solid rgba(168,85,247,0.2);">🌧️ Pioggia</th>
+                            <th style="padding: 0.7rem 1rem; background: rgba(168,85,247,0.15); color: #94A3B8; border: 1px solid rgba(168,85,247,0.2);">🌫️ Nebbia</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 0.65rem 1rem; border: 1px solid rgba(255,255,255,0.07); color: #F59E0B; font-weight: 600;">☀️ Sole</td>
+                            <td style="padding: 0.65rem 1rem; border: 1px solid rgba(255,255,255,0.07); text-align: center; color: var(--text-muted);">0.70</td>
+                            <td style="padding: 0.65rem 1rem; border: 1px solid rgba(255,255,255,0.07); text-align: center; color: var(--text-muted);">0.20</td>
+                            <td style="padding: 0.65rem 1rem; border: 1px solid rgba(255,255,255,0.07); text-align: center; color: var(--text-muted);">0.10</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.65rem 1rem; border: 1px solid rgba(255,255,255,0.07); color: #3B82F6; font-weight: 600;">🌧️ Pioggia</td>
+                            <td style="padding: 0.65rem 1rem; border: 1px solid rgba(255,255,255,0.07); text-align: center; color: var(--text-muted);">0.30</td>
+                            <td style="padding: 0.65rem 1rem; border: 1px solid rgba(255,255,255,0.07); text-align: center; color: var(--text-muted);">0.50</td>
+                            <td style="padding: 0.65rem 1rem; border: 1px solid rgba(255,255,255,0.07); text-align: center; color: var(--text-muted);">0.20</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.65rem 1rem; border: 1px solid rgba(255,255,255,0.07); color: #94A3B8; font-weight: 600;">🌫️ Nebbia</td>
+                            <td style="padding: 0.65rem 1rem; border: 1px solid rgba(255,255,255,0.07); text-align: center; color: var(--text-muted);">0.25</td>
+                            <td style="padding: 0.65rem 1rem; border: 1px solid rgba(255,255,255,0.07); text-align: center; color: var(--text-muted);">0.35</td>
+                            <td style="padding: 0.65rem 1rem; border: 1px solid rgba(255,255,255,0.07); text-align: center; color: var(--text-muted);">0.40</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="lesson-text" style="font-size: 0.92rem;">
+                Leggi la prima riga: se oggi c'è il Sole, domani ci sarà ancora il Sole con probabilità 70%, Pioggia con 20% e Nebbia con 10%.
+            </p>
+
+            <!-- SIMULAZIONE CATENA DI MARKOV -->
+            <div class="simulation-container">
+                <h4 style="color: #A855F7; margin-bottom: 0.5rem;">🌦️ Simulazione: Catena di Markov Meteo</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.2rem;">
+                    Scegli il meteo iniziale e lascia girare la catena. Il grafico mostra la <strong>distribuzione stazionaria</strong>: la frequenza con cui ogni stato viene visitato sul lungo periodo (indipendente dallo stato iniziale!).
+                </p>
+
+                <!-- Stato corrente -->
+                <div style="display: flex; gap: 0.8rem; flex-wrap: wrap; margin-bottom: 1.2rem;">
+                    <button class="btn-gen markov-start-btn" data-state="0" style="background: rgba(245,158,11,0.2); border: 2px solid #F59E0B; color: #F59E0B;">☀️ Inizia dal Sole</button>
+                    <button class="btn-gen markov-start-btn" data-state="1" style="background: rgba(59,130,246,0.2); border: 2px solid #3B82F6; color: #3B82F6;">🌧️ Inizia dalla Pioggia</button>
+                    <button class="btn-gen markov-start-btn" data-state="2" style="background: rgba(148,163,184,0.2); border: 2px solid #94A3B8; color: #94A3B8;">🌫️ Inizia dalla Nebbia</button>
+                </div>
+
+                <!-- Stato attuale big display -->
+                <div style="text-align: center; margin-bottom: 1.2rem;">
+                    <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted);">Stato attuale — Giorno</span>
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 1.2rem; margin-top: 0.5rem;">
+                        <span id="markov-state-icon" style="font-size: 3.5rem;">☀️</span>
+                        <div>
+                            <span id="markov-state-name" style="font-size: 1.5rem; font-weight: 800; color: #F59E0B;">Sole</span><br>
+                            <span id="markov-day" style="font-size: 0.9rem; color: var(--text-muted);">Giorno 1</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Canvas barchart distribuzione -->
+                <canvas id="markov-chart" height="180" style="border-radius: 10px; background: #020617; width: 100%;"></canvas>
+
+                <!-- Contatori -->
+                <div class="stats-grid" style="margin-top: 1rem;">
+                    <div class="stat-card">
+                        <span class="stat-label">☀️ Giorni di Sole</span>
+                        <span id="markov-count-0" class="stat-value" style="color: #F59E0B;">0</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">🌧️ Giorni di Pioggia</span>
+                        <span id="markov-count-1" class="stat-value" style="color: #3B82F6;">0</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">🌫️ Giorni di Nebbia</span>
+                        <span id="markov-count-2" class="stat-value" style="color: #94A3B8;">0</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Giorni Totali</span>
+                        <span id="markov-total" class="stat-value" style="color: #A855F7;">0</span>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                    <button id="markov-step" class="btn-gen" style="background: #A855F7;">Giorno Successivo</button>
+                    <button id="markov-run-100" class="btn-gen" style="background: rgba(168,85,247,0.3); border: 1px solid #A855F7; color: #A855F7;">+100 Giorni</button>
+                    <button id="markov-run-1000" class="btn-gen" style="background: rgba(168,85,247,0.3); border: 1px solid #A855F7; color: #A855F7;">+1000 Giorni</button>
+                    <button id="markov-reset" class="btn-gen" style="background: rgba(255,255,255,0.08);">Reset</button>
+                </div>
+
+                <div style="background: rgba(168,85,247,0.06); border: 1px solid rgba(168,85,247,0.2); border-radius: 10px; padding: 1rem; margin-top: 1.2rem; font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">
+                    💡 <strong style="color: #A855F7;">Distribuzione Stazionaria:</strong> dopo molti giorni, le frequenze convergeranno a valori fissi — la <em>distribuzione stazionaria</em> della catena. Essa è indipendente dallo stato iniziale scelto! Matematicamente è il vettore \(\pi\) tale che \(\pi P = \pi\). Per questa matrice: ≈ 53% Sole, 30% Pioggia, 17% Nebbia.
+                </div>
+            </div>
+
+            <!-- Applicazione PageRank -->
+            <h3 style="color: #A855F7; font-size: 1.2rem; margin: 2.5rem 0 1rem;">Una Grande Applicazione: Google PageRank</h3>
+            <p class="lesson-text">
+                Il motore di ricerca originale di Google era fondato su una catena di Markov. L'idea di Larry Page e Sergey Brin fu semplice quanto brillante: immagina un <strong>surfista casuale</strong> che naviga il web. Arriva su una pagina, sceglie uno dei link in modo casuale, va alla pagina successiva, e così via. Questo è un processo markoviano: il prossimo sito visitato dipende solo da quello corrente.
+            </p>
+            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.2rem; margin-top: 1.5rem;">
+                <div style="background: rgba(59,130,246,0.05); border: 1px solid rgba(59,130,246,0.2); border-radius: 14px; padding: 1.4rem;">
+                    <h4 style="color: #3B82F6; margin-bottom: 0.5rem;">📊 L'Intuizione</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.55;">Una pagina è "importante" se molte altre pagine importanti la citano. La distribuzione stazionaria del surfista casuale assegna a ogni pagina web una probabilità — il suo PageRank — proporzionale all'importanza percepita dalla rete.</p>
+                </div>
+                <div style="background: rgba(16,185,129,0.05); border: 1px solid rgba(16,185,129,0.2); border-radius: 14px; padding: 1.4rem;">
+                    <h4 style="color: #10B981; margin-bottom: 0.5rem;">⚙️ La matematica</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.55;">Si costruisce la matrice di transizione del grafo del web (miliardi di nodi!) e si calcola il vettore stazionario \(\pi P = \pi\). Il PageRank di una pagina è la componente corrispondente di \(\pi\). Google calcolava questo vettore ogni mese con iterazioni ripetute.</p>
+                </div>
+                <div style="background: rgba(245,158,11,0.05); border: 1px solid rgba(245,158,11,0.2); border-radius: 14px; padding: 1.4rem;">
+                    <h4 style="color: #F59E0B; margin-bottom: 0.5rem;">🌍 La Scala</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.55;">Nel 1998 Google indicizzava ~25 milioni di pagine. Oggi sono oltre 130 miliardi. La stessa idea markoviana — distribuzione stazionaria su un grafo orientato — ha scalato di un fattore 5.000 nell'arco di 25 anni.</p>
+                </div>
+            </div>
+        </section>
+
         <!-- QUIZ -->
         <section class="lesson-section quiz-container">
             <h2 class="lesson-title">Quiz di Verifica</h2>
