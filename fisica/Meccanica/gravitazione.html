@@ -580,7 +580,7 @@
             }
             function loop(){
                 if(!running){return;}
-                for(let i=0;i<8;i++) step(0.15);
+                for(let i=0;i<2;i++) step(0.15);
                 const r=Math.hypot(sat.x,sat.y);
                 if(r<Rp+2){running=false;document.getElementById('sat-info').textContent='💥 Il satellite è atterrato sul pianeta!';}
                 if(r>W){running=false;document.getElementById('sat-info').textContent='🚀 Il satellite ha lasciato il sistema!';}
