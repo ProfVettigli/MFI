@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Momentum e Rotazioni — Meccanica | MFI</title>
-    <meta name="description" content="Lezione interattiva sulla quantità di moto, il principio di conservazione, l'impulso e il momento angolare. Con simulatori di urti, biliardo e rotazioni.">
+    <title>Quantità di moto e momento angolare — Meccanica | MFI</title>
+    <meta name="description"
+        content="Lezione interattiva sulla quantità di moto, il principio di conservazione, l'impulso e il momento angolare. Con simulatori di urti, biliardo e rotazioni.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
@@ -18,146 +20,475 @@
 
     <style>
         :root {
-            --mom-color:  #f97316;   /* orange — quantità di moto */
-            --cons-color: #10b981;   /* green  — conservazione    */
-            --imp-color:  #a78bfa;   /* purple — impulso          */
-            --ang-color:  #38bdf8;   /* sky    — momento angolare */
+            --mom-color: #f97316;
+            /* orange — quantità di moto */
+            --cons-color: #10b981;
+            /* green  — conservazione    */
+            --imp-color: #a78bfa;
+            /* purple — impulso          */
+            --ang-color: #38bdf8;
+            /* sky    — momento angolare */
         }
 
-        .sub-hero { padding: 4rem 0 2.5rem; text-align: left; }
-        .sub-hero-title { font-size: clamp(2rem,4vw,3rem); font-weight: 800; margin-bottom: 1rem; }
+        .sub-hero {
+            padding: 4rem 0 2.5rem;
+            text-align: left;
+        }
+
+        .sub-hero-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
 
         .lesson-section {
-            margin-bottom: 3rem; padding: 2.5rem;
-            border-radius: 1rem; border: 1px solid rgba(255,255,255,0.06);
-            background: var(--surface-color, rgba(255,255,255,0.03));
+            margin-bottom: 3rem;
+            padding: 2.5rem;
+            border-radius: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: var(--surface-color, rgba(255, 255, 255, 0.03));
             scroll-margin-top: 4rem;
         }
-        .lesson-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 1.2rem; }
-        .lesson-text { color: var(--text-muted); line-height: 1.8; margin-bottom: 1.1rem; font-size: 1.02rem; }
+
+        .lesson-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.2rem;
+        }
+
+        .lesson-text {
+            color: var(--text-muted);
+            line-height: 1.8;
+            margin-bottom: 1.1rem;
+            font-size: 1.02rem;
+        }
 
         /* ===== formula/info boxes ===== */
         .info-box {
             border-left: 4px solid var(--mom-color);
-            background: rgba(249,115,22,0.07);
+            background: rgba(249, 115, 22, 0.07);
             border-radius: 0 0.75rem 0.75rem 0;
-            padding: 1.25rem 1.5rem; margin: 1.5rem 0;
+            padding: 1.25rem 1.5rem;
+            margin: 1.5rem 0;
         }
-        .info-box.cons  { border-left-color: var(--cons-color); background: rgba(16,185,129,0.07); }
-        .info-box.imp   { border-left-color: var(--imp-color);  background: rgba(167,139,250,0.07); }
-        .info-box.ang   { border-left-color: var(--ang-color);  background: rgba(56,189,248,0.07); }
-        .info-box.center{ text-align: center; }
+
+        .info-box.cons {
+            border-left-color: var(--cons-color);
+            background: rgba(16, 185, 129, 0.07);
+        }
+
+        .info-box.imp {
+            border-left-color: var(--imp-color);
+            background: rgba(167, 139, 250, 0.07);
+        }
+
+        .info-box.ang {
+            border-left-color: var(--ang-color);
+            background: rgba(56, 189, 248, 0.07);
+        }
+
+        .info-box.center {
+            text-align: center;
+        }
 
         /* ===== callouts ===== */
         .callout {
-            display: flex; gap: 1rem; align-items: flex-start;
-            border: 1px solid rgba(249,115,22,0.25);
-            background: rgba(249,115,22,0.07);
-            border-radius: 0.75rem; padding: 1.2rem 1.5rem; margin: 1.5rem 0;
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+            border: 1px solid rgba(249, 115, 22, 0.25);
+            background: rgba(249, 115, 22, 0.07);
+            border-radius: 0.75rem;
+            padding: 1.2rem 1.5rem;
+            margin: 1.5rem 0;
         }
-        .callout-icon { font-size: 1.5rem; flex-shrink: 0; }
-        .callout p { margin: 0; color: var(--text-muted); font-size: 0.97rem; line-height: 1.7; }
-        .callout p strong { color: #fdba74; }
-        .callout.green  { background: rgba(16,185,129,0.07); border-color: rgba(16,185,129,0.25); }
-        .callout.green  p strong { color: #6ee7b7; }
-        .callout.purple { background: rgba(167,139,250,0.07); border-color: rgba(167,139,250,0.25); }
-        .callout.purple p strong { color: #c4b5fd; }
-        .callout.sky    { background: rgba(56,189,248,0.07); border-color: rgba(56,189,248,0.25); }
-        .callout.sky    p strong { color: #7dd3fc; }
-        .callout.red    { background: rgba(239,68,68,0.07); border-color: rgba(239,68,68,0.25); }
-        .callout.red    p strong { color: #fca5a5; }
+
+        .callout-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .callout p {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 0.97rem;
+            line-height: 1.7;
+        }
+
+        .callout p strong {
+            color: #fdba74;
+        }
+
+        .callout.green {
+            background: rgba(16, 185, 129, 0.07);
+            border-color: rgba(16, 185, 129, 0.25);
+        }
+
+        .callout.green p strong {
+            color: #6ee7b7;
+        }
+
+        .callout.purple {
+            background: rgba(167, 139, 250, 0.07);
+            border-color: rgba(167, 139, 250, 0.25);
+        }
+
+        .callout.purple p strong {
+            color: #c4b5fd;
+        }
+
+        .callout.sky {
+            background: rgba(56, 189, 248, 0.07);
+            border-color: rgba(56, 189, 248, 0.25);
+        }
+
+        .callout.sky p strong {
+            color: #7dd3fc;
+        }
+
+        .callout.red {
+            background: rgba(239, 68, 68, 0.07);
+            border-color: rgba(239, 68, 68, 0.25);
+        }
+
+        .callout.red p strong {
+            color: #fca5a5;
+        }
 
         /* ===== sim containers ===== */
         .sim-container {
-            background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 1rem; padding: 2rem; margin: 1.5rem 0;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin: 1.5rem 0;
         }
-        .sim-container h3 { color: var(--mom-color); margin-bottom: 1.2rem; }
+
+        .sim-container h3 {
+            color: var(--mom-color);
+            margin-bottom: 1.2rem;
+        }
 
         /* ===== controls ===== */
-        .controls-row { display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: flex-end; margin-bottom: 1rem; }
-        .ctrl-group { display: flex; flex-direction: column; gap: 0.3rem; }
-        .ctrl-group label { color: var(--text-muted); font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .controls-row {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            margin-bottom: 1rem;
+        }
+
+        .ctrl-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .ctrl-group label {
+            color: var(--text-muted);
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
         .ctrl-group input[type=number] {
-            background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.15);
-            color: white; padding: 0.5rem 0.6rem; border-radius: 6px;
-            font-family: inherit; font-size: 1rem; width: 95px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: white;
+            padding: 0.5rem 0.6rem;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 1rem;
+            width: 95px;
         }
+
         .ctrl-group input[type=range] {
-            -webkit-appearance: none; width: 150px; height: 6px;
-            background: rgba(249,115,22,0.25); border-radius: 3px; outline: none;
+            -webkit-appearance: none;
+            width: 150px;
+            height: 6px;
+            background: rgba(249, 115, 22, 0.25);
+            border-radius: 3px;
+            outline: none;
         }
+
         .ctrl-group input[type=range]::-webkit-slider-thumb {
-            -webkit-appearance: none; width: 16px; height: 16px;
-            border-radius: 50%; background: var(--mom-color); cursor: pointer;
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--mom-color);
+            cursor: pointer;
         }
+
         .btn-action {
-            background: rgba(249,115,22,0.2); border: 1px solid var(--mom-color);
-            color: #fdba74; padding: 0.6rem 1.3rem; border-radius: 6px;
-            cursor: pointer; font-family: inherit; font-size: 0.95rem;
-            transition: all 0.2s; align-self: flex-end;
+            background: rgba(249, 115, 22, 0.2);
+            border: 1px solid var(--mom-color);
+            color: #fdba74;
+            padding: 0.6rem 1.3rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+            align-self: flex-end;
         }
-        .btn-action:hover { background: rgba(249,115,22,0.35); transform: translateY(-1px); }
-        .btn-action.green { background: rgba(16,185,129,0.2); border-color: #10b981; color: #6ee7b7; }
-        .btn-action.purple{ background: rgba(167,139,250,0.2); border-color: #a78bfa; color: #c4b5fd; }
-        .btn-action.sky   { background: rgba(56,189,248,0.2);  border-color: #38bdf8; color: #7dd3fc; }
+
+        .btn-action:hover {
+            background: rgba(249, 115, 22, 0.35);
+            transform: translateY(-1px);
+        }
+
+        .btn-action.green {
+            background: rgba(16, 185, 129, 0.2);
+            border-color: #10b981;
+            color: #6ee7b7;
+        }
+
+        .btn-action.purple {
+            background: rgba(167, 139, 250, 0.2);
+            border-color: #a78bfa;
+            color: #c4b5fd;
+        }
+
+        .btn-action.sky {
+            background: rgba(56, 189, 248, 0.2);
+            border-color: #38bdf8;
+            color: #7dd3fc;
+        }
 
         /* ===== result box ===== */
         .result-box {
-            background: rgba(0,0,0,0.3); border-radius: 8px;
-            padding: 1.1rem 1.4rem; min-height: 55px;
-            font-size: 0.97rem; color: var(--text-muted);
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 1.1rem 1.4rem;
+            min-height: 55px;
+            font-size: 0.97rem;
+            color: var(--text-muted);
         }
-        .result-box .val { color: var(--mom-color); font-weight: 700; font-size: 1.1rem; }
-        .result-box .row { display: block; margin: 0.2rem 0; }
+
+        .result-box .val {
+            color: var(--mom-color);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .result-box .row {
+            display: block;
+            margin: 0.2rem 0;
+        }
 
         /* ===== canvas ===== */
-        .canvas-wrap { background: rgba(0,0,0,0.3); border-radius: 10px; padding: 0.75rem; margin: 1rem 0; }
-        canvas { display: block; margin: 0 auto; max-width: 100%; border-radius: 6px; }
-        .canvas-label { text-align: center; color: var(--text-muted); font-size: 0.82rem; margin-top: 0.4rem; }
+        .canvas-wrap {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 0.75rem;
+            margin: 1rem 0;
+        }
+
+        canvas {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+            border-radius: 6px;
+        }
+
+        .canvas-label {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.82rem;
+            margin-top: 0.4rem;
+        }
 
         /* ===== quantity cards ===== */
-        .qty-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(200px,1fr)); gap: 1rem; margin: 1.5rem 0; }
-        .qty-card {
-            background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.07);
-            border-radius: 0.75rem; padding: 1.25rem; text-align: center;
+        .qty-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
         }
-        .qty-card .sym { font-size: 2.4rem; font-weight: 900; margin-bottom: 0.4rem; }
-        .qty-card h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.35rem; }
-        .qty-card p { color: var(--text-muted); font-size: 0.83rem; margin: 0; line-height: 1.5; }
+
+        .qty-card {
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            text-align: center;
+        }
+
+        .qty-card .sym {
+            font-size: 2.4rem;
+            font-weight: 900;
+            margin-bottom: 0.4rem;
+        }
+
+        .qty-card h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 0.35rem;
+        }
+
+        .qty-card p {
+            color: var(--text-muted);
+            font-size: 0.83rem;
+            margin: 0;
+            line-height: 1.5;
+        }
 
         /* ===== solution box ===== */
-        .solution-box { background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.07); border-radius: 1rem; padding: 1.5rem; margin: 1.5rem 0; }
-        .solution-box h4 { color: #fbbf24; font-size: 1rem; margin-bottom: 1rem; }
-        .step { display: flex; gap: 1rem; margin-bottom: 0.85rem; align-items: flex-start; }
-        .step-num { background: linear-gradient(135deg,#f97316,#a78bfa); color: white; font-weight: 800; font-size: 0.8rem; min-width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .step-body { color: var(--text-muted); font-size: 0.97rem; line-height: 1.7; }
+        .solution-box {
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .solution-box h4 {
+            color: #fbbf24;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .step {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 0.85rem;
+            align-items: flex-start;
+        }
+
+        .step-num {
+            background: linear-gradient(135deg, #f97316, #a78bfa);
+            color: white;
+            font-weight: 800;
+            font-size: 0.8rem;
+            min-width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .step-body {
+            color: var(--text-muted);
+            font-size: 0.97rem;
+            line-height: 1.7;
+        }
 
         /* ===== TOC ===== */
-        .toc { background: rgba(249,115,22,0.05); border: 1px solid rgba(249,115,22,0.2); border-radius: 1rem; padding: 1.5rem 2rem; margin: 1.5rem 0 2.5rem; }
-        .toc h3 { color: var(--mom-color); margin-bottom: 0.75rem; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.07em; }
-        .toc ol { padding-left: 1.2rem; }
-        .toc li { margin-bottom: 0.35rem; }
-        .toc a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
-        .toc a:hover { color: var(--mom-color); }
+        .toc {
+            background: rgba(249, 115, 22, 0.05);
+            border: 1px solid rgba(249, 115, 22, 0.2);
+            border-radius: 1rem;
+            padding: 1.5rem 2rem;
+            margin: 1.5rem 0 2.5rem;
+        }
+
+        .toc h3 {
+            color: var(--mom-color);
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+        }
+
+        .toc ol {
+            padding-left: 1.2rem;
+        }
+
+        .toc li {
+            margin-bottom: 0.35rem;
+        }
+
+        .toc a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .toc a:hover {
+            color: var(--mom-color);
+        }
 
         /* ===== quiz ===== */
-        .quiz-question { margin-bottom: 2rem; }
-        .quiz-question h3 { color: var(--text-main); font-size: 1rem; font-weight: 600; margin-bottom: 0.8rem; }
-        .quiz-options { display: flex; flex-direction: column; gap: 0.5rem; }
-        .quiz-btn { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); color: var(--text-main); padding: 0.75rem 1rem; border-radius: 0.5rem; cursor: pointer; text-align: left; font-size: 0.95rem; transition: all 0.2s; font-family: inherit; }
-        .quiz-btn:hover:not(:disabled) { background: rgba(249,115,22,0.15); border-color: var(--mom-color); }
-        .quiz-btn.correct { background: rgba(16,185,129,0.2)!important; border-color: #10b981!important; color: #6ee7b7; }
-        .quiz-btn.wrong   { background: rgba(239,68,68,0.2)!important;   border-color: #ef4444!important; color: #fca5a5; }
-        .quiz-btn:disabled { cursor: not-allowed; }
-        .quiz-score-msg { text-align: center; font-weight: 700; color: var(--mom-color); font-size: 1.1rem; margin-top: 1rem; min-height: 1.5rem; }
+        .quiz-question {
+            margin-bottom: 2rem;
+        }
+
+        .quiz-question h3 {
+            color: var(--text-main);
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .quiz-btn {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-main);
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            text-align: left;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .quiz-btn:hover:not(:disabled) {
+            background: rgba(249, 115, 22, 0.15);
+            border-color: var(--mom-color);
+        }
+
+        .quiz-btn.correct {
+            background: rgba(16, 185, 129, 0.2) !important;
+            border-color: #10b981 !important;
+            color: #6ee7b7;
+        }
+
+        .quiz-btn.wrong {
+            background: rgba(239, 68, 68, 0.2) !important;
+            border-color: #ef4444 !important;
+            color: #fca5a5;
+        }
+
+        .quiz-btn:disabled {
+            cursor: not-allowed;
+        }
+
+        .quiz-score-msg {
+            text-align: center;
+            font-weight: 700;
+            color: var(--mom-color);
+            font-size: 1.1rem;
+            margin-top: 1rem;
+            min-height: 1.5rem;
+        }
 
         /* ===== billiard table ===== */
-        #billiard-canvas { border-radius: 8px; }
+        #billiard-canvas {
+            border-radius: 8px;
+        }
 
-        @media(max-width:768px){ .lesson-section{padding:1.5rem;} .controls-row{flex-direction:column;} }
+        @media(max-width:768px) {
+            .lesson-section {
+                padding: 1.5rem;
+            }
+
+            .controls-row {
+                flex-direction: column;
+            }
+        }
     </style>
 </head>
+
 <body>
 
     <header class="sub-hero">
@@ -167,9 +498,10 @@
                     <span class="back-icon">←</span> Meccanica
                 </a>
             </div>
-            <h1 class="sub-hero-title">🎱 Momentum e <span class="gradient-text">Rotazioni</span></h1>
+            <h1 class="sub-hero-title">🎱 Quantità di moto e <span class="gradient-text">momento angolare</span></h1>
             <p style="font-size:1.1rem;color:var(--text-muted);max-width:750px;font-weight:300;line-height:1.7;">
-                Dall'urto tra biliardo alle figure acrobatiche dei pattinatori: la quantità di moto e il momento angolare sono le grandezze che rimangono immutate quand ogni altra cosa cambia.
+                Dall'urto tra biliardo alle figure acrobatiche dei pattinatori: la quantità di moto e il momento
+                angolare sono le grandezze che rimangono immutate quand ogni altra cosa cambia.
             </p>
         </div>
     </header>
@@ -195,13 +527,17 @@
             <h2 class="lesson-title">1. 🎳 La Quantità di Moto \(\vec{p}\)</h2>
 
             <p class="lesson-text">
-                Intuitivamente sentiamo che un tir a 80 km/h è molto più "difficile da fermare" di una bicicletta alla stessa velocità. E che una pallottola, pur piccola, fa molti più danni di una palla di gomma lanciata lentamente. Questa "quantità di movimento" ha un nome preciso in fisica:
+                Intuitivamente sentiamo che un tir a 80 km/h è molto più "difficile da fermare" di una bicicletta alla
+                stessa velocità. E che una pallottola, pur piccola, fa molti più danni di una palla di gomma lanciata
+                lentamente. Questa "quantità di movimento" ha un nome preciso in fisica:
             </p>
 
             <div class="info-box">
                 \[ \vec{p} = m \cdot \vec{v} \]
                 <p style="margin:0.75rem 0 0;color:var(--text-muted);font-size:0.95rem;">
-                    La <strong>quantità di moto</strong> \(\vec{p}\) è il prodotto della massa per la velocità. È una grandezza <strong>vettoriale</strong> (ha direzione e verso, come la velocità). Si misura in \(\text{kg·m/s}\).
+                    La <strong>quantità di moto</strong> \(\vec{p}\) è il prodotto della massa per la velocità. È una
+                    grandezza <strong>vettoriale</strong> (ha direzione e verso, come la velocità). Si misura in
+                    \(\text{kg·m/s}\).
                 </p>
             </div>
 
@@ -219,23 +555,33 @@
                 <div class="qty-card">
                     <div class="sym" style="color:#f59e0b;">p</div>
                     <h4 style="color:#f59e0b;">Quantità di moto</h4>
-                    <p>Misura la "resistenza al cambiamento" del moto. Più grande, più forza serve per fermare l'oggetto.</p>
+                    <p>Misura la "resistenza al cambiamento" del moto. Più grande, più forza serve per fermare
+                        l'oggetto.</p>
                 </div>
             </div>
 
             <div class="callout">
                 <span class="callout-icon">🎳</span>
-                <p><strong>Esempio numerico:</strong> un bowling ball da \(m = 5\,\text{kg}\) lanciato a \(v = 8\,\text{m/s}\) ha \(p = 5 \cdot 8 = 40\,\text{kg·m/s}\). Una pallina da golf da \(m = 0.045\,\text{kg}\) sparata a \(v = 80\,\text{m/s}\) ha \(p = 3.6\,\text{kg·m/s}\). Il bowling ball è <em>dieci volte</em> più difficile da fermare!</p>
+                <p><strong>Esempio numerico:</strong> un bowling ball da \(m = 5\,\text{kg}\) lanciato a \(v =
+                    8\,\text{m/s}\) ha \(p = 5 \cdot 8 = 40\,\text{kg·m/s}\). Una pallina da golf da \(m =
+                    0.045\,\text{kg}\) sparata a \(v = 80\,\text{m/s}\) ha \(p = 3.6\,\text{kg·m/s}\). Il bowling ball è
+                    <em>dieci volte</em> più difficile da fermare!
+                </p>
             </div>
 
             <!-- Legge di Newton 2 in forma vettoriale -->
             <h3 style="color:var(--mom-color);">Il legame con la seconda legge di Newton</h3>
             <p class="lesson-text">
-                In realtà, Newton non scrisse originariamente \(F = ma\): scrisse la seconda legge in termini di quantità di moto:
+                In realtà, Newton non scrisse originariamente \(F = ma\): scrisse la seconda legge in termini di
+                quantità di moto:
             </p>
             <div class="info-box center">
                 \[ \vec{F} = \frac{\Delta \vec{p}}{\Delta t} \]
-                <p style="margin:0.75rem 0 0;color:var(--text-muted);font-size:0.95rem;">La forza è la <em>variazione</em> della quantità di moto nel tempo. Quando la massa è costante, \(\Delta\vec{p}/\Delta t = m\cdot\Delta\vec{v}/\Delta t = m\vec{a}\). Ma se la massa cambia (es. un razzo che espelle combustibile), la forma originale è quella corretta.</p>
+                <p style="margin:0.75rem 0 0;color:var(--text-muted);font-size:0.95rem;">La forza è la
+                    <em>variazione</em> della quantità di moto nel tempo. Quando la massa è costante,
+                    \(\Delta\vec{p}/\Delta t = m\cdot\Delta\vec{v}/\Delta t = m\vec{a}\). Ma se la massa cambia (es. un
+                    razzo che espelle combustibile), la forma originale è quella corretta.
+                </p>
             </div>
 
             <!-- Calcolatore -->
@@ -266,30 +612,41 @@
             <h2 class="lesson-title">2. ♻️ Il Principio di Conservazione della Quantità di Moto</h2>
 
             <p class="lesson-text">
-                Se la forza esterna netta su un sistema è nulla, la quantità di moto totale <strong>non cambia</strong>, qualunque cosa accada all'interno del sistema. Questo è uno dei principi più potenti della fisica:
+                Se la forza esterna netta su un sistema è nulla, la quantità di moto totale <strong>non cambia</strong>,
+                qualunque cosa accada all'interno del sistema. Questo è uno dei principi più potenti della fisica:
             </p>
 
             <div class="info-box cons">
                 \[ \vec{F}_{\text{ext}} = 0 \implies \vec{p}_{\text{tot}} = \sum_i m_i \vec{v}_i = \text{costante} \]
                 <p style="margin:0.75rem 0 0;color:var(--text-muted);font-size:0.95rem;">
-                    In un sistema <strong>isolato</strong> (nessuna forza esterna), la somma vettoriale delle quantità di moto di tutti gli oggetti rimane costante nel tempo, prima e dopo qualsiasi urto o esplosione.
+                    In un sistema <strong>isolato</strong> (nessuna forza esterna), la somma vettoriale delle quantità
+                    di moto di tutti gli oggetti rimane costante nel tempo, prima e dopo qualsiasi urto o esplosione.
                 </p>
             </div>
 
             <h3 style="color:var(--cons-color);">Perché è vero? — Terza legge di Newton</h3>
             <p class="lesson-text">
-                Quando due oggetti interagiscono, la terza legge di Newton garantisce che si esercitino forze uguali e opposte. Quindi le variazioni di quantità di moto dei due oggetti sono sempre uguali e opposte, e si cancellano perfettamente nella somma totale:
-                \[ \Delta\vec{p}_1 + \Delta\vec{p}_2 = \vec{F}_{12}\,\Delta t + \vec{F}_{21}\,\Delta t = (\vec{F}_{12} + \vec{F}_{21})\,\Delta t = 0 \]
+                Quando due oggetti interagiscono, la terza legge di Newton garantisce che si esercitino forze uguali e
+                opposte. Quindi le variazioni di quantità di moto dei due oggetti sono sempre uguali e opposte, e si
+                cancellano perfettamente nella somma totale:
+                \[ \Delta\vec{p}_1 + \Delta\vec{p}_2 = \vec{F}_{12}\,\Delta t + \vec{F}_{21}\,\Delta t = (\vec{F}_{12} +
+                \vec{F}_{21})\,\Delta t = 0 \]
             </p>
 
             <div class="callout green">
                 <span class="callout-icon">🚀</span>
-                <p><strong>Propulsione a reazione:</strong> un razzo nello spazio non ha nulla su cui "spingere". Espelle gas ad alta velocità verso il basso → la quantità di moto dei gas è verso il basso → quella del razzo deve aumentare verso l'alto (sistema isolato, \(p_{tot} = 0\)). Non viola nessuna legge: <em>azione e reazione</em>, esattamente come Newton!</p>
+                <p><strong>Propulsione a reazione:</strong> un razzo nello spazio non ha nulla su cui "spingere".
+                    Espelle gas ad alta velocità verso il basso → la quantità di moto dei gas è verso il basso → quella
+                    del razzo deve aumentare verso l'alto (sistema isolato, \(p_{tot} = 0\)). Non viola nessuna legge:
+                    <em>azione e reazione</em>, esattamente come Newton!
+                </p>
             </div>
 
             <div class="callout green">
                 <span class="callout-icon">🧊</span>
-                <p><strong>Pattinatori sul ghiaccio:</strong> due pattinatori fermi si spingono a vicenda. Inizialmente \(p_{tot} = 0\). Dopo: uno va a destra con \(p_1 = m_1 v_1\) e l'altro a sinistra con \(p_2 = -m_2 v_2\). La somma è \(p_1 + p_2 = 0\) → conservata! Il più leggero si allontana più velocemente.</p>
+                <p><strong>Pattinatori sul ghiaccio:</strong> due pattinatori fermi si spingono a vicenda. Inizialmente
+                    \(p_{tot} = 0\). Dopo: uno va a destra con \(p_1 = m_1 v_1\) e l'altro a sinistra con \(p_2 = -m_2
+                    v_2\). La somma è \(p_1 + p_2 = 0\) → conservata! Il più leggero si allontana più velocemente.</p>
             </div>
         </section>
 
@@ -300,7 +657,8 @@
             <h2 class="lesson-title">3. 🎱 Tipologie di Urto — Laboratorio Biliardo</h2>
 
             <p class="lesson-text">
-                In un urto, la conservazione della quantità di moto vale <em>sempre</em>. Quello che cambia è se si conserva anche l'energia cinetica:
+                In un urto, la conservazione della quantità di moto vale <em>sempre</em>. Quello che cambia è se si
+                conserva anche l'energia cinetica:
             </p>
 
             <div class="qty-grid" style="margin-bottom:1.5rem;">
@@ -312,7 +670,8 @@
                 <div class="qty-card" style="border-color:rgba(249,115,22,0.3);">
                     <div class="sym" style="color:var(--mom-color);">A</div>
                     <h4 style="color:var(--mom-color);">Urto Anelastico</h4>
-                    <p>Si conserva \(\vec{p}_{tot}\), ma parte di \(E_k\) si converte in calore/suono. Esempio: auto che si scontrano.</p>
+                    <p>Si conserva \(\vec{p}_{tot}\), ma parte di \(E_k\) si converte in calore/suono. Esempio: auto che
+                        si scontrano.</p>
                 </div>
                 <div class="qty-card" style="border-color:rgba(239,68,68,0.3);">
                     <div class="sym" style="color:#ef4444;">P</div>
@@ -327,7 +686,8 @@
                 \[ m_1 v_{1i} + m_2 v_{2i} = m_1 v_{1f} + m_2 v_{2f} \]
                 <br>
                 <strong>Urto elastico (+ conservazione \(E_k\)):</strong>
-                \[ v_{1f} = \frac{m_1 - m_2}{m_1+m_2}v_{1i} + \frac{2m_2}{m_1+m_2}v_{2i} \quad;\quad v_{2f} = \frac{2m_1}{m_1+m_2}v_{1i} + \frac{m_2-m_1}{m_1+m_2}v_{2i} \]
+                \[ v_{1f} = \frac{m_1 - m_2}{m_1+m_2}v_{1i} + \frac{2m_2}{m_1+m_2}v_{2i} \quad;\quad v_{2f} =
+                \frac{2m_1}{m_1+m_2}v_{1i} + \frac{m_2-m_1}{m_1+m_2}v_{2i} \]
             </div>
 
             <!-- Simulatore urti 1D -->
@@ -352,7 +712,8 @@
                     </div>
                     <div class="ctrl-group">
                         <label>Tipo urto</label>
-                        <select id="u-type" style="background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.15);color:white;padding:0.5rem;border-radius:6px;font-family:inherit;">
+                        <select id="u-type"
+                            style="background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.15);color:white;padding:0.5rem;border-radius:6px;font-family:inherit;">
                             <option value="elastic">Elastico</option>
                             <option value="inelastic">Anelastico (e=0.6)</option>
                             <option value="perfect">Perf. Anelastico</option>
@@ -369,16 +730,33 @@
             <!-- Esempio guidato: biliardo -->
             <div class="solution-box">
                 <h4>🎱 Esempio: la pallina bianca colpisce la nera al biliardo</h4>
-                <div class="step"><div class="step-num">📋</div><div class="step-body">La pallina bianca (\(m_1 = m_2 = 0.17\,\text{kg}\)) si muove a \(v_{1i} = 2\,\text{m/s}\) e colpisce la nera ferma (\(v_{2i} = 0\)). Urto elastico.</div></div>
-                <div class="step"><div class="step-num">1</div><div class="step-body">
-                    \(v_{1f} = \dfrac{m_1-m_2}{m_1+m_2}\cdot v_{1i} = \dfrac{0}{0.34}\cdot 2 = \mathbf{0\,\text{m/s}}\) — la bianca si ferma!
-                </div></div>
-                <div class="step"><div class="step-num">2</div><div class="step-body">
-                    \(v_{2f} = \dfrac{2m_1}{m_1+m_2}\cdot v_{1i} = \dfrac{0.34}{0.34}\cdot 2 = \mathbf{2\,\text{m/s}}\) — la nera riparte con la stessa velocità della bianca.
-                </div></div>
-                <div class="step"><div class="step-num">✅</div><div class="step-body">
-                    Nel caso di <strong>masse uguali</strong> e urto elastico frontale: il corpo colpente si ferma e quello colpito riparte con la stessa velocità iniziale del colpente. Questo è esattamente quello che si vede al biliardo!
-                </div></div>
+                <div class="step">
+                    <div class="step-num">📋</div>
+                    <div class="step-body">La pallina bianca (\(m_1 = m_2 = 0.17\,\text{kg}\)) si muove a \(v_{1i} =
+                        2\,\text{m/s}\) e colpisce la nera ferma (\(v_{2i} = 0\)). Urto elastico.</div>
+                </div>
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <div class="step-body">
+                        \(v_{1f} = \dfrac{m_1-m_2}{m_1+m_2}\cdot v_{1i} = \dfrac{0}{0.34}\cdot 2 =
+                        \mathbf{0\,\text{m/s}}\) — la bianca si ferma!
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <div class="step-body">
+                        \(v_{2f} = \dfrac{2m_1}{m_1+m_2}\cdot v_{1i} = \dfrac{0.34}{0.34}\cdot 2 =
+                        \mathbf{2\,\text{m/s}}\) — la nera riparte con la stessa velocità della bianca.
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">✅</div>
+                    <div class="step-body">
+                        Nel caso di <strong>masse uguali</strong> e urto elastico frontale: il corpo colpente si ferma e
+                        quello colpito riparte con la stessa velocità iniziale del colpente. Questo è esattamente quello
+                        che si vede al biliardo!
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -389,46 +767,57 @@
             <h2 class="lesson-title">4. ⚡ L'Impulso \(\vec{J}\)</h2>
 
             <p class="lesson-text">
-                Quando una forza agisce su un oggetto per un certo intervallo di tempo, produce una variazione della quantità di moto. Il prodotto forza × tempo si chiama <strong>impulso</strong>:
+                Quando una forza agisce su un oggetto per un certo intervallo di tempo, produce una variazione della
+                quantità di moto. Il prodotto forza × tempo si chiama <strong>impulso</strong>:
             </p>
 
             <div class="info-box imp">
                 \[ \vec{J} = \vec{F} \cdot \Delta t = \Delta \vec{p} \]
                 <p style="margin:0.75rem 0 0;color:var(--text-muted);font-size:0.95rem;">
-                    L'impulso è uguale alla variazione di quantità di moto (\(\Delta\vec{p}\)). Si misura in \(\text{N·s} = \text{kg·m/s}\). È il <strong>Teorema Impulso-Quantità di moto</strong>.
+                    L'impulso è uguale alla variazione di quantità di moto (\(\Delta\vec{p}\)). Si misura in
+                    \(\text{N·s} = \text{kg·m/s}\). È il <strong>Teorema Impulso-Quantità di moto</strong>.
                 </p>
             </div>
 
             <p class="lesson-text">
-                Notare che lo stesso cambiamento di quantità di moto si può ottenere con una <strong>forza grande per poco tempo</strong> oppure con una <strong>forza piccola per molto tempo</strong>. Questo è il principio fisico dietro molte tecnologie di sicurezza:
+                Notare che lo stesso cambiamento di quantità di moto si può ottenere con una <strong>forza grande per
+                    poco tempo</strong> oppure con una <strong>forza piccola per molto tempo</strong>. Questo è il
+                principio fisico dietro molte tecnologie di sicurezza:
             </p>
 
             <div class="qty-grid">
                 <div class="qty-card" style="border-color:rgba(167,139,250,0.3);">
                     <div class="toy-icon" style="font-size:2rem;margin-bottom:0.4rem;">🥊</div>
                     <h4 style="color:var(--imp-color);">Boxe: guantoni</h4>
-                    <p>I guantoni aumentano il \(\Delta t\) dell'impatto → la forza sul pugno è ridotta (stesso impulso, più tempo).</p>
+                    <p>I guantoni aumentano il \(\Delta t\) dell'impatto → la forza sul pugno è ridotta (stesso impulso,
+                        più tempo).</p>
                 </div>
                 <div class="qty-card" style="border-color:rgba(167,139,250,0.3);">
                     <div class="toy-icon" style="font-size:2rem;margin-bottom:0.4rem;">🚗💨</div>
                     <h4 style="color:var(--imp-color);">Airbag</h4>
-                    <p>Aumenta il tempo di collisione: \(F = \Delta p / \Delta t\). Stessa variazione di \(p\), \(\Delta t\) più grande → \(F\) sul corpo molto più piccola.</p>
+                    <p>Aumenta il tempo di collisione: \(F = \Delta p / \Delta t\). Stessa variazione di \(p\), \(\Delta
+                        t\) più grande → \(F\) sul corpo molto più piccola.</p>
                 </div>
                 <div class="qty-card" style="border-color:rgba(167,139,250,0.3);">
                     <div class="toy-icon" style="font-size:2rem;margin-bottom:0.4rem;">🏏</div>
                     <h4 style="color:var(--imp-color);">Cricket / Baseball</h4>
-                    <p>Il battitore "accompagna" il colpo: aumenta \(\Delta t\) di contatto → maggiore impulso trasmesso alla palla → più distanza.</p>
+                    <p>Il battitore "accompagna" il colpo: aumenta \(\Delta t\) di contatto → maggiore impulso trasmesso
+                        alla palla → più distanza.</p>
                 </div>
             </div>
 
             <h3 style="color:var(--imp-color);">L'area sotto il grafico Forza–tempo</h3>
             <p class="lesson-text">
-                Come il lavoro è l'area sotto il grafico \(F\)–\(s\), l'impulso è l'<strong>area sotto il grafico \(F\)–\(t\)</strong>. Se la forza non è costante, si calcola l'integrale, ma anche graficamente l'area sotto la curva ci dà la variazione di quantità di moto.
+                Come il lavoro è l'area sotto il grafico \(F\)–\(s\), l'impulso è l'<strong>area sotto il grafico
+                    \(F\)–\(t\)</strong>. Se la forza non è costante, si calcola l'integrale, ma anche graficamente
+                l'area sotto la curva ci dà la variazione di quantità di moto.
             </p>
 
             <div class="canvas-wrap">
                 <canvas id="impulso-canvas" width="580" height="200"></canvas>
-                <p class="canvas-label">Area sotto la curva F(t) = Impulso = \(\Delta\vec{p}\). Forza costante (rettangolo, arancione) versus forza impulsiva di breve durata (rosso, stessa area = stesso impulso!).</p>
+                <p class="canvas-label">Area sotto la curva F(t) = Impulso = \(\Delta\vec{p}\). Forza costante
+                    (rettangolo, arancione) versus forza impulsiva di breve durata (rosso, stessa area = stesso
+                    impulso!).</p>
             </div>
 
             <!-- Calcolatore impulso -->
@@ -460,13 +849,16 @@
             <h2 class="lesson-title">5. 🌀 Il Momento Angolare \(\vec{L}\)</h2>
 
             <p class="lesson-text">
-                La quantità di moto \(\vec{p}\) descrive il moto di traslazione. Per il moto rotazionale esiste un'analoga grandezza: il <strong>momento angolare</strong> \(\vec{L}\). È la "quantità di moto della rotazione".
+                La quantità di moto \(\vec{p}\) descrive il moto di traslazione. Per il moto rotazionale esiste
+                un'analoga grandezza: il <strong>momento angolare</strong> \(\vec{L}\). È la "quantità di moto della
+                rotazione".
             </p>
 
             <div class="info-box ang">
                 \[ \vec{L} = \vec{r} \times \vec{p} = \vec{r} \times m\vec{v} \]
                 <p style="margin:0.75rem 0 0;color:var(--text-muted);font-size:0.95rem;">
-                    Per un corpo rigido in rotazione attorno a un asse fisso: \(L = I \cdot \omega\), dove \(I\) è il <strong>momento d'inerzia</strong> [kg·m²] e \(\omega\) è la velocità angolare [rad/s].
+                    Per un corpo rigido in rotazione attorno a un asse fisso: \(L = I \cdot \omega\), dove \(I\) è il
+                    <strong>momento d'inerzia</strong> [kg·m²] e \(\omega\) è la velocità angolare [rad/s].
                 </p>
             </div>
 
@@ -518,27 +910,37 @@
                 \[ \vec{\tau}_{\text{ext}} = 0 \implies \vec{L} = I\,\omega = \text{costante} \]
             </div>
             <p class="lesson-text">
-                Questo significa: se \(I\) diminuisce, \(\omega\) deve aumentare per mantenere costante \(L\). E viceversa.
+                Questo significa: se \(I\) diminuisce, \(\omega\) deve aumentare per mantenere costante \(L\). E
+                viceversa.
             </p>
 
             <div class="callout sky">
                 <span class="callout-icon">⛸️</span>
-                <p><strong>Il pattinatore che si avvolge:</strong> quando un pattinatore su ghiaccio allarga le braccia, il suo momento d'inerzia \(I\) aumenta (la massa è più lontana dall'asse) → \(\omega\) diminuisce (ruota più lentamente). Quando le raccoglie, \(I\) diminuisce → \(\omega\) aumenta vertiginosamente. Nessuna forza esterna agisce: \(L = I\omega = \text{costante}\).</p>
+                <p><strong>Il pattinatore che si avvolge:</strong> quando un pattinatore su ghiaccio allarga le braccia,
+                    il suo momento d'inerzia \(I\) aumenta (la massa è più lontana dall'asse) → \(\omega\) diminuisce
+                    (ruota più lentamente). Quando le raccoglie, \(I\) diminuisce → \(\omega\) aumenta vertiginosamente.
+                    Nessuna forza esterna agisce: \(L = I\omega = \text{costante}\).</p>
             </div>
 
             <div class="callout sky">
                 <span class="callout-icon">🌍</span>
-                <p><strong>Conservazione cosmica:</strong> quando una stella gigante collassa in una stella di neutroni, il suo raggio passa da milioni di km a ~10 km. Il momento d'inerzia cala di un fattore \(10^{10}\). Di conseguenza la velocità di rotazione aumenta dello stesso fattore: le <strong>pulsar</strong> ruotano fino a 700 volte al secondo, mentre le stelle normali girano una volta in settimane!</p>
+                <p><strong>Conservazione cosmica:</strong> quando una stella gigante collassa in una stella di neutroni,
+                    il suo raggio passa da milioni di km a ~10 km. Il momento d'inerzia cala di un fattore \(10^{10}\).
+                    Di conseguenza la velocità di rotazione aumenta dello stesso fattore: le <strong>pulsar</strong>
+                    ruotano fino a 700 volte al secondo, mentre le stelle normali girano una volta in settimane!</p>
             </div>
 
             <!-- Simulatore pattinatore -->
             <div class="sim-container" style="border-color:rgba(56,189,248,0.25);">
                 <h3 style="color:var(--ang-color);">⛸️ Simulatore: il Pattinatore</h3>
-                <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:1rem;">Sposta lo slider per cambiare il raggio di estensione delle braccia. Osserva come cambia \(\omega\) per conservare \(L = I\omega\).</p>
+                <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:1rem;">Sposta lo slider per cambiare il
+                    raggio di estensione delle braccia. Osserva come cambia \(\omega\) per conservare \(L = I\omega\).
+                </p>
                 <div class="controls-row">
                     <div class="ctrl-group">
                         <label>Raggio braccia r (m) — da 0.2 a 1.0</label>
-                        <input type="range" id="sk-r" min="0.2" max="1.0" value="0.7" step="0.05" oninput="updateSkater()" style="background:rgba(56,189,248,0.25);">
+                        <input type="range" id="sk-r" min="0.2" max="1.0" value="0.7" step="0.05"
+                            oninput="updateSkater()" style="background:rgba(56,189,248,0.25);">
                         <span id="sk-r-val" style="color:var(--ang-color);font-weight:700;">0.70 m</span>
                     </div>
                 </div>
@@ -571,7 +973,8 @@
         <!-- ================================================================ -->
         <section class="lesson-section" id="sec-quiz">
             <h2 class="lesson-title" style="color:var(--mom-color);">6. 🧠 Verifica Finale</h2>
-            <p class="lesson-text">Metti alla prova la tua comprensione di quantità di moto, impulso e momento angolare!</p>
+            <p class="lesson-text">Metti alla prova la tua comprensione di quantità di moto, impulso e momento angolare!
+            </p>
             <div style="background:rgba(0,0,0,0.15);border-radius:1rem;padding:1.5rem;">
                 <div id="quiz-area"></div>
                 <div class="quiz-score-msg" id="quiz-score"></div>
@@ -581,379 +984,379 @@
     </main>
 
     <footer>
-        <p>&copy; 2026 MFI — Meccanica: Momentum e Rotazioni.</p>
+        <p>&copy; 2026 MFI — Meccanica: Quantità di moto e momento angolare.</p>
     </footer>
 
     <script>
-    // ============================================================
-    //  UTILITY
-    // ============================================================
-    const fmt2 = v => Number.isFinite(v) ? v.toFixed(2) : '—';
-    const fmtAuto = v => {
-        if(!Number.isFinite(v)) return '—';
-        if(Math.abs(v) >= 1e4) return v.toExponential(2);
-        return v.toFixed(3);
-    };
+        // ============================================================
+        //  UTILITY
+        // ============================================================
+        const fmt2 = v => Number.isFinite(v) ? v.toFixed(2) : '—';
+        const fmtAuto = v => {
+            if (!Number.isFinite(v)) return '—';
+            if (Math.abs(v) >= 1e4) return v.toExponential(2);
+            return v.toFixed(3);
+        };
 
-    // ============================================================
-    //  1. QUANTITÀ DI MOTO
-    // ============================================================
-    function calcQdm() {
-        const m = parseFloat(document.getElementById('qdm-m').value);
-        const v = parseFloat(document.getElementById('qdm-v').value);
-        const res = document.getElementById('res-qdm');
-        if([m,v].some(isNaN)||m<=0){res.innerHTML='Valori non validi.';return;}
-        const p = m * v;
-        const Ek = 0.5*m*v*v;
-        res.innerHTML=`
+        // ============================================================
+        //  1. QUANTITÀ DI MOTO
+        // ============================================================
+        function calcQdm() {
+            const m = parseFloat(document.getElementById('qdm-m').value);
+            const v = parseFloat(document.getElementById('qdm-v').value);
+            const res = document.getElementById('res-qdm');
+            if ([m, v].some(isNaN) || m <= 0) { res.innerHTML = 'Valori non validi.'; return; }
+            const p = m * v;
+            const Ek = 0.5 * m * v * v;
+            res.innerHTML = `
             <span class="row">Quantità di moto: <span class="val">p = ${fmt2(m)} · ${fmt2(v)} = ${fmt2(p)} kg·m/s</span></span>
             <span class="row">Energia cinetica associata: Ek = ½·${fmt2(m)}·(${fmt2(v)})² = ${fmt2(Ek)} J</span>
             <span class="row" style="font-size:0.87rem;color:rgba(255,255,255,0.35);">Per fermare questo oggetto serve un impulso J = −${fmt2(p)} kg·m/s (uguale e opposto).</span>
         `;
-        drawQdmBar(p, m, v);
-    }
-    function drawQdmBar(p, m, v){
-        const c=document.getElementById('qdm-canvas');
-        const ctx=c.getContext('2d');
-        const W=c.width,H=c.height;
-        ctx.clearRect(0,0,W,H);
-        const maxP=5000, pct=Math.min(Math.abs(p)/maxP,1), dir=v>=0?1:-1;
-        const cx=W/2, barH=24;
-        ctx.fillStyle='rgba(255,255,255,0.05)';
-        ctx.fillRect(10,H/2-barH/2,W-20,barH);
-        const grad=ctx.createLinearGradient(cx,0,cx+dir*(W/2-10)*pct,0);
-        grad.addColorStop(0,'#f97316'); grad.addColorStop(1,'#fbbf24');
-        ctx.fillStyle=grad;
-        ctx.fillRect(cx,H/2-barH/2,dir*(W/2-10)*pct,barH);
-        // arrow
-        ctx.fillStyle='rgba(255,255,255,0.6)';ctx.font='11px Inter';ctx.textAlign='center';
-        ctx.fillText(`p = ${fmt2(p)} kg·m/s`,W/2,H-5);
-        ctx.fillText(v>=0?'→':'←', W/2+dir*20, H/2+5);
-    }
-
-    // ============================================================
-    //  3. URTI
-    // ============================================================
-    let collAnim=null;
-    function runCollision(){
-        cancelAnimationFrame(collAnim);
-        const m1=parseFloat(document.getElementById('u-m1').value);
-        const v1=parseFloat(document.getElementById('u-v1').value);
-        const m2=parseFloat(document.getElementById('u-m2').value);
-        const v2=parseFloat(document.getElementById('u-v2').value);
-        const type=document.getElementById('u-type').value;
-        const res=document.getElementById('res-urto');
-        if([m1,v1,m2,v2].some(isNaN)||m1<=0||m2<=0){res.innerHTML='Valori non validi.';return;}
-
-        const pBefore = m1*v1 + m2*v2;
-        const EkBefore = 0.5*m1*v1*v1 + 0.5*m2*v2*v2;
-        let v1f, v2f;
-        if(type==='elastic'){
-            v1f=(m1-m2)/(m1+m2)*v1 + 2*m2/(m1+m2)*v2;
-            v2f=2*m1/(m1+m2)*v1 + (m2-m1)/(m1+m2)*v2;
-        } else if(type==='inelastic'){
-            const e=0.6;
-            v1f=(m1*v1+m2*v2+m2*e*(v2-v1))/(m1+m2);
-            v2f=(m1*v1+m2*v2+m1*e*(v1-v2))/(m1+m2);
-        } else { // perfect
-            v1f=v2f=(m1*v1+m2*v2)/(m1+m2);
+            drawQdmBar(p, m, v);
         }
-        const pAfter = m1*v1f + m2*v2f;
-        const EkAfter = 0.5*m1*v1f*v1f + 0.5*m2*v2f*v2f;
-        const EkLoss = EkBefore - EkAfter;
-        res.innerHTML=`
+        function drawQdmBar(p, m, v) {
+            const c = document.getElementById('qdm-canvas');
+            const ctx = c.getContext('2d');
+            const W = c.width, H = c.height;
+            ctx.clearRect(0, 0, W, H);
+            const maxP = 5000, pct = Math.min(Math.abs(p) / maxP, 1), dir = v >= 0 ? 1 : -1;
+            const cx = W / 2, barH = 24;
+            ctx.fillStyle = 'rgba(255,255,255,0.05)';
+            ctx.fillRect(10, H / 2 - barH / 2, W - 20, barH);
+            const grad = ctx.createLinearGradient(cx, 0, cx + dir * (W / 2 - 10) * pct, 0);
+            grad.addColorStop(0, '#f97316'); grad.addColorStop(1, '#fbbf24');
+            ctx.fillStyle = grad;
+            ctx.fillRect(cx, H / 2 - barH / 2, dir * (W / 2 - 10) * pct, barH);
+            // arrow
+            ctx.fillStyle = 'rgba(255,255,255,0.6)'; ctx.font = '11px Inter'; ctx.textAlign = 'center';
+            ctx.fillText(`p = ${fmt2(p)} kg·m/s`, W / 2, H - 5);
+            ctx.fillText(v >= 0 ? '→' : '←', W / 2 + dir * 20, H / 2 + 5);
+        }
+
+        // ============================================================
+        //  3. URTI
+        // ============================================================
+        let collAnim = null;
+        function runCollision() {
+            cancelAnimationFrame(collAnim);
+            const m1 = parseFloat(document.getElementById('u-m1').value);
+            const v1 = parseFloat(document.getElementById('u-v1').value);
+            const m2 = parseFloat(document.getElementById('u-m2').value);
+            const v2 = parseFloat(document.getElementById('u-v2').value);
+            const type = document.getElementById('u-type').value;
+            const res = document.getElementById('res-urto');
+            if ([m1, v1, m2, v2].some(isNaN) || m1 <= 0 || m2 <= 0) { res.innerHTML = 'Valori non validi.'; return; }
+
+            const pBefore = m1 * v1 + m2 * v2;
+            const EkBefore = 0.5 * m1 * v1 * v1 + 0.5 * m2 * v2 * v2;
+            let v1f, v2f;
+            if (type === 'elastic') {
+                v1f = (m1 - m2) / (m1 + m2) * v1 + 2 * m2 / (m1 + m2) * v2;
+                v2f = 2 * m1 / (m1 + m2) * v1 + (m2 - m1) / (m1 + m2) * v2;
+            } else if (type === 'inelastic') {
+                const e = 0.6;
+                v1f = (m1 * v1 + m2 * v2 + m2 * e * (v2 - v1)) / (m1 + m2);
+                v2f = (m1 * v1 + m2 * v2 + m1 * e * (v1 - v2)) / (m1 + m2);
+            } else { // perfect
+                v1f = v2f = (m1 * v1 + m2 * v2) / (m1 + m2);
+            }
+            const pAfter = m1 * v1f + m2 * v2f;
+            const EkAfter = 0.5 * m1 * v1f * v1f + 0.5 * m2 * v2f * v2f;
+            const EkLoss = EkBefore - EkAfter;
+            res.innerHTML = `
             <span class="row">Velocità finali: <span class="val">v₁f = ${fmtAuto(v1f)} m/s</span>&nbsp;&nbsp;<span class="val">v₂f = ${fmtAuto(v2f)} m/s</span></span>
             <span class="row">p prima: ${fmt2(pBefore)} kg·m/s → p dopo: <span style="color:#6ee7b7;font-weight:700;">${fmt2(pAfter)} kg·m/s</span> ✓ conservata</span>
-            <span class="row">Ek prima: ${fmt2(EkBefore)} J → Ek dopo: ${fmt2(EkAfter)} J  [perdita: ${fmt2(EkLoss)} J = ${EkBefore>0?(EkLoss/EkBefore*100).toFixed(1):0}%]</span>
+            <span class="row">Ek prima: ${fmt2(EkBefore)} J → Ek dopo: ${fmt2(EkAfter)} J  [perdita: ${fmt2(EkLoss)} J = ${EkBefore > 0 ? (EkLoss / EkBefore * 100).toFixed(1) : 0}%]</span>
         `;
-        animateCollision(m1,v1,m2,v2,v1f,v2f,type);
-    }
-
-    function animateCollision(m1,v1,m2,v2,v1f,v2f,type){
-        const c=document.getElementById('collision-canvas');
-        const ctx=c.getContext('2d');
-        const W=c.width,H=c.height;
-        const r1=Math.min(30,Math.max(10,m1*8)), r2=Math.min(30,Math.max(10,m2*8));
-        let x1=W*0.25, x2=W*0.65, phase='before', tCol=0, tEnd=0;
-        const speed=60; // px/s sim
-        let lastTime=null;
-
-        function frame(ts){
-            if(!lastTime){lastTime=ts;}
-            const dt=(ts-lastTime)/1000; lastTime=ts;
-            ctx.clearRect(0,0,W,H);
-            // floor
-            ctx.fillStyle='rgba(255,255,255,0.06)';ctx.fillRect(0,H-20,W,20);
-            // phase transitions
-            if(phase==='before'){
-                x1+=v1*speed*dt; x2+=v2*speed*dt;
-                // collision check
-                if(x1+r1>=x2-r2){ phase='after'; tEnd=0; x1=x2-r1-r2; }
-            } else {
-                x1+=v1f*speed*dt; x2+=v2f*speed*dt; tEnd+=dt;
-            }
-            // draw balls
-            [[x1,r1,'#f97316',`m₁=${m1}kg`],[x2,r2,'#38bdf8',`m₂=${m2}kg`]].forEach(([x,r,col,lbl])=>{
-                ctx.beginPath(); ctx.arc(x,H-20-r,r,0,Math.PI*2);
-                ctx.fillStyle=col; ctx.fill();
-                ctx.strokeStyle='white';ctx.lineWidth=1.5;ctx.stroke();
-                ctx.fillStyle='white';ctx.font=`${Math.max(9,r*0.6)}px Inter`;ctx.textAlign='center';
-                ctx.fillText(lbl,x,H-20-r*2-6);
-            });
-            // velocity arrows
-            const drawArrow=(x,y,vx,col)=>{
-                if(Math.abs(vx)<0.01) return;
-                const len=Math.min(60,Math.abs(vx)*18)*Math.sign(vx);
-                ctx.strokeStyle=col;ctx.lineWidth=2;
-                ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+len,y);
-                ctx.moveTo(x+len,y-5);ctx.lineTo(x+len+Math.sign(len)*8,y);ctx.lineTo(x+len,y+5);
-                ctx.stroke();
-                ctx.fillStyle=col;ctx.font='10px Inter';ctx.textAlign='center';
-                ctx.fillText(`v=${Math.abs(phase==='before'?(x===x1?v1:v2):(x===x1?v1f:v2f)).toFixed(1)}m/s`,x+len/2,y-10);
-            };
-            if(phase==='before'){
-                drawArrow(x1,H-20-r1,'#f97316');
-                drawArrow(x2,H-20-r2,'#38bdf8');
-            } else {
-                drawArrow(x1,H-20-r1,'#fda4af');
-                drawArrow(x2,H-20-r2,'#67e8f9');
-            }
-            // reset if out of bounds
-            if(x1>W+50||x1<-50||x2>W+50||x2<-50||tEnd>3){
-                x1=W*0.25; x2=W*0.65; phase='before'; lastTime=null;
-            }
-            collAnim=requestAnimationFrame(frame);
+            animateCollision(m1, v1, m2, v2, v1f, v2f, type);
         }
-        collAnim=requestAnimationFrame(frame);
-    }
 
-    // ============================================================
-    //  4. IMPULSO
-    // ============================================================
-    function calcImpulso(){
-        const F=parseFloat(document.getElementById('imp-f').value);
-        const dt=parseFloat(document.getElementById('imp-dt').value)/1000; // ms→s
-        const m=parseFloat(document.getElementById('imp-m').value);
-        const res=document.getElementById('res-impulso');
-        if([F,dt,m].some(isNaN)||F<=0||dt<=0||m<=0){res.innerHTML='Valori non validi.';return;}
-        const J=F*dt;
-        const dv=J/m;
-        res.innerHTML=`
-            <span class="row">Impulso: <span class="val">J = F·Δt = ${F}·${(dt*1000).toFixed(0)}ms = ${fmt2(J)} N·s = ${fmt2(J)} kg·m/s</span></span>
+        function animateCollision(m1, v1, m2, v2, v1f, v2f, type) {
+            const c = document.getElementById('collision-canvas');
+            const ctx = c.getContext('2d');
+            const W = c.width, H = c.height;
+            const r1 = Math.min(30, Math.max(10, m1 * 8)), r2 = Math.min(30, Math.max(10, m2 * 8));
+            let x1 = W * 0.25, x2 = W * 0.65, phase = 'before', tCol = 0, tEnd = 0;
+            const speed = 60; // px/s sim
+            let lastTime = null;
+
+            function frame(ts) {
+                if (!lastTime) { lastTime = ts; }
+                const dt = (ts - lastTime) / 1000; lastTime = ts;
+                ctx.clearRect(0, 0, W, H);
+                // floor
+                ctx.fillStyle = 'rgba(255,255,255,0.06)'; ctx.fillRect(0, H - 20, W, 20);
+                // phase transitions
+                if (phase === 'before') {
+                    x1 += v1 * speed * dt; x2 += v2 * speed * dt;
+                    // collision check
+                    if (x1 + r1 >= x2 - r2) { phase = 'after'; tEnd = 0; x1 = x2 - r1 - r2; }
+                } else {
+                    x1 += v1f * speed * dt; x2 += v2f * speed * dt; tEnd += dt;
+                }
+                // draw balls
+                [[x1, r1, '#f97316', `m₁=${m1}kg`], [x2, r2, '#38bdf8', `m₂=${m2}kg`]].forEach(([x, r, col, lbl]) => {
+                    ctx.beginPath(); ctx.arc(x, H - 20 - r, r, 0, Math.PI * 2);
+                    ctx.fillStyle = col; ctx.fill();
+                    ctx.strokeStyle = 'white'; ctx.lineWidth = 1.5; ctx.stroke();
+                    ctx.fillStyle = 'white'; ctx.font = `${Math.max(9, r * 0.6)}px Inter`; ctx.textAlign = 'center';
+                    ctx.fillText(lbl, x, H - 20 - r * 2 - 6);
+                });
+                // velocity arrows
+                const drawArrow = (x, y, vx, col) => {
+                    if (Math.abs(vx) < 0.01) return;
+                    const len = Math.min(60, Math.abs(vx) * 18) * Math.sign(vx);
+                    ctx.strokeStyle = col; ctx.lineWidth = 2;
+                    ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + len, y);
+                    ctx.moveTo(x + len, y - 5); ctx.lineTo(x + len + Math.sign(len) * 8, y); ctx.lineTo(x + len, y + 5);
+                    ctx.stroke();
+                    ctx.fillStyle = col; ctx.font = '10px Inter'; ctx.textAlign = 'center';
+                    ctx.fillText(`v=${Math.abs(phase === 'before' ? (x === x1 ? v1 : v2) : (x === x1 ? v1f : v2f)).toFixed(1)}m/s`, x + len / 2, y - 10);
+                };
+                if (phase === 'before') {
+                    drawArrow(x1, H - 20 - r1, '#f97316');
+                    drawArrow(x2, H - 20 - r2, '#38bdf8');
+                } else {
+                    drawArrow(x1, H - 20 - r1, '#fda4af');
+                    drawArrow(x2, H - 20 - r2, '#67e8f9');
+                }
+                // reset if out of bounds
+                if (x1 > W + 50 || x1 < -50 || x2 > W + 50 || x2 < -50 || tEnd > 3) {
+                    x1 = W * 0.25; x2 = W * 0.65; phase = 'before'; lastTime = null;
+                }
+                collAnim = requestAnimationFrame(frame);
+            }
+            collAnim = requestAnimationFrame(frame);
+        }
+
+        // ============================================================
+        //  4. IMPULSO
+        // ============================================================
+        function calcImpulso() {
+            const F = parseFloat(document.getElementById('imp-f').value);
+            const dt = parseFloat(document.getElementById('imp-dt').value) / 1000; // ms→s
+            const m = parseFloat(document.getElementById('imp-m').value);
+            const res = document.getElementById('res-impulso');
+            if ([F, dt, m].some(isNaN) || F <= 0 || dt <= 0 || m <= 0) { res.innerHTML = 'Valori non validi.'; return; }
+            const J = F * dt;
+            const dv = J / m;
+            res.innerHTML = `
+            <span class="row">Impulso: <span class="val">J = F·Δt = ${F}·${(dt * 1000).toFixed(0)}ms = ${fmt2(J)} N·s = ${fmt2(J)} kg·m/s</span></span>
             <span class="row">Variazione di velocità: Δv = J/m = ${fmt2(J)}/${m} = <span style="color:#c4b5fd;font-weight:700;">${fmt2(dv)} m/s</span></span>
             <span class="row" style="font-size:0.88rem;color:rgba(255,255,255,0.4);">Nota: stasso impulso con F×10 e Δt/10 → stesso Δv, forza 10× maggiore! (rilevante per sicurezza).</span>
         `;
-    }
-
-    function drawImpulsoCurve(){
-        const c=document.getElementById('impulso-canvas');
-        if(!c) return;
-        const ctx=c.getContext('2d');
-        const W=c.width, H=c.height;
-        ctx.clearRect(0,0,W,H);
-        const padL=50,padB=40,padT=20,padR=20;
-        const gW=W-padL-padR,gH=H-padT-padB;
-        // axes
-        ctx.strokeStyle='rgba(255,255,255,0.25)';ctx.lineWidth=1.5;
-        ctx.beginPath();ctx.moveTo(padL,padT);ctx.lineTo(padL,padT+gH);ctx.lineTo(padL+gW,padT+gH);ctx.stroke();
-        ctx.fillStyle='rgba(255,255,255,0.4)';ctx.font='12px Inter';
-        ctx.textAlign='center';ctx.fillText('Tempo t',padL+gW/2,H-5);
-        ctx.save();ctx.translate(14,padT+gH/2);ctx.rotate(-Math.PI/2);
-        ctx.fillText('Forza F',0,0);ctx.restore();
-
-        // Rectangle (constant force, long time) — area A
-        const rx=padL+20, rw=gW*0.45, rh=gH*0.4, ry=padT+gH-rh;
-        const area = rw*rh;
-        ctx.fillStyle='rgba(249,115,22,0.3)';ctx.fillRect(rx,ry,rw,rh);
-        ctx.strokeStyle='#f97316';ctx.lineWidth=2;ctx.strokeRect(rx,ry,rw,rh);
-        ctx.fillStyle='#fcd34d';ctx.font='bold 11px Inter';ctx.textAlign='center';
-        ctx.fillText('J = F·Δt (forza costante)',rx+rw/2,ry-6);
-
-        // Bell curve (short impulse) — same area
-        const bx=padL+gW*0.65, bPeak=gH*0.85, bW=gW*0.12;
-        ctx.fillStyle='rgba(239,68,68,0.3)';
-        ctx.beginPath();ctx.moveTo(bx-bW,padT+gH);
-        for(let x=-bW;x<=bW;x+=1){
-            const y=bPeak*Math.exp(-x*x/(bW*bW*0.12));
-            ctx.lineTo(bx+x,padT+gH-y);
         }
-        ctx.lineTo(bx+bW,padT+gH);ctx.closePath();ctx.fill();
-        ctx.strokeStyle='#ef4444';ctx.lineWidth=2;
-        ctx.beginPath();ctx.moveTo(bx-bW,padT+gH);
-        for(let x=-bW;x<=bW;x+=1){
-            const y=bPeak*Math.exp(-x*x/(bW*bW*0.12));
-            ctx.lineTo(bx+x,padT+gH-y);
+
+        function drawImpulsoCurve() {
+            const c = document.getElementById('impulso-canvas');
+            if (!c) return;
+            const ctx = c.getContext('2d');
+            const W = c.width, H = c.height;
+            ctx.clearRect(0, 0, W, H);
+            const padL = 50, padB = 40, padT = 20, padR = 20;
+            const gW = W - padL - padR, gH = H - padT - padB;
+            // axes
+            ctx.strokeStyle = 'rgba(255,255,255,0.25)'; ctx.lineWidth = 1.5;
+            ctx.beginPath(); ctx.moveTo(padL, padT); ctx.lineTo(padL, padT + gH); ctx.lineTo(padL + gW, padT + gH); ctx.stroke();
+            ctx.fillStyle = 'rgba(255,255,255,0.4)'; ctx.font = '12px Inter';
+            ctx.textAlign = 'center'; ctx.fillText('Tempo t', padL + gW / 2, H - 5);
+            ctx.save(); ctx.translate(14, padT + gH / 2); ctx.rotate(-Math.PI / 2);
+            ctx.fillText('Forza F', 0, 0); ctx.restore();
+
+            // Rectangle (constant force, long time) — area A
+            const rx = padL + 20, rw = gW * 0.45, rh = gH * 0.4, ry = padT + gH - rh;
+            const area = rw * rh;
+            ctx.fillStyle = 'rgba(249,115,22,0.3)'; ctx.fillRect(rx, ry, rw, rh);
+            ctx.strokeStyle = '#f97316'; ctx.lineWidth = 2; ctx.strokeRect(rx, ry, rw, rh);
+            ctx.fillStyle = '#fcd34d'; ctx.font = 'bold 11px Inter'; ctx.textAlign = 'center';
+            ctx.fillText('J = F·Δt (forza costante)', rx + rw / 2, ry - 6);
+
+            // Bell curve (short impulse) — same area
+            const bx = padL + gW * 0.65, bPeak = gH * 0.85, bW = gW * 0.12;
+            ctx.fillStyle = 'rgba(239,68,68,0.3)';
+            ctx.beginPath(); ctx.moveTo(bx - bW, padT + gH);
+            for (let x = -bW; x <= bW; x += 1) {
+                const y = bPeak * Math.exp(-x * x / (bW * bW * 0.12));
+                ctx.lineTo(bx + x, padT + gH - y);
+            }
+            ctx.lineTo(bx + bW, padT + gH); ctx.closePath(); ctx.fill();
+            ctx.strokeStyle = '#ef4444'; ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.moveTo(bx - bW, padT + gH);
+            for (let x = -bW; x <= bW; x += 1) {
+                const y = bPeak * Math.exp(-x * x / (bW * bW * 0.12));
+                ctx.lineTo(bx + x, padT + gH - y);
+            }
+            ctx.stroke();
+            ctx.fillStyle = '#fca5a5'; ctx.font = 'bold 11px Inter'; ctx.textAlign = 'center';
+            ctx.fillText('Stessa area →', bx, padT + gH - bPeak - 12);
+            ctx.fillText('stesso impulso!', bx, padT + gH - bPeak + 2);
         }
-        ctx.stroke();
-        ctx.fillStyle='#fca5a5';ctx.font='bold 11px Inter';ctx.textAlign='center';
-        ctx.fillText('Stessa area →',bx,padT+gH-bPeak-12);
-        ctx.fillText('stesso impulso!',bx,padT+gH-bPeak+2);
-    }
 
-    // ============================================================
-    //  5. MOMENTO ANGOLARE — PATTINATORE
-    // ============================================================
-    // masse: corpo centrale m_body=50kg a r=0.2m, braccia m_arms=5kg ciascuno a r variabile
-    const M_BODY=50, R_BODY=0.2, M_ARMS=5;
-    const I_body=0.5*M_BODY*R_BODY*R_BODY; // cilindro solido
-    const r0=0.7; // posizione iniziale braccia
-    const I0=I_body+2*M_ARMS*r0*r0;
-    const omega0=2; // rad/s iniziale
-    const L0=I0*omega0;
+        // ============================================================
+        //  5. MOMENTO ANGOLARE — PATTINATORE
+        // ============================================================
+        // masse: corpo centrale m_body=50kg a r=0.2m, braccia m_arms=5kg ciascuno a r variabile
+        const M_BODY = 50, R_BODY = 0.2, M_ARMS = 5;
+        const I_body = 0.5 * M_BODY * R_BODY * R_BODY; // cilindro solido
+        const r0 = 0.7; // posizione iniziale braccia
+        const I0 = I_body + 2 * M_ARMS * r0 * r0;
+        const omega0 = 2; // rad/s iniziale
+        const L0 = I0 * omega0;
 
-    function updateSkater(){
-        const r=parseFloat(document.getElementById('sk-r').value);
-        document.getElementById('sk-r-val').textContent=r.toFixed(2)+' m';
-        const I=I_body+2*M_ARMS*r*r;
-        const omega=L0/I;
-        const rps=omega/(2*Math.PI);
-        document.getElementById('res-skater').innerHTML=`
+        function updateSkater() {
+            const r = parseFloat(document.getElementById('sk-r').value);
+            document.getElementById('sk-r-val').textContent = r.toFixed(2) + ' m';
+            const I = I_body + 2 * M_ARMS * r * r;
+            const omega = L0 / I;
+            const rps = omega / (2 * Math.PI);
+            document.getElementById('res-skater').innerHTML = `
             <span class="row">Raggio braccia: r = ${r.toFixed(2)} m → Momento d'inerzia: I = ${I.toFixed(3)} kg·m²</span>
             <span class="row">L conservato = ${L0.toFixed(3)} kg·m²/s → ω = L/I = <span style="color:var(--ang-color);font-weight:700;">${omega.toFixed(2)} rad/s = ${rps.toFixed(2)} giri/s</span></span>
         `;
-        drawSkater(r, omega, I);
-    }
+            drawSkater(r, omega, I);
+        }
 
-    function drawSkater(r, omega, I){
-        const c=document.getElementById('skater-canvas');
-        const ctx=c.getContext('2d');
-        const W=c.width, H=c.height;
-        ctx.clearRect(0,0,W,H);
-        const cx=W/2, cy=H/2;
+        function drawSkater(r, omega, I) {
+            const c = document.getElementById('skater-canvas');
+            const ctx = c.getContext('2d');
+            const W = c.width, H = c.height;
+            ctx.clearRect(0, 0, W, H);
+            const cx = W / 2, cy = H / 2;
 
-        // rotation circle
-        ctx.beginPath();ctx.arc(cx,cy,r*80,0,Math.PI*2);
-        ctx.strokeStyle='rgba(56,189,248,0.15)';ctx.lineWidth=1;ctx.setLineDash([4,4]);
-        ctx.stroke();ctx.setLineDash([]);
+            // rotation circle
+            ctx.beginPath(); ctx.arc(cx, cy, r * 80, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(56,189,248,0.15)'; ctx.lineWidth = 1; ctx.setLineDash([4, 4]);
+            ctx.stroke(); ctx.setLineDash([]);
 
-        // body
-        ctx.beginPath();ctx.arc(cx,cy,R_BODY*80,0,Math.PI*2);
-        ctx.fillStyle='rgba(56,189,248,0.3)';ctx.fill();
-        ctx.strokeStyle='#38bdf8';ctx.lineWidth=2;ctx.stroke();
+            // body
+            ctx.beginPath(); ctx.arc(cx, cy, R_BODY * 80, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(56,189,248,0.3)'; ctx.fill();
+            ctx.strokeStyle = '#38bdf8'; ctx.lineWidth = 2; ctx.stroke();
 
-        // arms
-        ctx.strokeStyle='#7dd3fc';ctx.lineWidth=6;ctx.lineCap='round';
-        ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx-r*80,cy);ctx.stroke();
-        ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+r*80,cy);ctx.stroke();
-        // arm dots
-        [cx-r*80,cx+r*80].forEach(ax=>{
-            ctx.beginPath();ctx.arc(ax,cy,10,0,Math.PI*2);
-            ctx.fillStyle='#38bdf8';ctx.fill();
-        });
+            // arms
+            ctx.strokeStyle = '#7dd3fc'; ctx.lineWidth = 6; ctx.lineCap = 'round';
+            ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx - r * 80, cy); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx + r * 80, cy); ctx.stroke();
+            // arm dots
+            [cx - r * 80, cx + r * 80].forEach(ax => {
+                ctx.beginPath(); ctx.arc(ax, cy, 10, 0, Math.PI * 2);
+                ctx.fillStyle = '#38bdf8'; ctx.fill();
+            });
 
-        // omega arrow (arc)
-        const rArc=R_BODY*80+15;
-        ctx.strokeStyle=omega>3?'#ef4444':'#fbbf24';ctx.lineWidth=2.5;
-        ctx.beginPath();ctx.arc(cx,cy,rArc,0.2,Math.PI*1.8);ctx.stroke();
-        const ex=cx+rArc*Math.cos(Math.PI*1.8), ey=cy+rArc*Math.sin(Math.PI*1.8);
-        ctx.fillStyle=omega>3?'#ef4444':'#fbbf24';
-        ctx.beginPath();ctx.moveTo(ex,ey);ctx.lineTo(ex-10,ey-5);ctx.lineTo(ex-6,ey+6);ctx.closePath();ctx.fill();
+            // omega arrow (arc)
+            const rArc = R_BODY * 80 + 15;
+            ctx.strokeStyle = omega > 3 ? '#ef4444' : '#fbbf24'; ctx.lineWidth = 2.5;
+            ctx.beginPath(); ctx.arc(cx, cy, rArc, 0.2, Math.PI * 1.8); ctx.stroke();
+            const ex = cx + rArc * Math.cos(Math.PI * 1.8), ey = cy + rArc * Math.sin(Math.PI * 1.8);
+            ctx.fillStyle = omega > 3 ? '#ef4444' : '#fbbf24';
+            ctx.beginPath(); ctx.moveTo(ex, ey); ctx.lineTo(ex - 10, ey - 5); ctx.lineTo(ex - 6, ey + 6); ctx.closePath(); ctx.fill();
 
-        // labels
-        ctx.fillStyle='rgba(255,255,255,0.7)';ctx.font='12px Inter';ctx.textAlign='center';
-        ctx.fillText(`ω = ${omega.toFixed(2)} rad/s`,cx,cy-R_BODY*80-20);
-        ctx.fillStyle='rgba(255,255,255,0.35)';ctx.font='10px Inter';
-        ctx.fillText(`I = ${I.toFixed(2)} kg·m²`,cx,cy+R_BODY*80+22);
-        ctx.fillText(`L = ${L0.toFixed(2)} kg·m²/s (conservato)`,cx,H-10);
+            // labels
+            ctx.fillStyle = 'rgba(255,255,255,0.7)'; ctx.font = '12px Inter'; ctx.textAlign = 'center';
+            ctx.fillText(`ω = ${omega.toFixed(2)} rad/s`, cx, cy - R_BODY * 80 - 20);
+            ctx.fillStyle = 'rgba(255,255,255,0.35)'; ctx.font = '10px Inter';
+            ctx.fillText(`I = ${I.toFixed(2)} kg·m²`, cx, cy + R_BODY * 80 + 22);
+            ctx.fillText(`L = ${L0.toFixed(2)} kg·m²/s (conservato)`, cx, H - 10);
 
-        // ω bar
-        const maxOmega=12, pct=Math.min(omega/maxOmega,1);
-        ctx.fillStyle='rgba(255,255,255,0.06)';ctx.fillRect(10,10,150,14);
-        const bg=ctx.createLinearGradient(10,0,160,0);
-        bg.addColorStop(0,'#38bdf8');bg.addColorStop(1,'#ef4444');
-        ctx.fillStyle=bg;ctx.fillRect(10,10,pct*150,14);
-        ctx.fillStyle='rgba(255,255,255,0.5)';ctx.font='10px Inter';ctx.textAlign='left';
-        ctx.fillText('velocità angolare',10,38);
-    }
+            // ω bar
+            const maxOmega = 12, pct = Math.min(omega / maxOmega, 1);
+            ctx.fillStyle = 'rgba(255,255,255,0.06)'; ctx.fillRect(10, 10, 150, 14);
+            const bg = ctx.createLinearGradient(10, 0, 160, 0);
+            bg.addColorStop(0, '#38bdf8'); bg.addColorStop(1, '#ef4444');
+            ctx.fillStyle = bg; ctx.fillRect(10, 10, pct * 150, 14);
+            ctx.fillStyle = 'rgba(255,255,255,0.5)'; ctx.font = '10px Inter'; ctx.textAlign = 'left';
+            ctx.fillText('velocità angolare', 10, 38);
+        }
 
-    function calcAngolare(){
-        const I=parseFloat(document.getElementById('ang-I').value);
-        const w=parseFloat(document.getElementById('ang-w').value);
-        const res=document.getElementById('res-angolare');
-        if([I,w].some(isNaN)||I<=0){res.innerHTML='Valori non validi.';return;}
-        const L=I*w;
-        const Erot=0.5*I*w*w;
-        res.innerHTML=`
+        function calcAngolare() {
+            const I = parseFloat(document.getElementById('ang-I').value);
+            const w = parseFloat(document.getElementById('ang-w').value);
+            const res = document.getElementById('res-angolare');
+            if ([I, w].some(isNaN) || I <= 0) { res.innerHTML = 'Valori non validi.'; return; }
+            const L = I * w;
+            const Erot = 0.5 * I * w * w;
+            res.innerHTML = `
             <span class="row">Momento angolare: <span class="val">L = I·ω = ${fmt2(I)}·${fmt2(w)} = ${fmt2(L)} kg·m²/s</span></span>
             <span class="row">Energia cinetica rotazionale: E_rot = ½·I·ω² = ${fmt2(Erot)} J</span>
         `;
-    }
-
-    // ============================================================
-    //  QUIZ
-    // ============================================================
-    const quizData=[
-        {
-            q:"La quantità di moto di un oggetto è p = mv = 200 kg·m/s. Se la sua velocità raddoppia mantenendo la stessa massa, la nuova quantità di moto è:",
-            opts:["100 kg·m/s","200 kg·m/s","400 kg·m/s","40 000 kg·m/s"],
-            ans:2, exp:"p = mv. Se v raddoppia con m costante, anche p raddoppia: 2·200 = 400 kg·m/s. Attenzione: l'energia cinetica (½mv²) invece quadruplica! La dipendenza lineare da v è la differenza fondamentale tra p ed Ek."
-        },
-        {
-            q:"In un sistema isolato (nessuna forza esterna), cosa si conserva durante un urto?",
-            opts:["Solo l'energia cinetica","Solo la quantità di moto totale","Sia la quantità di moto che l'energia cinetica","Né la quantità di moto né l'energia cinetica"],
-            ans:1, exp:"La quantità di moto totale si conserva SEMPRE in un sistema isolato (è conseguenza della III legge di Newton). L'energia cinetica si conserva solo negli urti elastici: negli urti anelastici parte di Ek si converte in calore, suono, deformazione."
-        },
-        {
-            q:"Una pallina bianca da biliardo colpisce frontalmente una pallina nera identica ferma. L'urto è elastico. Cosa accade?",
-            opts:["Entrambe si fermano","La bianca si ferma, la nera riparte con la velocità iniziale della bianca","Entrambe si muovono alla stessa velocità (metà di quella iniziale)","La bianca rimbalza indietro"],
-            ans:1, exp:"Per masse uguali e urto elastico frontale: v1f = 0, v2f = v1i. Il corpo colpente si ferma completamente, quello colpito riparte con la stessa velocità. Si vede chiaramente al biliardo — e anche nel pendolo di Newton con le palline metalliche."
-        },
-        {
-            q:"L'impulso J = F·Δt. Un airbag aumenta il tempo di collisione da 5 ms a 50 ms. Se la variazione di quantità di moto (Δp) rimane uguale, la forza sul passeggero diventa:",
-            opts:["10 volte maggiore","Uguale","10 volte minore","100 volte minore"],
-            ans:2, exp:"J = F·Δt = Δp = costante. Se Δt è 10 volte più grande, F deve essere 10 volte più piccola per mantenere lo stesso prodotto. Questo è il principio dell'airbag: stessa variazione di quantità di moto, più tempo → meno forza → meno danno."
-        },
-        {
-            q:"Un pattinatore ha momento angolare L = 20 kg·m²/s. Raccoglie le braccia riducendo il momento d'inerzia da I₁ = 4 kg·m² a I₂ = 1 kg·m². La nuova velocità angolare ω₂ è:",
-            opts:["5 rad/s","10 rad/s","20 rad/s","80 rad/s"],
-            ans:2, exp:"L = I·ω = costante. ω₁ = L/I₁ = 20/4 = 5 rad/s. ω₂ = L/I₂ = 20/1 = 20 rad/s. La velocità quadruplica quando il momento d'inerzia si riduce a ¼. Stessa fisica delle pulsar!"
-        },
-        {
-            q:"La seconda legge di Newton nella forma originale di Newton è:",
-            opts:["F = ma","F = Δp/Δt","F = mv","F = Δv/Δt"],
-            ans:1, exp:"Newton scrisse la seconda legge come 'la forza è la variazione della quantità di moto nel tempo': F = Δp/Δt. Quando la massa è costante, Δp/Δt = m·Δv/Δt = ma. Ma per sistemi a massa variabile (razzo che espelle carburante) solo la forma originale F = Δp/Δt è corretta."
         }
-    ];
 
-    let score=0,answered=0;
-    function loadQuiz(){
-        document.getElementById('quiz-area').innerHTML=quizData.map((q,i)=>`
+        // ============================================================
+        //  QUIZ
+        // ============================================================
+        const quizData = [
+            {
+                q: "La quantità di moto di un oggetto è p = mv = 200 kg·m/s. Se la sua velocità raddoppia mantenendo la stessa massa, la nuova quantità di moto è:",
+                opts: ["100 kg·m/s", "200 kg·m/s", "400 kg·m/s", "40 000 kg·m/s"],
+                ans: 2, exp: "p = mv. Se v raddoppia con m costante, anche p raddoppia: 2·200 = 400 kg·m/s. Attenzione: l'energia cinetica (½mv²) invece quadruplica! La dipendenza lineare da v è la differenza fondamentale tra p ed Ek."
+            },
+            {
+                q: "In un sistema isolato (nessuna forza esterna), cosa si conserva durante un urto?",
+                opts: ["Solo l'energia cinetica", "Solo la quantità di moto totale", "Sia la quantità di moto che l'energia cinetica", "Né la quantità di moto né l'energia cinetica"],
+                ans: 1, exp: "La quantità di moto totale si conserva SEMPRE in un sistema isolato (è conseguenza della III legge di Newton). L'energia cinetica si conserva solo negli urti elastici: negli urti anelastici parte di Ek si converte in calore, suono, deformazione."
+            },
+            {
+                q: "Una pallina bianca da biliardo colpisce frontalmente una pallina nera identica ferma. L'urto è elastico. Cosa accade?",
+                opts: ["Entrambe si fermano", "La bianca si ferma, la nera riparte con la velocità iniziale della bianca", "Entrambe si muovono alla stessa velocità (metà di quella iniziale)", "La bianca rimbalza indietro"],
+                ans: 1, exp: "Per masse uguali e urto elastico frontale: v1f = 0, v2f = v1i. Il corpo colpente si ferma completamente, quello colpito riparte con la stessa velocità. Si vede chiaramente al biliardo — e anche nel pendolo di Newton con le palline metalliche."
+            },
+            {
+                q: "L'impulso J = F·Δt. Un airbag aumenta il tempo di collisione da 5 ms a 50 ms. Se la variazione di quantità di moto (Δp) rimane uguale, la forza sul passeggero diventa:",
+                opts: ["10 volte maggiore", "Uguale", "10 volte minore", "100 volte minore"],
+                ans: 2, exp: "J = F·Δt = Δp = costante. Se Δt è 10 volte più grande, F deve essere 10 volte più piccola per mantenere lo stesso prodotto. Questo è il principio dell'airbag: stessa variazione di quantità di moto, più tempo → meno forza → meno danno."
+            },
+            {
+                q: "Un pattinatore ha momento angolare L = 20 kg·m²/s. Raccoglie le braccia riducendo il momento d'inerzia da I₁ = 4 kg·m² a I₂ = 1 kg·m². La nuova velocità angolare ω₂ è:",
+                opts: ["5 rad/s", "10 rad/s", "20 rad/s", "80 rad/s"],
+                ans: 2, exp: "L = I·ω = costante. ω₁ = L/I₁ = 20/4 = 5 rad/s. ω₂ = L/I₂ = 20/1 = 20 rad/s. La velocità quadruplica quando il momento d'inerzia si riduce a ¼. Stessa fisica delle pulsar!"
+            },
+            {
+                q: "La seconda legge di Newton nella forma originale di Newton è:",
+                opts: ["F = ma", "F = Δp/Δt", "F = mv", "F = Δv/Δt"],
+                ans: 1, exp: "Newton scrisse la seconda legge come 'la forza è la variazione della quantità di moto nel tempo': F = Δp/Δt. Quando la massa è costante, Δp/Δt = m·Δv/Δt = ma. Ma per sistemi a massa variabile (razzo che espelle carburante) solo la forma originale F = Δp/Δt è corretta."
+            }
+        ];
+
+        let score = 0, answered = 0;
+        function loadQuiz() {
+            document.getElementById('quiz-area').innerHTML = quizData.map((q, i) => `
             <div class="quiz-question">
-                <h3>${i+1}. ${q.q}</h3>
+                <h3>${i + 1}. ${q.q}</h3>
                 <div class="quiz-options">
-                    ${q.opts.map((o,j)=>`<button class="quiz-btn" onclick="checkQ(${i},${j},this)">${o}</button>`).join('')}
+                    ${q.opts.map((o, j) => `<button class="quiz-btn" onclick="checkQ(${i},${j},this)">${o}</button>`).join('')}
                 </div>
                 <div id="qexp-${i}" style="display:none;margin-top:0.6rem;font-size:0.87rem;color:#6ee7b7;background:rgba(16,185,129,0.07);padding:0.7rem 1rem;border-radius:8px;"></div>
             </div>`).join('');
-    }
-    window.checkQ=function(qi,oi,btn){
-        const btns=btn.parentElement.querySelectorAll('.quiz-btn');
-        btns.forEach(b=>b.disabled=true);
-        if(oi===quizData[qi].ans){btn.classList.add('correct');score++;}
-        else{btn.classList.add('wrong');btns[quizData[qi].ans].classList.add('correct');}
-        document.getElementById('qexp-'+qi).textContent='💡 '+quizData[qi].exp;
-        document.getElementById('qexp-'+qi).style.display='block';
-        answered++;
-        if(answered===quizData.length){
-            const pct=Math.round(score/quizData.length*100);
-            document.getElementById('quiz-score').textContent=
-                `Punteggio: ${score}/${quizData.length} (${pct}%). ${
-                pct===100?'🏆 Perfetto! Sei un esperto di momentum!':
-                pct>=75?'🚀 Ottimo! Hai capito la conservazione.':
-                pct>=50?'📚 Buono! Rileggi le sezioni sugli urti e il momento angolare.':
-                '🔄 Rileggi la lezione — il momentum ti aspetta!'}`;
         }
-    };
+        window.checkQ = function (qi, oi, btn) {
+            const btns = btn.parentElement.querySelectorAll('.quiz-btn');
+            btns.forEach(b => b.disabled = true);
+            if (oi === quizData[qi].ans) { btn.classList.add('correct'); score++; }
+            else { btn.classList.add('wrong'); btns[quizData[qi].ans].classList.add('correct'); }
+            document.getElementById('qexp-' + qi).textContent = '💡 ' + quizData[qi].exp;
+            document.getElementById('qexp-' + qi).style.display = 'block';
+            answered++;
+            if (answered === quizData.length) {
+                const pct = Math.round(score / quizData.length * 100);
+                document.getElementById('quiz-score').textContent =
+                    `Punteggio: ${score}/${quizData.length} (${pct}%). ${pct === 100 ? '🏆 Perfetto! Sei un esperto della quantità di moto!' :
+                        pct >= 75 ? '🚀 Ottimo! Hai capito la conservazione.' :
+                            pct >= 50 ? '📚 Buono! Rileggi le sezioni sugli urti e il momento angolare.' :
+                                '🔄 Rileggi la lezione — la quantità di moto ti aspetta!'}`;
+            }
+        };
 
-    // ============================================================
-    //  INIT
-    // ============================================================
-    document.addEventListener('DOMContentLoaded',()=>{
-        updateSkater();
-        loadQuiz();
-        drawImpulsoCurve();
-    });
+        // ============================================================
+        //  INIT
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', () => {
+            updateSkater();
+            loadQuiz();
+            drawImpulsoCurve();
+        });
     </script>
     <script src="../../js/main.js"></script>
 </body>
+
 </html>
