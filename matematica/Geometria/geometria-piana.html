@@ -389,12 +389,14 @@
             <h2 class="lesson-title" style="color: #10B981;">7. La Circonferenza e Pi Greco</h2>
             <p class="lesson-text">Per i matematici greci, il <strong>cerchio</strong> rappresentava la figura geometrica più perfetta. Si ottiene fissando un punto (il <em>centro</em>) e una distanza costante da esso (il <em>raggio</em> $r$): l'insieme di tutti i punti a quella distanza dal centro forma la <strong>circonferenza</strong>. Il cerchio è la regione di piano delimitata dalla circonferenza, mentre la circonferenza stessa è solo il suo contorno.</p>
             <p class="lesson-text">Gli antichi matematici si accorsero presto di qualcosa di sorprendente: se si «srotola» mentalmente la circonferenza e la si confronta con il diametro ($d = 2r$), si scopre che la lunghezza della circonferenza contiene il diametro <strong>poco più di tre volte</strong>, con un avanzo preciso e costante per qualsiasi cerchio.</p>
+            <p class="lesson-text">Un'altra proprietà fondamentale della circonferenza riguarda la sua costruzione: <strong>per tre punti non allineati passa una e una sola circonferenza</strong>. Questo significa che se si scelgono tre punti qualsiasi nel piano (che non formano una linea retta), esiste un unico centro e un unico raggio che permettono di tracciare una circonferenza che li tocchi tutti e tre. Questo concetto è anche la base per individuare il circocentro in un triangolo.</p>
             
             <div style="background: rgba(16, 185, 129, 0.05); padding: 1.5rem; border-left: 4px solid #10B981; margin: 2rem 0; display:flex; flex-wrap:wrap; gap: 2rem;">
                 <div style="flex:2; min-width: 250px;">
                     <h4 style="color: #10B981; margin-bottom: 0.5rem;">Un Numero Irrazionale Sfuggente</h4>
                     <p style="font-size: 0.95rem; color: var(--text-main); line-height:1.6; margin-bottom: 0.5rem;">Il rapporto costante tra la lunghezza della circonferenza e il suo diametro è la celebre costante <strong>Pi Greco ($\pi$)</strong>, nota anche come costante di Archimede.</p>
                     <p style="font-size: 0.95rem; color: var(--text-muted); line-height:1.6;">I moderni calcolatori hanno verificato che $\pi = 3.14159\ldots$ e che le sue cifre decimali si estendono all'infinito senza mai ripetersi con un periodo regolare. <strong>$\pi$ è un numero irrazionale e trascendente</strong>: questo significa che non può essere espresso come frazione di due numeri interi, e che non è radice di nessun polinomio a coefficienti interi. La sua natura rende impossibile rappresentarlo in forma esatta con un numero finito di simboli algebrici ordinari.</p>
+                    <p style="font-size: 0.95rem; color: var(--text-muted); line-height:1.6; margin-top: 0.8rem;"><strong>Curiosità:</strong> Poiché le cifre di $\pi$ proseguono all'infinito senza alcuno schema fisso (si ipotizza che sia un numero cosiddetto "normale"), si ritiene che all'interno della sua infinita sequenza decimale sia contenuta <em>qualsiasi</em> combinazione finita di numeri. Questo significa che, da qualche parte in $\pi$, si trova nascosta la tua data di nascita, il tuo numero di telefono o qualsiasi altra sequenza tu possa immaginare!</p>
                 </div>
                 <div style="flex:1; min-width: 200px; display:flex; flex-direction:column; justify-content:center; gap: 1rem;">
                     <div style="background:rgba(255,255,255,0.04); padding:1.5rem; border-radius:8px; text-align:center; border: 1px solid rgba(16, 185, 129, 0.2);">
@@ -407,6 +409,87 @@
                     </div>
                 </div>
             </div>
+            <!-- VISUALIZZAZIONE INTERATTIVA: PERCHÉ A = πr² -->
+            <div style="margin-top: 2.5rem;">
+                <h3 style="color: #10B981; margin-bottom: 0.8rem; display:flex; align-items:center; gap: 0.6rem;">
+                    <span style="font-size:1.4rem;">🔵</span> Perché l'area del cerchio è proprio $\pi r^2$?
+                </h3>
+                <p class="lesson-text">La formula $A = \pi r^2$ può sembrare arbitraria, ma si capisce con una dimostrazione elegante e visiva: immagina di tagliare il cerchio in tante <strong>fette triangolari</strong> uguali, come una pizza. Se poi le disponi alternandole (una punta in su, una punta in giù), le fette si incastrano formando una figura che assomiglia sempre di più a un <strong>rettangolo</strong>. Il lato lungo è metà della circonferenza, cioè $\pi r$, e l'altezza è il raggio $r$. L'area di questo rettangolo è:
+                $$\pi r \cdot r = \pi r^2$$</p>
+
+                <div class="interactive-container" style="margin-top: 1rem;">
+                    <h3 style="color: #10B981; margin-bottom: 0.5rem; text-align:center;">🎬 Animazione: dalla Pizza al Rettangolo</h3>
+                    <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:1rem; text-align:center;">
+                        Premi <strong>Avvia</strong> per vedere come le fette del cerchio si ricompongono in un rettangolo di area $\pi r^2$. Usa lo slider per aumentare il numero di fette e guarda il rettangolo diventare sempre più preciso.
+                    </p>
+                    <canvas id="areaCircleCanvas" width="640" height="340"></canvas>
+                    <div style="margin-top:1.2rem; display:flex; align-items:center; gap:1rem; flex-wrap:wrap; justify-content:center;">
+                        <label style="color:var(--text-muted); font-size:0.9rem;">Numero fette:</label>
+                        <input type="range" id="areaSlicesSlider" min="4" max="60" value="8" step="2"
+                               style="width:200px; accent-color:#10B981;">
+                        <span id="areaSlicesVal" style="color:#10B981; font-weight:700; min-width:50px;">8 fette</span>
+                    </div>
+                    <div style="display:flex; justify-content:center; gap:1rem; margin-top:1rem; flex-wrap:wrap;">
+                        <div style="background:rgba(0,0,0,0.2); padding:0.6rem 1.2rem; border-radius:8px; text-align:center; min-width:160px;">
+                            <div style="font-size:0.8rem; color:var(--text-muted);">Numero fette</div>
+                            <div id="area-rings-count" style="font-size:1.3rem; font-weight:800; color:#10B981;">8</div>
+                        </div>
+                        <div style="background:rgba(0,0,0,0.2); padding:0.6rem 1.2rem; border-radius:8px; text-align:center; min-width:160px;">
+                            <div style="font-size:0.8rem; color:var(--text-muted);">Forma rettangolo</div>
+                            <div id="area-approx" style="font-size:1.3rem; font-weight:800; color:#3B82F6;">πr × r</div>
+                        </div>
+                        <div style="background:rgba(0,0,0,0.2); padding:0.6rem 1.2rem; border-radius:8px; text-align:center; min-width:160px;">
+                            <div style="font-size:0.8rem; color:var(--text-muted);">Area = $\pi r^2$</div>
+                            <div id="area-exact" style="font-size:1.3rem; font-weight:800; color:#F59E0B;">—</div>
+                        </div>
+                    </div>
+                    <div class="controls" style="margin-top:1rem;">
+                        <button class="control-btn" id="btnAreaStart">▶ Avvia Animazione</button>
+                        <button class="control-btn" id="btnAreaReset" style="background:#64748b;">↺ Reset</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ESPERIMENTO: VERIFICA CHE C/(2r) = π -->
+            <div style="margin-top: 3rem;">
+                <h3 style="color: #10B981; margin-bottom: 0.8rem; display:flex; align-items:center; gap:0.6rem;">
+                    <span style="font-size:1.4rem;">🔬</span> Esperimento: il rapporto $C / d$ è sempre $\pi$?
+                </h3>
+                <p class="lesson-text">Gli antichi si accorsero empiricamente che, qualunque fosse la dimensione del cerchio, il rapporto tra la <strong>lunghezza della circonferenza</strong> $C$ e il <strong>diametro</strong> $d = 2r$ era sempre lo stesso numero misterioso. Prova a "misurare" tu stesso questo rapporto su cerchi di dimensioni diverse: trascina il cursore per cambiare il raggio e guarda come il rapporto $C/d$ rimane invariabilmente vicino a $\pi \approx 3.14159\ldots$</p>
+
+                <div class="interactive-container" style="margin-top: 1rem;">
+                    <h3 style="color: #10B981; margin-bottom: 0.5rem; text-align:center;">📏 Misura il Rapporto $C/d$</h3>
+                    <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:1rem; text-align:center;">
+                        Regola il raggio con lo slider. Poi premi <strong>Fai Rotolare</strong>: la circonferenza rotola lungo il terreno come una ruota e un punto rosso traccia il percorso. Alla fine, misura quanto ha percorso!
+                    </p>
+                    <canvas id="piRatioCanvas" width="640" height="340"></canvas>
+                    <div style="margin-top:1.2rem; display:flex; align-items:center; gap:1rem; flex-wrap:wrap; justify-content:center;">
+                        <label style="color:var(--text-muted); font-size:0.9rem;">Raggio:</label>
+                        <input type="range" id="piRadiusSlider" min="40" max="120" value="80"
+                               style="width:200px; accent-color:#10B981;">
+                        <span id="piRadiusVal" style="color:#10B981; font-weight:700; min-width:50px;">r = 80</span>
+                    </div>
+                    <div style="display:flex; justify-content:center; gap:1rem; margin-top:1rem; flex-wrap:wrap;">
+                        <div style="background:rgba(0,0,0,0.2); padding:0.6rem 1.2rem; border-radius:8px; text-align:center; min-width:160px;">
+                            <div style="font-size:0.8rem; color:var(--text-muted);">Circonferenza C</div>
+                            <div id="pi-circ-val" style="font-size:1.3rem; font-weight:800; color:#10B981;">—</div>
+                        </div>
+                        <div style="background:rgba(0,0,0,0.2); padding:0.6rem 1.2rem; border-radius:8px; text-align:center; min-width:160px;">
+                            <div style="font-size:0.8rem; color:var(--text-muted);">Diametro d = 2r</div>
+                            <div id="pi-diam-val" style="font-size:1.3rem; font-weight:800; color:#3B82F6;">—</div>
+                        </div>
+                        <div style="background:rgba(16,185,129,0.15); padding:0.6rem 1.2rem; border-radius:8px; text-align:center; min-width:180px; border: 2px solid rgba(16,185,129,0.4);">
+                            <div style="font-size:0.8rem; color:var(--text-muted);">Rapporto C/d ≈ π</div>
+                            <div id="pi-ratio-val" style="font-size:1.5rem; font-weight:800; color:#F59E0B;">—</div>
+                        </div>
+                    </div>
+                    <div class="controls" style="margin-top:1rem;">
+                        <button class="control-btn" id="btnPiUnroll">▶ Fai Rotolare</button>
+                        <button class="control-btn" id="btnPiReset" style="background:#64748b;">↺ Reset</button>
+                    </div>
+                </div>
+            </div>
+
             <p class="lesson-text" style="margin-top: 1.5rem;">È proprio questa natura irrazionale e trascendente di $\pi$ ad essere alla radice di uno dei problemi geometrici più famosi della storia:</p>
         </section>
 
@@ -420,6 +503,24 @@
                 <h4 style="color: #10B981; margin-bottom: 1rem;">La Sfida Irrisolvibile</h4>
                 <p style="font-size: 0.95rem; color: var(--text-main); margin-bottom: 0.5rem; line-height:1.6;">Il problema chiedeva di <strong>costruire, con sola riga e compasso, un quadrato avente la stessa area di un cerchio dato</strong>.</p>
                 <p style="font-size: 0.95rem; color: var(--text-muted); line-height:1.6;">Se il cerchio ha raggio $R = 1$, la sua area è $\pi$. Il lato del quadrato cercato dovrebbe quindi misurare $\sqrt{\pi}$. Matematici come Archimede e, secoli dopo, Leonardo da Vinci cercarono una costruzione esatta, trovando ogni volta solo approssimazioni.<br><br>La risposta definitiva arrivò solo nel <strong>1882</strong>, quando il matematico tedesco <em>Ferdinand von Lindemann</em> dimostrò che $\pi$ è un numero <strong>trascendente</strong>, cioè non è radice di alcun polinomio a coefficienti interi. Poiché riga e compasso possono costruire solo lunghezze ottenibili attraverso equazioni algebriche, costruire $\sqrt{\pi}$ con questi strumenti è <strong>matematicamente impossibile</strong>.</p>
+            </div>
+
+            <p class="lesson-text">Per dirla in termini meno rigorosi, la quadratura del cerchio è un po' come l'impossibile tentativo di infilare perfettamente un oggetto rotondo in una scatola quadrata (o viceversa). E a proposito di "pioli quadrati in buchi rotondi", la storia ci insegna che a volte l'incompatibilità tra forme geometriche è questione di vita o di morte...</p>
+            
+            <div style="background: rgba(59, 130, 246, 0.05); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(59, 130, 246, 0.2); margin: 2rem 0; display: flex; gap: 1.5rem; align-items: flex-start; flex-wrap: wrap;">
+                <div style="font-size: 3rem; line-height: 1;">🚀</div>
+                <div style="flex: 1; min-width: 250px;">
+                    <h4 style="color: #3B82F6; margin-bottom: 0.5rem;">Apollo 13: "Un piolo quadrato in un buco rotondo"</h4>
+                    <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 0.5rem;">
+                        Durante la storica e drammatica missione spaziale <strong>Apollo 13</strong> nel 1970, un'esplosione costrinse i tre astronauti ad abbandonare il Modulo di Comando (CM) e a rifugiarsi nel piccolo Modulo Lunare (LM) per fare ritorno verso la Terra.
+                    </p>
+                    <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.6;">
+                        Ben presto sorse un problema critico: l'aria si stava saturando di anidride carbonica (CO2) e i filtri rotondi del Modulo Lunare si stavano esaurendo. Gli astronauti avevano a disposizione moltissimi filtri di scorta del Modulo di Comando (ormai inutilizzato), ma c'era un ostacolo geometrico: <strong>i filtri del Modulo di Comando erano a base quadrata, mentre i bocchettoni nel Modulo Lunare erano rotondi!</strong> Come dichiarò la base operativa di Houston, la sfida consisteva nel <em>"far entrare letteralmente un piolo quadrato in un buco rotondo, usando solo gli scarti presenti a bordo della navicella"</em>.
+                    </p>
+                    <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; margin-top: 0.5rem;">
+                        Gli ingegneri della NASA dovettero inventare una soluzione improvvisata e geniale a terra, istruendo poi gli astronauti a costruire un "adattatore" artigianale utilizzando cartone estratto dalle copertine dei manuali di volo, sacchetti di plastica, calzini e tanto nastro adesivo grigio. La forma "sbagliata" fu aggirata grazie all'ingegno, e l'equipaggio si salvò.
+                    </p>
+                </div>
             </div>
         </section>
 

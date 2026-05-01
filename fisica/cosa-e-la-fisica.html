@@ -10,17 +10,114 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <!-- CSS -->
     <link rel="stylesheet" href="../css/style.css">
+    <!-- MathJax -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
     <style>
-        .physics-hero {
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1200');
-            background-size: cover;
-            background-position: center;
-            border-radius: 20px;
-            padding: 4rem 2rem;
-            margin: 2rem 0;
-            text-align: center;
-            border: 1px solid rgba(16, 185, 129, 0.3);
+        /* ===== HEADER ===== */
+        .lesson-header {
+            background: linear-gradient(135deg, #0f172a 0%, #064e3b 100%);
+            padding: 5rem 0 3rem;
+            position: relative;
+            overflow: hidden;
         }
+        .lesson-title-main {
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #34d399, #3b82f6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .lesson-subtitle-main {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            max-width: 650px;
+            margin: 0 auto;
+            font-weight: 300;
+            text-align: center;
+        }
+
+        /* ===== SECTIONS ===== */
+        .lesson-section {
+            margin-bottom: 3rem;
+            background: var(--surface-color);
+            padding: 2.5rem;
+            border-radius: 1rem;
+            border: 1px solid rgba(255,255,255,0.06);
+            scroll-margin-top: 4rem;
+        }
+        .section-number {
+            display: inline-block;
+            background: linear-gradient(135deg, #059669, #2563eb);
+            color: white;
+            font-weight: 800;
+            font-size: 0.85rem;
+            padding: 0.2rem 0.7rem;
+            border-radius: 20px;
+            margin-bottom: 0.75rem;
+        }
+        .lesson-section h2 {
+            color: var(--text-main);
+            margin-bottom: 1.25rem;
+            font-size: 1.7rem;
+            font-weight: 700;
+        }
+        .lesson-text {
+            margin-bottom: 1.2rem;
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            line-height: 1.75;
+        }
+
+        /* ===== TOC ===== */
+        .toc {
+            background: rgba(16,185,129,0.06);
+            border: 1px solid rgba(16,185,129,0.2);
+            border-radius: 1rem;
+            padding: 1.5rem 2rem;
+            margin: 2rem 0;
+        }
+        .toc h3 { color: #34d399; margin-bottom: 1rem; font-size: 1rem; text-transform: uppercase; letter-spacing: 0.08em; }
+        .toc ol { padding-left: 1.2rem; }
+        .toc li { margin-bottom: 0.4rem; }
+        .toc a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+        .toc a:hover { color: #34d399; }
+
+        /* ===== CALLOUTS ===== */
+        .callout {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+            background: rgba(59,130,246,0.07);
+            border: 1px solid rgba(59,130,246,0.2);
+            border-radius: 0.75rem;
+            padding: 1.2rem 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .callout-icon { font-size: 1.5rem; flex-shrink: 0; }
+        .callout p { margin: 0; font-size: 0.98rem; color: var(--text-muted); }
+        .callout p strong { color: #93c5fd; }
+        
+        .callout-warn {
+            background: rgba(245,158,11,0.07);
+            border-color: rgba(245,158,11,0.25);
+        }
+        .callout-warn p strong { color: #fcd34d; }
+
+        .callout-success {
+            background: rgba(16,185,129,0.07);
+            border-color: rgba(16,185,129,0.25);
+        }
+        .callout-success p strong { color: #6ee7b7; }
+
+        /* ===== GRIDS & CARDS ===== */
         .scale-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -28,85 +125,264 @@
             margin: 2rem 0;
         }
         .scale-card {
-            background: rgba(16, 185, 129, 0.05);
-            border: 1px solid rgba(16, 185, 129, 0.1);
+            background: rgba(0,0,0,0.25);
+            border: 1px solid rgba(255,255,255,0.07);
             padding: 1.5rem;
             border-radius: 12px;
             text-align: center;
+            transition: border-color 0.2s;
         }
+        .scale-card:hover { border-color: rgba(52,211,153,0.4); }
         .scale-card i {
             font-size: 2.5rem;
             display: block;
             margin-bottom: 1rem;
         }
+
+        .si-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+            text-align: left;
+        }
+        .si-table th {
+            padding: 0.75rem 1rem;
+            border-bottom: 2px solid rgba(52,211,153,0.3);
+            color: #34d399;
+            font-weight: 600;
+        }
+        .si-table td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            color: var(--text-muted);
+        }
+        .si-table tr:last-child td { border-bottom: none; }
+        .si-table strong { color: #fff; }
+
+        .flow-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        .flow-step {
+            background: rgba(0,0,0,0.2);
+            border-left: 4px solid #3b82f6;
+            padding: 1rem 1.5rem;
+            border-radius: 0 8px 8px 0;
+        }
+        .flow-step h4 { color: #93c5fd; margin-bottom: 0.5rem; }
     </style>
 </head>
 <body>
     <header class="lesson-header">
-        <div class="container" style="padding: 4rem 0 2rem;">
-            <div style="text-align: center; margin-bottom: 2.5rem;">
-                <a href="fisica.html" class="back-button" style="margin-bottom: 0;">
-                    <span class="back-icon">&larr;</span> Torna a Fisica
+        <div class="container" style="position:relative; z-index:1;">
+            <div style="text-align:center; margin-bottom:2rem;">
+                <a href="fisica.html" class="back-button" style="color:#34d399; justify-content:center;">
+                    <span class="back-icon">←</span> Torna a Fisica
                 </a>
             </div>
-            <h1 class="lesson-title" style="font-size: clamp(2.2rem, 5vw, 3.5rem); font-weight: 800; margin-bottom: 1rem;">
-                Che cos'è la <span class="gradient-text" style="background: linear-gradient(135deg, #10B981, #3B82F6); -webkit-background-clip: text; background-clip: text; color: transparent;">Fisica?</span>
+            <h1 class="lesson-title-main">
+                Che cos'è la <span class="gradient-text">Fisica?</span>
             </h1>
-            <p class="lesson-subtitle text-center">
-                L'indagine sulle leggi fondamentali che governano la materia, l'energia, lo spazio e il tempo.
+            <p class="lesson-subtitle-main">
+                Dall'antica filosofia naturale al metodo sperimentale: come l'umanità indaga le leggi dell'universo.
             </p>
         </div>
     </header>
 
-    <main class="container">
-        <section class="lesson-section">
-            <h2 class="lesson-title" style="color: var(--physics-color);">1. Cercare il "Perché" delle Cose</h2>
+    <main class="container" style="padding-top:2.5rem; padding-bottom:5rem;">
+        
+        <!-- TOC -->
+        <nav class="toc">
+            <h3>📋 Indice della lezione</h3>
+            <ol>
+                <li><a href="#sec-metafisica">Dalla Metafisica alla Fisica</a></li>
+                <li><a href="#sec-metodo">Il Metodo Sperimentale e la "Corroborazione"</a></li>
+                <li><a href="#sec-branche">Le branche della Fisica moderna</a></li>
+                <li><a href="#sec-si">Il Sistema Internazionale delle Unità di Misura (SI)</a></li>
+            </ol>
+        </nav>
+
+        <!-- 1. DALLA METAFISICA ALLA FISICA -->
+        <section class="lesson-section" id="sec-metafisica">
+            <div class="section-number">Sezione 1</div>
+            <h2>Dalla Metafisica alla Fisica</h2>
             <p class="lesson-text">
-                Dalla parola greca <i>physis</i> (natura), la fisica è la scienza che cerca di capire come funziona l'universo ai suoi livelli più elementari. Non si accontenta di osservare, ma vuole prevedere il futuro attraverso modelli matematici.
+                Oggi siamo abituati a pensare alla fisica come a una scienza fatta di laboratori, equazioni e strumenti di precisione. Ma non è sempre stato così. Nell'antichità, lo studio della natura era parte della filosofia. Aristotele scrisse opere che trattavano sia il mondo naturale (la <strong>Fisica</strong>, dal greco <em>physis</em>, "natura") sia i principi che stanno "oltre" o "dopo" la natura: la <strong>Metafisica</strong>.
             </p>
-            <div class="physics-hero">
-                <h3 style="color: white; margin-bottom: 1rem;">Dall'atomo alle stelle</h3>
-                <p style="color: #cbd5e1; max-width: 700px; margin: 0 auto;">La fisica non ha confini di scala: si occupa dell'infinitamente piccolo (meccanica quantistica) e dell'infinitamente grande (cosmologia).</p>
+            <p class="lesson-text">
+                Nella concezione antica, la metafisica indagava le cause prime, l'essenza dell'essere, l'anima e Dio. La fisica era semplicemente la "filosofia naturale". Tuttavia, il metodo per studiarle era lo stesso: l'osservazione qualitativa e il ragionamento logico puro. Si credeva che, pensando intensamente, si potesse dedurre come l'universo dovesse funzionare.
+            </p>
+
+            <div class="callout callout-warn">
+                <span class="callout-icon">🏛️</span>
+                <p>
+                    <strong>L'errore degli antichi:</strong> L'approccio puramente deduttivo portò ad alcuni malintesi durati duemila anni. Ad esempio, Aristotele affermava che gli oggetti pesanti cadono più velocemente di quelli leggeri. Nessuno si prese la briga di fare un vero test per secoli!
+                </p>
             </div>
+
+            <p class="lesson-text">
+                Tutto cambiò con la <strong>Rivoluzione Scientifica</strong> (XVI-XVII secolo). Scienziati come Galileo Galilei, Johannes Kepler e Isaac Newton iniziarono a separare la fisica dalla filosofia. Nasceva una distinzione netta: la metafisica continuava a occuparsi dei grandi "perché" dell'esistenza, mentre la fisica (e le altre scienze naturali, come chimica e biologia che si staccheranno in seguito) iniziò a concentrarsi sul <strong>"come"</strong>.
+            </p>
+            <p class="lesson-text">
+                Questo distacco fu reso possibile da un'invenzione cruciale: il <strong>metodo sperimentale</strong> e l'uso della matematica come linguaggio della natura.
+            </p>
         </section>
 
-        <section class="lesson-section">
-            <h2 class="lesson-title" style="color: var(--physics-color);">2. Le Grandi Domande</h2>
-            <p class="lesson-text">La fisica si divide in grandi aree che cercano di rispondere a domande diverse:</p>
+        <!-- 2. IL METODO SPERIMENTALE -->
+        <section class="lesson-section" id="sec-metodo">
+            <div class="section-number">Sezione 2</div>
+            <h2>Il Metodo Sperimentale e la "Corroborazione"</h2>
+            <p class="lesson-text">
+                Introdotto formalmente da Galileo Galilei, il metodo sperimentale (o scientifico) è il cuore pulsante della fisica. È il processo rigoroso attraverso il quale un'idea diventa una teoria accreditata.
+            </p>
+
+            <div class="flow-container">
+                <div class="flow-step">
+                    <h4>1. Osservazione del fenomeno</h4>
+                    <p class="lesson-text" style="margin-bottom:0; font-size:0.95rem;">Si osserva un fenomeno naturale e ci si fa delle domande (es. <em>"Perché la mela cade verso il basso?"</em>). Si raccolgono dati quantitativi.</p>
+                </div>
+                <div class="flow-step">
+                    <h4>2. Formulazione dell'ipotesi</h4>
+                    <p class="lesson-text" style="margin-bottom:0; font-size:0.95rem;">Si usa l'immaginazione e la matematica per formulare un'ipotesi, cioè una possibile spiegazione o una formula che descriva l'osservazione.</p>
+                </div>
+                <div class="flow-step">
+                    <h4>3. L'esperimento controllato</h4>
+                    <p class="lesson-text" style="margin-bottom:0; font-size:0.95rem;">Si progetta un esperimento in laboratorio per testare l'ipotesi. L'esperimento deve essere riproducibile da chiunque altro nel mondo.</p>
+                </div>
+                <div class="flow-step">
+                    <h4>4. Analisi e conclusione</h4>
+                    <p class="lesson-text" style="margin-bottom:0; font-size:0.95rem;">Se l'esperimento contraddice l'ipotesi, l'ipotesi viene scartata (o modificata). Se l'esperimento conferma l'ipotesi, si può formulare una legge fisica.</p>
+                </div>
+            </div>
+
+            <h3 style="color:#34d399; margin-top:2rem;">Verità assolute? No, Corroborazione</h3>
+            <p class="lesson-text">
+                Una cosa fondamentale da capire sulla scienza è che <strong>la fisica non "dimostra" in modo assoluto</strong> la verità di una teoria. La matematica dimostra i teoremi (perché si basa su assiomi astratti e logica pura), ma la fisica lavora nel mondo reale.
+            </p>
+            <p class="lesson-text">
+                Il filosofo della scienza Karl Popper ha chiarito questo punto introducendo il concetto di <strong>corroborazione</strong>:
+            </p>
+
+            <div class="callout callout-success">
+                <span class="callout-icon">✅</span>
+                <p>
+                    <strong>Cosa significa corroborare?</strong>
+                    Un'ipotesi si dice <em>corroborata</em> quando supera indenne ripetuti e severi tentativi di essere falsificata (smentita) tramite gli esperimenti. Più una teoria sopravvive ai test, più è "corroborata" o "affidabile", ma <strong>non sarà mai certa al 100%</strong>. Potrebbe sempre arrivare domani un nuovo esperimento, con strumenti migliori, capace di smentirla.
+                </p>
+            </div>
+            <p class="lesson-text">
+                È proprio questo il punto di forza della fisica: non avendo dogmi incontestabili, è in continuo miglioramento. La meccanica di Newton, corroborata per oltre 200 anni, ha mostrato i suoi limiti agli inizi del '900, venendo superata (o meglio, inglobata come approssimazione) dalla Relatività di Einstein.
+            </p>
+        </section>
+
+        <!-- 3. LE BRANCHE DELLA FISICA -->
+        <section class="lesson-section" id="sec-branche">
+            <div class="section-number">Sezione 3</div>
+            <h2>Le branche della Fisica moderna</h2>
+            <p class="lesson-text">Col tempo, lo studio della materia e dell'energia si è specializzato in diverse macroaree, a seconda delle scale di grandezza o delle velocità coinvolte:</p>
+
             <div class="scale-grid">
                 <div class="scale-card">
                     <span style="font-size: 2.5rem;">🍎</span>
-                    <h4 style="color: var(--physics-color); margin: 1rem 0;">Meccanica Classica</h4>
-                    <p class="lesson-text" style="font-size: 0.9rem;">Come si muovono le auto, i pianeti e perché gli oggetti cadono?</p>
+                    <h4 style="color: #3b82f6; margin: 1rem 0;">Meccanica Classica</h4>
+                    <p class="lesson-text" style="font-size: 0.9rem;">Studia il movimento dei corpi a grandezza umana e velocità basse rispetto alla luce (automobili, pianeti, fluidi).</p>
+                </div>
+                <div class="scale-card">
+                    <span style="font-size: 2.5rem;">🔥</span>
+                    <h4 style="color: #ef4444; margin: 1rem 0;">Termodinamica</h4>
+                    <p class="lesson-text" style="font-size: 0.9rem;">Studia il calore, la temperatura, e come l'energia termica si trasforma in lavoro meccanico.</p>
                 </div>
                 <div class="scale-card">
                     <span style="font-size: 2.5rem;">⚡</span>
-                    <h4 style="color: var(--physics-color); margin: 1rem 0;">Elettromagnetismo</h4>
-                    <p class="lesson-text" style="font-size: 0.9rem;">Cos'è la luce e come fa la corrente a far funzionare i nostri telefoni?</p>
+                    <h4 style="color: #eab308; margin: 1rem 0;">Elettromagnetismo</h4>
+                    <p class="lesson-text" style="font-size: 0.9rem;">Studia le cariche elettriche, i magneti, e la luce (che è un'onda elettromagnetica).</p>
                 </div>
                 <div class="scale-card">
                     <span style="font-size: 2.5rem;">🌌</span>
-                    <h4 style="color: var(--physics-color); margin: 1rem 0;">Relatività</h4>
-                    <p class="lesson-text" style="font-size: 0.9rem;">Come lo spazio e il tempo si piegano in presenza di grandi masse?</p>
+                    <h4 style="color: #a855f7; margin: 1rem 0;">Relatività</h4>
+                    <p class="lesson-text" style="font-size: 0.9rem;">Studia i fenomeni a velocità prossime a quella della luce e in presenza di gravità estreme (buchi neri).</p>
                 </div>
                 <div class="scale-card">
                     <span style="font-size: 2.5rem;">⚛️</span>
-                    <h4 style="color: var(--physics-color); margin: 1rem 0;">Meccanica Quantistica</h4>
-                    <p class="lesson-text" style="font-size: 0.9rem;">Cosa succede all'interno degli atomi, dove le regole del senso comune non valgono più?</p>
+                    <h4 style="color: #34d399; margin: 1rem 0;">Meccanica Quantistica</h4>
+                    <p class="lesson-text" style="font-size: 0.9rem;">Studia il mondo subatomico, dove le particelle si comportano sia da onde che da corpuscoli in modo controintuitivo.</p>
                 </div>
             </div>
         </section>
 
-        <section class="lesson-section">
-            <h2 class="lesson-title" style="color: var(--physics-color);">3. Il Metodo Sperimentale</h2>
+        <!-- 4. IL SISTEMA INTERNAZIONALE -->
+        <section class="lesson-section" id="sec-si">
+            <div class="section-number">Sezione 4</div>
+            <h2>Il Sistema Internazionale di Unità di Misura (SI)</h2>
             <p class="lesson-text">
-                A differenza della matematica pura, la fisica deve superare la prova della realtà. Un'idea può essere bellissima sulla carta, ma se l'esperimento dice il contrario, l'idea è sbagliata. Come disse Richard Feynman: <i>"Non importa quanto sia bella la tua teoria, non importa quanto tu sia intelligente. Se non concorda con l'esperimento, è sbagliata."</i>
+                Lord Kelvin disse: <em>"Se non puoi misurare qualcosa e non puoi esprimerlo con i numeri, la tua conoscenza è povera e insoddisfacente."</em> La fisica è quantitativa. Affinché gli esperimenti siano riproducibili e comprensibili in tutto il mondo, la comunità scientifica ha adottato un linguaggio comune per le misurazioni: il <strong>Sistema Internazionale (SI)</strong>.
             </p>
+            <p class="lesson-text">
+                Il SI si basa su <strong>7 grandezze fisiche fondamentali</strong>. Tutte le altre grandezze della fisica (come la velocità, la forza, l'energia) sono <em>derivate</em> da combinazioni matematiche di queste sette.
+            </p>
+
+            <table class="si-table">
+                <thead>
+                    <tr>
+                        <th>Grandezza Fondamentale</th>
+                        <th>Unità di misura</th>
+                        <th>Simbolo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Lunghezza</strong></td>
+                        <td>metro</td>
+                        <td>m</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Massa</strong></td>
+                        <td>kilogrammo</td>
+                        <td>kg</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Intervallo di tempo</strong></td>
+                        <td>secondo</td>
+                        <td>s</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Intensità di corrente elettrica</strong></td>
+                        <td>ampere</td>
+                        <td>A</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Temperatura termodinamica</strong></td>
+                        <td>kelvin</td>
+                        <td>K</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Quantità di sostanza</strong></td>
+                        <td>mole</td>
+                        <td>mol</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Intensità luminosa</strong></td>
+                        <td>candela</td>
+                        <td>cd</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="callout">
+                <span class="callout-icon">💡</span>
+                <p>
+                    <strong>Grandezze derivate:</strong> La <em>velocità</em> si calcola come spazio diviso tempo, quindi la sua unità di misura è il <strong>m/s</strong>. La <em>forza</em> (spiegata da Newton come massa per accelerazione) si misura in <strong>Newton (N)</strong>, che equivale a <strong>kg·m/s²</strong>. Tutto si riconduce a quei sette mattoncini!
+                </p>
+            </div>
         </section>
+
     </main>
 
     <footer>
-        <p>&copy; 2026 MFI - Fisica. Comprendere la realtà.</p>
+        <p>&copy; 2026 MFI - Matematica, Fisica, Informatica.</p>
     </footer>
 
     <script src="../js/main.js"></script>

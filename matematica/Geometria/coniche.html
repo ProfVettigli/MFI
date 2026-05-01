@@ -199,6 +199,37 @@
                 </div>
                 <div id="collinear-warning" style="color:#ef4444; font-weight:bold; opacity:0; margin-top:1rem; transition:0.3s; text-align:center;">⚠️ I tre punti sono allineati: nessuna circonferenza finita!</div>
             </div>
+
+            <div class="example-box" style="border-left-color: #14B8A6; margin-top: 2.5rem;">
+                <strong style="color: #14B8A6; text-transform:uppercase;">📝 Esercizio Guidato: Trovare l'equazione per 3 punti</strong><br>
+                <p style="margin-top: 0.5rem; margin-bottom: 1rem;">
+                    Come si calcola matematicamente l'equazione della circonferenza passante per tre punti, ad esempio <strong>A(0, 2)</strong>, <strong>B(2, 0)</strong> e <strong>C(0, -2)</strong>?
+                </p>
+                <p style="margin-bottom: 1rem;">
+                    Si parte dall'equazione generale \(x^2 + y^2 + ax + by + c = 0\) e la si riscrive <strong>tre volte</strong>. In ciascuna equazione andiamo a sostituire alle variabili \(x\) e \(y\) le coordinate di uno dei punti. In questo modo imponiamo il passaggio della circonferenza per quel punto.
+                </p>
+                <ul style="list-style-type: none; padding-left: 0; margin-bottom: 1rem;">
+                    <li style="margin-bottom: 0.5rem;"><strong>Passaggio per A(0, 2):</strong> sostituendo otteniamo \(0^2 + 2^2 + a(0) + b(2) + c = 0 \implies 4 + 2b + c = 0\)</li>
+                    <li style="margin-bottom: 0.5rem;"><strong>Passaggio per B(2, 0):</strong> sostituendo otteniamo \(2^2 + 0^2 + a(2) + b(0) + c = 0 \implies 4 + 2a + c = 0\)</li>
+                    <li style="margin-bottom: 0.5rem;"><strong>Passaggio per C(0, -2):</strong> sostituendo otteniamo \(0^2 + (-2)^2 + a(0) + b(-2) + c = 0 \implies 4 - 2b + c = 0\)</li>
+                </ul>
+                <p style="margin-bottom: 1rem;">
+                    Ora dobbiamo risolvere questo <strong>sistema di tre equazioni incognite</strong> in \(a, b, c\). Un metodo rapido in questo caso particolare è sommare membro a membro la prima e la terza equazione:
+                    <br>\((4 + 2b + c) + (4 - 2b + c) = 0 \implies 8 + 2c = 0 \implies 2c = -8 \implies \mathbf{c = -4}\)
+                </p>
+                <p style="margin-bottom: 1rem;">
+                    Sostituendo \(c = -4\) nella prima equazione troviamo \(b\):<br>
+                    \(4 + 2b - 4 = 0 \implies 2b = 0 \implies \mathbf{b = 0}\)
+                </p>
+                <p style="margin-bottom: 1rem;">
+                    Sostituendo \(c = -4\) nella seconda equazione troviamo \(a\):<br>
+                    \(4 + 2a - 4 = 0 \implies 2a = 0 \implies \mathbf{a = 0}\)
+                </p>
+                <p>
+                    I parametri sono dunque \(a=0, b=0, c=-4\). Inserendoli nell'equazione generale otteniamo:<br>
+                    <strong>\(x^2 + y^2 - 4 = 0\)</strong> (oppure \(x^2 + y^2 = 4\)), ovvero la circonferenza centrata nell'origine degli assi con raggio 2!
+                </p>
+            </div>
         </section>
 
         <!-- SECTION 3: ELLISSE & IPERBOLE -->

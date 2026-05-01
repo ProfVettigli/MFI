@@ -1099,4 +1099,441 @@ document.addEventListener('DOMContentLoaded', () => {
         p.fillText("β' = β  e  γ' = γ  (angoli alterni interni)  →  β' + α + γ' = 180°", PW / 2, PH - 8);
     }
 
+
+    /* =========================
+       CANVAS: AREA CERCHIO = πr²
+       (Pizza slices → rectangle)
+       ========================= */
+    const areaCircleCanvas = document.getElementById('areaCircleCanvas');
+    if (areaCircleCanvas) {
+        const ctxA = areaCircleCanvas.getContext('2d');
+        const AW = areaCircleCanvas.width;
+        const AH = areaCircleCanvas.height;
+
+        const R = 95;
+        let numSlices = 8;
+        let animT = 0; // 0=circle, 1=rectangle
+        let areaAnimId = null;
+
+        const sliceColor = (i, n) => {
+            const hue = (i / n) * 280 + 160;
+            return `hsl(${hue % 360}, 65%, 55%)`;
+        };
+        const sliceColorDark = (i, n) => {
+            const hue = (i / n) * 280 + 160;
+            return `hsl(${hue % 360}, 65%, 38%)`;
+        };
+
+        function drawAreaViz() {
+            ctxA.clearRect(0, 0, AW, AH);
+            const N = numSlices;
+            const angleStep = (2 * Math.PI) / N;
+
+            // Circle position (left side)
+            const cx = 140, cy = AH / 2;
+            // Rectangle target (right side) — base = πr, height = r
+            const rectW = Math.PI * R * 0.52;  // πr scaled to fit canvas
+            const rectH = R * 0.95;
+            const rectCX = 440, rectCY = AH / 2;
+            const rectLeft = rectCX - rectW / 2;
+
+            // Each slice gets its OWN slot: N slots across total width
+            const slotW = rectW / N;
+
+            const t = animT; // interpolation 0→1
+
+            for (let i = 0; i < N; i++) {
+                const isUp = (i % 2 === 0);
+
+                // -- SOURCE: pizza slice in circle --
+                const a0 = i * angleStep - Math.PI / 2;
+                const a1 = a0 + angleStep;
+                const srcTip = { x: cx, y: cy };
+                const srcP1 = { x: cx + R * Math.cos(a0), y: cy + R * Math.sin(a0) };
+                const srcP2 = { x: cx + R * Math.cos(a1), y: cy + R * Math.sin(a1) };
+
+                // -- TARGET: each slice in its own slot --
+                const xCenter = rectLeft + (i + 0.5) * slotW;
+                const halfW = slotW / 2;
+
+                let dstTip, dstP1, dstP2;
+                if (isUp) {
+                    dstTip = { x: xCenter, y: rectCY - rectH / 2 };
+                    dstP1  = { x: xCenter - halfW, y: rectCY + rectH / 2 };
+                    dstP2  = { x: xCenter + halfW, y: rectCY + rectH / 2 };
+                } else {
+                    dstTip = { x: xCenter, y: rectCY + rectH / 2 };
+                    dstP1  = { x: xCenter - halfW, y: rectCY - rectH / 2 };
+                    dstP2  = { x: xCenter + halfW, y: rectCY - rectH / 2 };
+                }
+
+                // Interpolate
+                const tip = { x: srcTip.x + (dstTip.x - srcTip.x) * t, y: srcTip.y + (dstTip.y - srcTip.y) * t };
+                const p1  = { x: srcP1.x + (dstP1.x - srcP1.x) * t,   y: srcP1.y + (dstP1.y - srcP1.y) * t };
+                const p2  = { x: srcP2.x + (dstP2.x - srcP2.x) * t,   y: srcP2.y + (dstP2.y - srcP2.y) * t };
+
+                // Draw the slice
+                ctxA.beginPath();
+                ctxA.moveTo(tip.x, tip.y);
+                if (t < 0.05) {
+                    const cArc0 = Math.atan2(p1.y - cy, p1.x - cx);
+                    const cArc1 = Math.atan2(p2.y - cy, p2.x - cx);
+                    ctxA.arc(cx, cy, R, cArc0, cArc1);
+                } else {
+                    ctxA.lineTo(p1.x, p1.y);
+                    ctxA.lineTo(p2.x, p2.y);
+                }
+                ctxA.closePath();
+                ctxA.fillStyle = sliceColor(i, N);
+                ctxA.fill();
+                ctxA.strokeStyle = sliceColorDark(i, N);
+                ctxA.lineWidth = 1.2;
+                ctxA.stroke();
+            }
+
+            // Labels
+            if (t < 0.15) {
+                // Circle labels
+                ctxA.beginPath();
+                ctxA.moveTo(cx, cy);
+                ctxA.lineTo(cx + R, cy);
+                ctxA.strokeStyle = '#F59E0B';
+                ctxA.lineWidth = 2;
+                ctxA.stroke();
+                ctxA.fillStyle = '#F59E0B';
+                ctxA.font = 'bold 14px Inter,sans-serif';
+                ctxA.textAlign = 'center';
+                ctxA.fillText('r', cx + R / 2, cy - 10);
+                ctxA.beginPath();
+                ctxA.arc(cx, cy, 3, 0, Math.PI * 2);
+                ctxA.fillStyle = '#fff';
+                ctxA.fill();
+            }
+
+            if (t > 0.85) {
+                // Rectangle labels
+                const opacity = Math.min(1, (t - 0.85) / 0.15);
+                ctxA.globalAlpha = opacity;
+                // Base = πr
+                ctxA.fillStyle = '#10B981';
+                ctxA.font = 'bold 13px Inter,sans-serif';
+                ctxA.textAlign = 'center';
+                ctxA.fillText('Base ≈ πr', rectCX, rectCY + rectH / 2 + 22);
+                // Height = r
+                ctxA.fillStyle = '#F59E0B';
+                ctxA.save();
+                ctxA.translate(rectLeft - 20, rectCY);
+                ctxA.rotate(-Math.PI / 2);
+                ctxA.fillText('h = r', 0, 0);
+                ctxA.restore();
+                // Bounding rect outline
+                ctxA.strokeStyle = 'rgba(16,185,129,0.4)';
+                ctxA.lineWidth = 1.5;
+                ctxA.setLineDash([6, 4]);
+                ctxA.strokeRect(rectLeft, rectCY - rectH / 2, rectW, rectH);
+                ctxA.setLineDash([]);
+                ctxA.globalAlpha = 1;
+            }
+
+            if (t >= 1) {
+                ctxA.fillStyle = '#fff';
+                ctxA.font = 'bold 15px Inter,sans-serif';
+                ctxA.textAlign = 'center';
+                ctxA.fillText('A = πr · r = πr²  ✓', rectCX, rectCY - rectH / 2 - 14);
+            }
+
+            // Arrow between circle and rect
+            if (t > 0.01 && t < 0.99) {
+                const arrowX = cx + R + 20 + (rectLeft - cx - R - 40) * t;
+                ctxA.fillStyle = 'rgba(255,255,255,0.35)';
+                ctxA.font = '20px sans-serif';
+                ctxA.textAlign = 'center';
+                ctxA.fillText('→', arrowX, cy);
+            }
+
+            // Update counters
+            const elCount = document.getElementById('area-rings-count');
+            const elApprox = document.getElementById('area-approx');
+            const elExact = document.getElementById('area-exact');
+            if (elCount) elCount.textContent = N;
+            if (elApprox) elApprox.textContent = N >= 30 ? '≈ rettangolo perfetto' : 'πr × r';
+            const exact = Math.PI * R * R;
+            if (elExact) elExact.textContent = exact.toFixed(1) + ' px²';
+        }
+
+        drawAreaViz();
+
+        const slicesSlider = document.getElementById('areaSlicesSlider');
+        if (slicesSlider) {
+            slicesSlider.addEventListener('input', (e) => {
+                numSlices = parseInt(e.target.value);
+                if (numSlices % 2 !== 0) numSlices++;
+                document.getElementById('areaSlicesVal').textContent = numSlices + ' fette';
+                if (areaAnimId) { cancelAnimationFrame(areaAnimId); areaAnimId = null; }
+                document.getElementById('btnAreaStart').textContent = '▶ Avvia Animazione';
+                animT = 0;
+                drawAreaViz();
+            });
+        }
+
+        document.getElementById('btnAreaStart').addEventListener('click', () => {
+            if (areaAnimId) { cancelAnimationFrame(areaAnimId); areaAnimId = null; document.getElementById('btnAreaStart').textContent = '▶ Avvia Animazione'; return; }
+            if (animT >= 1) { animT = 0; drawAreaViz(); }
+            document.getElementById('btnAreaStart').textContent = '⏸ Pausa';
+            function step() {
+                animT += 0.012;
+                if (animT >= 1) { animT = 1; drawAreaViz(); areaAnimId = null; document.getElementById('btnAreaStart').textContent = '▶ Avvia Animazione'; return; }
+                drawAreaViz();
+                areaAnimId = requestAnimationFrame(step);
+            }
+            areaAnimId = requestAnimationFrame(step);
+        });
+
+        document.getElementById('btnAreaReset').addEventListener('click', () => {
+            if (areaAnimId) { cancelAnimationFrame(areaAnimId); areaAnimId = null; }
+            document.getElementById('btnAreaStart').textContent = '▶ Avvia Animazione';
+            animT = 0;
+            drawAreaViz();
+        });
+    }
+
+    /* =========================
+       CANVAS: VERIFICA C/d = π
+       (Cerchio che rotola su una linea)
+       ========================= */
+    const piRatioCanvas = document.getElementById('piRatioCanvas');
+    if (piRatioCanvas) {
+        const ctxP = piRatioCanvas.getContext('2d');
+        const PW = piRatioCanvas.width;
+        const PH = piRatioCanvas.height;
+
+        let piRadius = 80;
+        let rollT = 0;       // 0→1 = one full rotation
+        let piAnimId = null;
+
+        function drawPiRatio() {
+            ctxP.clearRect(0, 0, PW, PH);
+
+            const r = piRadius;
+            const circ = 2 * Math.PI * r;
+            const diam = 2 * r;
+
+            // Layout
+            const groundY = PH - 60;
+            const startX = 30;
+            const scale = Math.min(1, (PW - 60) / circ); // fit on canvas
+            const totalDist = circ * scale;
+
+            // ---- Ground line ----
+            ctxP.beginPath();
+            ctxP.moveTo(startX, groundY);
+            ctxP.lineTo(startX + totalDist + 20, groundY);
+            ctxP.strokeStyle = 'rgba(255,255,255,0.2)';
+            ctxP.lineWidth = 2;
+            ctxP.stroke();
+
+            // ---- Diameter segments on ground ----
+            const diamScaled = diam * scale;
+            const colors = ['#EF4444', '#EC4899', '#F59E0B', '#8B5CF6'];
+            for (let k = 0; k < 4; k++) {
+                const x0 = startX + k * diamScaled;
+                const x1 = startX + (k + 1) * diamScaled;
+                if (x0 > startX + totalDist) break;
+                const xEnd = Math.min(x1, startX + totalDist);
+                // background bar
+                ctxP.beginPath();
+                ctxP.moveTo(x0, groundY + 8);
+                ctxP.lineTo(xEnd, groundY + 8);
+                ctxP.strokeStyle = colors[k];
+                ctxP.lineWidth = 6;
+                ctxP.stroke();
+                // tick at start
+                ctxP.beginPath();
+                ctxP.moveTo(x0, groundY + 2);
+                ctxP.lineTo(x0, groundY + 16);
+                ctxP.strokeStyle = colors[k];
+                ctxP.lineWidth = 2;
+                ctxP.stroke();
+                // label
+                if (x1 <= startX + totalDist + 2) {
+                    ctxP.fillStyle = colors[k];
+                    ctxP.font = 'bold 11px Inter,sans-serif';
+                    ctxP.textAlign = 'center';
+                    ctxP.fillText((k + 1) + '×d', (x0 + xEnd) / 2, groundY + 28);
+                }
+            }
+            // End tick
+            ctxP.beginPath();
+            ctxP.moveTo(startX + totalDist, groundY + 2);
+            ctxP.lineTo(startX + totalDist, groundY + 16);
+            ctxP.strokeStyle = '#10B981';
+            ctxP.lineWidth = 2;
+            ctxP.stroke();
+
+            // The residual after 3 full diameters
+            if (rollT >= 0.98) {
+                const x3d = startX + 3 * diamScaled;
+                const xEnd = startX + totalDist;
+                if (xEnd > x3d + 2) {
+                    ctxP.beginPath();
+                    ctxP.moveTo(x3d, groundY + 8);
+                    ctxP.lineTo(xEnd, groundY + 8);
+                    ctxP.strokeStyle = '#10B981';
+                    ctxP.lineWidth = 6;
+                    ctxP.stroke();
+                    ctxP.fillStyle = '#10B981';
+                    ctxP.font = 'bold 11px Inter,sans-serif';
+                    ctxP.textAlign = 'center';
+                    ctxP.fillText('0.14...×d', (x3d + xEnd) / 2, groundY + 28);
+                }
+            }
+
+            // ---- Rolling circle ----
+            const rolled = rollT * totalDist;
+            const wheelCX = startX + rolled;
+            const wheelCY = groundY - r * scale;
+            const rotAngle = -rollT * 2 * Math.PI; // rotation angle (roll right = clockwise from above contact)
+
+            // Trail (already rolled part)
+            ctxP.beginPath();
+            ctxP.moveTo(startX, groundY);
+            ctxP.lineTo(startX + rolled, groundY);
+            ctxP.strokeStyle = '#10B981';
+            ctxP.lineWidth = 4;
+            ctxP.stroke();
+
+            // Circle body
+            ctxP.beginPath();
+            ctxP.arc(wheelCX, wheelCY, r * scale, 0, 2 * Math.PI);
+            ctxP.fillStyle = 'rgba(16,185,129,0.07)';
+            ctxP.fill();
+            ctxP.strokeStyle = '#10B981';
+            ctxP.lineWidth = 2.5;
+            ctxP.stroke();
+
+            // Spokes for rotation visibility (4 spokes)
+            for (let s = 0; s < 4; s++) {
+                const sAngle = rotAngle + (s * Math.PI / 2);
+                ctxP.beginPath();
+                ctxP.moveTo(wheelCX, wheelCY);
+                ctxP.lineTo(wheelCX + r * scale * Math.cos(sAngle), wheelCY + r * scale * Math.sin(sAngle));
+                ctxP.strokeStyle = 'rgba(255,255,255,0.15)';
+                ctxP.lineWidth = 1;
+                ctxP.stroke();
+            }
+
+            // Center dot
+            ctxP.beginPath();
+            ctxP.arc(wheelCX, wheelCY, 3, 0, 2 * Math.PI);
+            ctxP.fillStyle = '#F59E0B';
+            ctxP.fill();
+
+            // Red marker point on circumference
+            const markerAngle = rotAngle - Math.PI / 2; // starts at bottom (contact point)
+            const markerX = wheelCX + r * scale * Math.cos(markerAngle);
+            const markerY = wheelCY + r * scale * Math.sin(markerAngle);
+
+            // Cycloid trail
+            if (rollT > 0.01) {
+                ctxP.beginPath();
+                const steps = Math.floor(rollT * 200);
+                for (let j = 0; j <= steps; j++) {
+                    const tt = j / 200;
+                    const cx_t = startX + tt * totalDist;
+                    const cy_t = groundY - r * scale;
+                    const ang = -tt * 2 * Math.PI - Math.PI / 2;
+                    const mx = cx_t + r * scale * Math.cos(ang);
+                    const my = cy_t + r * scale * Math.sin(ang);
+                    if (j === 0) ctxP.moveTo(mx, my);
+                    else ctxP.lineTo(mx, my);
+                }
+                ctxP.strokeStyle = 'rgba(239,68,68,0.4)';
+                ctxP.lineWidth = 2;
+                ctxP.stroke();
+            }
+
+            // Marker dot
+            ctxP.beginPath();
+            ctxP.arc(markerX, markerY, 6, 0, 2 * Math.PI);
+            ctxP.fillStyle = '#EF4444';
+            ctxP.fill();
+            ctxP.strokeStyle = '#fff';
+            ctxP.lineWidth = 1.5;
+            ctxP.stroke();
+
+            // ---- Labels ----
+            // Radius label
+            ctxP.fillStyle = '#F59E0B';
+            ctxP.font = 'bold 12px Inter,sans-serif';
+            ctxP.textAlign = 'center';
+            ctxP.fillText('r = ' + r, wheelCX, wheelCY - r * scale - 10);
+
+            // Result
+            if (rollT >= 0.98) {
+                ctxP.fillStyle = '#fff';
+                ctxP.font = 'bold 15px Inter,sans-serif';
+                ctxP.textAlign = 'center';
+                const ratio = (circ / diam).toFixed(5);
+                ctxP.fillText('Distanza percorsa = C = ' + circ.toFixed(2) + ' px', PW / 2, 24);
+                ctxP.fillText('C / d = ' + ratio + '  ≈  π  ✓', PW / 2, 46);
+            } else if (rollT > 0.01) {
+                const distSoFar = rollT * circ;
+                ctxP.fillStyle = 'rgba(255,255,255,0.5)';
+                ctxP.font = '12px Inter,sans-serif';
+                ctxP.textAlign = 'center';
+                ctxP.fillText('Percorso: ' + distSoFar.toFixed(1) + ' / ' + circ.toFixed(1) + ' px', PW / 2, 24);
+            }
+
+            // Update counters
+            const elCirc  = document.getElementById('pi-circ-val');
+            const elDiam  = document.getElementById('pi-diam-val');
+            const elRatio = document.getElementById('pi-ratio-val');
+            if (elCirc)  elCirc.textContent  = circ.toFixed(2) + ' px';
+            if (elDiam)  elDiam.textContent  = diam.toFixed(2) + ' px';
+            if (elRatio) elRatio.textContent = (circ / diam).toFixed(5);
+        }
+
+        drawPiRatio();
+
+        document.getElementById('piRadiusSlider').addEventListener('input', (e) => {
+            piRadius = parseInt(e.target.value);
+            document.getElementById('piRadiusVal').textContent = 'r = ' + piRadius;
+            rollT = 0;
+            if (piAnimId) { cancelAnimationFrame(piAnimId); piAnimId = null; }
+            document.getElementById('btnPiUnroll').textContent = '▶ Fai Rotolare';
+            drawPiRatio();
+        });
+
+        document.getElementById('btnPiUnroll').addEventListener('click', () => {
+            if (piAnimId) {
+                cancelAnimationFrame(piAnimId);
+                piAnimId = null;
+                document.getElementById('btnPiUnroll').textContent = '▶ Fai Rotolare';
+                return;
+            }
+            if (rollT >= 1) { rollT = 0; drawPiRatio(); }
+            document.getElementById('btnPiUnroll').textContent = '⏸ Pausa';
+            function step() {
+                rollT += 0.005;
+                if (rollT >= 1) {
+                    rollT = 1;
+                    drawPiRatio();
+                    piAnimId = null;
+                    document.getElementById('btnPiUnroll').textContent = '▶ Fai Rotolare';
+                    return;
+                }
+                drawPiRatio();
+                piAnimId = requestAnimationFrame(step);
+            }
+            piAnimId = requestAnimationFrame(step);
+        });
+
+        document.getElementById('btnPiReset').addEventListener('click', () => {
+            if (piAnimId) { cancelAnimationFrame(piAnimId); piAnimId = null; }
+            document.getElementById('btnPiUnroll').textContent = '▶ Fai Rotolare';
+            rollT = 0;
+            drawPiRatio();
+        });
+    }
+
 });

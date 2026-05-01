@@ -60,6 +60,39 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    const btnRevealAlphabet = document.getElementById('btn-reveal-alphabet');
+    const alphabetSolution = document.getElementById('alphabet-solution');
+    const alphabetExpr = document.getElementById('alphabet-expression');
+    const alphabetZero = document.getElementById('alphabet-zero');
+
+    if (btnRevealAlphabet) {
+        btnRevealAlphabet.addEventListener('click', () => {
+            if (alphabetSolution.style.display === "none") {
+                alphabetSolution.style.display = "block";
+                btnRevealAlphabet.textContent = "Nascondi la Magia";
+                
+                // Animation: Gommage effect
+                if (alphabetExpr && alphabetZero) {
+                    alphabetExpr.style.transform = "scale(0)";
+                    alphabetExpr.style.opacity = "0";
+                    alphabetZero.style.opacity = "1";
+                    alphabetZero.style.transform = "scale(1)";
+                }
+            } else {
+                alphabetSolution.style.display = "none";
+                btnRevealAlphabet.textContent = "Mostra la Magia!";
+                
+                // Reset Animation
+                if (alphabetExpr && alphabetZero) {
+                    alphabetExpr.style.transform = "scale(1)";
+                    alphabetExpr.style.opacity = "1";
+                    alphabetZero.style.opacity = "0";
+                    alphabetZero.style.transform = "scale(0)";
+                }
+            }
+        });
+    }
+
     /* =========================================================
        3. QUIZ GENERATION
        ========================================================= */

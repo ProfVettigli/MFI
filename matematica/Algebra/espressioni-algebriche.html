@@ -194,6 +194,36 @@
             </div>
         </section>
 
+        <!-- DOMANDA TRABOCCHETTO -->
+        <section class="lesson-section" style="border-color: #10B981; background: rgba(16, 185, 129, 0.05);">
+            <h2 class="lesson-title" style="color: #10B981;">🤔 Il Super Moltiplicatore Alfabetico</h2>
+            <p class="lesson-text">
+                Sembra spaventoso, vero? L'alfabeto intero che ti guarda minaccioso e un'infinità di parentesi da moltiplicare!
+                Guarda bene questa espressione. Sembra impossibile calcolarla tutta:
+            </p>
+            <div id="alphabet-box" style="background: rgba(0,0,0,0.3); padding: 2rem; border-radius: 12px; text-align: center; margin: 2rem 0; border: 1px dashed #10B981; min-height: 120px; display: flex; align-items: center; justify-content: center; position: relative;">
+                <p id="alphabet-expression" style="font-size: 1.4rem; font-family: 'Times New Roman', serif; transition: transform 0.8s ease-in, opacity 0.8s ease-in; width: 100%;">
+                    \[(x-a) \cdot (x-b) \cdot (x-c) \cdot \dots \cdot (x-z)\]
+                </p>
+                <div id="alphabet-zero" style="font-size: 5rem; font-weight: 900; color: #10B981; position: absolute; opacity: 0; transform: scale(0); transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.8s, opacity 0.5s 0.8s;">
+                    0
+                </div>
+            </div>
+            <p class="lesson-text">
+                Riesci a indovinare il risultato prima di farti venire il mal di testa cercando di usare la proprietà distributiva su 26 termini? 
+            </p>
+            <button id="btn-reveal-alphabet" class="btn-check-sm" style="background: #10B981;">Mostra la Magia!</button>
+            <div id="alphabet-solution" style="display: none; margin-top: 1.5rem; padding: 1.5rem; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                <p>Il risultato è... <strong>ZERO</strong>!</p>
+                <p style="font-size: 0.95rem; margin-top: 0.5rem; color: var(--text-muted);">
+                    <strong>Spiegazione:</strong><br>
+                    Perché è così semplice? Se continuiamo l'alfabeto, arriveremo inevitabilmente alla lettera <strong>x</strong>.<br>
+                    Quindi, in mezzo a tutti quei fattori, ci sarà anche \((x-x)\).<br>
+                    Ma \(x-x = 0\)! E se moltiplichi <strong>qualsiasi cosa</strong> per zero, il risultato dell'intera catena sarà zero. L'intera espressione scompare all'istante, come se usassi il "Gommage" in <em>Expedition 33</em>: tutti i fattori vengono letteralmente spazzati via! 😉
+                </p>
+            </div>
+        </section>
+
         <!-- QUIZ -->
         <section class="lesson-section quiz-container">
             <h2 class="lesson-title">Quiz di Verifica</h2>

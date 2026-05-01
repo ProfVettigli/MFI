@@ -676,10 +676,31 @@
         </section>
 
         <!-- ============================================ -->
-        <!-- 8. UN PARADOSSO STATISTICO                   -->
+        <!-- 8. L'ILLUSIONE DELLA PREVISIONE              -->
+        <!-- ============================================ -->
+        <section class="lesson-section" style="border-left: 4px solid #f59e0b; background: rgba(245, 158, 11, 0.03);">
+            <h2 style="color: #f59e0b;">8. L'Illusione della Previsione: Quando il 50% vale Zero</h2>
+            <p>Immagina che qualcuno ti venda una "macchina intelligente" in grado di prevedere l'esito del lancio di una moneta. La testi e scopri che <strong>indovina il 50% delle volte</strong>. Sembra un risultato onesto, giusto? Metà delle volte ha ragione.</p>
+            <p>In realtà, quella macchina è completamente <strong>inutile</strong>. Dato che una moneta ha solo due facce (Testa e Croce), una persona che tira semplicemente a caso indovinerà a sua volta il 50% delle volte. Se la "precisione" di uno strumento di previsione è uguale alla pura probabilità casuale, quello strumento ha un <strong>potere predittivo pari a zero</strong>.</p>
+            
+            <p style="margin-top: 1rem;">Spesso il nostro cervello ci inganna: ci fa credere di poter trovare schemi (<em>pattern</em>) nel caos. Questo è noto come <em>illusione del controllo</em> o <em>apofenia</em>. Quando la macchina indovina, il nostro cervello lo registra come un "successo", dimenticando sistematicamente le volte in cui ha fallito (<em>bias di conferma</em>).</p>
+
+            <div class="callout" style="background: rgba(245, 158, 11, 0.07); border-color: rgba(245, 158, 11, 0.25); margin-top: 1.5rem;">
+                <span class="callout-icon">🌦️</span>
+                <div>
+                    <p style="color: var(--text-muted);">
+                        <strong style="color: #fcd34d;">L'esempio storico: Il Barometro di Fitzroy (Storm Glass)</strong><br>
+                        Nel XIX secolo, l'ammiraglio <strong>Robert Fitzroy</strong> (capitano del Beagle, la nave di Charles Darwin) rese celebre lo <em>Storm Glass</em>, uno strumento di vetro contenente un liquido speciale che cristallizzava in modi diversi a seconda dell'imminente tempo atmosferico. Per decenni fu usato sulle navi e nelle case come strumento predittivo. Tuttavia, studi statistici moderni hanno dimostrato che <strong>la sua accuratezza nel prevedere il tempo era del 50%</strong>. Esattamente la stessa probabilità che si avrebbe tirando a indovinare lanciando una moneta. Nonostante la sua totale inutilità scientifica, la gente ha continuato a crederci ciecamente per oltre un secolo proprio a causa dell'illusione della previsione.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================ -->
+        <!-- 9. UN PARADOSSO STATISTICO                   -->
         <!-- ============================================ -->
         <section class="lesson-section" style="border-left: 4px solid #EC4899; background: rgba(236, 72, 153, 0.03);">
-            <h2 style="color: #EC4899;">8. Un Paradosso Statistico: L'Autoreferenzialità</h2>
+            <h2 style="color: #EC4899;">9. Un Paradosso Statistico: L'Autoreferenzialità</h2>
             <p>Per concludere il nostro viaggio nella probabilità, mettiamo alla prova il tuo cervello con un rompicapo che sfida le leggi della logica e della statistica. È un classico esempio di <strong>paradosso autoreferenziale</strong>.</p>
             
             <div class="interactive-box" style="border-color: #EC4899; background: rgba(0,0,0,0.2);">
@@ -711,6 +732,42 @@
                     <strong>Come fornire una risposta?</strong> Tecnicamente non si può fornire una risposta numerica corretta in questo sistema chiuso. È un esempio di come l'autoreferenzialità (una domanda che parla di se stessa) possa mandare in "crash" la logica formale e la probabilità classica. L'unico modo per uscirne è ammettere che la domanda è logicamente <em>indecidibile</em>.
                 </div>
             </div>
+        </section>
+
+        <!-- ============================================ -->
+        <!-- 10. ESERCIZIO GUIDATO                        -->
+        <!-- ============================================ -->
+        <section class="lesson-section">
+            <h2>10. Esercizio Guidato: La Forza dell'Evento Complementare</h2>
+            <p>Immaginiamo una classe composta da 30 ragazze. Vogliamo calcolare la probabilità che <strong>almeno una</strong> di loro abbia il ciclo mestruale in un giorno specifico.</p>
+            <p>A prima vista potrebbe sembrare un calcolo lunghissimo: dovremmo calcolare la probabilità che ne abbia il ciclo esattamente 1, poi 2, poi 3, fino a 30, e sommarle tutte! Fortunatamente, c'è un trucco potentissimo in probabilità: usare l'<strong>evento complementare</strong>.</p>
+            
+            <p>L'evento complementare di "almeno una" è "<strong>nessuna</strong>". Se calcoliamo la probabilità che <em>nessuna</em> ragazza abbia il ciclo e la sottraiamo al totale (cioè 1, o 100%), otterremo il nostro risultato in un solo semplice passaggio.</p>
+
+            <details>
+                <summary>💡 Mostra il Calcolo e la Soluzione</summary>
+                <div class="solution-content">
+                    <div class="step">
+                        <strong>Step 1 — Dati di base:</strong><br>
+                        Assumiamo che, in media, un ciclo mestruale duri 5 giorni all'interno di un periodo tipico di 28 giorni.<br>
+                        La probabilità che una singola ragazza <em>abbia</em> il ciclo è: $$P(C) = \frac{5}{28} \approx 17.8\%$$
+                        La probabilità che <em>non lo abbia</em> è il suo complementare: $$P(\bar{C}) = 1 - \frac{5}{28} = \frac{23}{28} \approx 82.2\%$$
+                    </div>
+                    <div class="step">
+                        <strong>Step 2 — Probabilità che NESSUNA lo abbia:</strong><br>
+                        Considerando gli eventi come indipendenti, per trovare la probabilità che <em>tutte e 30</em> non abbiano il ciclo nello stesso giorno, moltiplichiamo la probabilità per se stessa 30 volte:<br>
+                        $$P(\text{Nessuna}) = \left(\frac{23}{28}\right)^{30} \approx (0.8214)^{30} \approx 0.0027 \text{ (cioè lo } 0.27\%)$$
+                    </div>
+                    <div class="step">
+                        <strong>Step 3 — L'evento "Almeno una":</strong><br>
+                        Infine, sottraiamo questo valore al totale:<br>
+                        $$P(\text{Almeno una}) = 1 - P(\text{Nessuna}) = 1 - 0.0027 = 0.9973$$
+                    </div>
+                    <div class="step" style="border-left-color: #10B981;">
+                        <strong>Risultato Sorprendente:</strong> C'è il <strong>99.73%</strong> di probabilità che in una classe di 30 ragazze almeno una abbia il ciclo. È una quasi certezza matematica! Questo esempio mostra come la probabilità di eventi indipendenti si accumuli rapidamente, sfidando spesso il nostro intuito (come nel noto "Paradosso del Compleanno").
+                    </div>
+                </div>
+            </details>
         </section>
 
         <!-- ============================================ -->

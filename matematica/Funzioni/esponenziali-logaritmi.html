@@ -469,9 +469,12 @@
                 <li><a href="#sec-carta">Curiosità: piegare la carta fino alla Luna</a></li>
                 <li><a href="#sec-scacchi">Curiosità: i chicchi di riso sugli scacchi</a></li>
                 <li><a href="#sec-resident-evil">Curiosità: l'apocalisse zombie di Resident Evil</a></li>
+                <li><a href="#sec-inc-exp">L'incremento esponenziale: il segreto della magia</a></li>
                 <li><a href="#sec-def-log">Definizione di logaritmo e il numero <em>e</em></a></li>
                 <li><a href="#sec-grafico-log">Il grafico logaritmico e le sue proprietà</a></li>
                 <li><a href="#sec-prop-log">Proprietà dei logaritmi con esempi numerici</a></li>
+                <li><a href="#sec-inc-log">L'incremento logaritmico: il freno a mano</a></li>
+                <li><a href="#sec-app-log">Applicazioni: il pH e i Decibel</a></li>
                 <li><a href="#sec-quiz">Metti alla prova le tue conoscenze</a></li>
             </ol>
         </nav>
@@ -855,10 +858,28 @@
         </section>
 
         <!-- ================================================================ -->
-        <!-- 8. DEFINIZIONE LOGARITMO -->
+        <!-- 8. L'INCREMENTO ESPONENZIALE -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-inc-exp">
+            <div class="section-number">Sezione 8</div>
+            <h2 style="color: #f87171;">L'Incremento Esponenziale: Il Segreto della Magia</h2>
+            <p class="lesson-text">
+                Negli esempi del foglio di carta, degli scacchi e del virus, abbiamo assistito a una crescita tanto rapida da sfidare il senso comune. Ma qual è il segreto matematico di questa "magia"? Tutto risiede nel concetto di <strong>incremento</strong> (o tasso di variazione).
+            </p>
+            <p class="lesson-text">
+                In una retta, l'incremento è <em>costante</em>: a ogni passo si aggiunge sempre la stessa quantità fissa (es. \(\Delta y / \Delta x = costante\)). Nella <strong>crescita esponenziale</strong>, l'incremento non è fisso, ma <strong>dipende da quanto vale la funzione in quel momento</strong>. 
+            </p>
+            <div class="callout" style="background: rgba(248, 113, 113, 0.07); border-color: rgba(248, 113, 113, 0.25);">
+                <span class="callout-icon">📈</span>
+                <p><strong>La forza si auto-alimenta:</strong> Più il valore è alto, più l'incremento diventa grande al passo successivo. Un miliardo di zombie produrrà un <em>incremento</em> di un altro miliardo in un solo giorno! È proprio questa proporzionalità diretta tra "quanto vale" e "quanto cresce" a generare l'incontenibile esplosione esponenziale.</p>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 9. DEFINIZIONE LOGARITMO -->
         <!-- ================================================================ -->
         <section class="lesson-section" id="sec-def-log">
-            <div class="section-number">Sezione 8</div>
+            <div class="section-number">Sezione 9</div>
             <h2>Definizione di logaritmo e il numero <em>e</em></h2>
             <p class="lesson-text">
                 Il <strong>logaritmo</strong> è l'operazione inversa dell'esponenziale. Se l'esponenziale risponde a <em>"con questa base, elevo a quest'esponente: quanto ottengo?"</em>, il logaritmo risponde a <em>"a quale esponente devo elevare questa base per ottenere quel numero?"</em>
@@ -944,10 +965,10 @@
         </section>
 
         <!-- ================================================================ -->
-        <!-- 9. GRAFICO LOGARITMO -->
+        <!-- 10. GRAFICO LOGARITMO -->
         <!-- ================================================================ -->
         <section class="lesson-section" id="sec-grafico-log">
-            <div class="section-number">Sezione 9</div>
+            <div class="section-number">Sezione 10</div>
             <h2>Il grafico logaritmico e le sue proprietà</h2>
             <p class="lesson-text">
                 Il grafico di \(y = \log_a x\) è la <strong>riflessione speculare</strong> (rispetto alla bisettrice \(y = x\)) del grafico di \(y = a^x\). Sono funzioni inverse.
@@ -995,10 +1016,10 @@
         </section>
 
         <!-- ================================================================ -->
-        <!-- 10. PROPRIETÀ DEI LOGARITMI -->
+        <!-- 11. PROPRIETÀ DEI LOGARITMI -->
         <!-- ================================================================ -->
         <section class="lesson-section" id="sec-prop-log">
-            <div class="section-number">Sezione 10</div>
+            <div class="section-number">Sezione 11</div>
             <h2>Proprietà dei logaritmi — con esempi numerici e confronto</h2>
             <p class="lesson-text">
                 Ogni proprietà dei logaritmi è il riflesso diretto di una proprietà degli esponenti. Confrontiamole fianco a fianco:
@@ -1138,10 +1159,199 @@
         </section>
 
         <!-- ================================================================ -->
-        <!-- 11. QUIZ -->
+        <!-- 12. L'INCREMENTO LOGARITMICO -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-inc-log">
+            <div class="section-number">Sezione 12</div>
+            <h2 style="color: #34d399;">L'Incremento Logaritmico: Il Freno a Mano</h2>
+            <p class="lesson-text">
+                Se l'esponenziale è l'acceleratore definitivo della matematica, il logaritmo è il suo freno a mano più potente. Come abbiamo visto, il logaritmo cresce senza fine (arriva fino a infinito), ma lo fa in un modo disperatamente <strong>lento</strong>.
+            </p>
+            <p class="lesson-text">
+                Il segreto sta di nuovo nel suo <strong>incremento</strong>. Essendo la funzione inversa dell'esponenziale, il suo comportamento si ribalta: <strong>l'incremento del logaritmo diventa sempre più microscopico man mano che la \(x\) cresce</strong>. 
+            </p>
+            <div class="callout" style="background: rgba(52, 211, 153, 0.07); border-color: rgba(52, 211, 153, 0.25);">
+                <span class="callout-icon">🐢</span>
+                <p><strong>Un passo sempre più pesante:</strong> Per far salire il valore di \(\log_{10}(x)\) da 1 a 2, ti basta fare 90 passi in avanti (\(100 - 10\)). Ma per farlo salire da 9 a 10, devi fare la bellezza di <strong>9 miliardi</strong> di passi (\(10.000.000.000 - 1.000.000.000\))! Più vai avanti sull'asse \(x\), più la crescita è frenata, schiacciando inesorabilmente la curva verso il basso.</p>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 13. APPLICAZIONI DEI LOGARITMI: pH E DECIBEL -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-app-log">
+            <div class="section-number">Sezione 13</div>
+            <h2>🌍 Applicazioni: il pH e i Decibel</h2>
+            <p class="lesson-text">
+                I logaritmi non sono un capriccio dei matematici: compaiono ovunque nella scienza e nella vita quotidiana, ogni volta che servono per gestire <strong>grandezze che variano su scale enormi</strong>. Due degli esempi più importanti e celebri sono il <strong>pH</strong> in chimica e i <strong>decibel (dB)</strong> in acustica.
+            </p>
+
+            <!-- ========== pH ========== -->
+            <h3 style="margin-top:2rem; color:#34d399; display:flex; align-items:center; gap:0.6rem;">
+                <span style="font-size:1.4rem;">🧪</span> Il pH: misurare l'acidità con i logaritmi
+            </h3>
+
+            <p class="lesson-text">
+                Ogni soluzione acquosa contiene ioni <strong>idrogeno</strong> \(\text{H}^+\) (più precisamente ioni idronio \(\text{H}_3\text{O}^+\)). La <em>concentrazione</em> di questi ioni, indicata con \([\text{H}^+]\), determina quanto una soluzione è <strong>acida</strong> o <strong>basica</strong>. Il problema è che questa concentrazione varia su un intervallo enorme:
+            </p>
+            <ul class="props-list">
+                <li>
+                    <span class="prop-label">Acido molto forte</span>
+                    <span>\([\text{H}^+] \approx 1 \text{ mol/L} = 10^0\)</span>
+                </li>
+                <li>
+                    <span class="prop-label">Acqua pura (neutra)</span>
+                    <span>\([\text{H}^+] = 10^{-7}\text{ mol/L}\) — dieci milionesimi!</span>
+                </li>
+                <li>
+                    <span class="prop-label">Base molto forte</span>
+                    <span>\([\text{H}^+] \approx 10^{-14}\text{ mol/L}\) — centomila miliardésimi!</span>
+                </li>
+            </ul>
+            <p class="lesson-text">
+                Lavorare direttamente con numeri come \(0{,}0000001\) sarebbe scomodissimo. Per questo nel 1909 il chimico danese <strong>Søren Sørensen</strong> inventò la scala del pH, definita come:
+            </p>
+
+            <div class="definition-box">
+                <p style="font-size:1.15rem; text-align:center; margin-bottom:0.5rem;">
+                    \[ \text{pH} = -\log_{10}[\text{H}^+] \]
+                </p>
+                <p style="color:var(--text-muted); font-size:0.95rem;">
+                    Il segno meno serve a rendere positivi i valori tipici (dato che \(\log_{10}\) di numeri minori di 1 è negativo).
+                </p>
+            </div>
+
+            <p class="lesson-text">
+                Grazie a questa definizione, l'intera gamma di acidità si comprime in una scala da <strong>0 a 14</strong>:
+            </p>
+            <ul class="props-list">
+                <li>
+                    <span class="prop-label" style="color:#ef4444;">pH &lt; 7 → Acido</span>
+                    <span>Più il pH è basso, più la soluzione è acida. Il succo di limone ha pH ≈ 2, lo stomaco pH ≈ 1.</span>
+                </li>
+                <li>
+                    <span class="prop-label" style="color:#34d399;">pH = 7 → Neutro</span>
+                    <span>L'acqua pura a 25°C ha esattamente pH 7.</span>
+                </li>
+                <li>
+                    <span class="prop-label" style="color:#3b82f6;">pH &gt; 7 → Basico</span>
+                    <span>Più il pH è alto, più la soluzione è basica. Il sapone ha pH ≈ 10, la candeggina pH ≈ 13.</span>
+                </li>
+            </ul>
+
+            <div class="callout callout-warn">
+                <span class="callout-icon">⚠️</span>
+                <p><strong>Attenzione alla scala logaritmica:</strong> Un pH che scende di <strong>1 unità</strong> significa che la concentrazione di \(\text{H}^+\) è aumentata di <strong>10 volte</strong>! Il succo di limone (pH 2) è 100.000 volte più acido dell'acqua pura (pH 7), non solo "5 unità in più".</p>
+            </div>
+
+            <!-- pH INTERACTIVE -->
+            <div class="demo-box" style="border-color: rgba(52,211,153,0.3);">
+                <h3 style="color:#34d399;">🎛️ Simulatore interattivo del pH</h3>
+                <p class="lesson-text" style="font-size:0.95rem;">Trascina lo slider per esplorare la scala del pH. Osserva come cambia la concentrazione \([\text{H}^+]\).</p>
+
+                <div class="slider-group">
+                    <label>Valore pH</label>
+                    <input type="range" id="ph-slider" min="0" max="14" value="7" step="0.1"
+                        style="width:280px; accent-color:#34d399;">
+                    <span class="slider-val" id="ph-val" style="color:#34d399; font-size:1.3rem;">7.0</span>
+                </div>
+                <canvas id="phCanvas" width="640" height="180" style="display:block; max-width:100%; margin:0.5rem auto; border-radius:8px;"></canvas>
+                <div style="display:flex; justify-content:center; gap:1rem; margin-top:1rem; flex-wrap:wrap;">
+                    <div style="background:rgba(0,0,0,0.2); padding:0.6rem 1.2rem; border-radius:8px; text-align:center; min-width:200px;">
+                        <div style="font-size:0.8rem; color:var(--text-muted);">Concentrazione [H⁺]</div>
+                        <div id="ph-conc" style="font-size:1.2rem; font-weight:800; color:#fbbf24;">10⁻⁷ mol/L</div>
+                    </div>
+                    <div style="background:rgba(0,0,0,0.2); padding:0.6rem 1.2rem; border-radius:8px; text-align:center; min-width:200px;">
+                        <div style="font-size:0.8rem; color:var(--text-muted);">Tipo di soluzione</div>
+                        <div id="ph-type" style="font-size:1.2rem; font-weight:800; color:#34d399;">Neutra (acqua)</div>
+                    </div>
+                    <div style="background:rgba(0,0,0,0.2); padding:0.6rem 1.2rem; border-radius:8px; text-align:center; min-width:200px;">
+                        <div style="font-size:0.8rem; color:var(--text-muted);">Esempio</div>
+                        <div id="ph-example" style="font-size:1.1rem; font-weight:700; color:#c4b5fd;">💧 Acqua pura</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== DECIBEL ========== -->
+            <h3 style="margin-top:3rem; color:#818cf8; display:flex; align-items:center; gap:0.6rem;">
+                <span style="font-size:1.4rem;">🔊</span> I Decibel: misurare il suono con i logaritmi
+            </h3>
+
+            <p class="lesson-text">
+                Il <strong>suono</strong> è un'onda di pressione che si propaga nell'aria. La grandezza fisica che misura l'"intensità" del suono è la <strong>pressione sonora</strong>, misurata in Pascal (Pa). L'orecchio umano è un organo incredibilmente sensibile: riesce a percepire suoni in un range enorme:
+            </p>
+            <ul class="props-list">
+                <li>
+                    <span class="prop-label">Soglia dell'udito</span>
+                    <span>\(p_0 = 20\;\mu\text{Pa} = 0{,}00002\text{ Pa}\) — la più piccola pressione percepibile.</span>
+                </li>
+                <li>
+                    <span class="prop-label">Conversazione</span>
+                    <span>\(p \approx 0{,}02\text{ Pa}\) — circa 1.000 volte la soglia.</span>
+                </li>
+                <li>
+                    <span class="prop-label">Soglia del dolore</span>
+                    <span>\(p \approx 20\text{ Pa}\) — un milione di volte la soglia dell'udito!</span>
+                </li>
+            </ul>
+            <p class="lesson-text">
+                Il rapporto tra il suono più forte e più debole che possiamo percepire è di <strong>un milione a uno</strong>. Per gestire questi numeri, l'ingegnere <strong>Alexander Graham Bell</strong> (l'inventore del telefono) propose una scala logaritmica. L'unità che porta il suo nome è il <strong>Bel</strong>, ma nella pratica si usa il <strong>decibel</strong> (dB), pari a un decimo di Bel:
+            </p>
+
+            <div class="definition-box">
+                <p style="font-size:1.15rem; text-align:center; margin-bottom:0.5rem;">
+                    \[ L = 20 \cdot \log_{10}\!\left(\frac{p}{p_0}\right) \quad\text{dB} \]
+                </p>
+                <p style="color:var(--text-muted); font-size:0.95rem;">
+                    dove \(p\) è la pressione sonora misurata e \(p_0 = 20\;\mu\text{Pa}\) è la pressione di riferimento (soglia dell'udito). Il fattore 20 compare perché la formula è definita sull'intensità (proporzionale a \(p^2\)), e \(10\log(p^2/p_0^2)=20\log(p/p_0)\).
+                </p>
+            </div>
+
+            <div class="callout">
+                <span class="callout-icon">🔑</span>
+                <p><strong>Scala logaritmica in azione:</strong> Ogni aumento di <strong>10 dB</strong> corrisponde a una pressione sonora 3,16 volte maggiore (cioè intensità 10 volte maggiore). Un suono a 80 dB ha un'intensità <strong>10.000 volte</strong> maggiore di uno a 40 dB, non semplicemente "il doppio"!</p>
+            </div>
+
+            <!-- DECIBEL INTERACTIVE -->
+            <div class="demo-box" style="border-color: rgba(129,140,248,0.3);">
+                <h3 style="color:#818cf8;">🎛️ Simulatore interattivo dei Decibel</h3>
+                <p class="lesson-text" style="font-size:0.95rem;">Trascina lo slider per esplorare la scala dei decibel. Osserva la pressione sonora corrispondente e il rapporto rispetto alla soglia dell'udito.</p>
+
+                <div class="slider-group">
+                    <label>Livello (dB)</label>
+                    <input type="range" id="db-slider" min="0" max="140" value="60" step="1"
+                        style="width:280px; accent-color:#818cf8;">
+                    <span class="slider-val" id="db-val" style="color:#818cf8; font-size:1.3rem;">60 dB</span>
+                </div>
+                <canvas id="dbCanvas" width="640" height="180" style="display:block; max-width:100%; margin:0.5rem auto; border-radius:8px;"></canvas>
+                <div style="display:flex; justify-content:center; gap:1rem; margin-top:1rem; flex-wrap:wrap;">
+                    <div style="background:rgba(0,0,0,0.2); padding:0.6rem 1.2rem; border-radius:8px; text-align:center; min-width:200px;">
+                        <div style="font-size:0.8rem; color:var(--text-muted);">Pressione sonora</div>
+                        <div id="db-pressure" style="font-size:1.2rem; font-weight:800; color:#fbbf24;">0,02 Pa</div>
+                    </div>
+                    <div style="background:rgba(0,0,0,0.2); padding:0.6rem 1.2rem; border-radius:8px; text-align:center; min-width:200px;">
+                        <div style="font-size:0.8rem; color:var(--text-muted);">Rapporto p/p₀</div>
+                        <div id="db-ratio" style="font-size:1.2rem; font-weight:800; color:#818cf8;">×1.000</div>
+                    </div>
+                    <div style="background:rgba(0,0,0,0.2); padding:0.6rem 1.2rem; border-radius:8px; text-align:center; min-width:200px;">
+                        <div style="font-size:0.8rem; color:var(--text-muted);">Esempio</div>
+                        <div id="db-example" style="font-size:1.1rem; font-weight:700; color:#c4b5fd;">🗣️ Conversazione</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONFRONTO FINALE -->
+            <div class="callout" style="margin-top:2rem; background: rgba(139,92,246,0.08); border-color: rgba(139,92,246,0.25);">
+                <span class="callout-icon">🎯</span>
+                <p><strong>Il filo rosso:</strong> Sia il pH che i decibel usano la stessa idea: <em>prendere il logaritmo di un rapporto</em> per comprimere una scala enorme in numeri gestibili. In entrambi i casi, una variazione di 1 unità sulla scala logaritmica corrisponde a un <strong>fattore 10</strong> nella grandezza originale. Questo è il superpotere del logaritmo: trasformare moltiplicazioni in addizioni, rendendo comprensibili grandezze altrimenti inimmaginabili.</p>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 14. QUIZ -->
         <!-- ================================================================ -->
         <section class="lesson-section quiz-container" id="sec-quiz">
-            <div class="section-number">Sezione 11</div>
+            <div class="section-number">Sezione 14</div>
             <h2 style="color:var(--math-color);">Sfida le tue conoscenze</h2>
             <p class="lesson-text">Hai capito le funzioni esponenziali e logaritmiche? Mettiti alla prova!</p>
             <div class="quiz-wrapper">
@@ -1750,6 +1960,229 @@
     }
 
     // ============================================================
+    //  pH SIMULATOR
+    // ============================================================
+    function updatePH(val) {
+        val = parseFloat(val);
+        document.getElementById('ph-val').textContent = val.toFixed(1);
+        const conc = Math.pow(10, -val);
+        // Concentration display
+        const elConc = document.getElementById('ph-conc');
+        if (val === Math.round(val)) {
+            elConc.textContent = '10⁻' + Math.round(val) + ' mol/L';
+        } else {
+            elConc.textContent = conc.toExponential(2) + ' mol/L';
+        }
+        // Type
+        const elType = document.getElementById('ph-type');
+        if (val < 6.5) { elType.textContent = '🔴 Acida'; elType.style.color = '#ef4444'; }
+        else if (val <= 7.5) { elType.textContent = '🟢 Neutra'; elType.style.color = '#34d399'; }
+        else { elType.textContent = '🔵 Basica'; elType.style.color = '#3b82f6'; }
+        // Example
+        const elEx = document.getElementById('ph-example');
+        const examples = [
+            [0.5, '⚗️ Acido di batteria'],
+            [1.5, '🫁 Succo gastrico'],
+            [2.5, '🍋 Succo di limone'],
+            [3.5, '🍎 Succo di mela'],
+            [4.5, '☕ Caffè'],
+            [5.5, '🍌 Banana'],
+            [6.5, '🥛 Latte'],
+            [7.5, '💧 Acqua pura'],
+            [8.5, '🌊 Acqua di mare'],
+            [9.5, '🧼 Bicarbonato'],
+            [10.5, '🧴 Sapone'],
+            [11.5, '🧹 Ammoniaca'],
+            [12.5, '🫧 Candeggina'],
+            [13.5, '🔋 Soda caustica'],
+        ];
+        let best = examples[7];
+        let minDist = 99;
+        for (const e of examples) {
+            const d = Math.abs(val - e[0]);
+            if (d < minDist) { minDist = d; best = e; }
+        }
+        elEx.textContent = best[1];
+        // Canvas
+        drawPHCanvas(val);
+    }
+    function drawPHCanvas(ph) {
+        const canvas = document.getElementById('phCanvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const W = canvas.width, H = canvas.height;
+        ctx.clearRect(0, 0, W, H);
+        ctx.fillStyle = 'rgba(0,0,0,0.3)';
+        ctx.fillRect(0, 0, W, H);
+        const pad = 40, barH = 50;
+        const barW = W - pad * 2;
+        const y0 = (H - barH) / 2;
+        // Gradient bar
+        const grad = ctx.createLinearGradient(pad, 0, pad + barW, 0);
+        grad.addColorStop(0, '#ef4444');
+        grad.addColorStop(0.25, '#f97316');
+        grad.addColorStop(0.43, '#eab308');
+        grad.addColorStop(0.5, '#22c55e');
+        grad.addColorStop(0.65, '#06b6d4');
+        grad.addColorStop(0.85, '#3b82f6');
+        grad.addColorStop(1, '#7c3aed');
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.roundRect(pad, y0, barW, barH, 8);
+        ctx.fill();
+        // Labels
+        ctx.fillStyle = 'rgba(255,255,255,0.6)';
+        ctx.font = '11px Inter,sans-serif';
+        ctx.textAlign = 'center';
+        for (let i = 0; i <= 14; i++) {
+            const x = pad + (i / 14) * barW;
+            ctx.fillText(i, x, y0 + barH + 16);
+            if (i > 0) {
+                ctx.beginPath();
+                ctx.moveTo(x, y0 + barH);
+                ctx.lineTo(x, y0 + barH + 4);
+                ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            }
+        }
+        // Labels acid/neutral/base
+        ctx.font = 'bold 10px Inter,sans-serif';
+        ctx.fillStyle = 'rgba(255,255,255,0.5)';
+        ctx.fillText('ACIDO', pad + barW * 0.18, y0 - 8);
+        ctx.fillText('NEUTRO', pad + barW * 0.5, y0 - 8);
+        ctx.fillText('BASICO', pad + barW * 0.82, y0 - 8);
+        // Marker
+        const mx = pad + (ph / 14) * barW;
+        ctx.beginPath();
+        ctx.moveTo(mx, y0 - 2);
+        ctx.lineTo(mx - 8, y0 - 18);
+        ctx.lineTo(mx + 8, y0 - 18);
+        ctx.closePath();
+        ctx.fillStyle = '#fff';
+        ctx.fill();
+        ctx.beginPath();
+        ctx.moveTo(mx, y0);
+        ctx.lineTo(mx, y0 + barH);
+        ctx.strokeStyle = '#fff';
+        ctx.lineWidth = 2.5;
+        ctx.stroke();
+    }
+
+    // ============================================================
+    //  DECIBEL SIMULATOR
+    // ============================================================
+    function updateDB(val) {
+        val = parseInt(val);
+        document.getElementById('db-val').textContent = val + ' dB';
+        const p0 = 2e-5; // 20 µPa
+        const ratio = Math.pow(10, val / 20);
+        const pressure = p0 * ratio;
+        // Pressure display
+        const elP = document.getElementById('db-pressure');
+        if (pressure < 0.001) elP.textContent = (pressure * 1e6).toFixed(1) + ' µPa';
+        else if (pressure < 1) elP.textContent = (pressure * 1000).toFixed(2) + ' mPa';
+        else elP.textContent = pressure.toFixed(1) + ' Pa';
+        // Ratio
+        const elR = document.getElementById('db-ratio');
+        if (ratio >= 1e6) elR.textContent = '×' + ratio.toExponential(1);
+        else if (ratio >= 1000) elR.textContent = '×' + Math.round(ratio).toLocaleString('it');
+        else elR.textContent = '×' + ratio.toFixed(1);
+        // Example
+        const elEx = document.getElementById('db-example');
+        const dbExamples = [
+            [0, '🤫 Soglia dell\'udito'],
+            [15, '🍃 Fruscio di foglie'],
+            [30, '🌙 Sussurro'],
+            [45, '📚 Biblioteca'],
+            [60, '🗣️ Conversazione'],
+            [70, '🚿 Doccia / aspirapolvere'],
+            [80, '🚗 Traffico intenso'],
+            [90, '🏭 Fabbrica rumorosa'],
+            [100, '🏍️ Moto senza marmitta'],
+            [110, '🎸 Concerto rock'],
+            [120, '✈️ Decollo aereo (100m)'],
+            [130, '🚀 Soglia del dolore'],
+            [140, '💥 Sparo di fucile'],
+        ];
+        let best = dbExamples[4];
+        let minDist = 999;
+        for (const e of dbExamples) {
+            const d = Math.abs(val - e[0]);
+            if (d < minDist) { minDist = d; best = e; }
+        }
+        elEx.textContent = best[1];
+        // Danger indicator
+        if (val >= 85) elEx.style.color = '#fca5a5';
+        else elEx.style.color = '#c4b5fd';
+        // Canvas
+        drawDBCanvas(val);
+    }
+    function drawDBCanvas(db) {
+        const canvas = document.getElementById('dbCanvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const W = canvas.width, H = canvas.height;
+        ctx.clearRect(0, 0, W, H);
+        ctx.fillStyle = 'rgba(0,0,0,0.3)';
+        ctx.fillRect(0, 0, W, H);
+        const pad = 40, barH = 50;
+        const barW = W - pad * 2;
+        const y0 = (H - barH) / 2;
+        // Gradient bar (green → yellow → red)
+        const grad = ctx.createLinearGradient(pad, 0, pad + barW, 0);
+        grad.addColorStop(0, '#22c55e');
+        grad.addColorStop(0.35, '#84cc16');
+        grad.addColorStop(0.55, '#eab308');
+        grad.addColorStop(0.75, '#f97316');
+        grad.addColorStop(0.9, '#ef4444');
+        grad.addColorStop(1, '#dc2626');
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.roundRect(pad, y0, barW, barH, 8);
+        ctx.fill();
+        // Danger zone overlay
+        const dangerStart = pad + (85 / 140) * barW;
+        ctx.fillStyle = 'rgba(239,68,68,0.15)';
+        ctx.fillRect(dangerStart, y0, pad + barW - dangerStart, barH);
+        // Tick labels
+        ctx.fillStyle = 'rgba(255,255,255,0.6)';
+        ctx.font = '10px Inter,sans-serif';
+        ctx.textAlign = 'center';
+        for (let i = 0; i <= 140; i += 20) {
+            const x = pad + (i / 140) * barW;
+            ctx.fillText(i, x, y0 + barH + 16);
+            ctx.beginPath();
+            ctx.moveTo(x, y0 + barH);
+            ctx.lineTo(x, y0 + barH + 4);
+            ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+        }
+        // Zone labels
+        ctx.font = 'bold 10px Inter,sans-serif';
+        ctx.fillStyle = 'rgba(255,255,255,0.5)';
+        ctx.fillText('SICURO', pad + barW * 0.25, y0 - 8);
+        ctx.fillStyle = 'rgba(239,68,68,0.7)';
+        ctx.fillText('⚠ DANNO UDITIVO', pad + barW * 0.78, y0 - 8);
+        // Marker
+        const mx = pad + (db / 140) * barW;
+        ctx.beginPath();
+        ctx.moveTo(mx, y0 - 2);
+        ctx.lineTo(mx - 8, y0 - 18);
+        ctx.lineTo(mx + 8, y0 - 18);
+        ctx.closePath();
+        ctx.fillStyle = '#fff';
+        ctx.fill();
+        ctx.beginPath();
+        ctx.moveTo(mx, y0);
+        ctx.lineTo(mx, y0 + barH);
+        ctx.strokeStyle = '#fff';
+        ctx.lineWidth = 2.5;
+        ctx.stroke();
+    }
+
+    // ============================================================
     //  INIT
     // ============================================================
     document.addEventListener('DOMContentLoaded', () => {
@@ -1761,6 +2194,16 @@
         updateZombie(0);
         runCalc();
         runLogCalc();
+
+        // pH simulator
+        updatePH(7);
+        const phSlider = document.getElementById('ph-slider');
+        if (phSlider) phSlider.addEventListener('input', (e) => updatePH(e.target.value));
+
+        // dB simulator
+        updateDB(60);
+        const dbSlider = document.getElementById('db-slider');
+        if (dbSlider) dbSlider.addEventListener('input', (e) => updateDB(e.target.value));
 
         // Resize observer for responsive canvases
         const resizeAll = () => {

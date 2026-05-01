@@ -198,9 +198,9 @@
             <div id="sat-info" style="text-align:center;color:var(--text-muted);font-size:0.9rem;margin-top:0.5rem;"></div>
         </section>
 
-        <!-- 3. Gli Epicicli -->
+        <!-- 4. Gli Epicicli -->
         <section class="lesson-section" id="sec-epicicli">
-            <h2 class="lesson-title">3. 🌀 Il modello Tolemaico e gli Epicicli</h2>
+            <h2 class="lesson-title">4. 🌀 Il modello Tolemaico e gli Epicicli</h2>
             <p class="lesson-text">
                 Prima di Keplero (che introdusse le orbite ellittiche col Sole in un fuoco), il moto retrogrado dei pianeti come Marte veniva spiegato col sistema geocentrico di Tolomeo usando gli <strong>epicicli</strong>: circonferenze i cui centri ruotano su altre circonferenze (deferenti).
             </p>
@@ -227,9 +227,39 @@
             </div>
         </section>
 
-        <!-- 4. La Catenaria -->
+        <!-- 5. Il Problema dei Tre Corpi -->
+        <section class="lesson-section" id="sec-tre-corpi" style="border-color: rgba(239, 68, 68, 0.3); background: rgba(239, 68, 68, 0.03);">
+            <h2 class="lesson-title" style="color: #ef4444;">5. 🌌 Il Problema dei Tre Corpi e il Caos</h2>
+            <p class="lesson-text">
+                Abbiamo visto come due corpi (es. la Terra e il Sole) si muovano secondo leggi matematiche prevedibili ed esatte (ellissi, parabole). Ma cosa succede se aggiungiamo un <strong>terzo corpo</strong> che interagisce gravitazionalmente con gli altri due?
+            </p>
+            <div class="callout" style="background: rgba(239,68,68,0.07); border-color: rgba(239,68,68,0.25);">
+                <span class="callout-icon">📖</span>
+                <div>
+                    <p style="color: var(--text-muted);">
+                        <strong>Un enigma insolubile e un successo Pop:</strong> Da Newton in poi, i fisici cercarono invano una formula chiusa per prevedere l'evoluzione di tre masse. Fu <strong>Henri Poincaré</strong> nel 1887 a dimostrare che <em>non esiste una soluzione analitica generale</em>. Il sistema è intrinsecamente caotico: minime variazioni nelle posizioni iniziali portano a destini completamente diversi.
+                        Questo concetto ha ispirato la trilogia sci-fi <em>"Memoria del passato della Terra"</em> di <strong>Liu Cixin</strong> (tra cui <em>"Il problema dei tre corpi"</em> e <em>"La materia oscura - The Dark Forest"</em>), recentemente adattata nella serie TV <strong>"3 Body Problem"</strong>.
+                    </p>
+                </div>
+            </div>
+            
+            <p class="lesson-text">
+                Il <strong>caos deterministico</strong> significa che, pur conoscendo le leggi di gravità, un'incertezza anche minima sulla posizione o velocità iniziale si amplifica esponenzialmente nel tempo, rendendo il sistema imprevedibile a lungo termine.
+            </p>
+
+            <div class="canvas-wrap" style="background: #111827; border: 1px solid rgba(239, 68, 68, 0.2);">
+                <h4 style="color: #fca5a5; margin-top: 0; margin-bottom: 0.5rem; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;">Simulatore Effetto Farfalla</h4>
+                <p style="font-size: 0.85rem; color: #9ca3af; margin-bottom: 1rem;">La simulazione calcola contemporaneamente <strong>due universi paralleli</strong> (Tracce Rosse e Tracce Blu). Le masse e le posizioni di partenza sono identiche, eccetto per il terzo corpo (il più piccolo) che nell'universo blu parte spostato di appena <strong>un millesimo di pixel</strong>. Osserva con attenzione: <em>fino a un certo punto i due sistemi sembrano evolversi nello stesso identico modo, ma improvvisamente divergono in modo caotico</em>, generando traiettorie completamente diverse.</p>
+                <canvas id="threebody-canvas" width="580" height="380"></canvas>
+                <div class="controls-row" style="margin-top: 1rem;">
+                    <button class="btn-action" onclick="resetThreeBody()" style="background: rgba(239, 68, 68, 0.2); border-color: #ef4444; color: #fca5a5;">Riavvia Simulazione</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. La Catenaria -->
         <section class="lesson-section" id="sec-catenaria">
-            <h2 class="lesson-title">4. 🌉 La Catenaria: Geometria della Gravità</h2>
+            <h2 class="lesson-title">6. 🌉 La Catenaria: Geometria della Gravità</h2>
             <p class="lesson-text">
                 Oltre alle orbite, la gravità determina forme peculiari anche sulla Terra. Se prendiamo una fune inestensibile e omogenea, e la sospendiamo per i suoi estremi lasciandola pendere sotto l'effetto del proprio peso, quale curva assumerà? 
             </p>
@@ -254,13 +284,70 @@
                         <label>Lunghezza fune (L)</label>
                         <input type="range" id="cat-len" min="100" max="600" value="400">
                     </div>
+            </div>
+        </section>
+
+        <!-- 7. La Scoperta di Nettuno -->
+        <section class="lesson-section" id="sec-nettuno" style="border-color: rgba(59, 130, 246, 0.3); background: rgba(59, 130, 246, 0.03);">
+            <h2 class="lesson-title" style="color: #60a5fa;">7. 🔭 La Scoperta di Nettuno: Il Trionfo di Newton</h2>
+            <p class="lesson-text">
+                Uno dei successi più clamorosi della Teoria della Gravitazione Universale di Newton non fu la spiegazione di ciò che si vedeva, ma la <strong>previsione di ciò che era invisibile</strong>. 
+            </p>
+            <p class="lesson-text">
+                A metà dell'Ottocento, gli astronomi notarono che il pianeta Urano (scoperto nel 1781) non seguiva esattamente l'orbita prevista dalle leggi di Keplero e Newton. A volte sembrava accelerare, altre volte rallentare. Piuttosto che dubitare della teoria di Newton, due matematici, il francese <strong>Urbain Le Verrier</strong> e l'inglese <strong>John Couch Adams</strong>, ipotizzarono indipendentemente l'esistenza di un ottavo pianeta sconosciuto, la cui gravità perturbava l'orbita di Urano.
+            </p>
+            <div class="callout" style="background: rgba(59, 130, 246, 0.07); border-color: rgba(59, 130, 246, 0.25);">
+                <span class="callout-icon">✍️</span>
+                <div>
+                    <p style="color: var(--text-muted);">
+                        <strong>Scoperto con la penna:</strong> Usando solo carta, calamaio e le equazioni di Newton, Le Verrier calcolò l'esatta posizione nel cielo in cui questo pianeta fantasma avrebbe dovuto trovarsi. Inviò i suoi calcoli all'Osservatorio di Berlino. La notte del 23 settembre 1846, l'astronomo <strong>Johann Galle</strong> puntò il telescopio verso le coordinate indicate da Le Verrier: a meno di un grado di distanza, scoprì il pianeta <strong>Nettuno</strong>. François Arago dichiarò che Le Verrier aveva scoperto un pianeta "con la punta della sua penna".
+                    </p>
                 </div>
             </div>
         </section>
 
+        <!-- 8. Il Paradosso di Fermi -->
+        <section class="lesson-section" id="sec-fermi" style="border-color: rgba(16, 185, 129, 0.3); background: rgba(16, 185, 129, 0.03);">
+            <h2 class="lesson-title" style="color: #34d399;">8. 👽 Il Paradosso di Fermi: Dove Sono Tutti?</h2>
+            <p class="lesson-text">
+                La gravità universale modella l'intero universo: fonde nubi di gas per accendere stelle e aggrega la polvere per formare pianeti. Sapendo che le stesse leggi fisiche della gravità valgono ovunque, possiamo dedurre che l'universo pulluli di sistemi solari. Nel 1950, durante una pausa pranzo, il fisico italiano premio Nobel <strong>Enrico Fermi</strong> formulò una domanda apparentemente semplice ma profondamente inquietante.
+            </p>
+            <p class="lesson-text">
+                Ci sono miliardi di stelle nella nostra galassia, molte simili al Sole. È altamente probabile che innumerevoli di esse ospitino pianeti simili alla Terra. Se la Terra è tipica, la vita intelligente dovrebbe essersi evoluta in molti di questi mondi. Alcune di queste civiltà potrebbero aver sviluppato tecnologie avanzate o persino il viaggio interstellare. Allora, <strong>"Dove sono tutti?"</strong>.
+            </p>
+            <div class="info-box center" style="border-left-color: #34d399; background: rgba(16, 185, 129, 0.07);">
+                <p style="margin: 0; color: #a7f3d0; font-size: 1.05rem; font-weight: 600;">
+                    Il paradosso sta nel contrasto tra l'altissima probabilità stimata dell'esistenza di vita extraterrestre e la totale mancanza di prove del suo passaggio.
+                </p>
+            </div>
+            
+            <h3 style="color: #34d399; margin-top: 2rem;">L'Equazione di Drake</h3>
+            <p class="lesson-text">
+                Per cercare di quantificare matematicamente questa probabilità, l'astronomo <strong>Frank Drake</strong> propose nel 1961 una celebre equazione che stima il numero di civiltà extraterrestri attive e in grado di comunicare nella Via Lattea. L'equazione moltiplica tra loro diversi fattori:
+            </p>
+            <div class="info-box center" style="border-left-color: #34d399; background: rgba(16, 185, 129, 0.05); margin-bottom: 1.5rem;">
+                \[ N = R^* \cdot f_p \cdot n_e \cdot f_l \cdot f_i \cdot f_c \cdot L \]
+            </div>
+            <p class="lesson-text">
+                I fattori rappresentano: il tasso di formazione stellare (\(R^*\)), la frazione di stelle con pianeti (\(f_p\)), il numero di pianeti abitabili per sistema (\(n_e\)), e le frazioni in cui effettivamente si sviluppano vita (\(f_l\)), intelligenza (\(f_i\)) e tecnologia comunicativa (\(f_c\)), moltiplicati per la durata stimata di tale civiltà (\(L\)). Anche assegnando valori estremamente conservativi e pessimistici a queste variabili, il risultato matematico suggerisce che dovrebbero esistere numerose civiltà là fuori.
+            </p>
+
+            <h3 style="color: #34d399; margin-top: 2rem;">La Crescita Tecnologica Esponenziale</h3>
+            <p class="lesson-text">
+                Ad aggravare ulteriormente il paradosso c'è l'osservazione dello sviluppo umano: la nostra crescita tecnologica è <strong>esponenziale</strong>. Basti pensare che solo poco più di un secolo fa abbiamo effettuato il primo volo a motore, e oggi inviamo intelligenze artificiali e sonde oltre i confini del sistema solare. 
+            </p>
+            <p class="lesson-text">
+                L'universo ha circa 13.8 miliardi di anni. Se una civiltà aliena avesse iniziato il suo sviluppo tecnologico anche solo un milione di anni prima di noi (un tempo impercettibile su scala cosmica), l'esponenzialità del suo progresso le avrebbe garantito tutto il tempo necessario per sviluppare il viaggio interstellare e colonizzare, o quantomeno esplorare con sonde automatizzate (le cosiddette <em>sonde di von Neumann</em>), l'intera galassia. Dovrebbero già essere qui. Eppure, non ne vediamo alcuna traccia.
+            </p>
+
+            <p class="lesson-text">
+                Le possibili risposte al Paradosso di Fermi spaziano da ragioni biologiche (la vita complessa o multicellulare è estremamente rara), a limitazioni fisiche invalicabili (le enormi distanze imposte dalla relatività e i costi energetici proibitivi per i viaggi interstellari), fino a teorie ben più oscure come il concetto di "Grande Filtro", che ipotizza che la natura ponga degli ostacoli insormontabili, o che le civiltà avanzate tendano inesorabilmente ad autodistruggersi prima di poter colonizzare le stelle.
+            </p>
+        </section>
+
         <!-- Quiz -->
         <section class="lesson-section" id="sec-quiz">
-            <h2 class="lesson-title" style="color:var(--grav-color);">6. 🧠 Verifica Finale</h2>
+            <h2 class="lesson-title" style="color:var(--grav-color);">9. 🧠 Verifica Finale</h2>
             <p class="lesson-text">Metti alla prova la tua comprensione della gravitazione universale e delle leggi di Keplero!</p>
             <div style="background:rgba(0,0,0,0.15);border-radius:1rem;padding:1.5rem;">
                 <div id="quiz-area"></div>
@@ -601,6 +688,126 @@
             }
             document.getElementById('sat-v').addEventListener('input',function(){document.getElementById('sat-v-val').textContent=parseFloat(this.value).toFixed(2)+'×';});
             drawPlanet();
+        })();
+
+        // --- TRE CORPI SIMULATOR ---
+        (function(){
+            const c = document.getElementById('threebody-canvas');
+            if(!c)return;
+            const ctx = c.getContext('2d');
+            const W = c.width, H = c.height, cx = W/2, cy = H/2;
+            
+            let sys1 = [], sys2 = [];
+            let trail1 = [[],[],[]], trail2 = [[],[],[]];
+            let running = true;
+            let animId = null;
+
+            const G = 1; 
+            const dt = 0.04;
+
+            function initSystem(offsetX) {
+                // Corpo 1 e 2 ruotano vicini, Corpo 3 perturba
+                return [
+                    { m: 400, x: -70, y: 0, vx: 0, vy: -1.8 },
+                    { m: 400, x: 70,  y: 0, vx: 0, vy: 1.8 },
+                    { m: 150, x: 0 + offsetX, y: 120, vx: -1.2, vy: 0 }
+                ];
+            }
+
+            window.resetThreeBody = function() {
+                cancelAnimationFrame(animId);
+                sys1 = initSystem(0);
+                sys2 = initSystem(0.001); // 1 millesimo di differenza sulla X
+                trail1 = [[],[],[]];
+                trail2 = [[],[],[]];
+                running = true;
+                loop();
+            };
+
+            function stepSystem(sys) {
+                let acc = [
+                    {x:0, y:0}, {x:0, y:0}, {x:0, y:0}
+                ];
+                for (let i=0; i<3; i++) {
+                    for (let j=i+1; j<3; j++) {
+                        let dx = sys[j].x - sys[i].x;
+                        let dy = sys[j].y - sys[i].y;
+                        let distSq = dx*dx + dy*dy;
+                        let dist = Math.sqrt(distSq) + 0.1; // Softening
+                        let F = (G * sys[i].m * sys[j].m) / distSq;
+                        
+                        let ax = (F * dx/dist);
+                        let ay = (F * dy/dist);
+                        
+                        acc[i].x += ax / sys[i].m;
+                        acc[i].y += ay / sys[i].m;
+                        acc[j].x -= ax / sys[j].m;
+                        acc[j].y -= ay / sys[j].m;
+                    }
+                }
+                
+                // Semi-implicit Euler
+                for (let i=0; i<3; i++) {
+                    sys[i].vx += acc[i].x * dt;
+                    sys[i].vy += acc[i].y * dt;
+                    sys[i].x += sys[i].vx * dt;
+                    sys[i].y += sys[i].vy * dt;
+                }
+            }
+
+            function drawTrails(trails, colorStr) {
+                for (let i=0; i<3; i++) {
+                    if (trails[i].length > 1) {
+                        ctx.beginPath();
+                        ctx.moveTo(cx + trails[i][0].x, cy + trails[i][0].y);
+                        for (let j=1; j<trails[i].length; j++) {
+                            ctx.lineTo(cx + trails[i][j].x, cy + trails[i][j].y);
+                        }
+                        ctx.strokeStyle = colorStr;
+                        ctx.lineWidth = 1.5;
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            function drawBodies(sys, colorStr) {
+                for (let i=0; i<3; i++) {
+                    ctx.beginPath();
+                    let radius = i===2 ? 3 : 5;
+                    ctx.arc(cx + sys[i].x, cy + sys[i].y, radius, 0, Math.PI*2);
+                    ctx.fillStyle = colorStr;
+                    ctx.fill();
+                }
+            }
+
+            function loop() {
+                if(!running) return;
+                
+                for (let k=0; k<12; k++) {
+                    stepSystem(sys1);
+                    stepSystem(sys2);
+                }
+
+                for (let i=0; i<3; i++) {
+                    trail1[i].push({x: sys1[i].x, y: sys1[i].y});
+                    if (trail1[i].length > 400) trail1[i].shift();
+                    
+                    trail2[i].push({x: sys2[i].x, y: sys2[i].y});
+                    if (trail2[i].length > 400) trail2[i].shift();
+                }
+
+                ctx.clearRect(0,0,W,H);
+                
+                drawTrails(trail1, 'rgba(239, 68, 68, 0.4)');
+                drawTrails(trail2, 'rgba(59, 130, 246, 0.4)');
+                
+                drawBodies(sys1, '#ef4444');
+                drawBodies(sys2, '#3b82f6');
+
+                animId = requestAnimationFrame(loop);
+            }
+            // Avvia al caricamento
+            resetThreeBody();
         })();
 
         // --- QUIZ ---
