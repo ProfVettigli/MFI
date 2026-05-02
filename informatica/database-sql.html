@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database e SQL - MFI Informatica</title>
+    <meta name="description"
+        content="Lezione interattiva sui database relazionali, il linguaggio SQL e approfondimento sui grafi.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        .sql-keyword { color: #c084fc; font-weight: bold; }
+        .sql-string { color: #34d399; }
+        .sql-table { width: 100%; border-collapse: collapse; margin-top: 1rem; color: #e2e8f0; }
+        .sql-table th, .sql-table td { padding: 0.8rem; border: 1px solid rgba(255, 255, 255, 0.2); text-align: left; }
+        .sql-table th { background: rgba(59, 130, 246, 0.2); color: #3b82f6; }
+        .graph-canvas { width: 100%; height: 400px; background: #0f172a; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); cursor: crosshair; }
+        .interactive-section { background: rgba(255,255,255,0.03); padding: 1.5rem; border-radius: 12px; margin-top: 1.5rem; }
+    </style>
+</head>
+
+<body>
+    <header class="sub-hero"
+        style="background: linear-gradient(rgba(15, 23, 42, 0.92), rgba(15, 23, 42, 0.96)), url('https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80'); background-size: cover; padding: 6rem 0 3rem;">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2.5rem;">
+                <a href="informatica.html" class="back-button" style="margin-bottom: 0;">
+                    <span style="font-size:1.2rem; margin-right: 0.5rem;">&larr;</span> Torna a Informatica
+                </a>
+            </div>
+            <h1 style="font-size: clamp(3rem, 6vw, 4.5rem); font-weight: 800; margin-bottom: 1.5rem;">Database e
+                <span style="color: #3b82f6;">SQL</span></h1>
+            <p style="font-size: 1.25rem; color: var(--text-muted); max-width: 800px; line-height: 1.6;">
+                Come organizzare, interrogare e collegare enormi moli di dati. Dai database relazionali al mondo dei grafi e reti complesse.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- SEZIONE 1: Database -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #3b82f6;">1. Cos'è un Database?</h2>
+            <p class="lesson-text">
+                Un <strong>Database (Banca Dati)</strong> è una collezione organizzata di dati, strutturata in modo da poter essere facilmente accessibile, gestita e aggiornata. Mentre un semplice file di testo o un foglio di calcolo va bene per pochi dati, quando le informazioni diventano milioni, abbiamo bisogno di uno strumento specializzato chiamato <strong>DBMS (Database Management System)</strong>.
+            </p>
+            <div style="background: rgba(59,130,246,0.08); border-left: 4px solid #3b82f6; padding: 1.5rem; border-radius: 0 12px 12px 0; margin-top: 1.5rem;">
+                <h4 style="color: #3b82f6;">Database Relazionali (RDBMS)</h4>
+                <p>Nei database relazionali, i dati sono organizzati in <strong>Tabelle</strong> (che assomigliano a fogli di calcolo). Ogni tabella ha colonne (chiamate <em>campi</em> o <em>attributi</em>) e righe (chiamate <em>record</em>). Le tabelle possono essere collegate tra loro (messe in "relazione") attraverso campi in comune chiamati <em>Chiavi Esterne (Foreign Keys)</em>.</p>
+            </div>
+        </section>
+
+        <!-- SEZIONE 2: SQL -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #a855f7;">2. Il Linguaggio SQL</h2>
+            <p class="lesson-text">
+                <strong>SQL (Structured Query Language)</strong> è il linguaggio standard per comunicare con i database relazionali. Con SQL possiamo creare tabelle, inserire dati, modificarli e soprattutto <em>interrogarli</em>.
+            </p>
+            
+            <h3 style="color: #a855f7; margin-top: 2rem;">La Query SELECT</h3>
+            <p class="lesson-text">Il comando più usato in assoluto è la <code>SELECT</code>, che permette di estrarre (leggere) i dati che ci interessano, filtrandoli e ordinandoli.</p>
+            
+            <div style="background: #1e293b; padding: 1.5rem; border-radius: 12px; margin-top: 1rem; font-family: 'Fira Code', monospace;">
+                <span class="sql-keyword">SELECT</span> nome, cognome<br>
+                <span class="sql-keyword">FROM</span> utenti<br>
+                <span class="sql-keyword">WHERE</span> eta > <span class="sql-string">18</span><br>
+                <span class="sql-keyword">ORDER BY</span> cognome <span class="sql-keyword">ASC</span>;
+            </div>
+
+            <!-- Interattività SQL -->
+            <div class="interactive-section">
+                <h4 style="color: #a855f7; margin-bottom: 1rem;">🧪 Prova tu: Esegui una Query</h4>
+                <p style="margin-bottom: 1rem; color: #94a3b8;">Ecco una tabella <code>Studenti</code> virtuale. Usa <code>SELECT * FROM Studenti</code> oppure filtra con <code>WHERE</code> (es. <code>WHERE Voto >= 8</code>, <code>WHERE Materia = 'Informatica'</code>):</p>
+                <table class="sql-table" id="student-table-demo">
+                    <tr><th>ID</th><th>Nome</th><th>Materia</th><th>Voto</th></tr>
+                    <tr><td>1</td><td>Mario</td><td>Informatica</td><td>8</td></tr>
+                    <tr><td>2</td><td>Luigi</td><td>Matematica</td><td>6</td></tr>
+                    <tr><td>3</td><td>Anna</td><td>Informatica</td><td>9</td></tr>
+                    <tr><td>4</td><td>Giulia</td><td>Fisica</td><td>7</td></tr>
+                    <tr><td>5</td><td>Paolo</td><td>Matematica</td><td>4</td></tr>
+                </table>
+
+                <div style="margin-top: 1.5rem;">
+                    <label style="color: #a855f7; font-weight: bold;">Scrivi la tua query:</label>
+                    <textarea id="sql-input" style="width: 100%; height: 80px; background: #0f172a; color: #e2e8f0; border: 1px solid #334155; border-radius: 8px; padding: 1rem; margin-top: 0.5rem; font-family: 'Fira Code', monospace; resize: vertical;">SELECT * FROM Studenti WHERE Voto >= 8;</textarea>
+                    <button id="run-sql-btn" style="background: #a855f7; color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 8px; margin-top: 1rem; cursor: pointer; font-weight: bold; transition: 0.3s;">Esegui Query</button>
+                </div>
+                <div id="sql-output" style="margin-top: 1.5rem; padding: 1rem; background: #0f172a; border-radius: 8px; min-height: 50px;">
+                    <em style="color:#64748b;">Il risultato apparirà qui...</em>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEZIONE 3: I Grafi -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #10b981;">3. Approfondimento: I Grafi</h2>
+            <p class="lesson-text">
+                Non tutti i dati si adattano bene alle tabelle. Immagina un social network: come rappresenti le amicizie tra milioni di utenti? O come calcoli il percorso più veloce tra due città su una mappa? 
+                Qui entrano in gioco i <strong>Grafi</strong>, una struttura dati fondamentale in informatica che descrive un insieme di elementi e le loro reciproche connessioni. Su questa struttura si basano i <em>Graph Database</em> (come Neo4j).
+            </p>
+            <div style="background: rgba(16,185,129,0.08); border-left: 4px solid #10b981; padding: 1.5rem; border-radius: 0 12px 12px 0; margin-top: 1.5rem;">
+                <h4 style="color: #10b981;">Componenti di un Grafo</h4>
+                <ul style="line-height: 1.8;">
+                    <li><strong>Nodi (o Vertici):</strong> Rappresentano le entità. In un social network sarebbero le persone; in una mappa sarebbero le città.</li>
+                    <li><strong>Archi (o Lati/Edges):</strong> Rappresentano le relazioni tra le entità. Sarebbero le "amicizie" o le "strade".</li>
+                </ul>
+            </div>
+            
+            <p class="lesson-text" style="margin-top: 1.5rem;">
+                I grafi possono essere <strong>Orientati</strong> (le frecce hanno un verso, es. "Mario segue Luigi" su Twitter) o <strong>Non Orientati</strong> (la relazione è bidirezionale e reciproca, es. "Mario e Luigi sono amici" su Facebook). Un grafo è <strong>Connesso</strong> se esiste un percorso (una sequenza di archi) tra ogni coppia di nodi.
+            </p>
+
+            <div class="interactive-section">
+                <h4 style="color: #10b981; margin-bottom: 1rem;">🧪 Simulatore Interattivo di Grafo</h4>
+                <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 1rem;">Clicca sul canvas per aggiungere Nodi. Clicca su due nodi in sequenza per creare un Arco (relazione) tra loro. Usa il doppio clic su un nodo o arco per eliminarlo.</p>
+                <canvas id="graphCanvas" class="graph-canvas"></canvas>
+                <div style="margin-top: 1rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+                    <button id="clearGraphBtn" style="background: transparent; border: 1px solid #ef4444; color: #ef4444; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer;">Pulisci Grafo</button>
+                    <button id="presetSocialBtn" style="background: rgba(16,185,129,0.2); border: 1px solid #10b981; color: #10b981; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer;">Grafo Esempio (Social Network)</button>
+                </div>
+                <p id="graph-status" style="margin-top: 1rem; color: #10b981; font-weight: bold;"></p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Informatica.</p>
+    </footer>
+
+    <script src="database-sql.js"></script>
+    <script src="../js/main.js"></script>
+</body>
+</html>
