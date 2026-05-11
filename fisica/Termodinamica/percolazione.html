@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Percolazione e Reticoli - MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap"
+        rel="stylesheet">
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+        onload="renderMathInElement(document.body);"></script>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        .cuccuma-box {
+            background: rgba(139, 69, 19, 0.1);
+            border-left: 4px solid #8b4513;
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 0 16px 16px 0;
+            line-height: 1.6;
+        }
+
+        #forest-canvas, #pacman-canvas {
+            background: #0f172a;
+            border-radius: 12px;
+            width: 100%;
+            display: block;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 1rem;
+        }
+
+        .control-panel {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+
+        .slider-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .slider-group label {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            accent-color: var(--physics-color);
+        }
+
+        .pacman-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(234, 179, 8, 0.05);
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid rgba(234, 179, 8, 0.2);
+        }
+
+    </style>
+</head>
+
+<body>
+    <header class="sub-hero"
+        style="background: linear-gradient(rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.95)), url('https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&q=80'); background-size: cover; padding: 6rem 0 3rem;">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2.5rem;">
+                <a href="termodinamica.html" class="back-button" style="margin-bottom: 0;">
+                    <span style="font-size:1.2rem; margin-right: 0.5rem;">&larr;</span> Torna alla Termodinamica
+                </a>
+            </div>
+            <h1 style="font-size: clamp(3rem, 6vw, 5rem); font-weight: 800; margin-bottom: 1.5rem;">La <span
+                    style="color: #ef4444;">Percolazione</span>
+            </h1>
+            <p style="font-size: 1.25rem; color: var(--text-muted); max-width: 800px; line-height: 1.6;">
+                Dalle antiche macchinette del caffè agli incendi boschivi, fino alla propagazione dei virus.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- INTRO: CAFFE -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">1. Cos'è la Percolazione? L'esempio della Cuccuma</h2>
+            <p class="lesson-text">
+                Il termine "percolazione" deriva dal latino <em>percolare</em>, che significa "filtrare attraverso". In fisica e in matematica, la percolazione descrive il movimento e il filtraggio di fluidi attraverso materiali porosi.
+            </p>
+            <div class="cuccuma-box">
+                <h3 style="color: #d97706; margin-bottom: 1rem;">☕ La Macchinetta del Caffè Napoletana</h3>
+                <p class="lesson-text" style="font-size: 0.95rem; margin-bottom: 0;">
+                    Per capire intuitivamente la percolazione, pensa alla preparazione del caffè tradizionale a Napoli con la <strong>cuccumella</strong>. L'acqua bollente scende lentamente (per forza di gravità) attraverso uno strato di polvere di caffè macinato. L'acqua cerca una strada, un "percorso" tra i granelli di caffè. Se la polvere è troppo pressata, i vuoti (pori) sono disconnessi e l'acqua non riesce a passare. Se ci sono abbastanza vuoti connessi tra loro da formare un percorso continuo dall'alto verso il basso, l'acqua fluisce e il caffè è pronto. Questo percorso continuo è detto <strong>cluster percolativo</strong>.
+                </p>
+            </div>
+            <p class="lesson-text">
+                Il fenomeno della percolazione ha una caratteristica fondamentale: una <strong>transizione di fase critica</strong>. C'è una probabilità soglia esatta al di sotto della quale il fluido è intrappolato, e al di sopra della quale riesce a oltrepassare l'ostacolo.
+            </p>
+        </section>
+
+        <!-- FORESTA -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">2. Modelli di Propagazione: Alberi e Incendi</h2>
+            <p class="lesson-text">
+                Possiamo astrarre il concetto di percolazione e applicarlo a reti e reticoli. Immagina una <strong>foresta</strong> divisa in un reticolo (come una scacchiera). Ogni cella può contenere un albero oppure essere vuota.
+            </p>
+            <p class="lesson-text">
+                Se un fulmine colpisce un albero, questo prende fuoco. Il fuoco può propagarsi solo agli alberi "vicini". C'è una probabilità \(p\) che l'albero infetti un suo vicino. Nella realtà, questa probabilità <strong>dipende fortemente dalla distanza</strong> tra un albero e l'altro: se la foresta è molto fitta (distanza piccola, probabilità alta), l'incendio si propagherà. Se gli alberi sono diradati, l'incendio si spegnerà rapidamente.
+            </p>
+
+            <div style="background: rgba(59, 130, 246, 0.05); padding: 1.5rem; border-radius: 12px; border-left: 4px solid #3b82f6; margin: 2rem 0;">
+                <h4 style="color: #3b82f6; margin-bottom: 0.5rem;">Soglia Critica (\(p_c\))</h4>
+                <p style="font-size: 0.95rem; margin: 0;">
+                    In un reticolo infinito, esiste una probabilità critica \(p_c\). Se \(p < p_c\), l'incendio rimarrà confinato a un'area finita. Se \(p \ge p_c\), si forma un <strong>cluster infinito</strong> e l'incendio distruggerà l'intera foresta.
+                </p>
+            </div>
+        </section>
+
+        <!-- SIMULATORE FORESTA -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">3. Laboratorio Interattivo: Propagazione nella Foresta</h2>
+            <p class="lesson-text">
+                Sperimenta la transizione di fase! Modifica la <strong>densità degli alberi</strong> (che rappresenta la probabilità \(p\) che una cella sia occupata da un albero).
+                Per un reticolo quadrato 2D come questo, la meccanica statistica ha dimostrato che la soglia critica è <strong>\(p_c \approx 59.3\%\)</strong>.
+            </p>
+            <div style="background: rgba(16, 185, 129, 0.05); padding: 1.5rem; border-radius: 12px; border-left: 4px solid #10b981; margin-bottom: 2rem;">
+                <p style="margin: 0; font-size: 0.95rem;">
+                    <strong style="color: #10b981;">🔍 Prova tu stesso:</strong> Imposta prima la densità a <strong>55%</strong> (sotto la soglia) e appicca l'incendio: vedrai che si spegnerà confinato in una piccola zona. 
+                    Poi impostala a <strong>65%</strong> (sopra la soglia) e riprova: l'incendio divorerà quasi l'intera foresta propagandosi all'infinito!
+                </p>
+            </div>
+            <div class="control-panel">
+                <div class="slider-group">
+                    <label>
+                        <span>Densità della Foresta (Probabilità di connessione): <strong id="density-val" style="color: #10b981;">60%</strong></span>
+                    </label>
+                    <input type="range" id="density-slider" min="10" max="100" value="60">
+                </div>
+                <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                    <button id="btn-generate-forest" class="control-btn" style="background: #3b82f6;">Rigenera Foresta</button>
+                    <button id="btn-start-fire" class="control-btn" style="background: #ef4444;">Appicca Incendio al Centro</button>
+                </div>
+            </div>
+
+            <canvas id="forest-canvas" height="400"></canvas>
+            <p style="font-size: 0.85rem; color: var(--text-muted); text-align: center;">
+                Alberi sani (verdi), Alberi in fiamme (rossi), Cenere (grigi).
+                <em>Nota: il reticolo per i calcoli è toroidale (effetto Pac-Man).</em>
+            </p>
+        </section>
+
+        <!-- EFFETTO PACMAN -->
+        <section class="lesson-section">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;">
+                <div>
+                    <h2 class="lesson-title">4. L'Effetto Pac-Man (Condizioni Periodiche al Contorno)</h2>
+                    <p class="lesson-text">
+                        Nella simulazione, avrai notato che il fuoco che esce dal bordo destro rientra dal bordo sinistro. Questo si chiama utilizzo delle <strong>condizioni periodiche al contorno</strong> (Periodic Boundary Conditions).
+                    </p>
+                    <p class="lesson-text">
+                        I fisici usano queste condizioni per simulare sistemi infiniti avendo a disposizione computer con memoria finita. Invece di avere un bordo "duro" dove la simulazione si ferma, il reticolo è <em>chiuso su se stesso</em>. La destra si collega alla sinistra, l'alto si collega al basso.
+                    </p>
+                    <p class="lesson-text">
+                        Topologicamente, questa figura si chiama <strong>Toro</strong> (la forma di una ciambella). Nel linguaggio comune, è noto come l'<strong>Effetto Pac-Man</strong>: quando il celebre personaggio esce dallo schermo a destra, riappare a sinistra.
+                    </p>
+                </div>
+
+                <div class="pacman-wrapper">
+                    <h3 style="color: #eab308; margin-bottom: 1rem; text-align: center;">Mini-Mappa Pac-Man</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); text-align: center; margin-bottom: 1rem;">
+                        Usa il pulsante qui sotto per far muovere il nostro "Pac-Man" e osservare come i bordi sono connessi!
+                    </p>
+                    <canvas id="pacman-canvas" width="300" height="200" style="background: black;"></canvas>
+                    <div style="display: flex; gap: 1rem; justify-content: center;">
+                        <button id="btn-pacman-move" class="control-btn" style="background: #eab308; color: #000; font-weight: bold; padding: 0.5rem 1rem;">Muovi Pac-Man</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- APPLICAZIONI E PROBLEMI APERTI -->
+        <section class="lesson-section" style="margin-top: 4rem; border: 1px dashed var(--physics-color); padding: 2rem; border-radius: 16px; margin-bottom: 3rem;">
+            <h2 class="lesson-title" style="color: var(--physics-color);">5. Applicazioni e Problemi Aperti</h2>
+            
+            <p class="lesson-text">
+                Il concetto di transizione di fase nella percolazione si estende ben oltre le foreste e le macchinette del caffè. Generalizzando il modello su reti bi-dimensionali (2D), tri-dimensionali (3D) o persino su reti complesse ad altissima dimensionalità, la percolazione è diventata uno dei modelli matematici più sfruttati in assoluto.
+            </p>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem;">
+                <div style="background: rgba(59, 130, 246, 0.05); padding: 1.5rem; border-radius: 12px; border-left: 4px solid #3b82f6;">
+                    <h3 style="color: #3b82f6; margin-bottom: 1rem;">Applicazioni Pratiche</h3>
+                    <ul style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; padding-left: 1.2rem; margin: 0;">
+                        <li style="margin-bottom: 0.8rem;"><strong>Estrazione Petrolifera e Filtrazione:</strong> Calcolare se un fluido (petrolio, acqua) riuscirà ad attraversare una roccia porosa 3D per raggiungere il pozzo di estrazione.</li>
+                        <li style="margin-bottom: 0.8rem;"><strong>Scienza dei Materiali:</strong> Creare plastiche conduttive. Mescolando particelle metalliche (conduttori) in un polimero (isolante), il materiale diventa improvvisamente un conduttore elettrico macroscopico solo quando la concentrazione di metallo supera la soglia critica.</li>
+                        <li><strong>Epidemiologia e Internet:</strong> I modelli di percolazione simulano la diffusione di virus informatici o pandemie. La soglia critica indica <em>l'immunità di gregge necessaria</em> (raggiungibile ad esempio tramite vaccini o rimozione di nodi) per frammentare e distruggere il "cluster infinito" dei contagi, fermando la pandemia.</li>
+                    </ul>
+                </div>
+
+                <div style="background: rgba(168, 85, 247, 0.05); padding: 1.5rem; border-radius: 12px; border-left: 4px solid #a855f7;">
+                    <h3 style="color: #a855f7; margin-bottom: 1rem;">Perché se ne parla ancora?</h3>
+                    <p class="lesson-text" style="font-size: 0.95rem; margin-bottom: 1rem;">
+                        Nonostante la percolazione sia studiata da quasi 70 anni, rimane un campo di ricerca attivamente finanziato e con affascinanti <strong>problemi aperti</strong>:
+                    </p>
+                    <ul style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; padding-left: 1.2rem; margin: 0;">
+                        <li style="margin-bottom: 0.8rem;"><strong>Il Mistero del 3D:</strong> Mentre per alcuni reticoli 2D i matematici (tra cui il premio Fields Stanislav Smirnov) hanno ricavato soluzioni analitiche esatte, <em>non esiste ancora una formula matematica chiusa</em> per calcolare \(p_c\) in 3D. Ad oggi ci affidiamo esclusivamente a potenti stime numeriche fatte al computer (es. \(p_c \approx 0.3116\) per un reticolo cubico).</li>
+                        <li><strong>Percolazione Esplosiva:</strong> Solo recentemente (nel 2009) i fisici hanno scoperto varianti del modello in cui la transizione da reticolo disconnesso a cluster infinito non avviene gradualmente, ma in modo brutalmente repentino e "violento". Comprendere queste dinamiche non lineari aiuta a prevedere i collassi improvvisi della rete elettrica globale o i crac sistemici finanziari.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- QUIZ PERCOLAZIONE -->
+        <section id="quiz-finale" class="lesson-section quiz-container">
+            <h2 class="lesson-title" style="color: var(--physics-color); text-align: center;">Verifica le tue Competenze</h2>
+            <p class="lesson-text" style="text-align: center; font-size: 0.95rem; margin-bottom: 2rem;">Mettiti alla prova su percolazione, modelli di foresta e condizioni periodiche.</p>
+            <div id="quiz-area"></div>
+            <div id="quiz-score" class="feedback-msg" style="text-align: center; font-size: 1.2rem; margin-top: 2rem; font-weight: bold;"></div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione Termodinamica.</p>
+    </footer>
+
+    <!-- JS -->
+    <script src="percolazione.js"></script>
+    <script src="../../js/main.js"></script>
+</body>
+
+</html>

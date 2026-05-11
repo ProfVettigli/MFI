@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Probabilità: Calcolare l'Incertezza - MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- MathJax -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+            width: fit-content;
+        }
+        
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+        
+        .back-icon {
+            margin-right: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .hero-section {
+            padding: 4rem 0 2rem;
+            text-align: center;
+        }
+
+        .interactive-box {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 4px solid var(--math-color);
+            padding: 1.5rem;
+            border-radius: 0 1rem 1rem 0;
+            margin: 2rem 0;
+        }
+
+        .interactive-box h3 {
+            color: var(--math-color);
+            margin-bottom: 1rem;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        input[type="text"], input[type="number"], select {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 0.8rem 1rem;
+            border-radius: 0.5rem;
+            flex-grow: 1;
+            font-family: inherit;
+        }
+
+        button {
+            background: var(--math-color);
+            border: none;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: transform 0.2s, opacity 0.2s;
+        }
+
+        button:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
+        }
+
+        .feedback {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            display: none;
+            font-weight: 500;
+        }
+
+        .correct {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10B981;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .incorrect {
+            background: rgba(239, 68, 68, 0.1);
+            color: #EF4444;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .math-gradient {
+            background: linear-gradient(135deg, #3B82F6, #60A5FA);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .lesson-section {
+            margin-bottom: 4rem;
+        }
+
+        .formula-box {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            text-align: center;
+            margin: 1.5rem 0;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* --- Notation Symbol Cards --- */
+        .symbol-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.2rem;
+            margin: 2rem 0;
+        }
+
+        .symbol-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 1rem;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .symbol-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--math-color);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.1);
+        }
+
+        .symbol-icon {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--math-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .symbol-card h4 {
+            margin-bottom: 0.4rem;
+            color: #fff;
+            font-size: 0.95rem;
+        }
+
+        .symbol-card p {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+            margin: 0;
+        }
+
+        .symbol-example {
+            font-style: italic;
+            margin-top: 0.5rem !important;
+            font-size: 0.78rem !important;
+            color: rgba(255,255,255,0.4) !important;
+        }
+
+        /* --- Notation Quiz --- */
+        .notation-quiz-row {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .notation-quiz-row label {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .notation-quiz-row select {
+            max-width: 400px;
+        }
+
+        /* --- Contingency Table --- */
+        .contingency-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            text-align: center;
+            font-size: 0.95rem;
+        }
+
+        .contingency-table th,
+        .contingency-table td {
+            padding: 0.8rem 0.6rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .contingency-table thead th {
+            background: rgba(59, 130, 246, 0.15);
+            color: #60A5FA;
+            font-weight: 700;
+        }
+
+        .contingency-table tbody th {
+            background: rgba(59, 130, 246, 0.08);
+            font-weight: 600;
+            text-align: left;
+            padding-left: 1rem;
+        }
+
+        .contingency-table tfoot td {
+            background: rgba(255, 255, 255, 0.04);
+            font-weight: 700;
+        }
+
+        .contingency-table .highlight-cell {
+            background: rgba(16, 185, 129, 0.15);
+            color: #10B981;
+            font-weight: 700;
+        }
+
+        /* --- Sub-section header --- */
+        .sub-section {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .sub-section h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        /* --- Details / Solution box --- */
+        details {
+            margin-top: 1.2rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 0.8rem;
+            overflow: hidden;
+        }
+
+        details summary {
+            cursor: pointer;
+            padding: 1rem 1.2rem;
+            font-weight: 600;
+            color: var(--math-color);
+            transition: background 0.2s;
+        }
+
+        details summary:hover {
+            background: rgba(59, 130, 246, 0.08);
+        }
+
+        details .solution-content {
+            padding: 1rem 1.2rem 1.2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            line-height: 1.8;
+        }
+
+        details .solution-content .step {
+            margin-bottom: 0.8rem;
+            padding-left: 1rem;
+            border-left: 2px solid rgba(59, 130, 246, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <header class="hero-section">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <a href="../probabilita-statistica.html" class="back-button">
+                    <span class="back-icon">&larr;</span> Torna a Probabilità e Statistica
+                </a>
+            </div>
+            <h1 class="hero-title"><span class="math-gradient">La Probabilità</span></h1>
+            <p class="hero-subtitle">Dalle sfere del drago ai giochi gacha: scopri come calcolare l'incertezza e dominare gli eventi casuali.</p>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- ============================================ -->
+        <!-- 1. IL LINGUAGGIO DELLA PROBABILITÀ           -->
+        <!-- ============================================ -->
+        <section class="lesson-section">
+            <h2>1. Il Linguaggio della Probabilità</h2>
+            <p>Prima di iniziare a calcolare, impariamo i <strong>simboli</strong> che i matematici usano per scrivere le formule. Sono pochi e, una volta memorizzati, rendono tutto più chiaro.</p>
+
+            <div class="symbol-grid">
+                <!-- Ω -->
+                <div class="symbol-card">
+                    <div class="symbol-icon">Ω</div>
+                    <h4>Omega</h4>
+                    <p>Spazio campionario: l'insieme di <em>tutti</em> i risultati possibili.</p>
+                    <p class="symbol-example">Dado: Ω = {1,2,3,4,5,6}</p>
+                </div>
+                <!-- P(E) -->
+                <div class="symbol-card">
+                    <div class="symbol-icon">P(E)</div>
+                    <h4>Probabilità</h4>
+                    <p>Un numero tra 0 e 1 che misura quanto è "probabile" l'evento E.</p>
+                    <p class="symbol-example">P(Testa) = 0.5</p>
+                </div>
+                <!-- ∩ -->
+                <div class="symbol-card">
+                    <div class="symbol-icon">∩</div>
+                    <h4>Intersezione (AND)</h4>
+                    <p>"A <strong>e</strong> B accadono entrambi."</p>
+                    <p class="symbol-example">P(A ∩ B) = entrambi veri</p>
+                </div>
+                <!-- ∪ -->
+                <div class="symbol-card">
+                    <div class="symbol-icon">∪</div>
+                    <h4>Unione (OR)</h4>
+                    <p>"Accade A <strong>oppure</strong> B (o entrambi)."</p>
+                    <p class="symbol-example">P(A ∪ B) = almeno uno</p>
+                </div>
+                <!-- P(A|B) -->
+                <div class="symbol-card">
+                    <div class="symbol-icon">P(A|B)</div>
+                    <h4>Condizionata</h4>
+                    <p>"Probabilità di A, <em>sapendo che B è già accaduto</em>."</p>
+                    <p class="symbol-example">La barra "|" si legge "dato"</p>
+                </div>
+                <!-- Ē -->
+                <div class="symbol-card">
+                    <div class="symbol-icon">Ē</div>
+                    <h4>Complementare</h4>
+                    <p>"L'evento E <strong>non</strong> accade." Vale sempre: P(Ē) = 1 − P(E).</p>
+                    <p class="symbol-example">P(non Testa) = 1 − 0.5 = 0.5</p>
+                </div>
+            </div>
+
+            <div class="interactive-box">
+                <h3>Esercizio: Conosci i Simboli?</h3>
+                <p>Rispondi a tutte e 4 le domande, poi premi <strong>Verifica</strong>.</p>
+
+                <div class="notation-quiz-row">
+                    <label>1. Il simbolo Ω rappresenta:</label>
+                    <select id="not-1">
+                        <option value="">Seleziona...</option>
+                        <option value="a">L'insieme di tutti i risultati possibili</option>
+                        <option value="b">La probabilità di un evento singolo</option>
+                        <option value="c">Il numero totale di esperimenti</option>
+                    </select>
+                </div>
+                <div class="notation-quiz-row">
+                    <label>2. L'espressione P(A ∩ B) indica la probabilità che:</label>
+                    <select id="not-2">
+                        <option value="">Seleziona...</option>
+                        <option value="a">Accada A oppure B</option>
+                        <option value="b">Accadano sia A che B</option>
+                        <option value="c">A sia la causa di B</option>
+                    </select>
+                </div>
+                <div class="notation-quiz-row">
+                    <label>3. La notazione P(A|B) rappresenta:</label>
+                    <select id="not-3">
+                        <option value="">Seleziona...</option>
+                        <option value="a">La probabilità di A diviso B</option>
+                        <option value="b">La probabilità di A dato che B è avvenuto</option>
+                        <option value="c">La probabilità che A e B siano incompatibili</option>
+                    </select>
+                </div>
+                <div class="notation-quiz-row">
+                    <label>4. Se P(E) = 0.3, la probabilità complementare P(Ē) vale:</label>
+                    <select id="not-4">
+                        <option value="">Seleziona...</option>
+                        <option value="a">0.3</option>
+                        <option value="b">0.7</option>
+                        <option value="c">1.3</option>
+                    </select>
+                </div>
+
+                <div style="margin-top: 1rem;">
+                    <button onclick="checkNotazione()">Verifica Tutto</button>
+                </div>
+                <div id="feed-notazione" class="feedback"></div>
+            </div>
+        </section>
+
+        <!-- ============================================ -->
+        <!-- 2. SPAZIO CAMPIONATORIO                      -->
+        <!-- ============================================ -->
+        <section class="lesson-section">
+            <h2>2. Spazio Campionatorio</h2>
+            <p>L'insieme di tutti i possibili risultati di un esperimento casuale si chiama <strong>Spazio Campionatorio</strong> ($\Omega$). È la "mappa" di tutto ciò che può accadere.</p>
+            <p><strong>Esempio:</strong> Nel radar cerca-sfere di Bulma, i risultati possibili sono le sfere da 1 a 7 stelle. <br>
+            $$\Omega = \{1, 2, 3, 4, 5, 6, 7\}$$</p>
+            
+            <div class="interactive-box">
+                <h3>Esercizio: Starter Pokémon</h3>
+                <p>Il Professor Oak ti mostra una scatola con 12 Poké Ball numerate da 1 a 12, ciascuna contenente uno starter diverso. Se ne peschi una a caso, qual è lo spazio campionatorio? (Scrivilo tra parentesi graffe)</p>
+                <div class="input-group">
+                    <input type="text" id="ans-spazio" placeholder="Es: {1, 2, 3...}">
+                    <button onclick="checkSpazio()">Verifica</button>
+                </div>
+                <div id="feed-spazio" class="feedback"></div>
+            </div>
+        </section>
+
+        <!-- ============================================ -->
+        <!-- 3. DEFINIZIONE CLASSICA                      -->
+        <!-- ============================================ -->
+        <section class="lesson-section">
+            <h2>3. La Definizione Classica</h2>
+            <p>Si usa quando tutti i risultati sono <strong>equiprobabili</strong> (hanno la stessa chance). La probabilità di un evento $E$ è:</p>
+            <div class="formula-box">
+                $$P(E) = \frac{\text{Casi Favorevoli}}{\text{Casi Possibili}}$$
+            </div>
+            <p><strong>Esempio Exodia:</strong> Yugi ha un mazzo di 40 carte. Nel mazzo ci sono <strong>5 pezzi</strong> distinti di Exodia. Qual è la probabilità di pescare <em>un qualsiasi pezzo del proibito</em> alla prima carta pescata?</p>
+            <p>Favorevoli: 5 (i pezzi). Possibili: 40 (le carte).<br>
+            $P(\text{Exodia}) = 5/40 = 12.5\%$.</p>
+
+            <p style="margin-top: 1.5rem;"><strong>E il complementare?</strong> Se la probabilità di pescare Exodia è $P = 5/40$, la probabilità di <strong>non</strong> pescarlo (evento complementare $\bar{E}$) è:</p>
+            <p>$$P(\bar{E}) = 1 - P(E) = 1 - \frac{5}{40} = \frac{35}{40} = 87.5\%$$</p>
+
+            <div class="interactive-box">
+                <h3>Esercizio: Carte Napoletane</h3>
+                <p>In un mazzo di 40 carte napoletane, ci sono esattamente 4 <strong>Assi</strong> (uno per ogni seme: Bastoni, Coppe, Denari, Spade). Qual è la probabilità in frazione (es: "2/5") di pescare un Asso alla prima pescata?</p>
+                <div class="input-group">
+                    <input type="text" id="ans-classica" placeholder="Es: 1/10">
+                    <button onclick="checkClassica()">Verifica</button>
+                </div>
+                <div id="feed-classica" class="feedback"></div>
+            </div>
+        </section>
+
+        <!-- ============================================ -->
+        <!-- 4. EVENTI INDIPENDENTI                       -->
+        <!-- ============================================ -->
+        <section class="lesson-section">
+            <h2>4. Eventi Indipendenti</h2>
+            <p>Due eventi sono indipendenti se il verificarsi di uno non cambia la probabilità dell'altro. In questo caso, per trovare la probabilità che accadano <strong>entrambi</strong> ($A$ AND $B$), si moltiplicano:</p>
+            <div class="formula-box">
+                $$P(A \cap B) = P(A) \cdot P(B)$$
+            </div>
+            <p>Nota la notazione: il simbolo $\cap$ ("intersezione") si legge "e" — significa che <em>entrambi</em> gli eventi devono accadere.</p>
+            <p><strong>Esempio:</strong> Se lanci una moneta bilanciata, la probabilità di ottenere "Testa" è $1/2$. Se effettui un secondo lancio, il risultato del primo non influenza minimamente il secondo. La probabilità di ottenere <strong>due volte Testa</strong> consecutivamente è:</p>
+            <p>$$1/2 \cdot 1/2 = 1/4 = 25\%$$</p>
+
+            <div class="visual-explanation" style="margin: 2rem 0; text-align: center;">
+                <h3>Perché proprio 1 su 4?</h3>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.5rem;">Visualizziamo lo spazio campionario completo di due lanci consecutivi:</p>
+                
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; max-width: 400px; margin: 0 auto; padding: 1rem; background: rgba(0,0,0,0.2); border-radius: 1rem;">
+                    <!-- Testa, Testa -->
+                    <div style="aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(16, 185, 129, 0.15); border: 2px solid #10B981; border-radius: 10px; transition: 0.3s;" title="Favorevole">
+                        <span style="font-size: 1.5rem;">🪙🪙</span>
+                        <strong style="color: #10B981; font-size: 0.8rem; margin-top: 0.5rem;">TESTA-TESTA</strong>
+                        <span style="font-size: 0.7rem; opacity: 0.8;">Favorevole (1)</span>
+                    </div>
+                    <!-- Testa, Croce -->
+                    <div style="aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(239, 68, 68, 0.05); border: 2px solid rgba(239, 68, 68, 0.2); border-radius: 10px; opacity: 0.6;">
+                        <span style="font-size: 1.5rem;">🪙❌</span>
+                        <strong style="font-size: 0.8rem; margin-top: 0.5rem;">TESTA-CROCE</strong>
+                        <span style="font-size: 0.7rem; opacity: 0.8;">Sfavorevole</span>
+                    </div>
+                    <!-- Croce, Testa -->
+                    <div style="aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(239, 68, 68, 0.05); border: 2px solid rgba(239, 68, 68, 0.2); border-radius: 10px; opacity: 0.6;">
+                        <span style="font-size: 1.5rem;">❌🪙</span>
+                        <strong style="font-size: 0.8rem; margin-top: 0.5rem;">CROCE-TESTA</strong>
+                        <span style="font-size: 0.7rem; opacity: 0.8;">Sfavorevole</span>
+                    </div>
+                    <!-- Croce, Croce -->
+                    <div style="aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(239, 68, 68, 0.05); border: 2px solid rgba(239, 68, 68, 0.2); border-radius: 10px; opacity: 0.6;">
+                        <span style="font-size: 1.5rem;">❌❌</span>
+                        <strong style="font-size: 0.8rem; margin-top: 0.5rem;">CROCE-CROCE</strong>
+                        <span style="font-size: 0.7rem; opacity: 0.8;">Sfavorevole</span>
+                    </div>
+                </div>
+                
+                <p style="margin-top: 1.5rem; font-style: italic;">Sui <strong>4 casi possibili</strong> totali, solo <strong>1</strong> è quello cercato (Testa alla prima E Testa alla seconda).</p>
+            </div>
+
+            <div class="interactive-box">
+                <h3>Esercizio: Doppio 20!</h3>
+                <p>In D&D, fare un colpo critico richiede un 20 nel dado a 20 facce (1/20). Qual è la probabilità di fare due critici consecutivi? (Scrivi la frazione)</p>
+                <div class="input-group">
+                    <input type="text" id="ans-indip" placeholder="Es: 1/100">
+                    <button onclick="checkIndip()">Verifica</button>
+                </div>
+                <div id="feed-indip" class="feedback"></div>
+            </div>
+        </section>
+
+        <!-- ============================================ -->
+        <!-- 5. CONDIZIONATA + BAYES (UNITI)              -->
+        <!-- ============================================ -->
+        <section class="lesson-section">
+            <h2>5. Probabilità Condizionata e Teorema di Bayes</h2>
+            <p>Fino ad ora abbiamo calcolato la probabilità "in assoluto". Ma nella vita reale, spesso <strong>abbiamo già un'informazione</strong> che cambia le carte in tavola. Questa sezione introduce due strumenti potentissimi collegati tra loro.</p>
+
+            <!-- 5a. Probabilità Condizionata -->
+            <h3 style="color: var(--math-color); margin-top: 2rem;">5a. La Probabilità Condizionata</h3>
+            <p>Come cambia la probabilità di un evento $A$ se sappiamo che si è già verificato un evento $B$? La scriviamo $P(A|B)$ e si legge <em>"probabilità di A <strong>dato</strong> B"</em>:</p>
+            <div class="formula-box">
+                $$P(A|B) = \frac{P(A \cap B)}{P(B)}$$
+            </div>
+            <p>Traduzione: la probabilità che accadano <strong>entrambi</strong> (numeratore) diviso la probabilità di quello che <strong>già sappiamo</strong> essere accaduto (denominatore).</p>
+
+            <p><strong>Esempio Among Us:</strong> In una partita con 10 giocatori (8 crewmate e 2 impostori), la probabilità "base" che un giocatore sia l'impostore è $2/10 = 20\%$. Ma se lo vedi uscire da un condotto (solo gli impostori possono farlo!), quell'informazione cambia tutto: $P(\text{Impostore} | \text{Condotto}) = 100\%$.</p>
+
+            <p style="margin-top: 1.5rem;"><strong>Vediamo un esempio numerico con una tabella.</strong> Immaginiamo una classe di 30 studenti:</p>
+
+            <table class="contingency-table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>🎮 Videogiochi</th>
+                        <th>No Videogiochi</th>
+                        <th>Totale</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>⚽ Sport</th>
+                        <td class="highlight-cell">6</td>
+                        <td>6</td>
+                        <td>12</td>
+                    </tr>
+                    <tr>
+                        <th>No Sport</th>
+                        <td>12</td>
+                        <td>6</td>
+                        <td>18</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td><strong>Totale</strong></td>
+                        <td><strong>18</strong></td>
+                        <td><strong>12</strong></td>
+                        <td><strong>30</strong></td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <p>18 studenti giocano ai videogiochi, 12 fanno sport, e <strong>6 fanno entrambi</strong> (cella evidenziata in verde). Se uno studente scelto a caso gioca ai videogiochi, quale probabilità che faccia anche sport?</p>
+            <p>$$P(\text{Sport} | \text{Videogiochi}) = \frac{P(\text{Sport} \cap \text{Videogiochi})}{P(\text{Videogiochi})} = \frac{6/30}{18/30} = \frac{6}{18} = \frac{1}{3}$$</p>
+            <p>La probabilità "base" che uno studente faccia sport era $12/30 = 40\%$. Sapendo che gioca ai videogiochi scende a $1/3 \approx 33\%$.</p>
+
+            <div class="interactive-box">
+                <h3>Esercizio: Dado Truccato</h3>
+                <p>Lanci un dado a 6 facce regolare (Ω = {1,2,3,4,5,6}). Ti dicono che il risultato è un <strong>numero pari</strong> (evento B). Qual è la probabilità che sia uscito un <strong>6</strong> (evento A), <em>sapendo</em> che è pari? Scrivi la risposta come frazione.</p>
+                <p style="font-size: 0.85rem; color: var(--text-muted);">Suggerimento: i numeri pari sono {2, 4, 6}. Quanti di questi sono 6?</p>
+                <div class="input-group">
+                    <input type="text" id="ans-condiz" placeholder="Es: 1/6">
+                    <button onclick="checkCondiz()">Verifica</button>
+                </div>
+                <div id="feed-condiz" class="feedback"></div>
+            </div>
+
+            <!-- 5b. Teorema di Bayes -->
+            <div class="sub-section">
+                <h3 style="color: var(--math-color);">5b. Il Teorema di Bayes: Invertire la Domanda</h3>
+                <p>La probabilità condizionata ci dice $P(A|B)$. Ma cosa succede se conosciamo $P(B|A)$ e vogliamo trovare $P(A|B)$? Il <strong>Teorema di Bayes</strong> ci permette esattamente di <em>invertire</em> la direzione:</p>
+                <div class="formula-box">
+                    $$P(A|B) = \frac{P(B|A) \cdot P(A)}{P(B)}$$
+                </div>
+                <p>In parole semplici: <strong>aggiorno le mie credenze</strong> su un'ipotesi $A$ alla luce di una nuova prova $B$. È il metodo del detective per eccellenza.</p>
+
+                <p><strong>Esempio Death Note:</strong> L stima inizialmente al 5% che Light sia Kira ($P(\text{Kira}) = 0.05$). Ogni volta che Light si comporta in modo sospetto (nuova evidenza $E$), L usa mentalmente il teorema di Bayes per aggiornare quel 5% e portarlo sempre più in alto.</p>
+
+                <p style="margin-top: 1.5rem;"><strong>Esempio numerico — Pokémon Shiny:</strong></p>
+                <p>Hai due scatole scelte dall'avversario:</p>
+                <ul>
+                    <li><strong>Scatola A:</strong> 2 Pokémon shiny e 8 normali → $P(\text{Shiny}|A) = 2/10$</li>
+                    <li><strong>Scatola B:</strong> 8 Pokémon shiny e 2 normali → $P(\text{Shiny}|B) = 8/10$</li>
+                </ul>
+                <p>Scegli una scatola a caso ($P(A) = P(B) = 1/2$) e peschi un Pokémon: <strong>è shiny!</strong> Qual è la probabilità di aver pescato dalla Scatola B?</p>
+
+                <details>
+                    <summary>💡 Soluzione Guidata</summary>
+                    <div class="solution-content">
+                        <div class="step">
+                            <strong>Step 1 — Dati noti:</strong><br>
+                            $P(\text{Shiny}|A) = 2/10 = 0.2$ &nbsp;|&nbsp; $P(\text{Shiny}|B) = 8/10 = 0.8$<br>
+                            $P(A) = P(B) = 0.5$
+                        </div>
+                        <div class="step">
+                            <strong>Step 2 — Probabilità totale di pescare uno shiny:</strong><br>
+                            $P(\text{Shiny}) = P(\text{Shiny}|A) \cdot P(A) + P(\text{Shiny}|B) \cdot P(B)$<br>
+                            $= 0.2 \cdot 0.5 + 0.8 \cdot 0.5 = 0.1 + 0.4 = 0.5$
+                        </div>
+                        <div class="step">
+                            <strong>Step 3 — Teorema di Bayes:</strong><br>
+                            $P(B|\text{Shiny}) = \frac{P(\text{Shiny}|B) \cdot P(B)}{P(\text{Shiny})} = \frac{0.8 \cdot 0.5}{0.5} = \frac{0.4}{0.5} = 0.8$
+                        </div>
+                        <div class="step" style="border-left-color: #10B981;">
+                            <strong>Risposta:</strong> C'è l'<strong>80%</strong> di probabilità di aver pescato dalla Scatola B. Intuitivamente: la Scatola B ha molti più shiny, quindi è molto più plausibile.
+                        </div>
+                    </div>
+                </details>
+
+                <div class="interactive-box" style="margin-top: 1.5rem;">
+                    <h3>Esercizio: Da quale scatola viene?</h3>
+                    <p>Usando l'esempio delle due scatole Pokémon qui sopra: hai pescato uno <strong>shiny</strong>. Qual è la probabilità (in percentuale, es: "80") di aver scelto la <strong>Scatola B</strong>?</p>
+                    <div class="input-group">
+                        <input type="text" id="ans-bayes" placeholder="Es: 50">
+                        <button onclick="checkBayes()">Verifica</button>
+                    </div>
+                    <div id="feed-bayes" class="feedback"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================ -->
+        <!-- 6. DEFINIZIONE FREQUENTISTA                  -->
+        <!-- ============================================ -->
+        <section class="lesson-section">
+            <h2>6. Definizione Frequentista</h2>
+            <p>Quando non conosciamo la teoria matematica dietro un evento, guardiamo al passato sperimentale. Se ripetiamo un esperimento $N$ volte e l'evento accade $n$ volte:</p>
+            <div class="formula-box">
+                $$P(E) = \lim_{N\to\infty} \frac{n}{N}$$
+            </div>
+            
+            <div style="background: rgba(139, 92, 246, 0.05); padding: 1.5rem; border-radius: 12px; border-left: 4px solid #8B5CF6; margin: 1.5rem 0;">
+                <h4 style="color: #A78BFA; margin-bottom: 0.5rem;">Cosa significa quel "$lim$" misterioso?</h4>
+                <p style="font-size: 0.95rem; margin-bottom: 0.5rem;">
+                    Il simbolo $\lim_{N\to\infty}$ si legge <em>"limite per N che tende all'infinito"</em>. Non farti spaventare dalla notazione: il concetto è molto intuitivo, e in statistica prende il nome di <strong>Legge dei Grandi Numeri</strong>.
+                </p>
+                <p style="font-size: 0.95rem; margin-bottom: 0;">
+                    Immagina di lanciare una moneta vera: se la lanci solo 10 volte ($N=10$), potresti casualmente ottenere 8 Teste e 2 Croci (una frequenza dell'80% per Testa, ben lontana dal 50% matematico). Ma se ti mettessi a lanciarla un milione di volte, o un miliardo di volte, l'incidenza della fortuna scomparirebbe. Quel simbolo dice proprio questo: <strong>man mano che i tuoi tentativi ($N$) diventano un numero incredibilmente immenso (tendono all'infinito), la banale percentuale dei tuoi successi si fisserà definitivamente, smettendo di variare, diventando la probabilità assoluta dell'evento.</strong>
+                </p>
+            </div>
+
+            <p>In pratica: più esperimenti facciamo, più la frequenza relativa si <strong>stabilizza</strong> attorno alla probabilità "vera". Questo è il fondamento pratico della logica statistica in ambito aziendale.</p>
+
+            <div class="interactive-box">
+                <h3>Esercizio: Farming Raro</h3>
+                <p>Hai sconfitto 2000 mostri in un gioco RPG e ottenuto 10 oggetti leggendari. Qual è la probabilità frequentista stimata (percentuale)?</p>
+                <div class="input-group">
+                    <input type="number" id="ans-freq" step="0.1" placeholder="Es: 0.5">
+                    <button onclick="checkFreq()">Verifica</button>
+                </div>
+                <div id="feed-freq" class="feedback"></div>
+            </div>
+        </section>
+
+        <!-- ============================================ -->
+        <!-- 7. DEFINIZIONE SOGGETTIVA                    -->
+        <!-- ============================================ -->
+        <section class="lesson-section">
+            <h2>7. Definizione Soggettiva</h2>
+            <p>È il <strong>grado di fiducia</strong> personale che assegniamo a un evento, basato sulle informazioni che possediamo. Utile per eventi unici e irripetibili: "Chi vincerà il prossimo campionato del mondo?", "Pioverà domani?".</p>
+            <p>Due persone diverse possono assegnare probabilità soggettive diverse allo stesso evento, perché possiedono <strong>informazioni diverse</strong>.</p>
+
+            <div class="interactive-box">
+                <h3>Quiz Veloce</h3>
+                <p>La probabilità soggettiva è identica per ogni persona?</p>
+                <div class="input-group">
+                    <select id="ans-sogg">
+                        <option value="">Seleziona...</option>
+                        <option value="si">Sì, è universale.</option>
+                        <option value="no">No, dipende dalle informazioni possedute.</option>
+                    </select>
+                    <button onclick="checkSogg()">Verifica</button>
+                </div>
+                <div id="feed-sogg" class="feedback"></div>
+            </div>
+        </section>
+
+        <!-- ============================================ -->
+        <!-- 8. L'ILLUSIONE DELLA PREVISIONE              -->
+        <!-- ============================================ -->
+        <section class="lesson-section" style="border-left: 4px solid #f59e0b; background: rgba(245, 158, 11, 0.03);">
+            <h2 style="color: #f59e0b;">8. L'Illusione della Previsione: Quando il 50% vale Zero</h2>
+            <p>Immagina che qualcuno ti venda una "macchina intelligente" in grado di prevedere l'esito del lancio di una moneta. La testi e scopri che <strong>indovina il 50% delle volte</strong>. Sembra un risultato onesto, giusto? Metà delle volte ha ragione.</p>
+            <p>In realtà, quella macchina è completamente <strong>inutile</strong>. Dato che una moneta ha solo due facce (Testa e Croce), una persona che tira semplicemente a caso indovinerà a sua volta il 50% delle volte. Se la "precisione" di uno strumento di previsione è uguale alla pura probabilità casuale, quello strumento ha un <strong>potere predittivo pari a zero</strong>.</p>
+            
+            <p style="margin-top: 1rem;">Spesso il nostro cervello ci inganna: ci fa credere di poter trovare schemi (<em>pattern</em>) nel caos. Questo è noto come <em>illusione del controllo</em> o <em>apofenia</em>. Quando la macchina indovina, il nostro cervello lo registra come un "successo", dimenticando sistematicamente le volte in cui ha fallito (<em>bias di conferma</em>).</p>
+
+            <div class="callout" style="background: rgba(245, 158, 11, 0.07); border-color: rgba(245, 158, 11, 0.25); margin-top: 1.5rem;">
+                <span class="callout-icon">🌦️</span>
+                <div>
+                    <p style="color: var(--text-muted);">
+                        <strong style="color: #fcd34d;">L'esempio storico: Il Barometro di Fitzroy (Storm Glass)</strong><br>
+                        Nel XIX secolo, l'ammiraglio <strong>Robert Fitzroy</strong> (capitano del Beagle, la nave di Charles Darwin) rese celebre lo <em>Storm Glass</em>, uno strumento di vetro contenente un liquido speciale che cristallizzava in modi diversi a seconda dell'imminente tempo atmosferico. Per decenni fu usato sulle navi e nelle case come strumento predittivo. Tuttavia, studi statistici moderni hanno dimostrato che <strong>la sua accuratezza nel prevedere il tempo era del 50%</strong>. Esattamente la stessa probabilità che si avrebbe tirando a indovinare lanciando una moneta. Nonostante la sua totale inutilità scientifica, la gente ha continuato a crederci ciecamente per oltre un secolo proprio a causa dell'illusione della previsione.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================ -->
+        <!-- 9. UN PARADOSSO STATISTICO                   -->
+        <!-- ============================================ -->
+        <section class="lesson-section" style="border-left: 4px solid #EC4899; background: rgba(236, 72, 153, 0.03);">
+            <h2 style="color: #EC4899;">9. Un Paradosso Statistico: L'Autoreferenzialità</h2>
+            <p>Per concludere il nostro viaggio nella probabilità, mettiamo alla prova il tuo cervello con un rompicapo che sfida le leggi della logica e della statistica. È un classico esempio di <strong>paradosso autoreferenziale</strong>.</p>
+            
+            <div class="interactive-box" style="border-color: #EC4899; background: rgba(0,0,0,0.2);">
+                <h3 style="color: #EC4899; font-size: 1.2rem; margin-bottom: 1.5rem; line-height: 1.4; text-align: center;">
+                    "Se scegli una risposta a questa domanda a caso, qual è la probabilità di indovinare quella esatta?"
+                </h3>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; max-width: 600px; margin: 0 auto;">
+                    <button class="quiz-btn paradox-btn" data-val="25">A: 25%</button>
+                    <button class="quiz-btn paradox-btn" data-val="0">B: 0%</button>
+                    <button class="quiz-btn paradox-btn" data-val="25">C: 25%</button>
+                    <button class="quiz-btn paradox-btn" data-val="50">D: 50%</button>
+                </div>
+                
+                <div id="paradox-feedback" class="feedback" style="margin-top: 1.5rem; line-height: 1.6; border-radius: 12px; padding: 1.5rem;">
+                    <!-- Feedback dinamico -->
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 2rem; border-top: 2px solid #EC4899; background: rgba(236, 72, 153, 0.05);">
+                <h4 style="color: #EC4899; margin-bottom: 1rem;">Perché è un Paradosso?</h4>
+                <p class="lesson-text" style="font-size: 0.95rem;">
+                    Il problema nasce dal fatto che la risposta corretta è "incatenata" al processo di scelta:<br><br>
+                    1. <strong>Se pensi che la risposta sia 25%</strong>: siccome ci sono 4 opzioni, una scelta casuale darebbe il 25% di probabilità. Ma ci sono DUE opzioni (A e C) che dicono "25%". Quindi la probabilità di sceglierne una corretta è 2 su 4, ovvero il <strong>50%</strong>.<br>
+                    2. <strong>Se allora la risposta è 50%</strong>: c'è solo un'opzione (D) che dice "50%". Quindi la probabilità di sceglierla a caso è 1 su 4, ovvero il <strong>25%</strong>. (Siamo punto e a capo!)<br>
+                    3. <strong>Se pensi che la risposta sia 0%</strong>: se 0% è l'unica risposta corretta, allora scegliendola a caso (1 su 4) avresti il 25% di probabilità di indovinare, contraddicendo lo "0%".
+                </p>
+                <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px; font-style: italic; border-left: 3px solid #EC4899;">
+                    <strong>Come fornire una risposta?</strong> Tecnicamente non si può fornire una risposta numerica corretta in questo sistema chiuso. È un esempio di come l'autoreferenzialità (una domanda che parla di se stessa) possa mandare in "crash" la logica formale e la probabilità classica. L'unico modo per uscirne è ammettere che la domanda è logicamente <em>indecidibile</em>.
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================ -->
+        <!-- 10. ESERCIZIO GUIDATO                        -->
+        <!-- ============================================ -->
+        <section class="lesson-section">
+            <h2>10. Esercizio Guidato: La Forza dell'Evento Complementare</h2>
+            <p>Immaginiamo una classe composta da 30 ragazze. Vogliamo calcolare la probabilità che <strong>almeno una</strong> di loro abbia il ciclo mestruale in un giorno specifico.</p>
+            <p>A prima vista potrebbe sembrare un calcolo lunghissimo: dovremmo calcolare la probabilità che ne abbia il ciclo esattamente 1, poi 2, poi 3, fino a 30, e sommarle tutte! Fortunatamente, c'è un trucco potentissimo in probabilità: usare l'<strong>evento complementare</strong>.</p>
+            
+            <p>L'evento complementare di "almeno una" è "<strong>nessuna</strong>". Se calcoliamo la probabilità che <em>nessuna</em> ragazza abbia il ciclo e la sottraiamo al totale (cioè 1, o 100%), otterremo il nostro risultato in un solo semplice passaggio.</p>
+
+            <details>
+                <summary>💡 Mostra il Calcolo e la Soluzione</summary>
+                <div class="solution-content">
+                    <div class="step">
+                        <strong>Step 1 — Dati di base:</strong><br>
+                        Assumiamo che, in media, un ciclo mestruale duri 5 giorni all'interno di un periodo tipico di 28 giorni.<br>
+                        La probabilità che una singola ragazza <em>abbia</em> il ciclo è: $$P(C) = \frac{5}{28} \approx 17.8\%$$
+                        La probabilità che <em>non lo abbia</em> è il suo complementare: $$P(\bar{C}) = 1 - \frac{5}{28} = \frac{23}{28} \approx 82.2\%$$
+                    </div>
+                    <div class="step">
+                        <strong>Step 2 — Probabilità che NESSUNA lo abbia:</strong><br>
+                        Considerando gli eventi come indipendenti, per trovare la probabilità che <em>tutte e 30</em> non abbiano il ciclo nello stesso giorno, moltiplichiamo la probabilità per se stessa 30 volte:<br>
+                        $$P(\text{Nessuna}) = \left(\frac{23}{28}\right)^{30} \approx (0.8214)^{30} \approx 0.0027 \text{ (cioè lo } 0.27\%)$$
+                    </div>
+                    <div class="step">
+                        <strong>Step 3 — L'evento "Almeno una":</strong><br>
+                        Infine, sottraiamo questo valore al totale:<br>
+                        $$P(\text{Almeno una}) = 1 - P(\text{Nessuna}) = 1 - 0.0027 = 0.9973$$
+                    </div>
+                    <div class="step" style="border-left-color: #10B981;">
+                        <strong>Risultato Sorprendente:</strong> C'è il <strong>99.73%</strong> di probabilità che in una classe di 30 ragazze almeno una abbia il ciclo. È una quasi certezza matematica! Questo esempio mostra come la probabilità di eventi indipendenti si accumuli rapidamente, sfidando spesso il nostro intuito (come nel noto "Paradosso del Compleanno").
+                    </div>
+                </div>
+            </details>
+        </section>
+
+        <!-- ============================================ -->
+        <!-- QUIZ FINALE                                  -->
+        <!-- ============================================ -->
+        <section class="lesson-section">
+            <h2 style="text-align: center; margin-bottom: 2rem;">Verifica le tue Conoscenze</h2>
+            <div id="quiz-area"></div>
+            <div id="quiz-score" style="text-align: center; font-size: 1.5rem; font-weight: 800; margin-top: 2rem;"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Matematica.</p>
+    </footer>
+
+    <script src="../../js/main.js"></script>
+    <script src="probabilita.js"></script>
+</body>
+</html>

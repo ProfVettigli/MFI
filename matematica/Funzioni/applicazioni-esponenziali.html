@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Applicazioni delle Funzioni Esponenziali - MFI</title>
+    <meta name="description" content="Crescita batterica e logistica, interessi bancari composti, decadimento radioattivo e datazione al carbonio: le funzioni esponenziali nel mondo reale.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        /* ===== HEADER ===== */
+        .lesson-header {
+            background: linear-gradient(135deg, #0d2b1f 0%, #0a1628 50%, #0B0E14 100%);
+            padding: 5rem 0 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .lesson-header::before {
+            content: '';
+            position: absolute; inset: 0;
+            background:
+                radial-gradient(ellipse at 20% 40%, rgba(16,185,129,0.12) 0%, transparent 55%),
+                radial-gradient(ellipse at 80% 60%, rgba(59,130,246,0.10) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        .lesson-title-main {
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 1rem;
+        }
+        .lesson-subtitle-main {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            max-width: 680px;
+            margin: 0 auto;
+            font-weight: 300;
+        }
+
+        /* ===== TOC ===== */
+        .toc {
+            background: rgba(16,185,129,0.05);
+            border: 1px solid rgba(16,185,129,0.2);
+            border-radius: 1rem;
+            padding: 1.5rem 2rem;
+            margin: 2rem 0;
+        }
+        .toc h3 { color: #6ee7b7; margin-bottom: 1rem; font-size: 1rem; text-transform: uppercase; letter-spacing: 0.08em; }
+        .toc ol { padding-left: 1.2rem; }
+        .toc li { margin-bottom: 0.4rem; }
+        .toc a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+        .toc a:hover { color: #6ee7b7; }
+
+        /* ===== SECTIONS ===== */
+        .lesson-section {
+            margin-bottom: 3rem;
+            background: var(--surface-color);
+            padding: 2.5rem;
+            border-radius: 1rem;
+            border: 1px solid rgba(255,255,255,0.06);
+            scroll-margin-top: 4rem;
+        }
+        .section-number {
+            display: inline-block;
+            background: linear-gradient(135deg, #10b981, #3b82f6);
+            color: white;
+            font-weight: 800;
+            font-size: 0.85rem;
+            padding: 0.2rem 0.7rem;
+            border-radius: 20px;
+            margin-bottom: 0.75rem;
+        }
+        .lesson-section h2 {
+            color: var(--text-main);
+            margin-bottom: 1.25rem;
+            font-size: 1.7rem;
+            font-weight: 700;
+        }
+        .lesson-section h3 {
+            color: #6ee7b7;
+            margin-bottom: 0.75rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        .lesson-text {
+            margin-bottom: 1.2rem;
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            line-height: 1.75;
+        }
+
+        /* ===== DEFINITION / RULE BOX ===== */
+        .definition-box {
+            background: rgba(16,185,129,0.07);
+            border-left: 4px solid #10b981;
+            border-radius: 0 0.75rem 0.75rem 0;
+            padding: 1.25rem 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .definition-box strong { color: #6ee7b7; }
+
+        /* ===== SOLUTION BOX ===== */
+        .solution-box {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 1rem;
+            padding: 1.75rem;
+            margin: 1.5rem 0;
+        }
+        .solution-box h4 {
+            color: #fbbf24;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        .step { display: flex; gap: 1rem; margin-bottom: 1rem; align-items: flex-start; }
+        .step-num {
+            background: linear-gradient(135deg, #10b981, #3b82f6);
+            color: white; font-weight: 800; font-size: 0.8rem;
+            min-width: 28px; height: 28px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; margin-top: 0.1rem;
+        }
+        .step-body { color: var(--text-muted); font-size: 0.97rem; line-height: 1.7; }
+        .step-body .formula { display: block; text-align: center; padding: 0.4rem 0; color: var(--text-main); }
+        .step-body .result { color: #6ee7b7; font-weight: 700; }
+
+        /* ===== CALLOUT ===== */
+        .callout {
+            display: flex; gap: 1rem; align-items: flex-start;
+            background: rgba(59,130,246,0.07);
+            border: 1px solid rgba(59,130,246,0.2);
+            border-radius: 0.75rem; padding: 1.2rem 1.5rem; margin: 1.5rem 0;
+        }
+        .callout-icon { font-size: 1.5rem; flex-shrink: 0; }
+        .callout p { margin: 0; font-size: 0.98rem; color: var(--text-muted); }
+        .callout p strong { color: #93c5fd; }
+        .callout-warn { background: rgba(245,158,11,0.07); border-color: rgba(245,158,11,0.25); }
+        .callout-warn p strong { color: #fcd34d; }
+        .callout-green { background: rgba(16,185,129,0.07); border-color: rgba(16,185,129,0.25); }
+        .callout-green p strong { color: #6ee7b7; }
+        .callout-red { background: rgba(239,68,68,0.07); border-color: rgba(239,68,68,0.25); }
+        .callout-red p strong { color: #fca5a5; }
+        .callout-purple { background: rgba(139,92,246,0.07); border-color: rgba(139,92,246,0.25); }
+        .callout-purple p strong { color: #c4b5fd; }
+
+        /* ===== INTERACTIVE CARD ===== */
+        .interactive-box {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(16,185,129,0.25);
+            border-radius: 1rem; padding: 2rem; margin: 1.5rem 0;
+        }
+        .interactive-box h3 { color: #34d399; margin-bottom: 1.2rem; }
+        .input-row {
+            display: flex; gap: 0.75rem; flex-wrap: wrap;
+            align-items: flex-end; margin-bottom: 1rem;
+        }
+        .input-group { display: flex; flex-direction: column; gap: 0.3rem; }
+        .input-group label { color: var(--text-muted); font-size: 0.85rem; }
+        .input-group input, .input-group select {
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: white; padding: 0.55rem 0.75rem;
+            border-radius: 6px; font-family: inherit; font-size: 1rem; width: 110px;
+        }
+        .calc-btn {
+            background: rgba(16,185,129,0.25); border: 1px solid #10b981;
+            color: #6ee7b7; padding: 0.6rem 1.5rem; border-radius: 6px;
+            cursor: pointer; font-family: inherit; font-size: 0.95rem;
+            transition: all 0.2s; align-self: flex-end;
+        }
+        .calc-btn:hover { background: rgba(16,185,129,0.4); }
+        .result-box {
+            background: rgba(0,0,0,0.35); border-radius: 8px;
+            padding: 1.25rem 1.5rem; min-height: 64px;
+            font-size: 0.97rem; color: var(--text-muted);
+        }
+        .result-box .val { color: #6ee7b7; font-weight: 700; font-size: 1.15rem; }
+        .result-box .step-r { display: block; margin: 0.2rem 0; }
+
+        /* ===== CANVAS CHART ===== */
+        .chart-wrap {
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px; padding: 1rem; margin: 1rem 0;
+        }
+        canvas { display: block; margin: 0 auto; max-width: 100%; }
+
+        /* ===== FORMULA HIGHLIGHT ===== */
+        .formula-big {
+            background: rgba(16,185,129,0.08);
+            border-radius: 10px; padding: 1rem 1.5rem;
+            text-align: center; margin: 1.25rem 0;
+            font-size: 1.1rem; color: var(--text-main);
+        }
+
+        /* ===== BIO PHASES ===== */
+        .phases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1rem; margin: 1.5rem 0;
+        }
+        .phase-card {
+            background: rgba(0,0,0,0.25);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 0.75rem; padding: 1.2rem;
+            text-align: center;
+        }
+        .phase-card .ph-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+        .phase-card h4 { color: #6ee7b7; font-size: 0.95rem; margin-bottom: 0.4rem; }
+        .phase-card p { color: var(--text-muted); font-size: 0.82rem; line-height: 1.5; margin: 0; }
+
+        /* ===== QUIZ ===== */
+        .quiz-question { margin-bottom: 2rem; }
+        .quiz-question h3 { color: var(--text-main); font-size: 1.05rem; font-weight: 600; margin-bottom: 1rem; }
+        .quiz-options { display: flex; flex-direction: column; gap: 0.6rem; }
+        .quiz-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: var(--text-main); padding: 0.85rem 1.2rem;
+            border-radius: 0.5rem; cursor: pointer; text-align: left;
+            font-size: 0.98rem; transition: all 0.2s; font-family: inherit;
+        }
+        .quiz-btn:hover:not(:disabled) { background: rgba(16,185,129,0.15); border-color: #10b981; }
+        .quiz-btn.correct { background: rgba(16,185,129,0.25) !important; border-color: #10b981 !important; color: #6ee7b7; }
+        .quiz-btn.wrong { background: rgba(239,68,68,0.2) !important; border-color: #ef4444 !important; color: #fca5a5; }
+        .quiz-btn:disabled { cursor: not-allowed; }
+        .quiz-score-msg { text-align: center; font-weight: 700; color: #6ee7b7; font-size: 1.1rem; margin-top: 1rem; min-height: 1.5rem; }
+
+        /* ===== ISOTOPE JOKE ===== */
+        .joke-box {
+            background: rgba(251,191,36,0.06);
+            border: 1px solid rgba(251,191,36,0.2);
+            border-radius: 0.75rem; padding: 1.1rem 1.5rem; margin: 1.5rem 0;
+            display: flex; gap: 1rem; align-items: flex-start;
+        }
+        .joke-box .joke-icon { font-size: 1.8rem; flex-shrink: 0; }
+        .joke-box p { margin: 0; color: var(--text-muted); font-size: 0.97rem; line-height: 1.65; }
+        .joke-box p em { color: #fcd34d; font-style: italic; }
+
+        /* ===== ISOTOPE CARD ===== */
+        .isotope-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+            gap: 1rem; margin: 1.5rem 0;
+        }
+        .isotope-card {
+            background: rgba(0,0,0,0.25);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 0.75rem; padding: 1.25rem; text-align: center;
+        }
+        .isotope-card .symbol {
+            font-size: 2.5rem; font-weight: 800;
+            background: linear-gradient(135deg,#10b981,#3b82f6);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .isotope-card p { color: var(--text-muted); font-size: 0.88rem; margin: 0.4rem 0 0; }
+
+        @media (max-width: 768px) {
+            .lesson-section { padding: 1.5rem; }
+            .phases-grid { grid-template-columns: 1fr 1fr; }
+            .lesson-header { padding: 3rem 0 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <header class="lesson-header">
+        <div class="container" style="text-align:center; position:relative; z-index:1;">
+            <div style="margin-bottom:2rem;">
+                <a href="funzioni.html" class="back-button" style="color:#6ee7b7; justify-content:center;">
+                    <span class="back-icon">←</span> Torna a Funzioni Elementari
+                </a>
+            </div>
+            <h1 class="lesson-title-main">
+                Applicazioni delle <span class="gradient-text">Funzioni Esponenziali</span>
+            </h1>
+            <p class="lesson-subtitle-main">
+                Batteri, banche e atomi radioattivi: dove le funzioni esponenziali smettono di essere astratte e diventano strumenti per comprendere il mondo reale.
+            </p>
+        </div>
+    </header>
+
+    <main class="container" style="padding-top:2.5rem; padding-bottom:5rem;">
+
+        <!-- TOC -->
+        <nav class="toc">
+            <h3>📋 Indice della lezione</h3>
+            <ol>
+                <li><a href="#sec-batteri-bio">Crescita batterica: la biologia</a></li>
+                <li><a href="#sec-batteri-exp">Il modello esponenziale</a></li>
+                <li><a href="#sec-logistica">La crescita logistica: il modello reale</a></li>
+                <li><a href="#sec-batteri-lab">Laboratorio interattivo: crescita batterica</a></li>
+                <li><a href="#sec-interessi">Interessi bancari composti</a></li>
+                <li><a href="#sec-interessi-lab">Calcolatore interattivo: montante</a></li>
+                <li><a href="#sec-isotopi">Isotopi e decadimento radioattivo</a></li>
+                <li><a href="#sec-carbonio">La datazione al carbonio-14</a></li>
+                <li><a href="#sec-carbonio-lab">Calcolatore interattivo: datazione</a></li>
+                <li><a href="#sec-quiz">Sfida le tue conoscenze</a></li>
+            </ol>
+        </nav>
+
+        <!-- ================================================================ -->
+        <!-- 1. CRESCITA BATTERICA: LA BIOLOGIA -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-batteri-bio">
+            <div class="section-number">Sezione 1</div>
+            <h2>🧫 La crescita batterica: prima la biologia</h2>
+            <p class="lesson-text">
+                I <strong>batteri</strong> sono organismi unicellulari procarioti che si riproducono per <strong>scissione binaria</strong>: ogni cellula, dopo un certo intervallo di tempo detto <em>tempo di generazione</em> \(T_g\), si divide in due cellule figlie identiche. In condizioni ottimali (temperatura, pH, ossigeno e nutrienti adeguati) questo processo avviene in modo estremamente regolare.
+            </p>
+            <p class="lesson-text">
+                Quando si allestisce una <strong>coltura batterica</strong> in laboratorio si preparano i batteri in un <strong>substrato</strong> — cioè un mezzo di coltura liquido o solido che contiene tutti i nutrienti necessari (glucosio, azoto, fosforo, vitamine, ecc.). Si semina una piccola quantità di cellule e si osserva come la popolazione evolve nel tempo.
+            </p>
+
+            <h3>Le quattro fasi di crescita</h3>
+            <p class="lesson-text">Una coltura batterica non cresce in modo uniforme per sempre: attraversa quattro fasi ben distinte.</p>
+
+            <div class="phases-grid">
+                <div class="phase-card">
+                    <div class="ph-icon">😴</div>
+                    <h4>Fase Lag</h4>
+                    <p>I batteri si adattano al nuovo ambiente. Sintetizzano enzimi e proteine necessari. La popolazione non cresce ancora (o cresce pochissimo).</p>
+                </div>
+                <div class="phase-card">
+                    <div class="ph-icon">🚀</div>
+                    <h4>Fase Log (Esponenziale)</h4>
+                    <p>Le cellule si dividono al massimo ritmo. La popolazione raddoppia ogni \(T_g\) minuti. Qui vale il modello esponenziale.</p>
+                </div>
+                <div class="phase-card">
+                    <div class="ph-icon">⚖️</div>
+                    <h4>Fase Stazionaria</h4>
+                    <p>I nutrienti si esauriscono e i rifiuti metabolici si accumulano. Il numero di nuove cellule bilancia le morti. La popolazione si stabilizza.</p>
+                </div>
+                <div class="phase-card">
+                    <div class="ph-icon">💀</div>
+                    <h4>Fase di Declino</h4>
+                    <p>Le risorse sono esaurite. Le morti superano le nascite e la popolazione decresce, spesso anch'essa in modo esponenziale.</p>
+                </div>
+            </div>
+
+            <div class="callout callout-green">
+                <span class="callout-icon">🔬</span>
+                <p><strong>Il substrato è il limite.</strong> La chiave per capire perché la crescita non può essere "esponenziale per sempre" è il substrato: esso contiene una quantità finita di nutrienti. Man mano che i batteri li consumano, la velocità di riproduzione rallenta inevitabilmente.</p>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 2. IL MODELLO ESPONENZIALE -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-batteri-exp">
+            <div class="section-number">Sezione 2</div>
+            <h2>📈 Il modello esponenziale</h2>
+            <p class="lesson-text">
+                Durante la <strong>fase log</strong>, se la popolazione iniziale è \(N_0\) e ogni cellula si divide ogni \(T_g\) ore, dopo \(n\) generazioni la popolazione vale:
+            </p>
+
+            <div class="formula-big">
+                \[ N(t) = N_0 \cdot 2^{t / T_g} \]
+            </div>
+
+            <p class="lesson-text">
+                dove \(t\) è il tempo trascorso e \(T_g\) è il <strong>tempo di generazione</strong> (tempo di raddoppio). Questa è esattamente una funzione esponenziale in base 2.
+            </p>
+            <p class="lesson-text">
+                Equivalentemente, usando la base naturale \(e\) e indicando con \(k = \ln 2 / T_g\) la <em>costante di crescita</em>, si può scrivere anche \(N(t) = N_0 e^{kt}\).
+            </p>
+
+            <div class="definition-box">
+                <strong>Esempio numerico:</strong> Partiamo da \(N_0 = 100\) batteri con \(T_g = 30\) min. Dopo 3 ore (\(t = 180\) min): 
+                \[N(180) = 100 \cdot 2^{180/30} = 100 \cdot 2^6 = 100 \cdot 64 = 6\,400 \text{ batteri}\]
+                Dopo 6 ore: \(100 \cdot 2^{12} = 409\,600\) batteri!
+            </div>
+
+            <div class="callout">
+                <span class="callout-icon">⚠️</span>
+                <p><strong>Attenzione: questo modello vale solo durante la fase log.</strong> Se proiettassimo la crescita esponenziale indefinitamente, dopo 48 ore otterremmo un numero di batteri pari a circa \(10^{28}\) — più della massa della Terra in grammi. Chiaramente fisicamente impossibile: i nutrienti finiscono prima.</p>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 3. CRESCITA LOGISTICA -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-logistica">
+            <div class="section-number">Sezione 3</div>
+            <h2>🔄 La crescita logistica: il modello reale</h2>
+            <p class="lesson-text">
+                Per descrivere l'intera curva di crescita batterica — inclusa la fase stazionaria — si usa la <strong>funzione logistica</strong>, molto più realistica. L'idea fondamentale è introdurre una <strong>capacità portante</strong> \(K\): il numero massimo di individui che l'ambiente (il substrato) può sostenere.
+            </p>
+
+            <div class="formula-big">
+                \[ N(t) = \frac{K}{1 + \left(\dfrac{K - N_0}{N_0}\right) e^{-kt}} \]
+            </div>
+
+            <p class="lesson-text">Dove:</p>
+            <ul style="color:var(--text-muted); padding-left:1.5rem; line-height:2; font-size:1rem;">
+                <li>\(K\) = <strong>capacità portante</strong> (numero massimo sostenibile)</li>
+                <li>\(N_0\) = popolazione iniziale</li>
+                <li>\(k\) = costante di crescita intrinseca</li>
+            </ul>
+
+            <h3>Forma della curva sigmoide</h3>
+            <p class="lesson-text">
+                La curva logistica ha la forma di una <strong>S</strong> (sigmoide): cresce lentamente all'inizio (fase lag), poi rapidissimamente in modo quasi esponenziale (fase log), poi rallenta progressivamente avvicinandosi asintoticamente a \(K\) (fase stazionaria).
+            </p>
+
+            <div class="chart-wrap">
+                <canvas id="logistic-chart" width="700" height="280"></canvas>
+                <p style="text-align:center; color:var(--text-muted); font-size:0.85rem; margin-top:0.5rem;">
+                    Verde: crescita logistica (modello reale) &nbsp;|&nbsp; Azzurro tratteggiato: crescita esponenziale pura
+                </p>
+            </div>
+
+            <div class="callout callout-purple">
+                <span class="callout-icon">🧠</span>
+                <p><strong>La differenza fondamentale:</strong> nel modello esponenziale il tasso di crescita è costante; nel modello logistico il tasso <em>diminuisce</em> man mano che la popolazione si avvicina a \(K\). Matematicamente, la velocità di crescita è proporzionale sia alla popolazione attuale \(N\) sia allo "spazio disponibile" \((K-N)/K\). La curva logistica descrive accuratamente anche <strong>la crescita delle popolazioni animali</strong>, la diffusione di un virus, la propagazione di un'innovazione tecnologica.</p>
+            </div>
+
+            <div class="definition-box">
+                <strong>Punto di flesso:</strong> la curva logistica cresce più velocemente esattamente quando \(N = K/2\): è il punto di flesso della sigmoide. Prima accelera, dopo rallenta.
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 4. LABORATORIO BATTERI -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-batteri-lab">
+            <div class="section-number">Sezione 4</div>
+            <h2>🔬 Laboratorio interattivo: crescita batterica</h2>
+            <p class="lesson-text">Sperimenta entrambi i modelli: inserisci i parametri e confronta la crescita esponenziale con quella logistica.</p>
+
+            <div class="interactive-box">
+                <h3>Simulatore di coltura batterica</h3>
+                <div class="input-row">
+                    <div class="input-group"><label>N₀ (cellule iniziali)</label><input type="number" id="b-n0" value="100" min="1"></div>
+                    <div class="input-group"><label>Tg (min di raddoppio)</label><input type="number" id="b-tg" value="30" min="1"></div>
+                    <div class="input-group"><label>K (capacità portante)</label><input type="number" id="b-k" value="1000000" min="1"></div>
+                    <div class="input-group"><label>Tempo totale (ore)</label><input type="number" id="b-t" value="12" min="1" max="48"></div>
+                    <button class="calc-btn" onclick="runBacteria()">Simula</button>
+                </div>
+                <div class="result-box" id="res-batteri">Clicca "Simula" per avviare la coltura.</div>
+                <div class="chart-wrap" style="margin-top:1rem;">
+                    <canvas id="bacteria-chart" width="700" height="260"></canvas>
+                </div>
+            </div>
+
+            <!-- Problema interattivo -->
+            <div class="interactive-box" style="border-color:rgba(251,191,36,0.25); margin-top:1.5rem;">
+                <h3 style="color:#fbbf24;">⚙️ Problema: quando raggiungo N batteri?</h3>
+                <p style="color:var(--text-muted); font-size:0.93rem;">Usando il modello esponenziale: da \(N = N_0 \cdot 2^{t/T_g}\) ricava \(t\) usando i logaritmi.</p>
+                <div class="input-row">
+                    <div class="input-group"><label>N₀ iniziale</label><input type="number" id="p-n0" value="500" min="1"></div>
+                    <div class="input-group"><label>Tg (min)</label><input type="number" id="p-tg" value="20" min="1"></div>
+                    <div class="input-group"><label>N obiettivo</label><input type="number" id="p-n" value="1000000" min="1"></div>
+                    <button class="calc-btn" style="background:rgba(251,191,36,0.2);border-color:#fbbf24;color:#fcd34d;" onclick="solveBactTime()">Risolvi</button>
+                </div>
+                <div class="result-box" id="res-bact-time">Inserisci i valori e clicca Risolvi.</div>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 5. INTERESSI BANCARI -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-interessi">
+            <div class="section-number">Sezione 5</div>
+            <h2>🏦 Interessi bancari composti</h2>
+            <p class="lesson-text">
+                Quando depositi del denaro in banca, la banca ti paga degli <strong>interessi</strong>: una percentuale del capitale depositato. Con gli <strong>interessi semplici</strong>, gli interessi vengono calcolati solo sul capitale iniziale. Con gli <strong>interessi composti</strong> — il sistema bancario reale — gli interessi maturati vengono aggiunti al capitale e producono a loro volta interessi: è la magia dell'<em>interesse sull'interesse</em>, che genera una crescita esponenziale.
+            </p>
+
+            <h3>Il montante con capitalizzazione annuale</h3>
+            <div class="formula-big">
+                \[ M = C \cdot (1 + r)^n \]
+            </div>
+            <p class="lesson-text">Dove \(C\) = capitale iniziale, \(r\) = tasso annuo <strong>decimale</strong> (es. 5% → \(r = 0.05\)), \(n\) = numero di anni.</p>
+
+            <h3>Capitalizzazione più frequente</h3>
+            <p class="lesson-text">
+                Se la banca capitalizza \(m\) volte all'anno (mensile: \(m=12\), trimestrale: \(m=4\), giornaliera: \(m=365\)):
+            </p>
+            <div class="formula-big">
+                \[ M = C \cdot \left(1 + \frac{r}{m}\right)^{m \cdot n} \]
+            </div>
+
+            <h3>Capitalizzazione continua</h3>
+            <p class="lesson-text">
+                Al limite per \(m \to \infty\) (capitalizzazione continua), si ottiene la formula elegante:
+            </p>
+            <div class="formula-big">
+                \[ M = C \cdot e^{rn} \]
+            </div>
+            <p class="lesson-text">Ecco perché il numero \(e\) compare naturalmente in finanza!</p>
+
+            <div class="definition-box">
+                <strong>Esempio:</strong> Capitale <em>C = 10 000 €</em>, tasso <em>r = 0.05</em> (5%), durata <em>n = 20</em> anni.<br><br>
+                Capitalizzazione <strong>annuale</strong>:
+                \[ M = 10000 \cdot (1 + 0.05)^{20} = 10000 \cdot (1.05)^{20} \approx 10000 \cdot 2.6533 \approx 26\,533 \text{ €} \]
+                Capitalizzazione <strong>continua</strong>:
+                \[ M = 10000 \cdot e^{\,0.05 \cdot 20} = 10000 \cdot e^{1} \approx 27\,183 \text{ €} \]
+                La differenza è piccola ma non trascurabile!
+            </div>
+
+            <h3>Quanto tempo ci vuole a raddoppiare?</h3>
+            <p class="lesson-text">
+                Dalla formula del montante, vogliamo trovare \(n\) tale che \(M = 2C\):
+                \[2C = C(1+r)^n \implies 2 = (1+r)^n \implies n = \frac{\ln 2}{\ln(1+r)}\]
+                Per tassi piccoli esiste la famosa <strong>regola del 72</strong>: \(n \approx 72/(r \cdot 100)\). Al \(r=0.06\) (6%) ci vogliono circa 12 anni.
+            </p>
+
+            <div class="callout callout-warn">
+                <span class="callout-icon">💡</span>
+                <p><strong>La regola del 72:</strong> un'approssimazione pratica usata ancora oggi dai banchieri. Per sapere in quanti anni un capitale raddoppia, basta dividere 72 per il tasso <em>percentuale</em>. All'8% → 72/8 = 9 anni.</p>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 6. CALCOLATORE INTERESSI -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-interessi-lab">
+            <div class="section-number">Sezione 6</div>
+            <h2>💰 Calcolatore interattivo del montante</h2>
+
+            <div class="interactive-box">
+                <h3>Calcola il montante</h3>
+                <div class="input-row">
+                    <div class="input-group"><label>Capitale C (€)</label><input type="number" id="i-c" value="10000" min="1"></div>
+                    <div class="input-group"><label>Tasso r (decimale, es. 0.05)</label><input type="number" id="i-r" value="0.05" min="0.0001" step="0.005" style="width:150px;"></div>
+                    <div class="input-group"><label>Anni n</label><input type="number" id="i-n" value="20" min="1"></div>
+                    <div class="input-group">
+                        <label>Capitalizzazione</label>
+                        <select id="i-m">
+                            <option value="1">Annuale</option>
+                            <option value="2">Semestrale</option>
+                            <option value="4">Trimestrale</option>
+                            <option value="12" selected>Mensile</option>
+                            <option value="365">Giornaliera</option>
+                            <option value="0">Continua</option>
+                        </select>
+                    </div>
+                    <button class="calc-btn" onclick="calcMontante()">Calcola</button>
+                </div>
+                <div class="result-box" id="res-montante">Il risultato apparirà qui.</div>
+                <div class="chart-wrap" style="margin-top:1rem;">
+                    <canvas id="interest-chart" width="700" height="240"></canvas>
+                </div>
+            </div>
+
+            <!-- Problema inverso -->
+            <div class="interactive-box" style="border-color:rgba(251,191,36,0.25); margin-top:1.5rem;">
+                <h3 style="color:#fbbf24;">⚙️ Problema inverso: in quanti anni raggiungo M?</h3>
+                <p style="color:var(--text-muted);font-size:0.93rem;">Usa i logaritmi per ricavare \(n\) dalla formula del montante.</p>
+                <div class="input-row">
+                    <div class="input-group"><label>Capitale C (€)</label><input type="number" id="pi-c" value="5000" min="1"></div>
+                    <div class="input-group"><label>Tasso r (decimale, es. 0.04)</label><input type="number" id="pi-r" value="0.04" min="0.0001" step="0.005" style="width:150px;"></div>
+                    <div class="input-group"><label>Montante obiettivo M (€)</label><input type="number" id="pi-m" value="10000" min="1"></div>
+                    <button class="calc-btn" style="background:rgba(251,191,36,0.2);border-color:#fbbf24;color:#fcd34d;" onclick="solveAnni()">Risolvi</button>
+                </div>
+                <div class="result-box" id="res-anni">Inserisci i valori e clicca Risolvi.</div>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 7. ISOTOPI E DECADIMENTO -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-isotopi">
+            <div class="section-number">Sezione 7</div>
+            <h2>☢️ Isotopi e decadimento radioattivo</h2>
+
+            <h3>Che cosa sono gli isotopi?</h3>
+            <p class="lesson-text">
+                Gli <strong>isotopi</strong> sono atomi dello stesso elemento chimico (stessa numero di protoni, quindi stesso elemento) ma con un <strong>numero diverso di neutroni</strong>. Il nome deriva dal greco <em>ìsos</em> (uguale) e <em>tópos</em> (posto): occupano lo stesso "posto" nella tavola periodica.
+            </p>
+
+            <div class="isotope-grid">
+                <div class="isotope-card">
+                    <div class="symbol">¹²C</div>
+                    <p><strong>Carbonio-12</strong><br>6 protoni + 6 neutroni<br>Stabile, ~98.9% del carbonio</p>
+                </div>
+                <div class="isotope-card">
+                    <div class="symbol">¹³C</div>
+                    <p><strong>Carbonio-13</strong><br>6 protoni + 7 neutroni<br>Stabile, ~1.1% del carbonio</p>
+                </div>
+                <div class="isotope-card">
+                    <div class="symbol">¹⁴C</div>
+                    <p><strong>Carbonio-14</strong><br>6 protoni + 8 neutroni<br>Radioattivo! Usato per datazione</p>
+                </div>
+            </div>
+
+            <div class="joke-box">
+                <span class="joke-icon">😸</span>
+                <p>
+                    Come si catturano gli isotopi radioattivi? <em>Con gli isogatti!</em>
+                </p>
+            </div>
+
+            <h3>Il decadimento radioattivo</h3>
+            <p class="lesson-text">
+                Un isotopo è <strong>radioattivo</strong> quando il suo nucleo è instabile: spontaneamente emette particelle o radiazioni per raggiungere una configurazione più stabile. Questo processo è detto <strong>decadimento radioattivo</strong>. La caratteristica fondamentale è che è un processo <em>probabilistico</em>: ogni nucleo ha una certa probabilità per unità di tempo di decadere, indipendentemente da quanti anni abbia già "aspettato". Questo si traduce in una legge esponenziale per la popolazione di atomi radioattivi.
+            </p>
+
+            <div class="formula-big">
+                \[ N(t) = N_0 \cdot e^{-\lambda t} = N_0 \cdot \left(\frac{1}{2}\right)^{t/T_{1/2}} \]
+            </div>
+
+            <p class="lesson-text">Dove:</p>
+            <ul style="color:var(--text-muted); padding-left:1.5rem; line-height:2; font-size:1rem;">
+                <li>\(\lambda\) = <strong>costante di decadimento</strong> (probabilità di decadimento per unità di tempo)</li>
+                <li>\(T_{1/2} = \dfrac{\ln 2}{\lambda}\) = <strong>tempo di dimezzamento</strong> (tempo dopo il quale si dimezza la quantità)</li>
+            </ul>
+
+            <div class="callout callout-green">
+                <span class="callout-icon">⚛️</span>
+                <p><strong>Il decadimento esponenziale è la specchio della crescita esponenziale:</strong> invece di raddoppiare ogni periodo, la quantità si dimezza. La formula è identica, ma l'esponente è negativo. Il <strong>carbonio-14 (\({}^{14}C\))</strong> ha un tempo di dimezzamento di circa <strong>5730 anni</strong>.</p>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 8. DATAZIONE AL CARBONIO-14 -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-carbonio">
+            <div class="section-number">Sezione 8</div>
+            <h2>🦴 La datazione al carbonio-14</h2>
+
+            <h3>Il principio fisico</h3>
+            <p class="lesson-text">
+                Nell'atmosfera terrestre, i raggi cosmici bombardano continuamente gli atomi di azoto (\({}^{14}N\)), trasformandoli in <strong>carbonio-14</strong> (\({}^{14}C\)) radioattivo. Il \({}^{14}C\) si combina con l'ossigeno formando CO₂ e viene assorbito dalle piante tramite la fotosintesi, e da lì passa agli animali che le mangiano. Finché un organismo è vivo, il rapporto \({}^{14}C/{}^{12}C\) nei suoi tessuti rimane <strong>costante e uguale a quello atmosferico</strong> (circa \(1.2 \times 10^{-12}\)).
+            </p>
+            <p class="lesson-text">
+                Quando l'organismo <strong>muore</strong>, smette di assorbire nuovo \({}^{14}C\): il rapporto comincia a decrescere secondo la legge del decadimento esponenziale con \(T_{1/2} = 5730\) anni. Misurando il rapporto attuale di \({}^{14}C\) in un reperto organico (legno, carbone, ossa, tessuto), si può calcolare quanto tempo fa l'organismo è morto!
+            </p>
+
+            <div class="formula-big">
+                \[ t = T_{1/2} \cdot \frac{\ln(N_0/N)}{\ln 2} = \frac{T_{1/2}}{\ln 2} \cdot \ln\!\left(\frac{N_0}{N}\right) \]
+            </div>
+
+            <h3>Esempio: lo Scheletro della Caverna</h3>
+            <div class="solution-box">
+                <h4>✏️ Problema</h4>
+                <div class="step"><div class="step-num">💀</div><div class="step-body">
+                    Un reperto osseo contiene il <strong>35%</strong> del carbonio-14 che aveva quando l'organismo era in vita. Quanti anni fa è morto?
+                </div></div>
+                <div class="step"><div class="step-num">1</div><div class="step-body">
+                    Il rapporto attuale è \(N/N_0 = 0.35\). Uso la formula:
+                    <span class="formula">\(N(t) = N_0 \cdot (1/2)^{t/T_{1/2}} \implies 0.35 = (1/2)^{t/5730}\)</span>
+                </div></div>
+                <div class="step"><div class="step-num">2</div><div class="step-body">
+                    Applico il logaritmo naturale ad entrambi i membri:
+                    <span class="formula">\(\ln(0.35) = \dfrac{t}{5730} \cdot \ln(1/2) = -\dfrac{t}{5730} \cdot \ln 2\)</span>
+                </div></div>
+                <div class="step"><div class="step-num">3</div><div class="step-body">
+                    Risolvo per \(t\):
+                    <span class="formula">\(t = -\dfrac{5730 \cdot \ln(0.35)}{\ln 2} = \dfrac{5730 \cdot 1.0498}{0.6931} \approx \mathbf{8\,677}\text{ anni}\)</span>
+                </div></div>
+                <div class="step"><div class="step-num">✅</div><div class="step-body">
+                    <span class="result">L'organismo è morto circa 8 700 anni fa.</span> Siamo nel Neolitico!
+                </div></div>
+            </div>
+
+            <h3>Limiti della datazione al carbonio</h3>
+            <div class="callout callout-warn">
+                <span class="callout-icon">📏</span>
+                <p><strong>Finestra temporale valida:</strong> il metodo del ¹⁴C è affidabile per campioni con età compresa tra <strong>~300 e ~50 000 anni</strong>. Per campioni più antichi, la quantità residua di ¹⁴C è troppo piccola per essere misurata con precisione. Per campioni più recenti (soprattutto dopo i test nucleari atmosferici degli anni '50 che hanno alterato il rapporto ¹⁴C/¹²C), esistono correzioni necessarie. Per età geologiche si usano altri isotopi come Uranio-235 (\(T_{1/2} \approx 700\) milioni di anni) o Potassio-40.<br><br>
+                <strong>Assunzione fondamentale:</strong> il metodo presuppone che la concentrazione di ¹⁴C nell'atmosfera sia rimasta costante nel tempo — e quindi che il rapporto ¹⁴C/¹²C negli organismi viventi fosse lo stesso in epoche passate come oggi. Questa ipotesi è stata verificata e corretta tramite la <em>calibrazione dendrocronologica</em> (confronto con anelli di alberi antichi), ma rimane un'approssimazione.</p>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 9. CALCOLATORE DATAZIONE -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-carbonio-lab">
+            <div class="section-number">Sezione 9</div>
+            <h2>⚗️ Calcolatore interattivo di datazione</h2>
+
+            <div class="interactive-box">
+                <h3>Datazione al carbonio-14</h3>
+                <p style="color:var(--text-muted);font-size:0.93rem;margin-bottom:1rem;">Inserisci la percentuale di ¹⁴C ancora presente nel campione e calcola l'età.</p>
+                <div class="input-row">
+                    <div class="input-group"><label>¹⁴C residuo (%)</label><input type="number" id="c-perc" value="35" min="0.01" step="0.1" max="100"></div>
+                    <div class="input-group"><label>T½ isotopo (anni)</label><input type="number" id="c-half" value="5730" min="1"></div>
+                    <button class="calc-btn" onclick="calcCarbon()">Calcola età</button>
+                </div>
+                <div class="result-box" id="res-carbon">Inserisci i dati e clicca Calcola.</div>
+                <div class="chart-wrap" style="margin-top:1rem;">
+                    <canvas id="carbon-chart" width="700" height="220"></canvas>
+                </div>
+            </div>
+
+            <!-- Problema inverso: data l'età trova la percentuale -->
+            <div class="interactive-box" style="border-color:rgba(251,191,36,0.25); margin-top:1.5rem;">
+                <h3 style="color:#fbbf24;">⚙️ Problema: data l'età, quanto ¹⁴C rimane?</h3>
+                <p style="color:var(--text-muted);font-size:0.93rem;">Inserisci l'età del campione e calcola la percentuale di ¹⁴C rimasta.</p>
+                <div class="input-row">
+                    <div class="input-group"><label>Età stimata (anni)</label><input type="number" id="ci-eta" value="10000" min="1"></div>
+                    <div class="input-group"><label>T½ (anni)</label><input type="number" id="ci-half" value="5730" min="1"></div>
+                    <button class="calc-btn" style="background:rgba(251,191,36,0.2);border-color:#fbbf24;color:#fcd34d;" onclick="calcPercent()">Calcola %</button>
+                </div>
+                <div class="result-box" id="res-perc">Inserisci i valori e clicca Calcola.</div>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 10. QUIZ  -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-quiz">
+            <div class="section-number">Sezione 10</div>
+            <h2 style="color:#10b981;">🧠 Sfida le tue conoscenze</h2>
+            <p class="lesson-text">Verifica la tua comprensione con domande che collegano biologia, finanza e fisica nucleare alla matematica esponenziale!</p>
+            <div style="background:rgba(0,0,0,0.15); border-radius:1rem; padding:1.5rem;">
+                <div id="quiz-area"></div>
+                <div class="quiz-score-msg" id="quiz-score"></div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>© 2026 MFI — Matematica, Fisica, Informatica.</p>
+    </footer>
+
+    <script>
+    // ============================================================
+    //  UTILITY
+    // ============================================================
+    const fmt = v => {
+        if (!isFinite(v)) return '∞';
+        if (v >= 1e12)  return (v/1e12).toFixed(2) + ' bilioni';
+        if (v >= 1e9)   return (v/1e9).toFixed(2) + ' miliardi';
+        if (v >= 1e6)   return (v/1e6).toFixed(2) + ' milioni';
+        if (v >= 1e3)   return v.toLocaleString('it-IT', {maximumFractionDigits:0});
+        return v.toFixed(v < 10 ? 3 : 1);
+    };
+    const fmtEuro = v => '€ ' + v.toLocaleString('it-IT', {minimumFractionDigits:2, maximumFractionDigits:2});
+    const fmtNum = v => {
+        if (!isFinite(v)) return '∞';
+        if (Number.isInteger(v) || Math.abs(v - Math.round(v)) < 1e-9) return Math.round(v).toString();
+        return v.toFixed(4);
+    };
+
+    // ============================================================
+    //  STATIC LOGISTIC CHART
+    // ============================================================
+    function drawLogisticStatic() {
+        const canvas = document.getElementById('logistic-chart');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const W = canvas.width, H = canvas.height;
+        ctx.clearRect(0,0,W,H);
+
+        const padL=55, padR=20, padT=20, padB=35;
+        const N0=100, K=1000000, k=Math.log(2)/30*(60); // k per ora
+        const tMax=24;
+
+        const toX = t => padL + (t/tMax)*(W-padL-padR);
+        const toY = n => padT + (1 - n/K)*(H-padT-padB);
+
+        // axes
+        ctx.strokeStyle='rgba(255,255,255,0.2)'; ctx.lineWidth=1;
+        ctx.beginPath(); ctx.moveTo(padL,padT); ctx.lineTo(padL,H-padB); ctx.lineTo(W-padR,H-padB); ctx.stroke();
+
+        // labels x
+        ctx.fillStyle='rgba(255,255,255,0.4)'; ctx.font='11px Inter'; ctx.textAlign='center';
+        for(let t=0;t<=tMax;t+=4){ ctx.fillText(t+'h', toX(t), H-padB+16); }
+        ctx.textAlign='right';
+        ctx.fillText('0',padL-4,H-padB+5);
+        ctx.fillText('K',padL-4,padT+5);
+
+        // exponential (dashed)
+        ctx.setLineDash([6,4]); ctx.strokeStyle='rgba(96,165,250,0.5)'; ctx.lineWidth=2;
+        ctx.beginPath();
+        for(let t=0;t<=tMax;t+=0.05){
+            const n=N0*Math.pow(2,t*60/30);
+            const y=toY(Math.min(n,K*1.05));
+            if(t===0) ctx.moveTo(toX(t),y); else ctx.lineTo(toX(t),y);
+        }
+        ctx.stroke(); ctx.setLineDash([]);
+
+        // logistic
+        ctx.strokeStyle='#10b981'; ctx.lineWidth=2.5;
+        ctx.beginPath();
+        for(let t=0;t<=tMax;t+=0.05){
+            const n=K/(1+((K-N0)/N0)*Math.exp(-k*t));
+            const y=toY(n);
+            if(t===0) ctx.moveTo(toX(t),y); else ctx.lineTo(toX(t),y);
+        }
+        ctx.stroke();
+
+        // K asymptote
+        ctx.strokeStyle='rgba(16,185,129,0.3)'; ctx.lineWidth=1; ctx.setLineDash([4,4]);
+        ctx.beginPath(); ctx.moveTo(padL,toY(K)); ctx.lineTo(W-padR,toY(K)); ctx.stroke();
+        ctx.setLineDash([]);
+    }
+
+    // ============================================================
+    //  BACTERIA SIMULATOR
+    // ============================================================
+    function runBacteria() {
+        const N0=parseFloat(document.getElementById('b-n0').value);
+        const Tg=parseFloat(document.getElementById('b-tg').value);
+        const K=parseFloat(document.getElementById('b-k').value);
+        const T=parseFloat(document.getElementById('b-t').value);
+        const res=document.getElementById('res-batteri');
+        if(isNaN(N0)||isNaN(Tg)||isNaN(K)||isNaN(T)||Tg<=0||K<=0||T<=0){
+            res.innerHTML='Valori non validi.'; return;
+        }
+        const k=Math.log(2)/(Tg/60); // per ora
+        const tMax=T;
+        const nExp=N0*Math.pow(2,T*60/Tg);
+        const nLog=K/(1+((K-N0)/N0)*Math.exp(-k*T));
+        res.innerHTML=`
+            <span class="step-r"><strong>Modello esponenziale</strong> dopo ${T} ore: <span class="val">${fmt(nExp)}</span> cellule</span>
+            <span class="step-r"><strong>Modello logistico</strong> dopo ${T} ore: <span class="val">${fmt(nLog)}</span> cellule (max K = ${fmt(K)})</span>
+            <span class="step-r" style="font-size:0.85rem;color:rgba(255,255,255,0.3);">Notare come il modello esponenziale diventi irrealisticamente grande, mentre il logistico rimane entro la capacità portante.</span>
+        `;
+        drawBacteriaChart(N0, Tg, K, T, k);
+    }
+
+    function drawBacteriaChart(N0, Tg, K, T, k) {
+        const canvas=document.getElementById('bacteria-chart');
+        if(!canvas) return;
+        const ctx=canvas.getContext('2d');
+        const W=canvas.width, H=canvas.height;
+        ctx.clearRect(0,0,W,H);
+        const padL=65, padR=20, padT=20, padB=35;
+
+        const toX=t=>padL+(t/T)*(W-padL-padR);
+        const toY=n=>padT+(1-n/K)*(H-padT-padB);
+
+        ctx.strokeStyle='rgba(255,255,255,0.15)'; ctx.lineWidth=1;
+        ctx.beginPath(); ctx.moveTo(padL,padT); ctx.lineTo(padL,H-padB); ctx.lineTo(W-padR,H-padB); ctx.stroke();
+        ctx.fillStyle='rgba(255,255,255,0.35)'; ctx.font='10px Inter'; ctx.textAlign='center';
+        for(let t=0;t<=T;t+=T/6){ ctx.fillText(t.toFixed(1)+'h',toX(t),H-padB+14); }
+        ctx.textAlign='right';
+        ctx.fillText(fmt(K),padL-4,padT+5);
+        ctx.fillText('0',padL-4,H-padB+5);
+
+        // exponential clipped
+        ctx.setLineDash([5,4]); ctx.strokeStyle='rgba(96,165,250,0.5)'; ctx.lineWidth=2;
+        ctx.beginPath();
+        for(let t=0;t<=T;t+=T/300){
+            const n=Math.min(N0*Math.pow(2,t*60/Tg),K);
+            const y=toY(n);
+            if(t===0) ctx.moveTo(toX(t),y); else ctx.lineTo(toX(t),y);
+        }
+        ctx.stroke(); ctx.setLineDash([]);
+
+        // logistic
+        ctx.strokeStyle='#10b981'; ctx.lineWidth=2.5;
+        ctx.beginPath();
+        for(let t=0;t<=T;t+=T/300){
+            const n=K/(1+((K-N0)/N0)*Math.exp(-k*t));
+            const y=toY(n);
+            if(t===0) ctx.moveTo(toX(t),y); else ctx.lineTo(toX(t),y);
+        }
+        ctx.stroke();
+
+        ctx.strokeStyle='rgba(16,185,129,0.25)'; ctx.lineWidth=1; ctx.setLineDash([4,4]);
+        ctx.beginPath(); ctx.moveTo(padL,toY(K)); ctx.lineTo(W-padR,toY(K)); ctx.stroke();
+        ctx.setLineDash([]);
+    }
+
+    // ============================================================
+    //  SOLVE: quando raggiungo N batteri?
+    // ============================================================
+    function solveBactTime() {
+        const N0=parseFloat(document.getElementById('p-n0').value);
+        const Tg=parseFloat(document.getElementById('p-tg').value);
+        const N=parseFloat(document.getElementById('p-n').value);
+        const res=document.getElementById('res-bact-time');
+        if(N<=N0){res.innerHTML='Il numero obiettivo deve essere maggiore di N₀.';return;}
+        // N = N0 * 2^(t/Tg) => t = Tg * log2(N/N0)
+        const t = Tg * Math.log2(N/N0);
+        const ore=Math.floor(t/60), min=Math.round(t%60);
+        res.innerHTML=`
+            <span class="step-r">Equazione: <em>${fmt(N)} = ${fmt(N0)} · 2<sup>t/${Tg}</sup></em></span>
+            <span class="step-r">→ <em>2<sup>t/${Tg}</sup> = ${fmtNum(N/N0)}</em></span>
+            <span class="step-r">→ Applico log₂: <em>t/${Tg} = log₂(${fmtNum(N/N0)}) = ${fmtNum(Math.log2(N/N0))}</em></span>
+            <span class="step-r">→ <span class="val">t = ${fmtNum(t)} minuti (${ore} ore e ${min} minuti)</span></span>
+        `;
+    }
+
+    // ============================================================
+    //  MONTANTE
+    // ============================================================
+    function calcMontante() {
+        const C=parseFloat(document.getElementById('i-c').value);
+        const r=parseFloat(document.getElementById('i-r').value); // r già decimale
+        const n=parseFloat(document.getElementById('i-n').value);
+        const m=parseFloat(document.getElementById('i-m').value);
+        const res=document.getElementById('res-montante');
+
+        let M, formula;
+        if(m===0){
+            M=C*Math.exp(r*n);
+            formula=`M = ${fmtEuro(C)} · e^(${r}·${n})`;
+        } else {
+            M=C*Math.pow(1+r/m,m*n);
+            formula=`M = ${fmtEuro(C)} · (1 + ${r}/${m})^(${m}·${n})`;
+        }
+        const interessi=M-C;
+        const nRad72=72/(r*100); // regola del 72 vuole il tasso percentuale
+        res.innerHTML=`
+            <span class="step-r">Formula: <em>${formula}</em></span>
+            <span class="step-r">Montante finale: <span class="val">${fmtEuro(M)}</span></span>
+            <span class="step-r">Interessi guadagnati: <span style="color:#fbbf24;">${fmtEuro(interessi)}</span> (+${((M/C-1)*100).toFixed(1)}%)</span>
+            <span class="step-r" style="font-size:0.85rem;color:rgba(255,255,255,0.4);">Regola del 72: con r=${r} (${(r*100).toFixed(2)}%) si raddoppia in circa ${nRad72.toFixed(1)} anni.</span>
+        `;
+        drawInterestChart(C, r, n, m);
+    }
+
+    function drawInterestChart(C, r, n, m) {
+        const canvas=document.getElementById('interest-chart');
+        if(!canvas) return;
+        const ctx=canvas.getContext('2d');
+        const W=canvas.width, H=canvas.height;
+        ctx.clearRect(0,0,W,H);
+        const padL=80, padR=20, padT=15, padB=30;
+
+        const vals=[];
+        for(let t=0;t<=n;t++){
+            const M=m===0 ? C*Math.exp(r*t) : C*Math.pow(1+r/m,m*t);
+            vals.push(M);
+        }
+        const maxM=vals[vals.length-1];
+        const toX=t=>padL+(t/n)*(W-padL-padR);
+        const toY=v=>padT+(1-v/maxM)*(H-padT-padB);
+
+        ctx.strokeStyle='rgba(255,255,255,0.15)'; ctx.lineWidth=1;
+        ctx.beginPath(); ctx.moveTo(padL,padT); ctx.lineTo(padL,H-padB); ctx.lineTo(W-padR,H-padB); ctx.stroke();
+        ctx.fillStyle='rgba(255,255,255,0.35)'; ctx.font='10px Inter'; ctx.textAlign='center';
+        for(let t=0;t<=n;t+=Math.max(1,Math.floor(n/6))){ ctx.fillText(t+'a',toX(t),H-padB+14); }
+        ctx.textAlign='right';
+        ctx.fillText(fmtEuro(maxM).replace('€ ',''),padL-4,padT+5);
+        ctx.fillText(fmtEuro(C).replace('€ ',''),padL-4,H-padB+5);
+
+        // Capital base line
+        ctx.strokeStyle='rgba(251,191,36,0.3)'; ctx.lineWidth=1; ctx.setLineDash([4,4]);
+        ctx.beginPath(); ctx.moveTo(padL,toY(C)); ctx.lineTo(W-padR,toY(C)); ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Montante curve
+        ctx.strokeStyle='#10b981'; ctx.lineWidth=2.5;
+        ctx.beginPath();
+        vals.forEach((v,i)=>{ const x=toX(i),y=toY(v); if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y); });
+        ctx.stroke();
+    }
+
+    // ============================================================
+    //  SOLVE ANNI
+    // ============================================================
+    function solveAnni() {
+        const C=parseFloat(document.getElementById('pi-c').value);
+        const r=parseFloat(document.getElementById('pi-r').value); // r già decimale
+        const M=parseFloat(document.getElementById('pi-m').value);
+        const res=document.getElementById('res-anni');
+        if(M<=C){res.innerHTML='Il montante obiettivo deve essere maggiore del capitale.'; return;}
+        // M = C*(1+r)^n  =>  n = ln(M/C)/ln(1+r)
+        const base=1+r;
+        const n=Math.log(M/C)/Math.log(base);
+        res.innerHTML=`
+            <span class="step-r">Equazione: <em>${fmtEuro(M)} = ${fmtEuro(C)} · (1+${r})<sup>n</sup></em></span>
+            <span class="step-r">→ <em>(${base})<sup>n</sup> = ${fmtNum(M/C)}</em></span>
+            <span class="step-r">→ Applico ln: <em>n·ln(${base}) = ln(${fmtNum(M/C)})</em></span>
+            <span class="step-r">→ <span class="val">n = ln(${fmtNum(M/C)}) / ln(${base}) ≈ ${fmtNum(n)} anni</span></span>
+            <span class="step-r" style="color:rgba(255,255,255,0.4);font-size:0.85rem;">Regola del 72: raddoppio in ~${fmtNum(72/(r*100))} anni (r=${r}, ovvero ${(r*100).toFixed(2)}%).</span>
+        `;
+    }
+
+    // ============================================================
+    //  CARBON DATING
+    // ============================================================
+    function calcCarbon() {
+        const perc=parseFloat(document.getElementById('c-perc').value);
+        const half=parseFloat(document.getElementById('c-half').value);
+        const res=document.getElementById('res-carbon');
+        if(perc<=0||perc>100||half<=0){res.innerHTML='Valori non validi.'; return;}
+        const ratio=perc/100;
+        // N/N0 = (1/2)^(t/T½)  =>  t = T½ * ln(N0/N) / ln2
+        const t=half*Math.log(1/ratio)/Math.log(2);
+        let era='';
+        if(t<3000) era='— periodo storico recente (Ferro/Romano)';
+        else if(t<8000) era='— Neolitico';
+        else if(t<15000) era='— Mesolitico / fine Paleolitico superiore';
+        else if(t<35000) era='— Paleolitico superiore';
+        else era='— oltre il limite affidabile del carbonio (usa altri isotopi)';
+        res.innerHTML=`
+            <span class="step-r">¹⁴C residuo: <em>${perc}% → N/N₀ = ${ratio}</em></span>
+            <span class="step-r">Eq: <em>(1/2)<sup>t/${half}</sup> = ${ratio}</em></span>
+            <span class="step-r">→ <em>t = ${half} · ln(${fmtNum(1/ratio)}) / ln(2) = ${half} · ${fmtNum(Math.log(1/ratio))} / ${fmtNum(Math.log(2))}</em></span>
+            <span class="step-r"><span class="val">Età stimata: ${Math.round(t).toLocaleString('it-IT')} anni</span> ${era}</span>
+        `;
+        drawCarbonChart(half, perc/100);
+    }
+
+    function drawCarbonChart(half, currentRatio) {
+        const canvas=document.getElementById('carbon-chart');
+        if(!canvas) return;
+        const ctx=canvas.getContext('2d');
+        const W=canvas.width, H=canvas.height;
+        ctx.clearRect(0,0,W,H);
+        const padL=55, padR=30, padT=15, padB=35;
+        const tMax=half*6;
+        const toX=t=>padL+(t/tMax)*(W-padL-padR);
+        const toY=r=>padT+(1-r)*(H-padT-padB);
+
+        ctx.strokeStyle='rgba(255,255,255,0.15)'; ctx.lineWidth=1;
+        ctx.beginPath(); ctx.moveTo(padL,padT); ctx.lineTo(padL,H-padB); ctx.lineTo(W-padR,H-padB); ctx.stroke();
+        ctx.fillStyle='rgba(255,255,255,0.35)'; ctx.font='10px Inter'; ctx.textAlign='center';
+        for(let i=0;i<=6;i++){
+            const t=half*i;
+            ctx.fillText((t/1000).toFixed(1)+'ka',toX(t),H-padB+14);
+        }
+        ctx.textAlign='right';
+        ctx.fillText('100%',padL-4,padT+5);
+        ctx.fillText('0%',padL-4,H-padB+5);
+
+        ctx.strokeStyle='rgba(16,185,129,0.8)'; ctx.lineWidth=2.5;
+        ctx.beginPath();
+        for(let t=0;t<=tMax;t+=tMax/300){
+            const r=Math.pow(0.5,t/half);
+            if(t===0) ctx.moveTo(toX(t),toY(r)); else ctx.lineTo(toX(t),toY(r));
+        }
+        ctx.stroke();
+
+        // current position
+        const tCurrent=half*Math.log(1/currentRatio)/Math.log(2);
+        if(tCurrent<=tMax){
+            ctx.strokeStyle='rgba(251,191,36,0.7)'; ctx.lineWidth=1; ctx.setLineDash([4,4]);
+            ctx.beginPath(); ctx.moveTo(toX(tCurrent),padT); ctx.lineTo(toX(tCurrent),H-padB); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(padL,toY(currentRatio)); ctx.lineTo(toX(tCurrent),toY(currentRatio)); ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.fillStyle='#fbbf24'; ctx.beginPath(); ctx.arc(toX(tCurrent),toY(currentRatio),5,0,Math.PI*2); ctx.fill();
+        }
+    }
+
+    function calcPercent() {
+        const t=parseFloat(document.getElementById('ci-eta').value);
+        const half=parseFloat(document.getElementById('ci-half').value);
+        const res=document.getElementById('res-perc');
+        if(t<=0||half<=0){res.innerHTML='Valori non validi.'; return;}
+        const ratio=Math.pow(0.5,t/half);
+        const perc=(ratio*100);
+        res.innerHTML=`
+            <span class="step-r">Eq: <em>N/N₀ = (1/2)<sup>${t}/${half}</sup> = (1/2)<sup>${fmtNum(t/half)}</sup></em></span>
+            <span class="step-r">→ <span class="val">${fmtNum(perc)}% di ¹⁴C rimasto</span></span>
+            <span class="step-r" style="font-size:0.85rem;color:rgba(255,255,255,0.4);">Numero di dimezzamenti avvenuti: ${fmtNum(t/half)}</span>
+        `;
+    }
+
+    // ============================================================
+    //  QUIZ
+    // ============================================================
+    const quizData = [
+        {
+            question: "Durante quale fase la crescita batterica segue il modello esponenziale?",
+            options: ["Fase Lag", "Fase Log (esponenziale)", "Fase Stazionaria", "Fase di Declino"],
+            correct: 1,
+            explanation: "Nella fase Log i batteri si dividono al massimo ritmo e la popolazione raddoppia ogni Tg. È l'unica fase in cui il modello N(t) = N₀·2^(t/Tg) è valido."
+        },
+        {
+            question: "Partiamo da 200 batteri con Tg = 30 min. Quanti batteri ci sono dopo 2 ore?",
+            options: ["800", "1 600", "3 200", "12 800"],
+            correct: 3,
+            explanation: "2 ore = 120 min. Numero di generazioni: n = 120/30 = 4. N = 200 · 2⁴ = 200 · 16 = 3200... aspetta: 200 · 2⁴ = 3200? Ricontiamo: 2¹=2, 2²=4, 2³=8, 2⁴=16. 200·16=3200. Ma la risposta corretta è 12800: n = 120/30 = 4? No, 2h = 120 min, Tg=30 → 4 gen → 200·16 = 3200. Ricalcolo: opzione corretta = 3200. [Dati aggiornati in spiegazione]",
+            explanation: "2 ore = 120 min. Generazioni: n = 120/30 = 4. N = 200 · 2⁴ = 200 · 16 = 3 200 batteri."
+        },
+        {
+            question: "Cosa differenzia il modello logistico da quello esponenziale?",
+            options: ["Il modello logistico cresce più velocemente", "Il modello logistico introduce una capacità portante K che limita la crescita", "Il modello logistico non usa la base e", "Nel modello logistico la base è 10"],
+            correct: 1,
+            explanation: "La crescita logistica include la capacità portante K: man mano che N si avvicina a K, la crescita rallenta e la curva diventa una S (sigmoide), molto più realistica della retta esponenziale che cresce indefinitamente."
+        },
+        {
+            question: "Deposito 5 000 € al 4% annuo con capitalizzazione annuale. Quanto ho dopo 10 anni? (usa (1.04)^10 ≈ 1.4802)",
+            options: ["5 400 €", "6 000 €", "7 401 €", "8 000 €"],
+            correct: 2,
+            explanation: "M = 5000 · (1.04)^10 ≈ 5000 · 1.4802 = 7 401 €. Gli interessi composti hanno generato 2 401 € in più rispetto al capitale iniziale."
+        },
+        {
+            question: "In quanti anni si raddoppia un capitale al 6% annuo? (usa la regola del 72)",
+            options: ["6 anni", "12 anni", "18 anni", "24 anni"],
+            correct: 1,
+            explanation: "Regola del 72: n ≈ 72/r = 72/6 = 12 anni. Il calcolo esatto sarebbe n = ln(2)/ln(1.06) ≈ 11.9 anni — la regola del 72 è una buona approssimazione!"
+        },
+        {
+            question: "Cosa sono gli isotopi?",
+            options: ["Atomi con lo stesso numero di neutroni ma protoni diversi", "Atomi dello stesso elemento con numero diverso di neutroni", "Molecole con la stessa formula strutturale", "Elementi con la stessa massa atomica"],
+            correct: 1,
+            explanation: "Gli isotopi sono atomi dello stesso elemento (stesso numero di protoni, quindi stessa posizione nella tavola periodica) ma con numero diverso di neutroni. Il ¹²C, ¹³C e ¹⁴C sono tutti carbonio, ma con 6, 7 e 8 neutroni rispettivamente."
+        },
+        {
+            question: "Un reperto osseo ha il 25% del ¹⁴C originale. Quanti anni fa è morto l'organismo? (T½ = 5730 anni)",
+            options: ["2 865 anni", "5 730 anni", "11 460 anni", "17 190 anni"],
+            correct: 2,
+            explanation: "25% = (1/2)² → 2 dimezzamenti → t = 2 · 5730 = 11 460 anni. Oppure con la formula: t = 5730 · ln(4)/ln(2) = 5730 · 2 = 11 460 anni."
+        },
+        {
+            question: "Quale equazione logaritmica bisogna risolvere per trovare l'età t nella datazione al ¹⁴C, dato che rimane il 50% del carbonio?",
+            options: ["t = 5730 · ln(0.5) / ln(2)", "t = -5730 · ln(0.5) / ln(2)", "t = 5730 · log(2) / log(0.5)", "t = 5730 / ln(2)"],
+            correct: 1,
+            explanation: "0.5 = (1/2)^(t/5730). Applico ln: ln(0.5) = -(t/5730)·ln(2), quindi t = -5730·ln(0.5)/ln(2) = 5730·ln(2)/ln(2) = 5730 anni — un dimezzamento, come atteso!"
+        }
+    ];
+
+    let quizScore=0, quizAnswered=0;
+
+    function loadQuiz() {
+        // Fix question 2 options
+        quizData[1].options = ["800","3 200","6 400","12 800"];
+        quizData[1].correct = 1;
+        quizData[1].explanation = "2 ore = 120 min. Generazioni: n = 120/30 = 4. N = 200 · 2⁴ = 200 · 16 = 3 200 batteri.";
+
+        document.getElementById('quiz-area').innerHTML = quizData.map((q,i) => `
+            <div class="quiz-question">
+                <h3>${i+1}. ${q.question}</h3>
+                <div class="quiz-options">
+                    ${q.options.map((opt,j) => `
+                        <button class="quiz-btn" onclick="checkAnswer(${i},${j},this)">${opt}</button>
+                    `).join('')}
+                </div>
+                <div id="exp-${i}" style="display:none; margin-top:0.75rem; font-size:0.88rem; color:#6ee7b7; background:rgba(16,185,129,0.08); padding:0.7rem 1rem; border-radius:8px;"></div>
+            </div>
+        `).join('');
+    }
+
+    window.checkAnswer = function(qi, oi, btn) {
+        const btns=btn.parentElement.querySelectorAll('.quiz-btn');
+        btns.forEach(b=>b.disabled=true);
+        if(oi===quizData[qi].correct){ btn.classList.add('correct'); quizScore++; }
+        else { btn.classList.add('wrong'); btns[quizData[qi].correct].classList.add('correct'); }
+        const exp=document.getElementById(`exp-${qi}`);
+        exp.textContent=`💡 ${quizData[qi].explanation}`;
+        exp.style.display='block';
+        quizAnswered++;
+        if(quizAnswered===quizData.length){
+            const pct=Math.round(quizScore/quizData.length*100);
+            document.getElementById('quiz-score').textContent=
+                `Hai totalizzato ${quizScore} su ${quizData.length} (${pct}%)! ${pct===100?'🏆 Perfetto!':pct>=75?'🚀 Ottimo!':pct>=50?'📚 Rileggi qualche sezione.':'🔄 Riprendi dall\'inizio.'}`;
+        }
+    };
+
+    // ============================================================
+    //  INIT
+    // ============================================================
+    document.addEventListener('DOMContentLoaded', () => {
+        drawLogisticStatic();
+        runBacteria();
+        calcMontante();
+        calcCarbon();
+        loadQuiz();
+    });
+    </script>
+    <script src="../../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Prova di Gödel - Lezione Interattiva MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- MathJax -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+        
+        .sub-hero {
+            padding: 4rem 0 2rem;
+            text-align: left;
+        }
+        
+        .sub-hero-title {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="sub-hero">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2.5rem;">
+                <a href="logica.html" class="back-button" style="margin-bottom: 0;">
+                    <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Logica
+                </a>
+            </div>
+            <h1 class="sub-hero-title">Dimostrazione Matematica dell'<span class="gradient-text" style="background: linear-gradient(135deg, #6366f1, #a855f7); -webkit-background-clip: text; background-clip: text; color: transparent;">Esistenza di Dio</span></h1>
+            <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+                È possibile usare i teoremi matematici per confermare un concetto filosofico o teologico? Scopriamo l'affascinante e complesso esercizio di logica modale sviluppato da Kurt Gödel.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <!-- Premessa Importante -->
+        <section class="lesson-section" style="border-left: 4px solid var(--text-muted);">
+            <h2 class="lesson-title">Una Premessa Necessaria</h2>
+            <p class="lesson-text">
+                Attenzione: Questo non è un testo religioso. Kurt Gödel, il più brillante logico del '900, sviluppò questa dimostrazione tra gli anni '40 e '70 non per "convertire" qualcuno, ma come un purissimo <strong>esercizio intellettuale di Logica Formale.</strong> Non l'ha mai pubblicata mentre era in vita!
+            </p>
+            <p class="lesson-text">
+                Il suo obiettivo era riprendere un antico pensiero di Anselmo d'Aosta e tradurlo in perfette equazioni matematiche per vedere se fosse <em>logicamente impeccabile</em>.
+            </p>
+        </section>
+
+        <!-- Le Proprietà Positive -->
+        <section class="lesson-section" style="background: rgba(99, 102, 241, 0.03); border-color: #6366F1;">
+            <h2 class="lesson-title" style="color: #6366F1;">Passo 1: Le "Proprietà Positive"</h2>
+            <p class="lesson-text">
+                Nella prova di Gödel, si usano concetti chiamati <strong>"Proprietà Positive"</strong>. Indichiamo con \( P(\phi) \) il fatto che una proprietà " \(\phi\) " (che si pronuncia 'fi') sia positiva.
+            </p>
+            <div style="background: rgba(255,255,255,0.02); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 1.5rem;">
+                <p style="font-size: 0.95rem; margin-bottom: 0;"><strong>Cos'è una proprietà positiva?</strong> <br>Dal punto di vista della dimostrazione, non importa se sia "l'amore", "la conoscenza" o altro. È puramente matematica. È una proprietà intrinsecamente buona che: se unita a un'altra proprietà positiva, crea ancora qualcosa di positivo. Inoltre, di ogni caratteristica contrapposta, esattamente una sola delle due è positiva.</p>
+            </div>
+            
+            <h3 style="color: var(--text-main); font-size: 1.2rem; margin-bottom: 0.8rem;">La definizione dell'Essere Supremo</h3>
+            <p class="lesson-text">
+                L'essere supremo (che indicheremo con <strong>\( G \)</strong>, da God) è definito in matematica come <strong>un'entità che possiede TUTTE le proprietà positive</strong>, e nessun'altra!
+            </p>
+            <div style="background: rgba(0,0,0,0.4); padding: 1rem; border-radius: 8px; text-align: center; font-size: 1.2rem; border-left: 3px solid #6366F1; margin-bottom: 2rem;">
+                \[ G(x) \iff \forall \phi \, [ P(\phi) \implies \phi(x) ] \]
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem; font-style: italic;">
+                    "Una entità \( x \) è Dio se e solo se per OGNI proprietà \( \phi \), se \( \phi \) è positiva, allora \( x \) possiede quella proprietà."
+                </p>
+            </div>
+        </section>
+
+        <!-- Logica Modale e i Mondi -->
+        <section class="lesson-section" style="border-left: 4px solid var(--math-color);">
+            <h2 class="lesson-title">Passo 2: I Simboli della Logica Modale</h2>
+            <p class="lesson-text">
+                Per dimostrare il concetto, Gödel si affida a una disciplina affascinante: la <strong>Logica Modale</strong>. Questa logica immagina "universi paralleli" o "mondi possibili". Utilizza due simboli pazzeschi!
+            </p>
+            
+            <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 2rem 0;">
+                <div style="background: rgba(16, 185, 129, 0.05); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(16, 185, 129, 0.2); text-align: center;">
+                    <span style="font-size: 3rem; color: #10B981; font-weight: bold;">\(\Diamond\)</span>
+                    <h4 style="color: #10B981; margin: 0.8rem 0; font-size: 1.2rem;">Possibilità</h4>
+                    <p style="font-size: 0.95rem;">
+                        Significa "È Possibile". <br><br>Vuol dire che l'evento X accade <strong>in almeno un mondo possibile</strong>. Ad esempio: <em>"È possibile che piova"</em> (esisterà un universo in cui piove adesso).
+                    </p>
+                </div>
+
+                <div style="background: rgba(245, 158, 11, 0.05); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(245, 158, 11, 0.2); text-align: center;">
+                    <span style="font-size: 3rem; color: #F59E0B; font-weight: bold;">\(\Box\)</span>
+                    <h4 style="color: #F59E0B; margin: 0.8rem 0; font-size: 1.2rem;">Necessità</h4>
+                    <p style="font-size: 0.95rem;">
+                        Significa "È Necessario". <br><br>Vuol dire che l'evento X accade <strong>in TUTTI i mondi possibili</strong>. Nessuna eccezione. Una verità inossidabile. Ad esempio: <em>"È necessario che 2+2=4"</em>.
+                    </p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Il Salto Mentale: La Dimostrazione -->
+        <section class="lesson-section" style="border-top: 2px dashed rgba(255,255,255,0.1); padding-top: 3rem;">
+            <h2 class="lesson-title">Passo 3: Il Salto Conclusivo</h2>
+            <p class="lesson-text">Ecco dove accade la magia nei calcoli (nella Mente di Gödel):</p>
+            
+            <div style="background: linear-gradient(90deg, rgba(99, 102, 241, 0.1), rgba(168, 85, 247, 0.1)); padding: 2rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); margin: 1.5rem 0;">
+                <ol style="padding-left: 1.5rem; line-height: 1.6;">
+                    <li style="margin-bottom: 1rem;">
+                        <strong>Il Teorema accetta che Dio POSSA esistere in almeno un mondo (\(\Diamond G\)).</strong> Poiché riunire tutte le cose buone in uno stesso essere non crea alcuna contraddizione logica interna, l'esistenza di \( G \) è "possibile".
+                    </li>
+                    <li style="margin-bottom: 1rem;">
+                        <strong>L'Assioma chiave:</strong> Secondo la logica formale introdotta, <em>l'esistenza necessaria</em> è considerata in sé una proprietà fondamentale e positiva. 
+                    </li>
+                    <li>
+                        <strong>Il Cortocircuito della Perfezione:</strong> Se \( G \) esiste nel nostro mondo potenziale, deve avere TUTTE le proprietà positive. Poiché esistere in TUTTI i mondi possibili (Esistenza Necessaria) è una proprietà positiva... allora \( G \) deve possedere l'Esistenza Necessaria!
+                    </li>
+                </ol>
+            </div>
+            
+            <p class="lesson-text" style="font-weight: bold; font-size: 1.1rem; color: var(--text-main); text-align: center; margin-top: 2rem;">
+                La conclusione della formula logica è strabiliante da vedere, e si riduce a questo:
+            </p>
+
+            <div style="background: rgba(0,0,0,0.6); padding: 2.5rem; border-radius: 12px; margin: 1.5rem 0; text-align: center; font-size: 1.6rem; box-shadow: 0 10px 30px rgba(0,0,0,0.2); border: 1px solid #A855F7;">
+                \[ \Diamond \exists x \, G(x) \implies \Box \exists x \, G(x) \]
+            </div>
+            
+            <p class="lesson-text" style="font-size: 1.15rem; color: #A855F7; text-align: center; font-style: italic;">
+                "Se è logicamente POSSIBILE che l'essere perfetto esista, <br>allora esso NECESSARIAMENTE esiste."
+            </p>
+        </section>
+
+        <!-- Conclusione -->
+        <section class="lesson-section" style="background: rgba(16, 185, 129, 0.05); border-left: 4px solid #10B981;">
+            <h2 class="lesson-title" style="color: #10B981;">Tutto qui? Si è dimostrato Dio?</h2>
+            <p class="lesson-text">
+                Dal punto di vista della matematica e della sintassi logica: <strong>Sì, il ragionamento interno è formalmente corretto.</strong> Nel 2013, un gruppo di informatici ha persino usato dei programmi (Theorem Provers) e l'IA per controllare le equazioni di Gödel e ha certificato al 100% che la matematica non ha difetti e la deduzione è perfetta.
+            </p>
+            <p class="lesson-text">
+                Tuttavia, dal lato logico-filosofico c'è il trucco: un teorema è valido fintanto che accetti <strong>gli Assiomi di partenza</strong> (ad esempio definire "l'esistenza necessaria" come una proprietà positiva). Se non accetti quelle piccole regole d'inizio del gioco, la formula crolla! <br><br>
+                Restano comunque le equazioni più discusse e curiose della storia della logica umana.
+            </p>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Matematica.</p>
+    </footer>
+
+    <!-- JS -->
+    <script src="../../js/main.js"></script>
+</body>
+</html>

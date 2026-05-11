@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paradossi e Intuizione - MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+            width: fit-content;
+        }
+        
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+        
+        .hero-section {
+            padding: 4rem 0 2rem;
+            text-align: center;
+        }
+
+        .paradox-gradient {
+            background: linear-gradient(135deg, #F472B6, #8B5CF6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        /* --- Monty Hall Game Styles --- */
+        .monty-container {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 3rem 0;
+            perspective: 1000px;
+        }
+
+        .door-wrapper {
+            width: 120px;
+            height: 180px;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .door-wrapper:hover {
+            transform: scale(1.05);
+        }
+
+        .door {
+            width: 100%;
+            height: 100%;
+            background: #4B5563;
+            border: 4px solid #1F2937;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: #FBBF24;
+            font-weight: 800;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 2;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: left;
+            backface-visibility: hidden;
+        }
+
+        .door.open {
+            transform: rotateY(-110deg);
+        }
+
+        .content-behind {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            background: #111827;
+            border-radius: 8px;
+            z-index: 1;
+        }
+
+        .door-wrapper.selected .door {
+            border-color: #8B5CF6;
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
+        }
+
+        .stats-panel {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-val {
+            font-size: 2rem;
+            font-weight: 800;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+        }
+
+        .game-controls {
+            text-align: center;
+            margin-top: 2rem;
+            min-height: 120px;
+        }
+
+        .game-msg {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .btn-game {
+            background: var(--math-color);
+            border: none;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            margin: 0 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .btn-game:hover {
+            transform: scale(1.05);
+            background: #2563EB;
+        }
+
+        .btn-game:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* --- Analysis Table --- */
+        .analysis-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: rgba(0,0,0,0.2);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .analysis-table th, .analysis-table td {
+            padding: 1rem;
+            border: 1px solid rgba(255,255,255,0.05);
+            text-align: center;
+        }
+
+        .analysis-table th {
+            background: rgba(255,255,255,0.05);
+            color: #F472B6;
+        }
+
+        .win-tag {
+            background: rgba(16, 185, 129, 0.15);
+            color: #10B981;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .loss-tag {
+            background: rgba(239, 68, 68, 0.15);
+            color: #EF4444;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <header class="hero-section">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <a href="../probabilita-statistica.html" class="back-button">
+                    <span class="back-icon">&larr;</span> Torna a Probabilità e Statistica
+                </a>
+            </div>
+            <h1 class="hero-title"><span class="paradox-gradient">Paradossi e Intuizione</span></h1>
+            <p class="hero-subtitle">Perché il nostro cervello spesso sbaglia a calcolare le probabilità? Esplora i "bug" dell'intuizione umana.</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- 1. COS'È UN PARADOSSO -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #F472B6;">1. Cos'è un Paradosso Statistisco?</h2>
+            <p class="lesson-text">
+                Nella vita quotidiana, un paradosso è un'affermazione assurda o contraddittoria. Nella probabilità, però, un paradosso è spesso un risultato che è <strong>matematicamente vero</strong>, ma che appare <strong>assolutamente falso</strong> al nostro intuito.
+            </p>
+
+        </section>
+
+        <!-- 2. IL PROBLEMA DI MONTY HALL -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #8B5CF6;">2. Il Problema di Monty Hall</h2>
+            <p class="lesson-text">
+                Immagina di partecipare a un popolarissimo show televisivo degli anni '60. Davanti a te ci sono <strong>tre porte</strong>:
+            </p>
+            <ul class="lesson-text" style="margin-left: 1.5rem; list-style-type: disc;">
+                <li>Dietro una porta c'è una fiammante <strong>auto sportiva</strong> 🏎️.</li>
+                <li>Dietro le altre due porte ci sono delle <strong>capre</strong> 🐐.</li>
+            </ul>
+            <p class="lesson-text">
+                Scegli una porta (es. la 1). Il conduttore, Monty Hall, che sa cosa c'è dietro le porte, ne apre una di quelle che non hai scelto, rivelando una capra (es. la 3). 
+                <br><br>
+                A questo punto Monty ti fa la domanda fatidica: <strong>"Vuoi cambiare la tua scelta e passare alla porta 2?"</strong>.
+            </p>
+
+            <!-- INTERACTIVE SIMULATION -->
+            <div class="card" style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); padding: 2.5rem; margin: 3rem 0;">
+                <h3 style="text-align: center; margin-bottom: 2rem; color: #FBBF24;">🕹️ Simulatore Monty Hall</h3>
+                
+                <div class="monty-container" id="doors-container">
+                    <div class="door-wrapper" data-door="0">
+                        <div class="content-behind">🐐</div>
+                        <div class="door">1</div>
+                    </div>
+                    <div class="door-wrapper" data-door="1">
+                        <div class="content-behind">🐐</div>
+                        <div class="door">2</div>
+                    </div>
+                    <div class="door-wrapper" data-door="2">
+                        <div class="content-behind">🐐</div>
+                        <div class="door">3</div>
+                    </div>
+                </div>
+
+                <div class="game-controls">
+                    <p id="game-msg" class="game-msg">Scegli una porta per iniziare!</p>
+                    <div id="action-btns" style="display: none;">
+                        <button class="btn-game" id="btn-stay">Rimani (Stay)</button>
+                        <button class="btn-game" id="btn-switch">Cambia (Switch)</button>
+                    </div>
+                    <button class="btn-game" id="btn-reset" style="display: none; background: #4B5563;">Nuova Partita</button>
+                </div>
+
+                <div class="stats-panel">
+                    <div class="stat-card">
+                        <span class="stat-val" id="stats-stay" style="color: #EF4444;">0%</span>
+                        <span class="stat-label">Vittorie Rimanendo</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-val" id="stats-switch" style="color: #10B981;">0%</span>
+                        <span class="stat-label">Vittorie Cambiando</span>
+                    </div>
+                </div>
+                <p style="text-align: center; font-size: 0.8rem; color: var(--text-muted); margin-top: 1rem;">
+                    Prova a giocare almeno 10 volte per vedere come si stabilizzano le probabilità!
+                </p>
+            </div>
+        </section>
+
+        <!-- 3. LA SPIEGAZIONE -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">3. Perché cambiare raddoppia le chance?</h2>
+            <p class="lesson-text">
+                L'intuizione ci dice che, rimaste due porte, le probabilità siano 50/50. <strong>Ma è un errore.</strong>
+                <br><br>
+                Quando scegli per la prima volta, hai 1 probabilità su 3 di prendere l'auto. Le altre 2 porte (che insieme hanno il 2/3 di probabilità) contengono sicuramente almeno una capra. 
+                Quando Monty apre una porta con la capra, non sta creando una nuova situazione 50/50, ma sta <strong>concentrando tutta la probabilità del 2/3</strong> sull'unica porta rimasta chiusa che non avevi scelto.
+            </p>
+
+            <h3 style="margin: 2rem 0 1rem; color: #8B5CF6;">Analisi Completa dei Casi</h3>
+            <table class="analysis-table">
+                <thead>
+                    <tr>
+                        <th>Tua Scelta</th>
+                        <th>Auto dietro</th>
+                        <th>Se RIMANI (Stay)</th>
+                        <th>Se CAMBI (Switch)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Porta 1</td>
+                        <td>Porta 1</td>
+                        <td><span class="win-tag">VINCI AUTO</span></td>
+                        <td><span class="loss-tag">PERDI</span></td>
+                    </tr>
+                    <tr>
+                        <td>Porta 1</td>
+                        <td>Porta 2</td>
+                        <td><span class="loss-tag">PERDI</span></td>
+                        <td><span class="win-tag">VINCI AUTO</span></td>
+                    </tr>
+                    <tr>
+                        <td>Porta 1</td>
+                        <td>Porta 3</td>
+                        <td><span class="loss-tag">PERDI</span></td>
+                        <td><span class="win-tag">VINCI AUTO</span></td>
+                    </tr>
+                </tbody>
+            </table>
+            <p class="lesson-text" style="font-weight: 600; text-align: center; color: #10B981;">
+                Risultato: Cambiando vinci in 2 casi su 3 (66.6%), restando vinci solo in 1 su 3 (33.3%).
+            </p>
+        </section>
+
+        <!-- 4. IL PARADOSSO DEL COMPLEANNO -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #3B82F6;">4. Il Paradosso del Compleanno</h2>
+            <p class="lesson-text">
+                Quante persone pensi che servano in una stanza perché ci sia il <strong>50% di probabilità</strong> che almeno due di loro compiano gli anni lo stesso giorno? 
+                <br><br>
+                Poiché l'anno ha 365 giorni, l'intuizione suggerisce un numero molto alto (forse 183?). In realtà, la risposta è sorprendentemente bassa: <strong>solo 23 persone</strong>.
+            </p>
+
+            <!-- INTERACTIVE BIRTHDAY BOX -->
+            <div class="card" style="background: rgba(59, 130, 246, 0.05); border: 1px solid rgba(59, 130, 246, 0.2); padding: 2rem; margin: 3rem 0;">
+                <h3 style="text-align: center; margin-bottom: 2rem; color: #3B82F6;">📉 Simulatore di Gruppo</h3>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center;">
+                    <!-- Controllo -->
+                    <div>
+                        <div style="margin-bottom: 1.5rem;">
+                            <label style="display: block; margin-bottom: 0.5rem; color: var(--text-muted); font-size: 0.9rem;">Numero di persone nel gruppo:</label>
+                            <input type="range" id="birthday-slider" min="1" max="100" value="23" style="width: 100%; accent-color: #3B82F6;">
+                            <div style="display: flex; justify-content: space-between; margin-top: 0.5rem; font-weight: 800; font-size: 1.2rem;">
+                                <span id="people-count">23 persone</span>
+                                <span id="prob-display" style="color: #3B82F6;">50.7%</span>
+                            </div>
+                        </div>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6;">
+                            Quando il gruppo raggiunge le <strong>70 persone</strong>, la probabilità che due facciano il compleanno lo stesso giorno balza al <strong>99.9%</strong>. Praticamente una certezza!
+                        </p>
+                    </div>
+
+                    <!-- Grafico Canvas -->
+                    <div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 1rem; border: 1px solid rgba(255,255,255,0.05);">
+                        <canvas id="birthday-chart" width="400" height="250" style="width: 100%; height: auto;"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="margin-bottom: 1rem;">Perché succede?</h3>
+            <p class="lesson-text">
+                L'errore sta nel pensare a quante persone hanno lo stesso compleanno <strong>di una specifica persona</strong> (come te). In quel caso le probabilità sarebbero basse. 
+                <br><br>
+                Ma il paradosso riguarda <strong>qualsiasi coppia</strong> possibile. In un gruppo di 23 persone, ci sono ben <strong>253 coppie diverse</strong>. Ognuna di queste coppie è una piccola "scommessa" sulla possibilità di condividere il compleanno.
+            </p>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Probabilità e Statistica.</p>
+    </footer>
+
+    <!-- JS -->
+    <script src="../../js/main.js"></script>
+    <script src="paradossi-intuizione.js"></script>
+</body>
+</html>

@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Polvere di Cantor — Logica | MFI</title>
+    <meta name="description" content="Cos'è l'insieme di Cantor? Un oggetto matematico paradossale: ha lunghezza zero ma contiene infiniti punti. Costruiscilo passo dopo passo.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+        onload="renderMathInElement(document.body);"></script>
+
+    <style>
+        :root {
+            --cantor-color: #a78bfa;
+            --cantor-glow: rgba(167,139,250,0.35);
+            --cantor-dark: rgba(167,139,250,0.08);
+            --removed-color: rgba(239,68,68,0.55);
+        }
+
+        .back-button {
+            display: inline-flex; align-items: center;
+            color: var(--text-muted); text-decoration: none;
+            margin-bottom: 2rem; font-weight: 600;
+            transition: color 0.3s, transform 0.3s;
+        }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+
+        .sub-hero { padding: 4rem 0 2.5rem; }
+        .sub-hero-title { font-size: clamp(2.2rem,4vw,3.2rem); font-weight: 800; margin-bottom: 1rem; }
+
+        .cantor-gradient {
+            background: linear-gradient(135deg, #a78bfa, #7c3aed);
+            -webkit-background-clip: text; background-clip: text; color: transparent;
+        }
+
+        /* ── SECTIONS ── */
+        .lesson-section {
+            margin-bottom: 3rem; padding: 2.5rem;
+            border-radius: 1rem; border: 1px solid rgba(255,255,255,0.06);
+            background: rgba(255,255,255,0.02);
+            scroll-margin-top: 4rem;
+        }
+        .lesson-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 1.2rem; }
+        .lesson-text { color: var(--text-muted); line-height: 1.8; margin-bottom: 1.1rem; font-size: 1.02rem; }
+
+        /* ── INFO BOX ── */
+        .info-box {
+            background: var(--cantor-dark);
+            border-left: 4px solid var(--cantor-color);
+            border-radius: 0 0.75rem 0.75rem 0;
+            padding: 1.25rem 1.5rem; margin: 1.5rem 0;
+        }
+        .info-box.red { border-left-color:#ef4444; background:rgba(239,68,68,0.07); }
+        .info-box.green { border-left-color:#10b981; background:rgba(16,185,129,0.07); }
+        .info-box.amber { border-left-color:#f59e0b; background:rgba(245,158,11,0.07); }
+
+        /* ── CALLOUT ── */
+        .callout {
+            display: flex; gap: 1rem; align-items: flex-start;
+            background: var(--cantor-dark);
+            border: 1px solid rgba(167,139,250,0.22);
+            border-radius: 0.75rem; padding: 1.2rem 1.5rem; margin: 1.5rem 0;
+        }
+        .callout-icon { font-size: 1.5rem; flex-shrink: 0; }
+        .callout p { margin: 0; color: var(--text-muted); font-size: 0.97rem; line-height: 1.7; }
+        .callout p strong { color: #c4b5fd; }
+        .callout.red { background:rgba(239,68,68,0.07); border-color:rgba(239,68,68,0.22); }
+        .callout.red p strong { color:#fca5a5; }
+        .callout.green { background:rgba(16,185,129,0.07); border-color:rgba(16,185,129,0.22); }
+        .callout.green p strong { color:#6ee7b7; }
+        .callout.amber { background:rgba(245,158,11,0.07); border-color:rgba(245,158,11,0.22); }
+        .callout.amber p strong { color:#fcd34d; }
+        .callout.blue { background:rgba(59,130,246,0.07); border-color:rgba(59,130,246,0.22); }
+        .callout.blue p strong { color:#93c5fd; }
+
+        /* ── PARADOX GRID ── */
+        .paradox-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+            gap: 1rem; margin: 1.5rem 0;
+        }
+        .paradox-card {
+            background: rgba(0,0,0,0.25);
+            border: 1px solid rgba(167,139,250,0.2);
+            border-radius: 0.75rem; padding: 1.25rem; text-align: center;
+        }
+        .paradox-card .p-icon { font-size: 2.2rem; margin-bottom: 0.5rem; }
+        .paradox-card h4 { color: #c4b5fd; font-size: 0.95rem; margin-bottom: 0.4rem; }
+        .paradox-card p { color: var(--text-muted); font-size: 0.82rem; margin: 0; line-height: 1.5; }
+
+        /* ── COSTRUZIONE INTERATTIVA ── */
+        .sim-container {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 1rem; padding: 2rem; margin: 1.5rem 0;
+        }
+        .sim-container h3 { color: var(--cantor-color); margin-bottom: 1.2rem; font-size: 1.1rem; }
+
+        .step-controls {
+            display: flex; gap: 0.75rem; align-items: center;
+            flex-wrap: wrap; margin-bottom: 1.5rem;
+        }
+        .btn-step {
+            background: rgba(167,139,250,0.15);
+            border: 1px solid var(--cantor-color);
+            color: #c4b5fd; padding: 0.55rem 1.2rem;
+            border-radius: 6px; cursor: pointer;
+            font-family: inherit; font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+        .btn-step:hover { background: rgba(167,139,250,0.3); transform: translateY(-1px); }
+        .btn-step:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
+        .btn-reset {
+            background: rgba(239,68,68,0.1);
+            border: 1px solid rgba(239,68,68,0.4);
+            color: #fca5a5; padding: 0.55rem 1.2rem;
+            border-radius: 6px; cursor: pointer;
+            font-family: inherit; font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+        .btn-reset:hover { background: rgba(239,68,68,0.2); }
+
+        .step-label {
+            font-size: 0.9rem; color: var(--text-muted);
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 0.4rem 0.9rem; border-radius: 6px;
+        }
+        .step-label span { color: #c4b5fd; font-weight: 700; }
+
+        /* Canvas area */
+        .canvas-stack {
+            display: flex; flex-direction: column; gap: 4px;
+            margin: 1rem 0;
+        }
+        .canvas-row {
+            display: flex; align-items: center; gap: 0.75rem;
+        }
+        .canvas-row-label {
+            width: 48px; text-align: right; flex-shrink: 0;
+            font-family: 'Fira Code', monospace; font-size: 0.78rem;
+            color: rgba(167,139,250,0.6);
+        }
+        canvas.cantor-strip {
+            flex: 1; height: 28px; border-radius: 4px;
+            display: block;
+        }
+
+        /* Stats bar */
+        .stats-row {
+            display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1.25rem;
+        }
+        .stat-pill {
+            flex: 1; min-width: 130px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 0.6rem; padding: 0.7rem 1rem; text-align: center;
+        }
+        .stat-pill .s-label { font-size: 0.73rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-muted); }
+        .stat-pill .s-val { font-size: 1.05rem; font-weight: 700; color: #c4b5fd; font-family: 'Fira Code', monospace; margin-top: 0.25rem; }
+
+        /* ── STEP-BY-STEP EXPLANATION ── */
+        .step-explain {
+            background: rgba(0,0,0,0.2);
+            border: 1px solid rgba(167,139,250,0.15);
+            border-radius: 0.75rem; padding: 1.1rem 1.4rem; margin-top: 1.25rem;
+            font-size: 0.95rem; color: var(--text-muted); line-height: 1.7;
+            min-height: 70px;
+        }
+        .step-explain strong { color: #c4b5fd; }
+
+        /* ── TOC ── */
+        .toc {
+            background: var(--cantor-dark);
+            border: 1px solid rgba(167,139,250,0.2);
+            border-radius: 1rem; padding: 1.5rem 2rem; margin: 1.5rem 0 2.5rem;
+        }
+        .toc h3 { color: var(--cantor-color); margin-bottom: 0.75rem; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.07em; }
+        .toc ol { padding-left: 1.2rem; }
+        .toc li { margin-bottom: 0.35rem; }
+        .toc a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+        .toc a:hover { color: var(--cantor-color); }
+
+        /* ── QUIZ ── */
+        .quiz-question { margin-bottom: 2rem; }
+        .quiz-question h3 { color: var(--text-main); font-size: 1rem; font-weight: 600; margin-bottom: 0.8rem; }
+        .quiz-options { display: flex; flex-direction: column; gap: 0.5rem; }
+        .quiz-btn {
+            background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+            color: var(--text-main); padding: 0.75rem 1rem; border-radius: 0.5rem;
+            cursor: pointer; text-align: left; font-size: 0.95rem;
+            transition: all 0.2s; font-family: inherit;
+        }
+        .quiz-btn:hover:not(:disabled) { background: var(--cantor-dark); border-color: var(--cantor-color); }
+        .quiz-btn.correct { background:rgba(16,185,129,0.2)!important; border-color:#10b981!important; color:#6ee7b7; }
+        .quiz-btn.wrong { background:rgba(239,68,68,0.2)!important; border-color:#ef4444!important; color:#fca5a5; }
+        .quiz-btn:disabled { cursor:not-allowed; }
+        .quiz-score-msg { text-align:center; font-weight:700; color:var(--cantor-color); font-size:1.1rem; margin-top:1rem; min-height:1.5rem; }
+        .q-exp { display:none; margin-top:0.6rem; font-size:0.87rem; color:#6ee7b7; background:rgba(16,185,129,0.07); padding:0.7rem 1rem; border-radius:8px; }
+
+        @media (max-width:768px) {
+            .lesson-section { padding: 1.5rem; }
+            .paradox-grid { grid-template-columns: 1fr 1fr; }
+            .step-controls { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align:center; margin-bottom:2rem;">
+            <a href="logica.html" class="back-button">
+                <span style="margin-right:0.5rem; font-size:1.2rem;">←</span> Logica
+            </a>
+        </div>
+        <h1 class="sub-hero-title">🌫️ La <span class="cantor-gradient">Polvere di Cantor</span></h1>
+        <p style="font-size:1.1rem; color:var(--text-muted); max-width:750px; font-weight:300; line-height:1.7;">
+            Un insieme che ha lunghezza zero ma contiene infiniti punti. Più ne togli, più rimane. Uno degli oggetti più strani e affascinanti della matematica.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <nav class="toc">
+        <h3>📋 Indice della lezione</h3>
+        <ol>
+            <li><a href="#sec-chi">Chi era Georg Cantor?</a></li>
+            <li><a href="#sec-cos-e">Cos'è l'insieme di Cantor?</a></li>
+            <li><a href="#sec-costruzione">Costruzione passo dopo passo</a></li>
+            <li><a href="#sec-paradosso">I paradossi: perché è così strano?</a></li>
+            <li><a href="#sec-frattale">Un frattale ante litteram</a></li>
+            <li><a href="#sec-quiz">Verifica finale</a></li>
+        </ol>
+    </nav>
+
+    <!-- ============================================================ -->
+    <!-- 1. CHI ERA CANTOR -->
+    <!-- ============================================================ -->
+    <section class="lesson-section" id="sec-chi">
+        <h2 class="lesson-title">1. 👤 Chi era Georg Cantor?</h2>
+        <p class="lesson-text">
+            <strong>Georg Cantor</strong> (1845–1918) è stato un matematico tedesco che ha completamente rivoluzionato il concetto di <em>infinito</em>. Prima di lui, l'infinito era considerato una cosa vaga e ingestibile — qualcosa di cui i matematici preferivano non parlare troppo. Cantor, al contrario, ha deciso di studiarla con rigore.
+        </p>
+        <p class="lesson-text">
+            Le sue idee erano così radicali e controintuitive che molti colleghi dell'epoca le rifiutarono con ostilità. Il grande matematico Henri Poincaré definì la teoria degli insiemi di Cantor «una malattia da cui la matematica si sarebbe dovuta guarire». Il matematico Leopold Kronecker lo attaccò personalmente, chiamandolo «corruttore della gioventù».
+        </p>
+        <div class="callout amber">
+            <span class="callout-icon">🧠</span>
+            <p>Cantor dimostrò cose che sembrano assurde: esistono <strong>infiniti di dimensioni diverse</strong>. L'infinito dei numeri interi è "più piccolo" dell'infinito dei numeri reali. E l'insieme che porta il suo nome — la "polvere di Cantor" — è forse il suo esempio più bizzarro e affascinante.</p>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 2. COS'È L'INSIEME DI CANTOR -->
+    <!-- ============================================================ -->
+    <section class="lesson-section" id="sec-cos-e">
+        <h2 class="lesson-title">2. 🔍 Cos'è l'insieme di Cantor?</h2>
+
+        <p class="lesson-text">
+            Immagina un segmento di lunghezza 1 — il segmento <strong>[0, 1]</strong>, cioè tutti i numeri reali tra 0 e 1. Adesso segui questa procedura:
+        </p>
+
+        <div class="info-box">
+            <strong style="color:#c4b5fd;">La regola di costruzione:</strong>
+            <ol style="color:var(--text-muted); margin-top:0.75rem; padding-left:1.2rem; line-height:2;">
+                <li>Parti dal segmento [0, 1].</li>
+                <li>Rimuovi il <strong>terzo centrale</strong> (cioè la parte da 1/3 a 2/3). Rimangono due pezzi.</li>
+                <li>Rimuovi il terzo centrale da <strong>ciascuno</strong> dei pezzi rimasti. Rimangono quattro pezzi.</li>
+                <li>Ripeti all'infinito.</li>
+            </ol>
+        </div>
+
+        <p class="lesson-text">
+            Quello che rimane dopo infiniti passi — i punti che non vengono <em>mai</em> rimossi — è l'<strong>insieme di Cantor</strong>, detto anche <em>polvere di Cantor</em> perché sembra ridursi in polvere.
+        </p>
+
+        <div class="callout">
+            <span class="callout-icon">💡</span>
+            <p><strong>Un esempio concreto:</strong> il punto 0 rimane sempre (non viene mai rimosso). Il punto 1 rimane. Il punto 1/3 rimane (è l'estremo sinistro della parte rimossa, non la parte in sé). In realtà, ogni numero rappresentabile in base 3 usando <em>solo</em> le cifre 0 e 2 (senza la cifra 1) appartiene all'insieme di Cantor. Per esempio: 0, 1/3, 2/3, 1, 1/9, 2/9, 7/9, 8/9…</p>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 3. COSTRUZIONE INTERATTIVA -->
+    <!-- ============================================================ -->
+    <section class="lesson-section" id="sec-costruzione">
+        <h2 class="lesson-title">3. 🔨 Costruzione Passo dopo Passo</h2>
+        <p class="lesson-text">
+            Guarda come si costruisce l'insieme di Cantor, un'iterazione alla volta. Ogni riga mostra lo stato dopo un ulteriore "taglio". Le parti <strong style="color:#c4b5fd;">viola</strong> rimangono; le parti scure sono state rimosse.
+        </p>
+
+        <div class="sim-container">
+            <h3>🎛️ Costruttore Interattivo dell'Insieme di Cantor</h3>
+
+            <div class="step-controls">
+                <button class="btn-step" id="btn-prev" onclick="prevStep()" disabled>← Passo precedente</button>
+                <button class="btn-step" id="btn-next" onclick="nextStep()">Passo successivo →</button>
+                <button class="btn-reset" onclick="resetSteps()">↺ Ricomincia</button>
+                <div class="step-label">Iterazione: <span id="step-num">0</span> / 7</div>
+            </div>
+
+            <div class="canvas-stack" id="canvas-stack">
+                <!-- Le righe canvas vengono generate in JS -->
+            </div>
+
+            <div class="stats-row">
+                <div class="stat-pill">
+                    <div class="s-label">Iterazione</div>
+                    <div class="s-val" id="stat-step">0</div>
+                </div>
+                <div class="stat-pill">
+                    <div class="s-label">Segmenti rimasti</div>
+                    <div class="s-val" id="stat-segs">1</div>
+                </div>
+                <div class="stat-pill">
+                    <div class="s-label">Lunghezza totale rimasta</div>
+                    <div class="s-val" id="stat-len">(2/3)⁰ = 1</div>
+                </div>
+                <div class="stat-pill">
+                    <div class="s-label">Lunghezza rimossa finora</div>
+                    <div class="s-val" id="stat-rem">0</div>
+                </div>
+            </div>
+
+            <div class="step-explain" id="step-explain">
+                <strong>Iterazione 0 — Il punto di partenza.</strong> Abbiamo il segmento completo [0, 1], con lunghezza 1. Da qui inizia tutto.
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 4. I PARADOSSI -->
+    <!-- ============================================================ -->
+    <section class="lesson-section" id="sec-paradosso">
+        <h2 class="lesson-title">4. 🤯 I Paradossi: perché è così strano?</h2>
+
+        <p class="lesson-text">
+            L'insieme di Cantor è uno degli oggetti matematici più controintuitivi in assoluto. Contiene due affermazioni che sembrano impossibili da conciliare — eppure entrambe sono rigorosamente vere.
+        </p>
+
+        <div class="paradox-grid">
+            <div class="paradox-card">
+                <div class="p-icon">📏</div>
+                <h4>Lunghezza zero</h4>
+                <p>La somma delle lunghezze di tutto quello che rimane è <em>zero</em>. Matematicamente, la "misura" dell'insieme di Cantor è 0.</p>
+            </div>
+            <div class="paradox-card">
+                <div class="p-icon">♾️</div>
+                <h4>Infiniti punti</h4>
+                <p>Nonostante la lunghezza zero, l'insieme contiene <em>infiniti</em> punti — tanti quanti ce ne sono nell'intero segmento [0,1].</p>
+            </div>
+            <div class="paradox-card">
+                <div class="p-icon">🧩</div>
+                <h4>Nessun intervallo</h4>
+                <p>Non esiste nessun "pezzetto" di segmento interamente contenuto nell'insieme. È davvero fatta di soli punti isolati.</p>
+            </div>
+            <div class="paradox-card">
+                <div class="p-icon">🔬</div>
+                <h4>Autoassomigliante</h4>
+                <p>Se ingrandisci qualsiasi parte, vedi di nuovo la stessa struttura. È un <em>frattale</em>, decenni prima che i frattali fossero inventati.</p>
+            </div>
+        </div>
+
+        <h3 style="color:#c4b5fd; margin-top:2rem;">Perché la lunghezza è zero?</h3>
+        <p class="lesson-text">
+            Ad ogni passo rimuoviamo un terzo di quello che rimane. La lunghezza totale rimasta dopo \(n\) passi è:
+        </p>
+        <div class="info-box">
+            \[ L_n = \left(\frac{2}{3}\right)^n \]
+            <p style="margin:0.75rem 0 0; color:var(--text-muted); font-size:0.95rem;">
+                Man mano che \(n \to \infty\), questa espressione tende a zero: \(\left(\frac{2}{3}\right)^n \to 0\).
+                Dopo infiniti passi, la lunghezza rimasta è <strong>esattamente zero</strong>.
+            </p>
+        </div>
+        <p class="lesson-text">
+            In termini più concreti: al passo 1 rimuoviamo \(\frac{1}{3}\), al passo 2 altri \(\frac{2}{9}\), al passo 3 altri \(\frac{4}{27}\), e così via. La somma totale di tutto ciò che rimuoviamo è:
+        </p>
+        <div class="info-box amber">
+            \[ \frac{1}{3} + \frac{2}{9} + \frac{4}{27} + \frac{8}{81} + \cdots = \frac{1/3}{1 - 2/3} = 1 \]
+            <p style="margin:0.75rem 0 0; color:var(--text-muted); font-size:0.95rem;">
+                Abbiamo rimosso una lunghezza totale di <strong>1</strong> — cioè tutto il segmento originale. Eppure qualcosa rimane!
+            </p>
+        </div>
+
+        <h3 style="color:#c4b5fd; margin-top:2rem;">Perché rimangono infiniti punti?</h3>
+        <p class="lesson-text">
+            Ogni volta che rimuoviamo un intervallo aperto (ad esempio \(\left(\frac{1}{3}, \frac{2}{3}\right)\)), lasciamo gli <em>estremi</em>. Ma gli estremi di tutti gli infiniti intervalli rimossi non sono mai finiti — ce ne sono letteralmente infiniti. Anzi, Cantor dimostrò che l'insieme di Cantor è <strong>non numerabile</strong>: ha tanti elementi quanti i numeri reali in [0,1], ovvero una cardinalità \(\mathfrak{c}\), la stessa del continuo.
+        </p>
+        <div class="callout red">
+            <span class="callout-icon">🤔</span>
+            <p><strong>Il paradosso in una frase:</strong> abbiamo rimosso una "quantità" pari a 1 da un segmento di lunghezza 1 — eppure rimane un insieme di punti <em>grande quanto l'intero segmento di partenza</em>, in termini di cardinalità. La lunghezza (misura) e il numero di punti (cardinalità) sono due concetti completamente diversi.</p>
+        </div>
+
+        <h3 style="color:#c4b5fd; margin-top:2rem;">Totalmente disconnesso</h3>
+        <p class="lesson-text">
+            L'insieme di Cantor non contiene nessun intervallo reale, per piccolo che sia. Tra due qualsiasi punti dell'insieme esiste sempre un "buco" — una zona che è stata rimossa. In matematica si dice che l'insieme è <strong>totalmente disconnesso</strong>: è fatto solo di punti "isolati" in un certo senso, ma in numero così elevato da essere comunque grande quanto il continuo. È una polvere infinita — da qui il nome.
+        </p>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 5. FRATTALE -->
+    <!-- ============================================================ -->
+    <section class="lesson-section" id="sec-frattale">
+        <h2 class="lesson-title">5. 🔁 Un Frattale Ante Litteram</h2>
+
+        <p class="lesson-text">
+            Il termine "frattale" fu inventato da Benoît Mandelbrot nel 1975. Ma Cantor costruì il suo insieme nel 1883 — quasi cento anni prima. Nonostante ciò, l'insieme di Cantor è un frattale perfetto: è <strong>autoassomigliante</strong>.
+        </p>
+
+        <div class="callout green">
+            <span class="callout-icon">🔍</span>
+            <p><strong>Autoassomiglianza:</strong> se prendi la metà sinistra dell'insieme di Cantor (i punti tra 0 e 1/3) e la ingrandisci di un fattore 3, ottieni esattamente l'intero insieme di Cantor. Lo stesso vale per la metà destra. L'insieme è composto da due copie di sé stesso ridotte a un terzo — e ognuna di quelle copie è a sua volta composta da due copie… all'infinito.</p>
+        </div>
+
+        <h3 style="color:#c4b5fd; margin-top:2rem;">La dimensione frattale</h3>
+        <p class="lesson-text">
+            Un segmento ha dimensione 1. Un quadrato ha dimensione 2. Ma l'insieme di Cantor si trova in un limbo: è "più grande" di un singolo punto (dimensione 0) ma "più piccolo" di un segmento (dimensione 1). La sua <strong>dimensione di Hausdorff</strong> — la dimensione frattale — è:
+        </p>
+        <div class="info-box green">
+            \[ d = \frac{\log 2}{\log 3} \approx 0.6309 \]
+            <p style="margin:0.75rem 0 0; color:var(--text-muted); font-size:0.95rem;">
+                Un numero tra 0 e 1. L'insieme di Cantor esiste in una dimensione "frazionaria" — non è un punto, non è una linea, ma qualcosa nel mezzo.
+            </p>
+        </div>
+
+        <p class="lesson-text">
+            Questo concetto di dimensione non intera fu rivoluzionario. Oggi è alla base di applicazioni reali: le antenne dei telefoni cellulari usano geometrie frattali per captare segnali su molte frequenze; la struttura dei polmoni e dei vasi sanguigni segue pattern frattali per massimizzare la superficie in uno spazio minimo.
+        </p>
+
+        <div class="callout blue">
+            <span class="callout-icon">🌿</span>
+            <p><strong>La natura è piena di frattali:</strong> le coste frastagliate, i fiocchi di neve, i broccoli romanesco, i fulmine, la rete di fiumi visti dall'alto. Cantor, costruendo il suo strano insieme in modo puramente astratto, stava — senza saperlo — descrivendo una delle strutture più comuni in natura.</p>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 6. QUIZ -->
+    <!-- ============================================================ -->
+    <section class="lesson-section" id="sec-quiz">
+        <h2 class="lesson-title" style="color:var(--cantor-color);">6. 🧠 Verifica Finale</h2>
+        <p class="lesson-text">Metti alla prova la tua comprensione della polvere di Cantor!</p>
+        <div style="background:rgba(0,0,0,0.15); border-radius:1rem; padding:1.5rem;">
+            <div id="quiz-area"></div>
+            <div class="quiz-score-msg" id="quiz-score"></div>
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 MFI — Logica: La Polvere di Cantor.</p>
+</footer>
+
+<script>
+/* ============================================================
+   COSTRUZIONE INTERATTIVA DELL'INSIEME DI CANTOR
+   ============================================================ */
+
+const MAX_STEPS = 7;
+let currentStep = 0;
+
+// Genera i segmenti dell'insieme di Cantor all'iterazione n.
+// Restituisce un array di [left, right] in [0,1].
+function cantorSegments(n) {
+    let segs = [[0, 1]];
+    for (let i = 0; i < n; i++) {
+        const next = [];
+        for (const [l, r] of segs) {
+            const third = (r - l) / 3;
+            next.push([l, l + third]);
+            next.push([r - third, r]);
+        }
+        segs = next;
+    }
+    return segs;
+}
+
+// Disegna una riga dell'insieme di Cantor su un canvas
+function drawCantorRow(canvas, step) {
+    const ctx = canvas.getContext('2d');
+    const W = canvas.offsetWidth || canvas.width;
+    const H = canvas.height;
+    canvas.width = W; // aggiorna risoluzione
+
+    // Sfondo (spazio rimosso)
+    ctx.fillStyle = 'rgba(239,68,68,0.12)';
+    ctx.fillRect(0, 0, W, H);
+
+    // Segmenti rimasti
+    const segs = cantorSegments(step);
+    const grad = ctx.createLinearGradient(0, 0, W, 0);
+    grad.addColorStop(0, '#7c3aed');
+    grad.addColorStop(1, '#a78bfa');
+    ctx.fillStyle = grad;
+
+    for (const [l, r] of segs) {
+        const x = l * W;
+        const w = (r - l) * W;
+        ctx.fillRect(x, 0, Math.max(w, 0.5), H);
+    }
+}
+
+function buildStack() {
+    const stack = document.getElementById('canvas-stack');
+    stack.innerHTML = '';
+    for (let s = 0; s <= currentStep; s++) {
+        const row = document.createElement('div');
+        row.className = 'canvas-row';
+        row.id = 'row-' + s;
+
+        const lbl = document.createElement('div');
+        lbl.className = 'canvas-row-label';
+        lbl.textContent = 'n=' + s;
+
+        const cvs = document.createElement('canvas');
+        cvs.className = 'cantor-strip';
+        cvs.height = 28;
+
+        row.appendChild(lbl);
+        row.appendChild(cvs);
+        stack.appendChild(row);
+    }
+    // Disegna dopo che i canvas sono nel DOM
+    requestAnimationFrame(() => {
+        for (let s = 0; s <= currentStep; s++) {
+            const row = document.getElementById('row-' + s);
+            if (row) drawCantorRow(row.querySelector('canvas'), s);
+        }
+    });
+}
+
+const stepExplanations = [
+    '<strong>Iterazione 0 — Il punto di partenza.</strong> Il segmento [0, 1] è intero. Lunghezza = 1, un singolo segmento.',
+    '<strong>Iterazione 1 — Primo taglio.</strong> Rimuoviamo il terzo centrale (1/3, 2/3). Rimangono 2 segmenti: [0, 1/3] e [2/3, 1]. Lunghezza rimasta: 2/3.',
+    '<strong>Iterazione 2 — Secondo taglio.</strong> Rimuoviamo il terzo centrale da ognuno dei 2 segmenti. Rimangono 4 segmenti. Lunghezza rimasta: (2/3)² = 4/9 ≈ 0.444.',
+    '<strong>Iterazione 3 — Terzo taglio.</strong> 8 segmenti rimasti. Ogni segmento è lungo 1/27. Lunghezza rimasta: (2/3)³ ≈ 0.296.',
+    '<strong>Iterazione 4 — Quarto taglio.</strong> 16 segmenti. La struttura inizia a sembrare "polvere". Lunghezza rimasta: (2/3)⁴ ≈ 0.198.',
+    '<strong>Iterazione 5 — Quinto taglio.</strong> 32 segmenti, ciascuno lungo 1/243. Il pattern si ripete in miniatura. Lunghezza rimasta: (2/3)⁵ ≈ 0.132.',
+    '<strong>Iterazione 6 — Sesto taglio.</strong> 64 segmenti. I buchi sono ormai molti più dei pieni. Lunghezza rimasta: (2/3)⁶ ≈ 0.088.',
+    '<strong>Iterazione 7 — Settimo taglio.</strong> 128 segmenti, ognuno lungo 1/2187. All\'infinito questi convergono alla polvere di Cantor. Lunghezza rimasta: (2/3)⁷ ≈ 0.059. Nota come i segmenti siano quasi invisibili!'
+];
+
+function updateStats() {
+    const n = currentStep;
+    const segs = Math.pow(2, n);
+    const lenFrac = Math.pow(2/3, n);
+    const removed = 1 - lenFrac;
+
+    document.getElementById('stat-step').textContent = n;
+    document.getElementById('stat-segs').textContent = segs;
+    document.getElementById('step-num').textContent = n;
+
+    // Lunghezza rimasta come frazione leggibile per i primi passi
+    if (n <= 4) {
+        const num = Math.pow(2, n);
+        const den = Math.pow(3, n);
+        document.getElementById('stat-len').textContent =
+            n === 0 ? '1' : `(2/3)^${n} = ${num}/${den}`;
+    } else {
+        document.getElementById('stat-len').textContent =
+            `(2/3)^${n} ≈ ${lenFrac.toFixed(4)}`;
+    }
+    document.getElementById('stat-rem').textContent = removed.toFixed(4);
+    document.getElementById('step-explain').innerHTML = stepExplanations[n];
+
+    document.getElementById('btn-prev').disabled = n === 0;
+    document.getElementById('btn-next').disabled = n === MAX_STEPS;
+}
+
+function nextStep() {
+    if (currentStep < MAX_STEPS) {
+        currentStep++;
+        buildStack();
+        updateStats();
+    }
+}
+
+function prevStep() {
+    if (currentStep > 0) {
+        currentStep--;
+        buildStack();
+        updateStats();
+    }
+}
+
+function resetSteps() {
+    currentStep = 0;
+    buildStack();
+    updateStats();
+}
+
+/* ============================================================
+   QUIZ
+   ============================================================ */
+const quizData = [
+    {
+        q: "Cos'è l'insieme di Cantor?",
+        opts: [
+            "Un insieme di numeri interi con certe proprietà",
+            "Quello che rimane togliendo ripetutamente il terzo centrale da un segmento",
+            "Un insieme di tutti i numeri razionali tra 0 e 1",
+            "Un tipo di serie numerica convergente"
+        ],
+        ans: 1,
+        exp: "L'insieme di Cantor si costruisce partendo dal segmento [0,1] e rimuovendo all'infinito il terzo centrale di ogni segmento rimasto. Quello che sopravvive a infiniti tagli è la polvere di Cantor."
+    },
+    {
+        q: "Qual è la lunghezza (misura) dell'insieme di Cantor?",
+        opts: ["1", "1/2", "1/3", "0"],
+        ans: 3,
+        exp: "Ad ogni passo la lunghezza si moltiplica per 2/3. Dopo n passi rimane (2/3)ⁿ. Quando n→∞, questa espressione tende a 0. La misura dell'insieme di Cantor è esattamente zero."
+    },
+    {
+        q: "Quanti punti contiene l'insieme di Cantor?",
+        opts: [
+            "Zero, perché la lunghezza è zero",
+            "Un numero finito ma molto grande",
+            "Infiniti numerabili (come i numeri interi)",
+            "Infiniti non numerabili (come i numeri reali)"
+        ],
+        ans: 3,
+        exp: "Paradossalmente, pur avendo misura zero, l'insieme di Cantor è non numerabile: contiene tanti punti quanti ce ne sono nell'intero segmento [0,1]. Lunghezza e cardinalità sono concetti completamente diversi."
+    },
+    {
+        q: "Dopo 3 iterazioni, quanti segmenti rimangono?",
+        opts: ["3", "6", "8", "9"],
+        ans: 2,
+        exp: "Ad ogni iterazione il numero di segmenti raddoppia: 1 → 2 → 4 → 8. Dopo 3 iterazioni rimangono 2³ = 8 segmenti, ciascuno di lunghezza 1/27."
+    },
+    {
+        q: "Perché l'insieme di Cantor è un frattale?",
+        opts: [
+            "Perché ha un numero infinito di elementi",
+            "Perché ha lunghezza zero",
+            "Perché ogni sua parte, ingrandita, riproduce la struttura dell'intero",
+            "Perché è stato scoperto dopo i frattali di Mandelbrot"
+        ],
+        ans: 2,
+        exp: "Un frattale è autoassomigliante: la struttura si ripete alla stessa scala a qualsiasi ingrandimento. L'insieme di Cantor è composto da due copie di sé stesso ridotte a 1/3 — e fu costruito nel 1883, quasi 100 anni prima che il termine 'frattale' fosse inventato."
+    },
+    {
+        q: "Qual è la dimensione frattale (di Hausdorff) dell'insieme di Cantor?",
+        opts: ["0", "0.6309…", "1", "2"],
+        ans: 1,
+        exp: "La dimensione di Hausdorff è log(2)/log(3) ≈ 0.6309. Non è né 0 (un punto) né 1 (un segmento), ma qualcosa nel mezzo: una dimensione frazionaria, tipica dei frattali."
+    }
+];
+
+let score = 0, answered = 0;
+
+function loadQuiz() {
+    document.getElementById('quiz-area').innerHTML = quizData.map((q, i) => `
+        <div class="quiz-question">
+            <h3>${i + 1}. ${q.q}</h3>
+            <div class="quiz-options">
+                ${q.opts.map((o, j) =>
+                    `<button class="quiz-btn" onclick="checkQ(${i},${j},this)">${o}</button>`
+                ).join('')}
+            </div>
+            <div class="q-exp" id="qexp-${i}"></div>
+        </div>`).join('');
+}
+
+window.checkQ = function(qi, oi, btn) {
+    const btns = btn.parentElement.querySelectorAll('.quiz-btn');
+    btns.forEach(b => b.disabled = true);
+    if (oi === quizData[qi].ans) { btn.classList.add('correct'); score++; }
+    else { btn.classList.add('wrong'); btns[quizData[qi].ans].classList.add('correct'); }
+    const exp = document.getElementById('qexp-' + qi);
+    exp.textContent = '💡 ' + quizData[qi].exp;
+    exp.style.display = 'block';
+    answered++;
+    if (answered === quizData.length) {
+        const pct = Math.round(score / quizData.length * 100);
+        document.getElementById('quiz-score').textContent =
+            `Punteggio: ${score}/${quizData.length} (${pct}%). ${
+            pct === 100 ? '🏆 Perfetto! Sei pronto per Mandelbrot!' :
+            pct >= 70  ? '🚀 Ottimo! Hai capito i paradossi di Cantor.' :
+            pct >= 50  ? '📚 Buono! Rileggi la sezione sui paradossi.' :
+            '🔄 Rileggi la lezione — la polvere di Cantor ti aspetta!'}`;
+    }
+};
+
+/* ============================================================
+   INIT
+   ============================================================ */
+document.addEventListener('DOMContentLoaded', () => {
+    buildStack();
+    updateStats();
+    loadQuiz();
+
+    // Ridisegna i canvas al resize
+    window.addEventListener('resize', () => buildStack());
+});
+</script>
+<script src="../../js/main.js"></script>
+</body>
+</html>

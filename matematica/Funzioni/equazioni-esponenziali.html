@@ -1,0 +1,2182 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equazioni e Disequazioni Esponenziali e Logaritmiche - MFI</title>
+    <meta name="description" content="Risolvi equazioni e disequazioni esponenziali e logaritmiche: tutti i tipi, esempi passo per passo, tavola dei segni e risolutori interattivi.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        /* ===== HEADER ===== */
+        .lesson-header {
+            background: linear-gradient(135deg, #0d2b1f 0%, #0a1628 50%, #0B0E14 100%);
+            padding: 5rem 0 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .lesson-header::before {
+            content: '';
+            position: absolute; inset: 0;
+            background:
+                radial-gradient(ellipse at 20% 40%, rgba(16,185,129,0.12) 0%, transparent 55%),
+                radial-gradient(ellipse at 80% 60%, rgba(59,130,246,0.10) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        .lesson-title-main {
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 1rem;
+        }
+        .lesson-subtitle-main {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            max-width: 680px;
+            margin: 0 auto;
+            font-weight: 300;
+        }
+
+        /* ===== TOC ===== */
+        .toc {
+            background: rgba(16,185,129,0.05);
+            border: 1px solid rgba(16,185,129,0.2);
+            border-radius: 1rem;
+            padding: 1.5rem 2rem;
+            margin: 2rem 0;
+        }
+        .toc h3 { color: #6ee7b7; margin-bottom: 1rem; font-size: 1rem; text-transform: uppercase; letter-spacing: 0.08em; }
+        .toc ol { padding-left: 1.2rem; }
+        .toc li { margin-bottom: 0.4rem; }
+        .toc a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+        .toc a:hover { color: #6ee7b7; }
+
+        /* ===== SECTIONS ===== */
+        .lesson-section {
+            margin-bottom: 3rem;
+            background: var(--surface-color);
+            padding: 2.5rem;
+            border-radius: 1rem;
+            border: 1px solid rgba(255,255,255,0.06);
+            scroll-margin-top: 4rem;
+        }
+        .section-number {
+            display: inline-block;
+            background: linear-gradient(135deg, #10b981, #3b82f6);
+            color: white;
+            font-weight: 800;
+            font-size: 0.85rem;
+            padding: 0.2rem 0.7rem;
+            border-radius: 20px;
+            margin-bottom: 0.75rem;
+        }
+        .lesson-section h2 {
+            color: var(--text-main);
+            margin-bottom: 1.25rem;
+            font-size: 1.7rem;
+            font-weight: 700;
+        }
+        .lesson-section h3 {
+            color: #6ee7b7;
+            margin-bottom: 0.75rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        .lesson-text {
+            margin-bottom: 1.2rem;
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            line-height: 1.75;
+        }
+
+        /* ===== DEFINITION / RULE BOX ===== */
+        .definition-box {
+            background: rgba(16,185,129,0.07);
+            border-left: 4px solid #10b981;
+            border-radius: 0 0.75rem 0.75rem 0;
+            padding: 1.25rem 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .definition-box strong { color: #6ee7b7; }
+
+        /* ===== STEP-BY-STEP SOLUTION ===== */
+        .solution-box {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 1rem;
+            padding: 1.75rem;
+            margin: 1.5rem 0;
+        }
+        .solution-box h4 {
+            color: #fbbf24;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .step {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            align-items: flex-start;
+        }
+        .step-num {
+            background: linear-gradient(135deg, #10b981, #3b82f6);
+            color: white;
+            font-weight: 800;
+            font-size: 0.8rem;
+            min-width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 0.1rem;
+        }
+        .step-body {
+            color: var(--text-muted);
+            font-size: 0.97rem;
+            line-height: 1.7;
+        }
+        .step-body .formula {
+            display: block;
+            text-align: center;
+            padding: 0.4rem 0;
+            color: var(--text-main);
+        }
+        .step-body .result {
+            color: #6ee7b7;
+            font-weight: 700;
+        }
+
+        /* ===== TYPE GRID ===== */
+        .type-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+            gap: 1.25rem;
+            margin: 1.5rem 0;
+        }
+        .type-card {
+            background: rgba(0,0,0,0.25);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 0.875rem;
+            padding: 1.5rem;
+            transition: border-color 0.25s, transform 0.25s;
+        }
+        .type-card:hover { border-color: rgba(16,185,129,0.4); transform: translateY(-2px); }
+        .type-card h4 {
+            color: #6ee7b7;
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+            font-weight: 700;
+        }
+        .formula-chip {
+            background: rgba(16,185,129,0.1);
+            border-radius: 8px;
+            padding: 0.55rem 1rem;
+            margin: 0.6rem 0;
+            font-size: 1rem;
+            text-align: center;
+            color: var(--text-main);
+        }
+
+        /* ===== CALLOUT ===== */
+        .callout {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+            background: rgba(59,130,246,0.07);
+            border: 1px solid rgba(59,130,246,0.2);
+            border-radius: 0.75rem;
+            padding: 1.2rem 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .callout-icon { font-size: 1.5rem; flex-shrink: 0; }
+        .callout p { margin: 0; font-size: 0.98rem; color: var(--text-muted); }
+        .callout p strong { color: #93c5fd; }
+        .callout-warn { background: rgba(245,158,11,0.07); border-color: rgba(245,158,11,0.25); }
+        .callout-warn p strong { color: #fcd34d; }
+        .callout-green { background: rgba(16,185,129,0.07); border-color: rgba(16,185,129,0.25); }
+        .callout-green p strong { color: #6ee7b7; }
+        .callout-red { background: rgba(239,68,68,0.07); border-color: rgba(239,68,68,0.25); }
+        .callout-red p strong { color: #fca5a5; }
+
+        /* ===== INTERACTIVE SOLVER ===== */
+        .solver-box {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(16,185,129,0.25);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin: 1.5rem 0;
+        }
+        .solver-box h3 { color: #34d399; margin-bottom: 1rem; }
+        .eq-input-row {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            margin-bottom: 1rem;
+        }
+        .eq-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+        .eq-input-group label {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+        .eq-input-group input, .eq-input-group select {
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: white;
+            padding: 0.55rem 0.75rem;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 1rem;
+            width: 90px;
+        }
+        .eq-input-group select { width: 120px; }
+        .solve-btn {
+            background: rgba(16,185,129,0.25);
+            border: 1px solid #10b981;
+            color: #6ee7b7;
+            padding: 0.6rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+            align-self: flex-end;
+        }
+        .solve-btn:hover { background: rgba(16,185,129,0.4); }
+        .solver-result {
+            background: rgba(0,0,0,0.35);
+            border-radius: 8px;
+            padding: 1.25rem 1.5rem;
+            min-height: 64px;
+            font-size: 0.97rem;
+            color: var(--text-muted);
+        }
+        .solver-result .sol-val { color: #6ee7b7; font-weight: 700; font-size: 1.15rem; }
+        .solver-result .sol-step { display: block; margin: 0.25rem 0; }
+
+        /* ===== SIGN TABLE ===== */
+        .sign-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.25rem 0;
+            font-size: 0.93rem;
+        }
+        .sign-table th {
+            padding: 0.6rem 1rem;
+            border-bottom: 2px solid rgba(255,255,255,0.12);
+            color: #6ee7b7;
+            text-align: center;
+        }
+        .sign-table td {
+            padding: 0.55rem 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            text-align: center;
+            color: var(--text-muted);
+        }
+        .sign-table .pos { color: #6ee7b7; font-weight: 700; }
+        .sign-table .neg { color: #f87171; font-weight: 700; }
+        .sign-table .zero { color: #fbbf24; font-weight: 700; }
+        .sign-table .highlight { background: rgba(16,185,129,0.08); }
+
+        /* ===== TIMELINE METHOD ===== */
+        .method-tabs {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+        .tab-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: var(--text-muted);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .tab-btn.active, .tab-btn:hover {
+            background: rgba(16,185,129,0.2);
+            border-color: #10b981;
+            color: #6ee7b7;
+        }
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+
+        /* ===== NUMBER LINE ===== */
+        .number-line-container {
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            padding: 1.25rem 1.5rem;
+            margin: 1rem 0;
+        }
+        .number-line-canvas {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+        }
+
+        /* ===== QUIZ ===== */
+        .quiz-wrapper { background: rgba(0,0,0,0.15); border-radius: 1rem; padding: 1.5rem; }
+        .quiz-question { margin-bottom: 2rem; }
+        .quiz-question h3 { color: var(--text-main); font-size: 1.05rem; font-weight: 600; margin-bottom: 1rem; }
+        .quiz-options { display: flex; flex-direction: column; gap: 0.6rem; }
+        .quiz-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: var(--text-main);
+            padding: 0.85rem 1.2rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            text-align: left;
+            font-size: 0.98rem;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        .quiz-btn:hover:not(:disabled) { background: rgba(16,185,129,0.15); border-color: #10b981; }
+        .quiz-btn.correct { background: rgba(16,185,129,0.25) !important; border-color: #10b981 !important; color: #6ee7b7; }
+        .quiz-btn.wrong { background: rgba(239,68,68,0.2) !important; border-color: #ef4444 !important; color: #fca5a5; }
+        .quiz-btn:disabled { cursor: not-allowed; }
+        .quiz-score-msg { text-align: center; font-weight: 700; color: #6ee7b7; font-size: 1.1rem; margin-top: 1rem; min-height: 1.5rem; }
+        .ctrl-btn {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.12);
+            color: var(--text-main);
+            padding: 0.5rem 1.1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .ctrl-btn:hover { background: rgba(16,185,129,0.2); border-color: #10b981; color: #6ee7b7; }
+
+        /* ===== SUMMARY TABLE ===== */
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.93rem;
+            margin: 1.25rem 0;
+        }
+        .summary-table th {
+            padding: 0.75rem 1rem;
+            border-bottom: 2px solid rgba(255,255,255,0.1);
+            text-align: left;
+            color: #6ee7b7;
+        }
+        .summary-table td {
+            padding: 0.65rem 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            vertical-align: top;
+            color: var(--text-muted);
+        }
+        .summary-table tr:last-child td { border-bottom: none; }
+        .summary-table .td-type { color: #c4b5fd; font-weight: 600; }
+        .summary-table .td-form { color: #fed7aa; }
+
+        @media (max-width: 768px) {
+            .lesson-section { padding: 1.5rem; }
+            .type-grid { grid-template-columns: 1fr; }
+            .lesson-header { padding: 3rem 0 2rem; }
+            .eq-input-row { gap: 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <header class="lesson-header">
+        <div class="container" style="text-align:center; position:relative; z-index:1;">
+            <div style="margin-bottom:2rem;">
+                <a href="funzioni.html" class="back-button" style="color:#6ee7b7; justify-content:center;">
+                    <span class="back-icon">←</span> Torna a Funzioni Elementari
+                </a>
+            </div>
+            <h1 class="lesson-title-main">
+                Equazioni e Disequazioni <span class="gradient-text">Esponenziali e Logaritmiche</span>
+            </h1>
+            <p class="lesson-subtitle-main">
+                Tutti i tipi di equazione e disequazione esponenziale e logaritmica: metodi, esempi passo per passo, condizioni di esistenza e risolutori interattivi.
+            </p>
+        </div>
+    </header>
+
+    <main class="container" style="padding-top:2.5rem; padding-bottom:5rem;">
+
+        <!-- TOC -->
+        <nav class="toc">
+            <h3>📋 Indice della lezione</h3>
+            <ol>
+                <li><a href="#sec-intro">Che cos'è un'equazione esponenziale?</a></li>
+                <li><a href="#sec-tipo1">Tipo 1 — Stessa base: \(a^{f(x)} = a^{g(x)}\)</a></li>
+                <li><a href="#sec-tipo2">Tipo 2 — Basi diverse riconducibili</a></li>
+                <li><a href="#sec-tipo3">Tipo 3 — Forma quadratica (sostituzione)</a></li>
+                <li><a href="#sec-tipo4">Tipo 4 — Uso dei logaritmi</a></li>
+                <li><a href="#sec-solver">Risolutore interattivo equazioni esponenziali</a></li>
+                <li><a href="#sec-diseq-intro">Disequazioni esponenziali: principio chiave</a></li>
+                <li><a href="#sec-diseq-tipo1">Disequazioni con \(a > 1\) e \(0 < a < 1\)</a></li>
+                <li><a href="#sec-diseq-tipo2">Disequazioni esponenziali in forma quadratica</a></li>
+                <li><a href="#sec-diseq-interattivo">Risolutore interattivo disequazioni esponenziali</a></li>
+                <li><a href="#sec-log-eq-intro">Equazioni logaritmiche: principio chiave e dominio</a></li>
+                <li><a href="#sec-log-eq-tipo1">EQ LOG Tipo 1 — Stessa base</a></li>
+                <li><a href="#sec-log-eq-tipo2">EQ LOG Tipo 2 — Log uguale a numero</a></li>
+                <li><a href="#sec-log-eq-tipo3">EQ LOG Tipo 3 — Forma quadratica nei logaritmi</a></li>
+                <li><a href="#sec-log-solver">Risolutore interattivo equazioni logaritmiche</a></li>
+                <li><a href="#sec-log-diseq-intro">Disequazioni logaritmiche: principio chiave</a></li>
+                <li><a href="#sec-log-diseq-esempi">Esempi di disequazioni logaritmiche</a></li>
+                <li><a href="#sec-riepilogo">Riepilogo di tutti i metodi</a></li>
+                <li><a href="#sec-quiz">Metti alla prova le tue conoscenze</a></li>
+            </ol>
+        </nav>
+
+        <!-- ================================================================ -->
+        <!-- 1. INTRO -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-intro">
+            <div class="section-number">Sezione 1</div>
+            <h2>Che cos'è un'equazione esponenziale?</h2>
+            <p class="lesson-text">
+                Un'<strong>equazione esponenziale</strong> è un'equazione in cui la variabile incognita \(x\) compare all'<em>esponente</em>. L'obiettivo è trovare il valore (o i valori) di \(x\) che rendono l'equazione vera.
+            </p>
+            <div class="definition-box">
+                <p style="font-size:1.1rem; text-align:center; margin-bottom:0.5rem;">
+                    \[ a^{f(x)} = b \quad \text{oppure} \quad a^{f(x)} = a^{g(x)} \]
+                </p>
+                <p style="color:var(--text-muted); font-size:0.97rem;">
+                    con \(a > 0\), \(a \neq 1\). La <strong>strategia fondamentale</strong>: sfruttare la proprietà che \(a^u = a^v \iff u = v\) (la funzione esponenziale è iniettiva).
+                </p>
+            </div>
+            <p class="lesson-text">
+                Esistono quattro grandi famiglie di equazioni esponenziali, ciascuna con il proprio metodo di risoluzione. Le studieremo in ordine crescente di complessità.
+            </p>
+            <div class="callout">
+                <span class="callout-icon">🔑</span>
+                <p>Il <strong>principio di base</strong>: poiché \(f(x) = a^x\) è strettamente monotona (iniettiva), due potenze con la stessa base sono uguali se e solo se gli esponenti sono uguali: \(a^u = a^v \iff u = v\).</p>
+            </div>
+
+            <div class="type-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); margin-top:1.5rem;">
+                <div class="type-card" style="border-top:3px solid #818cf8;">
+                    <h4>Tipo 1</h4>
+                    <div class="formula-chip">\(a^{f(x)} = a^{g(x)}\)</div>
+                    <p style="color:var(--text-muted); font-size:0.9rem;">Stessa base: si eguagliano gli esponenti direttamente.</p>
+                </div>
+                <div class="type-card" style="border-top:3px solid #34d399;">
+                    <h4>Tipo 2</h4>
+                    <div class="formula-chip">\(a^{f(x)} = b^{g(x)}\)</div>
+                    <p style="color:var(--text-muted); font-size:0.9rem;">Basi diverse riconducibili alla stessa potenza.</p>
+                </div>
+                <div class="type-card" style="border-top:3px solid #fb923c;">
+                    <h4>Tipo 3</h4>
+                    <div class="formula-chip">\(A\cdot a^{2x} + B\cdot a^x + C = 0\)</div>
+                    <p style="color:var(--text-muted); font-size:0.9rem;">Forma quadratica: sostituzione \(t = a^x\).</p>
+                </div>
+                <div class="type-card" style="border-top:3px solid #f472b6;">
+                    <h4>Tipo 4</h4>
+                    <div class="formula-chip">\(a^x = b\)</div>
+                    <p style="color:var(--text-muted); font-size:0.9rem;">Basi irriducibili: uso del logaritmo.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 2. TIPO 1 -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-tipo1">
+            <div class="section-number">Sezione 2</div>
+            <h2>Tipo 1 — Stessa base: \(a^{f(x)} = a^{g(x)}\)</h2>
+            <p class="lesson-text">
+                È il caso più semplice. Se i due membri hanno già la <strong>stessa base</strong>, basta eguagliare gli esponenti. La proprietà di iniettività fa tutto il lavoro.
+            </p>
+            <div class="definition-box">
+                <strong>Regola:</strong> \(\quad a^{f(x)} = a^{g(x)} \iff f(x) = g(x) \quad (a > 0,\; a \neq 1)\)
+            </div>
+
+            <!-- Esempio 1.1 -->
+            <h3>Esempio 1 — Esponenti lineari</h3>
+            <p class="lesson-text">Risolvi: \(\quad 2^{3x-1} = 2^{x+5}\)</p>
+            <div class="solution-box">
+                <h4>✏️ Soluzione passo per passo</h4>
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <div class="step-body">
+                        Stessa base (2): eguaglio gli esponenti.
+                        <span class="formula">\(3x - 1 = x + 5\)</span>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <div class="step-body">
+                        Risolvo l'equazione lineare:
+                        <span class="formula">\(3x - x = 5 + 1 \implies 2x = 6\)</span>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">3</div>
+                    <div class="step-body">
+                        <span class="result">Soluzione: \(x = 3\)</span><br>
+                        Verifica: \(2^{3\cdot3-1} = 2^8 = 256\) e \(2^{3+5} = 2^8 = 256\) ✓
+                    </div>
+                </div>
+            </div>
+
+            <!-- Esempio 1.2 -->
+            <h3>Esempio 2 — Esponente quadratico</h3>
+            <p class="lesson-text">Risolvi: \(\quad 3^{x^2 - 2x} = 3^3\)</p>
+            <div class="solution-box">
+                <h4>✏️ Soluzione passo per passo</h4>
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <div class="step-body">
+                        Stessa base (3): eguaglio gli esponenti.
+                        <span class="formula">\(x^2 - 2x = 3\)</span>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <div class="step-body">
+                        Risolvo l'equazione di secondo grado:
+                        <span class="formula">\(x^2 - 2x - 3 = 0 \implies (x-3)(x+1) = 0\)</span>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">3</div>
+                    <div class="step-body">
+                        <span class="result">Soluzioni: \(x = 3\) oppure \(x = -1\)</span><br>
+                        Verifica: \(3^{9-6} = 3^3 = 27\) ✓ e \(3^{1+2} = 3^3 = 27\) ✓
+                    </div>
+                </div>
+            </div>
+
+            <div class="callout callout-green">
+                <span class="callout-icon">💡</span>
+                <p>Una volta eguagliati gli esponenti, ci si riconduce a una normale equazione algebrica (lineare, quadratica, ecc.) che si risolve con i metodi già noti.</p>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 3. TIPO 2 -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-tipo2">
+            <div class="section-number">Sezione 3</div>
+            <h2>Tipo 2 — Basi diverse riconducibili alla stessa</h2>
+            <p class="lesson-text">
+                A volte le basi sono diverse, ma è possibile <strong>riscrivere entrambi i membri come potenze della stessa base</strong>. Riconosci che \(4 = 2^2\), \(8 = 2^3\), \(9 = 3^2\), \(27 = 3^3\), \(\frac{1}{4} = 2^{-2}\), ecc.
+            </p>
+            <div class="definition-box">
+                <strong>Strategia:</strong> Riscrivi ogni membro come \(a^{\text{qualcosa}}\), poi eguaglia gli esponenti.
+            </div>
+
+            <!-- Esempio 2.1 -->
+            <h3>Esempio 1 — Potenze di 2</h3>
+            <p class="lesson-text">Risolvi: \(\quad 4^{x+1} = 8^{x-1}\)</p>
+            <div class="solution-box">
+                <h4>✏️ Soluzione passo per passo</h4>
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <div class="step-body">
+                        Riscrivo entrambe le basi come potenze di 2: \(4 = 2^2\) e \(8 = 2^3\).
+                        <span class="formula">\((2^2)^{x+1} = (2^3)^{x-1}\)</span>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <div class="step-body">
+                        Applico la regola \((a^m)^n = a^{mn}\):
+                        <span class="formula">\(2^{2(x+1)} = 2^{3(x-1)} \implies 2^{2x+2} = 2^{3x-3}\)</span>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">3</div>
+                    <div class="step-body">
+                        Stessa base: eguaglio gli esponenti.
+                        <span class="formula">\(2x + 2 = 3x - 3 \implies x = 5\)</span>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">4</div>
+                    <div class="step-body">
+                        <span class="result">Soluzione: \(x = 5\)</span><br>
+                        Verifica: \(4^6 = 4096\) e \(8^4 = 4096\) ✓
+                    </div>
+                </div>
+            </div>
+
+            <!-- Esempio 2.2 -->
+            <h3>Esempio 2 — Base frazionaria</h3>
+            <p class="lesson-text">Risolvi: \(\quad \left(\dfrac{1}{9}\right)^{x} = 27^{x-2}\)</p>
+            <div class="solution-box">
+                <h4>✏️ Soluzione passo per passo</h4>
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <div class="step-body">
+                        Riscrivo come potenze di 3: \(\dfrac{1}{9} = 3^{-2}\) e \(27 = 3^3\).
+                        <span class="formula">\((3^{-2})^x = (3^3)^{x-2}\)</span>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <div class="step-body">
+                        Semplicifco gli esponenti:
+                        <span class="formula">\(3^{-2x} = 3^{3(x-2)} = 3^{3x-6}\)</span>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">3</div>
+                    <div class="step-body">
+                        Eguaglio gli esponenti:
+                        <span class="formula">\(-2x = 3x - 6 \implies -5x = -6\)</span>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">4</div>
+                    <div class="step-body">
+                        <span class="result">Soluzione: \(x = \dfrac{6}{5} = 1{,}2\)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="callout callout-warn">
+                <span class="callout-icon">⚠️</span>
+                <p><strong>Ricorda i casi comuni da riconoscere:</strong><br>
+                \(4=2^2,\; 8=2^3,\; 16=2^4,\; 32=2^5,\; \frac{1}{2}=2^{-1},\; \frac{1}{4}=2^{-2}\)<br>
+                \(9=3^2,\; 27=3^3,\; 81=3^4,\; \frac{1}{3}=3^{-1},\; \frac{1}{9}=3^{-2}\)<br>
+                \(25=5^2,\; 125=5^3,\; \sqrt{a}=a^{1/2},\; \sqrt[3]{a}=a^{1/3}\)</p>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 4. TIPO 3 -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-tipo3">
+            <div class="section-number">Sezione 4</div>
+            <h2>Tipo 3 — Forma quadratica con sostituzione</h2>
+            <p class="lesson-text">
+                Alcune equazioni sembrano molto complesse, ma nascondono una semplice equazione di secondo grado. La chiave è la <strong>sostituzione</strong> \(t = a^x\).
+            </p>
+            <div class="definition-box">
+                <strong>Strategia:</strong> Se l'equazione ha la forma \(A \cdot a^{2x} + B \cdot a^x + C = 0\), si pone \(t = a^x\) (con \(t > 0\)) e si risolve \(At^2 + Bt + C = 0\). Per ogni soluzione \(t_k > 0\) si risolve poi \(a^x = t_k\).
+            </div>
+
+            <!-- Esempio 3.1 -->
+            <h3>Esempio 1 — Equazione binomica</h3>
+            <p class="lesson-text">Risolvi: \(\quad 4^x - 5 \cdot 2^x + 4 = 0\)</p>
+            <div class="solution-box">
+                <h4>✏️ Soluzione passo per passo</h4>
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <div class="step-body">
+                        Osservo che \(4^x = (2^2)^x = (2^x)^2\). Pongo \(t = 2^x\), con \(t > 0\).
+                        <span class="formula">\(t^2 - 5t + 4 = 0\)</span>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <div class="step-body">
+                        Risolvo l'equazione di secondo grado:
+                        <span class="formula">\((t - 4)(t - 1) = 0 \implies t = 4 \text{ oppure } t = 1\)</span>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">3</div>
+                    <div class="step-body">
+                        Entrambe le soluzioni sono positive (\(t > 0\)), quindi sono accettabili. Risostituisco:
+                        <span class="formula">\(t = 4 \implies 2^x = 4 = 2^2 \implies x = 2\)</span>
+                        <span class="formula">\(t = 1 \implies 2^x = 1 = 2^0 \implies x = 0\)</span>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">4</div>
+                    <div class="step-body">
+                        <span class="result">Soluzioni: \(x = 2\) oppure \(x = 0\)</span><br>
+                        Verifica per \(x=2\): \(16 - 5{\cdot}4 + 4 = 16 - 20 + 4 = 0\) ✓<br>
+                        Verifica per \(x=0\): \(1 - 5{\cdot}1 + 4 = 0\) ✓
+                    </div>
+                </div>
+            </div>
+
+            <!-- Esempio 3.2 -->
+            <h3>Esempio 2 — Con soluzione da scartare</h3>
+            <p class="lesson-text">Risolvi: \(\quad 9^x - 4 \cdot 3^x - 5 = 0\)</p>
+            <div class="solution-box">
+                <h4>✏️ Soluzione passo per passo</h4>
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <div class="step-body">
+                        Osservo che \(9^x = (3^x)^2\). Pongo \(t = 3^x\), con \(t > 0\).
+                        <span class="formula">\(t^2 - 4t - 5 = 0\)</span>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <div class="step-body">
+                        Risolvo: \((t-5)(t+1) = 0 \implies t = 5\) oppure \(t = -1\).
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">3</div>
+                    <div class="step-body">
+                        <strong style="color:#fca5a5;">⚠️ Attenzione:</strong> \(t = -1\) non è accettabile perché \(t = 3^x > 0\) sempre. <strong style="color:#ef4444;">Scarto \(t = -1\).</strong>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">4</div>
+                    <div class="step-body">
+                        Risostituisco \(t = 5\):
+                        <span class="formula">\(3^x = 5 \implies x = \log_3 5 = \dfrac{\ln 5}{\ln 3} \approx 1{,}465\)</span>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">5</div>
+                    <div class="step-body">
+                        <span class="result">Soluzione: \(x = \log_3 5 \approx 1{,}465\)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="callout callout-red">
+                <span class="callout-icon">🚫</span>
+                <p><strong>Regola fondamentale:</strong> dopo la sostituzione \(t = a^x\), ogni soluzione \(t \leq 0\) va <strong>scartata obbligatoriamente</strong>, perché \(a^x > 0\) per ogni \(x\) reale.</p>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 5. TIPO 4 -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-tipo4">
+            <div class="section-number">Sezione 5</div>
+            <h2>Tipo 4 — Uso dei logaritmi</h2>
+            <p class="lesson-text">
+                Quando le basi non sono riconducibili alla stessa potenza, si usa il <strong>logaritmo</strong> per "portare giù" l'esponente. Si può usare il logaritmo in qualsiasi base, ma di solito si usa il logaritmo naturale \(\ln\) o il logaritmo decimale \(\log_{10}\).
+            </p>
+            <div class="definition-box">
+                <strong>Strategia:</strong> Da \(a^x = b\) si ottiene \(x \cdot \ln a = \ln b\), quindi \(\;x = \dfrac{\ln b}{\ln a} = \log_a b\).
+            </div>
+
+            <!-- Esempio 4.1 -->
+            <h3>Esempio 1 — Equazione semplice</h3>
+            <p class="lesson-text">Risolvi: \(\quad 3^x = 7\)</p>
+            <div class="solution-box">
+                <h4>✏️ Soluzione passo per passo</h4>
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <div class="step-body">
+                        Applico il logaritmo naturale ad entrambi i membri:
+                        <span class="formula">\(\ln(3^x) = \ln 7\)</span>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <div class="step-body">
+                        Uso la proprietà \(\ln(a^x) = x \cdot \ln a\):
+                        <span class="formula">\(x \cdot \ln 3 = \ln 7\)</span>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">3</div>
+                    <div class="step-body">
+                        <span class="result">\(x = \dfrac{\ln 7}{\ln 3} = \log_3 7 \approx \dfrac{1{,}946}{1{,}099} \approx 1{,}771\)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Esempio 4.2 -->
+            <h3>Esempio 2 — Base ed esponente più complessi</h3>
+            <p class="lesson-text">Risolvi: \(\quad 5^{2x-1} = 12\)</p>
+            <div class="solution-box">
+                <h4>✏️ Soluzione passo per passo</h4>
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <div class="step-body">
+                        Applico \(\ln\) ad entrambi i membri:
+                        <span class="formula">\((2x-1)\ln 5 = \ln 12\)</span>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <div class="step-body">
+                        Isolo \(x\):
+                        <span class="formula">\(2x - 1 = \dfrac{\ln 12}{\ln 5} \approx \dfrac{2{,}485}{1{,}609} \approx 1{,}544\)</span>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">3</div>
+                    <div class="step-body">
+                        <span class="result">\(2x = 2{,}544 \implies x = 1{,}272\)</span><br>
+                        Forma esatta: \(\;x = \dfrac{1}{2}\!\left(1 + \dfrac{\ln 12}{\ln 5}\right)\)
+                    </div>
+                </div>
+            </div>
+
+            <!-- Esempio 4.3 -->
+            <h3>Esempio 3 — Due esponenziali diverse basi</h3>
+            <p class="lesson-text">Risolvi: \(\quad 2^x = 3^{x-1}\)</p>
+            <div class="solution-box">
+                <h4>✏️ Soluzione passo per passo</h4>
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <div class="step-body">
+                        Applico \(\ln\) ad entrambi i membri:
+                        <span class="formula">\(x \ln 2 = (x-1)\ln 3\)</span>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <div class="step-body">
+                        Espando e raggruppo i termini con \(x\):
+                        <span class="formula">\(x \ln 2 = x \ln 3 - \ln 3 \implies x(\ln 2 - \ln 3) = -\ln 3\)</span>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">3</div>
+                    <div class="step-body">
+                        <span class="result">\(x = \dfrac{-\ln 3}{\ln 2 - \ln 3} = \dfrac{\ln 3}{\ln 3 - \ln 2} = \dfrac{\ln 3}{\ln(3/2)} \approx \dfrac{1{,}099}{0{,}405} \approx 2{,}71\)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 6. RISOLUTORE INTERATTIVO -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-solver">
+            <div class="section-number">Sezione 6</div>
+            <h2>🧮 Risolutore interattivo di equazioni</h2>
+            <p class="lesson-text">Prova a risolvere equazioni dei Tipi 1 e 4 in modo interattivo. Scegli il tipo e inserisci i parametri.</p>
+
+            <div class="solver-box">
+                <h3>Risolutore guidato</h3>
+                <div class="method-tabs">
+                    <button class="tab-btn active" onclick="switchSolverTab('t1')">Tipo 1: stessa base</button>
+                    <button class="tab-btn" onclick="switchSolverTab('t2')">Tipo 2: basi diverse</button>
+                    <button class="tab-btn" onclick="switchSolverTab('t4')">Tipo 4: logaritmo</button>
+                </div>
+
+                <!-- TAB 1 -->
+                <div class="tab-panel active" id="solver-t1">
+                    <p style="color:var(--text-muted); font-size:0.92rem; margin-bottom:1rem;">Equazione: \(a^{mx+p} = a^{nx+q}\)</p>
+                    <div class="eq-input-row">
+                        <div class="eq-input-group"><label>Base a</label><input type="number" id="s1-a" value="2" min="0.1" step="0.5"></div>
+                        <div class="eq-input-group"><label>m (coeff. x sx)</label><input type="number" id="s1-m" value="3" step="1"></div>
+                        <div class="eq-input-group"><label>p (termine noto sx)</label><input type="number" id="s1-p" value="-1" step="1"></div>
+                        <div class="eq-input-group"><label>n (coeff. x dx)</label><input type="number" id="s1-n" value="1" step="1"></div>
+                        <div class="eq-input-group"><label>q (termine noto dx)</label><input type="number" id="s1-q" value="5" step="1"></div>
+                        <button class="solve-btn" onclick="solveT1()">Risolvi</button>
+                    </div>
+                    <div class="solver-result" id="res-t1">Il risultato apparirà qui.</div>
+                </div>
+
+                <!-- TAB 2 -->
+                <div class="tab-panel" id="solver-t2">
+                    <p style="color:var(--text-muted); font-size:0.92rem; margin-bottom:1rem;">Equazione: \(a^{mx+p} = b^{nx+q}\) — risolta prendendo il log di entrambi i membri.</p>
+                    <div class="eq-input-row">
+                        <div class="eq-input-group"><label>Base a</label><input type="number" id="s2-a" value="4" min="0.1" step="1"></div>
+                        <div class="eq-input-group"><label>m</label><input type="number" id="s2-m" value="1" step="1"></div>
+                        <div class="eq-input-group"><label>p</label><input type="number" id="s2-p" value="1" step="1"></div>
+                        <div class="eq-input-group"><label>Base b</label><input type="number" id="s2-b" value="8" min="0.1" step="1"></div>
+                        <div class="eq-input-group"><label>n</label><input type="number" id="s2-n" value="1" step="1"></div>
+                        <div class="eq-input-group"><label>q</label><input type="number" id="s2-q" value="-1" step="1"></div>
+                        <button class="solve-btn" onclick="solveT2()">Risolvi</button>
+                    </div>
+                    <div class="solver-result" id="res-t2">Il risultato apparirà qui.</div>
+                </div>
+
+                <!-- TAB 4 -->
+                <div class="tab-panel" id="solver-t4">
+                    <p style="color:var(--text-muted); font-size:0.92rem; margin-bottom:1rem;">Equazione: \(a^x = b\) — risultato esatto con logaritmo.</p>
+                    <div class="eq-input-row">
+                        <div class="eq-input-group"><label>Base a</label><input type="number" id="s4-a" value="3" min="0.01" step="0.5"></div>
+                        <div class="eq-input-group"><label>Risultato b</label><input type="number" id="s4-b" value="7" min="0.001" step="1"></div>
+                        <button class="solve-btn" onclick="solveT4()">Risolvi</button>
+                    </div>
+                    <div class="solver-result" id="res-t4">Il risultato apparirà qui.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 7. DISEQUAZIONI INTRO -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-diseq-intro">
+            <div class="section-number">Sezione 7</div>
+            <h2>Disequazioni esponenziali — il principio chiave</h2>
+            <p class="lesson-text">
+                Una <strong>disequazione esponenziale</strong> richiede di trovare l'insieme dei valori di \(x\) per cui \(a^{f(x)} \gtrless a^{g(x)}\) oppure \(a^{f(x)} \gtrless b\). Il principio essenziale dipende dalla <strong>monotonia</strong> della funzione esponenziale:
+            </p>
+
+            <div class="type-grid" style="grid-template-columns: 1fr 1fr;">
+                <div class="type-card" style="border-left:4px solid #34d399; border-radius:0 0.875rem 0.875rem 0;">
+                    <h4>📈 Base \(a > 1\): funzione CRESCENTE</h4>
+                    <div class="formula-chip">\(a^{f(x)} > a^{g(x)} \iff f(x) > g(x)\)</div>
+                    <p style="color:var(--text-muted); font-size:0.9rem; margin-top:0.5rem;">Il verso della disequazione si <strong>conserva</strong>: eguagli gli esponenti mantenendo lo stesso segno.</p>
+                </div>
+                <div class="type-card" style="border-left:4px solid #f87171; border-radius:0 0.875rem 0.875rem 0;">
+                    <h4>📉 Base \(0 &lt; a &lt; 1\): funzione DECRESCENTE</h4>
+                    <div class="formula-chip">\(a^{f(x)} > a^{g(x)} \iff f(x) < g(x)\)</div>
+                    <p style="color:var(--text-muted); font-size:0.9rem; margin-top:0.5rem;">Il verso della disequazione si <strong>inverte</strong>: eguagli gli esponenti invertendo il segno.</p>
+                </div>
+            </div>
+
+            <div class="callout callout-warn">
+                <span class="callout-icon">⚠️</span>
+                <p><strong>Analogia con le disequazioni algebriche:</strong> è come moltiplicare entrambi i membri per un numero negativo — il verso si inverte. Qui, una base \(0 < a < 1\) "inverte" la relazione d'ordine tra gli esponenti.</p>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 8. DISEQUAZIONI TIPO 1 e 2 -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-diseq-tipo1">
+            <div class="section-number">Sezione 8</div>
+            <h2>Disequazioni con \(a > 1\) e \(0 < a < 1\)</h2>
+
+            <!-- Esempio D1 -->
+            <h3>Esempio 1 — Base maggiore di 1</h3>
+            <p class="lesson-text">Risolvi: \(\quad 2^{3x-1} > 2^{x+3}\)</p>
+            <div class="solution-box">
+                <h4>✏️ Soluzione passo per passo</h4>
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <div class="step-body">
+                        Base \(a = 2 > 1\): funzione crescente → conservo il verso.
+                        <span class="formula">\(3x - 1 > x + 3\)</span>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <div class="step-body">
+                        Risolvo la disequazione lineare:
+                        <span class="formula">\(2x > 4 \implies x > 2\)</span>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">3</div>
+                    <div class="step-body">
+                        <span class="result">Soluzione: \(x \in (2, +\infty)\)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Esempio D2 -->
+            <h3>Esempio 2 — Base minore di 1</h3>
+            <p class="lesson-text">Risolvi: \(\quad \left(\dfrac{1}{3}\right)^{x+2} \leq \left(\dfrac{1}{3}\right)^{2x-1}\)</p>
+            <div class="solution-box">
+                <h4>✏️ Soluzione passo per passo</h4>
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <div class="step-body">
+                        Base \(a = \dfrac{1}{3} < 1\): funzione decrescente → <strong>inverto il verso</strong>.
+                        <span class="formula">\(x + 2 \;\geq\; 2x - 1\)</span>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <div class="step-body">
+                        Risolvo:
+                        <span class="formula">\(-x \geq -3 \implies x \leq 3\)</span>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">3</div>
+                    <div class="step-body">
+                        <span class="result">Soluzione: \(x \in (-\infty, 3]\)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Esempio D3 — con numero a destra -->
+            <h3>Esempio 3 — Confronto con un numero</h3>
+            <p class="lesson-text">Risolvi: \(\quad 5^{x-1} \leq 25\)</p>
+            <div class="solution-box">
+                <h4>✏️ Soluzione passo per passo</h4>
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <div class="step-body">
+                        Riscrivo 25 come potenza di 5: \(25 = 5^2\).
+                        <span class="formula">\(5^{x-1} \leq 5^2\)</span>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <div class="step-body">
+                        Base \(5 > 1\): conservo il verso.
+                        <span class="formula">\(x - 1 \leq 2 \implies x \leq 3\)</span>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">3</div>
+                    <div class="step-body">
+                        <span class="result">Soluzione: \(x \in (-\infty, 3]\)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Esempio D4 — con log -->
+            <h3>Esempio 4 — Con logaritmo (basi non riconducibili)</h3>
+            <p class="lesson-text">Risolvi: \(\quad 3^x < 10\)</p>
+            <div class="solution-box">
+                <h4>✏️ Soluzione passo per passo</h4>
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <div class="step-body">
+                        10 non è una potenza intera di 3. Applico \(\log_3\) a entrambi i membri.
+                        Base \(3 > 1\) → il \(\log_3\) è una funzione <em>crescente</em> → conservo il verso.
+                        <span class="formula">\(x < \log_3 10 = \dfrac{\ln 10}{\ln 3} \approx 2{,}096\)</span>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <div class="step-body">
+                        <span class="result">Soluzione: \(x \in \left(-\infty,\; \log_3 10\right) \approx (-\infty,\; 2{,}096)\)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 9. DISEQUAZIONI QUADRATICHE -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-diseq-tipo2">
+            <div class="section-number">Sezione 9</div>
+            <h2>Disequazioni in forma quadratica</h2>
+            <p class="lesson-text">
+                Come per le equazioni, anche le disequazioni con la forma \(A \cdot a^{2x} + B \cdot a^x + C \gtrless 0\) si risolvono con la sostituzione \(t = a^x > 0\), ottenendo una disequazione di secondo grado in \(t\). Poi si analizza il segno.
+            </p>
+
+            <h3>Esempio — Disequazione binomica</h3>
+            <p class="lesson-text">Risolvi: \(\quad 4^x - 5 \cdot 2^x + 4 < 0\)</p>
+            <div class="solution-box">
+                <h4>✏️ Soluzione passo per passo</h4>
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <div class="step-body">
+                        Pongo \(t = 2^x > 0\), noto che \(4^x = t^2\):
+                        <span class="formula">\(t^2 - 5t + 4 < 0\)</span>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <div class="step-body">
+                        Trovo le radici dell'equazione associata: \(t^2 - 5t + 4 = 0 \implies (t-1)(t-4) = 0\).
+                        Radici: \(t_1 = 1,\quad t_2 = 4\).
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">3</div>
+                    <div class="step-body">
+                        Parabolaa con concavità verso l'alto (\(A = 1 > 0\)): il trinomio è negativo tra le radici.
+                        <span class="formula">\(1 < t < 4\)</span>
+                        Interseco con \(t > 0\): la condizione \(1 < t < 4\) è già contenuta in \(t > 0\). Rimane: \(1 < t < 4\).
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">4</div>
+                    <div class="step-body">
+                        Risostituisco \(t = 2^x\):
+                        <span class="formula">\(1 < 2^x < 4 \implies 2^0 < 2^x < 2^2\)</span>
+                        Base \(2 > 1\): conservo il verso. \(\implies 0 < x < 2\)
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">5</div>
+                    <div class="step-body">
+                        <span class="result">Soluzione: \(x \in (0,\; 2)\)</span>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="margin-top:2rem;">Tavola dei segni — visualizzazione</h3>
+            <p class="lesson-text" style="font-size:0.95rem;">Per l'equazione \(t^2 - 5t + 4\) con radici \(t=1\) e \(t=4\):</p>
+            <table class="sign-table">
+                <thead>
+                    <tr>
+                        <th>\(t\)</th>
+                        <th>\((-\infty, 0)\)<br><small style="color:rgba(255,255,255,0.3);">(escluso: t>0)</small></th>
+                        <th>\((0, 1)\)</th>
+                        <th>\(t = 1\)</th>
+                        <th>\((1, 4)\)</th>
+                        <th>\(t = 4\)</th>
+                        <th>\((4, +\infty)\)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>\((t-1)\)</td>
+                        <td class="neg">−</td>
+                        <td class="neg">−</td>
+                        <td class="zero">0</td>
+                        <td class="pos">+</td>
+                        <td class="pos">+</td>
+                        <td class="pos">+</td>
+                    </tr>
+                    <tr>
+                        <td>\((t-4)\)</td>
+                        <td class="neg">−</td>
+                        <td class="neg">−</td>
+                        <td class="neg">−</td>
+                        <td class="neg">−</td>
+                        <td class="zero">0</td>
+                        <td class="pos">+</td>
+                    </tr>
+                    <tr class="highlight">
+                        <td><strong>\(t^2-5t+4\)</strong></td>
+                        <td class="pos">+</td>
+                        <td class="pos">+</td>
+                        <td class="zero">0</td>
+                        <td class="neg">−  ✓</td>
+                        <td class="zero">0</td>
+                        <td class="pos">+</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="color:var(--text-muted); font-size:0.9rem;">La zona verde (✓) è dove il trinomio è negativo, corrispondente a \(1 < t < 4\), cioè \(x \in (0, 2)\).</p>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 10. RISOLUTORE DISEQUAZIONI -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-diseq-interattivo">
+            <div class="section-number">Sezione 10</div>
+            <h2>🎛️ Risolutore interattivo di disequazioni</h2>
+            <p class="lesson-text">
+                Sperimenta con disequazioni della forma \(a^{mx+p} \gtrless a^{nx+q}\). Scegli i parametri e osserva come il verso si conserva o si inverte a seconda della base.
+            </p>
+
+            <div class="solver-box" style="border-color:rgba(251,191,36,0.25);">
+                <h3 style="color:#fbbf24;">Disequazione: \(a^{mx+p}\) ◇ \(a^{nx+q}\)</h3>
+                <div class="eq-input-row">
+                    <div class="eq-input-group"><label>Base a</label><input type="number" id="d-a" value="2" min="0.01" step="0.5"></div>
+                    <div class="eq-input-group"><label>m</label><input type="number" id="d-m" value="3" step="1"></div>
+                    <div class="eq-input-group"><label>p</label><input type="number" id="d-p" value="-1" step="1"></div>
+                    <div class="eq-input-group">
+                        <label>Segno</label>
+                        <select id="d-sign">
+                            <option value="gt">&gt;</option>
+                            <option value="gte">&ge;</option>
+                            <option value="lt">&lt;</option>
+                            <option value="lte">&le;</option>
+                        </select>
+                    </div>
+                    <div class="eq-input-group"><label>n</label><input type="number" id="d-n" value="1" step="1"></div>
+                    <div class="eq-input-group"><label>q</label><input type="number" id="d-q" value="3" step="1"></div>
+                    <button class="solve-btn" onclick="solveDiseq()">Risolvi</button>
+                </div>
+                <div class="solver-result" id="res-diseq">Il risultato apparirà qui.</div>
+
+                <!-- Retta dei numeri -->
+                <canvas id="numline" class="number-line-canvas" width="600" height="60" style="margin-top:1.25rem; max-width:100%; display:block;"></canvas>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 11. EQUAZIONI LOGARITMICHE: INTRO -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-log-eq-intro">
+            <div class="section-number">Sezione 11</div>
+            <h2>📓 Equazioni logaritmiche — principio chiave e dominio</h2>
+            <p class="lesson-text">
+                Un'<strong>equazione logaritmica</strong> è un'equazione in cui la variabile compare come argomento di un logaritmo. La strategia sfrutta la proprietà di iniettività del logaritmo.
+            </p>
+            <div class="definition-box">
+                <p style="font-size:1.05rem;text-align:center;margin-bottom:0.5rem;">
+                    \[\log_a f(x) = \log_a g(x) \iff f(x) = g(x)\]
+                </p>
+                <p style="color:var(--text-muted);font-size:0.97rem;">
+                    con \(a > 0\), \(a \neq 1\). Vale solo se <strong>entrambi gli argomenti sono positivi</strong>.
+                </p>
+            </div>
+
+            <div class="callout callout-red">
+                <span class="callout-icon">🚫</span>
+                <p><strong>Condizione di Esistenza (C.E.) — obbligatoria!</strong><br>
+                Prima di risolvere qualsiasi equazione logaritmica si impone che tutti gli argomenti siano <strong>strettamente positivi</strong>. Le soluzioni che non soddisfano la C.E. vanno <strong>scartate</strong>.</p>
+            </div>
+
+            <div class="type-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); margin-top:1.5rem;">
+                <div class="type-card" style="border-top:3px solid #818cf8;">
+                    <h4>LOG Tipo 1</h4>
+                    <div class="formula-chip">\(\log_a f(x) = \log_a g(x)\)</div>
+                    <p style="color:var(--text-muted);font-size:0.9rem;">Stessa base: eguaglio gli argomenti (+ C.E.).</p>
+                </div>
+                <div class="type-card" style="border-top:3px solid #34d399;">
+                    <h4>LOG Tipo 2</h4>
+                    <div class="formula-chip">\(\log_a f(x) = k\)</div>
+                    <p style="color:var(--text-muted);font-size:0.9rem;">Log = numero: trasformo in esponenziale \(f(x) = a^k\).</p>
+                </div>
+                <div class="type-card" style="border-top:3px solid #fb923c;">
+                    <h4>LOG Tipo 3</h4>
+                    <div class="formula-chip">\(A(\log_a x)^2 + B\log_a x + C = 0\)</div>
+                    <p style="color:var(--text-muted);font-size:0.9rem;">Forma quadratica: sostituzione \(t = \log_a x\).</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 12. EQ LOG TIPO 1 -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-log-eq-tipo1">
+            <div class="section-number">Sezione 12</div>
+            <h2>EQ LOG Tipo 1 — \(\log_a f(x) = \log_a g(x)\)</h2>
+            <p class="lesson-text">
+                Quando i due logaritmi hanno la <strong>stessa base</strong>, si eguagliano gli argomenti. La C.E. può escludere alcune soluzioni algebriche.
+            </p>
+            <div class="definition-box">
+                <strong>Regola:</strong> \(\log_a f(x) = \log_a g(x) \iff \begin{cases} f(x) = g(x) \\ f(x) > 0 \end{cases}\)
+            </div>
+
+            <h3>Esempio 1 — Argomenti lineari</h3>
+            <p class="lesson-text">Risolvi: \(\log_2(3x-1) = \log_2(x+5)\)</p>
+            <div class="solution-box">
+                <h4>✏️ Soluzione passo per passo</h4>
+                <div class="step"><div class="step-num">1</div><div class="step-body">
+                    C.E.: \(3x-1 > 0 \implies x > \tfrac{1}{3}\) &nbsp;e&nbsp; \(x+5 > 0 \implies x > -5\)<br>
+                    C.E. risultante: \(x > \tfrac{1}{3}\)
+                </div></div>
+                <div class="step"><div class="step-num">2</div><div class="step-body">
+                    Stessa base: eguaglio gli argomenti.
+                    <span class="formula">\(3x - 1 = x + 5 \implies 2x = 6 \implies x = 3\)</span>
+                </div></div>
+                <div class="step"><div class="step-num">3</div><div class="step-body">
+                    Verifico la C.E.: \(3 > \tfrac{1}{3}\) ✓<br>
+                    <span class="result">Soluzione: \(x = 3\)</span><br>
+                    Verifica: \(\log_2 8 = 3 = \log_2 8\) ✓
+                </div></div>
+            </div>
+
+            <h3>Esempio 2 — Argomento quadratico (soluzione esclusa dalla C.E.)</h3>
+            <p class="lesson-text">Risolvi: \(\log_3(x^2 - 4) = \log_3(3x)\)</p>
+            <div class="solution-box">
+                <h4>✏️ Soluzione passo per passo</h4>
+                <div class="step"><div class="step-num">1</div><div class="step-body">
+                    C.E.: \(x^2 - 4 > 0\) e \(3x > 0\).<br>
+                    \(x^2 > 4 \implies x < -2\) o \(x > 2\) &nbsp;e&nbsp; \(x > 0\).<br>
+                    C.E. risultante: \(x > 2\).
+                </div></div>
+                <div class="step"><div class="step-num">2</div><div class="step-body">
+                    Eguaglio gli argomenti:
+                    <span class="formula">\(x^2 - 4 = 3x \implies x^2 - 3x - 4 = 0 \implies (x-4)(x+1) = 0\)</span>
+                    Soluzioni algebriche: \(x = 4\) o \(x = -1\).
+                </div></div>
+                <div class="step"><div class="step-num">3</div><div class="step-body">
+                    C.E.: \(x = 4 > 2\) ✓ &nbsp;&nbsp; \(x = -1\): non soddisfa \(x > 2\) → <strong style="color:#ef4444;">scartato</strong>.<br>
+                    <span class="result">Soluzione: \(x = 4\)</span>
+                </div></div>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 13. EQ LOG TIPO 2 -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-log-eq-tipo2">
+            <div class="section-number">Sezione 13</div>
+            <h2>EQ LOG Tipo 2 — \(\log_a f(x) = k\)</h2>
+            <p class="lesson-text">
+                Quando un logaritmo è uguale a un numero, si usa la definizione invertita: \(\log_a N = k \iff N = a^k\).
+            </p>
+            <div class="definition-box">
+                <strong>Regola:</strong> \(\log_a f(x) = k \iff f(x) = a^k\quad\) (con C.E.: \(f(x) > 0\), automaticamente garantita da \(a^k > 0\))
+            </div>
+
+            <h3>Esempio 1 — log₂</h3>
+            <p class="lesson-text">Risolvi: \(\log_2(x-1) = 3\)</p>
+            <div class="solution-box">
+                <h4>✏️ Soluzione passo per passo</h4>
+                <div class="step"><div class="step-num">1</div><div class="step-body">C.E.: \(x-1>0 \implies x>1\).</div></div>
+                <div class="step"><div class="step-num">2</div><div class="step-body">
+                    Forma esponenziale: \(x-1 = 2^3 = 8\)
+                    <span class="formula">\(x = 9\)</span>
+                </div></div>
+                <div class="step"><div class="step-num">3</div><div class="step-body">
+                    C.E.: \(9 > 1\) ✓ &nbsp;&nbsp; <span class="result">Soluzione: \(x = 9\)</span>
+                </div></div>
+            </div>
+
+            <h3>Esempio 2 — logaritmo naturale</h3>
+            <p class="lesson-text">Risolvi: \(\ln(2x+1) = 2\)</p>
+            <div class="solution-box">
+                <h4>✏️ Soluzione passo per passo</h4>
+                <div class="step"><div class="step-num">1</div><div class="step-body">C.E.: \(2x+1>0 \implies x>-\tfrac{1}{2}\).</div></div>
+                <div class="step"><div class="step-num">2</div><div class="step-body">
+                    \(\ln = \log_e\): \(2x+1 = e^2\)
+                    <span class="formula">\(x = \dfrac{e^2-1}{2} \approx 3.195\)</span>
+                </div></div>
+                <div class="step"><div class="step-num">3</div><div class="step-body"><span class="result">Soluzione: \(x = \dfrac{e^2-1}{2} \approx 3.195\)</span></div></div>
+            </div>
+
+            <h3>Esempio 3 — logaritmo decimale</h3>
+            <p class="lesson-text">Risolvi: \(\log(5x-2) = 2\) &nbsp; \((\log = \log_{10})\)</p>
+            <div class="solution-box">
+                <h4>✏️ Soluzione passo per passo</h4>
+                <div class="step"><div class="step-num">1</div><div class="step-body">C.E.: \(5x-2>0 \implies x > \tfrac{2}{5}\).</div></div>
+                <div class="step"><div class="step-num">2</div><div class="step-body">
+                    \(5x-2 = 10^2 = 100\)
+                    <span class="formula">\(x = \dfrac{102}{5} = 20.4\)</span>
+                </div></div>
+                <div class="step"><div class="step-num">3</div><div class="step-body"><span class="result">Soluzione: \(x = 20.4\)</span></div></div>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 14. EQ LOG TIPO 3 -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-log-eq-tipo3">
+            <div class="section-number">Sezione 14</div>
+            <h2>EQ LOG Tipo 3 — Forma quadratica nei logaritmi</h2>
+            <p class="lesson-text">
+                Come le equazioni esponenziali quadratiche, anche alcune equazioni logaritmiche usando la sostituzione \(t = \log_a x\) diventano equazioni di secondo grado.
+            </p>
+            <div class="definition-box">
+                <strong>Strategia:</strong> Da \(A(\log_a x)^2 + B\log_a x + C = 0\) poni \(t = \log_a x\), risolvi \(At^2+Bt+C=0\), poi per ogni \(t_k\) risolvi \(x = a^{t_k}\) (C.E.: \(x>0\) è automatica).
+            </div>
+
+            <h3>Esempio 1</h3>
+            <p class="lesson-text">Risolvi: \((\log_2 x)^2 - 3\log_2 x + 2 = 0\)</p>
+            <div class="solution-box">
+                <h4>✏️ Soluzione passo per passo</h4>
+                <div class="step"><div class="step-num">1</div><div class="step-body">
+                    C.E.: \(x>0\). Pongo \(t = \log_2 x\):
+                    <span class="formula">\(t^2 - 3t + 2 = 0 \implies (t-1)(t-2) = 0\)</span>
+                    \(t = 1\) oppure \(t = 2\).
+                </div></div>
+                <div class="step"><div class="step-num">2</div><div class="step-body">
+                    Risostituisco:<br>
+                    \(t=1 \implies x = 2^1 = 2\) &nbsp;&nbsp; \(t=2 \implies x = 2^2 = 4\)
+                </div></div>
+                <div class="step"><div class="step-num">3</div><div class="step-body">
+                    C.E.: \(x=2>0\) ✓ &nbsp; \(x=4>0\) ✓<br>
+                    <span class="result">Soluzioni: \(x = 2\) oppure \(x = 4\)</span>
+                </div></div>
+            </div>
+
+            <h3>Esempio 2</h3>
+            <p class="lesson-text">Risolvi: \((\log_3 x)^2 + \log_3 x - 6 = 0\)</p>
+            <div class="solution-box">
+                <h4>✏️ Soluzione passo per passo</h4>
+                <div class="step"><div class="step-num">1</div><div class="step-body">
+                    Pongo \(t = \log_3 x\):
+                    <span class="formula">\(t^2 + t - 6 = 0 \implies (t+3)(t-2) = 0\)</span>
+                    \(t = -3\) oppure \(t = 2\).
+                </div></div>
+                <div class="step"><div class="step-num">2</div><div class="step-body">
+                    Risostituisco (entrambi accettabili — \(x = 3^t > 0\) sempre):<br>
+                    \(t=-3 \implies x = 3^{-3} = \tfrac{1}{27}\) &nbsp;&nbsp; \(t=2 \implies x = 9\)
+                </div></div>
+                <div class="step"><div class="step-num">3</div><div class="step-body">
+                    <span class="result">Soluzioni: \(x = \dfrac{1}{27}\) oppure \(x = 9\)</span>
+                </div></div>
+            </div>
+
+            <div class="callout callout-green">
+                <span class="callout-icon">💡</span>
+                <p>Nella sostituzione \(t = \log_a x\), il ritorno \(x = a^t\) garantisce automaticamente \(x > 0\). <strong>Non si scartan mai valori di \(t\) per motivi di segno</strong> — a differenza del caso esponenziale.</p>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 15. LOG SOLVER -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-log-solver">
+            <div class="section-number">Sezione 15</div>
+            <h2>🧮 Risolutore interattivo equazioni logaritmiche</h2>
+            <p class="lesson-text">Risolvi equazioni logaritmiche dei Tipi 1 e 2 con soluzione guidata e verifica della C.E.</p>
+
+            <div class="solver-box" style="border-color:rgba(129,140,248,0.3);">
+                <h3 style="color:#a78bfa;">Risolutore logaritmico</h3>
+                <div class="method-tabs" id="log-solver-tabs">
+                    <button class="tab-btn active" onclick="switchLogTab('lt1')">Tipo 1: stessa base</button>
+                    <button class="tab-btn" onclick="switchLogTab('lt2')">Tipo 2: log = numero</button>
+                </div>
+
+                <!-- TAB L1 -->
+                <div class="tab-panel active" id="log-solver-lt1">
+                    <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:1rem;">Equazione: \(\log_a(mx+p) = \log_a(nx+q)\)</p>
+                    <div class="eq-input-row">
+                        <div class="eq-input-group"><label>Base a</label><input type="number" id="ls1-a" value="2" min="0.1" step="0.5"></div>
+                        <div class="eq-input-group"><label>m</label><input type="number" id="ls1-m" value="3" step="1"></div>
+                        <div class="eq-input-group"><label>p</label><input type="number" id="ls1-p" value="-1" step="1"></div>
+                        <div class="eq-input-group"><label>n</label><input type="number" id="ls1-n" value="1" step="1"></div>
+                        <div class="eq-input-group"><label>q</label><input type="number" id="ls1-q" value="5" step="1"></div>
+                        <button class="solve-btn" style="background:rgba(124,58,237,0.25);border-color:#7c3aed;color:#c4b5fd;" onclick="solveLogT1()">Risolvi</button>
+                    </div>
+                    <div class="solver-result" id="res-lt1">Il risultato apparirà qui.</div>
+                </div>
+
+                <!-- TAB L2 -->
+                <div class="tab-panel" id="log-solver-lt2">
+                    <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:1rem;">Equazione: \(\log_a(mx+p) = k\)</p>
+                    <div class="eq-input-row">
+                        <div class="eq-input-group"><label>Base a</label><input type="number" id="ls2-a" value="2" min="0.1" step="0.5"></div>
+                        <div class="eq-input-group"><label>m</label><input type="number" id="ls2-m" value="1" step="1"></div>
+                        <div class="eq-input-group"><label>p</label><input type="number" id="ls2-p" value="-1" step="1"></div>
+                        <div class="eq-input-group"><label>k</label><input type="number" id="ls2-k" value="3" step="1"></div>
+                        <button class="solve-btn" style="background:rgba(124,58,237,0.25);border-color:#7c3aed;color:#c4b5fd;" onclick="solveLogT2()">Risolvi</button>
+                    </div>
+                    <div class="solver-result" id="res-lt2">Il risultato apparirà qui.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 16. DISEQUAZIONI LOGARITMICHE: INTRO -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-log-diseq-intro">
+            <div class="section-number">Sezione 16</div>
+            <h2>Disequazioni logaritmiche — principio chiave</h2>
+            <p class="lesson-text">
+                Una <strong>disequazione logaritmica</strong> ha la forma \(\log_a f(x) \gtrless \log_a g(x)\) oppure \(\log_a f(x) \gtrless k\). Come per le esponenziali, la monotonia dipende dalla base.
+            </p>
+
+            <div class="type-grid" style="grid-template-columns: 1fr 1fr;">
+                <div class="type-card" style="border-left:4px solid #34d399; border-radius:0 0.875rem 0.875rem 0;">
+                    <h4>📈 Base \(a > 1\): log CRESCENTE</h4>
+                    <div class="formula-chip">\(\log_a f(x) > \log_a g(x) \iff f(x) > g(x)\)</div>
+                    <p style="color:var(--text-muted);font-size:0.9rem;margin-top:0.5rem;">Verso <strong>conservato</strong> + C.E. obbligatoria.</p>
+                </div>
+                <div class="type-card" style="border-left:4px solid #f87171; border-radius:0 0.875rem 0.875rem 0;">
+                    <h4>📉 Base \(0 &lt; a &lt; 1\): log DECRESCENTE</h4>
+                    <div class="formula-chip">\(\log_a f(x) > \log_a g(x) \iff f(x) < g(x)\)</div>
+                    <p style="color:var(--text-muted);font-size:0.9rem;margin-top:0.5rem;">Verso <strong>invertito</strong> + C.E. obbligatoria.</p>
+                </div>
+            </div>
+
+            <div class="definition-box" style="margin-top:1.5rem;">
+                <strong>Metodo sistematico in 3 passi:</strong>
+                <ol style="margin-top:0.75rem; padding-left:1.2rem; color:var(--text-muted); font-size:0.97rem; line-height:1.9;">
+                    <li><strong style="color:#6ee7b7;">C.E.</strong> — imponi che tutti gli argomenti siano &gt; 0.</li>
+                    <li><strong style="color:#6ee7b7;">Risolvi</strong> — eguaglia/disequa gli argomenti (conservando o invertendo il verso).</li>
+                    <li><strong style="color:#6ee7b7;">Interseca</strong> — soluzione finale = soluzione ∩ C.E.</li>
+                </ol>
+            </div>
+
+            <div class="callout callout-warn">
+                <span class="callout-icon">⚠️</span>
+                <p><strong>Differenza chiave rispetto alle disequazioni esponenziali:</strong> la C.E. spesso restringe ulteriormente la soluzione. Non dimenticarla mai!</p>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 17. ESEMPI DISEQUAZIONI LOGARITMICHE -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-log-diseq-esempi">
+            <div class="section-number">Sezione 17</div>
+            <h2>Esempi di disequazioni logaritmiche</h2>
+
+            <h3>Esempio 1 — Base &gt; 1 (verso conservato)</h3>
+            <p class="lesson-text">Risolvi: \(\log_2(x-1) > \log_2(2x-3)\)</p>
+            <div class="solution-box">
+                <h4>✏️ Soluzione passo per passo</h4>
+                <div class="step"><div class="step-num">1</div><div class="step-body">
+                    C.E.: \(x-1>0\) e \(2x-3>0\) → C.E.: \(x > \tfrac{3}{2}\)
+                </div></div>
+                <div class="step"><div class="step-num">2</div><div class="step-body">
+                    Base \(2>1\) → conservo il verso:
+                    <span class="formula">\(x-1 > 2x-3 \implies -x > -2 \implies x < 2\)</span>
+                </div></div>
+                <div class="step"><div class="step-num">3</div><div class="step-body">
+                    Interseco: \(x < 2\;\cap\; x > \tfrac{3}{2}\)
+                    <span class="result">Soluzione: \(x \in \left(\tfrac{3}{2},\; 2\right)\)</span>
+                </div></div>
+            </div>
+
+            <h3>Esempio 2 — Base &lt; 1 (verso invertito)</h3>
+            <p class="lesson-text">Risolvi: \(\log_{1/2}(x+3) \leq \log_{1/2}(2x-1)\)</p>
+            <div class="solution-box">
+                <h4>✏️ Soluzione passo per passo</h4>
+                <div class="step"><div class="step-num">1</div><div class="step-body">
+                    C.E.: \(x+3>0\) e \(2x-1>0\) → C.E.: \(x > \tfrac{1}{2}\)
+                </div></div>
+                <div class="step"><div class="step-num">2</div><div class="step-body">
+                    Base \(\tfrac{1}{2}<1\) → <strong>inverto il verso</strong>:
+                    <span class="formula">\(x+3 \geq 2x-1 \implies -x \geq -4 \implies x \leq 4\)</span>
+                </div></div>
+                <div class="step"><div class="step-num">3</div><div class="step-body">
+                    Interseco: \(x \leq 4\;\cap\; x > \tfrac{1}{2}\)
+                    <span class="result">Soluzione: \(x \in \left(\tfrac{1}{2},\; 4\right]\)</span>
+                </div></div>
+            </div>
+
+            <h3>Esempio 3 — Log confrontato con numero</h3>
+            <p class="lesson-text">Risolvi: \(\log_3(2x-1) \geq 2\)</p>
+            <div class="solution-box">
+                <h4>✏️ Soluzione passo per passo</h4>
+                <div class="step"><div class="step-num">1</div><div class="step-body">C.E.: \(2x-1>0 \implies x > \tfrac{1}{2}\).</div></div>
+                <div class="step"><div class="step-num">2</div><div class="step-body">
+                    Scrivo \(2 = \log_3 9\) (poiché \(3^2=9\)):
+                    <span class="formula">\(\log_3(2x-1) \geq \log_3 9\)</span>
+                    Base \(3>1\) → conservo: \(2x-1 \geq 9 \implies x \geq 5\)
+                </div></div>
+                <div class="step"><div class="step-num">3</div><div class="step-body">
+                    Interseco con C.E.: \(x \geq 5\) è più restrittiva.
+                    <span class="result">Soluzione: \(x \in [5, +\infty)\)</span>
+                </div></div>
+            </div>
+
+            <h3>Esempio 4 — Quadratica nei logaritmi</h3>
+            <p class="lesson-text">Risolvi: \((\log_2 x)^2 - 3\log_2 x + 2 < 0\)</p>
+            <div class="solution-box">
+                <h4>✏️ Soluzione passo per passo</h4>
+                <div class="step"><div class="step-num">1</div><div class="step-body">
+                    C.E.: \(x>0\). Pongo \(t = \log_2 x\):
+                    <span class="formula">\(t^2 - 3t + 2 < 0 \implies (t-1)(t-2) < 0 \implies 1 < t < 2\)</span>
+                </div></div>
+                <div class="step"><div class="step-num">2</div><div class="step-body">
+                    Risostituisco: \(1 < \log_2 x < 2\)
+                    <span class="formula">\(2^1 < x < 2^2 \implies 2 < x < 4\)</span>
+                    (Base \(2>1\) → conservo il verso.)
+                </div></div>
+                <div class="step"><div class="step-num">3</div><div class="step-body">
+                    Interseco con C.E. (già soddisfatta).
+                    <span class="result">Soluzione: \(x \in (2,\; 4)\)</span>
+                </div></div>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 18. RIEPILOGO -->
+        <!-- ================================================================ -->
+
+        <section class="lesson-section" id="sec-riepilogo">
+            <div class="section-number">Sezione 18</div>
+            <h2>📊 Riepilogo di tutti i metodi</h2>
+            <p class="lesson-text">Usa questa tabella come promemoria per identificare il tipo di equazione/disequazione e scegliere il metodo corretto.</p>
+
+            <table class="summary-table">
+                <thead>
+                    <tr>
+                        <th>Tipo</th>
+                        <th>Forma</th>
+                        <th>Metodo</th>
+                        <th>Attenzione</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="td-type">EQ — Tipo 1</td>
+                        <td class="td-form">\(a^{f(x)} = a^{g(x)}\)</td>
+                        <td>Eguagliare gli esponenti: \(f(x) = g(x)\)</td>
+                        <td style="color:#fca5a5;">Stessa base obbligatoria</td>
+                    </tr>
+                    <tr>
+                        <td class="td-type">EQ — Tipo 2</td>
+                        <td class="td-form">Basi diverse ma riconducibili</td>
+                        <td>Riscrivere tutto con la stessa base, poi come Tipo 1</td>
+                        <td style="color:#fca5a5;">Riconoscere le potenze: \(4=2^2\), \(8=2^3\)…</td>
+                    </tr>
+                    <tr>
+                        <td class="td-type">EQ — Tipo 3</td>
+                        <td class="td-form">\(A\cdot a^{2x} + B\cdot a^x + C=0\)</td>
+                        <td>Sostituzione \(t=a^x\), eq. di 2° grado, poi risostituire</td>
+                        <td style="color:#fca5a5;">Scartare \(t \leq 0\)</td>
+                    </tr>
+                    <tr>
+                        <td class="td-type">EQ — Tipo 4</td>
+                        <td class="td-form">\(a^x = b\)</td>
+                        <td>Applicare \(\ln\) ad entrambi i membri: \(x = \ln b / \ln a\)</td>
+                        <td style="color:#fca5a5;">Solo se \(b > 0\)</td>
+                    </tr>
+                    <tr>
+                        <td class="td-type">DISEQ — \(a > 1\)</td>
+                        <td class="td-form">\(a^{f(x)} \gtrless a^{g(x)}\)</td>
+                        <td>Conservare il verso: \(f(x) \gtrless g(x)\)</td>
+                        <td style="color:#6ee7b7;">Verso conservato</td>
+                    </tr>
+                    <tr>
+                        <td class="td-type">DISEQ — \(0{<}a{<}1\)</td>
+                        <td class="td-form">\(a^{f(x)} \gtrless a^{g(x)}\)</td>
+                        <td>Invertire il verso: \(f(x) \lessgtr g(x)\)</td>
+                        <td style="color:#fca5a5;">⚠️ Verso invertito!</td>
+                    </tr>
+                    <tr>
+                        <td class="td-type">DISEQ EXP — Quadratica</td>
+                        <td class="td-form">\(Aa^{2x} + Ba^x + C \gtrless 0\)</td>
+                        <td>Sostituzione, risolvi, analisi del segno, poi risostituisci</td>
+                        <td style="color:#fca5a5;">Intersecare con \(t>0\)</td>
+                    </tr>
+                    <tr><td colspan="4" style="background:rgba(129,140,248,0.06);color:#a78bfa;font-weight:700;padding:0.6rem 1rem;border-top:1px solid rgba(129,140,248,0.2);">── Equazioni Logaritmiche ──</td></tr>
+                    <tr>
+                        <td class="td-type">EQ LOG — Tipo 1</td>
+                        <td class="td-form">\(\log_a f(x) = \log_a g(x)\)</td>
+                        <td>Eguaglio gli argomenti: \(f(x) = g(x)\) &amp; C.E.</td>
+                        <td style="color:#fca5a5;">C.E.: \(f(x)>0\) e \(g(x)>0\)</td>
+                    </tr>
+                    <tr>
+                        <td class="td-type">EQ LOG — Tipo 2</td>
+                        <td class="td-form">\(\log_a f(x) = k\)</td>
+                        <td>Trasformo: \(f(x) = a^k\), poi risolvo e verifico C.E.</td>
+                        <td style="color:#fca5a5;">C.E.: \(f(x)>0\)</td>
+                    </tr>
+                    <tr>
+                        <td class="td-type">EQ LOG — Tipo 3</td>
+                        <td class="td-form">\(A(\log_a x)^2 + B\log_a x + C = 0\)</td>
+                        <td>Sostituzione \(t=\log_a x\), risolvi, poi \(x = a^{t_k}\)</td>
+                        <td style="color:#6ee7b7;">Non si scartan valori di \(t\)</td>
+                    </tr>
+                    <tr><td colspan="4" style="background:rgba(129,140,248,0.06);color:#a78bfa;font-weight:700;padding:0.6rem 1rem;border-top:1px solid rgba(129,140,248,0.2);">── Disequazioni Logaritmiche ──</td></tr>
+                    <tr>
+                        <td class="td-type">DISEQ LOG — \(a>1\)</td>
+                        <td class="td-form">\(\log_a f(x) \gtrless \log_a g(x)\)</td>
+                        <td>Verso conservato; intersecare con C.E.</td>
+                        <td style="color:#6ee7b7;">C.E. essenziale</td>
+                    </tr>
+                    <tr>
+                        <td class="td-type">DISEQ LOG — \(0{<}a{<}1\)</td>
+                        <td class="td-form">\(\log_a f(x) \gtrless \log_a g(x)\)</td>
+                        <td>Verso invertito; intersecare con C.E.</td>
+                        <td style="color:#fca5a5;">⚠️ Verso invertito + C.E.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- QUIZ -->
+        <!-- ================================================================ -->
+        <section class="lesson-section quiz-container" id="sec-quiz">
+            <div class="section-number">Sezione 19</div>
+            <h2 style="color:#10b981;">Sfida le tue conoscenze</h2>
+            <p class="lesson-text">Metti alla prova la tua comprensione di equazioni e disequazioni esponenziali e logaritmiche!</p>
+            <div class="quiz-wrapper">
+                <div id="quiz-area"></div>
+                <div class="quiz-score-msg" id="quiz-score"></div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>© 2026 MFI — Matematica, Fisica, Informatica.</p>
+    </footer>
+
+    <script>
+    // ============================================================
+    //  TABS
+    // ============================================================
+    function switchSolverTab(id) {
+        // Only affect tabs inside sec-solver
+        const tabs = document.querySelectorAll('#sec-solver .tab-btn');
+        const ids = ['t1','t2','t4'];
+        tabs.forEach((b,i) => b.classList.toggle('active', ids[i] === id));
+        ['solver-t1','solver-t2','solver-t4'].forEach(pid => {
+            const el = document.getElementById(pid);
+            if (el) el.classList.toggle('active', pid === 'solver-'+id);
+        });
+    }
+
+    function switchLogTab(id) {
+        const tabs = document.querySelectorAll('#log-solver-tabs .tab-btn');
+        const ids = ['lt1','lt2'];
+        tabs.forEach((b,i) => b.classList.toggle('active', ids[i] === id));
+        ['log-solver-lt1','log-solver-lt2'].forEach(pid => {
+            const el = document.getElementById(pid);
+            if (el) el.classList.toggle('active', pid === 'log-solver-'+id);
+        });
+    }
+
+    // ============================================================
+    //  FORMAT HELPERS
+    // ============================================================
+    const fmtNum = v => {
+        if (!isFinite(v)) return '∞';
+        if (Number.isInteger(v) || Math.abs(v - Math.round(v)) < 1e-9) return Math.round(v).toString();
+        return v.toFixed(4);
+    };
+
+    const fmtFrac = (num, den) => {
+        if (den === 0) return '∞';
+        const g = gcd(Math.abs(Math.round(num * 1e9)), Math.abs(Math.round(den * 1e9)));
+        const n = Math.round(num * 1e9) / g;
+        const d = Math.round(den * 1e9) / g;
+        if (d === 1) return n.toString();
+        return `${n}/${d}`;
+    };
+
+    function gcd(a, b) { return b === 0 ? a : gcd(b, a % b); }
+
+    // ============================================================
+    //  SOLVER T1: a^(mx+p) = a^(nx+q)
+    // ============================================================
+    function solveT1() {
+        const a = parseFloat(document.getElementById('s1-a').value);
+        const m = parseFloat(document.getElementById('s1-m').value);
+        const p = parseFloat(document.getElementById('s1-p').value);
+        const n = parseFloat(document.getElementById('s1-n').value);
+        const q = parseFloat(document.getElementById('s1-q').value);
+        const res = document.getElementById('res-t1');
+
+        if (a <= 0 || a === 1) { res.innerHTML = 'Base non valida (deve essere > 0 e ≠ 1).'; return; }
+
+        const eqDisp = `${a}<sup>${fmtM(m)}x${fmtP(p)}</sup> = ${a}<sup>${fmtM(n)}x${fmtP(q)}</sup>`;
+
+        if (m === n) {
+            if (p === q) {
+                res.innerHTML = `<strong style="color:#6ee7b7;">Identità</strong>: vera per ogni x ∈ ℝ.<br><small>(Gli esponenti sono identici)</small>`;
+            } else {
+                res.innerHTML = `<strong style="color:#fca5a5;">Impossibile</strong>: gli esponenti non possono essere uguali (${m}x${fmtP(p)} ≠ ${m}x${fmtP(q)} per nessun x).`;
+            }
+            return;
+        }
+
+        // (m-n)x = q-p
+        const coeff = m - n;
+        const rhs = q - p;
+        const x = rhs / coeff;
+
+        res.innerHTML = `
+            <span class="sol-step"><strong>Equazione:</strong> ${eqDisp}</span>
+            <span class="sol-step">Stessa base → eguaglio esponenti: <em>${fmtM(m)}x ${fmtP(p)} = ${fmtM(n)}x ${fmtP(q)}</em></span>
+            <span class="sol-step">→ <em>${fmtM(coeff)}x = ${fmtNum(rhs)}</em></span>
+            <span class="sol-step"><strong style="color:#6ee7b7;">Soluzione: x = ${fmtNum(x)}</strong></span>
+            <span class="sol-step" style="color:rgba(255,255,255,0.4); font-size:0.85rem;">Verifica: ${a}<sup>${fmtNum(m*x+p)}</sup> = ${fmtNum(Math.pow(a, m*x+p))} ≈ ${a}<sup>${fmtNum(n*x+q)}</sup> = ${fmtNum(Math.pow(a, n*x+q))}</span>
+        `;
+    }
+
+    // ============================================================
+    //  SOLVER T2: a^(mx+p) = b^(nx+q) via log
+    // ============================================================
+    function solveT2() {
+        const a = parseFloat(document.getElementById('s2-a').value);
+        const m = parseFloat(document.getElementById('s2-m').value);
+        const p = parseFloat(document.getElementById('s2-p').value);
+        const b = parseFloat(document.getElementById('s2-b').value);
+        const n = parseFloat(document.getElementById('s2-n').value);
+        const q = parseFloat(document.getElementById('s2-q').value);
+        const res = document.getElementById('res-t2');
+
+        if (a <= 0 || a === 1 || b <= 0 || b === 1) { res.innerHTML = 'Basi non valide.'; return; }
+
+        // (mx+p) ln a = (nx+q) ln b
+        // x (m ln a - n ln b) = q ln b - p ln a
+        const lna = Math.log(a), lnb = Math.log(b);
+        const coeff = m * lna - n * lnb;
+        const rhs = q * lnb - p * lna;
+
+        if (Math.abs(coeff) < 1e-10) {
+            if (Math.abs(rhs) < 1e-10) {
+                res.innerHTML = `<strong style="color:#6ee7b7;">Identità</strong>: vera per ogni x ∈ ℝ.`;
+            } else {
+                res.innerHTML = `<strong style="color:#fca5a5;">Impossibile</strong>: nessuna soluzione.`;
+            }
+            return;
+        }
+
+        const x = rhs / coeff;
+        res.innerHTML = `
+            <span class="sol-step">Applico ln: <em>(${fmtM(m)}x${fmtP(p)})·ln(${a}) = (${fmtM(n)}x${fmtP(q)})·ln(${b})</em></span>
+            <span class="sol-step">→ <em>x·(${fmtNum(m)}·${fmtNum(lna)} − ${fmtNum(n)}·${fmtNum(lnb)}) = ${fmtNum(q)}·${fmtNum(lnb)} − ${fmtNum(p)}·${fmtNum(lna)}</em></span>
+            <span class="sol-step">→ <em>x · ${fmtNum(coeff)} = ${fmtNum(rhs)}</em></span>
+            <span class="sol-step"><strong style="color:#6ee7b7;">Soluzione: x ≈ ${fmtNum(x)}</strong></span>
+            <span class="sol-step" style="color:rgba(255,255,255,0.4); font-size:0.85rem;">Verifica: ${a}<sup>${fmtNum(m*x+p)}</sup> ≈ ${fmtNum(Math.pow(a, m*x+p).toFixed(4))} ≈ ${b}<sup>${fmtNum(n*x+q)}</sup> ≈ ${fmtNum(Math.pow(b, n*x+q).toFixed(4))}</span>
+        `;
+    }
+
+    // ============================================================
+    //  SOLVER T4: a^x = b
+    // ============================================================
+    function solveT4() {
+        const a = parseFloat(document.getElementById('s4-a').value);
+        const b = parseFloat(document.getElementById('s4-b').value);
+        const res = document.getElementById('res-t4');
+
+        if (a <= 0 || a === 1) { res.innerHTML = 'Base non valida.'; return; }
+        if (b <= 0) { res.innerHTML = `<strong style="color:#fca5a5;">Nessuna soluzione</strong>: b deve essere > 0 (il valore ${b} non è raggiungibile da un'esponenziale).`; return; }
+
+        const x = Math.log(b) / Math.log(a);
+        res.innerHTML = `
+            <span class="sol-step">Applico ln: <em>x · ln(${a}) = ln(${b})</em></span>
+            <span class="sol-step">→ <em>x = ln(${b}) / ln(${a}) = ${fmtNum(Math.log(b))} / ${fmtNum(Math.log(a))}</em></span>
+            <span class="sol-step"><strong class="sol-val">x = log<sub>${a}</sub>(${b}) ≈ ${fmtNum(x)}</strong></span>
+            <span class="sol-step" style="color:rgba(255,255,255,0.4); font-size:0.85rem;">Verifica: ${a}<sup>${fmtNum(x)}</sup> ≈ ${Math.pow(a, x).toFixed(6)}</span>
+        `;
+    }
+
+    // ============================================================
+    //  SOLVE DISEQUATION a^(mx+p) ◇ a^(nx+q)
+    // ============================================================
+    function solveDiseq() {
+        const a    = parseFloat(document.getElementById('d-a').value);
+        const m    = parseFloat(document.getElementById('d-m').value);
+        const p    = parseFloat(document.getElementById('d-p').value);
+        const sign = document.getElementById('d-sign').value;
+        const n    = parseFloat(document.getElementById('d-n').value);
+        const q    = parseFloat(document.getElementById('d-q').value);
+        const res  = document.getElementById('res-diseq');
+
+        if (a <= 0 || a === 1) { res.innerHTML = 'Base non valida.'; return; }
+
+        const signStr  = {gt:'>',gte:'≥',lt:'<',lte:'≤'}[sign];
+        const growing  = a > 1;
+        const inverted = !growing;
+
+        // Sign after possible inversion
+        const effSign = inverted
+            ? {gt:'lt',gte:'lte',lt:'gt',lte:'gte'}[sign]
+            : sign;
+        const effStr  = {gt:'>',gte:'≥',lt:'<',lte:'≤'}[effSign];
+
+        // mx+p ◇ nx+q  →  (m-n)x ◇ q-p
+        const coeff = m - n;
+        const rhs   = q - p;
+
+        let solText = '';
+        let solInterval = null; // [lo, hi, openLo, openHi]
+
+        if (coeff === 0) {
+            const lhsConst = p, rhsConst = q;
+            let val = false;
+            // check 0 ◇ q-p  (both sides are const: lhsConst ◇ rhsConst after same base cancel → p ◇ q)
+            const diff = p - q;
+            if (effSign === 'gt')  val = diff >  0;
+            if (effSign === 'gte') val = diff >= 0;
+            if (effSign === 'lt')  val = diff <  0;
+            if (effSign === 'lte') val = diff <= 0;
+            solText = val ? `<strong style="color:#6ee7b7;">Soluzione: ∀ x ∈ ℝ</strong> (la disequazione è sempre vera)` : `<strong style="color:#fca5a5;">Nessuna soluzione</strong> (la disequazione è sempre falsa)`;
+        } else {
+            // (m-n)x ◇ q-p
+            let xVal = rhs / coeff;
+            // if coeff < 0 we flip sign again
+            let finalSign = effSign;
+            if (coeff < 0) {
+                finalSign = {gt:'lt',gte:'lte',lt:'gt',lte:'gte'}[finalSign];
+            }
+            const fs = {gt:'>',gte:'≥',lt:'<',lte:'≤'}[finalSign];
+            const openLo = finalSign === 'gt' || finalSign === 'lt';
+            const openHi = openLo;
+
+            if (finalSign === 'gt')  { solInterval = [xVal, Infinity, true, true];  solText = `x > ${fmtNum(xVal)} &nbsp;→&nbsp; <strong style="color:#6ee7b7;">x ∈ (${fmtNum(xVal)}, +∞)</strong>`; }
+            if (finalSign === 'gte') { solInterval = [xVal, Infinity, false, true]; solText = `x ≥ ${fmtNum(xVal)} &nbsp;→&nbsp; <strong style="color:#6ee7b7;">x ∈ [${fmtNum(xVal)}, +∞)</strong>`; }
+            if (finalSign === 'lt')  { solInterval = [-Infinity, xVal, true, true];  solText = `x < ${fmtNum(xVal)} &nbsp;→&nbsp; <strong style="color:#6ee7b7;">x ∈ (-∞, ${fmtNum(xVal)})</strong>`; }
+            if (finalSign === 'lte') { solInterval = [-Infinity, xVal, true, false]; solText = `x ≤ ${fmtNum(xVal)} &nbsp;→&nbsp; <strong style="color:#6ee7b7;">x ∈ (-∞, ${fmtNum(xVal)}]</strong>`; }
+        }
+
+        const invNote = inverted
+            ? `<span style="color:#f87171;">Base ${a} &lt; 1 → funzione decrescente → il verso si <strong>inverte</strong>: ${signStr} diventa ${effStr}</span><br>`
+            : `<span style="color:#6ee7b7;">Base ${a} &gt; 1 → funzione crescente → il verso si <strong>conserva</strong></span><br>`;
+
+        res.innerHTML = `
+            <span class="sol-step">${invNote}</span>
+            <span class="sol-step">Eguaglio esponenti (con verso eventualmente invertito):<br>&nbsp;&nbsp;${fmtM(m)}x${fmtP(p)} ${effStr} ${fmtM(n)}x${fmtP(q)}</span>
+            <span class="sol-step">→ ${fmtM(coeff)}x ${effStr} ${fmtNum(rhs)}</span>
+            <span class="sol-step">${solText}</span>
+        `;
+
+        drawNumberLine(solInterval, xVal => fmtNum(xVal));
+    }
+
+    // ============================================================
+    //  NUMBER LINE CANVAS
+    // ============================================================
+    function drawNumberLine(interval, fmt) {
+        const canvas = document.getElementById('numline');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const W = canvas.width, H = canvas.height;
+        ctx.clearRect(0, 0, W, H);
+
+        const pad = 60;
+        const midY = H / 2;
+        const lineW = W - 2*pad;
+
+        // Find a good range
+        let center = 0;
+        if (interval) {
+            const finite = interval.filter(v => isFinite(v));
+            if (finite.length > 0) center = finite[0];
+        }
+        const range = 8;
+        const xMin = center - range/2;
+        const xMax = center + range/2;
+        const toX = v => {
+            if (!isFinite(v)) return v > 0 ? W - pad/2 : pad/2;
+            return pad + (v - xMin) / (xMax - xMin) * lineW;
+        };
+
+        // Axis
+        ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+        ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(pad/2, midY); ctx.lineTo(W - pad/2, midY); ctx.stroke();
+
+        // Arrow heads
+        ctx.fillStyle = 'rgba(255,255,255,0.3)';
+        ctx.beginPath(); ctx.moveTo(W-pad/2, midY); ctx.lineTo(W-pad/2-8, midY-5); ctx.lineTo(W-pad/2-8, midY+5); ctx.closePath(); ctx.fill();
+
+        // Ticks
+        ctx.fillStyle = 'rgba(255,255,255,0.4)';
+        ctx.font = '11px Inter';
+        ctx.textAlign = 'center';
+        for (let v = Math.ceil(xMin); v <= Math.floor(xMax); v++) {
+            const cx = toX(v);
+            ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+            ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(cx, midY-5); ctx.lineTo(cx, midY+5); ctx.stroke();
+            ctx.fillText(v, cx, midY + 18);
+        }
+
+        if (!interval) return;
+
+        const [lo, hi, openLo, openHi] = interval;
+        const lx = toX(lo);
+        const hx = toX(hi);
+
+        // Solution region
+        ctx.fillStyle = 'rgba(16,185,129,0.3)';
+        ctx.fillRect(lx, midY - 8, hx - lx, 16);
+
+        // Endpoints
+        const drawEndpoint = (cx, open) => {
+            ctx.beginPath();
+            ctx.arc(cx, midY, 7, 0, Math.PI * 2);
+            if (open) {
+                ctx.strokeStyle = '#10b981';
+                ctx.lineWidth = 2.5;
+                ctx.stroke();
+                ctx.fillStyle = '#0B0E14';
+                ctx.fill();
+            } else {
+                ctx.fillStyle = '#10b981';
+                ctx.fill();
+            }
+        };
+        if (isFinite(lo)) drawEndpoint(lx, openLo);
+        if (isFinite(hi)) drawEndpoint(hx, openHi);
+
+        // Label
+        if (isFinite(lo)) {
+            ctx.fillStyle = '#6ee7b7';
+            ctx.font = '11px Inter';
+            ctx.textAlign = 'center';
+            ctx.fillText(fmt(lo), lx, midY - 16);
+        }
+    }
+
+    // ============================================================
+    //  FORMAT HELPERS FOR DISPLAY
+    // ============================================================
+    function fmtM(m) {
+        if (m === 1) return '';
+        if (m === -1) return '-';
+        return fmtNum(m);
+    }
+    function fmtP(p) {
+        if (p === 0) return '';
+        if (p > 0) return '+' + fmtNum(p);
+        return fmtNum(p);
+    }
+
+    // ============================================================
+    //  LOG SOLVER T1: log_a(mx+p) = log_a(nx+q)
+    // ============================================================
+    function solveLogT1() {
+        const a = parseFloat(document.getElementById('ls1-a').value);
+        const m = parseFloat(document.getElementById('ls1-m').value);
+        const p = parseFloat(document.getElementById('ls1-p').value);
+        const n = parseFloat(document.getElementById('ls1-n').value);
+        const q = parseFloat(document.getElementById('ls1-q').value);
+        const res = document.getElementById('res-lt1');
+        if (a <= 0 || a === 1) { res.innerHTML = 'Base non valida.'; return; }
+
+        const coeff = m - n, rhs = q - p;
+        let html = '';
+        html += `<span class="sol-step"><strong style="color:#f87171;">C.E.:</strong> (${fmtM(m)}x${fmtP(p)}) &gt; 0 &nbsp;e&nbsp; (${fmtM(n)}x${fmtP(q)}) &gt; 0</span>`;
+
+        if (coeff === 0) {
+            html += p === q
+                ? `<span class="sol-step"><strong style="color:#6ee7b7;">Identità: ∀ x nella C.E.</strong></span>`
+                : `<span class="sol-step"><strong style="color:#fca5a5;">Impossibile.</strong></span>`;
+            res.innerHTML = html; return;
+        }
+
+        const x = rhs / coeff;
+        const arg1 = m * x + p, arg2 = n * x + q;
+        const ceOk = arg1 > 0 && arg2 > 0;
+        html += `<span class="sol-step">Eguaglio argomenti: ${fmtM(m)}x${fmtP(p)} = ${fmtM(n)}x${fmtP(q)} → ${fmtM(coeff)}x = ${fmtNum(rhs)} → <em>x = ${fmtNum(x)}</em></span>`;
+        if (ceOk) {
+            html += `<span class="sol-step">C.E.: arg1 = ${fmtNum(arg1)} &gt; 0 ✓, arg2 = ${fmtNum(arg2)} &gt; 0 ✓</span>`;
+            html += `<span class="sol-step"><strong style="color:#6ee7b7;">Soluzione: x = ${fmtNum(x)}</strong></span>`;
+        } else {
+            html += `<span class="sol-step" style="color:#fca5a5;">x = ${fmtNum(x)}: argomento/i ≤ 0 → <strong>escluso dalla C.E.</strong> → nessuna soluzione.</span>`;
+        }
+        res.innerHTML = html;
+    }
+
+    // ============================================================
+    //  LOG SOLVER T2: log_a(mx+p) = k
+    // ============================================================
+    function solveLogT2() {
+        const a = parseFloat(document.getElementById('ls2-a').value);
+        const m = parseFloat(document.getElementById('ls2-m').value);
+        const p = parseFloat(document.getElementById('ls2-p').value);
+        const k = parseFloat(document.getElementById('ls2-k').value);
+        const res = document.getElementById('res-lt2');
+        if (a <= 0 || a === 1) { res.innerHTML = 'Base non valida.'; return; }
+
+        const rhs = Math.pow(a, k);
+        let html = '';
+        html += `<span class="sol-step"><strong style="color:#f87171;">C.E.:</strong> ${fmtM(m)}x${fmtP(p)} &gt; 0</span>`;
+        html += `<span class="sol-step">Trasformo: ${fmtM(m)}x${fmtP(p)} = ${a}<sup>${fmtNum(k)}</sup> = ${fmtNum(rhs)}</span>`;
+
+        if (m === 0) {
+            html += p === rhs
+                ? `<span class="sol-step"><strong style="color:#6ee7b7;">Identità ∀ x nella C.E.</strong></span>`
+                : `<span class="sol-step"><strong style="color:#fca5a5;">Impossibile.</strong></span>`;
+            res.innerHTML = html; return;
+        }
+
+        const x = (rhs - p) / m;
+        const arg = m * x + p;
+        const ceOk = arg > 1e-10;
+        html += `<span class="sol-step">${fmtM(m)}x = ${fmtNum(rhs - p)} → <em>x = ${fmtNum(x)}</em></span>`;
+        if (ceOk) {
+            html += `<span class="sol-step">C.E.: ${fmtNum(arg)} &gt; 0 ✓</span>`;
+            html += `<span class="sol-step"><strong style="color:#6ee7b7;">Soluzione: x = ${fmtNum(x)}</strong></span>`;
+            html += `<span class="sol-step" style="color:rgba(255,255,255,0.4);font-size:0.85rem;">Verifica: log<sub>${a}</sub>(${fmtNum(arg)}) ≈ ${fmtNum(Math.log(arg)/Math.log(a))} ≈ ${fmtNum(k)} ✓</span>`;
+        } else {
+            html += `<span class="sol-step" style="color:#fca5a5;">x = ${fmtNum(x)}: argomento ≤ 0 → <strong>escluso dalla C.E.</strong> → nessuna soluzione.</span>`;
+        }
+        res.innerHTML = html;
+    }
+
+    // ============================================================
+    //  QUIZ
+    // ============================================================
+    const quizData = [
+        {
+            question: "Risolvi: 2^(3x-1) = 2^(x+5). Qual è la soluzione?",
+            options: ["x = 2", "x = 3", "x = 4", "x = 6"],
+            correct: 1,
+            explanation: "Stessa base → eguaglio esponenti: 3x-1 = x+5 → 2x = 6 → x = 3."
+        },
+        {
+            question: "Per risolvere 4^(x+1) = 8^(x-1), la strategia corretta è:",
+            options: ["Applicare il logaritmo direttamente", "Riscrivere 4=2² e 8=2³ poi eguagliare gli esponenti", "Fare la radice quadrata di entrambi i membri", "Non è risolvibile senza calcolatrice"],
+            correct: 1,
+            explanation: "4=2² e 8=2³: (2²)^(x+1) = (2³)^(x-1) → 2x+2 = 3x-3 → x = 5."
+        },
+        {
+            question: "Nell'equazione 4^x - 5·2^x + 4 = 0, si pone t = 2^x. Quale equazione si ottiene?",
+            options: ["t² - 5t + 4 = 0", "t² - 10t + 4 = 0", "2t² - 5t + 4 = 0", "t - 5√t + 4 = 0"],
+            correct: 0,
+            explanation: "4^x = (2^x)² = t², quindi t² - 5t + 4 = 0. Le soluzioni sono t=1 e t=4, cioè x=0 e x=2."
+        },
+        {
+            question: "Nella sostituzione t = 3^x per risolvere 9^x - 4·3^x - 5 = 0, si ottiene t=-1 e t=5. Come si procede?",
+            options: ["Si accettano entrambe le soluzioni", "Si scarta t=5 perché troppo grande", "Si scarta t=-1 perché 3^x > 0 sempre", "Si prendono le soluzioni opposte: t=1 e t=-5"],
+            correct: 2,
+            explanation: "Poiché t = 3^x > 0 per ogni x reale, t=-1 è impossibile e va scartata. Rimane solo t=5 → 3^x = 5 → x = log₃5."
+        },
+        {
+            question: "Risolvi: 3^x = 7. La soluzione è:",
+            options: ["x = 7/3", "x = ln7 / ln3", "x = log10(7)", "x = 7·ln3"],
+            correct: 1,
+            explanation: "Applico ln: x·ln3 = ln7 → x = ln7/ln3 = log₃7 ≈ 1.771."
+        },
+        {
+            question: "Nella disequazione (1/2)^(x+1) > (1/2)^(2x-3), il verso della disequazione agli esponenti è:",
+            options: ["Conservato, perché 1/2 > 0", "Invertito, perché 1/2 < 1", "Conservato, perché l'esponente è positivo", "Non cambia mai"],
+            correct: 1,
+            explanation: "Base 0 < 1/2 < 1 → funzione decrescente → il verso si inverte: otteniamo x+1 < 2x-3 → x > 4."
+        },
+        {
+            question: "Risolvi: 2^(3x-1) > 2^(x+3). La soluzione è:",
+            options: ["x > 3", "x < 2", "x > 2", "x < 3"],
+            correct: 2,
+            explanation: "Base 2 > 1 → conservo il verso: 3x-1 > x+3 → 2x > 4 → x > 2."
+        },
+        {
+            question: "Dalla disequazione 4^x - 5·2^x + 4 < 0, con t = 2^x, si ottiene 1 < t < 4. La soluzione in x è:",
+            options: ["0 < x < 2", "1 < x < 4", "x < 0 oppure x > 2", "-2 < x < 2"],
+            correct: 0,
+            explanation: "1 < 2^x < 4 → 2^0 < 2^x < 2^2 → con base 2>1 si conserva il verso → 0 < x < 2."
+        },
+        {
+            question: "Risolvi log₂(3x-1) = log₂(x+5). Qual è la soluzione (con C.E.)?",
+            options: ["x = 3 (C.E. soddisfatta)", "x = 3 e x = -1", "x = -1", "Nessuna soluzione"],
+            correct: 0,
+            explanation: "Eguaglio argomenti: 3x-1 = x+5 → x = 3. C.E.: x > 1/3 → x=3 è ammessa. Unica soluzione."
+        },
+        {
+            question: "Risolvi log₂(x-1) = 3. La soluzione è:",
+            options: ["x = 7", "x = 8", "x = 9", "x = 4"],
+            correct: 2,
+            explanation: "Tipo 2: x-1 = 2³ = 8 → x = 9. C.E.: x > 1 verificata. log₂(8) = 3 ✓"
+        },
+        {
+            question: "Nell'equazione (log₂x)² - 3·log₂x + 2 = 0, con t = log₂x si trova t=1 e t=2. Le soluzioni per x sono:",
+            options: ["x = 1 e x = 2", "x = 2 e x = 4", "x = 1/2 e x = 1/4", "x = 0 e x = 1"],
+            correct: 1,
+            explanation: "t=1 → x=2; t=2 → x=4. A differenza delle eq. esponenziali, entrambi i valori di t sono accettabili (3^t > 0 sempre)."
+        },
+        {
+            question: "Nella disequazione log₂(x-1) > log₂(2x-3), con base 2>1, qual è la soluzione completa (con C.E.)?",
+            options: ["x > 4", "x < 4", "3/2 < x < 2", "x > 3/2"],
+            correct: 2,
+            explanation: "C.E.: x>1 e x>3/2 → C.E.: x>3/2. Conservo verso: x-1 > 2x-3 → x < 2. Intersezione: 3/2 < x < 2."
+        },
+        {
+            question: "Nella disequazione log(1/2)(x+3) ≤ log(1/2)(2x-1), il verso agli argomenti diventa:",
+            options: ["x+3 ≤ 2x-1 (conservato)", "x+3 ≥ 2x-1 (invertito)", "x+3 = 2x-1", "Non si può risolvere"],
+            correct: 1,
+            explanation: "Base 1/2 < 1 → funzione decrescente → verso invertito: x+3 ≥ 2x-1 → x ≤ 4. C.E.: x>1/2. Soluzione: 1/2 < x ≤ 4."
+        }
+    ];
+
+    let quizScore = 0, quizAnswered = 0;
+
+    function loadQuiz() {
+        document.getElementById('quiz-area').innerHTML = quizData.map((q, i) => `
+            <div class="quiz-question">
+                <h3>${i+1}. ${q.question}</h3>
+                <div class="quiz-options">
+                    ${q.options.map((opt, j) => `
+                        <button class="quiz-btn" onclick="checkAnswer(${i},${j},this)">${opt}</button>
+                    `).join('')}
+                </div>
+                <div id="exp-${i}" style="display:none; margin-top:0.75rem; font-size:0.88rem; color:#6ee7b7; background:rgba(16,185,129,0.08); padding:0.7rem 1rem; border-radius:8px;"></div>
+            </div>
+        `).join('');
+    }
+
+    window.checkAnswer = function(qi, oi, btn) {
+        const btns = btn.parentElement.querySelectorAll('.quiz-btn');
+        btns.forEach(b => b.disabled = true);
+        if (oi === quizData[qi].correct) { btn.classList.add('correct'); quizScore++; }
+        else { btn.classList.add('wrong'); btns[quizData[qi].correct].classList.add('correct'); }
+        const exp = document.getElementById(`exp-${qi}`);
+        exp.textContent = `💡 ${quizData[qi].explanation}`;
+        exp.style.display = 'block';
+        quizAnswered++;
+        if (quizAnswered === quizData.length) {
+            const pct = Math.round(quizScore / quizData.length * 100);
+            document.getElementById('quiz-score').textContent =
+                `Hai totalizzato ${quizScore} su ${quizData.length} (${pct}%)! ${pct===100?'🏆 Perfetto!':pct>=75?'🚀 Ottimo!':pct>=50?'📚 Rileggi qualche sezione.':'🔄 Riprendi dall\'inizio.'}`;
+        }
+    };
+
+    // ============================================================
+    //  INIT
+    // ============================================================
+    document.addEventListener('DOMContentLoaded', () => {
+        loadQuiz();
+        solveT1();
+        solveT2();
+        solveT4();
+        solveDiseq();
+        solveLogT1();
+        solveLogT2();
+    });
+    </script>
+    <script src="../../js/main.js"></script>
+</body>
+</html>

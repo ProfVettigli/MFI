@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proposizioni - Lezione Interattiva MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+        
+        .sub-hero {
+            padding: 4rem 0 2rem;
+            text-align: left;
+        }
+        
+        .sub-hero-title {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+        
+        /* Logic Tables */
+        .logic-table {
+            width: 100%;
+            max-width: 400px;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .logic-table th, .logic-table td {
+            padding: 1rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .logic-table th {
+            background: rgba(255,255,255,0.05);
+            font-weight: 600;
+            color: var(--math-color);
+        }
+        .truth-btn {
+            background: var(--surface-hover);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: var(--text-main);
+            width: 40px; height: 40px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .truth-btn:hover { background: rgba(255,255,255,0.1); }
+        .truth-btn.t-true { background: var(--physics-color); border-color: var(--physics-color); color: white; }
+        .truth-btn.t-false { background: #EF4444; border-color: #EF4444; color: white; }
+
+        /* Proposition Interactive Builder */
+        .prop-builder {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .prop-line {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .prop-line span { font-size: 1.1rem; }
+        .prop-symbol { font-weight: bold; color: var(--math-color); font-size: 1.5rem!important; }
+        .result-box {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 8px;
+            background: rgba(0,0,0,0.3);
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-align: center;
+            border-left: 4px solid var(--text-muted);
+            transition: border-color 0.3s, color 0.3s;
+        }
+    </style>
+</head>
+<body>
+    <header class="sub-hero">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2.5rem;">
+                <a href="logica.html" class="back-button" style="margin-bottom: 0;">
+                    <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Logica
+                </a>
+            </div>
+            <h1 class="sub-hero-title">Le <span class="gradient-text">Proposizioni</span> Logiche</h1>
+            <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+                Nella logica matematica, una proposizione è una frase dichiarativa che può essere <strong>Vera (V)</strong> o <strong>Falsa (F)</strong>, ma mai entrambe contemporaneamente. Le domande o le esclamazioni non sono proposizioni!
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <!-- INTRO -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">Cos'è una Proposizione? Esempi Pop</h2>
+            <p class="lesson-text">Guardiamo alcune affermazioni famose per capire se sono vere, false, o se non sono affatto proposizioni!</p>
+            <div style="background: rgba(0,0,0,0.2); border-left: 4px solid var(--math-color); padding: 1rem 1.5rem; margin: 1.5rem 0; font-family: monospace; font-size: 1.1rem; color: var(--text-main);">
+                <strong>p:</strong> <em>"Homer Simpson ama le ciambelle"</em> <span style="color:var(--physics-color)">[ VERO ]</span><br><br>
+                <strong>q:</strong> <em>"Il Tardis del Doctor Who è una cabina rossa"</em> <span style="color:#EF4444">[ FALSO, è blu! ]</span><br><br>
+                <strong>r:</strong> <em>"Luke, io sono tuo zio!"</em> <span style="color:#EF4444">[ FALSO, è il padre! ]</span><br><br>
+                <strong>s:</strong> <em>"Che la Forza sia con te!"</em> <span style="color:var(--text-muted)">[ NON È UNA PROPOSIZIONE, è un augurio! ]</span>
+            </div>
+            <p class="lesson-text">Le proposizioni si indicano di solito con le lettere minuscole (p, q, r...).</p>
+        </section>
+        <!-- CHIUSE VS APERTE -->
+        <section class="lesson-section" style="border-left: 4px solid var(--physics-color);">
+            <h2 class="lesson-title">Proposizioni Chiuse vs Aperte</h2>
+            <p class="lesson-text">
+                Oltre alla verità o falsità, dobbiamo distinguere tra frasi che sono "complete" e frasi che dipendono da un'incognita.
+            </p>
+            
+            <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 2rem;">
+                <div style="background: rgba(16, 185, 129, 0.05); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(16, 185, 129, 0.1);">
+                    <h3 style="color: var(--physics-color); margin-bottom: 0.8rem;">Proposizione Chiusa</h3>
+                    <p class="lesson-text" style="font-size: 0.95rem;">È un'affermazione di cui possiamo stabilire <strong>subito</strong> il valore di verità.</p>
+                    <p style="font-style: italic; color: var(--text-main);">"Il numero 7 è un numero primo."</p>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">[ Risultato: VERA ]</p>
+                </div>
+
+                <div style="background: rgba(59, 130, 246, 0.05); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(59, 130, 246, 0.1);">
+                    <h3 style="color: var(--math-color); margin-bottom: 0.8rem;">Proposizione Aperta (Predicato)</h3>
+                    <p class="lesson-text" style="font-size: 0.95rem;">Contiene una variabile (come \(x\)). Non sappiamo se è vera o falsa finché non diamo un valore a quella \(x\)).</p>
+                    <p style="font-style: italic; color: var(--text-main);">"\(x\) è un numero primo."</p>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">[ Vero se \(x=7\), Falso se \(x=10\) ]</p>
+                </div>
+            </div>
+            <p class="lesson-text" style="margin-top: 1.5rem;">
+                In matematica, le proposizioni aperte diventano chiuse quando usiamo i <strong>Quantificatori</strong> (che vedremo tra poco) o quando sostituiamo le lettere con dei numeri reali.
+            </p>
+        </section>
+
+        <!-- INSIEME DI VERITÀ -->
+        <section class="lesson-section" style="background: rgba(245, 158, 11, 0.03); border-color: #F59E0B;">
+            <h2 class="lesson-title" style="color: #F59E0B;">L'Insieme di Verità</h2>
+            <p class="lesson-text">
+                Quando abbiamo una proposizione aperta (con una \(x\)), l'<strong>Insieme di Verità</strong> è l'elenco di tutti gli elementi del nostro "Universo" che, messi al posto della \(x\), rendono la frase <strong>VERA</strong>.
+            </p>
+            <p class="lesson-text" style="color: #F59E0B; opacity: 0.9; font-weight: 600;">
+                È come fare una query in un database nerd! 🤓
+            </p>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+                <div class="card" style="padding: 1.5rem; border-left: 4px solid #F59E0B; background: rgba(255,255,255,0.02);">
+                    <h4 style="margin-bottom: 0.5rem; color: #F59E0B;">Esempio Marvel 🦸‍♂️</h4>
+                    <p style="font-size: 0.95rem;"><strong>Predicato \(P(x)\):</strong> "\(x\) è un Avenger che può sollevare Mjolnir".</p>
+                    <p style="font-size: 0.95rem; margin-top: 0.5rem; color: var(--text-muted);">
+                        <strong>Insieme di Verità:</strong> \(\{ \text{Thor, Visione, Capitan America} \}\).
+                    </p>
+                </div>
+
+                <div class="card" style="padding: 1.5rem; border-left: 4px solid #F59E0B; background: rgba(255,255,255,0.02);">
+                    <h4 style="margin-bottom: 0.5rem; color: #F59E0B;">Esempio Pokémon ⚡</h4>
+                    <p style="font-size: 0.95rem;"><strong>Predicato \(Q(x)\):</strong> "\(x\) è l'evoluzione di Eevee tramite una pietra elementale".</p>
+                    <p style="font-size: 0.95rem; margin-top: 0.5rem; color: var(--text-muted);">
+                        <strong>Insieme di Verità:</strong> \(\{ \text{Vaporeon, Jolteon, Flareon} \}\).
+                    </p>
+                </div>
+
+                <div class="card" style="padding: 1.5rem; border-left: 4px solid #F59E0B; background: rgba(255,255,255,0.02);">
+                    <h4 style="margin-bottom: 0.5rem; color: #F59E0B;">Esempio Star Wars 🌌</h4>
+                    <p style="font-size: 1rem;"><strong>Predicato \(R(x)\):</strong> "\(x\) è un pianeta distrutto dalla Morte Nera".</p>
+                    <p style="font-size: 0.95rem; margin-top: 0.5rem; color: var(--text-muted);">
+                        <strong>Insieme di Verità:</strong> \(\{ \text{Alderaan} \}\).
+                    </p>
+                </div>
+            </div>
+            
+            <p class="lesson-text">
+                Se l'insieme di verità è <strong>vuoto</strong> (es. "\(x\) è un nemico di Batman che non è mai stato ad Arkham"), significa che la frase è falsa per ogni elemento dell'universo scelto!
+            </p>
+        </section>
+
+        <!-- AND SECTION -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">1. Congiunzione: L'operatore AND (∧)</h2>
+            <p class="lesson-text">La congiunzione unisce due proposizioni con una <strong>"E"</strong>. Il risultato è <strong>VERO solo se ENTRAMBE</strong> le frasi di partenza sono vere. Se in un anime dico "Goku è forte <em>E</em> Vegeta è calmo", il risultato totale è Falso, perché Vegeta non è per niente calmo!</p>
+            
+            <div class="prop-builder" id="builder-and">
+                <h3 style="margin-bottom: 1rem; color: var(--math-color);">Esempio da Game of Thrones</h3>
+                <div class="prop-line">
+                    <button class="truth-btn t-true" data-prop="p">V</button>
+                    <span><strong>p:</strong> L'Inverno sta arrivando</span>
+                </div>
+                <div class="prop-line">
+                    <button class="truth-btn t-true" data-prop="q">V</button>
+                    <span><strong>q:</strong> I draghi sputano fuoco</span>
+                </div>
+                <div class="result-box" id="result-and">
+                    p ∧ q: VERO
+                </div>
+                <p style="font-size: 0.9rem; margin-top: 1rem; color: var(--text-muted);"><em>Prova a cliccare i bottoni [V / F] per cambiare la veridicità delle singole affermazioni e osserva come cambia il risultato dell'intera frase unita!</em></p>
+            </div>
+        </section>
+
+        <!-- OR SECTION -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">2. Disgiunzione: L'operatore OR (∨)</h2>
+            <p class="lesson-text">La disgiunzione unisce due proposizioni con un <strong>"OPPURE"</strong>. Il risultato è <strong>VERO se ALMENO UNA</strong> delle frasi è vera. Basta un piccolo elemento reale per salvare tutto!</p>
+            
+            <div class="prop-builder" id="builder-or">
+                <h3 style="margin-bottom: 1rem; color: var(--physics-color);">Esempio da Futurama</h3>
+                <div class="prop-line">
+                    <button class="truth-btn t-false" data-prop="p">F</button>
+                    <span><strong>p:</strong> Bender è un umano</span>
+                </div>
+                <div class="prop-line">
+                    <button class="truth-btn t-true" data-prop="q">V</button>
+                    <span><strong>q:</strong> La navetta Planet Express consegna pacchi</span>
+                </div>
+                <div class="result-box" id="result-or" style="border-left-color: var(--physics-color);">
+                    p ∨ q: VERO (Basta che la navetta consegni pacchi per rendere vera la frase "Bender è umano OPPURE la navetta consegna pacchi")
+                </div>
+            </div>
+        </section>
+
+        <!-- NOT & IMPLICATION -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">3. Negazione (¬) e Implicazione (→)</h2>
+            <div class="grid" style="grid-template-columns: 1fr 1fr;">
+                <div class="prop-builder" style="margin-bottom:0;" id="builder-not">
+                    <h3 style="margin-bottom: 1rem; color: #EF4444;">Negazione (NOT)</h3>
+                    <p class="lesson-text" style="font-size: 0.95rem;">Capovolge il valore di verità. Il VERO diventa FALSO, e il FALSO diventa VERO.</p>
+                    <div class="prop-line">
+                        <button class="truth-btn t-true" data-prop="p">V</button>
+                        <span><strong>p:</strong> I Jedi usano la spada laser</span>
+                    </div>
+                    <div class="result-box" id="result-not" style="border-left-color: #EF4444;">
+                        ¬p: FALSO (I Jedi NON usano la spada laser)
+                    </div>
+                </div>
+
+                <div class="prop-builder" style="margin-bottom:0;" id="builder-impl">
+                    <h3 style="margin-bottom: 1rem; color: #F59E0B;">Implicazione (IF... THEN...)</h3>
+                    <p class="lesson-text" style="font-size: 0.95rem;">L'affermazione <em>"SE p ALLORA q"</em> è FALSA solamente quando una premessa vera (p) porta ad una conclusione assurda/falsa (q).</p>
+                    <div class="prop-line" style="margin-bottom: 0.5rem;">
+                        <button class="truth-btn t-true" style="width: 30px; height: 30px; font-size: 0.8rem;" data-prop="p">V</button>
+                        <span style="font-size: 0.95rem;"><strong>p:</strong> Goku diventa un Super Saiyan</span>
+                    </div>
+                    <div class="prop-line">
+                        <button class="truth-btn t-true" style="width: 30px; height: 30px; font-size: 0.8rem;" data-prop="q">V</button>
+                        <span style="font-size: 0.95rem;"><strong>q:</strong> I suoi capelli diventano biondi</span>
+                    </div>
+                    <div class="result-box" id="result-impl" style="border-left-color: #F59E0B; font-size: 1rem;">
+                        p → q: VERO 
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TRUTH TABLES BUILDER -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">Mettiti alla Prova: Costruisci le Tavole di Verità!</h2>
+            <p class="lesson-text">Le Tavole di Verità racchiudono tutte le combinazioni possibili tra la proposizione p e la proposizione q. Clicca sui tastini grigi [?] nell'ultima colonna per assegnare V o F e completare la tabella della Congiunzione E della Disgiunzione!</p>
+            
+            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; justify-items: center;">
+                
+                <!-- Tabella AND -->
+                <div style="width: 100%;">
+                    <h3 style="text-align:center; color: var(--math-color);">Tabella AND (p ∧ q)</h3>
+                    <table class="logic-table" id="table-and">
+                        <thead>
+                            <tr><th>p</th><th>q</th><th>p ∧ q</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>V</td><td>V</td><td><button class="truth-btn t-guess" data-ans="V" data-eval="none">?</button></td></tr>
+                            <tr><td>V</td><td>F</td><td><button class="truth-btn t-guess" data-ans="F" data-eval="none">?</button></td></tr>
+                            <tr><td>F</td><td>V</td><td><button class="truth-btn t-guess" data-ans="F" data-eval="none">?</button></td></tr>
+                            <tr><td>F</td><td>F</td><td><button class="truth-btn t-guess" data-ans="F" data-eval="none">?</button></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Tabella OR -->
+                <div style="width: 100%;">
+                    <h3 style="text-align:center; color: var(--physics-color);">Tabella OR (p ∨ q)</h3>
+                    <table class="logic-table" id="table-or">
+                        <thead>
+                            <tr><th>p</th><th>q</th><th>p ∨ q</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>V</td><td>V</td><td><button class="truth-btn t-guess" data-ans="V" data-eval="none">?</button></td></tr>
+                            <tr><td>V</td><td>F</td><td><button class="truth-btn t-guess" data-ans="V" data-eval="none">?</button></td></tr>
+                            <tr><td>F</td><td>V</td><td><button class="truth-btn t-guess" data-ans="V" data-eval="none">?</button></td></tr>
+                            <tr><td>F</td><td>F</td><td><button class="truth-btn t-guess" data-ans="F" data-eval="none">?</button></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- QUANTIFICATORI -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">4. I Quantificatori: Tutti, Nessuno o Qualcuno?</h2>
+            <p class="lesson-text">Per non scrivere lunghe frasi, in logica e matematica usiamo dei simboli speciali chiamati <strong>Quantificatori</strong>. Essi ci permettono di specificare in modo fulmineo "quanti" elementi di un insieme rispettano una certa proprietà.</p>
+            
+            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
+                <div class="card" style="padding: 1.5rem; justify-content: flex-start;">
+                    <h3 style="color: var(--math-color); font-size: 2.5rem; text-align: center;">∀</h3>
+                    <h4 style="text-align: center; margin: 0.5rem 0;">"Per Ogni"<br><span style="font-weight:400; font-size:0.9rem;">(Universale)</span></h4>
+                    <p style="color: var(--text-muted); font-size: 0.95rem; text-align: center;">Indica che una proprietà vale per <strong>TUTTI</strong> gli elementi. <br><br><em style="color:var(--text-main);">Esempio:<br>∀ cane, ha 4 zampe.</em></p>
+                </div>
+                <div class="card" style="padding: 1.5rem; justify-content: flex-start;">
+                    <h3 style="color: var(--physics-color); font-size: 2.5rem; text-align: center;">∃</h3>
+                    <h4 style="text-align: center; margin: 0.5rem 0;">"Esiste"<br><span style="font-weight:400; font-size:0.9rem;">(Esistenziale)</span></h4>
+                    <p style="color: var(--text-muted); font-size: 0.95rem; text-align: center;">C'è <strong>ALMENO UNO</strong> (o più) elemento per cui vale. <br><br><em style="color:var(--text-main);">Esempio:<br>∃ studente della classe che gioca a Minecraft.</em></p>
+                </div>
+                <div class="card" style="padding: 1.5rem; justify-content: flex-start;">
+                    <h3 style="color: #F59E0B; font-size: 2.5rem; text-align: center;">∃!</h3>
+                    <h4 style="text-align: center; margin: 0.5rem 0;">"Esiste ed è Unico"</h4>
+                    <p style="color: var(--text-muted); font-size: 0.95rem; text-align: center;">Esiste <strong>UNO E UN SOLO</strong> elemento speciale. <br><br><em style="color:var(--text-main);">Esempio:<br>∃! stella nel nostro sistema solare (il Sole).</em></p>
+                </div>
+                <div class="card" style="padding: 1.5rem; justify-content: flex-start;">
+                    <h3 style="color: #EF4444; font-size: 2.5rem; text-align: center;">∄</h3>
+                    <h4 style="text-align: center; margin: 0.5rem 0;">"Non Esiste"</h4>
+                    <p style="color: var(--text-muted); font-size: 0.95rem; text-align: center;">Nessun elemento possiede la proprietà. <br><br><em style="color:var(--text-main);">Esempio:<br>∄ umano in grado di volare sbattendo le braccia.</em></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- RIDDLE SECTION -->
+        <section class="lesson-section" style="border-top: 4px solid var(--math-color); background: rgba(59, 130, 246, 0.05);">
+            <h2 class="lesson-title">Sfida Finale: L'Indovinello delle Due Guardie</h2>
+            <p class="lesson-text">Applichiamo la logica pura! Ti trovi davanti a due guardie che sorvegliano due porte: una porta verso la libertà, l'altra verso una trappola mortale. <br>
+            <strong>Le regole:</strong> Una guardia dice sempre la <strong>VERITÀ</strong>, l'altra <strong>MENTE</strong> sempre. Non sai chi sia chi. Puoi fare <strong>UNA SOLA DOMANDA</strong> a una sola guardia.</p>
+            
+            <div id="riddle-area" style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 2rem; margin-top: 2rem; text-align: center;">
+                <div style="display: flex; justify-content: space-around; gap: 2rem; flex-wrap: wrap; margin-bottom: 2rem;">
+                    <!-- Guardia 1 -->
+                    <div class="guard-box" id="guard-a" style="flex: 1; min-width: 150px; cursor: pointer; padding: 1rem; border-radius: 10px; border: 2px solid transparent; transition: all 0.3s;">
+                        <div style="font-size: 4rem;">👮‍♂️</div>
+                        <h4 style="margin: 0.5rem 0;">Guardia A</h4>
+                    </div>
+                    <!-- Guardia 2 -->
+                    <div class="guard-box" id="guard-b" style="flex: 1; min-width: 150px; cursor: pointer; padding: 1rem; border-radius: 10px; border: 2px solid transparent; transition: all 0.3s;">
+                        <div style="font-size: 4rem;">👮‍♀️</div>
+                        <h4 style="margin: 0.5rem 0;">Guardia B</h4>
+                    </div>
+                </div>
+
+                <div id="question-selector" style="display: none;">
+                    <p style="margin-bottom: 1rem; font-weight: 600;">Scegli la domanda da porre:</p>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem; max-width: 500px; margin: 0 auto;">
+                        <button class="quiz-btn riddle-q" data-q="door">"Qual è la porta per la libertà?"</button>
+                        <button class="quiz-btn riddle-q" data-q="other">"Cosa mi risponderebbe l'ALTRA guardia se le chiedessi qual è la porta per la libertà?"</button>
+                        <button class="quiz-btn riddle-q" data-q="self">"Tu dici la verità?"</button>
+                    </div>
+                </div>
+
+                <div id="guard-response" style="margin-top: 1.5rem; min-height: 60px; font-style: italic; color: var(--math-color); font-size: 1.2rem;">
+                    (Clicca su una guardia per parlarle...)
+                </div>
+
+                <div id="door-selector" style="display: none; margin-top: 2rem;">
+                    <p style="margin-bottom: 1rem; font-weight: 600; color: #FBBF24;">Ora scegli la Porta!</p>
+                    <div style="display: flex; justify-content: center; gap: 2rem;">
+                        <button class="btn-door" id="door-1" style="width: 80px; height: 120px; background: #5D4037; border: 4px solid #3E2723; border-radius: 5px; cursor: pointer; color: white; font-weight: bold;">PORTA 1</button>
+                        <button class="btn-door" id="door-2" style="width: 80px; height: 120px; background: #5D4037; border: 4px solid #3E2723; border-radius: 5px; cursor: pointer; color: white; font-weight: bold;">PORTA 2</button>
+                    </div>
+                    <div id="riddle-feedback" style="margin-top: 1rem; font-weight: bold;"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PARADOX SECTION -->
+        <section class="lesson-section" style="border-left: 4px solid #EC4899; background: rgba(236, 72, 153, 0.03);">
+            <h2 class="lesson-title" style="color: #EC4899; font-size: 2.2rem; margin-bottom: 1.5rem;">🧠 Oltre la Logica: Il Paradosso del Mentitore</h2>
+            <p class="lesson-text">
+                Dopo aver risolto l'indovinello delle guardie, potresti pensare che la logica sia un sistema perfetto dove ogni frase è o vera o falsa. Eppure, esiste un "cortocircuito" che mette in crisi questo sistema da oltre 2000 anni.
+            </p>
+
+            <div class="grid" style="grid-template-columns: 1fr; gap: 2rem;">
+                <!-- Cos'è un paradosso -->
+                <div class="card" style="padding: 1.5rem; background: rgba(236, 72, 153, 0.05); border: 1px solid rgba(236, 72, 153, 0.2);">
+                    <h3 style="color: #EC4899; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="font-size: 1.5rem;">❓</span> Cos'è un Paradosso?
+                    </h3>
+                    <p class="lesson-text" style="font-size: 1rem; color: var(--text-main); margin-bottom: 0;">
+                        In logica, un <strong>paradosso</strong> è un'affermazione che sembra corretta, ma che porta a una conclusione <strong>contraddittoria</strong>. 
+                        È un ragionamento che "si mangia la coda": se è vero, allora deve essere falso; se è falso, allora deve essere vero.
+                    </p>
+                </div>
+
+                <!-- La Storia -->
+                <div style="padding: 0 1rem;">
+                    <h3 style="color: var(--text-main); margin-bottom: 1rem;">1. La Versione Storica: Il Cretese Epimenide</h3>
+                    <p class="lesson-text">
+                        Tutto iniziò nell'Antica Grecia. <strong>Epimenide</strong>, un filosofo dell'isola di Creta, fece una dichiarazione diventata leggendaria:
+                    </p>
+                    <div style="background: rgba(0,0,0,0.3); border-left: 4px solid var(--math-color); padding: 1.5rem; margin: 1rem 0; font-style: italic; font-size: 1.2rem; border-radius: 0 10px 10px 0;">
+                        "Tutti i Cretesi sono mentitori."
+                    </div>
+                    <p class="lesson-text" style="font-size: 0.95rem;">
+                        Rifletti un attimo: Epimenide è un cretese. Se quello che dice è vero, allora lui è un mentitore. Ma se è un mentitore, allora quello che dice (che tutti i cretesi mentono) deve essere falso! 
+                    </p>
+                </div>
+
+                <!-- Versione Moderna -->
+                <div style="padding: 0 1rem;">
+                    <h3 style="color: var(--text-main); margin-bottom: 1rem;">2. La Versione Moderna (Pura)</h3>
+                    <p class="lesson-text">
+                        I logici moderni hanno eliminato ogni distrazione (come l'origine geografica) per arrivare al cuore del problema con questa frase:
+                    </p>
+                    <div style="background: linear-gradient(90deg, rgba(236, 72, 153, 0.1), rgba(59, 130, 246, 0.1)); padding: 2.5rem; border-radius: 15px; text-align: center; border: 1px solid rgba(255,255,255,0.1); margin: 1.5rem 0; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+                        <p style="font-size: 1.8rem; font-weight: 800; color: #F8FAFC; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 15px rgba(236, 72, 153, 0.5);">
+                            "Questa frase è falsa"
+                        </p>
+                    </div>
+                    <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+                        <div style="background: rgba(16, 185, 129, 0.05); padding: 1rem; border-radius: 10px; border: 1px solid rgba(16, 185, 129, 0.2);">
+                            <p style="font-size: 0.9rem;"><strong>Se è VERA:</strong><br>Allora è vero che è falsa... quindi è <span style="color:#EF4444; font-weight:bold;">FALSA</span>.</p>
+                        </div>
+                        <div style="background: rgba(239, 68, 68, 0.05); padding: 1rem; border-radius: 10px; border: 1px solid rgba(239, 68, 68, 0.2);">
+                            <p style="font-size: 0.9rem;"><strong>Se è FALSA:</strong><br>Dato che dice di essere falsa, sta dicendo il vero... quindi è <span style="color:#10B981; font-weight:bold;">VERA</span>.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Metalinguaggio -->
+                <div class="card" style="padding: 2rem; background: rgba(59, 130, 246, 0.05); border-top: 4px solid var(--math-color);">
+                    <h3 style="color: var(--math-color); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="font-size: 1.5rem;">🔓</span> La Soluzione: Il Metalinguaggio
+                    </h3>
+                    <p class="lesson-text" style="color: var(--text-main);">
+                        Per risolvere questo vicolo cieco, il logico <strong>Alfred Tarski</strong> ha spiegato che il paradosso nasce perché usiamo la lingua per parlare della lingua stessa senza distinguere i livelli. 
+                        Dobbiamo quindi introdurre il concetto di <strong>Metalinguaggio</strong>.
+                    </p>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <div style="display: flex; gap: 1rem; align-items: flex-start;">
+                            <div style="background: var(--math-color); color: white; padding: 0.2rem 0.6rem; border-radius: 4px; font-weight: bold; font-size: 0.8rem; margin-top: 0.3rem;">LIVELLO 1</div>
+                            <div>
+                                <h4 style="color: var(--text-main); font-size: 1rem;">Linguaggio Oggetto</h4>
+                                <p style="font-size: 0.9rem; color: var(--text-muted);">Si usa per parlare del mondo esterno. <br><em>Esempio: "Il cielo è blu", "La mela è buona".</em></p>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 1rem; align-items: flex-start;">
+                            <div style="background: #EC4899; color: white; padding: 0.2rem 0.6rem; border-radius: 4px; font-weight: bold; font-size: 0.8rem; margin-top: 0.3rem;">LIVELLO 2</div>
+                            <div>
+                                <h4 style="color: var(--text-main); font-size: 1rem;">Metalinguaggio</h4>
+                                <p style="font-size: 0.9rem; color: var(--text-muted);">Si usa per parlare del Linguaggio Oggetto. <br><em>Esempio: "La frase 'Il cielo è blu' è vera".</em></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="lesson-text" style="margin-top: 1.5rem; font-size: 1rem; border-left: 3px solid var(--math-color); padding-left: 1rem; font-style: italic;">
+                        In breve: una frase non può parlare della propria verità al suo stesso livello. Per dire che una frase è vera o falsa, devi salire di un gradino e usare un <strong>metalinguaggio</strong>!
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- QUIZ -->
+        <section class="lesson-section quiz-container">
+            <h2 class="lesson-title">Quiz di Riepilogo</h2>
+            <p class="lesson-text" style="font-size: 0.95rem;">Assicuriamoci che tutto sia chiaro. Rispondi a queste brevi domande sulle Proposizioni e i Quantificatori.</p>
+            <div id="quiz-area">
+                <!-- Il quiz verrà generato via JS -->
+            </div>
+            <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Matematica.</p>
+    </footer>
+
+    <!-- JS -->
+    <script src="proposizioni.js"></script>
+
+    <script src="../../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Euler's Identity — The Most Beautiful Equation in Mathematics | MFI</title>
+    <meta name="description" content="A CLIL lesson on Euler's Identity: its history, its hidden beauty, and why mathematicians call it the G5 summit of numbers.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        /* ===== ROOT OVERRIDES ===== */
+        :root {
+            --euler-gold:  #f59e0b;
+            --euler-purple:#a78bfa;
+            --euler-teal:  #2dd4bf;
+            --euler-rose:  #fb7185;
+            --euler-blue:  #60a5fa;
+        }
+
+        /* ===== HEADER ===== */
+        .lesson-header {
+            background: linear-gradient(140deg, #0a0415 0%, #0d1a3a 50%, #0B0E14 100%);
+            padding: 5rem 0 3.5rem;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+        .lesson-header::before {
+            content: '';
+            position: absolute; inset: 0;
+            background:
+                radial-gradient(ellipse at 20% 50%, rgba(167,139,250,0.13) 0%, transparent 55%),
+                radial-gradient(ellipse at 80% 40%, rgba(245,158,11,0.10) 0%, transparent 55%),
+                radial-gradient(ellipse at 50% 90%, rgba(45,212,191,0.07) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        /* Floating particles */
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float-particle linear infinite;
+            opacity: 0.18;
+        }
+        @keyframes float-particle {
+            0%   { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10%  { opacity: 0.18; }
+            90%  { opacity: 0.18; }
+            100% { transform: translateY(-600px) rotate(720deg); opacity: 0; }
+        }
+
+        .clil-badge {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            background: rgba(245,158,11,0.12);
+            border: 1px solid rgba(245,158,11,0.35);
+            padding: 0.35rem 1rem; border-radius: 20px;
+            font-size: 0.85rem; font-weight: 600; color: #fcd34d;
+            letter-spacing: 0.06em; margin-bottom: 1.25rem;
+        }
+
+        .euler-formula-hero {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 8vw, 6rem);
+            font-weight: 700;
+            line-height: 1;
+            margin: 1.5rem auto;
+            position: relative; z-index: 1;
+        }
+        .euler-formula-hero .num-e    { color: var(--euler-teal); }
+        .euler-formula-hero .num-i    { color: var(--euler-purple); }
+        .euler-formula-hero .num-pi   { color: var(--euler-gold); }
+        .euler-formula-hero .num-plus { color: rgba(255,255,255,0.6); }
+        .euler-formula-hero .num-one  { color: var(--euler-rose); }
+        .euler-formula-hero .num-eq   { color: rgba(255,255,255,0.7); }
+        .euler-formula-hero .num-zero { color: var(--euler-blue); }
+
+        .hero-subtitle {
+            font-size: 1.15rem; color: var(--text-muted);
+            max-width: 620px; margin: 0 auto 1rem;
+            line-height: 1.7; font-weight: 300;
+        }
+
+        /* ===== TOC ===== */
+        .toc {
+            background: rgba(167,139,250,0.05);
+            border: 1px solid rgba(167,139,250,0.2);
+            border-radius: 1rem; padding: 1.5rem 2rem; margin: 2rem 0;
+        }
+        .toc h3 { color: var(--euler-purple); margin-bottom: 1rem; font-size: 1rem; text-transform: uppercase; letter-spacing: 0.08em; }
+        .toc ol { padding-left: 1.2rem; }
+        .toc li { margin-bottom: 0.4rem; }
+        .toc a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+        .toc a:hover { color: var(--euler-purple); }
+
+        /* ===== SECTIONS ===== */
+        .lesson-section {
+            margin-bottom: 3rem;
+            background: var(--surface-color);
+            padding: 2.5rem;
+            border-radius: 1rem;
+            border: 1px solid rgba(255,255,255,0.06);
+            scroll-margin-top: 4rem;
+        }
+        .section-number {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--euler-purple), var(--euler-teal));
+            color: white; font-weight: 800; font-size: 0.85rem;
+            padding: 0.2rem 0.7rem; border-radius: 20px; margin-bottom: 0.75rem;
+        }
+        .lesson-section h2 { color: var(--text-main); margin-bottom: 1.25rem; font-size: 1.7rem; font-weight: 700; }
+        .lesson-section h3 { color: var(--euler-teal); margin-bottom: 0.75rem; font-size: 1.2rem; font-weight: 600; }
+        .lesson-text { margin-bottom: 1.2rem; font-size: 1.05rem; color: var(--text-muted); line-height: 1.8; }
+
+        /* ===== FORMULA BIG ===== */
+        .formula-big {
+            background: rgba(167,139,250,0.07);
+            border-radius: 10px; padding: 1rem 1.5rem;
+            text-align: center; margin: 1.25rem 0; font-size: 1.15rem; color: var(--text-main);
+            border: 1px solid rgba(167,139,250,0.15);
+        }
+
+        /* ===== DEFINITION BOX ===== */
+        .definition-box {
+            background: rgba(45,212,191,0.06);
+            border-left: 4px solid var(--euler-teal);
+            border-radius: 0 0.75rem 0.75rem 0;
+            padding: 1.25rem 1.5rem; margin: 1.5rem 0;
+        }
+        .definition-box strong { color: var(--euler-teal); }
+
+        /* ===== CALLOUTS ===== */
+        .callout {
+            display: flex; gap: 1rem; align-items: flex-start;
+            background: rgba(96,165,250,0.07);
+            border: 1px solid rgba(96,165,250,0.2);
+            border-radius: 0.75rem; padding: 1.2rem 1.5rem; margin: 1.5rem 0;
+        }
+        .callout-icon { font-size: 1.5rem; flex-shrink: 0; }
+        .callout p { margin: 0; font-size: 0.98rem; color: var(--text-muted); }
+        .callout p strong { color: #93c5fd; }
+        .callout-gold  { background: rgba(245,158,11,0.07); border-color: rgba(245,158,11,0.25); }
+        .callout-gold  p strong { color: #fcd34d; }
+        .callout-purple{ background: rgba(167,139,250,0.07); border-color: rgba(167,139,250,0.25); }
+        .callout-purple p strong { color: #c4b5fd; }
+        .callout-rose  { background: rgba(251,113,133,0.07); border-color: rgba(251,113,133,0.25); }
+        .callout-rose  p strong { color: #fda4af; }
+        .callout-teal  { background: rgba(45,212,191,0.07); border-color: rgba(45,212,191,0.25); }
+        .callout-teal  p strong { color: #5eead4; }
+
+        /* ===== TIMELINE ===== */
+        .timeline { position: relative; padding-left: 2rem; margin: 1.5rem 0; }
+        .timeline::before {
+            content: ''; position: absolute; left: 0.4rem; top: 0; bottom: 0;
+            width: 2px; background: linear-gradient(to bottom, var(--euler-purple), var(--euler-teal));
+        }
+        .timeline-item { position: relative; margin-bottom: 2rem; }
+        .timeline-dot {
+            position: absolute; left: -1.9rem; top: 0.25rem;
+            width: 14px; height: 14px; border-radius: 50%;
+            background: var(--euler-purple); border: 2px solid var(--euler-teal);
+            box-shadow: 0 0 8px rgba(167,139,250,0.5);
+        }
+        .timeline-year { font-weight: 800; color: var(--euler-gold); font-size: 0.9rem; margin-bottom: 0.3rem; }
+        .timeline-text { color: var(--text-muted); font-size: 0.98rem; line-height: 1.65; }
+        .timeline-text strong { color: var(--text-main); }
+
+        /* ===== NUMBER CARDS ===== */
+        .numbers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px,1fr));
+            gap: 1rem; margin: 1.5rem 0;
+        }
+        .number-card {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 1rem; padding: 1.5rem 1rem; text-align: center;
+            transition: transform 0.25s, box-shadow 0.25s;
+        }
+        .number-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
+        .number-card .sym { font-size: 2.8rem; font-weight: 900; font-family: 'Playfair Display', serif; margin-bottom: 0.5rem; }
+        .number-card h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.4rem; }
+        .number-card p { color: var(--text-muted); font-size: 0.82rem; margin: 0; line-height: 1.5; }
+        .nc-e  .sym { color: var(--euler-teal); }  .nc-e  h4 { color: var(--euler-teal); }
+        .nc-i  .sym { color: var(--euler-purple); } .nc-i  h4 { color: var(--euler-purple); }
+        .nc-pi .sym { color: var(--euler-gold); }   .nc-pi h4 { color: var(--euler-gold); }
+        .nc-1  .sym { color: var(--euler-rose); }   .nc-1  h4 { color: var(--euler-rose); }
+        .nc-0  .sym { color: var(--euler-blue); }   .nc-0  h4 { color: var(--euler-blue); }
+
+        /* ===== G5 JOKE BOX ===== */
+        .joke-box {
+            background: rgba(245,158,11,0.06);
+            border: 1px solid rgba(245,158,11,0.22);
+            border-radius: 0.75rem; padding: 1.25rem 1.5rem; margin: 1.5rem 0;
+            display: flex; gap: 1rem; align-items: flex-start;
+        }
+        .joke-box .j-icon { font-size: 2rem; flex-shrink: 0; }
+        .joke-box p { margin: 0; color: var(--text-muted); font-size: 0.98rem; line-height: 1.7; }
+        .joke-box p em { color: #fcd34d; font-style: italic; }
+
+        /* ===== OPINION POLL ===== */
+        .poll-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0;
+        }
+        .poll-btn {
+            background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+            color: var(--text-main); padding: 1rem 1.25rem; border-radius: 0.75rem;
+            cursor: pointer; font-family: inherit; font-size: 0.95rem;
+            text-align: left; transition: all 0.2s;
+        }
+        .poll-btn:hover:not(:disabled) { background: rgba(167,139,250,0.15); border-color: var(--euler-purple); }
+        .poll-btn.chosen { background: rgba(167,139,250,0.2) !important; border-color: var(--euler-purple) !important; }
+        .poll-result { margin-top: 1rem; font-size: 0.92rem; color: var(--euler-teal); min-height: 1.4rem; }
+
+        /* ===== COMPLEX UNIT CIRCLE ===== */
+        .canvas-wrap {
+            background: rgba(0,0,0,0.3); border-radius: 10px; padding: 1rem; margin: 1.5rem 0;
+        }
+        canvas { display: block; margin: 0 auto; max-width: 100%; }
+        .canvas-label { text-align: center; color: var(--text-muted); font-size: 0.83rem; margin-top: 0.5rem; }
+
+        /* ===== ANGLE SLIDER ===== */
+        .angle-control {
+            display: flex; align-items: center; gap: 1rem; margin: 1rem 0; flex-wrap: wrap;
+        }
+        .angle-control label { color: var(--text-muted); font-size: 0.92rem; min-width: 130px; }
+        input[type=range] {
+            -webkit-appearance: none; flex: 1; height: 6px; min-width: 160px;
+            background: rgba(167,139,250,0.25); border-radius: 3px; outline: none;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none; width: 18px; height: 18px;
+            border-radius: 50%; background: var(--euler-purple); cursor: pointer;
+            box-shadow: 0 0 8px rgba(167,139,250,0.6);
+        }
+        .angle-val {
+            min-width: 120px; color: var(--euler-gold);
+            font-weight: 700; font-size: 1rem; text-align: right;
+        }
+
+        /* ===== QUIZ ===== */
+        .quiz-question { margin-bottom: 2rem; }
+        .quiz-question h3 { color: var(--text-main); font-size: 1.05rem; font-weight: 600; margin-bottom: 1rem; }
+        .quiz-options { display: flex; flex-direction: column; gap: 0.6rem; }
+        .quiz-btn {
+            background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+            color: var(--text-main); padding: 0.85rem 1.2rem; border-radius: 0.5rem;
+            cursor: pointer; text-align: left; font-size: 0.98rem;
+            transition: all 0.2s; font-family: inherit;
+        }
+        .quiz-btn:hover:not(:disabled) { background: rgba(167,139,250,0.15); border-color: var(--euler-purple); }
+        .quiz-btn.correct { background: rgba(45,212,191,0.2) !important; border-color: var(--euler-teal) !important; color: #5eead4; }
+        .quiz-btn.wrong   { background: rgba(251,113,133,0.2) !important; border-color: var(--euler-rose) !important; color: #fda4af; }
+        .quiz-btn:disabled { cursor: not-allowed; }
+        .quiz-score-msg { text-align: center; font-weight: 700; color: var(--euler-teal); font-size: 1.1rem; margin-top: 1rem; min-height: 1.5rem; }
+
+        /* ===== BEAUTY METER ===== */
+        .beauty-bars { display: flex; flex-direction: column; gap: 0.75rem; margin: 1.25rem 0; }
+        .beauty-row { display: flex; align-items: center; gap: 0.75rem; }
+        .beauty-row .b-label { min-width: 150px; font-size: 0.88rem; color: var(--text-muted); }
+        .beauty-bar-track { flex: 1; height: 10px; background: rgba(255,255,255,0.06); border-radius: 5px; overflow: hidden; }
+        .beauty-bar-fill  { height: 100%; border-radius: 5px; transform-origin: left; transform: scaleX(0); transition: transform 1.2s cubic-bezier(.22,1,.36,1); }
+        .beauty-row .b-score { min-width: 35px; text-align: right; font-weight: 700; font-size: 0.9rem; color: var(--euler-gold); }
+
+        @media (max-width: 768px) {
+            .lesson-section { padding: 1.5rem; }
+            .numbers-grid { grid-template-columns: repeat(3,1fr); }
+            .poll-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Floating particles -->
+    <div class="particle" style="width:8px;height:8px;background:#a78bfa;left:10%;top:80%;animation-duration:14s;animation-delay:0s;"></div>
+    <div class="particle" style="width:5px;height:5px;background:#f59e0b;left:25%;top:90%;animation-duration:18s;animation-delay:2s;"></div>
+    <div class="particle" style="width:6px;height:6px;background:#2dd4bf;left:70%;top:85%;animation-duration:12s;animation-delay:4s;"></div>
+    <div class="particle" style="width:4px;height:4px;background:#fb7185;left:85%;top:75%;animation-duration:16s;animation-delay:1s;"></div>
+    <div class="particle" style="width:7px;height:7px;background:#60a5fa;left:50%;top:80%;animation-duration:20s;animation-delay:6s;"></div>
+
+    <header class="lesson-header">
+        <div class="container" style="position:relative;z-index:1;">
+            <div style="margin-bottom:1.5rem;">
+                <a href="funzioni.html" class="back-button" style="color:#c4b5fd;justify-content:center;">
+                    <span class="back-icon">←</span> Back to Functions
+                </a>
+            </div>
+            <div class="clil-badge">🇬🇧 CLIL Lesson — Mathematics in English</div>
+            <div class="euler-formula-hero" aria-label="e to the power of i pi plus 1 equals 0">
+                <span class="num-e">e</span><sup><span class="num-i">i</span><span class="num-pi">π</span></sup>
+                <span class="num-plus"> + </span>
+                <span class="num-one">1</span>
+                <span class="num-eq"> = </span>
+                <span class="num-zero">0</span>
+            </div>
+            <p class="hero-subtitle">
+                Five fundamental constants. One breathtaking equation.<br>
+                <em>The most beautiful formula in all of mathematics.</em>
+            </p>
+        </div>
+    </header>
+
+    <main class="container" style="padding-top:2.5rem;padding-bottom:5rem;">
+
+        <!-- TOC -->
+        <nav class="toc">
+            <h3>📋 Table of Contents</h3>
+            <ol>
+                <li><a href="#sec-who">Who Was Euler?</a></li>
+                <li><a href="#sec-history">The History of the Formula</a></li>
+                <li><a href="#sec-five">Meet the Five Constants</a></li>
+                <li><a href="#sec-g5">The G5 Summit of Mathematics</a></li>
+                <li><a href="#sec-formula">Euler's Formula — The Building Block</a></li>
+                <li><a href="#sec-unit-circle">Interactive: The Unit Circle</a></li>
+                <li><a href="#sec-beauty">Why Is It So Beautiful?</a></li>
+                <li><a href="#sec-anecdotes">Famous Reactions & Anecdotes</a></li>
+                <li><a href="#sec-quiz">Test Your Knowledge</a></li>
+            </ol>
+        </nav>
+
+        <!-- ================================================================ -->
+        <!-- 1. WHO WAS EULER? -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-who">
+            <div class="section-number">Section 1</div>
+            <h2>👤 Who Was Leonhard Euler?</h2>
+            <p class="lesson-text">
+                <strong>Leonhard Euler</strong> (1707–1783) was a Swiss mathematician and physicist, widely regarded as the most prolific mathematician in history. He worked in virtually every branch of mathematics — number theory, graph theory, mechanics, optics, and astronomy — and his collected works fill over 80 volumes.
+            </p>
+            <p class="lesson-text">
+                Euler introduced most of the mathematical notation we still use today: the symbol <strong>\(e\)</strong> for the base of the natural logarithm, <strong>\(i\)</strong> for the imaginary unit, <strong>\(\pi\)</strong> for the ratio of a circle's circumference to its diameter, <strong>\(f(x)\)</strong> for a function, and the capital sigma <strong>\(\Sigma\)</strong> for summation.
+            </p>
+
+            <div class="callout callout-gold">
+                <span class="callout-icon">💡</span>
+                <p><strong>Remarkable fact:</strong> Euler lost the sight of his right eye in 1738 and became completely blind in 1771 — yet he continued to produce groundbreaking mathematics at an even faster rate than before, dictating his work to assistants. He once said: <em>"Now I will have fewer distractions."</em></p>
+            </div>
+
+            <div class="callout callout-purple">
+                <span class="callout-icon">📚</span>
+                <p><strong>Scale of his output:</strong> It has been estimated that Euler wrote, on average, <strong>800 pages of mathematics per year</strong> over his entire career. The Saint Petersburg Academy of Sciences was still publishing his previously unprinted manuscripts 47 years after his death.</p>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 2. HISTORY -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-history">
+            <div class="section-number">Section 2</div>
+            <h2>📜 The History of the Formula</h2>
+            <p class="lesson-text">
+                Euler's Identity is a special case of a much more general result: <strong>Euler's Formula</strong>. Understanding how this formula was discovered requires following the trail of some of the most daring ideas in the history of mathematics.
+            </p>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot" style="background:#fb7185;"></div>
+                    <div class="timeline-year">~1545 — Imaginary Numbers Are Born</div>
+                    <div class="timeline-text"><strong>Gerolamo Cardano</strong> encountered square roots of negative numbers while solving cubic equations. Mathematicians of his era found these "impossible" numbers deeply unsettling, yet couldn't deny their usefulness. René Descartes later sneered at them, calling them <em>"imaginary"</em> — a sarcastic label that stuck.</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot" style="background:#f59e0b;"></div>
+                    <div class="timeline-year">1614–1659 — Logarithms & the Number e</div>
+                    <div class="timeline-text"><strong>John Napier</strong> invented logarithms in 1614, revolutionising astronomy and navigation. The number \(e \approx 2.71828\ldots\) emerged naturally from the study of compound interest and logarithms, first appearing in letters by <strong>Jacob Bernoulli</strong> in 1683.</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot" style="background:#a78bfa;"></div>
+                    <div class="timeline-year">1690s — Complex Numbers Are Accepted</div>
+                    <div class="timeline-text"><strong>Gottfried Wilhelm Leibniz</strong> and <strong>Johan Bernoulli</strong> debated the logarithms of negative and complex numbers, noticing strange connections between trigonometry and exponentials — but couldn't fully explain them.</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot" style="background:#2dd4bf;"></div>
+                    <div class="timeline-year">1714 — Roger Cotes' Glimpse</div>
+                    <div class="timeline-text">English mathematician <strong>Roger Cotes</strong> wrote, perhaps for the first time, something close to Euler's formula in a different notation: \( \ln(\cos\theta + i\sin\theta) = i\theta \). He died at 33 before fully developing the idea.</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot" style="background:#60a5fa;"></div>
+                    <div class="timeline-year">1748 — Euler Publishes <em>Introductio in analysin infinitorum</em></div>
+                    <div class="timeline-text"><strong>Leonhard Euler</strong> derives the complete formula \( e^{ix} = \cos x + i\sin x \) in his masterwork. Setting \( x = \pi \) immediately yields the identity \( e^{i\pi} + 1 = 0 \). Euler grasped the formula's full significance and placed it at the centre of complex analysis.</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot" style="background:#6ee7b7;"></div>
+                    <div class="timeline-year">19th–20th Century — The Formula's Fame Grows</div>
+                    <div class="timeline-text">The identity gained legendary status. In 1988, the mathematical journal <em>Mathematical Intelligencer</em> ran a poll asking readers to vote for the most beautiful theorem in mathematics. <strong>Euler's Identity came first</strong>. A 2004 poll in <em>Physics World</em> asked physicists: same result.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 3. THE FIVE CONSTANTS -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-five">
+            <div class="section-number">Section 3</div>
+            <h2>🔢 Meet the Five Constants</h2>
+            <p class="lesson-text">
+                What makes Euler's Identity so astonishing is that it unites <strong>five of the most fundamental constants in mathematics</strong>, each arising from a completely different area — and yet they fit together perfectly.
+            </p>
+
+            <div class="numbers-grid">
+                <div class="number-card nc-e">
+                    <div class="sym">e</div>
+                    <h4>Euler's Number</h4>
+                    <p>\(e \approx 2.71828\ldots\)<br>The base of natural logarithms. Governs exponential growth and decay, compound interest, probability.</p>
+                </div>
+                <div class="number-card nc-i">
+                    <div class="sym">i</div>
+                    <h4>Imaginary Unit</h4>
+                    <p>\(i = \sqrt{-1}\)<br>The foundation of complex numbers. "Impossible" yet essential in engineering, physics, and signal processing.</p>
+                </div>
+                <div class="number-card nc-pi">
+                    <div class="sym">π</div>
+                    <h4>Pi</h4>
+                    <p>\(\pi \approx 3.14159\ldots\)<br>The ratio of circumference to diameter of any circle. Appears everywhere in geometry, waves, and statistics.</p>
+                </div>
+                <div class="number-card nc-1">
+                    <div class="sym">1</div>
+                    <h4>One</h4>
+                    <p>The multiplicative identity. The building block of all counting numbers and arithmetic.</p>
+                </div>
+                <div class="number-card nc-0">
+                    <div class="sym">0</div>
+                    <h4>Zero</h4>
+                    <p>The additive identity. One of humanity's greatest mathematical inventions — nothing made into something.</p>
+                </div>
+            </div>
+
+            <div class="definition-box">
+                <strong>Euler's Identity:</strong> \( e^{i\pi} + 1 = 0 \)<br><br>
+                This single equation links <strong>two fundamental operations</strong> (addition and exponentiation), <strong>two identities</strong> (the additive identity 0 and the multiplicative identity 1), and <strong>three transcendental/imaginary constants</strong> (\(e\), \(i\), \(\pi\)) — each discovered centuries apart, in completely different contexts.
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 4. THE G5 SUMMIT -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-g5">
+            <div class="section-number">Section 4</div>
+            <h2>🌍 The G5 Summit of Mathematics</h2>
+            <p class="lesson-text">
+                You have probably heard of the <strong>G7</strong> — the annual summit where the leaders of the world's seven major economies gather at the same table to discuss global affairs. It is considered extraordinary precisely because it is so rare to have all these powerful figures in the same room at the same time.
+            </p>
+
+            <div class="joke-box">
+                <span class="j-icon">🏛️</span>
+                <p>
+                    Think of Euler's Identity as the <em>G5 summit of mathematics</em>: the five most important numbers in all of mathematics — each a superpower in its own domain — sitting together at the same table, united by a single, impossibly elegant equation.<br><br>
+                    \(e\) represents <em>analysis and growth</em>, \(i\) represents <em>the complex plane</em>, \(\pi\) represents <em>geometry and cycles</em>, \(1\) represents <em>arithmetic</em>, and \(0\) represents <em>the concept of nothingness</em>. The fact that they all appear in one formula, with no extra coefficients, no clutter, no approximations — just pure equality — is what makes mathematicians go silent in awe.
+                </p>
+            </div>
+
+            <p class="lesson-text">
+                The physicist Richard Feynman — one of the greatest scientific minds of the 20th century and no stranger to beautiful ideas — called it <em>"the most remarkable formula in mathematics."</em> He first encountered it as a teenager and reportedly stared at it for hours.
+            </p>
+
+            <div class="callout callout-rose">
+                <span class="callout-icon">🎓</span>
+                <p>Stanford mathematician <strong>Keith Devlin</strong> put it this way: <em>"Like a Shakespearean sonnet that captures the very essence of love, or a painting that brings out the beauty of the human form that is far more than just skin deep, Euler's equation reaches down into the very depths of existence."</em></p>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 5. EULER'S FORMULA -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-formula">
+            <div class="section-number">Section 5</div>
+            <h2>⚙️ Euler's Formula — The Building Block</h2>
+            <p class="lesson-text">
+                Euler's Identity is actually a <em>special case</em> of the more general <strong>Euler's Formula</strong>, which connects the complex exponential to trigonometry:
+            </p>
+
+            <div class="formula-big">
+                \[ e^{ix} = \cos x + i\sin x \quad \text{for any real number } x \]
+            </div>
+
+            <p class="lesson-text">
+                This formula tells us that raising \(e\) to an imaginary power produces a rotation in the complex plane. When \(x\) increases from \(0\) to \(2\pi\), the point \(e^{ix}\) traces out a <strong>complete circle of radius 1</strong> — the unit circle.
+            </p>
+
+            <h3>Deriving the Identity</h3>
+            <p class="lesson-text">Simply substitute \(x = \pi\) into Euler's Formula:</p>
+            <div class="formula-big">
+                \[ e^{i\pi} = \cos\pi + i\sin\pi = -1 + i \cdot 0 = -1 \]
+            </div>
+            <p class="lesson-text">Therefore:</p>
+            <div class="formula-big">
+                \[ e^{i\pi} = -1 \quad \Longrightarrow \quad e^{i\pi} + 1 = 0 \]
+            </div>
+
+            <div class="callout callout-teal">
+                <span class="callout-icon">🔄</span>
+                <p><strong>Key insight:</strong> \(\cos\pi = -1\) because \(\pi\) radians is a half-turn — exactly halfway around the unit circle — which lands you at the point \((-1, 0)\). And \(\sin\pi = 0\) because that point lies on the real axis. The imaginary part vanishes, leaving just \(-1\).</p>
+            </div>
+
+            <h3>Where Does Euler's Formula Come From?</h3>
+            <p class="lesson-text">
+                The deepest proof uses <strong>Taylor series</strong> — infinite polynomial expansions. We expand \(e^{ix}\), \(\cos x\), and \(\sin x\):
+            </p>
+            <div class="formula-big">
+                \[ e^{ix} = 1 + ix + \frac{(ix)^2}{2!} + \frac{(ix)^3}{3!} + \frac{(ix)^4}{4!} + \cdots \]
+            </div>
+            <p class="lesson-text">
+                Using \(i^2 = -1\), \(i^3 = -i\), \(i^4 = 1\) and separating real from imaginary terms gives exactly \(\cos x + i\sin x\). The two seemingly unrelated worlds — exponentials and trigonometry — turn out to be the <em>same function</em>, seen from different angles.
+            </p>
+
+            <div class="callout callout-purple">
+                <span class="callout-icon">📝</span>
+                <p><strong>Note for students:</strong> Taylor series and complex numbers are topics you will study in depth in future years. For now, what matters is the <em>result</em>: a complex exponential is a rotation, and \(x = \pi\) rotates exactly halfway around the circle, landing on −1.</p>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 6. UNIT CIRCLE INTERACTIVE -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-unit-circle">
+            <div class="section-number">Section 6</div>
+            <h2>🎯 Interactive: Euler's Formula on the Unit Circle</h2>
+            <p class="lesson-text">
+                Drag the slider to change the angle \(x\). Watch how \(e^{ix} = \cos x + i\sin x\) traces the unit circle in the complex plane — and observe what happens exactly at \(x = \pi\).
+            </p>
+
+            <div class="angle-control">
+                <label>Angle \(x\):</label>
+                <input type="range" id="angle-slider" min="0" max="628" value="314" step="1">
+                <div class="angle-val" id="angle-display">\(x = \pi\)</div>
+            </div>
+
+            <div class="canvas-wrap">
+                <canvas id="unit-circle-canvas" width="500" height="500"></canvas>
+            </div>
+            <div class="canvas-label">
+                The <span style="color:#a78bfa;">purple dot</span> is \(e^{ix} = \cos x + i\sin x\).<br>
+                At \(x = \pi\), the point lands on \(-1\) → Euler's Identity: \(e^{i\pi} + 1 = 0\) ✓
+            </div>
+
+            <div id="euler-values" style="margin-top:1rem; font-size:0.95rem; color:var(--text-muted); text-align:center; line-height:2;">
+                Loading…
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 7. WHY IS IT BEAUTIFUL? -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-beauty">
+            <div class="section-number">Section 7</div>
+            <h2>✨ Why Is It So Beautiful?</h2>
+            <p class="lesson-text">
+                Mathematical beauty is akin to aesthetic beauty: partly subjective, partly universal. When mathematicians say Euler's Identity is beautiful, they are pointing to several distinct qualities.
+            </p>
+
+            <h3>The Criteria of Mathematical Beauty</h3>
+            <div class="beauty-bars" id="beauty-bars">
+                <div class="beauty-row">
+                    <span class="b-label">Economy / Compactness</span>
+                    <div class="beauty-bar-track"><div class="beauty-bar-fill" style="width:100%;background:linear-gradient(90deg,#a78bfa,#2dd4bf);" data-scale="1.0"></div></div>
+                    <span class="b-score">10/10</span>
+                </div>
+                <div class="beauty-row">
+                    <span class="b-label">Unexpectedness</span>
+                    <div class="beauty-bar-track"><div class="beauty-bar-fill" style="width:100%;background:linear-gradient(90deg,#f59e0b,#fb7185);" data-scale="1.0"></div></div>
+                    <span class="b-score">10/10</span>
+                </div>
+                <div class="beauty-row">
+                    <span class="b-label">Depth of Connection</span>
+                    <div class="beauty-bar-track"><div class="beauty-bar-fill" style="width:100%;background:linear-gradient(90deg,#60a5fa,#a78bfa);" data-scale="1.0"></div></div>
+                    <span class="b-score">10/10</span>
+                </div>
+                <div class="beauty-row">
+                    <span class="b-label">Inevitability</span>
+                    <div class="beauty-bar-track"><div class="beauty-bar-fill" style="width:95%;background:linear-gradient(90deg,#2dd4bf,#6ee7b7);" data-scale="0.95"></div></div>
+                    <span class="b-score">9.5/10</span>
+                </div>
+                <div class="beauty-row">
+                    <span class="b-label">Universality</span>
+                    <div class="beauty-bar-track"><div class="beauty-bar-fill" style="width:95%;background:linear-gradient(90deg,#fb7185,#f59e0b);" data-scale="0.95"></div></div>
+                    <span class="b-score">9.5/10</span>
+                </div>
+            </div>
+
+            <h3>1. Economy — It says everything using nothing</h3>
+            <p class="lesson-text">
+                The equation \(e^{i\pi} + 1 = 0\) contains only <strong>seven symbols</strong> (five constants, one operation, one relation) and <em>zero</em> superfluous elements. No coefficients. No approximation sign. No fine print. This is the mathematical equivalent of a haiku — the maximum of meaning in the minimum of form.
+            </p>
+
+            <h3>2. Unexpectedness — Nobody expected this</h3>
+            <p class="lesson-text">
+                \(e\) comes from calculus and continuous growth. \(\pi\) comes from geometry and circles. \(i\) comes from algebra and the desire to solve \(x^2 = -1\). These areas have nothing obvious in common. And yet they are secretly the same thing, connected through the complex exponential. The <strong>surprise</strong> is key to beauty — the moment of <em>"How can this be true?!"</em>
+            </p>
+
+            <h3>3. Depth — It reveals hidden structure</h3>
+            <p class="lesson-text">
+                The identity is not a coincidence or a trick — it reflects a deep structural truth about mathematics: <strong>rotation and exponential growth are the same operation</strong>, just applied in different directions. Real exponents produce growth; imaginary exponents produce rotation. The formula shows that geometry and analysis are two faces of the same coin.
+            </p>
+
+            <h3>4. Inevitability — Once you see it, it couldn't be otherwise</h3>
+            <p class="lesson-text">
+                After Euler's Formula is established, the identity feels <em>inevitable</em>: of course \(e^{i\pi} = -1\). Of course it was always true. This sense of "it couldn't be any other way" is what the philosopher Bertrand Russell described as the cold beauty of mathematics — logic so tight that there is no room for it to be wrong.
+            </p>
+
+            <div class="callout callout-gold">
+                <span class="callout-icon">🎵</span>
+                <p><strong>An analogy:</strong> the identity is to mathematics what Beethoven's Fifth Symphony is to music. Not because it is complex, but because it achieves <em>perfection through simplicity</em> — a brief, inevitable statement that contains infinite depth.</p>
+            </div>
+
+            <!-- Poll -->
+            <h3 style="margin-top:2rem;">🗳️ Do You Find It Beautiful? — Your Vote</h3>
+            <p class="lesson-text">Now that you know the story, cast your vote.</p>
+            <div class="poll-grid" id="poll-grid">
+                <button class="poll-btn" onclick="vote(0)">😍 Breathtakingly beautiful — I finally see it!</button>
+                <button class="poll-btn" onclick="vote(1)">🤔 Interesting, but I need to think more about it.</button>
+                <button class="poll-btn" onclick="vote(2)">📐 More curious than beautiful — I appreciate the logic.</button>
+                <button class="poll-btn" onclick="vote(3)">😅 Honestly, I'm still not sure what all the fuss is about.</button>
+            </div>
+            <div class="poll-result" id="poll-result"></div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 8. ANECDOTES -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-anecdotes">
+            <div class="section-number">Section 8</div>
+            <h2>💬 Famous Reactions & Anecdotes</h2>
+
+            <h3>Richard Feynman, age 14</h3>
+            <p class="lesson-text">
+                Nobel Prize-winning physicist Richard Feynman first encountered Euler's Formula from a library book as a teenager. He later wrote in his notebooks: <em>"The most remarkable formula in mathematics"</em> — a phrase he never retracted. When asked to explain it, he would often pause, smile, and say: <em>"If you're not already amazed, you haven't understood it yet."</em>
+            </p>
+
+            <h3>The Tattoo Test</h3>
+            <p class="lesson-text">
+                A famous anecdote in mathematics departments is the <strong>"tattoo test"</strong>: it is said that \(e^{i\pi} + 1 = 0\) is the most common tattoo among mathematicians and physicists — ahead of any other equation, including \(E = mc^2\). Whether or not this is statistically true, the story captures something real: the formula inspires a kind of personal, almost spiritual devotion.
+            </p>
+
+            <h3>Benjamin Peirce's Reaction (1850s)</h3>
+            <p class="lesson-text">
+                American mathematician Benjamin Peirce — one of the leading figures of 19th-century American mathematics — reportedly wrote the formula on a blackboard in front of his Harvard students, then turned around and said:
+            </p>
+            <div class="callout callout-purple">
+                <span class="callout-icon">🖊️</span>
+                <p><em>"Gentlemen, that is surely true, it is absolutely paradoxical; we cannot understand it, and we don't know what it means. But we have proved it, and therefore we know it must be the truth."</em></p>
+            </div>
+
+            <h3>Mathematics in Pop Culture</h3>
+            <p class="lesson-text">
+                Euler's Identity has appeared in countless novels, films, and TV shows as a shorthand for genius or mathematical beauty. In the TV series <em>Futurama</em>, writers (many of whom hold advanced mathematics degrees) embedded it in an episode as a visual joke. In the film <em>The Avengers</em>, a character's chalkboard famously features it. It has even been referenced in songs and architecture. A formula from 1748 — still culturally relevant today.
+            </p>
+
+            <h3>Why Euler Got the Credit (and Not Cotes)</h3>
+            <p class="lesson-text">
+                Roger Cotes came closest before Euler, but his version was obscured in notation — he didn't fully realise the geometric and algebraic significance of what he had found. Euler, by contrast, <strong>recognised the result, understood it deeply, and placed it in the context of a general theory</strong>. In mathematics, credit goes not just to whoever writes something first, but to whoever <em>understands it fully and communicates it clearly</em>.
+            </p>
+
+            <div class="callout">
+                <span class="callout-icon">🔭</span>
+                <p><strong>Applications today:</strong> Euler's Formula (the general form) is <em>everywhere</em> in modern science and technology — it underpins <strong>signal processing</strong> (the Fourier Transform), <strong>quantum mechanics</strong> (the wave function), <strong>electrical engineering</strong> (AC circuit analysis), and <strong>computer graphics</strong> (3D rotations). The "beautiful but useless" equation turns out to be one of the most useful equations ever written.</p>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- 9. QUIZ -->
+        <!-- ================================================================ -->
+        <section class="lesson-section" id="sec-quiz">
+            <div class="section-number">Section 9</div>
+            <h2 style="color:var(--euler-teal);">🧠 Test Your Knowledge</h2>
+            <p class="lesson-text">Answer these questions to check your understanding of Euler's Identity and its history. All questions are in English!</p>
+            <div style="background:rgba(0,0,0,0.15);border-radius:1rem;padding:1.5rem;">
+                <div id="quiz-area"></div>
+                <div class="quiz-score-msg" id="quiz-score"></div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>© 2026 MFI — Mathematics, Physics, Computer Science.</p>
+    </footer>
+
+    <script>
+    // ============================================================
+    //  UNIT CIRCLE CANVAS
+    // ============================================================
+    const canvas = document.getElementById('unit-circle-canvas');
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+    const CX = W/2, CY = H/2;
+    const R = Math.min(W,H)*0.38;
+
+    function drawUnitCircle(angle) {
+        ctx.clearRect(0,0,W,H);
+
+        // Background grid
+        ctx.strokeStyle='rgba(255,255,255,0.05)'; ctx.lineWidth=1;
+        for(let gx=-3;gx<=3;gx++){
+            const px=CX+gx*R/3;
+            ctx.beginPath(); ctx.moveTo(px,0); ctx.lineTo(px,H); ctx.stroke();
+        }
+        for(let gy=-3;gy<=3;gy++){
+            const py=CY+gy*R/3;
+            ctx.beginPath(); ctx.moveTo(0,py); ctx.lineTo(W,py); ctx.stroke();
+        }
+
+        // Axes
+        ctx.strokeStyle='rgba(255,255,255,0.25)'; ctx.lineWidth=1.5;
+        ctx.beginPath(); ctx.moveTo(0,CY); ctx.lineTo(W,CY); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(CX,0); ctx.lineTo(CX,H); ctx.stroke();
+
+        // Axis labels
+        ctx.fillStyle='rgba(255,255,255,0.4)'; ctx.font='13px Inter';
+        ctx.textAlign='center';
+        ctx.fillText('+1',CX+R+18,CY+5);
+        ctx.fillText('−1',CX-R-18,CY+5);
+        ctx.textAlign='left';
+        ctx.fillText('+i',CX+8,CY-R-6);
+        ctx.fillText('−i',CX+8,CY+R+16);
+
+        // Shaded arc so far
+        ctx.beginPath();
+        ctx.moveTo(CX,CY);
+        ctx.arc(CX,CY,R,0,-angle,true);
+        ctx.closePath();
+        ctx.fillStyle='rgba(167,139,250,0.07)';
+        ctx.fill();
+
+        // Unit circle
+        ctx.beginPath(); ctx.arc(CX,CY,R,0,Math.PI*2);
+        ctx.strokeStyle='rgba(167,139,250,0.35)'; ctx.lineWidth=1.5;
+        ctx.stroke();
+
+        const px = CX + R*Math.cos(-angle);
+        const py = CY + R*Math.sin(-angle);
+
+        // cos projection (dashed vertical)
+        ctx.setLineDash([4,4]);
+        ctx.strokeStyle='rgba(96,165,250,0.5)'; ctx.lineWidth=1.5;
+        ctx.beginPath(); ctx.moveTo(px,CY); ctx.lineTo(px,py); ctx.stroke();
+        // sin projection (dashed horizontal)
+        ctx.strokeStyle='rgba(251,113,133,0.5)';
+        ctx.beginPath(); ctx.moveTo(CX,py); ctx.lineTo(px,py); ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Radius line
+        ctx.beginPath(); ctx.moveTo(CX,CY); ctx.lineTo(px,py);
+        ctx.strokeStyle='rgba(167,139,250,0.7)'; ctx.lineWidth=2;
+        ctx.stroke();
+
+        // Angle arc
+        ctx.beginPath(); ctx.arc(CX,CY,R*0.2,0,-angle,true);
+        ctx.strokeStyle='rgba(245,158,11,0.6)'; ctx.lineWidth=1.5;
+        ctx.stroke();
+
+        // Labels: cos x, sin x
+        ctx.font='12px Inter';
+        ctx.fillStyle='#60a5fa'; ctx.textAlign='center';
+        ctx.fillText('cos x', px, CY+(Math.sign(-angle)>=0?14:-6));
+        ctx.fillStyle='#fb7185'; ctx.textAlign='left';
+        ctx.fillText('sin x', CX+6, (CY+py)/2+4);
+
+        // Special marker at x=pi (-1, 0)
+        const atPi = Math.abs(angle - Math.PI) < 0.06;
+        if(atPi){
+            ctx.beginPath(); ctx.arc(CX-R,CY,10,0,Math.PI*2);
+            ctx.fillStyle='rgba(245,158,11,0.3)'; ctx.fill();
+            ctx.strokeStyle='#f59e0b'; ctx.lineWidth=2; ctx.stroke();
+            ctx.fillStyle='#fcd34d'; ctx.font='bold 13px Inter'; ctx.textAlign='center';
+            ctx.fillText('e^{iπ}=−1', CX-R, CY-18);
+        }
+
+        // Point on circle
+        ctx.beginPath(); ctx.arc(px,py,8,0,Math.PI*2);
+        ctx.fillStyle= atPi ? '#f59e0b' : '#a78bfa'; ctx.fill();
+        ctx.strokeStyle='white'; ctx.lineWidth=2; ctx.stroke();
+
+        // Coordinates display
+        ctx.font='13px Inter'; ctx.fillStyle='rgba(255,255,255,0.75)'; ctx.textAlign='right';
+        const cosV=Math.cos(angle).toFixed(3), sinV=Math.sin(angle).toFixed(3);
+        ctx.fillText(`(${cosV}, ${sinV}i)`, W-12, H-14);
+    }
+
+    function updateCircle() {
+        const raw = parseInt(document.getElementById('angle-slider').value);
+        const angle = raw/100;
+        const pi = Math.PI;
+        let label;
+        const frac = angle/pi;
+        if(Math.abs(frac-1)<0.02) label='\\(x = \\pi\\) ← <em style="color:#f59e0b">Euler\'s Identity!</em>';
+        else if(Math.abs(frac-2)<0.02) label='\\(x = 2\\pi\\)';
+        else if(Math.abs(frac-0.5)<0.02) label='\\(x = \\pi/2\\)';
+        else if(Math.abs(frac-1.5)<0.02) label='\\(x = 3\\pi/2\\)';
+        else label=`\\(x \\approx ${frac.toFixed(2)}\\pi\\)`;
+        document.getElementById('angle-display').innerHTML=label;
+
+        const cosV=Math.cos(angle), sinV=Math.sin(angle);
+        const signStr = sinV>=0?'+':'-';
+        const absI = Math.abs(sinV).toFixed(4);
+        document.getElementById('euler-values').innerHTML=
+            `\\(e^{ix} = \\cos x + i\\sin x = ${cosV.toFixed(4)} ${signStr} ${absI}i\\)`;
+
+        drawUnitCircle(angle);
+        if(window.MathJax) MathJax.typesetPromise(['#angle-display','#euler-values']).catch(()=>{});
+    }
+
+    document.getElementById('angle-slider').addEventListener('input', updateCircle);
+
+    // ============================================================
+    //  BEAUTY BARS ANIMATION
+    // ============================================================
+    function animateBars() {
+        document.querySelectorAll('.beauty-bar-fill').forEach(bar => {
+            bar.style.transform = 'scaleX(1)';
+        });
+    }
+    const barsObserver = new IntersectionObserver(entries => {
+        entries.forEach(e => { if(e.isIntersecting) animateBars(); });
+    }, {threshold: 0.3});
+    const barsEl = document.getElementById('beauty-bars');
+    if(barsEl) barsObserver.observe(barsEl);
+
+    // ============================================================
+    //  POLL
+    // ============================================================
+    const pollResponses = [
+        "Wonderful! Beauty is most powerful when it surprises us.",
+        "That's perfectly valid — mathematical beauty reveals itself gradually. Come back after you've studied complex numbers!",
+        "Logical appreciation is the first step. Beauty follows understanding.",
+        "Totally fair! Many students feel this way at first. After a full course in complex analysis, ask yourself again."
+    ];
+
+    window.vote = function(i) {
+        document.querySelectorAll('.poll-btn').forEach((b,j) => {
+            b.disabled = true;
+            if(j===i) b.classList.add('chosen');
+        });
+        document.getElementById('poll-result').textContent = '💬 ' + pollResponses[i];
+    };
+
+    // ============================================================
+    //  QUIZ
+    // ============================================================
+    const quizData = [
+        {
+            q: "In which year did Euler publish the formula e^{ix} = cos x + i sin x?",
+            opts: ["1707","1737","1748","1783"],
+            ans: 2,
+            exp: "Euler published it in 1748 in his masterwork 'Introductio in analysin infinitorum'. That's the same year he was 41 and at the height of his powers — despite having lost sight in his right eye a decade earlier."
+        },
+        {
+            q: "Which value of x in Euler's Formula e^{ix} = cos x + i sin x gives Euler's Identity?",
+            opts: ["x = e","x = 1","x = π/2","x = π"],
+            ans: 3,
+            exp: "Setting x = π gives e^{iπ} = cos π + i sin π = −1 + 0 = −1, so e^{iπ} + 1 = 0. The angle π radians corresponds to a half-turn around the unit circle, landing at (−1, 0)."
+        },
+        {
+            q: "What are the five constants in Euler's Identity?",
+            opts: ["e, π, i, 2, 1","e, π, i, 0, 1","e, φ, i, 0, 1","e, π, √2, 0, 1"],
+            ans: 1,
+            exp: "Euler's Identity e^{iπ} + 1 = 0 contains exactly: e (Euler's number), π (pi), i (imaginary unit), 1 (multiplicative identity), and 0 (additive identity). Five constants, five different areas of mathematics."
+        },
+        {
+            q: "cos π = ?",
+            opts: ["0","1","−1","i"],
+            ans: 2,
+            exp: "cos π = −1. On the unit circle, π radians is a half-turn, landing at the point (−1, 0). The x-coordinate is the cosine, so cos π = −1. This is the key step in deriving Euler's Identity."
+        },
+        {
+            q: "Who first glimpsed a formula close to Euler's but died before developing it?",
+            opts: ["René Descartes","John Napier","Roger Cotes","Carl Gauss"],
+            ans: 2,
+            exp: "Roger Cotes (1682–1716) wrote ln(cos θ + i sin θ) = iθ, very close to Euler's formula, but died at 33 without fully understanding its significance. Euler later derived and recognised the complete result."
+        },
+        {
+            q: "In the context of Euler's Formula, what does e^{ix} represent geometrically?",
+            opts: ["A point on the parabola y = x²","A rotation by angle x on the unit circle in the complex plane","A point on the real number line","An exponential growth curve"],
+            ans: 1,
+            exp: "e^{ix} = cos x + i sin x is a point on the unit circle in the complex plane, at angle x from the positive real axis. As x increases, the point rotates counterclockwise. This is why complex exponentials are fundamental to the description of oscillations and waves."
+        },
+        {
+            q: "What does 'CLIL' stand for?",
+            opts: ["Complex Language in Learning","Content and Language Integrated Learning","Creative Learning in Literature","Curriculum Language and Instruction Lessons"],
+            ans: 1,
+            exp: "CLIL stands for Content and Language Integrated Learning — a teaching approach where a subject (like mathematics) is taught in a foreign language (here, English). It develops both subject knowledge and language skills simultaneously."
+        },
+        {
+            q: "Which of the following is an application of Euler's Formula in the real world?",
+            opts: ["Calculating compound interest","Analysing AC electrical circuits","Finding the area of a triangle","Solving quadratic equations"],
+            ans: 1,
+            exp: "Euler's Formula e^{ix} = cos x + i sin x is the mathematical foundation of AC circuit analysis, which engineers use to study alternating current. It also underlies the Fourier Transform (used in signal processing and image compression) and quantum mechanics."
+        }
+    ];
+
+    let score = 0, answered = 0;
+
+    function loadQuiz() {
+        document.getElementById('quiz-area').innerHTML = quizData.map((q,i) => `
+            <div class="quiz-question">
+                <h3>${i+1}. ${q.q}</h3>
+                <div class="quiz-options">
+                    ${q.opts.map((o,j)=>`<button class="quiz-btn" onclick="checkQ(${i},${j},this)">${o}</button>`).join('')}
+                </div>
+                <div id="qexp-${i}" style="display:none;margin-top:0.75rem;font-size:0.88rem;color:var(--euler-teal);background:rgba(45,212,191,0.07);padding:0.7rem 1rem;border-radius:8px;"></div>
+            </div>
+        `).join('');
+    }
+
+    window.checkQ = function(qi, oi, btn) {
+        const btns = btn.parentElement.querySelectorAll('.quiz-btn');
+        btns.forEach(b => b.disabled = true);
+        if(oi === quizData[qi].ans){ btn.classList.add('correct'); score++; }
+        else { btn.classList.add('wrong'); btns[quizData[qi].ans].classList.add('correct'); }
+        const exp = document.getElementById(`qexp-${qi}`);
+        exp.textContent = '💡 ' + quizData[qi].exp;
+        exp.style.display = 'block';
+        answered++;
+        if(answered === quizData.length){
+            const pct = Math.round(score/quizData.length*100);
+            document.getElementById('quiz-score').textContent =
+                `You scored ${score}/${quizData.length} (${pct}%). ${
+                    pct===100?'🏆 Perfect score — Euler would be proud!':
+                    pct>=75?'🚀 Excellent! You understand the identity deeply.':
+                    pct>=50?'📚 Good start — review the sections you found challenging.':
+                    '🔄 Read through the lesson again — beauty reveals itself on the second reading.'}`;
+        }
+    };
+
+    // ============================================================
+    //  INIT
+    // ============================================================
+    document.addEventListener('DOMContentLoaded', () => {
+        drawUnitCircle(Math.PI);
+        updateCircle();
+        loadQuiz();
+    });
+    </script>
+    <script src="../../js/main.js"></script>
+</body>
+</html>

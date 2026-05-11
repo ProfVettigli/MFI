@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assiomi e Teoremi - Geometria MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        .back-button { display: inline-flex; align-items: center; color: var(--text-muted); text-decoration: none; margin-bottom: 2rem; font-weight: 600; transition: color 0.3s ease, transform 0.3s ease; }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+        .sub-hero { padding: 4rem 0 2rem; text-align: left; }
+        .interactive-container { background: rgba(0,0,0,0.15); padding: 2rem; border-radius: 12px; margin: 2rem 0; display: flex; flex-direction: column; align-items: center; box-shadow: inset 0 0 10px rgba(0,0,0,0.1); }
+        canvas { background: #fff; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); max-width: 100%; }
+        .controls { margin-top: 1.5rem; display: flex; gap: 1rem; }
+        .control-btn { background: #3B82F6; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-family: 'Inter', sans-serif; font-weight: 600; }
+        .control-btn:hover { opacity: 0.8; }
+    </style>
+</head>
+<body>
+    <header class="sub-hero">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2.5rem;">
+                <a href="geometria.html" class="back-button" style="margin-bottom: 0;">
+                    <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Geometria
+                </a>
+            </div>
+            <h1 class="sub-hero-title" style="color: #3B82F6;"> 📜 Assiomi e Teoremi </h1>
+            <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+                Le basi della dimostrazione in matematica e i postulati del mondo classico.
+            </p>
+        </div>
+    </header>
+    <main class="container">
+        
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #3B82F6;">1. Qual è la differenza tra Assioma e Teorema?</h2>
+            <p class="lesson-text">In matematica, non si dà mai nulla per scontato, eccetto gli assiomi. Un <strong>Assioma</strong> (o Postulato) è un'affermazione considerata così elementare ed evidente da essere assunta come vera senza bisogno di alcuna dimostrazione rigorosa. È il "mattone originario" su cui si costruisce un'intera teoria.</p>
+            <p class="lesson-text">Un <strong>Teorema</strong>, invece, è un'affermazione complessa che deve essere <em>sempre</em> accompagnata da un calcolo o da una deduzione. La verità del Teorema si dimostra smontandolo fino ad attestare che rispetta gli Assiomi principali e gli altri teoremi precedenti. <br><br>
+            Spesso, i matematici non si accontentano di una sola dimostrazione per un singolo teorema, ma ne cercano <strong>molteplici e profondamente diverse tra loro</strong>. Perché? Perché dimostrare lo stesso risultato usando rami diversi della matematica (ad esempio la geometria al posto dell'algebra) non serve solo a confermare la verità, ma dischiude connessioni inaspettate fortificando il teorema e spesso semplificandone la comprensione da angolazioni del tutto nuove.</p>
+        </section>
+
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #3B82F6;">2. I 5 Postulati di Euclide</h2>
+            <p class="lesson-text">Intorno al 300 a.C., il saggio greco Euclide scrisse decine di libri ("Gli Elementi"), gettando le fondamenta della geometria piana che usiamo da millenni. Sorprendentemente, trasse l'intero impero di regole partendo da soli cinque principi banalissimi e autoevidenti:</p>
+            
+            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
+                
+                <div class="card" style="padding: 1.5rem; background: rgba(59, 130, 246, 0.05); border-left: 4px solid #3B82F6;">
+                    <h4 style="color: #3B82F6; margin-bottom: 0.5rem;">1° Postulato</h4>
+                    <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 1rem; min-height: 45px;">Tra due punti qualsiasi è possibile tracciare una ed una sola retta.</p>
+                    <div style="display: flex; justify-content: center;">
+                        <svg width="250" height="60" viewBox="0 0 250 60">
+                            <line x1="30" y1="30" x2="220" y2="30" stroke="#3B82F6" stroke-width="2"/>
+                            <circle cx="30" cy="30" r="4" fill="#3B82F6" />
+                            <circle cx="220" cy="30" r="4" fill="#3B82F6" />
+                            <text x="25" y="50" font-family="Inter, sans-serif" font-size="12" fill="#94a3b8">A</text>
+                            <text x="215" y="50" font-family="Inter, sans-serif" font-size="12" fill="#94a3b8">B</text>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="card" style="padding: 1.5rem; background: rgba(59, 130, 246, 0.05); border-left: 4px solid #3B82F6;">
+                    <h4 style="color: #3B82F6; margin-bottom: 0.5rem;">2° Postulato</h4>
+                    <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 1rem; min-height: 45px;">Si può prolungare un segmento all'infinito da ambo i lati per produrre una retta.</p>
+                    <div style="display: flex; justify-content: center;">
+                        <svg width="250" height="60" viewBox="0 0 250 60">
+                            <line x1="80" y1="30" x2="170" y2="30" stroke="#3B82F6" stroke-width="3"/>
+                            <line x1="10" y1="30" x2="80" y2="30" stroke="#3B82F6" stroke-width="1.5" stroke-dasharray="5,5"/>
+                            <line x1="170" y1="30" x2="240" y2="30" stroke="#3B82F6" stroke-width="1.5" stroke-dasharray="5,5"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="card" style="padding: 1.5rem; background: rgba(59, 130, 246, 0.05); border-left: 4px solid #3B82F6;">
+                    <h4 style="color: #3B82F6; margin-bottom: 0.5rem;">3° Postulato</h4>
+                    <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 1rem; min-height: 45px;">Dato un punto (centro) e una lunghezza (raggio), è possibile descrivere un cerchio perfetto.</p>
+                    <div style="display: flex; justify-content: center;">
+                        <svg width="250" height="80" viewBox="0 0 250 80">
+                            <circle cx="125" cy="40" r="35" stroke="#3B82F6" stroke-width="2" fill="none"/>
+                            <circle cx="125" cy="40" r="3" fill="#3B82F6" />
+                            <line x1="125" y1="40" x2="160" y2="40" stroke="#3B82F6" stroke-width="1.5" stroke-dasharray="4,4"/>
+                            <text x="135" y="32" font-family="Inter, sans-serif" font-size="12" fill="#94a3b8">r</text>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="card" style="padding: 1.5rem; background: rgba(59, 130, 246, 0.05); border-left: 4px solid #3B82F6;">
+                    <h4 style="color: #3B82F6; margin-bottom: 0.5rem;">4° Postulato</h4>
+                    <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 1rem; min-height: 45px;">Tutti gli angoli retti ($90^\circ$) sono congruenti o uguali tra loro.</p>
+                    <div style="display: flex; justify-content: center;">
+                        <svg width="250" height="80" viewBox="0 0 250 80">
+                            <line x1="30" y1="70" x2="90" y2="70" stroke="#3B82F6" stroke-width="2"/>
+                            <line x1="60" y1="10" x2="60" y2="70" stroke="#3B82F6" stroke-width="2"/>
+                            <rect x="60" y="55" width="15" height="15" fill="rgba(59, 130, 246, 0.2)" stroke="#3B82F6" stroke-width="1"/>
+
+                            <g transform="translate(130, 10) rotate(30 40 40)">
+                                <line x1="10" y1="70" x2="70" y2="70" stroke="#3B82F6" stroke-width="2"/>
+                                <line x1="40" y1="10" x2="40" y2="70" stroke="#3B82F6" stroke-width="2"/>
+                                <rect x="40" y="55" width="15" height="15" fill="rgba(59, 130, 246, 0.2)" stroke="#3B82F6" stroke-width="1"/>
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2b. PARALLELE E TRASVERSALE -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #10B981;">2b. Parallele Tagliate da una Trasversale</h2>
+            <p class="lesson-text">
+                Quando una retta (la <strong>trasversale</strong>) interseca due rette parallele, si formano
+                <strong>otto angoli</strong>. Questi angoli non sono tutti indipendenti: grazie alla proprietà
+                del V postulato di Euclide, esistono relazioni precise tra loro che è fondamentale conoscere.
+            </p>
+
+            <!-- MAPPA DEGLI ANGOLI -->
+            <div style="display:flex; flex-wrap:wrap; gap:2rem; align-items:flex-start; margin: 1.5rem 0;">
+
+                <!-- SVG statico con tutti e 8 gli angoli etichettati -->
+                <div style="flex:1; min-width:260px; text-align:center;">
+                    <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:0.6rem;">Mappa dei 8 angoli formati</p>
+                    <svg width="300" height="220" viewBox="0 0 300 220" style="display:block; margin:0 auto; max-width:100%;">
+                        <!-- Parallela superiore (r) -->
+                        <line x1="10" y1="70"  x2="290" y2="70"  stroke="#3B82F6" stroke-width="2.5"/>
+                        <!-- Parallela inferiore (s) -->
+                        <line x1="10" y1="155" x2="290" y2="155" stroke="#3B82F6" stroke-width="2.5"/>
+                        <!-- Trasversale -->
+                        <line x1="80" y1="10"  x2="220" y2="210" stroke="#F59E0B" stroke-width="2.5"/>
+
+                        <!-- Etichette rette -->
+                        <text x="14" y="64"  font-family="Inter,sans-serif" font-size="13" fill="#3B82F6" font-weight="bold">r</text>
+                        <text x="14" y="149" font-family="Inter,sans-serif" font-size="13" fill="#3B82F6" font-weight="bold">s</text>
+                        <text x="216" y="205" font-family="Inter,sans-serif" font-size="13" fill="#F59E0B" font-weight="bold">t</text>
+
+                        <!-- Intersez. r con t: punto P ≈ (116, 70) -->
+                        <!-- Angoli α1(sup-sin) β1(sup-des) γ1(inf-des) δ1(inf-sin) -->
+                        <text x="82"  y="62"  font-family="Inter,sans-serif" font-size="12" fill="#EC4899" font-weight="bold">α₁</text>
+                        <text x="120" y="62"  font-family="Inter,sans-serif" font-size="12" fill="#EF4444" font-weight="bold">β₁</text>
+                        <text x="120" y="85"  font-family="Inter,sans-serif" font-size="12" fill="#8B5CF6" font-weight="bold">γ₁</text>
+                        <text x="82"  y="85"  font-family="Inter,sans-serif" font-size="12" fill="#10B981" font-weight="bold">δ₁</text>
+
+                        <!-- Intersez. s con t: punto Q ≈ (158, 155) -->
+                        <!-- Angoli α2(sup-sin) β2(sup-des) γ2(inf-des) δ2(inf-sin) -->
+                        <text x="123" y="147" font-family="Inter,sans-serif" font-size="12" fill="#EC4899" font-weight="bold">α₂</text>
+                        <text x="162" y="147" font-family="Inter,sans-serif" font-size="12" fill="#EF4444" font-weight="bold">β₂</text>
+                        <text x="162" y="170" font-family="Inter,sans-serif" font-size="12" fill="#8B5CF6" font-weight="bold">γ₂</text>
+                        <text x="123" y="170" font-family="Inter,sans-serif" font-size="12" fill="#10B981" font-weight="bold">δ₂</text>
+
+                        <!-- Legenda colori -->
+                        <rect x="10" y="185" width="280" height="28" rx="6" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+                        <circle cx="24"  cy="199" r="5" fill="#EC4899"/>
+                        <text x="32"  y="203" font-family="Inter,sans-serif" font-size="10" fill="#94a3b8">corrispondenti</text>
+                        <circle cx="110" cy="199" r="5" fill="#EF4444"/>
+                        <text x="118" y="203" font-family="Inter,sans-serif" font-size="10" fill="#94a3b8">alterni int.</text>
+                        <circle cx="185" cy="199" r="5" fill="#10B981"/>
+                        <text x="193" y="203" font-family="Inter,sans-serif" font-size="10" fill="#94a3b8">co-interni</text>
+                    </svg>
+                </div>
+
+                <!-- Tabella delle proprietà -->
+                <div style="flex:1.2; min-width:280px; display:flex; flex-direction:column; gap:1rem;">
+
+                    <div style="background:rgba(239,68,68,0.07); border-left:4px solid #EF4444; border-radius:0 10px 10px 0; padding:1rem 1.2rem;">
+                        <h4 style="color:#EF4444; margin-bottom:0.4rem;">↔ Angoli Alterni Interni</h4>
+                        <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.6; margin:0;">
+                            Stanno tra le due parallele, su lati opposti della trasversale.
+                            <br><strong style="color:var(--text-main);">Proprietà:</strong> sono <strong>uguali</strong>.
+                            <br><span style="color:#EF4444;">γ₁ = α₂</span> &nbsp;e&nbsp; <span style="color:#EF4444;">δ₁ = β₂</span> ... non, meglio: β₁ = δ₂ e γ₁ = α₂.
+                        </p>
+                        <div style="background:rgba(239,68,68,0.1); border-radius:6px; padding:0.5rem 1rem; margin-top:0.6rem; text-align:center;">
+                            <span style="color:#EF4444; font-weight:800;">γ₁ = α₂ &nbsp;&nbsp; δ₁ = β₂</span>
+                        </div>
+                    </div>
+
+                    <div style="background:rgba(16,185,129,0.07); border-left:4px solid #10B981; border-radius:0 10px 10px 0; padding:1rem 1.2rem;">
+                        <h4 style="color:#10B981; margin-bottom:0.4rem;">⊂ Angoli Co-interni (coniugati)</h4>
+                        <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.6; margin:0;">
+                            Stanno tra le due parallele, sullo <em>stesso</em> lato della trasversale.
+                            <br><strong style="color:var(--text-main);">Proprietà:</strong> la loro somma è <strong>180°</strong>.
+                        </p>
+                        <div style="background:rgba(16,185,129,0.1); border-radius:6px; padding:0.5rem 1rem; margin-top:0.6rem; text-align:center;">
+                            <span style="color:#10B981; font-weight:800;">δ₁ + α₂ = 180° &nbsp;&nbsp; γ₁ + β₂ = 180°</span>
+                        </div>
+                    </div>
+
+                    <div style="background:rgba(236,72,153,0.07); border-left:4px solid #EC4899; border-radius:0 10px 10px 0; padding:1rem 1.2rem;">
+                        <h4 style="color:#EC4899; margin-bottom:0.4rem;">⇉ Angoli Corrispondenti</h4>
+                        <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.6; margin:0;">
+                            Occupano la stessa posizione nelle due intersezioni (uno sopra, uno sotto, stessa parte).
+                            <br><strong style="color:var(--text-main);">Proprietà:</strong> sono <strong>uguali</strong>.
+                        </p>
+                        <div style="background:rgba(236,72,153,0.1); border-radius:6px; padding:0.5rem 1rem; margin-top:0.6rem; text-align:center;">
+                            <span style="color:#EC4899; font-weight:800;">α₁ = α₂ &nbsp;&nbsp; β₁ = β₂ &nbsp;&nbsp; γ₁ = γ₂ &nbsp;&nbsp; δ₁ = δ₂</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Nota angoli opposti al vertice -->
+            <div style="background:rgba(139,92,246,0.07); border-left:4px solid #8B5CF6; border-radius:0 10px 10px 0; padding:1rem 1.4rem; margin-bottom:1.5rem;">
+                <h4 style="color:#8B5CF6; margin-bottom:0.3rem;">↕ Angoli Verticalmente Opposti</h4>
+                <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.6; margin:0;">
+                    In ciascuna delle due intersezioni si formano anche coppie di angoli <strong>verticalmente opposti</strong>
+                    (detti anche <em>angoli opposti al vertice</em>), che si ottengono due a due incrociando le rette.
+                    Questi angoli sono sempre uguali indipendentemente dal parallelismo:
+                    <strong style="color:#8B5CF6;">α₁ = γ₁, β₁ = δ₁</strong> e analogamente per la seconda intersezione.
+                </p>
+            </div>
+
+            <!-- LAB INTERATTIVO -->
+            <div class="interactive-container">
+                <h3 style="color:#10B981; margin-bottom:0.4rem;">Laboratorio Interattivo — Trasversale Mobile</h3>
+                <p style="color:var(--text-muted); font-size:0.88rem; text-align:center; margin-bottom:1rem;">
+                    Trascina la trasversale per cambiarne l'inclinazione. Gli 8 angoli si aggiornano in tempo reale
+                    con il loro valore in gradi. Osserva che gli alterni interni rimangono sempre uguali!
+                </p>
+                <canvas id="transversalCanvas" width="580" height="310" style="cursor:ew-resize; background:#0f172a; border-radius:8px;"></canvas>
+                <div class="controls" style="margin-top:1rem;">
+                    <button class="control-btn" id="btnTransReset" style="background:#64748b;">↺ Reset</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #EF4444;">3. L'Inquietante Caso del 5° Postulato</h2>
+            <p class="lesson-text">Avrai notato che i primi 4 postulati sono stringati e semplicissimi (si può tracciare una riga, girare un cerchio...). Tuttavia, il V postulato (noto anche come Postulato delle Parallele) è strutturato in modo totalmente diverso e grottescamente complesso. Recita più o meno così:</p>
+            
+            <div style="background: rgba(239, 68, 68, 0.05); padding: 1.5rem; border-left: 3px solid #EF4444; margin: 1.5rem 0; font-family: 'Times New Roman', serif; font-size: 1.2rem; line-height: 1.6; color: var(--text-main);">
+                "Se una retta taglia altre due rette determinando dallo stesso lato angoli interni la cui somma è minore di due angoli retti, prolungando indefinitamente le due rette, esse si incontreranno da quella stessa parte."
+            </div>
+            
+            <p class="lesson-text"><strong>Sembra l'enunciato di un Teorema, non un Assioma evidente!</strong> Fin dall'antichità, questo enunciato turbò i matematici geometrici, che si convinsero fermamente ci fosse un modo logico per poter 'dimostrare' questo quinto punto utilizzando solo i primi quattro primitivi... Senza però doverlo accettare testardamente come Assioma fondante.</p>
+            
+            <p class="lesson-text">Fallirono tutti disastrosamente. L'incredibile ricerca durata due millenni fu la causa che portò matematici come Gauss a capire che la geometria poteva variare in caso di sfere curvate, portando alla superba scoperta delle <a href="geometrie-non-euclidee.html" style="color: #6366F1; font-weight: bold; text-decoration: underline;">Geometrie Non Euclidee (che trovi espansa magistralmente in quell'altra lezione)</a>.</p>
+            
+            <div class="interactive-container">
+                <h3 style="color: #EF4444; margin-bottom: 1rem;">Linguaggio Interattivo: Prova il 5° Postulato</h3>
+                <canvas id="mainCanvas" width="600" height="400"></canvas>
+                <div class="controls">
+                    <button class="control-btn" id="btnInteract" style="background:#EF4444;">Prolunga le Rette</button>
+                    <button class="control-btn" id="btnReset" style="background:#64748b;">Reset</button>
+                </div>
+            </div>
+        </section>
+        
+        <section class="lesson-section quiz-container">
+            <h2 class="lesson-title" style="text-align: center;">Quiz di Riepilogo</h2>
+            <p class="lesson-text" style="font-size: 0.95rem; text-align: center;">Testa le tue conoscenze rispondendo a queste domande finali riepilogative.</p>
+            <div id="quiz-area">
+                <!-- Il quiz vera generato via JS dinamicamente (come insiemi) -->
+            </div>
+            <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem; text-align: center; font-weight: bold;"></div>
+        </section>
+        
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Matematica MFI.</p>
+    </footer>
+
+    <script src="assiomi-teoremi.js"></script>
+    <script src="../../js/main.js"></script>
+</body>
+</html>

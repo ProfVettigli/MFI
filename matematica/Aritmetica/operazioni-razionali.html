@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operazioni con Numeri Razionali - MFI Interattiva</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    
+    <!-- KaTeX for math rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {
+        delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false},
+            {left: '\\(', right: '\\)', display: false},
+            {left: '\\[', right: '\\]', display: true}
+        ],
+        throwOnError : false
+    });"></script>
+
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+
+        .fraction-ui {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            justify-content: center;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .fraction {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .fraction-line {
+            width: 50px;
+            height: 2px;
+            background: var(--text-main);
+            margin: 5px 0;
+        }
+
+        .num-in {
+            width: 40px;
+            padding: 5px;
+            text-align: center;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid #555;
+            color: white;
+            border-radius: 4px;
+        }
+
+        .calc-panel {
+            background: rgba(0,0,0,0.3);
+            border: 1px dashed #555;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-top: 3rem;
+            text-align: center;
+        }
+
+        .mcd-box {
+            background: rgba(59, 130, 246, 0.05);
+            border-left: 4px solid #3B82F6;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .mcm-box {
+            background: rgba(16, 185, 129, 0.05);
+            border-left: 4px solid #10B981;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .lesson-section {
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding-bottom: 3rem;
+            margin-bottom: 3rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="sub-hero" style="padding: 4rem 0 2rem; text-align: left;">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2.5rem;">
+                <a href="aritmetica.html" class="back-button" style="margin-bottom: 0;">
+                    <span style="font-size:1.2rem; margin-right: 0.5rem;">&larr;</span> Torna ad Aritmetica
+                </a>
+            </div>
+            <h1 style="font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; margin-bottom: 1rem;">Operazioni <span
+                    class="gradient-text"
+                    style="background: linear-gradient(135deg, #10B981, #3B82F6); -webkit-background-clip: text; background-clip: text; color: transparent;">Razionali (ℚ)</span>
+            </h1>
+            <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+                Dalle torte alle pizze: impara a manipolare le frazioni con precisione chirurgica.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- SEMPLIFICAZIONE -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">1. Semplificazione: Ridurre ai Minimi Termini</h2>
+            <p class="lesson-text">
+                Una frazione è un rapporto. Se moltiplichi o dividi sia sopra (numeratore) che sotto (denominatore) per lo stesso numero, il valore non cambia!
+            </p>
+            <div style="text-align: center; font-size: 1.5rem; background: rgba(0,0,0,0.2); padding: 2rem; border-radius: 12px; border: 1px solid #333;">
+                <span style="color:#10B981;">10 / 20</span> &rarr; Dividiamo entrambi per 10 &rarr; <span style="color:#10B981;">1 / 2</span>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 1rem;">La pizza intera divisa in 20 fette (ne mangi 10) è uguale a metà pizza!</p>
+            </div>
+        <section class="lesson-section" style="border-left: 4px solid #10B981; background: rgba(16, 185, 129, 0.02);">
+            <h2 class="lesson-title">Le Classi di Equivalenza</h2>
+            <p class="lesson-text">
+                In matematica, un numero razionale è in realtà un <strong>Insieme (o Classe) di Equivalenza</strong>. 
+                Tutte le frazioni che indicano la stessa quantità, come \( \{ \frac{1}{2}, \frac{2}{4}, \frac{3}{6}, \frac{4}{8} \dots \} \), appartengono allo stesso gruppo.
+            </p>
+            <p class="lesson-text">
+                Prendiamo sempre la frazione <strong>ridotta ai minimi termini</strong> (quella con i numeri più piccoli) come "campione" o rappresentante di tutto l'insieme.
+            </p>
+
+            <div style="background: rgba(0, 0, 0, 0.4); padding: 2rem; border-radius: 12px; text-align: center; margin-top: 2rem;">
+                <h3 style="color: #FCD34D; margin-bottom: 2rem; font-size: 1.2rem;">Perché 1/2 è scavalcabile da 2/4?</h3>
+                <div style="display: flex; justify-content: center; gap: 3rem; align-items: center; flex-wrap: wrap;">
+                    <div style="text-align: center;">
+                        <canvas id="canvas-1-2" width="140" height="140"></canvas>
+                        <p style="margin-top: 1rem; font-weight: 800;">1 / 2</p>
+                    </div>
+                    <div style="font-size: 2.5rem; color: #10B981;">=</div>
+                    <div style="text-align: center;">
+                        <canvas id="canvas-dynamic" width="140" height="140"></canvas>
+                        <p style="margin-top: 1rem; font-weight: 800;" id="label-dynamic">2 / 4</p>
+                    </div>
+                </div>
+                <div style="margin-top: 2rem; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+                    <button class="btn-gen" onclick="drawPizza('canvas-dynamic', 2, 4, '#10B981'); document.getElementById('label-dynamic').textContent='2 / 4';" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Mostra 2/4</button>
+                    <button class="btn-gen" onclick="drawPizza('canvas-dynamic', 4, 8, '#3B82F6'); document.getElementById('label-dynamic').textContent='4 / 8';" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Mostra 4/8</button>
+                    <button class="btn-gen" onclick="drawPizza('canvas-dynamic', 8, 16, '#8B5CF6'); document.getElementById('label-dynamic').textContent='8 / 16';" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Mostra 8/16</button>
+                </div>
+                <p style="margin-top: 1.5rem; font-size: 0.9rem; color: var(--text-muted);">
+                    Nota come l'area colorata rimanga <strong>sempre la stessa</strong> (esattamente metà cerchio), anche se le fette diventano più numerose e piccole!
+                </p>
+            </div>
+        </section>
+
+        <!-- MCD e mcm -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">2. Strumenti: MCD e mcm</h2>
+            <p class="lesson-text">Per sommare le frazioni o semplificarle, dobbiamo saper calcolare queste due quantità usando la scomposizione in fattori primi.</p>
+            
+            <div class="mcd-box">
+                <h3 style="color:#3B82F6;">M.C.D. (Massimo Comune Divisore)</h3>
+                <p>È il numero più grande che divide entrambi. <em>Serve per semplificare le frazioni.</em></p>
+                <p>Esempio: \( MCD(12, 18) = \mathbf{6} \)</p>
+            </div>
+
+            <div class="mcm-box">
+                <h3 style="color:#10B981;">m.c.m. (minimo comune multiplo)</h3>
+                <p>È il multiplo più piccolo in comune. <em>Serve per trovare il denominatore comune.</em></p>
+                <p>Esempio: \( mcm(12, 18) = \mathbf{36} \)</p>
+            </div>
+
+            <div class="calc-panel">
+                <h3 style="color: white; font-size: 1.1rem; margin-bottom: 1.5rem;">Calcolatore MCD / mcm</h3>
+                <div style="display: flex; justify-content: center; gap: 10px; align-items: center; margin-bottom: 1.5rem;">
+                    <input type="number" id="ma" value="12" class="num-in" style="width: 80px;">
+                    <input type="number" id="mb" value="18" class="num-in" style="width: 80px;">
+                    <button class="btn-gen" id="run-calc-m" style="margin:0; padding: 0.5rem 1rem;">Calcola</button>
+                </div>
+                <div style="display: flex; justify-content: center; gap: 2rem; font-weight: bold;">
+                    <div>MCD: <span id="mcd-res" style="color:#3B82F6;">6</span></div>
+                    <div>mcm: <span id="mcm-res" style="color:#10B981;">36</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SOMMA E SOTTRAZIONE -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">3. Sommare e Sottrarre: Il m.c.m. in azione</h2>
+            <p class="lesson-text">
+                Non puoi sommare fette di grandezza diversa (es. \( 1/4 \) e \( 1/6 \)). Devi prima "uniformare" le fette trovando il <strong>minimo comune multiplo (m.c.m.)</strong> dei denominatori.
+            </p>
+            
+            <div style="background: rgba(59, 130, 246, 0.05); padding: 1.5rem; border-radius: 8px; border-left: 4px solid var(--math-color); margin-bottom: 2rem;">
+                <h4 style="color: #60A5FA;">Esempio: \( \frac{1}{4} + \frac{1}{6} \)</h4>
+                <p>1) <strong>Trova il m.c.m.</strong> tra 4 e 6: il multiplo più piccolo in comune è <strong>12</strong>.</p>
+                <p>2) <strong>Trasforma</strong> le frazioni: <br>
+                &nbsp;&nbsp;&nbsp; \( \frac{1}{4} = \frac{3}{12} \) (perché 12 ÷ 4 = 3) <br>
+                &nbsp;&nbsp;&nbsp; \( \frac{1}{6} = \frac{2}{12} \) (perché 12 ÷ 6 = 2)</p>
+                <p>3) <strong>Somma i numeratori</strong>: <br>
+                &nbsp;&nbsp;&nbsp; \( \frac{3}{12} + \frac{2}{12} = \mathbf{\frac{5}{12}} \)</p>
+            </div>
+
+            <div style="background: rgba(245, 158, 11, 0.1); padding: 1.5rem; border-radius: 12px; border: 1px dashed #F59E0B;">
+                <h3 style="color: #F59E0B; margin-bottom: 1rem;">🆘 Trucco di Emergenza (Metodo Farfalla)</h3>
+                <p class="lesson-text" style="font-size: 0.95rem;">
+                    Se non ricordi come calcolare il m.c.m., esiste un metodo infallibile (anche se spesso richiede di semplificare il risultato alla fine):
+                </p>
+                <p style="text-align:center; font-size:1.3rem; font-weight:bold;">
+                    \( \frac{a}{b} + \frac{c}{d} = \frac{(a \cdot d) + (b \cdot c)}{b \cdot d} \)
+                </p>
+                <p class="lesson-text" style="font-size: 0.9rem; margin-top: 1rem;">
+                    Moltiplica tra loro i denominatori per avere il "sotto" della somma, e incrocia numeratori e denominatori per avere il "sopra"!
+                </p>
+            </div>
+        </section>
+
+        <!-- MOLTIPLICAZIONE E DIVISIONE -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">3. Moltiplicazione e Divisione: Più Semplice!</h2>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                <div style="padding: 1rem; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;">
+                    <h4 style="color: #60A5FA;">Moltiplicazione</h4>
+                    <p style="font-size: 0.9rem;">Si moltiplica sopra con sopra e sotto con sotto. <br> <strong>(a/b) × (c/d) = ac/bd</strong></p>
+                </div>
+                <div style="padding: 1rem; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;">
+                    <h4 style="color: #60A5FA;">Divisione</h4>
+                    <p style="font-size: 0.9rem;">Capovolgi la seconda frazione e moltiplica! <br> <strong>(a/b) ÷ (c/d) = (a/b) × (d/c)</strong></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CALCOLATORE FRAZIONI -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="text-align: center;">Calcolatrice di Frazioni</h2>
+            <div class="fraction-ui">
+                <div class="fraction">
+                    <input type="number" id="num1" class="num-in" value="1">
+                    <div class="fraction-line"></div>
+                    <input type="number" id="den1" class="num-in" value="2">
+                </div>
+                
+                <select id="f-op" style="padding: 0.5rem; border-radius: 8px; background: #222; color: white;">
+                    <option value="+">+</option>
+                    <option value="-">-</option>
+                    <option value="*">×</option>
+                    <option value="/">÷</option>
+                </select>
+
+                <div class="fraction">
+                    <input type="number" id="num2" class="num-in" value="1">
+                    <div class="fraction-line"></div>
+                    <input type="number" id="den2" class="num-in" value="3">
+                </div>
+
+                <button class="btn-gen" id="btn-calc-f" style="margin:0 1rem;">=</button>
+
+                <div class="fraction" id="fract-res" style="color: #60A5FA;">
+                    <span id="res-num">?</span>
+                    <div class="fraction-line"></div>
+                    <span id="res-den">?</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- LE FRAZIONI NELLA MUSICA -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">4. Le Frazioni Nascoste nella Musica</h2>
+            <p class="lesson-text">
+                Ti sei mai chiesto perché le note musicali hanno nomi come "un quarto" o "un ottavo"? L'intero sistema ritmico moderno è basato matematicamente sulle <strong>frazioni</strong>!
+            </p>
+            <p class="lesson-text">
+                Una <strong>battuta</strong> musicale è come una "scatola" di tempo. La scatola più usata è quella da 4 movimenti (il famoso tempo di \( \frac{4}{4} \) ). Le note che noi scriviamo per indicare la durata di un suono derivano da divisioni perfette di questa scatola, <strong>sempre divise a metà</strong>:
+            </p>
+
+            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin: 2rem 0;">
+                <div class="card" style="text-align: center; border-bottom: 4px solid #10B981;">
+                    <div style="font-size: 3rem; line-height: 1;">𝅝</div>
+                    <h4 style="margin: 0.5rem 0;">Semibreve</h4>
+                    <p>Vale <strong>1</strong> intero (o \( \frac{4}{4} \))</p>
+                </div>
+                <div class="card" style="text-align: center; border-bottom: 4px solid #3B82F6;">
+                    <div style="font-size: 3rem; line-height: 1;">𝅗𝅥</div>
+                    <h4 style="margin: 0.5rem 0;">Minima</h4>
+                    <p>Vale <strong>1/2</strong> dell'intero</p>
+                </div>
+                <div class="card" style="text-align: center; border-bottom: 4px solid #8B5CF6;">
+                    <div style="font-size: 3rem; line-height: 1;">♩</div>
+                    <h4 style="margin: 0.5rem 0;">Semiminima</h4>
+                    <p>Vale <strong>1/4</strong> (il tipico "Quarto")</p>
+                </div>
+                <div class="card" style="text-align: center; border-bottom: 4px solid #F59E0B;">
+                    <div style="font-size: 3rem; line-height: 1;">♪</div>
+                    <h4 style="margin: 0.5rem 0;">Croma</h4>
+                    <p>Vale <strong>1/8</strong></p>
+                </div>
+            </div>
+
+            <!-- Pentagramma visivo -->
+            <div style="position: relative; width: 100%; height: 140px; margin: 3rem 0; background: rgba(255,255,255,0.03); border-radius: 12px; display: flex; align-items: center; justify-content: flex-start; overflow: hidden; padding-left: 2rem;">
+                <!-- 5 Linee del Pentagramma -->
+                <div style="position: absolute; top: 38%; left: 0; width: 100%; border-top: 1px solid rgba(255,255,255,0.3);"></div>
+                <div style="position: absolute; top: 46%; left: 0; width: 100%; border-top: 1px solid rgba(255,255,255,0.3);"></div>
+                <div style="position: absolute; top: 54%; left: 0; width: 100%; border-top: 1px solid rgba(255,255,255,0.3);"></div>
+                <div style="position: absolute; top: 62%; left: 0; width: 100%; border-top: 1px solid rgba(255,255,255,0.3);"></div>
+                <div style="position: absolute; top: 70%; left: 0; width: 100%; border-top: 1px solid rgba(255,255,255,0.3);"></div>
+                
+                <!-- Chiave di Violino -->
+                <span style="font-size: 5rem; z-index: 10; font-family: serif; color: var(--text-main); margin-top: -15px;">𝄞</span>
+                
+                <div style="display: flex; align-items: flex-end; z-index: 10; padding-bottom: 25px; margin-left: 1rem; width: 100%; justify-content: space-around;">
+                    <!-- Battuta 1: una nota intera -->
+                    <div style="display: flex; flex-direction: column; align-items: center;">
+                        <span style="font-size: 3rem; color: #10B981;">𝅝</span>
+                        <span style="font-size: 0.8rem; color: #10B981; font-weight: bold; margin-top: -5px;">1.0 = (1)</span>
+                    </div>
+
+                    <div style="font-size: 3rem; color: rgba(255,255,255,0.2);">|</div>
+
+                    <!-- Battuta 2: due mezzi -->
+                    <div style="display: flex; gap: 2rem;">
+                        <div style="display: flex; flex-direction: column; align-items: center;">
+                            <span style="font-size: 4rem; color: #3B82F6;">𝅗𝅥</span>
+                            <span style="font-size: 0.8rem; color: #3B82F6; font-weight: bold; margin-top: -20px;">1/2</span>
+                        </div>
+                        <div style="display: flex; flex-direction: column; align-items: center;">
+                            <span style="font-size: 4rem; color: #3B82F6;">𝅗𝅥</span>
+                            <span style="font-size: 0.8rem; color: #3B82F6; font-weight: bold; margin-top: -20px;">1/2</span>
+                        </div>
+                    </div>
+
+                    <div style="font-size: 3rem; color: rgba(255,255,255,0.2);">|</div>
+
+                    <!-- Battuta 3: 4 quarti -->
+                    <div style="display: flex; gap: 1rem;">
+                        <div style="display: flex; flex-direction: column; align-items: center;">
+                            <span style="font-size: 4.5rem; color: #8B5CF6;">♩</span>
+                            <span style="font-size: 0.8rem; color: #8B5CF6; font-weight: bold; margin-top: -25px;">1/4</span>
+                        </div>
+                        <div style="display: flex; flex-direction: column; align-items: center;">
+                            <span style="font-size: 4.5rem; color: #8B5CF6;">♩</span>
+                            <span style="font-size: 0.8rem; color: #8B5CF6; font-weight: bold; margin-top: -25px;">1/4</span>
+                        </div>
+                        <div style="display: flex; flex-direction: column; align-items: center;">
+                            <span style="font-size: 4.5rem; color: #8B5CF6;">♩</span>
+                            <span style="font-size: 0.8rem; color: #8B5CF6; font-weight: bold; margin-top: -25px;">1/4</span>
+                        </div>
+                        <div style="display: flex; flex-direction: column; align-items: center;">
+                            <span style="font-size: 4.5rem; color: #8B5CF6;">♩</span>
+                            <span style="font-size: 0.8rem; color: #8B5CF6; font-weight: bold; margin-top: -25px;">1/4</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- E se dividessimo in Numeri Primi? -->
+            <div style="background: rgba(245, 158, 11, 0.05); padding: 1.5rem; border-radius: 12px; border-left: 4px solid #F59E0B;">
+                <h3 style="color: #F59E0B; margin-bottom: 1rem;">La Teoria dei "Tempi Irrazionali": Perché non i Numeri Primi?</h3>
+                <p class="lesson-text" style="font-size: 0.95rem;">
+                    Noterai che la musica moderna si basa costantemente su divisioni per <strong>potenze di 2</strong> (1/2, 1/4, 1/8, 1/16). 
+                </p>
+                <p class="lesson-text" style="font-size: 0.95rem;">
+                    Ma cosa succederebbe se, invece di dividere il tempo sempre a metà, decidessimo in teoria matematica di dividerlo secondo <strong>Numeri Primi</strong> come il 3, il 5 o il 7 (cioè note dal valore di 1/3, 1/5 o 1/7)?
+                </p>
+                <p class="lesson-text" style="font-size: 0.95rem;">
+                    Questa non è solo fantasia! È ciò che produce i famosi <strong>Poliritmi</strong>. Ad esempio: se dividi forzatamente lo spazio di un "quarto" (1/4) in esattamente 3 parti uguali, ottieni la <strong>Terzina</strong>! Una nota appositamente allargata temporalmente affinché \( \frac{1}{3} + \frac{1}{3} + \frac{1}{3} \) formi di nuovo la regolarità ritmica. 
+                    I compositori di musica classica contemporanea creano complessi giochi algebrici usando ritmi su frazioni di 1/5 (Quintine) o 1/7 (Settimine), creando una griglia musicale che oscilla come la cresta di una forma d'onda geometrica, deformando temporaneamente il "battito cardiaco" lineare!
+                </p>
+            </div>
+        </section>
+
+        <!-- QUIZ FINALE -->
+        <section class="lesson-section quiz-container" id="quiz-section">
+            <h2 class="lesson-title">Questionario di Verifica</h2>
+            <p class="lesson-text">Mettiti alla prova su calcolo del m.c.m, operazioni tra frazioni e le loro applicazioni musicali!</p>
+            <div id="quiz-area"></div>
+            <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Matematica.</p>
+    </footer>
+
+    <script>
+        function drawPizza(canvasId, num, den, color) {
+            const canvas = document.getElementById(canvasId);
+            if(!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const cx = canvas.width / 2;
+            const cy = canvas.height / 2;
+            const r = 60;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Background circle
+            ctx.beginPath();
+            ctx.arc(cx, cy, r, 0, 2 * Math.PI);
+            ctx.fillStyle = "rgba(255,255,255,0.05)";
+            ctx.fill();
+            ctx.strokeStyle = "rgba(255,255,255,0.2)";
+            ctx.stroke();
+
+            // Shaded slice
+            const fractionArea = (num / den) * 2 * Math.PI;
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.arc(cx, cy, r, -Math.PI / 2, -Math.PI / 2 + fractionArea);
+            ctx.lineTo(cx, cy);
+            ctx.fillStyle = color || "#10B981";
+            ctx.fill();
+
+            // Grid lines (fette)
+            ctx.beginPath();
+            for (let i = 0; i < den; i++) {
+                const angle = (i / den) * 2 * Math.PI - Math.PI / 2;
+                ctx.moveTo(cx, cy);
+                ctx.lineTo(cx + Math.cos(angle) * r, cy + Math.sin(angle) * r);
+            }
+            ctx.strokeStyle = "rgba(0,0,0,0.4)";
+            ctx.lineWidth = 1;
+            ctx.stroke();
+        }
+
+        // Initialize
+        window.onload = () => {
+            drawPizza('canvas-1-2', 1, 2, '#10B981');
+            drawPizza('canvas-dynamic', 2, 4, '#10B981');
+        };
+
+        // GCD & LCM Internal
+        function internalGcd(a, b) { return b ? internalGcd(b, a % b) : a; }
+        function internalLcm(a, b) { return (a * b) / internalGcd(a, b); }
+
+        document.getElementById('run-calc-m').onclick = () => {
+             const a = Math.abs(parseInt(document.getElementById('ma').value));
+             const b = Math.abs(parseInt(document.getElementById('mb').value));
+             if(!isNaN(a) && !isNaN(b) && a !== 0 && b !== 0) {
+                 document.getElementById('mcd-res').textContent = internalGcd(a, b);
+                 document.getElementById('mcm-res').textContent = internalLcm(a, b);
+             }
+        };
+
+        // GCD helper
+        function gcd(a, b) {
+            return b ? gcd(b, a % b) : a;
+        }
+
+        document.getElementById('btn-calc-f').onclick = () => {
+            let n1 = parseInt(document.getElementById('num1').value);
+            let d1 = parseInt(document.getElementById('den1').value);
+            let n2 = parseInt(document.getElementById('num2').value);
+            let d2 = parseInt(document.getElementById('den2').value);
+            const op = document.getElementById('f-op').value;
+
+            if (d1 === 0 || d2 === 0) {
+                alert("Il denominatore non può essere zero!"); return;
+            }
+
+            let rn, rd;
+            if (op === '+') {
+                rd = d1 * d2;
+                rn = n1 * d2 + n2 * d1;
+            } else if (op === '-') {
+                rd = d1 * d2;
+                rn = n1 * d2 - n2 * d1;
+            } else if (op === '*') {
+                rn = n1 * n2;
+                rd = d1 * d2;
+            } else if (op === '/') {
+                rn = n1 * d2;
+                rd = d1 * n2;
+            }
+
+            if (rd === 0) { alert("Operazione impossibile!"); return; }
+
+            // Simplification
+            const common = Math.abs(gcd(rn, rd));
+            rn /= common;
+            rd /= common;
+
+            // Handle negative denominator
+            if (rd < 0) {
+                rn = -rn;
+                rd = -rd;
+            }
+
+            document.getElementById('res-num').textContent = rn;
+            document.getElementById('res-den').textContent = rd;
+        };
+    </script>
+
+    <script src="operazioni-razionali.js"></script>
+    <script src="../../js/main.js"></script>
+</body>
+
+</html>

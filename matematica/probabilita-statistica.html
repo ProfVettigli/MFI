@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Probabilità e Statistica - Matematica MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+    
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+        
+        .back-icon {
+            margin-right: 0.5rem;
+            font-size: 1.2rem;
+        }
+        
+        .sub-hero {
+            padding: 4rem 0 2rem;
+            text-align: left;
+        }
+        
+        .sub-hero-title {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+        
+        .sub-hero-subtitle {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            max-width: 800px;
+            font-weight: 300;
+            margin-bottom: 3rem;
+        }
+        
+        /* Specific accent for Prob/Stat */
+        .prob-gradient {
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+    </style>
+</head>
+<body>
+    <header class="sub-hero">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <a href="matematica.html" class="back-button" style="margin-bottom: 0;">
+                    <span class="back-icon">&larr;</span> Torna a Matematica
+                </a>
+            </div>
+            
+            <h1 class="sub-hero-title">Probabilità e <span class="prob-gradient">Statistica</span></h1>
+            <p class="sub-hero-subtitle">Dal calcolo delle probabilità classiche all'analisi dei dati e ai paradossi della logica: esplora gli strumenti matematici per dominare l'incertezza.</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="subjects" style="padding-bottom: 4rem;">
+            <div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));">
+                
+                <!-- 1. Definizione di Probabilità -->
+                <a href="Probabilita-Statistica/probabilita.html" class="card math-card">
+                    <div class="card-icon">🎲</div>
+                    <h3 class="card-title">Cos'è la Probabilità?</h3>
+                    <p class="card-desc">Esplora i concetti base: eventi, spazio campionario e le diverse definizioni (classica, frequentista, soggettiva) in chiave anime e gaming.</p>
+                </a>
+                
+                <!-- 2. Statistica descrittiva e grafici -->
+                <a href="Probabilita-Statistica/statistica.html" class="card math-card">
+                    <div class="card-icon">📊</div>
+                    <h3 class="card-title">Statistica Descrittiva</h3>
+                    <p class="card-desc">Analizza e visualizza i dati: media, mediana, moda, deviazione standard, grafici a barre, a torta, istogrammi e regressione.</p>
+                </a>
+                
+                <!-- 3. Calcolo Combinatorio -->
+                <a href="Probabilita-Statistica/combinatoria.html" class="card math-card">
+                    <div class="card-icon">🔢</div>
+                    <h3 class="card-title">Calcolo Combinatorio</h3>
+                    <p class="card-desc">Permutazioni, disposizioni, combinazioni, Triangolo di Tartaglia e Binomio di Newton per dominare l'arte del contare.</p>
+                </a>
+
+                <!-- 4. Distribuzioni Statistiche -->
+                <a href="Probabilita-Statistica/distribuzioni.html" class="card math-card">
+                    <div class="card-icon">📉</div>
+                    <h3 class="card-title">Distribuzioni di Probabilità</h3>
+                    <p class="card-desc">Dalla Binomiale alla Gaussiana: scopri come si distribuiscono i dati e come i test come il T-Student aiutano a validare le ipotesi.</p>
+                </a>
+
+                <!-- 5. Problema di Buffon -->
+                <a href="Probabilita-Statistica/buffon.html" class="card math-card" style="position: relative;">
+                    <div class="card-icon">🧵</div>
+                    <div style="position: absolute; top: 1.5rem; right: 1.5rem; font-size: 0.75rem; font-weight: bold; background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.2); color: #60A5FA; padding: 0.2rem 0.6rem; border-radius: 6px; letter-spacing: 1px;">CLIL</div>
+                    <h3 class="card-title">Buffon's Needle</h3>
+                    <p class="card-desc">An English CLIL lesson linking geometry and probability to estimate Pi by dropping needles on a floor.</p>
+                </a>
+
+                <!-- 6. Metodo Montecarlo -->
+                <a href="Probabilita-Statistica/montecarlo.html" class="card math-card">
+                    <div class="card-icon">🎰</div>
+                    <h3 class="card-title">Metodo Monte Carlo</h3>
+                    <p class="card-desc">Utilizza la casualità per risolvere problemi complessi attraverso simulazioni ripetute e visualizzazioni interattive.</p>
+                </a>
+
+                <!-- 8. Paradossi (Monty Hall) -->
+                <a href="Probabilita-Statistica/paradossi-intuizione.html" class="card math-card">
+                    <div class="card-icon">🚪</div>
+                    <h3 class="card-title">Paradossi e Intuizione</h3>
+                    <p class="card-desc">Sfida il tuo intuito con il problema di Monty Hall e risolvi paradossi che sembrano impossibili.</p>
+                </a>
+
+                <!-- Random Walk -->
+                <a href="Probabilita-Statistica/random-walk.html" class="card math-card">
+                    <div class="card-icon" style="color: #3B82F6;">👟</div>
+                    <h3 class="card-title">Random Walk (Incompleto)</h3>
+                    <p class="card-desc">Dalla passeggiata dell'ubriaco al moto browniano di Einstein. Scopri come il caos descrive la realtà.</p>
+                </a>
+
+                <!-- 10. Mappa Logistica -->
+                <a href="#" class="card math-card" style="opacity: 0.7; cursor: default;">
+                    <div class="card-icon">🦋</div>
+                    <h3 class="card-title">Mappa Logistica</h3>
+                    <p class="card-desc">Prossimamente: L'ordine nel caos: come una semplice equazione può generare comportamenti complessi e imprevedibili.</p>
+                </a>
+
+                
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Matematica.</p>
+    </footer>
+
+    <!-- JS -->
+    <script src="../js/main.js"></script>
+</body>
+</html>

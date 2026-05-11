@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Il File System - MFI Informatica</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        .fs-container {
+            background: #1e293b;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            font-family: 'Fira Code', monospace;
+            color: #cbd5e1;
+            position: relative;
+        }
+
+        .folder, .file {
+            padding: 0.5rem 0;
+            margin-left: 1.5rem;
+            border-left: 1px dashed rgba(255,255,255,0.2);
+            padding-left: 1rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .folder > .title {
+            color: #3b82f6;
+            font-weight: bold;
+        }
+        
+        .folder > .title::before {
+            content: "📁 ";
+        }
+
+        .folder.open > .title::before {
+            content: "📂 ";
+        }
+
+        .file > .title {
+            color: #94a3b8;
+        }
+
+        .file > .title::before {
+            content: "📄 ";
+        }
+
+        .folder-content {
+            display: none;
+        }
+
+        .folder.open > .folder-content {
+            display: block;
+        }
+
+        .permission-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .perm-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="sub-hero" style="background: linear-gradient(rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.95)), url('https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80'); background-size: cover; padding: 6rem 0 3rem;">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2.5rem;">
+                <a href="informatica.html" class="back-button" style="margin-bottom: 0;">
+                    <span style="font-size:1.2rem; margin-right: 0.5rem;">&larr;</span> Torna a Informatica
+                </a>
+            </div>
+            <h1 style="font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 800; margin-bottom: 1.5rem;">Il <span style="color: #10b981;">File System</span></h1>
+            <p style="font-size: 1.25rem; color: var(--text-muted); max-width: 800px; line-height: 1.6;">
+                L'invisibile archivista del tuo computer: come l'ammasso caotico di byte si trasforma in un ordine perfetto di cartelle e documenti.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <!-- COS'E IL FILE SYSTEM -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #10b981;">1. L'Archivista Digitale</h2>
+            <p class="lesson-text">
+                Immagina un enorme magazzino buio pieno zeppo di milioni di fogli mescolati a casaccio sul pavimento. Quello è il tuo Disco Fisso (Hard Disk o SSD) senza un File System. I dati fisicamente esistono, ma è impossibile trovare quello che cerchi senza leggere ogni singolo foglio.
+            </p>
+            <p class="lesson-text">
+                Il <strong>File System (FS)</strong> è il programma fondamentale che mappa questo caos. È colui che crea l'illusione di <em>Cartelle</em> e <em>File</em>, organizzando miliardi di byte in una formidabile struttura gerarchica (un "albero" genealogico di informazioni).
+            </p>
+
+            <div class="fs-container">
+                <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.5rem; text-align: center;">Simulatore Interattivo (Clicca sulle cartelle per esplorare)</p>
+                <div class="folder open">
+                    <span class="title">Disco_Principale</span>
+                    <div class="folder-content">
+                        <div class="folder">
+                            <span class="title">Utenti</span>
+                            <div class="folder-content">
+                                <div class="folder">
+                                    <span class="title">MarioRossi</span>
+                                    <div class="folder-content">
+                                        <div class="file"><span class="title">tesina_storia.pdf</span></div>
+                                        <div class="file"><span class="title">foto_vacanza.jpg</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="folder">
+                            <span class="title">Applicazioni</span>
+                            <div class="folder-content">
+                                <div class="folder">
+                                    <span class="title">Videogioco</span>
+                                    <div class="folder-content">
+                                        <div class="file"><span class="title">motore_grafico.exe</span></div>
+                                        <div class="file"><span class="title">salvataggi.dat</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- WINDOWS VS LINUX -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #3b82f6;">2. Due Filosofie: Windows e Linux</h2>
+            <p class="lesson-text">
+                I due colossi del mondo dell'Informatica organizzano questo "Albero" in maniere concettualmente diverse tra loro.
+            </p>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-top: 1.5rem;">
+                <div style="background: rgba(59, 130, 246, 0.05); border: 1px solid rgba(59, 130, 246, 0.2); padding: 1.5rem; border-radius: 12px;">
+                    <h3 style="color: #3b82f6; margin-bottom: 0.5rem; font-size: 1.3rem;">🪟 Mondo Windows</h3>
+                    <p style="font-size: 0.95rem; line-height: 1.6; margin: 0;">
+                        Windows utilizza storicamente le lettere per indicare blocchi di memoria differenti. La base assoluta per lui è tradizionalmente il disco <strong>C:\</strong>. Se inserisci una chiavetta, lui creerà un albero totalmente staccato e lo chimamato <strong>D:\</strong> o E:\. Usa il <em>Backslash</em> (\) per scendere nei livelli.
+                    </p>
+                    <div style="margin-top: 1rem; font-family: monospace; background: #0f172a; padding: 0.5rem; border-radius: 5px; color: #94a3b8; font-size: 0.9rem;">
+                        C:\Utenti\Mario\foto.jpg
+                    </div>
+                </div>
+                <div style="background: rgba(245, 158, 11, 0.05); border: 1px solid rgba(245, 158, 11, 0.2); padding: 1.5rem; border-radius: 12px;">
+                    <h3 style="color: #f59e0b; margin-bottom: 0.5rem; font-size: 1.3rem;">🐧 Mondo Linux (e Server)</h3>
+                    <p style="font-size: 0.95rem; line-height: 1.6; margin: 0;">
+                        In Linux e in tutto il mondo UNIX, esiste un unico ed enorme albero maestro. La "Radice" di tutto è una singola stanghetta chiamata <strong>/ (Root)</strong>. Non ci sono lettere. Se inserisci una chiavetta, Linux non crea un albero nuovo, ma la "attacca" semplicemente come un ramo all'interno del grande albero (es. dentro /media).
+                    </p>
+                    <div style="margin-top: 1rem; font-family: monospace; background: #0f172a; padding: 0.5rem; border-radius: 5px; color: #94a3b8; font-size: 0.9rem;">
+                        /home/mario/foto.jpg
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- APPLE E IOS CHIUSURA -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #a855f7;">3. Apple: Il Paradigma Chiuso e l'Astrazione</h2>
+            <p class="lesson-text">
+                E per quanto riguarda iPhone (iOS) e i Mac (macOS)?<br>
+                Dietro le quinte, possiedono una radice simile a quella di Linux, ma con una politica diametralmente opposta sull'esperienza utente.
+            </p>
+            
+            <div style="background: rgba(168, 85, 247, 0.05); padding: 1.5rem; border-radius: 12px; border-left: 3px solid #a855f7; margin-top: 1.5rem; display: flex; align-items: center; gap: 1.5rem;">
+                <div style="font-size: 3rem;">📱</div>
+                <div>
+                    <h4 style="color: #a855f7; font-size: 1.1rem; margin-bottom: 0.5rem;">Nascondere la complessità all'utente</h4>
+                    <p style="font-size: 0.95rem; line-height: 1.6; margin: 0;">
+                        Nei sistemi mobili di Apple, <strong>non ti è permesso navigare liberamente l'Albero del File System</strong> per vedere le cartelle di sistema. Apple preferisce utilizzare una logica detta <em>Sandbox</em>: le foto le vedi solo dall'App "Foto", i pdf solo dall'App che legge i pdf. L'utente viene tenuto all'oscuro di dove siano realmente i file, impedendogli di esplorarli in stile Windows. Questo rende il sistema iper-semplificato da usare e incredibilmente corazzato contro i virus (nessun'app può leggere i file di un'altra app), pur sacrificando gran parte della tua libertà di gestione tecnica.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PERMESSI E SICUREZZA -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #ef4444;">4. Sicurezza: I Muri Maestri dei File</h2>
+            <p class="lesson-text">
+                Non tutti coloro che possiedono un account su un computer possono fare quello che vogliono con i file presenti sul disco. Un File System solido garantisce che ogni documento abbia attributi di sicurezza molto ferrei, chiamati <strong>Permessi</strong>.
+            </p>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
+                <div class="permission-card" style="border-top: 4px solid #3b82f6;">
+                    <div class="perm-icon">📖</div>
+                    <h4 style="color: #3b82f6; margin-bottom: 0.5rem;">Sola Lettura (Read)</h4>
+                    <p style="font-size: 0.85rem; color: #cbd5e1; margin: 0; line-height: 1.5;">
+                        L'utente può aprire, guardare e copiare il file, ma gli è categoricamente vietato apportarvi alcuna modifica o cancellarlo dal disco.
+                    </p>
+                </div>
+                <div class="permission-card" style="border-top: 4px solid #10b981;">
+                    <div class="perm-icon">✏️</div>
+                    <h4 style="color: #10b981; margin-bottom: 0.5rem;">Scrittura (Write)</h4>
+                    <p style="font-size: 0.85rem; color: #cbd5e1; margin: 0; line-height: 1.5;">
+                        L'utente ha il potere di alterare i dati interni al file o persino eliminarlo permanentemente dal File System.
+                    </p>
+                </div>
+                <div class="permission-card" style="border-top: 4px solid #ef4444;">
+                    <div class="perm-icon">⚙️</div>
+                    <h4 style="color: #ef4444; margin-bottom: 0.5rem;">Esecuzione (Execute)</h4>
+                    <p style="font-size: 0.85rem; color: #cbd5e1; margin: 0; line-height: 1.5;">
+                        Si applica ai programmi: definisce se a un utente specifico è legalmente permesso avviare quel file come software funzionante o meno.
+                    </p>
+                </div>
+            </div>
+            
+            <p class="lesson-text" style="font-size: 0.95rem; margin-top: 1.5rem; text-align: center; color: #9ca3af;">
+                <em>Nota storica:</em> Nei sistemi UNIX veri (come Linux o macOS sotto al cofano), questi tre permessi (Read, Write, Execute) vengo calcolati minuziosamente separando i diritti tra il Proprietario (Chi ha creato il file), il Gruppo di appartenenza, e Tutti gli altri sconosciuti nel mondo.
+            </p>
+        </section>
+
+        <!-- QUIZ -->
+        <section id="quiz-finale" class="lesson-section quiz-container">
+            <h2 class="lesson-title" style="color: #10b981; text-align: center;">Verifica Cognitiva (5 Domande)</h2>
+            <p class="lesson-text" style="text-align: center; font-size: 0.95rem; margin-bottom: 2rem;">Dimostra la tua padronanza nei labirinti della memoria fissa.</p>
+            <div id="quiz-area"></div>
+            <div id="quiz-score" class="feedback-msg" style="text-align: center; font-size: 1.2rem; margin-top: 2rem; font-weight: bold;"></div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione Informatica.</p>
+    </footer>
+
+    <!-- JS -->
+    <script src="file-system.js"></script>
+    <script src="../js/main.js"></script>
+</body>
+
+</html>

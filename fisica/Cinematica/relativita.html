@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatività Galileiana - MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- Katex -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+        onload="renderMathInElement(document.body);"></script>
+
+    <style>
+        :root {
+            --moto-color: #a855f7;
+            --moto-color-rgb: 168, 85, 247;
+        }
+
+        .simulation-canvas {
+            background: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            width: 100%;
+            display: block;
+            touch-action: none;
+        }
+
+        .operation-card {
+            background: rgba(var(--moto-color-rgb), 0.05);
+            border: 1px solid rgba(var(--moto-color-rgb), 0.2);
+            padding: 1.5rem;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .step-list {
+            counter-reset: step;
+            list-style: none;
+            padding: 0;
+        }
+
+        .step-list li {
+            counter-increment: step;
+            position: relative;
+            padding-left: 2.5rem;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* Prevent KaTeX formulas from line-breaking internally */
+        .step-list li .katex {
+            white-space: nowrap !important;
+            display: inline-block;
+        }
+
+        .step-list li::before {
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: -2px;
+            min-width: 28px;
+            height: 28px;
+            background: #3b82f6;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        .flex-col {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="sub-hero" style="border-bottom: 2px solid rgba(168, 85, 247, 0.5);">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <a href="../cinematica.html" class="back-button" style="margin-bottom: 0;">
+                    <span class="back-icon">&larr;</span> Lezioni di Cinematica
+                </a>
+            </div>
+            <h1 class="sub-hero-title">Relatività <span class="gradient-text" style="background: linear-gradient(to right, #a855f7, #3b82f6); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">Galileiana</span></h1>
+            <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+                Sistemi di Riferimento, inosservabilità del moto rettilineo uniforme e le famose trasformazioni cinematiche dettate da Galileo Galilei.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: var(--moto-color);">1. Che cos'è un Sistema di Riferimento?</h2>
+            <p class="lesson-text">
+                In fisica, non ha senso affermare che un oggetto "si trova nella posizione 5" oppure che "si sta muovendo a 10 km/h" in senso assoluto. Tutto dipende da <strong>rispetto a chi</strong> o a <strong>cosa</strong> stiamo misurando.
+            </p>
+            <p class="lesson-text">
+                Un <strong>Sistema di Riferimento (S.d.R.)</strong> è un apparato concettuale o matematico, solitamente formato da un insieme di assi cartesiani (X, Y, Z) dotati di un'origine \(O\), e da un <em>orologio</em> per misurare il tempo. Identifica univocamente dove e quando accade un evento geometrico.
+            </p>
+
+            <div class="operation-card" style="border-left-color: #3b82f6; margin-top: 1.5rem;">
+                <h3 style="color: #3b82f6; margin-bottom: 1.5rem;">📏 Simulazione 1: L'Arbitrarietà del Sistema</h3>
+                <p class="lesson-text" style="font-size: 0.95rem; margin-bottom: 1.5rem;">
+                    In cinemtatica, la scelta del sistema di riferimento è a <strong>totale discrezione dello scienziato</strong>! Puoi posizionare l'origine dove ti è più comodo per semplificare i calcoli. Prova a cliccare nel vuoto per spostare l'Origine \(O(0,0)\): noterai che l'evento (la stella dorata) rimane fisicamente fermo, ma le sue coordinate lette sul reticolo cambiano radicalmente.
+                </p>
+                <div class="grid" style="grid-template-columns: 1fr 2fr; gap: 2rem; align-items: start;">
+                    <div class="data-display" style="grid-template-columns: 1fr;">
+                        <div class="data-card" style="border-left-color: #f59e0b; margin-top: 0.5rem;">
+                            <span class="data-label">Coord. Stella rispetto a O:</span>
+                            <div style="font-size:1.1rem; margin-top: 0.5rem; display:flex; flex-direction:column; gap:0.3rem;">
+                                <span>\(X_{stella} =\) <span id="val-x">5.0</span> m</span>
+                                <span>\(Y_{stella} =\) <span id="val-y">4.0</span> m</span>
+                            </div>
+                        </div>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 1rem;">
+                            <em>💡 Clicca / Trascina ovunque sulla griglia per riposizionare l'Origine (il pallino rosso).</em>
+                        </p>
+                    </div>
+                    <div style="position: relative;">
+                        <!-- Canvas per spostare sistema di riferimento -->
+                        <canvas id="refCanvas" class="simulation-canvas" height="350" style="cursor: crosshair;"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: var(--moto-color);">2. L'Esempio de "Il Gran Navilio"</h2>
+            <p class="lesson-text">
+                Una delle argomentazioni più affascinanti e rivoluzionarie di Galileo Galilei è tratta dal suo scitto <strong>Il Saggiatore</strong> (1623) e prende il nome del classico esempio del <strong>"Gran Navilio"</strong>. 
+            </p>
+            <p class="lesson-text">
+                Immaginiamo di trovarci nella cabina chiusa (senza oblò) posizionata all'interno della stiva di una grande nave. Galileo fa notare che se la nave è ormeggiata oppure si sta muovendo su un mare di quiete a velocità costante (Moto Rettilineo Uniforme), <em>nessun esperimento puramente meccanico condotto sottocoperta ci potrà mai rivelare se siamo in moto o siamo fermi</em>.
+            </p>
+            <p class="lesson-text">
+                L'acqua nel catino cadrà dritta, le farfalle voleranno in tutte le direzioni con la stessa fluidità, e le palline da ping-pong rimbalzeranno sui banchi sempre negli stessi identici punti. Tutta la fisica apparirà identica.
+            </p>
+
+            <div class="info-box" style="margin-top: 2rem; border-left-color: #10b981; background: rgba(16, 185, 129, 0.05);">
+                <h3 style="color: #10b981; margin-bottom: 0.5rem;">📜 Il Principio di Relatività Galileiana</h3>
+                <p class="lesson-text" style="font-size: 0.95rem; font-weight: 600; font-style: italic; margin-bottom: 0;">
+                    "Le leggi della meccanica sono le stesse in tutti i Sistemi di Riferimento Inerziali (cioè quelli che si muovono di moto rettilineo uniforme gli uni rispetto agli altri)."
+                </p>
+            </div>
+        </section>
+
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: var(--moto-color);">3. Le Trasformazioni Galileiane</h2>
+            <p class="lesson-text">
+                Per tradurre il principio di Galileo in algebra matematicamente utile, abbiamo bisogno delle equazioni in grado di tradurre le informazioni misurate da due osservatori diversi. Immaginiamo due sistemi di riferimento:
+            </p>
+            <ul style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem; line-height: 1.6;">
+                <li>Un sistema fisso \(S\) con coordinate \((x, y, z)\) e tempo \(t\).</li>
+                <li>Un sistema mobile \(S'\) con coordinate \((x', y', z')\) e tempo \(t'\) che si sta muovendo a velocità vettoriale costante \(\vec{V}\) rispetto a \(S\), per semplicità spostandosi solo lungo l'asse X.</li>
+            </ul>
+
+            <div class="formula-row">
+                <div class="flex-col">
+                    <span style="color: #10b981;">Equazioni di Trasformazione (da S a S')</span>
+                    <span style="font-size: 1.2rem;">
+                        \(\begin{cases} 
+                        x' = x - V \cdot t \\ 
+                        y' = y \\ 
+                        z' = z \\ 
+                        t' = t 
+                        \end{cases}\)
+                    </span>
+                </div>
+            </div>
+
+            <p class="lesson-text" style="margin-top: 1.5rem;">
+                Dalle trasformazioni delle posizioni, derivando matematicamente rispetto al tempo, possiamo scrivere il famoso calcolo per la composizione galileiana delle velocità. 
+            </p>
+
+            <div class="formula-row" style="background: rgba(236, 72, 153, 0.1); border-color: rgba(236, 72, 153, 0.3);">
+                <div class="flex-col">
+                    <span style="color: #ec4899;">Legge di Addizione delle Velocità</span>
+                    <span>\(v'_{oggetto} = v_{oggetto} - V_{sistema}\)</span>
+                    <span style="font-size: 0.85rem; color: var(--text-muted);">Oppure, da S' a S: \( v = v' + V_{sistema} \)</span>
+                </div>
+            </div>
+
+            <div class="guided-exercise" style="border-color: rgba(59, 130, 246, 0.4); background: rgba(59, 130, 246, 0.05); margin-top: 2rem;">
+                <h3 style="color: #3b82f6;">✏️ Esercizio Guidato: Il Cuoco sul Puffing Tom</h3>
+                <p class="lesson-text">Il mitico treno marino <strong>Puffing Tom</strong> (Sistema \(S'\)) viaggia spedito verso Enies Lobby a una velocità costante di \(V = 100 \, \text{km/h}\) sull'acqua. <strong>Sanji</strong> sfreccia dal vagone ristorante in avanti per consegnare una torta a <strong>Nami</strong> (comodamente seduta a un tavolino) ad una corsetta di agilità \(v' = 15 \, \text{km/h}\). Nel frattempo, <strong>Jinbei</strong> (Sistema \(S\)) osserva la scena da fuori, immobile sulla panchina di sosta.</p>
+                <ol class="step-list">
+                    <li>Qual è la velocità di Sanji <em>rispetto a Nami</em>? Nami condivide lo stesso Sistema \(S'\) in viaggio, non ha velocità rispetto al pavimento del treno. Dunque, dal suo punto di vista, vede Sanji avvicinarsi semplicemente a \( v' = 15 \, \text{km/h} \).</li>
+                    <li>Con che velocità si muove Sanji <em>rispetto a Jinbei</em>? Poiché lui guarda dal Sistema Fisso \(S\), dobbiamo usare l'equazione di Galilei: \( v = v' + V_{treno} \).</li>
+                    <li>Sia la velocità del treno \(V\) che la corsa di Sanji \(v'\) vanno nello stesso verso propulsivo, le sommiamo: \(v = 15 + 100 = 115 \, \text{km/h}\).</li>
+                    <li>Per Jinbei, che sta facendo l'osservatore solidale con l'oceano, Sanji "schizza" letteralmente davanti ai suoi occhi a ben \(115 \, \text{km/h}\)! Due percezioni di velocità diverse unificate sapientemente dalla matematica.</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- SEZIONE 4: LA MOSCA NEL VAGONE -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: var(--moto-color);">4. 🪰 La Mosca nel Vagone del Treno</h2>
+            <p class="lesson-text">
+                Hai mai pensato alle mosche mentre sei in treno? Se una mosca vola nel corridoio del tuo vagone, ti sembra semplicemente che si stia muovendo lentamente da un punto all'altro. Ma per un osservatore sul marciapiede della stazione, la mosca sta volando a una velocità molto più alta! Vediamo perché.
+            </p>
+
+            <div class="operation-card" style="border-left-color: #f59e0b; background: rgba(245, 158, 11, 0.05);">
+                <h3 style="color: #f59e0b; margin-bottom: 1.2rem;">🤔 Il Paradosso della Mosca</h3>
+                <p class="lesson-text" style="font-size: 0.95rem;">
+                    Il treno viaggia a <strong>200 km/h</strong>. La mosca dentro il vagone svolazza tranquilla in avanti a soli <strong>5 km/h</strong> rispetto al sedile. Eppure... la mosca non cade a terra, non sbatte sulle pareti posteriori, non fa nulla di speciale. Come mai riesce a "tenere il passo" con un veicolo che sfreccia a 200 km/h?
+                </p>
+                <p class="lesson-text" style="font-size: 0.95rem;">
+                    La risposta è elegante: <strong>la mosca non sa di essere sul treno</strong>. Per lei, l'aria del vagone è ferma, le pareti sono ferme, il pavimento è fermo. Il suo sistema di riferimento è solidale con il vagone chiuso. Galileo ci insegna che nessun esperimento meccanico condotto all'interno di un sistema inerziale può rivelare che quel sistema si sta muovendo a velocità costante.
+                </p>
+            </div>
+
+            <div class="operation-card" style="border-left-color: #10b981; background: rgba(16, 185, 129, 0.05); margin-top: 1.5rem;">
+                <h3 style="color: #10b981; margin-bottom: 1.2rem;">🧮 Il Calcolo con le Trasformazioni Galileiane</h3>
+                <ul style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.8; margin-bottom: 1rem;">
+                    <li><strong>Sistema \(S\):</strong> il marciapiede della stazione (osservatore fermo a terra)</li>
+                    <li><strong>Sistema \(S'\):</strong> il vagone del treno (in moto a \(V = 200\) km/h)</li>
+                    <li><strong>\(v'_{mosca} = +5\) km/h</strong> — velocità della mosca nel vagone (in avanti)</li>
+                </ul>
+                <p class="lesson-text" style="font-size: 0.95rem;">
+                    Applicando la legge di addizione galileiana \(v = v' + V\):
+                </p>
+                <div class="formula-row" style="margin: 1rem 0;">
+                    <div class="flex-col">
+                        <span style="color:#10b981;">Vista dal marciapiede:</span>
+                        <span style="font-size: 1.2rem;">\(v_{mosca} = 5 + 200 = \mathbf{205 \text{ km/h}}\)</span>
+                    </div>
+                </div>
+                <p class="lesson-text" style="font-size: 0.95rem;">
+                    Per chi è sul marciapiede, quella mosca sfreccia a <strong>205 km/h</strong>! Non perché sia un insetto supersonico, ma perché porta con sé tutta la velocità del treno in cui è immersa.
+                </p>
+            </div>
+
+            <!-- COSA SUCCEDEREBBE SE USCISSE -->
+            <div class="operation-card" style="border-left-color: #ef4444; background: rgba(239, 68, 68, 0.05); margin-top: 1.5rem;">
+                <h3 style="color: #ef4444; margin-bottom: 1rem;">💨 E se la mosca uscisse dal finestrino?</h3>
+                <p class="lesson-text" style="font-size: 0.95rem;">
+                    Supponiamo che il finestrino sia aperto e la mosca si avventuri fuori. Cosa succederebbe?
+                </p>
+                <ol class="step-list">
+                    <li>
+                        <strong>Dentro al vagone</strong>, l'aria è in quiete rispetto alla mosca (stessa velocità del treno). La mosca vola senza sforzo, come farebbe in una stanza ferma.
+                    </li>
+                    <li>
+                        <strong>Appena fuori</strong>, la mosca entra in contatto con l'aria esterna, che è praticamente ferma rispetto al suolo. Dal punto di vista della mosca, improvvisamente si troverebbe di fronte a un vento violento di <strong>200 km/h</strong> (uguale e contrario alla velocità del treno).
+                    </li>
+                    <li>
+                        Una mosca non può volare contro un vento di 200 km/h: verrebbe immediatamente spazzata via verso il retro del treno, mentre per un osservatore a terra sembrerebbe semplicemente fermarsi mentre il treno continua a sfrecciare.
+                    </li>
+                    <li>
+                        Questo è il <strong>cambio di sistema di riferimento</strong> in azione: da \(S'\) (vagone, con tutta l'aria e il "micromondo" che vanno a 200 km/h con lei) a \(S\) (la Terra, con l'aria ferma e il vento relativo).
+                    </li>
+                </ol>
+                <div style="background: rgba(239,68,68,0.08); border-left: 3px solid #ef4444; padding: 1rem 1.2rem; border-radius: 0 10px 10px 0; margin-top: 1rem;">
+                    <strong style="color: #ef4444;">Morale galileiana:</strong>
+                    <span style="color: var(--text-muted); font-size: 0.95rem;"> Non è la mosca che vola a 200 km/h — è il <em>sistema</em> che la trasporta. La velocità è sempre relativa al sistema di riferimento scelto. Cambia sistema, cambia tutto.</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- BATTUTA DELLA LAMPADINA -->
+        <section class="lesson-section" style="border-color: rgba(168,85,247,0.3); background: rgba(168,85,247,0.04);">
+            <h2 class="lesson-title" style="color: var(--moto-color);">💡 Per concludere...</h2>
+            <div style="background: rgba(0,0,0,0.25); border-radius: 16px; padding: 2rem; text-align: center; border: 1px dashed rgba(168,85,247,0.4);">
+                <p style="font-size: 1.5rem; line-height: 1.8; color: var(--text-main); font-style: italic;">
+                    «Quanti fisici teorici ci vogliono per cambiare una lampadina?»
+                </p>
+                <p style="font-size: 1.3rem; color: #a855f7; font-weight: 700; margin-top: 1rem;">
+                    Due.
+                </p>
+                <p style="font-size: 1.1rem; color: var(--text-muted); margin-top: 0.5rem;">
+                    Uno per tenerla ferma... e un altro che ruoti il sistema di riferimento intorno alla lampadina. 🌀
+                </p>
+            </div>
+            <p class="lesson-text" style="margin-top: 1.5rem; font-size: 0.9rem; color: var(--text-muted); text-align: center;">
+                (In fondo, se la fisica dice che spostare la lampadina o spostare il resto dell'universo attorno ad essa sono la stessa cosa... perché affaticarsi?)
+            </p>
+        </section>
+
+        <!-- PLANET EXPRESS - FUTURAMA -->
+        <section class="lesson-section" style="border-color: rgba(34,211,238,0.4); background: rgba(34,211,238,0.03);">
+            <h2 class="lesson-title" style="color: #22d3ee;">🚀 Bonus: La Planet Express di Futurama e il Motore a Curvatura</h2>
+            <p class="lesson-text">
+                Nella fisica moderna, la teoria della relatività di Einstein impone un limite cosmico invalicabile: <strong>nessun oggetto con massa può muoversi attraverso lo spazio a una velocità superiore a quella della luce</strong>. Eppure, in <strong>Futurama</strong>, la nave Planet Express sfreccia tra le galassie in pochi istanti. Come fa senza violare questa legge fondamentale? Il trucco è che la nave non supera mai la velocità della luce <em>localmente</em>. Questo è possibile grazie a un concetto scientificamente reale chiamato <strong>Motore a Curvatura</strong>, o <em>Warp Drive</em>.
+            </p>
+
+            <div class="operation-card" style="border-left-color: #22d3ee; background: rgba(34,211,238,0.05);">
+                <h3 style="color: #22d3ee; margin-bottom: 1rem;">🧠 Il Trucco Galileiano (ma in versione cosmica)</h3>
+                <p class="lesson-text" style="font-size: 0.95rem;">
+                    Ricordi il principio di Galileo? Non è importante se sei tu a muoverti o se è il mondo attorno a te a muoversi: la fisica è identica. La Planet Express applica questo principio alla lettera, ma su scala spaziotemporale:
+                </p>
+                <ul style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.9;">
+                    <li><strong>La nave non si muove</strong> rispetto allo spaziotempo locale che la circonda — rimane fisicamente "ferma" nella sua bolla.</li>
+                    <li><strong>È lo spazio stesso</strong> a comprimersi davanti alla nave e ad espandersi dietro di essa, trascinando la bolla (e la nave dentro) verso la destinazione.</li>
+                    <li>Dal punto di vista di chi è a bordo: nessuna forza d'inerzia, nessuna accelerazione percepita. È come stare seduti in vagone mentre è il paesaggio a scorrere fuori dal finestrino.</li>
+                </ul>
+            </div>
+
+            <div class="operation-card" style="border-left-color: #3b82f6; background: rgba(59,130,246,0.05); margin-top: 1.5rem;">
+                <h3 style="color: #3b82f6; margin-bottom: 1rem;">📐 La Metrica di Alcubierre (1994)</h3>
+                <p class="lesson-text" style="font-size: 0.95rem;">
+                    Nel <strong>1994</strong> il fisico messicano <strong>Miguel Alcubierre</strong> dimostrò matematicamente, usando le equazioni della Relatività Generale di Einstein, che una tale "bolla di curvatura" è <em>geometricamente consistente</em> con le leggi della fisica. La soluzione si chiama <strong>Metrica di Alcubierre</strong>.
+                </p>
+                <div class="formula-row" style="margin: 1rem 0; background: rgba(59,130,246,0.08); border-color: rgba(59,130,246,0.25);">
+                    <div class="flex-col">
+                        <span style="color: #3b82f6;">Schema della bolla di Alcubierre</span>
+                        <div style="display: flex; align-items: center; gap: 2rem; flex-wrap: wrap; margin-top: 0.5rem;">
+                            <div style="text-align: center;">
+                                <svg width="280" height="100" viewBox="0 0 280 100" style="display:block; margin: 0 auto;">
+                                    <!-- Spazio compresso davanti -->
+                                    <path d="M 10 50 Q 50 15 90 50" fill="none" stroke="#22d3ee" stroke-width="2"/>
+                                    <path d="M 10 50 Q 50 30 90 50" fill="none" stroke="#22d3ee" stroke-width="1.5" opacity="0.5"/>
+                                    <path d="M 10 50 Q 50 42 90 50" fill="none" stroke="#22d3ee" stroke-width="1" opacity="0.3"/>
+                                    <text x="46" y="12" fill="#22d3ee" font-size="10" text-anchor="middle">Spazio compresso</text>
+                                    <!-- Bolla nave -->
+                                    <ellipse cx="140" cy="50" rx="38" ry="32" fill="rgba(34,211,238,0.1)" stroke="#22d3ee" stroke-width="2.5" stroke-dasharray="5,3"/>
+                                    <text x="140" y="47" fill="white" font-size="13" text-anchor="middle">🚀</text>
+                                    <text x="140" y="63" fill="#22d3ee" font-size="9" text-anchor="middle">Bolla (ferma)</text>
+                                    <!-- Spazio espanso dietro -->
+                                    <path d="M 190 50 Q 230 85 270 50" fill="none" stroke="#a855f7" stroke-width="2"/>
+                                    <path d="M 190 50 Q 230 70 270 50" fill="none" stroke="#a855f7" stroke-width="1.5" opacity="0.5"/>
+                                    <path d="M 190 50 Q 230 58 270 50" fill="none" stroke="#a855f7" stroke-width="1" opacity="0.3"/>
+                                    <text x="230" y="93" fill="#a855f7" font-size="10" text-anchor="middle">Spazio espanso</text>
+                                    <!-- Freccia direzione -->
+                                    <line x1="60" y1="50" x2="100" y2="50" stroke="white" stroke-width="1" stroke-dasharray="3,3"/>
+                                    <text x="10" y="75" fill="rgba(255,255,255,0.5)" font-size="9">←→</text>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="lesson-text" style="font-size: 0.95rem; margin-top: 0.5rem;">
+                    La bolla non "sposta" la nave a velocità superluminale: è lo <em>spazio</em> davanti a comprimersi e quello dietro a espandersi. La nave rimane in quiete nella sua bolla, ma la bolla stessa può avanzare a qualsiasi velocità perché è lo <strong>spaziotempo</strong> a muoversi, non la materia.
+                </p>
+            </div>
+
+            <div class="operation-card" style="border-left-color: #f59e0b; background: rgba(245,158,11,0.05); margin-top: 1.5rem;">
+                <h3 style="color: #f59e0b; margin-bottom: 1rem;">⚠️ Perché non lo costruiamo subito?</h3>
+                <p class="lesson-text" style="font-size: 0.95rem;">
+                    La Metrica di Alcubierre è matematicamente coerente, ma richiede una quantità astronomica di <strong>energia esotica con densità di energia negativa</strong> — una forma di materia/energia che non sappiamo ancora come produrre o manipolare. Le stime originali parlavano di una massa-energia equivalente a quella di Giove, convertita in energia esotica. Versioni successive (White, 2012) hanno ridotto questo valore, ma rimane ben al di fuori di qualsiasi tecnologia immaginabile oggi.
+                </p>
+                <p class="lesson-text" style="font-size: 0.95rem; margin-top: 0.5rem;">
+                    Non è la fisica a dire "impossibile" — è la tecnologia a essere lontanissima. Il principio galileiano che muovere sé stessi o muovere l'universo attorno a sé è equivalente vale ancora: Futurama ha solo trovato la versione fantascientifica giusta di questa verità.
+                </p>
+            </div>
+
+            <div style="background: rgba(34,211,238,0.07); border: 1px solid rgba(34,211,238,0.25); border-radius: 12px; padding: 1.2rem 1.5rem; margin-top: 1.5rem; display: flex; gap: 1rem; align-items: flex-start; flex-wrap: wrap;">
+                <span style="font-size: 2rem; flex-shrink: 0;">🎓</span>
+                <div>
+                    <strong style="color: #22d3ee;">Il collegamento con Galileo:</strong>
+                    <p style="margin: 0.4rem 0 0; font-size: 0.92rem; color: var(--text-muted); line-height: 1.6;">
+                        Galileo nel 1623 ha scritto che non esiste esperimento interno che riveli il moto uniforme. Alcubierre nel 1994 ha scritto le equazioni per far sì che la navicella rimanga <em>sempre</em> in uno stato di quiete locale — anche mentre la destinazione si avvicina a velocità superluminale. Quattrocento anni di distanza, stessa intuizione fisica.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="lesson-section" id="quiz-finale">
+            <h2 class="lesson-title" style="color: var(--moto-color);">Quiz di Verifica</h2>
+            <div class="quiz-container">
+                <!-- Domanda 1 -->
+                <div class="quiz-question" id="q1">
+                    <h3>1. Cosa afferma il Principio di Relatività Galileiana?</h3>
+                    <div class="quiz-options">
+                        <button class="quiz-btn" data-status="wrong">A) Le leggi della meccanica cambiano in scia ad un corpo che accelera.</button>
+                        <button class="quiz-btn" data-status="correct">B) Le leggi della meccanica sono le stesse in tutti i Sistemi di Riferimento Inerziali.</button>
+                        <button class="quiz-btn" data-status="wrong">C) Non è possibile muoversi a una velocità costante nel vuoto.</button>
+                        <button class="quiz-btn" data-status="wrong">D) Il tempo diviene relativo al variare del moto rettilineo.</button>
+                    </div>
+                </div>
+
+                <!-- Domanda 2 -->
+                <div class="quiz-question" id="q2">
+                    <h3>2. Il Sistema Mobile \(S'\) si muove in avanti a destra rispetto al Fisso \(S\) a traslazione costante \(V\). L'equazione per le posizioni è:</h3>
+                    <div class="quiz-options">
+                        <button class="quiz-btn" data-status="wrong">A) \(x' = x + V \cdot t\)</button>
+                        <button class="quiz-btn" data-status="wrong">B) \(x' = x/V + t\)</button>
+                        <button class="quiz-btn" data-status="correct">C) \(x' = x - V \cdot t\)</button>
+                        <button class="quiz-btn" data-status="wrong">D) \(x = x' - V \cdot c\)</button>
+                    </div>
+                </div>
+
+                <!-- Domanda 3 -->
+                <div class="quiz-question" id="q3">
+                    <h3>3. Riferendosi all'argomentazione del Gran Navilio, perché gli esperimenti di meccanica non svelano il moto della barca?</h3>
+                    <div class="quiz-options">
+                        <button class="quiz-btn" data-status="wrong">A) Perché le palline cadono dritte frenate dall'aria compressa della stiva.</button>
+                        <button class="quiz-btn" data-status="correct">B) Perché la meccanica locale è interamente solidale alla quiete apparente e non distingue il moto uniforme.</button>
+                        <button class="quiz-btn" data-status="wrong">C) Perché l'acqua marina annulla la forza di spinta propulsiva laterale.</button>
+                        <button class="quiz-btn" data-status="wrong">D) Perché occorre un orologio satellitare molto più preciso.</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Cinematica.</p>
+    </footer>
+
+    <!-- Carica lo script dedicato -->
+    <script src="relativita.js"></script>
+    <script src="../../js/main.js"></script>
+</body>
+
+</html>

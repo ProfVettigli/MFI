@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algebra - Matematica MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+
+        .back-icon {
+            margin-right: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .sub-hero {
+            padding: 4rem 0 2rem;
+            text-align: left;
+        }
+
+        .sub-hero-title {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        .sub-hero-subtitle {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            max-width: 800px;
+            font-weight: 300;
+            margin-bottom: 3rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="sub-hero">
+        <div class="container">
+            <div style="text-align: center;">
+                <a href="../matematica.html" class="back-button">
+                    <span class="back-icon">&larr;</span> Torna a Matematica
+                </a>
+            </div>
+
+            <h1 class="sub-hero-title">Fondamenti di <span class="gradient-text"
+                    style="background: linear-gradient(135deg, #3B82F6, #60A5FA); -webkit-background-clip: text; background-clip: text; color: transparent;">Algebra</span>
+            </h1>
+            <p class="sub-hero-subtitle">Il passaggio dal numero al simbolo. Impara a manipolare lettere, espressioni e
+                a risolvere equazioni: gli strumenti che trasformano un problema in una soluzione.</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="subjects" style="padding-bottom: 4rem;">
+            <div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));">
+
+                <!-- Strutture Algebriche -->
+                <a href="strutture-algebriche.html" class="card math-card">
+                    <div class="card-icon">{A}</div>
+                    <h3 class="card-title">Strutture Algebriche</h3>
+                    <p class="card-desc">Dalle origini di Al-Khwarizmi all'astrazione moderna: scopri anelli, campi e la potenza del pensiero strutturale.</p>
+                </a>
+
+                <!-- Monomi e Polinomi -->
+                <a href="monomi-polinomi.html" class="card math-card">
+                    <div class="card-icon">3x²</div>
+                    <h3 class="card-title">Monomi e Polinomi</h3>
+                    <p class="card-desc">Scopri i mattoni dell'algebra: monomi, polinomi, operazioni tra di essi e grado
+                        di un'espressione letterale.</p>
+                </a>
+
+                <!-- Espressioni Algebriche -->
+                <a href="espressioni-algebriche.html" class="card math-card">
+                    <div class="card-icon">a+b</div>
+                    <h3 class="card-title">Espressioni Algebriche</h3>
+                    <p class="card-desc">Impara a semplificare, ridurre e calcolare il valore delle espressioni
+                        letterali sostituendo i numeri alle lettere.</p>
+                </a>
+
+                <!-- Prodotti Notevoli -->
+                <a href="prodotti-notevoli.html" class="card math-card">
+                    <div class="card-icon">(a+b)²</div>
+                    <h3 class="card-title">Prodotti Notevoli</h3>
+                    <p class="card-desc">Le scorciatoie fondamentali: quadrato di un binomio, differenza di quadrati,
+                        cubo di un binomio e molto altro.</p>
+                </a>
+
+                <!-- Equazioni e Disequazioni -->
+                <a href="equazioni-disequazioni.html" class="card math-card">
+                    <div class="card-icon">x>?</div>
+                    <h3 class="card-title">Equazioni e Disequazioni</h3>
+                    <p class="card-desc">Risolvi equazioni di primo e secondo grado e scopri come trovare gli intervalli
+                        di verità delle disequazioni.</p>
+                </a>
+
+                <!-- Sistemi -->
+                <a href="sistemi.html" class="card math-card">
+                    <div class="card-icon">{}</div>
+                    <h3 class="card-title">Sistemi di Equazioni</h3>
+                    <p class="card-desc">Quando una sola equazione non basta: impara i metodi di sostituzione, confronto e Cramer.</p>
+                </a>
+
+                <!-- Numeri Complessi -->
+                <a href="numeri-complessi.html" class="card math-card">
+                    <div class="card-icon" style="color: #A855F7; font-size: 1.1rem; font-weight: 800;">z = a + bi</div>
+                    <h3 class="card-title">I Numeri Complessi</h3>
+                    <p class="card-desc">L'universo immaginario: esplora il piano di Gauss, impara le operazioni e scopri le applicazioni nel mondo reale.</p>
+                </a>
+
+
+                <!-- Sfida Speciale: Paradosso -->
+                <a href="paradosso-1-2.html" class="card math-card" style="border: 2px solid #F59E0B; background: rgba(245, 158, 11, 0.05);">
+                    <div class="card-icon" style="color: #F59E0B;">1=2?</div>
+                    <h3 class="card-title" style="color: #F59E0B;">Il Paradosso di 1=2</h3>
+                    <p class="card-desc">Una sfida logica per i più audaci: troverai l'errore nascosto nella dimostrazione "proibita"?</p>
+                </a>
+
+                <!-- CLIL Galois -->
+                <a href="clil-galois.html" class="card math-card" style="border: 2px solid #EF4444; background: rgba(239, 68, 68, 0.05);">
+                    <div class="card-icon" style="color: #EF4444;">⚔️</div>
+                    <h3 class="card-title" style="color: #EF4444;">CLIL: Évariste Galois</h3>
+                    <p class="card-desc">History in English: the rebel genius, mathematical duels, and the foundation of groups.</p>
+                </a>
+
+                <!-- Algebra Lineare (Vettori, Matrici, Diagonalizzazione) -->
+                <a href="algebra-lineare.html" class="card math-card">
+                    <div class="card-icon" style="font-size: 1.5rem; font-weight: bold;">[A]{v}</div>
+                    <h3 class="card-title">Algebra Lineare e Matrici</h3>
+                    <p class="card-desc">Scopri vettori, matrici, determinanti, cambi di base e il segreto della diagonalizzazione delle trasformazioni spaziali.</p>
+                </a>
+
+                <!-- CLIL Bourbaki -->
+                <a href="clil-bourbaki.html" class="card math-card" style="border: 2px solid #3B82F6; background: rgba(59, 130, 246, 0.05);">
+                    <div class="card-icon" style="color: #3B82F6;">📚</div>
+                    <h3 class="card-title" style="color: #3B82F6;">CLIL: Nicolas Bourbaki</h3>
+                    <p class="card-desc">History in English: the secret society of mathematicians that rewrote modern foundations under a fake genius identity.</p>
+                </a>
+
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Matematica.</p>
+    </footer>
+
+    <!-- JS -->
+    <script src="../../js/main.js"></script>
+</body>
+
+</html>

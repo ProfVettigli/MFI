@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cos'è una Funzione? - MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- MathJax for formulas -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <style>
+        .function-machine {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            text-align: center;
+        }
+        .machine-visual {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        .input-box, .output-box {
+            background: var(--surface-hover);
+            border: 2px solid var(--math-color);
+            padding: 1rem;
+            border-radius: 8px;
+            min-width: 80px;
+        }
+        .machine-body {
+            background: var(--math-color);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            font-weight: 800;
+            position: relative;
+            box-shadow: 0 0 20px var(--math-glow);
+        }
+        .arrow {
+            font-size: 2rem;
+            color: var(--math-color);
+        }
+        .representation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        .rep-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 1.5rem;
+            border-radius: 12px;
+        }
+        .property-badge {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+            background: var(--math-color);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header class="lesson-header">
+        <div class="container" style="padding: 4rem 0 2rem;">
+            <div style="text-align: center; margin-bottom: 2.5rem;">
+                <a href="funzioni.html" class="back-button" style="margin-bottom: 0;">
+                    <span class="back-icon">&larr;</span> Torna a Funzioni
+                </a>
+            </div>
+            <h1 class="lesson-title" style="font-size: clamp(2.2rem, 5vw, 3.5rem); font-weight: 800; margin-bottom: 1rem;">
+                Cos'è una <span class="gradient-text">Funzione?</span>
+            </h1>
+            <p class="lesson-subtitle">
+                Il concetto più potente della matematica: una regola che lega due mondi.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- 1. DEFINIZIONE -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">1. Una Relazione Speciale</h2>
+            <p class="lesson-text">
+                In matematica, una <strong>funzione</strong> è una relazione tra due insiemi, chiamati <strong>Dominio</strong> (A) e <strong>Codominio</strong> (B), che associa a <strong>ogni</strong> elemento del dominio <strong>uno e un solo</strong> elemento del codominio.
+            </p>
+            
+            <div class="function-machine">
+                <h4>La "Macchina" delle Funzioni</h4>
+                <div class="machine-visual">
+                    <div class="input-box" id="machine-input">x</div>
+                    <div class="arrow">➔</div>
+                    <div class="machine-body">f(x) = x²</div>
+                    <div class="arrow">➔</div>
+                    <div class="output-box" id="machine-output">f(x)</div>
+                </div>
+                <p class="lesson-text" style="font-size: 0.9rem;">Prova a pensare: se inseriamo \(3\), la macchina restituisce \(9\). Se inseriamo \(-3\), restituisce ancora \(9\). È una funzione?</p>
+            </div>
+
+            <p class="lesson-text">
+                L'elemento \(x\) del dominio è la <strong>variabile indipendente</strong> (l'input), mentre \(y = f(x)\) è la <strong>variabile dipendente</strong> (l'output).
+            </p>
+        </section>
+
+        <!-- 2. RAPPRESENTAZIONI -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">2. Modi di Rappresentarla</h2>
+            <p class="lesson-text">Una funzione può essere "vestita" in molti modi diversi:</p>
+            
+            <div class="representation-grid">
+                <div class="rep-card">
+                    <h4 style="color: var(--math-color); margin-bottom: 0.5rem;">Analitica (La formula)</h4>
+                    <p class="lesson-text" style="font-size: 0.95rem;">\(f(x) = 2x + 1\)<br>È il modo più preciso e compatto.</p>
+                </div>
+                <div class="rep-card">
+                    <h4 style="color: var(--math-color); margin-bottom: 0.5rem;">Tabellare</h4>
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 0.5rem;">
+                        <tr><th style="border-bottom: 1px solid #444;">x</th><th style="border-bottom: 1px solid #444;">y</th></tr>
+                        <tr><td>0</td><td>1</td></tr>
+                        <tr><td>1</td><td>3</td></tr>
+                        <tr><td>2</td><td>5</td></tr>
+                    </table>
+                </div>
+                <div class="rep-card">
+                    <h4 style="color: var(--math-color); margin-bottom: 0.5rem;">Grafica</h4>
+                    <p class="lesson-text" style="font-size: 0.95rem;">Una linea o una curva sul piano cartesiano. La "forma" della funzione.</p>
+                </div>
+                <div class="rep-card">
+                    <h4 style="color: var(--math-color); margin-bottom: 0.5rem;">Sagittale (Insiemi)</h4>
+                    <p class="lesson-text" style="font-size: 0.95rem;">Frecce che collegano elementi di due insiemi (Diagrammi di Eulero-Venn).</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. PROPRIETÀ -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">3. Proprietà Fondamentali</h2>
+            <p class="lesson-text">Non tutte le funzioni sono uguali. Ecco come le classifichiamo:</p>
+            
+            <div style="margin-bottom: 1.5rem;">
+                <h4 style="color: var(--physics-color);"><span class="property-badge">Iniettiva</span></h4>
+                <p class="lesson-text">Elementi distinti del dominio hanno immagini distinte nel codominio. <i>Non ci sono due input che finiscono nello stesso output.</i></p>
+            </div>
+
+            <div style="margin-bottom: 1.5rem;">
+                <h4 style="color: var(--physics-color);"><span class="property-badge">Suriettiva</span></h4>
+                <p class="lesson-text">Ogni elemento del codominio è immagine di almeno un elemento del dominio. <i>Tutto il "bersaglio" viene colpito.</i></p>
+            </div>
+
+            <div style="margin-bottom: 1.5rem;">
+                <h4 style="color: var(--physics-color);"><span class="property-badge">Biunivoca (Biettiva)</span></h4>
+                <p class="lesson-text">È sia iniettiva che suriettiva. Esiste una corrispondenza perfetta 1-a-1 tra i due insiemi.</p>
+            </div>
+        </section>
+
+        <!-- 4. SIMMETRIE -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">4. Simmetrie: Pari e Dispari</h2>
+            <p class="lesson-text">Alcune funzioni mostrano uno "specchio" nel loro grafico:</p>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                <div style="background: rgba(139, 92, 246, 0.05); padding: 1.5rem; border-radius: 12px; border-top: 4px solid #8B5CF6;">
+                    <h4 style="color: #8B5CF6; margin-bottom: 0.5rem;">Funzione Pari</h4>
+                    <p class="lesson-text" style="font-size: 0.95rem;">\(f(-x) = f(x)\)<br>Il grafico è simmetrico rispetto all'<strong>asse y</strong>.<br>Es: \(x^2, \cos(x)\)</p>
+                </div>
+                <div style="background: rgba(245, 158, 11, 0.05); padding: 1.5rem; border-radius: 12px; border-top: 4px solid #F59E0B;">
+                    <h4 style="color: #F59E0B; margin-bottom: 0.5rem;">Funzione Dispari</h4>
+                    <p class="lesson-text" style="font-size: 0.95rem;">\(f(-x) = -f(x)\)<br>Il grafico è simmetrico rispetto all'<strong>origine</strong>.<br>Es: \(x^3, \sin(x)\)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- QUIZ -->
+        <section class="lesson-section quiz-container">
+            <h2 class="lesson-title">Sfida le tue conoscenze</h2>
+            <div id="quiz-area"></div>
+            <div id="quiz-score" class="feedback-msg"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Matematica. Tutto è connesso.</p>
+    </footer>
+
+    <script src="cosa-e-una-funzione.js"></script>
+    <script src="../../js/main.js"></script>
+</body>
+</html>

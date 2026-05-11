@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geometria Solida - Geometria MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        .back-button { display: inline-flex; align-items: center; color: var(--text-muted); text-decoration: none; margin-bottom: 2rem; font-weight: 600; transition: color 0.3s ease, transform 0.3s ease; }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+        .sub-hero { padding: 4rem 0 2rem; text-align: left; }
+        .interactive-container { background: rgba(0,0,0,0.15); padding: 2rem; border-radius: 12px; margin: 2rem 0; display: flex; flex-direction: column; align-items: center; box-shadow: inset 0 0 10px rgba(0,0,0,0.1); }
+        canvas { background: #111827; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); max-width: 100%; display: block; margin: 10px auto; border: 1px solid rgba(255,255,255,0.1); }
+        .controls { margin-top: 1.5rem; display: flex; gap: 1rem; }
+        .control-btn { background: #F59E0B; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-family: 'Inter', sans-serif; font-weight: 600; }
+        .control-btn:hover { opacity: 0.8; }
+        .formula-box { background: rgba(255,255,255,0.04); padding: 1.5rem; border-radius: 8px; border: 1px solid rgba(245, 158, 11, 0.3); text-align: center; height: 100%; }
+        .formula-title { font-size: 1.05rem; font-weight: 600; color: #F59E0B; margin-bottom: 0.5rem; }
+        .formula-math { font-size: 1.3rem; font-weight: 800; color: #fff; margin-top: 0.5rem; display: block; }
+        .svg-drawing { display: block; margin: 0 auto; margin-bottom: 1.5rem; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3)); }
+        .grid-half { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; align-items: center; margin-bottom: 3rem; }
+    </style>
+</head>
+<body>
+    <header class="sub-hero">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2.5rem;">
+                <a href="geometria.html" class="back-button" style="margin-bottom: 0;">
+                    <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Geometria
+                </a>
+            </div>
+            <h1 class="sub-hero-title" style="color: #F59E0B;"> 🧊 Geometria Solida </h1>
+            <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+                Il salto nella terza dimensione: volume, superfici chiuse e le forme dell'universo.
+            </p>
+        </div>
+    </header>
+    <main class="container">
+
+        <!-- 1. TERZA DIMENSIONE -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #F59E0B;">1. L'Alba della 3D (e l'Impossibilità della Quarta)</h2>
+            <p class="lesson-text">Benvenuto nel mondo reale. Abbandoniamo i fogli piatti di carta (Asse $X$ e Asse $Y$) e sfrecciamo finalmente in profondità bucando l'universo aggiungendo l'asse della quota altimetrica: lo spigolo $Z$. Ma perché la nostra fisica spaziale si ferma a tre dimensioni? La risposta è viscerale ed empirica: per tracciare una coordinata dimensionale indipendente, essa deve sempre viaggiare **ortogonalmente** (a $90^\circ$ esatti di angolo ritto) rispetto <em>a tutte</em> le altre precedenti.</p>
+            <p class="lesson-text">Prendi nell'angolo della tua stanza uno spigolo a terra: un muro fugge dritto, un muro gli va storto a 90°, e il pilarstro del soffitto s'alza scontrandosi in cielo sempre a 90°. Ma se ti chiedessero di piantare brutalmente nel pavimento un clamoroso "quarto palo" che riesca per magia ad essere posizionato a caduta perpendicolare di 90° gradi *simultaneamente* contro a tutte e tre le linee precedenti? Noterai che non hai più "scappatoie rotazionali" verso cui inclinarti! Nel nostro tessuto fisico spaziale un tracciato quadridimensionale macroscopico perpendicolare è strutturalmente intollerabile per assenza di gradi di libertà liberi.</p>
+        </section>
+
+        <!-- 2. SUPERFICIE E VOLUME -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #F59E0B;">2. Superficie Involucro vs Volume Stoccato</h2>
+            <p class="lesson-text">Nella tridimensionalità, gli oggetti smettono di possedere Aree e Perimetri lisci tramutandosi in esseri capaci d'immagazzinamento solido. Dobbiamo calcolare quindi due enti in feroce contrapposizione biologica ed architettonica:</p>
+            <ul style="color: var(--text-muted); line-height: 1.8; margin-left:1.5rem; margin-bottom: 2rem;">
+                <li><strong>Superficie Esterna ($S$):</strong> L'area bidimensionale del carapace "involucro". Immagina che calcoli quanta minuscola carta stagnola incartatrice o vernice di barattolo ti servirebbe unicamente per pennellare perfettamente e tappare lo scheletro dell'oggetto.</li>
+                <li><strong>Volume Interno ($V$):</strong> L'abisso di capienza tridimensionale. Quanti litri scroscianti d'acqua puoi travasare e affogare versandoli al suo interno finché il guscio non esplode fino al tappo.</li>
+            </ul>
+        </section>
+
+        <!-- 3. PARALLELEPIPEDO -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #F59E0B;">3. Il Parallelepipedo (La Base a Scatola)</h2>
+            <div class="grid-half">
+                <div>
+                    <p class="lesson-text" style="margin-top:0;">Il solido generato dalle ortogonali perfette: una semplice scatola di scarpe dai lati paralleli che estrude un rettangolo facendolo viaggiare in altezza. Ne costituiscono il corpo una base $b$, una profondità $p$ ed una altezza totale calcolisticamente chiamata $h$. (Il <em>Cubo</em> ne è solo il caso sacro ed estremo i cui i tre spigoli sono dentitici).</p>
+                    <svg class="svg-drawing" width="200" height="180" viewBox="0 0 200 180">
+                        <polygon points="50,140 130,160 180,100 100,80" fill="rgba(245, 158, 11, 0.2)" stroke="#F59E0B" stroke-width="2"/> <!-- Top -->
+                        <polygon points="50,140 130,160 130,70 50,50" fill="rgba(245, 158, 11, 0.5)" stroke="#F59E0B" stroke-width="2"/> <!-- Front-Left -->
+                        <polygon points="130,160 180,100 180,10 130,70" fill="rgba(245, 158, 11, 0.8)" stroke="#F59E0B" stroke-width="2"/> <!-- Front-Right -->
+                        <!-- Dotted internal -->
+                        <line x1="50" y1="50" x2="100" y2="-10" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="4,4"/>
+                        <line x1="180" y1="10" x2="100" y2="-10" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="4,4"/>
+                        <line x1="100" y1="80" x2="100" y2="-10" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="4,4"/>
+                    </svg>
+                </div>
+                <div style="display:flex; flex-direction:column; gap:1rem;">
+                    <div class="formula-box">
+                        <div class="formula-title">Superficie Totale</div>
+                        <span class="formula-math">$S = 2 \cdot (bp + ph + bh)$</span>
+                    </div>
+                    <div class="formula-box">
+                        <div class="formula-title">Volume (Idrico)</div>
+                        <span class="formula-math">$V = b \cdot p \cdot h$</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. PIRAMIDI -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #F59E0B;">4. La Piramide (La Morte per Restringimento)</h2>
+            <div class="grid-half">
+                <div>
+                    <p class="lesson-text" style="margin-top:0;">Costruita poggiando al terreno un poligono infido (es. il Quadrato d'Egitto), la piramide strozza spassionatamente tutti i vertici del suo tracciato finendo per farli schiantare brutalmente tutti concentrati in una macula convergente letale nota come "Apice". Esiste una stregoneria millenaria: per colpa di quest'apice a punta che disperde lo spazio, la Piramide vanta possedere *esattamente e matematicamente Un Terzo* dell'acqua volumetrica incapsulabile in un Parallelepipedo retto della medesima base e altezza!</p>
+                    <svg class="svg-drawing" width="200" height="180" viewBox="0 0 200 180">
+                        <polygon points="50,140 150,160 180,120" fill="rgba(245, 158, 11, 0.5)" stroke="#F59E0B" stroke-width="2"/> <!-- Base visibile -->
+                        <polygon points="50,140 150,160 115,20" fill="rgba(245, 158, 11, 0.4)" stroke="#F59E0B" stroke-width="2"/> <!-- Face 1 -->
+                        <polygon points="150,160 180,120 115,20" fill="rgba(245, 158, 11, 0.7)" stroke="#F59E0B" stroke-width="2"/> <!-- Face 2 -->
+                        <!-- Dotted -->
+                        <line x1="50" y1="140" x2="80" y2="100" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="4,4"/>
+                        <line x1="180" y1="120" x2="80" y2="100" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="4,4"/>
+                        <line x1="80" y1="100" x2="115" y2="20" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="4,4"/>
+                        <!-- Altezza H -->
+                        <line x1="115" y1="20" x2="115" y2="135" stroke="#EF4444" stroke-width="2" stroke-dasharray="3,3"/>
+                    </svg>
+                </div>
+                <div style="display:flex; flex-direction:column; gap:1rem;">
+                    <div class="formula-box">
+                        <div class="formula-title">Superficie (Approssimata da Base + Facciate Triangolari)</div>
+                        <span class="formula-math">$S = Area_{base} + \frac{Perimetro \cdot Apotema}{2}$</span>
+                    </div>
+                    <div class="formula-box">
+                        <div class="formula-title">Volume (La Terza Frazione)</div>
+                        <span class="formula-math">$V = \frac{Area_{base} \cdot h}{3}$</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. VIDEOGIOCHI E 3D -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #F59E0B;">5. L'Illusionismo dei Videogiochi: I Mattoni del Falso 3D</h2>
+            <p class="lesson-text">Guardandoti la mano noti carni ed ossa rotonde e lisce di molecole curve infinite. Nei videogiochi e nelle simulazioni moderne (sfruttando le Schede Video o Graphic Processing Unit), calcolare l'impatto della luce su un'ellisse o su curve matematiche fluide come una sfera costerebbe al microchip uno sforzo termico devastante, generando framerate a scatti injocabili. Come risolvono l'arcano i motori grafici (es. Unreal Engine)?</p>
+            <p class="lesson-text">Agiscono tramite "Approssimazione Poligonale" (<em>Tassellazione Mesh</em>). Costruiscono lo scafo curvo dell'astronave incollando come un orrendo mosaico centinaia o migliaia di piccolissimi <strong>poligoni triangolari piatti ed elementari</strong> uniti ai vertici spigolosi! Se il videogioco è vecchissimo i modelli sono squadrati e angolosi (pochi poligoni grezzi = "Low Poly"). Aumentando le capacità della RAM e accatastando all'incirca 500,000 microscopici triangolini affiancati vicinissimi l'uno all'altro, il tuo occhio biologico umano viene genialmente truffato e processa quella strambata accozzaglia di vetro spezzato percependola ingannevolmente come un'impeccabile <strong>Superficie Curva liscia e massicciamente continua!</strong> Clicca il trucco qui sotto per svelarlo in calcolo locale:</p>
+            
+            <div class="interactive-container">
+                <h3 style="color: #F59E0B; margin-bottom: 0.5rem;">Cervello Elettronico: Raddoppia i Poligoni della Scena</h3>
+                <canvas id="poly3DCanvas" width="550" height="350"></canvas>
+                <div class="controls">
+                    <button class="control-btn" id="btnDetail" style="background:#10B981;">Aumenta Densità Vertici</button>
+                    <button class="control-btn" id="btnDetailReset" style="background:#EF4444;">Riporta in Low-Poly (Grezzo)</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. CILINDRO -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #F59E0B;">6. Il Cilindro (Ritorno del Pi Greco)</h2>
+            <div class="grid-half">
+                <div>
+                    <p class="lesson-text" style="margin-top:0;">Fratello tondeggiante del parallelepipedo. Possiede una base circolare stagna che si lancia eretta verso una seconda tettoia gemella formante il tappo. È la forma maestra adoperata in barattoli da produzione ingegneristica per bilanciare ottima stivabilità in scatolone e buona estrusione tubolare rotante dei fogli d'alluminio in fabbrica.</p>
+                    <svg class="svg-drawing" width="160" height="200" viewBox="0 0 160 200">
+                        <!-- Bot ellipse -->
+                        <ellipse cx="80" cy="160" rx="60" ry="25" fill="rgba(245, 158, 11, 0.4)" stroke="#F59E0B" stroke-width="2"/>
+                        <!-- Body -->
+                        <path d="M 20 40 L 20 160 A 60 25 0 0 0 140 160 L 140 40 Z" fill="rgba(245, 158, 11, 0.3)" stroke="none"/>
+                        <line x1="20" y1="40" x2="20" y2="160" stroke="#F59E0B" stroke-width="2"/>
+                        <line x1="140" y1="40" x2="140" y2="160" stroke="#F59E0B" stroke-width="2"/>
+                        <!-- Top ellipse -->
+                        <ellipse cx="80" cy="40" rx="60" ry="25" fill="rgba(245, 158, 11, 0.8)" stroke="#F59E0B" stroke-width="2"/>
+                        <!-- Raggio -->
+                        <line x1="80" y1="40" x2="140" y2="40" stroke="#10B981" stroke-width="2" stroke-dasharray="4,4"/>
+                        <circle cx="80" cy="40" r="3" fill="#10B981"/>
+                        <text x="100" y="32" font-family="Inter" fill="#10B981" font-weight="bold">r</text>
+                        <!-- Altezza -->
+                        <line x1="80" y1="40" x2="80" y2="160" stroke="#EF4444" stroke-width="2" stroke-dasharray="3,3"/>
+                        <text x="65" y="100" font-family="Inter" fill="#EF4444" font-weight="bold">h</text>
+                    </svg>
+                </div>
+                <div style="display:flex; flex-direction:column; gap:1rem;">
+                    <div class="formula-box">
+                        <div class="formula-title">Superficie (Curva srotolata + 2 Tappi)</div>
+                        <span class="formula-math">$S = 2\pi r^2 + 2\pi rh$</span>
+                    </div>
+                    <div class="formula-box">
+                        <div class="formula-title">Volume </div>
+                        <span class="formula-math">$V = \pi \cdot r^2 \cdot h$</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. LA SFERA -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #F59E0B;">7. La Sfera e il Letargo degli Animali</h2>
+            <div class="grid-half">
+                <div>
+                    <p class="lesson-text" style="margin-top:0;">La palla perfetta cosmogonica. Esiste un principio sacro di bio-volumetrica termodinamica detto "Quoziente Isoperimetrico". Incredibilmente, per una fissa porzione di volume interno di litri richiesti, <strong>la Sfera è letteralmente, su milioni di conformazioni esistenti, l'unica misera geometria che offre in cambio al suo creatore l'Area di Superficie Involucrale Esterna minore in assoluto</strong>.</p>
+                    <p class="lesson-text" style="font-size:0.95rem; line-height:1.6; color:var(--text-muted);">Ed ecco lo strabiliante adattamento biologico! Durante i gelidi inverni o mentre riposano da stanchi, scoiattoli, gatti e chiocciole da letto si raggomitolano annodandosi al proprio corpo per formare una "Palla". Sferificandosi ritirano gli arti che disperdono le calorie in aria e massimizzano il calore salvato esponendo in sacrificio all'addizione del gelo atmosferico <em>il metro-quadro pelle corporeo minimo concepibile per un essere vivibile in tre dimensioni</em>.</p>
+                    <svg class="svg-drawing" width="180" height="180" viewBox="0 0 180 180">
+                        <!-- Sfuma radially -->
+                        <defs>
+                            <radialGradient id="sphereGrad" cx="30%" cy="30%" r="70%">
+                                <stop offset="0%" stop-color="#FCD34D"/>
+                                <stop offset="50%" stop-color="#F59E0B"/>
+                                <stop offset="100%" stop-color="#92400E"/>
+                            </radialGradient>
+                        </defs>
+                        <circle cx="90" cy="90" r="80" fill="url(#sphereGrad)" stroke="#78350F" stroke-width="2"/>
+                        <!-- Equator -->
+                        <ellipse cx="90" cy="90" rx="80" ry="25" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2" stroke-dasharray="8,4"/>
+                        <!-- Axis -->
+                        <line x1="90" y1="90" x2="160" y2="50" stroke="#10B981" stroke-width="2" stroke-dasharray="4,4"/>
+                        <circle cx="90" cy="90" r="4" fill="#111827"/>
+                    </svg>
+                </div>
+                <div style="display:flex; flex-direction:column; gap:1rem;">
+                    <div class="formula-box">
+                        <div class="formula-title">Superficie Avvolgente (Ben 4 cerchi perfetti)</div>
+                        <span class="formula-math">$S = 4 \cdot \pi \cdot r^2$</span>
+                    </div>
+                    <div class="formula-box">
+                        <div class="formula-title">Volume Costretto</div>
+                        <span class="formula-math">$V = \frac{4}{3} \pi \cdot r^3$</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. L'ENIGMA APERTO: LA SCHIUMA PERFETTA E LO SPAZIO -->
+        <section class="lesson-section">
+            <h2 class="lesson-title" style="color: #F59E0B;">8. L'Enigma della Schiuma (Kelvin vs Weaire-Phelan)</h2>
+            <p class="lesson-text">Abbiamo appreso che le Api tassellano il foglio 2D con perfetti esagoni per risparmiare cera e che la singola Sfera domina l'ottimizzazione 3D in solitudine termica. Ma cosa accade se le costringiamo geometricamente ad accatastarsi impilandole fino a coprire interamente uno spazio cosmico tridimensionale <strong>senza lasciare insidiosi buchi vuoti tra loro</strong>?</p>
+            <p class="lesson-text">Benvenuti al "Problema di Kelvin". La singolarità è brutale e ad oggi risulta essere, sotto un piano investigativo puramente matematico e formale, un rompicapo parzialmente "aperto": <em>Qual è la struttura o forma solida vitale che incastra e riempie lo spazio in celle interconnesse (aventi tutte rigorosamente il medesimo volume idrico), ma consumando materialmente la <strong>minore quantità di superficie perimetrale</strong> all'universo per sigillare i propri muri divisori?</em></p>
+
+            <div style="background: rgba(245, 158, 11, 0.05); padding: 1.5rem; border-left: 4px solid #F59E0B; margin: 2rem 0;">
+                <h4 style="color: #F59E0B; margin-bottom: 0.5rem;">Guerre Architettoniche nella Scienza</h4>
+                <ul style="color: var(--text-muted); line-height:1.6; margin-left: 1.5rem;">
+                    <li style="margin-bottom:0.5rem;">Nel lontano <strong>1887</strong>, il gigantesco fisico transumanista Lord Kelvin ipotizzò d'aver sbrogliato l'assoluto asserendo che la piastrellatura spaziale perfetta avvenisse agganciando <em>Ottedri Troncati leggermente incurvati</em>. Sembrava inattaccabile, e fisicamente la sua "schiuma perfetta" divenne un dogma secolare pre-informatico.</li>
+                    <li>Centosette (107) anni dopo, irrompe il <strong>1993</strong>. I geniali scienziati D. Weaire e R. Phelan scrissero un programma simulativo di fluidodinamica e reticoli termici inviandolo ad alto calcolo su PC, generando accidentalmente una bolla mostruosamente complessa disallineata sprizzante di forme asimmetriche (dododecaedri alieni incastrati). Questa grottesca deformazione distrusse brutalmente il dogma d'equilibrio di Kelvin detronizzandolo per sempre: risparmiava per un miracolo nanometrico uno <strong>0.3% pregevolissimo in più di tessitura superficiale di scarto!</strong></li>
+                </ul>
+                <p style="font-size: 0.95rem; color: var(--text-main); margin-top: 1rem; line-height:1.6;">Questa Struttura di Weaire-Phelan regna tuttora incontrastata come configurazione poligonale chimica più massimamente compatta mai scovata tra le stelle. Questa medesima rete architettonica "bollosa ed interconnessa" è stata copiata rubandola alla gravità per fungere da immensa e leggerissima cassa toracica nello spettacolare <strong>Stadio Olimpico del Nuoto di Pechino (Il famoso "Cubo d'Acqua" Water Cube)</strong> nel 2008.<br>Tuttavia, nessun matematico purista vivente tramite equazioni è ancora mai riuscito a <em>forgiare la prova certa logica</em> asserente che la base costruttiva di Weaire sia davvero la cima termodinamica suprema intoccabile. Se domani i super-computer sputassero miscelazioni molecolari di tetraedri a stella scompigliata, i testi scolastici andranno riscritti un'ulteriore volta.</p>
+                <h4 style="color: #F59E0B; margin-bottom: 0.5rem; margin-top: 1.5rem;">Perché una tale follia d'ignoto deve essere risolta?</h4>
+                <p style="font-size: 0.95rem; color: var(--text-muted); line-height:1.6;">Scovare il puzzle incrociato ed invisibile che consuma "Meno pelle d'involucro possibile a stretto stoccaggio" modificherebbe drasticamente la capacità dell'uomo sull'acciaieria e la nano-biologia. Parliamo dell'implementazione violenta per poter stampare futuri <strong>Aerogel leggeri termici ultracompatti</strong> in 3D, isolanti spaziali perfetti per l'atmosfera o spugnosità strutturate per carrozzerie protettive, che massimizzano la volumetria portante della vettura asportando e radendo al suolo l'impiego d'inutile peso di plastica costosa da stampare. Capire i misteri oscuri della Matematica indirizza per spavento le frontiere dell'esplorazione Civile.</p>
+            </div>
+        </section>
+
+        <!-- QUIZ -->
+        <section class="lesson-section quiz-container">
+            <h2 class="lesson-title" style="text-align: center;">Quiz di Riepilogo</h2>
+            <p class="lesson-text" style="font-size: 0.95rem; text-align: center;">Testa le tue conoscenze rispondendo a queste domande finali.</p>
+            <div id="quiz-area"></div>
+            <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem; font-weight: bold; text-align: center;"></div>
+        </section>
+    </main>
+    <footer><p>&copy; 2026 MFI - Matematica MFI.</p></footer>
+    <script src="geometria-solida.js"></script>
+    <script src="../../js/main.js"></script>
+</body>
+</html>
