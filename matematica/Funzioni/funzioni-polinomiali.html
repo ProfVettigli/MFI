@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Funzioni Polinomiali - Lezione Interattiva MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="stylesheet" href="../../css/style.css">
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+        .sub-hero { padding: 4rem 0 2rem; text-align: left; }
+        .sub-hero-title { font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; margin-bottom: 1rem; }
+
+        .grapher-box {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+        }
+        .grapher-canvas {
+            width: 100%;
+            max-width: 640px;
+            display: block;
+            margin: 0 auto 1.5rem;
+            background: rgba(0,0,0,0.35);
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .slider-row {
+            display: grid;
+            grid-template-columns: 60px 1fr 80px;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 0.8rem;
+            font-family: monospace;
+        }
+        .slider-label { color: var(--math-color); font-weight: 700; font-size: 1.05rem; }
+        input[type=range] {
+            width: 100%;
+            accent-color: var(--math-color);
+        }
+        .slider-value {
+            font-family: monospace;
+            color: var(--text-main);
+            font-weight: 700;
+            text-align: right;
+        }
+        .poly-display {
+            font-family: monospace;
+            font-size: 1.2rem;
+            color: var(--math-color);
+            background: rgba(0,0,0,0.3);
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            text-align: center;
+            letter-spacing: 0.03em;
+        }
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .info-table th, .info-table td {
+            padding: 0.85rem 1.1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.95rem;
+        }
+        .info-table th {
+            background: rgba(255,255,255,0.05);
+            color: var(--math-color);
+            font-weight: 700;
+        }
+        .info-table td.mono { font-family: monospace; color: var(--text-main); }
+        .timeline { position: relative; padding-left: 2.5rem; margin: 2rem 0; }
+        .timeline::before {
+            content: ''; position: absolute; left: 0.6rem; top: 0; bottom: 0;
+            width: 2px; background: linear-gradient(to bottom, var(--math-color), rgba(59,130,246,0.1));
+        }
+        .timeline-item { position: relative; margin-bottom: 2rem; }
+        .timeline-item::before {
+            content: ''; position: absolute; left: -1.95rem; top: 0.4rem;
+            width: 10px; height: 10px; border-radius: 50%;
+            background: var(--math-color); box-shadow: 0 0 8px var(--math-glow);
+        }
+        .timeline-year { font-size: 0.8rem; font-weight: 700; color: var(--math-color); letter-spacing: 1px; margin-bottom: 0.3rem; }
+        .timeline-text { font-size: 0.97rem; color: var(--text-muted); line-height: 1.6; }
+        .timeline-text strong { color: var(--text-main); }
+
+        .btn-preset {
+            background: rgba(59,130,246,0.1);
+            border: 1px solid rgba(59,130,246,0.3);
+            color: var(--math-color);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin: 0.3rem;
+        }
+        .btn-preset:hover {
+            background: var(--math-color);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="funzioni.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Funzioni
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Funzioni <span class="gradient-text">Polinomiali</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+            Dal primo grado alle potenze superiori: esplora come pochi coefficienti possono generare rette, parabole, curve a "S" e oscillazioni complesse che descrivono mezzo mondo fisico.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">I Mattoncini Universali della Matematica</h2>
+        <p class="lesson-text">
+            Una <strong>funzione polinomiale</strong> è una somma di potenze intere e non negative della variabile \(x\), ciascuna moltiplicata per un <em>coefficiente</em>. La forma generale è:
+        </p>
+        <div class="poly-display">
+            P(x) = a<sub>n</sub> x<sup>n</sup> + a<sub>n-1</sub> x<sup>n-1</sup> + ... + a<sub>1</sub> x + a<sub>0</sub>
+        </div>
+        <p class="lesson-text">
+            Il numero \(n\) (la potenza più alta) si chiama <strong>grado</strong> del polinomio. Sono i "mattoncini LEGO" della matematica: con loro si possono approssimare quasi tutte le funzioni continue (è il <em>Teorema di Weierstrass</em>, 1885). Anche Pixar usa polinomi per disegnare le curve dei suoi personaggi.
+        </p>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-year">~250 a.C.</div>
+                <p class="timeline-text"><strong>Archimede</strong> studia parabole (polinomi di grado 2) per calcolare aree e descrivere lo specchio ustorio.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">XVI secolo</div>
+                <p class="timeline-text"><strong>Tartaglia, Cardano e Ferrari</strong> trovano formule risolutive per equazioni di terzo e quarto grado, scatenando una delle più celebri rivalità della storia della matematica.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1824</div>
+                <p class="timeline-text">Il norvegese <strong>Niels Henrik Abel</strong>, a soli 22 anni, dimostra che le equazioni polinomiali di grado 5 o superiore <em>non</em> hanno una formula risolutiva generale per radicali.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">Oggi</div>
+                <p class="timeline-text">I polinomi vivono dentro ogni motore grafico 3D, in ogni codice di compressione JPEG, e perfino nei modelli di machine learning più semplici.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Polinomi di Grado 0 e 1: Rette</h2>
+        <p class="lesson-text">
+            Un polinomio di grado 0 è una costante: \(P(x) = c\). Il suo grafico è una retta orizzontale. Un polinomio di grado 1 è \(P(x) = mx + q\), una <strong>retta inclinata</strong>: \(m\) è il <em>coefficiente angolare</em> (la pendenza) e \(q\) è l'<em>intercetta</em> sull'asse y.
+        </p>
+        <table class="info-table">
+            <thead><tr><th>Coefficiente</th><th>Significato geometrico</th></tr></thead>
+            <tbody>
+                <tr><td class="mono">m &gt; 0</td><td>Retta che sale (funzione crescente)</td></tr>
+                <tr><td class="mono">m &lt; 0</td><td>Retta che scende (funzione decrescente)</td></tr>
+                <tr><td class="mono">m = 0</td><td>Retta orizzontale (funzione costante)</td></tr>
+                <tr><td class="mono">q</td><td>Punto di intersezione con l'asse y</td></tr>
+            </tbody>
+        </table>
+
+        <div class="grapher-box">
+            <h3 style="color: var(--math-color); margin-bottom: 1rem;">Grafico interattivo: retta \(y = mx + q\)</h3>
+            <div class="poly-display" id="line-display">y = 1.0 x + 0.0</div>
+            <canvas id="line-canvas" class="grapher-canvas" width="640" height="400"></canvas>
+            <div class="slider-row">
+                <span class="slider-label">m</span>
+                <input type="range" id="line-m" min="-5" max="5" step="0.1" value="1">
+                <span class="slider-value" id="line-m-val">1.0</span>
+            </div>
+            <div class="slider-row">
+                <span class="slider-label">q</span>
+                <input type="range" id="line-q" min="-5" max="5" step="0.1" value="0">
+                <span class="slider-value" id="line-q-val">0.0</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section" style="border-left: 4px solid var(--physics-color);">
+        <h2 class="lesson-title" style="color: var(--physics-color);">Polinomi di Grado 2: La Parabola</h2>
+        <p class="lesson-text">
+            Un polinomio di secondo grado \(P(x) = ax^2 + bx + c\) ha come grafico una <strong>parabola</strong>. È la stessa curva descritta da un proiettile lanciato (un calcio di Cristiano Ronaldo, per esempio) sotto l'effetto della gravità.
+        </p>
+        <p class="lesson-text">
+            Le caratteristiche importanti:
+        </p>
+        <ul style="color: var(--text-muted); margin-left: 2rem; margin-bottom: 1.5rem; line-height: 1.9;">
+            <li>Se \(a &gt; 0\) la parabola è rivolta verso <strong>l'alto</strong> (concavità positiva).</li>
+            <li>Se \(a &lt; 0\) la parabola è rivolta verso il <strong>basso</strong>.</li>
+            <li>Il vertice ha ascissa \(x_v = -\frac{b}{2a}\).</li>
+            <li>Il discriminante \(\Delta = b^2 - 4ac\) ci dice se interseca l'asse x (0, 1 o 2 intersezioni).</li>
+        </ul>
+
+        <div class="grapher-box">
+            <h3 style="color: var(--physics-color); margin-bottom: 1rem;">Grafico interattivo: parabola \(y = ax^2 + bx + c\)</h3>
+            <div class="poly-display" id="parab-display" style="color: var(--physics-color);">y = 1.0 x² + 0.0 x + 0.0</div>
+            <canvas id="parab-canvas" class="grapher-canvas" width="640" height="400"></canvas>
+            <div class="slider-row">
+                <span class="slider-label" style="color: var(--physics-color);">a</span>
+                <input type="range" id="parab-a" min="-3" max="3" step="0.1" value="1">
+                <span class="slider-value" id="parab-a-val">1.0</span>
+            </div>
+            <div class="slider-row">
+                <span class="slider-label" style="color: var(--physics-color);">b</span>
+                <input type="range" id="parab-b" min="-5" max="5" step="0.1" value="0">
+                <span class="slider-value" id="parab-b-val">0.0</span>
+            </div>
+            <div class="slider-row">
+                <span class="slider-label" style="color: var(--physics-color);">c</span>
+                <input type="range" id="parab-c" min="-5" max="5" step="0.1" value="0">
+                <span class="slider-value" id="parab-c-val">0.0</span>
+            </div>
+            <div id="parab-info" style="background: rgba(0,0,0,0.25); padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.95rem; color: var(--text-muted); margin-top: 1rem;">
+                Vertice: (0.00, 0.00) — Δ = 0.00 — Soluzioni reali: 1
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Polinomi di Grado Superiore</h2>
+        <p class="lesson-text">
+            Aumentando il grado, le curve possono ondeggiare con sempre più "gobbe" e "valli". Una proprietà chiave: un polinomio di grado \(n\) ha al massimo \(n\) zeri (intersezioni con l'asse x) e al massimo \(n-1\) punti di flesso o cambio di pendenza.
+        </p>
+        <table class="info-table">
+            <thead><tr><th>Grado</th><th>Forma tipica</th><th>Max zeri</th><th>Max "gobbe"</th></tr></thead>
+            <tbody>
+                <tr><td class="mono">1</td><td>Retta</td><td class="mono">1</td><td class="mono">0</td></tr>
+                <tr><td class="mono">2</td><td>Parabola</td><td class="mono">2</td><td class="mono">1</td></tr>
+                <tr><td class="mono">3</td><td>Curva a "S"</td><td class="mono">3</td><td class="mono">2</td></tr>
+                <tr><td class="mono">4</td><td>"W" o "M"</td><td class="mono">4</td><td class="mono">3</td></tr>
+                <tr><td class="mono">n</td><td>Variabile</td><td class="mono">n</td><td class="mono">n-1</td></tr>
+            </tbody>
+        </table>
+
+        <div class="grapher-box">
+            <h3 style="color: var(--math-color); margin-bottom: 1rem;">Grafico interattivo: cubica \(y = ax^3 + bx^2 + cx + d\)</h3>
+            <div class="poly-display" id="cubic-display">y = 1.0 x³ + 0.0 x² + 0.0 x + 0.0</div>
+            <canvas id="cubic-canvas" class="grapher-canvas" width="640" height="400"></canvas>
+            <div class="slider-row">
+                <span class="slider-label">a</span>
+                <input type="range" id="cubic-a" min="-2" max="2" step="0.1" value="1">
+                <span class="slider-value" id="cubic-a-val">1.0</span>
+            </div>
+            <div class="slider-row">
+                <span class="slider-label">b</span>
+                <input type="range" id="cubic-b" min="-3" max="3" step="0.1" value="0">
+                <span class="slider-value" id="cubic-b-val">0.0</span>
+            </div>
+            <div class="slider-row">
+                <span class="slider-label">c</span>
+                <input type="range" id="cubic-c" min="-3" max="3" step="0.1" value="0">
+                <span class="slider-value" id="cubic-c-val">0.0</span>
+            </div>
+            <div class="slider-row">
+                <span class="slider-label">d</span>
+                <input type="range" id="cubic-d" min="-3" max="3" step="0.1" value="0">
+                <span class="slider-value" id="cubic-d-val">0.0</span>
+            </div>
+            <div style="text-align: center; margin-top: 1rem;">
+                <button class="btn-preset" data-preset="standard">x³</button>
+                <button class="btn-preset" data-preset="sshape">x³ - x</button>
+                <button class="btn-preset" data-preset="bumpy">2 gobbe</button>
+                <button class="btn-preset" data-preset="invert">Invertita</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section" style="background: rgba(59,130,246,0.03);">
+        <h2 class="lesson-title">Comportamento agli Estremi</h2>
+        <p class="lesson-text">
+            Quando \(x\) diventa molto grande (positivo o negativo), conta soltanto il termine di grado massimo. I polinomi seguono regole molto semplici "all'infinito", riassunte qui:
+        </p>
+        <table class="info-table">
+            <thead><tr><th>Grado</th><th>Segno di a<sub>n</sub></th><th>Per x → +∞</th><th>Per x → -∞</th></tr></thead>
+            <tbody>
+                <tr><td class="mono">Pari</td><td class="mono">+</td><td class="mono">+∞</td><td class="mono">+∞</td></tr>
+                <tr><td class="mono">Pari</td><td class="mono">−</td><td class="mono">−∞</td><td class="mono">−∞</td></tr>
+                <tr><td class="mono">Dispari</td><td class="mono">+</td><td class="mono">+∞</td><td class="mono">−∞</td></tr>
+                <tr><td class="mono">Dispari</td><td class="mono">−</td><td class="mono">−∞</td><td class="mono">+∞</td></tr>
+            </tbody>
+        </table>
+        <p class="lesson-text" style="font-size: 0.95rem;">
+            In altre parole: un polinomio di grado pari "abbraccia" il cielo da entrambe le parti (oppure il pavimento); uno dispari fa l'<em>arcobaleno al contrario</em>, un'estremità su, l'altra giù.
+        </p>
+    </section>
+
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title">Quiz di Riepilogo</h2>
+        <p class="lesson-text" style="font-size: 0.95rem;">Verifica di aver compreso le funzioni polinomiali.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Matematica.</p>
+</footer>
+
+<script src="funzioni-polinomiali.js"></script>
+<script src="../../js/main.js"></script>
+</body>
+</html>

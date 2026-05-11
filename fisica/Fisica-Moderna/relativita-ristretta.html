@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatività Ristretta - Lezione Interattiva MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        .back-button { display: inline-flex; align-items: center; color: var(--text-muted); text-decoration: none; margin-bottom: 2rem; font-weight: 600; transition: color 0.3s ease, transform 0.3s ease; }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+        .sub-hero { padding: 4rem 0 2rem; text-align: left; }
+        .sub-hero-title { font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; margin-bottom: 1rem; }
+        .lesson-title { color: var(--physics-color) !important; }
+
+        .interactive-box {
+            background: rgba(16,185,129,0.04);
+            border: 1px solid rgba(16,185,129,0.18);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+        }
+        .slider-row { display: flex; align-items: center; gap: 1rem; margin: 1rem 0; flex-wrap: wrap; }
+        .slider-row label { min-width: 140px; font-weight: 600; color: var(--text-muted); }
+        .slider-row input[type=range] { flex: 1; min-width: 200px; accent-color: var(--physics-color); }
+        .slider-row .value { font-family: monospace; font-weight: 800; color: var(--physics-color); min-width: 90px; }
+
+        .result-box {
+            background: rgba(0,0,0,0.3);
+            border-left: 5px solid var(--physics-color);
+            padding: 1.2rem 1.5rem;
+            border-radius: 0 10px 10px 0;
+            margin-top: 1.2rem;
+            font-family: monospace;
+            font-size: 1.05rem;
+        }
+        .result-box strong { color: var(--physics-color); font-size: 1.3rem; }
+
+        .timeline { position: relative; padding-left: 2.5rem; margin: 2rem 0; }
+        .timeline::before { content: ''; position: absolute; left: 0.6rem; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--physics-color), rgba(16,185,129,0.1)); }
+        .timeline-item { position: relative; margin-bottom: 2rem; }
+        .timeline-item::before { content: ''; position: absolute; left: -1.95rem; top: 0.4rem; width: 10px; height: 10px; border-radius: 50%; background: var(--physics-color); box-shadow: 0 0 8px var(--physics-glow); }
+        .timeline-year { font-size: 0.8rem; font-weight: 700; color: var(--physics-color); letter-spacing: 1px; margin-bottom: 0.3rem; }
+        .timeline-text { font-size: 0.97rem; color: var(--text-muted); line-height: 1.6; }
+        .timeline-text strong { color: var(--text-main); }
+
+        .train-sim { background: linear-gradient(180deg, #0b1220 0%, #050810 100%); border-radius: 12px; padding: 1.5rem; position: relative; overflow: hidden; min-height: 200px; }
+        .train-track { position: relative; height: 80px; background: linear-gradient(180deg, transparent 50%, rgba(255,255,255,0.06) 50.5%, transparent 51%); margin: 1rem 0; }
+        .train { position: absolute; bottom: 18px; width: 90px; height: 36px; background: linear-gradient(135deg, var(--physics-color), #059669); border-radius: 6px; box-shadow: 0 0 16px var(--physics-glow); display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 0.85rem; }
+        .light-beam { position: absolute; top: 30%; height: 4px; background: linear-gradient(90deg, transparent, #fde68a, transparent); border-radius: 2px; box-shadow: 0 0 12px #fde68a; }
+
+        canvas.diagram { width: 100%; max-width: 480px; height: 360px; background: rgba(0,0,0,0.35); border-radius: 12px; display: block; }
+
+        .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+        .compare-cell { background: rgba(0,0,0,0.25); border-radius: 10px; padding: 1rem; text-align: center; }
+        .compare-cell .big { font-size: 2rem; font-weight: 800; color: var(--physics-color); font-family: monospace; }
+        .compare-cell .lbl { font-size: 0.85rem; color: var(--text-muted); margin-top: 0.4rem; }
+
+        .formula { font-family: 'Cambria Math', Cambria, serif; font-size: 1.4rem; text-align: center; padding: 1rem; background: rgba(0,0,0,0.25); border-radius: 10px; margin: 1rem 0; }
+        .formula em { color: var(--physics-color); font-style: italic; }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="../fisica-moderna.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Fisica Moderna
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Relatività <span class="gradient-text">Ristretta</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+            Quando il tempo rallenta, le lunghezze si contraggono e la massa diventa energia: il viaggio di Einstein attraverso il limite di velocità dell'universo.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Il Ragazzo Ribelle che Cambiò la Fisica</h2>
+        <p class="lesson-text">
+            Nel 1905, un impiegato dell'ufficio brevetti di Berna, di 26 anni, pubblicò quattro articoli che avrebbero rivoluzionato la fisica. Si chiamava <strong>Albert Einstein</strong>. Uno di quegli articoli, intitolato <em>"Sull'elettrodinamica dei corpi in movimento"</em>, demolì duemila anni di intuizione comune sul tempo e sullo spazio.
+        </p>
+        <p class="lesson-text">
+            La sua idea nasceva da un esperimento mentale fatto a 16 anni: <em>cosa vedrei se cavalcassi un raggio di luce?</em> Le equazioni di Maxwell sembravano dire che la luce viaggia sempre alla stessa velocità — <strong>c ≈ 300 000 km/s</strong> — indipendentemente da chi la misura. Einstein prese sul serio questa stranezza e ne dedusse due postulati che sembrano innocui ma sono dinamite pura.
+        </p>
+
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+            <div class="card" style="padding: 1.5rem; border-top: 3px solid var(--physics-color);">
+                <h4 style="color: var(--physics-color); margin-bottom: 0.5rem;">1° Postulato — Principio di Relatività</h4>
+                <p style="font-size: 0.93rem; color: var(--text-muted);">Le leggi della fisica sono <strong style="color:var(--text-main)">le stesse</strong> in tutti i sistemi di riferimento inerziali. Non esiste un osservatore "privilegiato" o un riferimento "assoluto".</p>
+            </div>
+            <div class="card" style="padding: 1.5rem; border-top: 3px solid #F59E0B;">
+                <h4 style="color: #F59E0B; margin-bottom: 0.5rem;">2° Postulato — Invarianza di c</h4>
+                <p style="font-size: 0.93rem; color: var(--text-muted);">La velocità della luce nel vuoto è <strong style="color:var(--text-main)">la stessa per tutti gli osservatori</strong>, indipendentemente dal loro moto o dal moto della sorgente.</p>
+            </div>
+        </div>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-year">1887</div>
+                <p class="timeline-text">L'esperimento di <strong>Michelson-Morley</strong> non rileva alcun "vento d'etere": la luce ha la stessa velocità in ogni direzione. È il primo grande indizio.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1905</div>
+                <p class="timeline-text"><strong>Einstein</strong> pubblica la teoria della relatività ristretta. Tempo e spazio diventano relativi, ma c è invariante.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1908</div>
+                <p class="timeline-text"><strong>Hermann Minkowski</strong> fonde tempo e spazio in un'unica entità geometrica: lo <em>spazio-tempo</em>.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1971</div>
+                <p class="timeline-text">L'esperimento di <strong>Hafele-Keating</strong> porta orologi atomici su aerei di linea e ne conferma la dilatazione del tempo prevista da Einstein.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Il Fattore di Lorentz γ</h2>
+        <p class="lesson-text">
+            Tutta la magia della relatività ristretta si nasconde in una formula sola, il <strong>fattore di Lorentz</strong>:
+        </p>
+        <div class="formula">γ = 1 / √(1 − <em>v²/c²</em>)</div>
+        <p class="lesson-text">
+            Per velocità ordinarie (auto, treni, aerei) γ è praticamente 1 e la relatività è invisibile. Ma quando v si avvicina a c, γ esplode verso l'infinito. Esplora la curva:
+        </p>
+
+        <div class="interactive-box">
+            <h3 style="color: var(--physics-color); margin-bottom: 1rem;">Calcolatore del fattore γ</h3>
+            <div class="slider-row">
+                <label for="gamma-v">Velocità v (frazione di c):</label>
+                <input type="range" id="gamma-v" min="0" max="0.999" step="0.001" value="0.5">
+                <span class="value" id="gamma-v-val">0.500 c</span>
+            </div>
+            <div class="result-box">
+                Velocità reale: <strong id="gamma-vreal">149 896 km/s</strong><br>
+                Fattore di Lorentz: γ = <strong id="gamma-result">1.155</strong>
+            </div>
+            <canvas id="gamma-canvas" class="diagram" style="max-width: 100%; margin-top: 1rem;"></canvas>
+            <p style="font-size: 0.88rem; color: var(--text-muted); margin-top: 0.5rem;">Il punto verde mostra il valore attuale di γ sulla curva.</p>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Dilatazione del Tempo</h2>
+        <p class="lesson-text">
+            Un orologio in movimento batte <strong>più lentamente</strong> rispetto a uno fermo. Se Δt₀ è l'intervallo misurato nel sistema in cui l'orologio è a riposo (tempo proprio), l'intervallo misurato da chi lo vede passare è:
+        </p>
+        <div class="formula">Δt = γ · Δt₀</div>
+        <p class="lesson-text">
+            È esattamente il meccanismo dietro al <em>paradosso dei gemelli</em>: il gemello astronauta che viaggia vicino alla velocità della luce torna sulla Terra più giovane del fratello rimasto a casa. Lo stesso effetto è stato girato nel film <strong>Interstellar</strong>, dove un'ora sul pianeta vicino al buco nero corrisponde a sette anni terrestri.
+        </p>
+
+        <div class="interactive-box">
+            <h3 style="color: var(--physics-color); margin-bottom: 1rem;">Astronave verso Proxima Centauri</h3>
+            <p style="font-size: 0.95rem; color: var(--text-muted);">Proxima è a 4,24 anni-luce dalla Terra. Scegli a che velocità viaggia l'astronave e confronta il tempo terrestre con il tempo a bordo.</p>
+            <div class="slider-row">
+                <label for="time-v">Velocità (frazione di c):</label>
+                <input type="range" id="time-v" min="0.1" max="0.999" step="0.001" value="0.9">
+                <span class="value" id="time-v-val">0.900 c</span>
+            </div>
+            <div class="compare-grid">
+                <div class="compare-cell">
+                    <div class="big" id="time-earth">4.71 anni</div>
+                    <div class="lbl">Tempo misurato sulla Terra</div>
+                </div>
+                <div class="compare-cell">
+                    <div class="big" id="time-ship">2.05 anni</div>
+                    <div class="lbl">Tempo vissuto dagli astronauti</div>
+                </div>
+            </div>
+            <div class="result-box">Fattore di dilatazione: γ = <strong id="time-gamma">2.294</strong></div>
+        </div>
+
+        <div style="background: rgba(16,185,129,0.06); border-left: 4px solid var(--physics-color); padding: 1.2rem; border-radius: 0 10px 10px 0; margin-top: 1rem;">
+            <p class="lesson-text" style="margin-bottom: 0; font-size: 1rem;">
+                <strong>Prova sperimentale:</strong> i <em>muoni</em> prodotti nell'alta atmosfera dai raggi cosmici hanno una vita media di soli 2,2 µs. A velocità classica non potrebbero mai arrivare al suolo. Eppure i rivelatori li trovano: la dilatazione del tempo li mantiene "giovani" abbastanza per arrivare.
+            </p>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Contrazione delle Lunghezze</h2>
+        <p class="lesson-text">
+            Specularmente al tempo, anche lo spazio cambia. Un oggetto in movimento appare <strong>più corto</strong> nella direzione del moto. Se L₀ è la lunghezza propria (a riposo), un osservatore esterno misura:
+        </p>
+        <div class="formula">L = L₀ / γ</div>
+
+        <div class="interactive-box">
+            <h3 style="color: var(--physics-color); margin-bottom: 1rem;">Treno relativistico</h3>
+            <p style="font-size: 0.95rem; color: var(--text-muted);">Il treno è lungo 100 m a riposo. Spingilo verso velocità relativistiche e osservalo restringersi (in scala) sul binario.</p>
+            <div class="slider-row">
+                <label for="len-v">Velocità (frazione di c):</label>
+                <input type="range" id="len-v" min="0" max="0.99" step="0.01" value="0.6">
+                <span class="value" id="len-v-val">0.60 c</span>
+            </div>
+            <div class="train-sim">
+                <div class="train-track">
+                    <div class="train" id="train-el" style="left: 30%; width: 90px;">TRENO</div>
+                </div>
+                <div style="text-align: center; color: var(--text-muted); font-size: 0.9rem;">Binario (sistema di riposo della Terra)</div>
+            </div>
+            <div class="compare-grid">
+                <div class="compare-cell">
+                    <div class="big">100 m</div>
+                    <div class="lbl">Lunghezza propria L₀</div>
+                </div>
+                <div class="compare-cell">
+                    <div class="big" id="len-result">80 m</div>
+                    <div class="lbl">Lunghezza misurata da terra</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Trasformazioni di Lorentz</h2>
+        <p class="lesson-text">
+            Le formule che traducono le coordinate (x, t) di un evento da un sistema all'altro non sono più quelle di Galileo, ma le <strong>trasformazioni di Lorentz</strong>:
+        </p>
+        <div class="formula">x' = γ(x − <em>vt</em>) &nbsp;&nbsp;|&nbsp;&nbsp; t' = γ(t − <em>vx/c²</em>)</div>
+        <p class="lesson-text">
+            Si noti l'intreccio fra spazio e tempo: il termine <em>vx/c²</em> dice che eventi simultanei in un sistema non lo sono più in un altro. La <strong>relatività della simultaneità</strong> è forse l'idea più spiazzante di tutte.
+        </p>
+
+        <div class="interactive-box">
+            <h3 style="color: var(--physics-color); margin-bottom: 1rem;">Trasforma un evento</h3>
+            <p style="font-size: 0.95rem; color: var(--text-muted);">Inserisci la posizione e il tempo di un evento nel sistema fermo S, e una velocità v del sistema mobile S'. Calcolerai le coordinate (x', t') del medesimo evento secondo S'.</p>
+            <div class="slider-row">
+                <label for="lt-x">Posizione x (m):</label>
+                <input type="range" id="lt-x" min="0" max="1000" step="10" value="500">
+                <span class="value" id="lt-x-val">500 m</span>
+            </div>
+            <div class="slider-row">
+                <label for="lt-t">Tempo t (µs):</label>
+                <input type="range" id="lt-t" min="0" max="10" step="0.1" value="2">
+                <span class="value" id="lt-t-val">2.0 µs</span>
+            </div>
+            <div class="slider-row">
+                <label for="lt-v">Velocità v (frazione di c):</label>
+                <input type="range" id="lt-v" min="0" max="0.99" step="0.01" value="0.5">
+                <span class="value" id="lt-v-val">0.50 c</span>
+            </div>
+            <div class="result-box">
+                x' = <strong id="lt-xp">−115 m</strong><br>
+                t' = <strong id="lt-tp">1.34 µs</strong><br>
+                γ = <strong id="lt-gamma">1.155</strong>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">L'Equazione più Famosa della Storia</h2>
+        <p class="lesson-text">
+            Dalle stesse equazioni emerge la formula che ha cambiato la storia del XX secolo:
+        </p>
+        <div class="formula" style="font-size: 1.8rem;">E = m · <em>c²</em></div>
+        <p class="lesson-text">
+            Massa ed energia sono due facce della stessa medaglia. Una piccolissima quantità di massa, moltiplicata per <em>c²</em> (un numero gigantesco, circa 9·10¹⁶ m²/s²), libera energie enormi. È il principio che alimenta le centrali nucleari, le stelle e — purtroppo — le bombe atomiche.
+        </p>
+
+        <div class="interactive-box">
+            <h3 style="color: var(--physics-color); margin-bottom: 1rem;">Quanta energia c'è in 1 kg?</h3>
+            <div class="slider-row">
+                <label for="emc-m">Massa (kg):</label>
+                <input type="range" id="emc-m" min="0.001" max="10" step="0.001" value="1">
+                <span class="value" id="emc-m-val">1.000 kg</span>
+            </div>
+            <div class="result-box">
+                E = <strong id="emc-result">8.99 × 10¹⁶ J</strong><br>
+                Equivalente a <strong id="emc-tnt">21.5 megatoni di TNT</strong>
+            </div>
+            <p style="font-size: 0.88rem; color: var(--text-muted); margin-top: 0.7rem;">Riferimento: la bomba di Hiroshima rilasciò circa 0,015 megatoni. Convertire un solo kg di massa equivale a oltre 1000 bombe di Hiroshima.</p>
+        </div>
+    </section>
+
+    <section class="lesson-section" style="border-left: 4px solid var(--physics-color); background: rgba(16,185,129,0.03);">
+        <h2 class="lesson-title">Dove Incontri la Relatività Ristretta</h2>
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+            <div class="card" style="padding: 1.5rem;">
+                <div style="font-size: 2rem;">📡</div>
+                <h4 style="color: var(--physics-color);">GPS</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">I satelliti GPS viaggiano a 14 000 km/h: senza correzioni relativistiche, il tuo navigatore sbaglierebbe di circa 10 km al giorno.</p>
+            </div>
+            <div class="card" style="padding: 1.5rem;">
+                <div style="font-size: 2rem;">⚛️</div>
+                <h4 style="color: var(--physics-color);">Acceleratori</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Al CERN i protoni raggiungono il 99,9999991% di c. La loro massa effettiva diventa migliaia di volte quella di riposo.</p>
+            </div>
+            <div class="card" style="padding: 1.5rem;">
+                <div style="font-size: 2rem;">🎬</div>
+                <h4 style="color: var(--physics-color);">Cinema</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Da <em>Interstellar</em> a <em>Planet of the Apes</em>: ogni racconto di astronauti che tornano in un futuro lontano usa la dilatazione del tempo.</p>
+            </div>
+            <div class="card" style="padding: 1.5rem;">
+                <div style="font-size: 2rem;">☀️</div>
+                <h4 style="color: var(--physics-color);">Sole</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Il Sole converte 4 milioni di tonnellate di massa in energia al secondo. Senza E=mc², l'astrofisica non esisterebbe.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title">Quiz di Riepilogo</h2>
+        <p class="lesson-text" style="font-size: 0.95rem;">Metti alla prova la tua comprensione della relatività ristretta.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Fisica.</p>
+</footer>
+
+<script src="relativita-ristretta.js"></script>
+<script src="../../js/main.js"></script>
+</body>
+</html>
