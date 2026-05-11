@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CAD e Stampa 3D - Lezione Interattiva MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        .back-button { display: inline-flex; align-items: center; color: var(--text-muted); text-decoration: none; margin-bottom: 2rem; font-weight: 600; transition: color 0.3s ease, transform 0.3s ease; }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+        .sub-hero { padding: 4rem 0 2rem; text-align: left; }
+        .sub-hero-title { font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; margin-bottom: 1rem; }
+
+        .timeline { position: relative; padding-left: 2.5rem; margin: 2rem 0; }
+        .timeline::before { content: ''; position: absolute; left: 0.6rem; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--chem-color), rgba(245,158,11,0.1)); }
+        .timeline-item { position: relative; margin-bottom: 2rem; }
+        .timeline-item::before { content: ''; position: absolute; left: -1.95rem; top: 0.4rem; width: 10px; height: 10px; border-radius: 50%; background: var(--chem-color); box-shadow: 0 0 8px var(--chem-glow); }
+        .timeline-year { font-size: 0.8rem; font-weight: 700; color: var(--chem-color); letter-spacing: 1px; margin-bottom: 0.3rem; }
+        .timeline-text { font-size: 0.97rem; color: var(--text-muted); line-height: 1.6; }
+        .timeline-text strong { color: var(--text-main); }
+
+        .viewer-box { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 2rem 1rem; margin: 1.5rem 0; }
+        .stage-3d { perspective: 900px; height: 320px; display: flex; align-items: center; justify-content: center; margin: 1rem 0; }
+        .cube-3d { width: 160px; height: 160px; position: relative; transform-style: preserve-3d; transition: transform 0.1s linear; }
+        .cube-3d .face { position: absolute; width: 160px; height: 160px; display: flex; align-items: center; justify-content: center; font-family: monospace; font-weight: 800; font-size: 1.6rem; color: #fff; border: 2px solid rgba(255,255,255,0.3); opacity: 0.92; }
+        .face-front  { background: rgba(245,158,11,0.7); transform: translateZ(80px); }
+        .face-back   { background: rgba(59,130,246,0.7); transform: rotateY(180deg) translateZ(80px); }
+        .face-right  { background: rgba(16,185,129,0.7); transform: rotateY(90deg) translateZ(80px); }
+        .face-left   { background: rgba(168,85,247,0.7); transform: rotateY(-90deg) translateZ(80px); }
+        .face-top    { background: rgba(236,72,153,0.7); transform: rotateX(90deg) translateZ(80px); }
+        .face-bottom { background: rgba(239,68,68,0.7); transform: rotateX(-90deg) translateZ(80px); }
+
+        .sliders { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-top: 1rem; }
+        .slider-block { background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 10px; }
+        .slider-block label { display: block; color: var(--chem-color); font-family: monospace; margin-bottom: 0.4rem; font-weight: 700; }
+        .slider-block input[type="range"] { width: 100%; accent-color: var(--chem-color); }
+        .slider-value { color: var(--text-muted); font-family: monospace; font-size: 0.9rem; }
+        .auto-btn { background: var(--chem-color); color: #fff; border: none; padding: 0.55rem 1.1rem; border-radius: 8px; cursor: pointer; font-weight: 700; font-family: inherit; margin-top: 1rem; }
+
+        .mesh-viewer { background: rgba(0,0,0,0.3); border-radius: 12px; padding: 1rem; margin: 1rem 0; }
+        .mesh-canvas { width: 100%; max-width: 480px; height: 300px; background: #0B0E14; border-radius: 8px; display: block; margin: 0 auto; }
+        .mesh-controls { display: flex; gap: 0.7rem; flex-wrap: wrap; margin-top: 1rem; justify-content: center; }
+        .mc-btn { background: rgba(255,255,255,0.08); color: var(--text-main); border: 1px solid rgba(255,255,255,0.15); padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-family: inherit; font-size: 0.9rem; }
+        .mc-btn.active { background: var(--chem-color); border-color: var(--chem-color); color: #fff; }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="informatica.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Informatica
+            </a>
+        </div>
+        <h1 class="sub-hero-title">CAD e <span class="gradient-text">Stampa 3D</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+            Dal primo schermo touch del 1963 alle stampanti 3D che oggi producono case, protesi e razzi: come il computer e diventato lo strumento di disegno di ogni ingegnere.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Sketchpad: dove e nato il CAD</h2>
+        <p class="lesson-text">
+            Nel 1963 lo studente del MIT <strong>Ivan Sutherland</strong> presento la sua tesi di dottorato: <em>Sketchpad</em>. Era il primo programma al mondo in cui un umano disegnava sullo schermo con una "penna ottica" e il computer rispondeva in tempo reale. Aveva inventato in un colpo solo: l'interfaccia grafica, il disegno vettoriale e il CAD (Computer Aided Design).
+        </p>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-year">1963</div>
+                <p class="timeline-text"><strong>Sketchpad</strong> di Ivan Sutherland al MIT. Il programma occupava un intero TX-2 (un armadio di computer) per fare quello che oggi un iPad fa con una matita.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1982</div>
+                <p class="timeline-text">Esce <strong>AutoCAD 1.0</strong> di Autodesk per il PC IBM. E il primo CAD economico per professionisti: costava 1.000 dollari e ha cambiato l'industria.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1995</div>
+                <p class="timeline-text"><strong>SolidWorks</strong> introduce il parametric modeling: cambi un valore e tutto il progetto si aggiorna. Diventa lo standard nell'ingegneria meccanica.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2009</div>
+                <p class="timeline-text"><strong>Tinkercad</strong> (Autodesk) porta il CAD nei browser e nelle scuole: bastano un browser e il mouse per modellare in 3D, gratis.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2013</div>
+                <p class="timeline-text">Autodesk <strong>Fusion 360</strong>: CAD, simulazione e CAM in un'unica app cloud. Modellazione parametrica e mesh sculpting nello stesso software.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">Oggi</div>
+                <p class="timeline-text"><strong>Blender</strong> (open source) viene usato dalla Pixar e dagli studi indie: anche i lungometraggi di Netflix vengono renderizzati con Blender.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section" style="border-left: 4px solid var(--chem-color);">
+        <h2 class="lesson-title" style="color: var(--chem-color);">2D vs 3D: due Mondi Diversi</h2>
+        <p class="lesson-text">
+            Il CAD non e solo "disegnare al PC": esiste una distinzione enorme tra le due famiglie di modellazione.
+        </p>
+        <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0;">
+            <div class="card" style="padding: 1.5rem; border-top: 3px solid var(--math-color);">
+                <h4 style="color: var(--math-color); margin-bottom: 0.5rem;">CAD 2D</h4>
+                <p style="font-size: 0.93rem; color: var(--text-muted);">Lavora su un piano: <strong>x, y</strong>. Si usa per planimetrie, schemi elettrici, disegni tecnici. AutoCAD, LibreCAD, QCAD.</p>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;"><em>Esempio: la planimetria della tua casa.</em></p>
+            </div>
+            <div class="card" style="padding: 1.5rem; border-top: 3px solid var(--chem-color);">
+                <h4 style="color: var(--chem-color); margin-bottom: 0.5rem;">CAD 3D</h4>
+                <p style="font-size: 0.93rem; color: var(--text-muted);">Aggiunge la profondita: <strong>x, y, z</strong>. Si costruiscono solidi che si possono ruotare e sezionare. Fusion 360, SolidWorks, Blender, Tinkercad.</p>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;"><em>Esempio: il modello del telefono prima che venga prodotto.</em></p>
+            </div>
+        </div>
+        <p class="lesson-text">
+            Quasi tutti i CAD 3D moderni permettono di passare dal 3D al disegno 2D (sezioni, viste prospettiche) con un click: <strong>il 3D contiene il 2D</strong>.
+        </p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Visualizzatore 3D Interattivo</h2>
+        <p class="lesson-text">
+            Ecco un cubo 3D renderizzato con le <strong>CSS 3D transforms</strong>: stessa matematica dei CAD veri, solo molto piu semplificata. Usa gli slider per ruotarlo sui tre assi e osserva come cambia.
+        </p>
+
+        <div class="viewer-box">
+            <div class="stage-3d">
+                <div class="cube-3d" id="cube">
+                    <div class="face face-front">F</div>
+                    <div class="face face-back">B</div>
+                    <div class="face face-right">R</div>
+                    <div class="face face-left">L</div>
+                    <div class="face face-top">T</div>
+                    <div class="face face-bottom">D</div>
+                </div>
+            </div>
+
+            <div class="sliders">
+                <div class="slider-block">
+                    <label>Rotazione X: <span class="slider-value" id="rx-val">15&deg;</span></label>
+                    <input type="range" min="-180" max="180" value="15" id="rx">
+                </div>
+                <div class="slider-block">
+                    <label>Rotazione Y: <span class="slider-value" id="ry-val">25&deg;</span></label>
+                    <input type="range" min="-180" max="180" value="25" id="ry">
+                </div>
+                <div class="slider-block">
+                    <label>Rotazione Z: <span class="slider-value" id="rz-val">0&deg;</span></label>
+                    <input type="range" min="-180" max="180" value="0" id="rz">
+                </div>
+            </div>
+            <div style="text-align: center;">
+                <button class="auto-btn" id="auto-rotate">Avvia rotazione automatica</button>
+            </div>
+        </div>
+        <p class="lesson-text" style="font-size: 0.93rem; color: var(--text-muted);">
+            Ogni faccia e un quadrato traslato lungo l'asse Z e poi ruotato: <code style="background:rgba(255,255,255,0.08); padding: 0.1em 0.4em; border-radius:4px;">rotateY(90deg) translateZ(80px)</code>. E' la stessa idea dei CAD professionali, solo che li le facce sono milioni.
+        </p>
+    </section>
+
+    <section class="lesson-section" style="border-left: 4px solid var(--physics-color);">
+        <h2 class="lesson-title" style="color: var(--physics-color);">Mesh, Vertici, Facce: il Modello Poligonale</h2>
+        <p class="lesson-text">
+            Un oggetto 3D al computer non e una forma matematica perfetta (come una sfera ideale): e una <strong>maglia di triangoli</strong>, detta <em>mesh</em>. Tre concetti chiave:
+        </p>
+
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.2rem; margin: 1.5rem 0;">
+            <div class="card" style="padding: 1.3rem; border-top: 3px solid var(--chem-color);">
+                <h4 style="color: var(--chem-color); margin-bottom: 0.5rem; font-family: monospace;">Vertice</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Un punto nello spazio 3D, definito da tre coordinate <em>(x, y, z)</em>. Il vertice e l'unita base.</p>
+            </div>
+            <div class="card" style="padding: 1.3rem; border-top: 3px solid var(--physics-color);">
+                <h4 style="color: var(--physics-color); margin-bottom: 0.5rem; font-family: monospace;">Spigolo (edge)</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Una linea che connette due vertici. Lo "scheletro" del modello (wireframe) e fatto solo di spigoli.</p>
+            </div>
+            <div class="card" style="padding: 1.3rem; border-top: 3px solid var(--math-color);">
+                <h4 style="color: var(--math-color); margin-bottom: 0.5rem; font-family: monospace;">Faccia (face)</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Un poligono (di solito un triangolo) racchiuso da spigoli. Le facce hanno colore e texture.</p>
+            </div>
+        </div>
+
+        <div class="mesh-viewer">
+            <canvas class="mesh-canvas" id="mesh-canvas" width="480" height="300"></canvas>
+            <div class="mesh-controls">
+                <button class="mc-btn active" data-mesh="cube">Cubo (8v, 12f)</button>
+                <button class="mc-btn" data-mesh="pyramid">Piramide (5v, 6f)</button>
+                <button class="mc-btn" data-mesh="sphere">Sfera (~80v, ~120f)</button>
+            </div>
+        </div>
+        <p class="lesson-text" style="font-size: 0.93rem; color: var(--text-muted);">
+            Una sfera "perfetta" non esiste in CG: si approssima con tanti triangoli. Piu triangoli = piu liscia ma piu pesante. Il personaggio di <strong>Crash Bandicoot (1996)</strong> aveva circa 700 poligoni; quello di <strong>The Last of Us 2 (2020)</strong> oltre 100.000.
+        </p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Stampa 3D: dal Modello all'Oggetto Reale</h2>
+        <p class="lesson-text">
+            La <strong>stampa 3D additiva</strong> costruisce oggetti strato per strato, depositando materiale dove serve. Inventata negli anni '80, e diventata accessibile dopo il 2009 con la scadenza dei brevetti.
+        </p>
+
+        <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0;">
+            <div class="card" style="padding: 1.5rem; border-top: 3px solid var(--chem-color);">
+                <h4 style="color: var(--chem-color); margin-bottom: 0.5rem;">FDM (Fused Deposition Modeling)</h4>
+                <p style="font-size: 0.92rem; color: var(--text-muted);">Una bobina di plastica (<strong>filamento</strong>) viene scaldata e depositata da un ugello mobile. E' il sistema delle stampanti economiche (Ender 3, Prusa, Bambu Lab).</p>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem; font-family:monospace;">Filamenti: PLA, ABS, PETG, TPU.</p>
+            </div>
+            <div class="card" style="padding: 1.5rem; border-top: 3px solid var(--math-color);">
+                <h4 style="color: var(--math-color); margin-bottom: 0.5rem;">SLA (Stereolitografia)</h4>
+                <p style="font-size: 0.92rem; color: var(--text-muted);">Una vasca di <strong>resina liquida</strong> viene solidificata strato per strato con un laser UV o uno schermo LCD. Risoluzione altissima, ottimo per gioielli e miniature.</p>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem; font-family:monospace;">Esempi: Formlabs, Anycubic Photon, Elegoo Mars.</p>
+            </div>
+        </div>
+
+        <div style="background: rgba(0,0,0,0.3); padding: 1.3rem; border-radius: 10px; font-family: monospace; font-size: 0.92rem; margin-top: 1rem;">
+            <span style="color: var(--text-muted);">// Il flusso completo di stampa 3D</span><br>
+            1. <span style="color: var(--chem-color);">Modello CAD</span> (file .stl / .obj / .3mf)<br>
+            2. <span style="color: var(--chem-color);">Slicer</span> (Cura, PrusaSlicer): trasforma in G-code<br>
+            3. <span style="color: var(--chem-color);">G-code</span>: istruzioni "vai a (x,y,z), estrudi 0.4mm"<br>
+            4. <span style="color: var(--chem-color);">Stampante</span>: esegue il G-code per ore<br>
+            5. <span style="color: var(--chem-color);">Post-processing</span>: rimozione supporti, levigatura
+        </div>
+
+        <p class="lesson-text" style="margin-top: 1rem;">
+            <strong>Lo slicer</strong> e la fase magica: divide il modello in <em>layer</em> sottili (tipicamente 0.1-0.3 mm) e calcola il percorso dell'ugello. Per un pezzo medio: alcune ore di stampa, milioni di righe di G-code.
+        </p>
+    </section>
+
+    <section class="lesson-section" style="background: rgba(245,158,11,0.03); border-left: 4px solid var(--chem-color);">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Applicazioni Reali</h2>
+        <p class="lesson-text">CAD e stampa 3D sono ovunque, ben oltre il "gadget per maker":</p>
+
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.2rem; margin: 1.5rem 0;">
+            <div class="card" style="padding: 1.3rem;">
+                <div style="font-size: 1.8rem; margin-bottom: 0.5rem;">🦾</div>
+                <h4 style="color: var(--chem-color); margin-bottom: 0.5rem;">Protesi mediche</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Mani bioniche stampate per bambini a meno di 50 euro (progetto e-NABLE). Protesi su misura basate su scansione TAC del paziente.</p>
+            </div>
+            <div class="card" style="padding: 1.3rem;">
+                <div style="font-size: 1.8rem; margin-bottom: 0.5rem;">🏠</div>
+                <h4 style="color: var(--physics-color); margin-bottom: 0.5rem;">Architettura</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Case stampate in 24 ore con cemento speciale (ICON, MIGHTY Buildings). Ponti in acciaio stampati (MX3D ad Amsterdam).</p>
+            </div>
+            <div class="card" style="padding: 1.3rem;">
+                <div style="font-size: 1.8rem; margin-bottom: 0.5rem;">🚀</div>
+                <h4 style="color: var(--math-color); margin-bottom: 0.5rem;">Aerospaziale</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">SpaceX e Relativity Space stampano motori e razzi interi. Pezzi piu leggeri e geometrie impossibili da fresare.</p>
+            </div>
+            <div class="card" style="padding: 1.3rem;">
+                <div style="font-size: 1.8rem; margin-bottom: 0.5rem;">🎮</div>
+                <h4 style="color: #EC4899; margin-bottom: 0.5rem;">Gaming e cinema</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">I personaggi di Spider-Verse, le navi di Star Wars, gli avatar di Fortnite: tutti modelli CAD/mesh prima di essere immagini.</p>
+            </div>
+            <div class="card" style="padding: 1.3rem;">
+                <div style="font-size: 1.8rem; margin-bottom: 0.5rem;">🧪</div>
+                <h4 style="color: #A855F7; margin-bottom: 0.5rem;">Prototipazione rapida</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Un ingegnere puo modellare un pezzo a colazione e averlo in mano per pranzo. Riduce mesi di sviluppo a giorni.</p>
+            </div>
+            <div class="card" style="padding: 1.3rem;">
+                <div style="font-size: 1.8rem; margin-bottom: 0.5rem;">🦷</div>
+                <h4 style="color: var(--chem-color); margin-bottom: 0.5rem;">Odontoiatria</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Allineatori dentali Invisalign, corone, impianti: tutto scansionato in 3D e stampato in resina biocompatibile.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Quiz di Riepilogo</h2>
+        <p class="lesson-text" style="font-size: 0.95rem;">Metti alla prova la tua comprensione del CAD e della stampa 3D.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Informatica.</p>
+</footer>
+
+<script src="cad-3d.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>
