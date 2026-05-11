@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Porte Logiche - Lezione Interattiva MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        .back-button { display: inline-flex; align-items: center; color: var(--text-muted); text-decoration: none; margin-bottom: 2rem; font-weight: 600; transition: color 0.3s ease, transform 0.3s ease; }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+        .sub-hero { padding: 4rem 0 2rem; text-align: left; }
+        .sub-hero-title { font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; margin-bottom: 1rem; }
+
+        .gate-box { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 2rem; margin-bottom: 2rem; }
+        .gate-inputs { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem; }
+        .gate-row { display: flex; align-items: center; gap: 1rem; }
+        .gate-label { font-size: 1.1rem; font-weight: 600; min-width: 30px; color: var(--text-muted); }
+        .bit-btn { width: 56px; height: 56px; border-radius: 10px; border: 2px solid rgba(255,255,255,0.15); background: var(--surface-hover); color: var(--text-main); font-size: 1.4rem; font-weight: 800; cursor: pointer; transition: all 0.2s; font-family: monospace; }
+        .bit-btn.on { background: var(--chem-color); border-color: var(--chem-color); color: white; box-shadow: 0 0 16px var(--chem-glow); }
+        .bit-btn.off { background: rgba(239,68,68,0.15); border-color: #EF4444; color: #EF4444; }
+        .gate-output { padding: 1.2rem 2rem; border-radius: 10px; font-size: 1.4rem; font-weight: 800; text-align: center; border-left: 5px solid var(--text-muted); background: rgba(0,0,0,0.3); transition: all 0.3s; font-family: monospace; }
+        .gate-output.out-1 { border-left-color: var(--chem-color); color: var(--chem-color); box-shadow: 0 0 20px var(--chem-glow); }
+        .gate-output.out-0 { border-left-color: #EF4444; color: #EF4444; }
+
+        .logic-table { width: 100%; max-width: 460px; border-collapse: collapse; margin: 1.5rem 0; background: rgba(0,0,0,0.2); border-radius: 10px; overflow: hidden; }
+        .logic-table th, .logic-table td { padding: 0.9rem 1.2rem; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); font-family: monospace; font-size: 1rem; }
+        .logic-table th { background: rgba(255,255,255,0.05); font-weight: 700; color: var(--chem-color); font-family: inherit; letter-spacing: 0.03em; }
+        .logic-table td.val-1 { color: var(--chem-color); font-weight: 700; }
+        .logic-table td.val-0 { color: #EF4444; font-weight: 700; }
+
+        .adder-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+        .adder-cell { background: rgba(0,0,0,0.25); border-radius: 12px; padding: 1.2rem; text-align: center; }
+        .adder-cell .label { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.3rem; }
+        .adder-cell .value { font-family: monospace; font-size: 2rem; font-weight: 800; color: var(--chem-color); }
+
+        .mux-box { background: rgba(0,0,0,0.25); border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0; }
+        .mux-controls { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem; }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="informatica.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Informatica
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Porte <span class="gradient-text">Logiche</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+            Dai transistor di silicio ai circuiti che sommano, scelgono e ricordano: come si costruisce un computer dalle sue mattonelle piu fondamentali.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Dal Transistor alla CPU</h2>
+        <p class="lesson-text">
+            Aprendo un processore moderno (un Apple M3, un AMD Ryzen, un Intel Core) trovi <strong>decine di miliardi di transistor</strong> incisi sul silicio. Un transistor da solo non sa fare granche: e un interruttore microscopico che si chiude o si apre a seconda di una tensione di controllo.
+        </p>
+        <p class="lesson-text">
+            Ma se combini due o tre transistor in modo intelligente, ottieni una <strong>porta logica</strong>: un piccolo dispositivo che esegue una delle operazioni booleane fondamentali (AND, OR, NOT). E se metti insieme migliaia di porte logiche, ottieni un sommatore. Milioni di porte? Un'intera CPU. Come dei mattoncini LEGO, partendo da pochi pezzi semplicissimi si arriva a costruire Iron Man.
+        </p>
+
+        <div style="background: rgba(245,158,11,0.06); border-left: 4px solid var(--chem-color); padding: 1.5rem; border-radius: 0 10px 10px 0;">
+            <p class="lesson-text" style="margin-bottom: 0;">
+                <strong>Curiosita:</strong> Il primo transistor (1947, Bell Labs) era grande come una mano. Oggi sul tuo telefono ce ne sono circa 16 miliardi, ciascuno largo pochi nanometri, cioe migliaia di volte piu sottile di un capello.
+            </p>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Le Porte di Base: Ripasso Rapido</h2>
+        <p class="lesson-text">
+            Prima di buttarci nei circuiti piu complessi, ricapitoliamo le tre porte fondamentali. Ogni operazione lavora su <strong>bit</strong> che valgono solo 0 o 1.
+        </p>
+
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+            <div class="card" style="padding: 1.5rem; border-top: 3px solid var(--chem-color);">
+                <h4 style="color: var(--chem-color); font-family: monospace;">AND</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Esce 1 solo se <strong>tutti</strong> gli ingressi sono 1. Pensa alla cassaforte con due chiavi: serve la presenza di entrambi i custodi.</p>
+            </div>
+            <div class="card" style="padding: 1.5rem; border-top: 3px solid var(--physics-color);">
+                <h4 style="color: var(--physics-color); font-family: monospace;">OR</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Esce 1 se <strong>almeno uno</strong> degli ingressi e 1. Come l'allarme antincendio: basta un sensore qualunque per far suonare la sirena.</p>
+            </div>
+            <div class="card" style="padding: 1.5rem; border-top: 3px solid #EF4444;">
+                <h4 style="color: #EF4444; font-family: monospace;">NOT</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Inverte il bit: 1 diventa 0, 0 diventa 1. Si scrive anche con una barra sopra la variabile: A.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section" style="border-left: 4px solid var(--chem-color);">
+        <h2 class="lesson-title" style="color: var(--chem-color);">NAND: La Porta Universale</h2>
+        <p class="lesson-text">
+            La porta NAND e semplicemente un AND seguito da un NOT (<strong>NAND = NOT(A AND B)</strong>). Ma c'e un dettaglio sorprendente: <strong>usando solo porte NAND si puo costruire qualunque circuito logico immaginabile</strong>. Per questo gli ingegneri la chiamano "porta universale".
+        </p>
+        <p class="lesson-text">
+            E come in Minecraft: tutto il mondo e fatto solo di cubi, ma con quei cubi puoi costruire una catapulta, un castello o un computer funzionante (esiste davvero). La NAND e il cubo dei circuiti digitali.
+        </p>
+
+        <div class="gate-box">
+            <h3 style="color: var(--chem-color); margin-bottom: 1.5rem;">Simulatore NAND</h3>
+            <div class="gate-inputs">
+                <div class="gate-row"><span class="gate-label">A</span><button class="bit-btn on" id="nand-a">1</button></div>
+                <div class="gate-row"><span class="gate-label">B</span><button class="bit-btn on" id="nand-b">1</button></div>
+            </div>
+            <div class="gate-output out-0" id="nand-out" style="border-left-color:#EF4444; color:#EF4444;">A NAND B = 0</div>
+        </div>
+
+        <h3 style="margin: 2rem 0 1rem; font-size: 1.1rem;">Costruire NOT con sole NAND</h3>
+        <p class="lesson-text">Se colleghi entrambi gli ingressi di una NAND alla stessa variabile A, ottieni un NOT! Infatti:</p>
+        <div style="background: rgba(0,0,0,0.25); padding: 1.2rem; border-radius: 10px; font-family: monospace; color: var(--chem-color); margin-bottom: 1rem;">
+            NAND(A, A) = NOT(A AND A) = NOT(A)
+        </div>
+        <p class="lesson-text" style="font-size: 0.95rem;">Con la stessa logica puoi costruire AND (due NAND in cascata), OR (tre NAND), e a cascata tutto il resto.</p>
+    </section>
+
+    <section class="lesson-section" style="border-left: 4px solid var(--physics-color);">
+        <h2 class="lesson-title" style="color: var(--physics-color);">XOR: l'OR Esclusivo</h2>
+        <p class="lesson-text">
+            La porta XOR (eXclusive OR) e 1 quando gli ingressi <strong>sono diversi tra loro</strong>, 0 quando sono uguali. E la porta del "o uno o l'altro, ma non entrambi": il dilemma della pizza o sushi quando hai 10 euro in tasca.
+        </p>
+
+        <div class="gate-box" style="border-color: rgba(16,185,129,0.15);">
+            <h3 style="color: var(--physics-color); margin-bottom: 1.5rem;">Simulatore XOR</h3>
+            <div class="gate-inputs">
+                <div class="gate-row"><span class="gate-label">A</span><button class="bit-btn off" id="xor-a" style="border-color:#EF4444; color:#EF4444; background:rgba(239,68,68,0.15);">0</button></div>
+                <div class="gate-row"><span class="gate-label">B</span><button class="bit-btn on" id="xor-b">1</button></div>
+            </div>
+            <div class="gate-output out-1" id="xor-out" style="border-left-color:var(--physics-color); color:var(--physics-color);">A XOR B = 1</div>
+        </div>
+
+        <h3 style="margin: 2rem 0 1rem; font-size: 1.1rem;">Tavola di Verita XOR</h3>
+        <table class="logic-table">
+            <thead><tr><th>A</th><th>B</th><th>A XOR B</th></tr></thead>
+            <tbody>
+                <tr><td class="val-0">0</td><td class="val-0">0</td><td class="val-0">0</td></tr>
+                <tr><td class="val-0">0</td><td class="val-1">1</td><td class="val-1">1</td></tr>
+                <tr><td class="val-1">1</td><td class="val-0">0</td><td class="val-1">1</td></tr>
+                <tr><td class="val-1">1</td><td class="val-1">1</td><td class="val-0">0</td></tr>
+            </tbody>
+        </table>
+        <p class="lesson-text" style="font-size: 0.95rem;">XOR e fondamentale per la <strong>crittografia</strong> (cifrari a maschera variabile) e per le <strong>somme binarie</strong>: 1 XOR 1 = 0 con riporto, esattamente come la cifra meno significativa di 1 + 1 = 10.</p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Half Adder: la Somma di un Bit</h2>
+        <p class="lesson-text">
+            Vuoi sommare due bit A e B? Hai bisogno di due informazioni in uscita: la <strong>somma S</strong> (la cifra delle unita) e il <strong>riporto C</strong> (la cifra dei "due").
+        </p>
+        <ul class="lesson-text" style="margin-left: 1.5rem;">
+            <li>S = A XOR B (vale 1 quando i bit sono diversi)</li>
+            <li>C = A AND B (riporto solo quando entrambi sono 1)</li>
+        </ul>
+
+        <div class="gate-box">
+            <h3 style="color: var(--chem-color); margin-bottom: 1.5rem;">Sommatore a Mezzo Bit (Half Adder)</h3>
+            <div class="gate-inputs">
+                <div class="gate-row"><span class="gate-label">A</span><button class="bit-btn off" id="ha-a" style="border-color:#EF4444; color:#EF4444; background:rgba(239,68,68,0.15);">0</button></div>
+                <div class="gate-row"><span class="gate-label">B</span><button class="bit-btn on" id="ha-b">1</button></div>
+            </div>
+            <div class="adder-grid">
+                <div class="adder-cell">
+                    <div class="label">Somma (S)</div>
+                    <div class="value" id="ha-s">1</div>
+                </div>
+                <div class="adder-cell">
+                    <div class="label">Riporto (C)</div>
+                    <div class="value" id="ha-c">0</div>
+                </div>
+                <div class="adder-cell">
+                    <div class="label">Binario (CS)</div>
+                    <div class="value" id="ha-bin">01</div>
+                </div>
+            </div>
+        </div>
+
+        <p class="lesson-text" style="font-size: 0.95rem;">Combinando due half adder e una porta OR ottieni un <strong>full adder</strong> capace di sommare tre bit (A, B e riporto precedente). Mettendo in cascata 32 full adder, una CPU somma due numeri da 32 bit in un solo ciclo di clock.</p>
+    </section>
+
+    <section class="lesson-section" style="border-left: 4px solid var(--math-color);">
+        <h2 class="lesson-title" style="color: var(--math-color);">Multiplexer (MUX): lo Smistatore di Segnali</h2>
+        <p class="lesson-text">
+            Un <strong>multiplexer 2-a-1</strong> e una porta che ha due ingressi dati (D0 e D1) e un ingresso di selezione (S). L'uscita Y prende il valore di D0 se S=0, oppure D1 se S=1. E come un binario ferroviario: lo scambio decide quale dei due treni passa.
+        </p>
+
+        <div class="mux-box">
+            <h3 style="color: var(--math-color); margin-bottom: 1rem;">Simulatore MUX 2-a-1</h3>
+            <div class="mux-controls">
+                <div class="gate-row"><span class="gate-label">D0</span><button class="bit-btn on" id="mux-d0">1</button></div>
+                <div class="gate-row"><span class="gate-label">D1</span><button class="bit-btn off" id="mux-d1" style="border-color:#EF4444; color:#EF4444; background:rgba(239,68,68,0.15);">0</button></div>
+                <div class="gate-row"><span class="gate-label">S</span><button class="bit-btn off" id="mux-s" style="border-color:#EF4444; color:#EF4444; background:rgba(239,68,68,0.15);">0</button></div>
+            </div>
+            <div class="gate-output out-1" id="mux-out" style="border-left-color:var(--math-color); color:var(--math-color);">Y = D0 = 1</div>
+        </div>
+
+        <p class="lesson-text" style="font-size: 0.95rem;">I MUX sono nelle <strong>ALU</strong> delle CPU: scelgono se "instradare" il risultato di una somma, di un AND o di un OR verso il registro di uscita. Senza MUX la CPU non saprebbe quale operazione restituire.</p>
+    </section>
+
+    <section class="lesson-section" style="background: rgba(245,158,11,0.03);">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Flip-Flop: la Memoria di un Bit</h2>
+        <p class="lesson-text">
+            Le porte logiche viste finora sono <strong>combinatorie</strong>: l'uscita dipende solo dall'ingresso ora. Ma un computer ha bisogno di <strong>ricordare</strong> i dati. Per questo esiste il <strong>flip-flop</strong>: un piccolo circuito (due NOR retroazionate) che memorizza 1 bit fino al prossimo aggiornamento.
+        </p>
+        <p class="lesson-text">
+            La <strong>RAM</strong> del tuo PC e composta da miliardi di flip-flop, uno per ogni bit di memoria. Quando salvi una variabile in un programma, in realta stai aggiornando lo stato di alcuni flip-flop.
+        </p>
+
+        <div style="background: rgba(0,0,0,0.25); border-radius: 12px; padding: 1.5rem; font-family: monospace;">
+            <div style="color: var(--text-muted); margin-bottom: 0.5rem;">// Schema concettuale di un latch SR</div>
+            <div style="color: var(--chem-color);">Q  = NOR(R, Q_prev)</div>
+            <div style="color: var(--chem-color);">Qn = NOR(S, Q)</div>
+            <div style="color: var(--text-muted); margin-top: 0.5rem;">// S = Set (forza Q=1), R = Reset (forza Q=0)</div>
+        </div>
+    </section>
+
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Quiz di Riepilogo</h2>
+        <p class="lesson-text" style="font-size: 0.95rem;">Metti alla prova quanto hai imparato sui circuiti digitali.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Informatica.</p>
+</footer>
+
+<script src="porte-logiche.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

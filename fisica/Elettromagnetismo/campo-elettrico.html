@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campo Elettrico - Lezione Interattiva MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+        .sub-hero {
+            padding: 4rem 0 2rem;
+            text-align: left;
+        }
+        .sub-hero-title {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .formula-box {
+            background: rgba(16,185,129,0.06);
+            border-left: 4px solid var(--physics-color);
+            padding: 1.5rem;
+            border-radius: 0 10px 10px 0;
+            margin: 1.5rem 0;
+            font-family: monospace;
+            font-size: 1.15rem;
+            color: var(--text-main);
+            letter-spacing: 0.04em;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 2.5rem;
+            margin: 2rem 0;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0.6rem;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--physics-color), rgba(16,185,129,0.1));
+        }
+        .timeline-item { position: relative; margin-bottom: 2rem; }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -1.95rem;
+            top: 0.4rem;
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            background: var(--physics-color);
+            box-shadow: 0 0 8px var(--physics-glow);
+        }
+        .timeline-year {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--physics-color);
+            letter-spacing: 1px;
+            margin-bottom: 0.3rem;
+        }
+        .timeline-text { font-size: 0.97rem; color: var(--text-muted); line-height: 1.6; }
+        .timeline-text strong { color: var(--text-main); }
+
+        .interactive-box {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        .slider-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+        .slider-label {
+            min-width: 130px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+        .slider-row input[type="range"] {
+            flex: 1;
+            min-width: 200px;
+            accent-color: var(--physics-color);
+        }
+        .slider-val {
+            font-family: monospace;
+            color: var(--physics-color);
+            font-weight: 700;
+            min-width: 100px;
+            text-align: right;
+        }
+        canvas {
+            display: block;
+            width: 100%;
+            background: #050810;
+            border-radius: 10px;
+            margin-top: 1rem;
+        }
+
+        .result-display {
+            padding: 1.2rem;
+            border-radius: 10px;
+            background: rgba(0,0,0,0.3);
+            border-left: 5px solid var(--physics-color);
+            font-family: monospace;
+            font-size: 1.1rem;
+            margin-top: 1rem;
+        }
+        .result-display strong { color: var(--physics-color); }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        .info-card {
+            background: rgba(0,0,0,0.2);
+            border-top: 3px solid var(--physics-color);
+            border-radius: 10px;
+            padding: 1.5rem;
+        }
+        .info-card h4 { color: var(--physics-color); margin-bottom: 0.5rem; }
+        .info-card p { font-size: 0.92rem; color: var(--text-muted); }
+
+        .charge-controls {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+        .charge-btn {
+            background: var(--surface-hover);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: var(--text-main);
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .charge-btn:hover { background: rgba(16,185,129,0.15); border-color: var(--physics-color); }
+        .charge-btn.active { background: var(--physics-color); color: white; border-color: var(--physics-color); }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="../elettromagnetismo.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Elettromagnetismo
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Campo <span class="gradient-text">Elettrico</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+            La forza invisibile che muove gli elettroni nei tuoi auricolari, accende il fulmine durante un temporale e tiene insieme ogni atomo dell'universo. Dalla legge di Coulomb al teorema di Gauss.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Una Forza Antica come l'Ambra</h2>
+        <p class="lesson-text">
+            Già nel 600 a.C. il filosofo greco <strong>Talete di Mileto</strong> notò un fenomeno curioso: strofinando un pezzo di ambra (in greco <em>elektron</em>) con un panno di lana, questa attraeva piccoli pezzetti di paglia. Per oltre 2000 anni nessuno seppe spiegare il perché. La parola "elettricità" deriva proprio da quel pezzo di ambra dimenticato.
+        </p>
+        <p class="lesson-text">
+            Bisognò aspettare il 1785, quando <strong>Charles-Augustin de Coulomb</strong>, ingegnere militare francese, costruì una bilancia di torsione così sensibile da misurare la forza tra due piccole sfere cariche. Scoprì che la forza segue una legge identica a quella della gravitazione di Newton: diminuisce con il quadrato della distanza.
+        </p>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-year">600 a.C.</div>
+                <p class="timeline-text"><strong>Talete</strong> osserva che l'ambra strofinata attira oggetti leggeri. Nasce la parola "elettricità" (da <em>elektron</em> = ambra).</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1752</div>
+                <p class="timeline-text"><strong>Benjamin Franklin</strong> dimostra con il celebre esperimento dell'aquilone che i fulmini sono fenomeni elettrici. Introduce i termini "carica positiva" e "negativa".</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1785</div>
+                <p class="timeline-text"><strong>Coulomb</strong> formula la legge che porta il suo nome usando la bilancia di torsione.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1830</div>
+                <p class="timeline-text"><strong>Michael Faraday</strong> introduce il rivoluzionario concetto di <strong>campo</strong>: lo spazio attorno a una carica è "deformato" e trasmette la forza alle altre cariche.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">La Legge di Coulomb</h2>
+        <p class="lesson-text">
+            Due cariche elettriche puntiformi q<sub>1</sub> e q<sub>2</sub> poste a distanza r si esercitano una forza diretta lungo la retta che le congiunge. Cariche dello stesso segno si <strong>respingono</strong>, di segno opposto si <strong>attraggono</strong>.
+        </p>
+        <div class="formula-box">
+            F = k &middot; (|q<sub>1</sub> &middot; q<sub>2</sub>|) / r&sup2;
+            <div style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem; font-family: inherit;">
+                con k = 8,99 &times; 10&sup9; N&middot;m&sup2;/C&sup2; (costante di Coulomb)
+            </div>
+        </div>
+
+        <h3 style="margin: 2rem 0 1rem; color: var(--physics-color);">Calcolatore di Forza di Coulomb</h3>
+        <div class="interactive-box">
+            <div class="slider-row">
+                <span class="slider-label">Carica q<sub>1</sub></span>
+                <input type="range" id="coul-q1" min="-10" max="10" step="0.5" value="2">
+                <span class="slider-val" id="coul-q1-val">+2 &micro;C</span>
+            </div>
+            <div class="slider-row">
+                <span class="slider-label">Carica q<sub>2</sub></span>
+                <input type="range" id="coul-q2" min="-10" max="10" step="0.5" value="-3">
+                <span class="slider-val" id="coul-q2-val">-3 &micro;C</span>
+            </div>
+            <div class="slider-row">
+                <span class="slider-label">Distanza r</span>
+                <input type="range" id="coul-r" min="0.05" max="2" step="0.05" value="0.5">
+                <span class="slider-val" id="coul-r-val">0.50 m</span>
+            </div>
+            <div class="result-display" id="coul-result">
+                Forza F = <strong>0.216 N</strong> &middot; Tipo: <strong>attrattiva</strong>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section" style="border-left: 4px solid var(--physics-color);">
+        <h2 class="lesson-title">Il Concetto di Campo Elettrico</h2>
+        <p class="lesson-text">
+            Faraday ebbe un'idea geniale: invece di pensare alla forza tra due cariche, immagina che ogni carica <strong>modifichi lo spazio attorno a sé</strong>. Questa modifica si chiama <em>campo elettrico</em>. Una seconda carica posta in quel punto "sente" il campo e ne riceve una forza.
+        </p>
+        <div class="formula-box">
+            E = F / q<sub>test</sub> &nbsp;&nbsp;&rArr;&nbsp;&nbsp; F = q &middot; E
+            <div style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem; font-family: inherit;">
+                Unit&agrave; di misura: N/C oppure V/m
+            </div>
+        </div>
+        <p class="lesson-text">
+            Per una carica puntiforme Q, il campo elettrico a distanza r vale:
+        </p>
+        <div class="formula-box">
+            E = k &middot; |Q| / r&sup2;
+        </div>
+        <p class="lesson-text">
+            <strong>Riferimento pop culture:</strong> nel film "Iron Man" il reattore arc nel petto di Tony Stark genera un intenso campo elettromagnetico. Nella realt&agrave;, anche solo per accendere uno schermo LCD i tuoi occhi stanno guardando milioni di pixel pilotati da minuscoli campi elettrici applicati ai cristalli liquidi.
+        </p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Visualizzatore del Campo Elettrico</h2>
+        <p class="lesson-text">
+            Le <strong>linee di campo</strong> di Faraday sono un trucco visivo: linee che escono dalle cariche positive ed entrano nelle negative, mostrando direzione e intensit&agrave; del campo. Pi&ugrave; le linee sono fitte, pi&ugrave; il campo &egrave; intenso. Aggiungi cariche cliccando sulla tela.
+        </p>
+        <div class="interactive-box">
+            <div class="charge-controls">
+                <button class="charge-btn active" id="mode-pos">Carica + (clicca tela)</button>
+                <button class="charge-btn" id="mode-neg">Carica &minus; (clicca tela)</button>
+                <button class="charge-btn" id="mode-clear">Cancella tutto</button>
+            </div>
+            <canvas id="field-canvas" width="900" height="480"></canvas>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.8rem;">
+                Le frecce indicano la direzione del campo in ogni punto. Colore freccia: intensit&agrave; (verde = forte).
+            </p>
+        </div>
+    </section>
+
+    <section class="lesson-section" style="border-left: 4px solid #F59E0B;">
+        <h2 class="lesson-title" style="color: #F59E0B;">Il Teorema di Gauss</h2>
+        <p class="lesson-text">
+            Nel 1813 il matematico tedesco <strong>Carl Friedrich Gauss</strong> trov&ograve; un modo elegantissimo di calcolare il campo elettrico anche per distribuzioni complesse di cariche. Il suo teorema dice: il <strong>flusso del campo elettrico</strong> attraverso una superficie chiusa &egrave; proporzionale alla carica totale racchiusa al suo interno.
+        </p>
+        <div class="formula-box" style="border-color: #F59E0B; background: rgba(245,158,11,0.06);">
+            &Phi;(E) = Q<sub>interna</sub> / &epsilon;<sub>0</sub>
+            <div style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem; font-family: inherit;">
+                con &epsilon;<sub>0</sub> = 8,854 &times; 10<sup>&minus;12</sup> C&sup2;/(N&middot;m&sup2;) (costante dielettrica del vuoto)
+            </div>
+        </div>
+        <p class="lesson-text">
+            Il teorema di Gauss &egrave; uno strumento potentissimo per calcolare il campo in situazioni simmetriche: sfera carica, filo infinito, piano carico. Inoltre &egrave; una delle <strong>quattro equazioni di Maxwell</strong> che vedremo in una lezione successiva.
+        </p>
+
+        <div class="info-grid">
+            <div class="info-card">
+                <h4>Sfera carica</h4>
+                <p>Una sfera con carica Q distribuita uniformemente genera all'esterno lo stesso campo di una carica puntiforme posta nel centro. All'interno il campo &egrave; zero (per un conduttore).</p>
+            </div>
+            <div class="info-card">
+                <h4>Piano infinito</h4>
+                <p>Un piano carico genera un campo <em>uniforme</em>: E = &sigma;/(2&epsilon;<sub>0</sub>), indipendente dalla distanza. &Egrave; il principio del condensatore a facce piane parallele.</p>
+            </div>
+            <div class="info-card">
+                <h4>Filo infinito</h4>
+                <p>Un filo carico genera un campo radiale: E = &lambda;/(2&pi;&epsilon;<sub>0</sub> &middot; r). Decade con 1/r, non con 1/r&sup2;.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Applicazioni Reali</h2>
+        <div class="info-grid">
+            <div class="info-card" style="border-top-color: var(--math-color);">
+                <h4 style="color: var(--math-color);">Schermo del telefono</h4>
+                <p>Il touchscreen capacitivo del tuo smartphone misura la variazione di campo elettrico causata dal tuo dito (un buon conduttore di cariche).</p>
+            </div>
+            <div class="info-card" style="border-top-color: #F59E0B;">
+                <h4 style="color: #F59E0B;">Fotocopiatrice</h4>
+                <p>I tamburi delle stampanti laser usano cariche elettriche per attrarre il toner solo nelle aree corrispondenti al disegno da stampare.</p>
+            </div>
+            <div class="info-card" style="border-top-color: #EF4444;">
+                <h4 style="color: #EF4444;">Fulmini</h4>
+                <p>Una nuvola temporalesca accumula cariche fino a generare campi di oltre 3 milioni di V/m, sufficienti a ionizzare l'aria. Il fulmine &egrave; semplicemente una scarica elettrica gigante.</p>
+            </div>
+            <div class="info-card" style="border-top-color: #A855F7;">
+                <h4 style="color: #A855F7;">Gabbia di Faraday</h4>
+                <p>Un conduttore cavo schermazza l'interno dal campo elettrico esterno. Ti protegge dentro la tua auto durante un temporale, e protegge i tuoi dati dentro le carte di credito contactless.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title">Quiz di Riepilogo</h2>
+        <p class="lesson-text" style="font-size: 0.95rem;">Verifica la tua comprensione del campo elettrico e della legge di Coulomb.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Fisica.</p>
+</footer>
+
+<script src="campo-elettrico.js"></script>
+<script src="../../js/main.js"></script>
+</body>
+</html>

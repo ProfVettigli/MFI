@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bilancia e Massa — Meccanica | MFI</title>
+    <meta name="description" content="Lezione interattiva sulla massa: misura della materia, differenza tra massa e peso, strumenti di misura, bilance a bracci e dinamometri.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+        onload="renderMathInElement(document.body);"></script>
+    <style>
+        .back-button { display:inline-flex; align-items:center; color:var(--text-muted); text-decoration:none; margin-bottom:2rem; font-weight:600; transition:color 0.3s ease, transform 0.3s ease; }
+        .back-button:hover { color:var(--text-main); transform:translateX(-5px); }
+        .sub-hero { padding:4rem 0 2rem; text-align:left; }
+        .sub-hero-title { font-size:clamp(2.2rem, 4vw, 3.2rem); font-weight:800; margin-bottom:1rem; }
+
+        .lesson-section { margin-bottom:3rem; padding:2.5rem; border-radius:1rem; border:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.03); }
+        .lesson-title { font-size:1.5rem; font-weight:700; margin-bottom:1.2rem; color:var(--physics-color); }
+        .lesson-text { color:var(--text-muted); line-height:1.8; margin-bottom:1.1rem; font-size:1.02rem; }
+
+        .info-box { background:rgba(16,185,129,0.07); border-left:4px solid var(--physics-color); border-radius:0 0.75rem 0.75rem 0; padding:1.25rem 1.5rem; margin:1.5rem 0; }
+        .callout { display:flex; gap:1rem; align-items:flex-start; background:rgba(16,185,129,0.07); border:1px solid rgba(16,185,129,0.22); border-radius:0.75rem; padding:1.2rem 1.5rem; margin:1.5rem 0; }
+        .callout-icon { font-size:1.5rem; flex-shrink:0; }
+        .callout p { margin:0; color:var(--text-muted); font-size:0.97rem; line-height:1.7; }
+        .callout p strong { color:#6ee7b7; }
+        .callout.blue { background:rgba(59,130,246,0.07); border-color:rgba(59,130,246,0.22); }
+        .callout.blue p strong { color:#93c5fd; }
+        .callout.amber { background:rgba(245,158,11,0.07); border-color:rgba(245,158,11,0.22); }
+        .callout.amber p strong { color:#fcd34d; }
+
+        .balance-widget { background:rgba(0,0,0,0.25); border-radius:14px; padding:2rem; margin:1.5rem 0; }
+        canvas { display:block; margin:0 auto; max-width:100%; border-radius:8px; background:rgba(0,0,0,0.3); }
+        .controls-row { display:flex; gap:1.5rem; flex-wrap:wrap; align-items:flex-end; justify-content:center; margin-top:1.2rem; }
+        .ctrl-group { display:flex; flex-direction:column; gap:0.3rem; min-width:180px; }
+        .ctrl-group label { color:var(--text-muted); font-size:0.82rem; text-transform:uppercase; letter-spacing:0.05em; }
+        .ctrl-group input[type=range] { -webkit-appearance:none; width:100%; height:6px; background:rgba(16,185,129,0.25); border-radius:3px; outline:none; }
+        .ctrl-group input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:18px; height:18px; border-radius:50%; background:var(--physics-color); cursor:pointer; box-shadow:0 0 8px var(--physics-glow); }
+        .ctrl-group input[type=range]::-moz-range-thumb { width:18px; height:18px; border-radius:50%; background:var(--physics-color); cursor:pointer; border:none; }
+        .ctrl-value { color:var(--physics-color); font-weight:700; font-family:monospace; }
+
+        .planet-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:0.7rem; margin-top:1rem; }
+        .planet-btn { background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:var(--text-main); padding:0.7rem; border-radius:8px; cursor:pointer; font-family:inherit; transition:all 0.2s; }
+        .planet-btn:hover { background:rgba(16,185,129,0.15); border-color:var(--physics-color); }
+        .planet-btn.active { background:var(--physics-color); border-color:var(--physics-color); color:#fff; font-weight:700; }
+
+        .readout { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:1.5rem; }
+        .readout-card { background:rgba(0,0,0,0.3); border-radius:10px; padding:1.2rem; text-align:center; border-top:3px solid var(--physics-color); }
+        .readout-card.peso { border-top-color:#f59e0b; }
+        .readout-label { font-size:0.85rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.5rem; }
+        .readout-value { font-size:1.6rem; font-weight:800; color:var(--physics-color); font-family:monospace; }
+        .readout-card.peso .readout-value { color:#f59e0b; }
+
+        .timeline { position:relative; padding-left:2.5rem; margin:2rem 0; }
+        .timeline::before { content:''; position:absolute; left:0.6rem; top:0; bottom:0; width:2px; background:linear-gradient(to bottom, var(--physics-color), rgba(16,185,129,0.1)); }
+        .timeline-item { position:relative; margin-bottom:2rem; }
+        .timeline-item::before { content:''; position:absolute; left:-1.95rem; top:0.4rem; width:10px; height:10px; border-radius:50%; background:var(--physics-color); box-shadow:0 0 8px var(--physics-glow); }
+        .timeline-year { font-size:0.8rem; font-weight:700; color:var(--physics-color); letter-spacing:1px; margin-bottom:0.3rem; }
+        .timeline-text { font-size:0.97rem; color:var(--text-muted); line-height:1.6; }
+        .timeline-text strong { color:var(--text-main); }
+
+        .data-table { width:100%; border-collapse:collapse; margin:1rem 0; background:rgba(0,0,0,0.2); border-radius:10px; overflow:hidden; }
+        .data-table th, .data-table td { padding:0.8rem 1rem; text-align:left; border-bottom:1px solid rgba(255,255,255,0.05); font-size:0.95rem; }
+        .data-table th { background:rgba(16,185,129,0.1); color:var(--physics-color); font-weight:700; }
+        .data-table td.num { font-family:monospace; text-align:right; color:var(--text-main); }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align:center; margin-bottom:2.5rem;">
+            <a href="../meccanica.html" class="back-button" style="margin-bottom:0;">
+                <span style="margin-right:0.5rem; font-size:1.2rem;">&larr;</span> Torna a Meccanica
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Bilancia e <span class="gradient-text">Massa</span></h1>
+        <p style="font-size:1.15rem; color:var(--text-muted); max-width:800px; font-weight:300;">
+            Cos'è davvero la massa? Quanta materia c'è in un corpo? Scopri la differenza tra ciò che <em>sei</em> e ciò che <em>pesi</em>, e perché un astronauta su Marte resta sempre la stessa persona.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">La Domanda Antica: Quanto C'è di Materia?</h2>
+        <p class="lesson-text">
+            Già nel 3000 a.C., i mercanti egizi sentivano il bisogno di confrontare la quantità di grano, oro o sale che acquistavano. Inventarono la <strong>bilancia a bracci uguali</strong>: due piatti sospesi a un giogo che, in equilibrio, garantiscono che il contenuto dei piatti contenga la stessa "quantità di materia".
+        </p>
+        <p class="lesson-text">
+            Per millenni questa è stata l'unica definizione operativa di massa: <em>massa è ciò che equilibra una bilancia confrontandolo con un campione</em>. Solo nel 1687 Isaac Newton, nei <em>Principia</em>, le diede una definizione fisica precisa: la massa è la <strong>misura dell'inerzia</strong>, cioè della resistenza che un corpo oppone al cambiamento del suo stato di moto.
+        </p>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-year">~3000 a.C.</div>
+                <p class="timeline-text">Nasce la <strong>bilancia a bracci uguali</strong> in Egitto. Misurare la massa significa confrontare con un campione (un sasso, un pezzo di metallo).</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1687</div>
+                <p class="timeline-text"><strong>Newton</strong> definisce la massa come "quantità di materia", proporzionale all'inerzia di un corpo: \( F = m \, a \).</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1889</div>
+                <p class="timeline-text">Viene depositato a Sèvres il <strong>"Grand K"</strong>, un cilindro di platino-iridio: il chilogrammo standard mondiale per oltre un secolo.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2019</div>
+                <p class="timeline-text">Il chilogrammo viene <strong>ridefinito</strong> a partire dalla costante di Planck \( h \). Per la prima volta nella storia, l'unità di massa non dipende più da un oggetto fisico.</p>
+            </div>
+        </div>
+
+        <div class="callout">
+            <div class="callout-icon">💡</div>
+            <p><strong>Curiosità:</strong> Il "Grand K" stava perdendo peso! Dal 1889 al 2019 ha "dimagrito" di circa 50 microgrammi rispetto ai suoi gemelli, contaminato da gas e polveri. Una buona ragione per definire il kg con una costante della natura.</p>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Massa o Peso? La Confusione di Tutti i Giorni</h2>
+        <p class="lesson-text">
+            Quando saliamo sulla bilancia in bagno e leggiamo "70 kg", in realtà stiamo misurando il <strong>peso</strong>, cioè la forza con cui la Terra ci attrae. La bilancia, però, è tarata per convertire quella forza in massa, supponendo di essere sulla superficie terrestre.
+        </p>
+
+        <div class="info-box">
+            <p style="margin:0;"><strong>Massa</strong>: quantità di materia, misurata in <strong>kg</strong>. È una proprietà <em>intrinseca</em> del corpo.</p>
+            <p style="margin:0.5rem 0 0;"><strong>Peso</strong>: forza gravitazionale che agisce sul corpo, misurata in <strong>Newton (N)</strong>. Dipende da <em>dove</em> ti trovi.</p>
+            <p style="margin:0.5rem 0 0;">Relazione fondamentale: \( P = m \cdot g \), dove \( g \) è l'accelerazione di gravità.</p>
+        </div>
+
+        <p class="lesson-text">
+            Sulla Terra \( g \approx 9{,}81 \, \text{m/s}^2 \). Sulla Luna \( g \approx 1{,}62 \, \text{m/s}^2 \). Un astronauta di 80 kg <em>pesa</em> 785 N sulla Terra e solo 130 N sulla Luna, ma la sua massa resta sempre 80 kg.
+        </p>
+
+        <div class="callout blue">
+            <div class="callout-icon">🚀</div>
+            <p><strong>Neil Armstrong sulla Luna:</strong> il suo zaino "Apollo PLSS" pesava 80 kg sulla Terra e nessuno l'avrebbe potuto sollevare. Sulla Luna, invece, pesava come 14 kg: facilmente trasportabile. Ma se Armstrong fosse caduto contro un masso, l'inerzia (cioè la massa) era esattamente la stessa di sulla Terra: avrebbe dovuto frenare 80 kg di materia.</p>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Simulatore Interattivo: Massa vs Peso nei Pianeti</h2>
+        <p class="lesson-text">
+            Scegli un pianeta e una massa: vedrai come cambia il peso restando invariata la massa del corpo. Questa è la dimostrazione più immediata che le due grandezze sono diverse.
+        </p>
+
+        <div class="balance-widget">
+            <canvas id="planet-canvas" width="700" height="280"></canvas>
+
+            <div class="controls-row">
+                <div class="ctrl-group">
+                    <label>Massa del corpo: <span class="ctrl-value" id="mass-display">70</span> kg</label>
+                    <input type="range" id="mass-slider" min="1" max="200" value="70" step="1">
+                </div>
+            </div>
+
+            <div class="planet-grid" id="planet-grid">
+                <button class="planet-btn" data-g="1.62" data-name="Luna">🌙 Luna</button>
+                <button class="planet-btn" data-g="3.71" data-name="Marte">🔴 Marte</button>
+                <button class="planet-btn active" data-g="9.81" data-name="Terra">🌍 Terra</button>
+                <button class="planet-btn" data-g="24.79" data-name="Giove">🪐 Giove</button>
+                <button class="planet-btn" data-g="274" data-name="Sole">☀️ Sole</button>
+            </div>
+
+            <div class="readout">
+                <div class="readout-card">
+                    <div class="readout-label">Massa (invariante)</div>
+                    <div class="readout-value" id="mass-readout">70 kg</div>
+                </div>
+                <div class="readout-card peso">
+                    <div class="readout-label">Peso su <span id="planet-name">Terra</span></div>
+                    <div class="readout-value" id="weight-readout">686.7 N</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Bilancia a Bracci vs Dinamometro</h2>
+        <p class="lesson-text">
+            Esistono fondamentalmente <strong>due famiglie di strumenti</strong> per misurare la massa, basate su principi fisici opposti:
+        </p>
+
+        <div class="grid" style="grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:1.5rem; margin:2rem 0;">
+            <div class="card" style="padding:1.5rem; border-top:3px solid var(--physics-color);">
+                <div style="font-size:2.5rem; text-align:center; margin-bottom:0.8rem;">⚖️</div>
+                <h4 style="color:var(--physics-color); text-align:center; margin-bottom:0.8rem;">Bilancia a Bracci</h4>
+                <p style="font-size:0.93rem; color:var(--text-muted);">Confronta direttamente la <strong style="color:var(--text-main);">massa</strong> di un oggetto con pesi campione. Funziona su qualsiasi pianeta perché \( g \) si elide su entrambi i piatti. <em>Misura davvero la massa.</em></p>
+            </div>
+            <div class="card" style="padding:1.5rem; border-top:3px solid #f59e0b;">
+                <div style="font-size:2.5rem; text-align:center; margin-bottom:0.8rem;">🪝</div>
+                <h4 style="color:#f59e0b; text-align:center; margin-bottom:0.8rem;">Dinamometro (Molla)</h4>
+                <p style="font-size:0.93rem; color:var(--text-muted);">Misura la <strong style="color:var(--text-main);">forza peso</strong> tramite l'allungamento di una molla (legge di Hooke). Su un altro pianeta darebbe un valore diverso. <em>Misura il peso, non la massa.</em></p>
+            </div>
+        </div>
+
+        <div class="callout amber">
+            <div class="callout-icon">🧪</div>
+            <p><strong>Test pratico:</strong> la bilancia digitale di casa è un dinamometro elettronico! Tara la "massa" attraverso il peso, e per questo va periodicamente calibrata con \( g \) locale. In un volo parabolico (gravità zero), segnerebbe sempre <em>0 kg</em>.</p>
+        </div>
+
+        <h3 style="margin:2rem 0 1rem; font-size:1.1rem;">L'Allungamento della Molla (Dinamometro)</h3>
+        <p class="lesson-text">
+            Trascina lo slider per vedere come una molla si allunga proporzionalmente al peso appeso (legge di Hooke: \( F = k \cdot \Delta x \)). Cambiando il pianeta, vedrai che <em>la stessa massa</em> produce allungamenti differenti.
+        </p>
+
+        <div class="balance-widget">
+            <canvas id="spring-canvas" width="500" height="400"></canvas>
+            <div class="controls-row">
+                <div class="ctrl-group">
+                    <label>Massa appesa: <span class="ctrl-value" id="spring-mass-display">2</span> kg</label>
+                    <input type="range" id="spring-mass" min="0" max="10" value="2" step="0.1">
+                </div>
+                <div class="ctrl-group">
+                    <label>Gravità: <span class="ctrl-value" id="spring-g-display">9.81</span> m/s²</label>
+                    <input type="range" id="spring-g" min="1" max="25" value="9.81" step="0.1">
+                </div>
+            </div>
+            <div class="readout">
+                <div class="readout-card">
+                    <div class="readout-label">Forza peso</div>
+                    <div class="readout-value" id="spring-force">19.6 N</div>
+                </div>
+                <div class="readout-card peso">
+                    <div class="readout-label">Allungamento Δx</div>
+                    <div class="readout-value" id="spring-delta">9.8 cm</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Massa Inerziale e Massa Gravitazionale</h2>
+        <p class="lesson-text">
+            Esistono in realtà <strong>due concetti distinti di massa</strong> che, per una coincidenza profonda, hanno lo stesso valore numerico:
+        </p>
+        <ul style="color:var(--text-muted); line-height:1.8; margin-bottom:1.5rem; padding-left:1.5rem;">
+            <li><strong>Massa inerziale</strong> \( m_i \): compare in \( F = m_i \, a \). Misura quanto un corpo resiste all'essere accelerato.</li>
+            <li><strong>Massa gravitazionale</strong> \( m_g \): compare in \( F = m_g \, g \). Misura quanto un corpo è "sensibile" alla gravità.</li>
+        </ul>
+
+        <p class="lesson-text">
+            Galileo, nel 1589 (secondo la leggenda dalla Torre di Pisa), dimostrò che tutti i corpi cadono con la stessa accelerazione. Questo implica \( m_i = m_g \). Einstein nel 1907 elevò questo fatto a <strong>principio di equivalenza</strong>, la pietra angolare della relatività generale.
+        </p>
+
+        <div class="callout blue">
+            <div class="callout-icon">🪶</div>
+            <p><strong>Esperimento Apollo 15 (1971):</strong> il comandante David Scott lasciò cadere una piuma e un martello sulla Luna. Entrambi toccarono il suolo nello stesso istante, dimostrando in diretta TV che Galileo aveva ragione. Senza aria, una piuma e un'incudine cadono insieme.</p>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Confronta il Tuo Peso nel Sistema Solare</h2>
+        <p class="lesson-text">
+            Una persona di 70 kg avrebbe questi pesi sui vari corpi celesti del Sistema Solare:
+        </p>
+
+        <table class="data-table">
+            <thead>
+                <tr><th>Corpo celeste</th><th>g (m/s²)</th><th>Massa (kg)</th><th>Peso (N)</th></tr>
+            </thead>
+            <tbody id="planet-table"></tbody>
+        </table>
+
+        <div class="callout">
+            <div class="callout-icon">🦸</div>
+            <p><strong>Riferimento pop:</strong> in <em>Dragon Ball</em>, Goku si allena sul pianeta del re Kaio dove \( g = 10 \times g_{Terra} \). Con 9,81·10 ≈ 98 m/s², un Goku da 60 kg peserebbe circa 5900 N: sentirebbe sulla pelle l'equivalente di portare in spalla 6 persone! Un ottimo esercizio di rafforzamento muscolare.</p>
+        </div>
+    </section>
+
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title">Quiz di Riepilogo</h2>
+        <p class="lesson-text" style="font-size:0.95rem;">Verifica di aver compreso la distinzione tra massa e peso e gli strumenti per misurarli.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size:1.2rem; margin-top:2rem;"></div>
+    </section>
+
+</main>
+
+<footer><p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Fisica.</p></footer>
+
+<script src="bilancia-massa.js"></script>
+<script src="../../js/main.js"></script>
+</body>
+</html>

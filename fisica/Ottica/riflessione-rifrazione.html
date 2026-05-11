@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riflessione e Rifrazione - Lezione Interattiva MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+        .sub-hero {
+            padding: 4rem 0 2rem;
+            text-align: left;
+        }
+        .sub-hero-title {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .canvas-wrap {
+            background: rgba(0,0,0,0.35);
+            border-radius: 12px;
+            padding: 1.2rem;
+            margin: 1.5rem 0;
+            text-align: center;
+            border: 1px solid rgba(16,185,129,0.15);
+        }
+        canvas {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+            border-radius: 8px;
+            background: #060a10;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin: 1rem 0;
+            align-items: center;
+            justify-content: center;
+        }
+        .ctrl {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            min-width: 180px;
+        }
+        .ctrl label {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .ctrl input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            background: rgba(16,185,129,0.25);
+            border-radius: 3px;
+            outline: none;
+        }
+        .ctrl input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--physics-color);
+            cursor: pointer;
+            box-shadow: 0 0 8px var(--physics-glow);
+        }
+        .ctrl select {
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(16,185,129,0.3);
+            color: var(--text-main);
+            padding: 0.5rem 0.7rem;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+        .val-display {
+            font-family: monospace;
+            color: var(--physics-color);
+            font-weight: 700;
+            font-size: 1.05rem;
+        }
+
+        .info-box {
+            background: rgba(16,185,129,0.07);
+            border-left: 4px solid var(--physics-color);
+            border-radius: 0 0.75rem 0.75rem 0;
+            padding: 1.25rem 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .info-box .formula {
+            font-family: 'Courier New', monospace;
+            font-size: 1.3rem;
+            color: var(--physics-color);
+            text-align: center;
+            padding: 0.5rem 0;
+            font-weight: 700;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 2.5rem;
+            margin: 2rem 0;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0.6rem;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--physics-color), rgba(16,185,129,0.1));
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -1.95rem;
+            top: 0.4rem;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--physics-color);
+            box-shadow: 0 0 8px var(--physics-glow);
+        }
+        .timeline-year {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--physics-color);
+            letter-spacing: 1px;
+            margin-bottom: 0.3rem;
+        }
+        .timeline-text {
+            font-size: 0.97rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+        .timeline-text strong { color: var(--text-main); }
+
+        .n-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background: rgba(0,0,0,0.25);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .n-table th, .n-table td {
+            padding: 0.85rem 1.2rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.97rem;
+        }
+        .n-table th {
+            background: rgba(16,185,129,0.1);
+            color: var(--physics-color);
+            font-weight: 700;
+            letter-spacing: 0.03em;
+        }
+        .n-table td.num {
+            font-family: monospace;
+            color: var(--physics-color);
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .quiz-question { margin-bottom: 2rem; }
+        .quiz-question h3 { color: var(--text-main); font-size: 1rem; font-weight: 600; margin-bottom: 0.8rem; }
+        .quiz-options { display: flex; flex-direction: column; gap: 0.5rem; }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="../ottica.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Ottica
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Riflessione e <span class="gradient-text">Rifrazione</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+            Quando un raggio di luce incontra una superficie, può rimbalzare, piegarsi o entrambe le cose. Le leggi di Snell-Cartesio descrivono questo balletto con precisione matematica.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Da Tolomeo a Snell: La Caccia alla Legge della Rifrazione</h2>
+        <p class="lesson-text">
+            Già nel II secolo d.C. l'astronomo <strong>Claudio Tolomeo</strong> notò che i raggi luminosi cambiano direzione quando passano dall'aria all'acqua. Misurò gli angoli e compilò tabelle precise, ma non riuscì a estrarre una legge matematica generale. Quel passo decisivo arrivò più di 1400 anni dopo.
+        </p>
+        <p class="lesson-text">
+            Nel 1621 il matematico olandese <strong>Willebrord Snell</strong> scoprì la regola che oggi porta il suo nome, ma non la pubblicò mai. La pubblicò invece <strong>René Descartes</strong> nel 1637 nel suo trattato <em>"La Dioptrique"</em>. In Italia e Francia la legge è infatti spesso chiamata <em>legge di Snell-Cartesio</em>.
+        </p>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-year">~140 d.C.</div>
+                <p class="timeline-text"><strong>Tolomeo</strong> raccoglie misure sistematiche degli angoli di rifrazione fra aria, acqua e vetro nella sua <em>Optica</em>.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1021</div>
+                <p class="timeline-text"><strong>Alhazen</strong> (Ibn al-Haytham), nel suo <em>Kitab al-Manazir</em>, propone il principio del cammino minimo e getta le basi dell'ottica moderna.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1621</div>
+                <p class="timeline-text"><strong>Willebrord Snell</strong> formula la relazione corretta tra angolo di incidenza e angolo di rifrazione.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1637</div>
+                <p class="timeline-text"><strong>Descartes</strong> pubblica la legge di rifrazione e Newton, qualche decennio dopo, mostra che la luce bianca contiene tutti i colori dell'arcobaleno usando un <strong>prisma di vetro</strong>.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1854</div>
+                <p class="timeline-text"><strong>John Tyndall</strong> dimostra la <em>riflessione totale interna</em> in un getto d'acqua, gettando le basi delle moderne fibre ottiche.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">La Riflessione: Quando la Luce Rimbalza</h2>
+        <p class="lesson-text">
+            Quando un raggio di luce colpisce una superficie liscia, parte dell'energia rimbalza indietro. Questa è la <strong>riflessione</strong>. Per descriverla introduciamo la <em>normale</em>: la linea perpendicolare alla superficie nel punto di incidenza.
+        </p>
+
+        <div class="info-box">
+            <p style="margin: 0; color: var(--text-muted);"><strong style="color: var(--physics-color);">Legge della Riflessione:</strong> il raggio incidente, la normale e il raggio riflesso giacciono nello stesso piano. L'angolo di incidenza è uguale all'angolo di riflessione.</p>
+            <div class="formula">θ<sub>i</sub> = θ<sub>r</sub></div>
+        </div>
+
+        <p class="lesson-text">
+            Gli angoli si misurano sempre <em>rispetto alla normale</em>, non alla superficie. Se una superficie è perfettamente liscia (come uno specchio) la riflessione è <strong>speculare</strong>: i raggi paralleli restano paralleli dopo il rimbalzo. Su una superficie ruvida (un muro, un foglio di carta) la riflessione è <strong>diffusa</strong>: i raggi si disperdono in tutte le direzioni ed è grazie a questa diffusione che vediamo gli oggetti illuminati.
+        </p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">La Rifrazione: Quando la Luce Cambia Velocità</h2>
+        <p class="lesson-text">
+            Nel vuoto la luce viaggia a c = 299 792 458 m/s, la massima velocità dell'universo. In un mezzo materiale (acqua, vetro, diamante) procede più lentamente. Il rapporto fra le due velocità definisce l'<strong>indice di rifrazione</strong> n del mezzo:
+        </p>
+
+        <div class="info-box">
+            <div class="formula">n = c / v</div>
+            <p style="margin: 0.7rem 0 0; color: var(--text-muted); text-align: center; font-size: 0.95rem;">Più n è grande, più la luce rallenta in quel materiale.</p>
+        </div>
+
+        <p class="lesson-text">
+            Quando un raggio passa da un mezzo all'altro la sua velocità cambia: per mantenere la coerenza dell'onda, anche la direzione cambia. Questo è il fenomeno della <strong>rifrazione</strong>, regolato dalla legge di Snell:
+        </p>
+
+        <div class="info-box">
+            <div class="formula">n<sub>1</sub> · sin(θ<sub>1</sub>) = n<sub>2</sub> · sin(θ<sub>2</sub>)</div>
+        </div>
+
+        <h3 style="margin: 1.5rem 0 1rem; color: var(--physics-color); font-size: 1.15rem;">Indici di rifrazione di alcuni materiali comuni</h3>
+        <table class="n-table">
+            <thead><tr><th>Materiale</th><th>Indice n</th><th>Velocità della luce (km/s)</th></tr></thead>
+            <tbody>
+                <tr><td>Vuoto</td><td class="num">1.000</td><td class="num">299 792</td></tr>
+                <tr><td>Aria (a 0°C)</td><td class="num">1.0003</td><td class="num">~299 700</td></tr>
+                <tr><td>Acqua</td><td class="num">1.333</td><td class="num">225 000</td></tr>
+                <tr><td>Vetro crown</td><td class="num">1.52</td><td class="num">197 000</td></tr>
+                <tr><td>Plexiglass</td><td class="num">1.49</td><td class="num">201 000</td></tr>
+                <tr><td>Diamante</td><td class="num">2.42</td><td class="num">124 000</td></tr>
+            </tbody>
+        </table>
+        <p class="lesson-text" style="font-size: 0.93rem;">
+            È proprio l'altissimo indice di rifrazione del diamante che, combinato con il taglio del gioielliere, fa scintillare le gemme: la luce rimane intrappolata internamente e rimbalza più volte prima di uscire.
+        </p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Simulatore di Snell — Cambia Mezzo, Cambia Angolo</h2>
+        <p class="lesson-text">
+            Sposta il raggio incidente e cambia i materiali. Osserva come l'angolo rifratto cambia secondo la legge di Snell. Quando si passa da un mezzo più rifrangente a uno meno rifrangente, esiste un <strong>angolo limite</strong> oltre il quale la luce non riesce più ad uscire: avviene la <em>riflessione totale interna</em>.
+        </p>
+
+        <div class="canvas-wrap">
+            <canvas id="snellCanvas" width="640" height="380"></canvas>
+            <div class="controls">
+                <div class="ctrl">
+                    <label>Angolo di incidenza: <span class="val-display" id="angleVal">30°</span></label>
+                    <input type="range" id="angleSlider" min="0" max="89" value="30">
+                </div>
+                <div class="ctrl">
+                    <label>Mezzo 1 (sopra)</label>
+                    <select id="medium1">
+                        <option value="1.0003" selected>Aria (n=1.00)</option>
+                        <option value="1.333">Acqua (n=1.33)</option>
+                        <option value="1.52">Vetro (n=1.52)</option>
+                        <option value="2.42">Diamante (n=2.42)</option>
+                    </select>
+                </div>
+                <div class="ctrl">
+                    <label>Mezzo 2 (sotto)</label>
+                    <select id="medium2">
+                        <option value="1.0003">Aria (n=1.00)</option>
+                        <option value="1.333" selected>Acqua (n=1.33)</option>
+                        <option value="1.52">Vetro (n=1.52)</option>
+                        <option value="2.42">Diamante (n=2.42)</option>
+                    </select>
+                </div>
+            </div>
+            <div style="background: rgba(0,0,0,0.4); border-radius: 8px; padding: 1rem; margin-top: 0.8rem; font-family: monospace; font-size: 0.95rem; color: var(--text-muted);">
+                <div>n<sub>1</sub> sin(θ<sub>1</sub>) = <span style="color: var(--physics-color);" id="lhsVal">0.500</span></div>
+                <div>n<sub>2</sub> sin(θ<sub>2</sub>) = <span style="color: var(--physics-color);" id="rhsVal">0.500</span></div>
+                <div style="margin-top: 0.4rem;">Angolo rifratto: <span style="color: var(--physics-color); font-weight: 700;" id="refractedAngle">22°</span></div>
+                <div id="totalRefMsg" style="color: #f59e0b; margin-top: 0.4rem; display: none;">Riflessione totale interna! L'angolo supera il limite critico.</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">La Riflessione Totale Interna</h2>
+        <p class="lesson-text">
+            Quando la luce viaggia da un mezzo più denso (n alto) verso uno meno denso (n basso), aumentando l'angolo di incidenza si arriva a un punto in cui il raggio rifratto sfiora la superficie a 90°. Oltre questo <strong>angolo critico</strong> θ<sub>c</sub> la luce non esce più: viene completamente riflessa.
+        </p>
+
+        <div class="info-box">
+            <div class="formula">sin(θ<sub>c</sub>) = n<sub>2</sub> / n<sub>1</sub></div>
+            <p style="margin: 0.7rem 0 0; color: var(--text-muted); text-align: center; font-size: 0.95rem;">Vale solo quando n<sub>1</sub> &gt; n<sub>2</sub>.</p>
+        </div>
+
+        <p class="lesson-text">
+            Per il sistema vetro-aria θ<sub>c</sub> ≈ 41°. Per acqua-aria ≈ 48,8°. Per il diamante-aria scende a circa 24°: ecco perché un diamante taglia la luce in tutte le direzioni e brilla così intensamente. Questo fenomeno è anche il principio alla base delle <strong>fibre ottiche</strong>, dei <strong>prismi binoculari</strong> e delle stelle filanti nelle vetrine dei gioiellieri.
+        </p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Il Prisma di Newton: Dispersione della Luce</h2>
+        <p class="lesson-text">
+            Nel 1666 Isaac Newton, ancora ventitreenne, era a casa dei genitori nel Lincolnshire a causa della peste. Per passare il tempo procurò un piccolo prisma triangolare di vetro. Quando ci fece passare un raggio di sole, sul muro apparve <strong>l'arcobaleno completo</strong>. La luce bianca, scoprì Newton, è un miscuglio di tutti i colori.
+        </p>
+        <p class="lesson-text">
+            Questo avviene perché l'indice di rifrazione dipende leggermente dalla lunghezza d'onda: la luce rossa (λ ≈ 700 nm) viene deviata meno della luce violetta (λ ≈ 400 nm). Il prisma quindi "separa" i colori, fenomeno chiamato <strong>dispersione</strong>. L'arcobaleno in cielo funziona allo stesso modo: ogni gocciolina d'acqua è un mini-prisma.
+        </p>
+
+        <div class="canvas-wrap">
+            <canvas id="prismCanvas" width="640" height="320"></canvas>
+            <div class="controls">
+                <div class="ctrl">
+                    <label>Angolo del raggio in entrata: <span class="val-display" id="prismAngleVal">35°</span></label>
+                    <input type="range" id="prismAngle" min="20" max="60" value="35">
+                </div>
+            </div>
+            <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem;">Ogni colore ha un indice di rifrazione leggermente diverso e quindi un percorso diverso nel prisma.</p>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Ottica nella Vita di Tutti i Giorni</h2>
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin: 1.5rem 0;">
+            <div class="card" style="padding: 1.5rem;">
+                <div style="font-size: 2.2rem; margin-bottom: 0.5rem;">🌊</div>
+                <h4 style="color: var(--physics-color); margin-bottom: 0.5rem;">La cannuccia "spezzata"</h4>
+                <p style="font-size: 0.92rem; color: var(--text-muted);">Una cannuccia in un bicchiere d'acqua appare piegata al pelo del liquido: i raggi che escono dall'acqua si rifrangono e ingannano il nostro cervello.</p>
+            </div>
+            <div class="card" style="padding: 1.5rem;">
+                <div style="font-size: 2.2rem; margin-bottom: 0.5rem;">🌈</div>
+                <h4 style="color: var(--physics-color); margin-bottom: 0.5rem;">Arcobaleno</h4>
+                <p style="font-size: 0.92rem; color: var(--text-muted);">La luce solare entra in una goccia d'acqua, viene rifratta, riflessa internamente e nuovamente rifratta in uscita. I colori escono con angoli diversi: rosso a 42°, viola a 40°.</p>
+            </div>
+            <div class="card" style="padding: 1.5rem;">
+                <div style="font-size: 2.2rem; margin-bottom: 0.5rem;">💎</div>
+                <h4 style="color: var(--physics-color); margin-bottom: 0.5rem;">Brillantezza dei diamanti</h4>
+                <p style="font-size: 0.92rem; color: var(--text-muted);">L'indice n=2.42 e un angolo critico di soli 24° intrappolano la luce all'interno della gemma, che rimbalza più volte prima di uscire colorata.</p>
+            </div>
+            <div class="card" style="padding: 1.5rem;">
+                <div style="font-size: 2.2rem; margin-bottom: 0.5rem;">🏜️</div>
+                <h4 style="color: var(--physics-color); margin-bottom: 0.5rem;">Miraggi</h4>
+                <p style="font-size: 0.92rem; color: var(--text-muted);">L'aria calda vicino all'asfalto rovente ha n leggermente più basso: la luce si curva e crea l'illusione di una pozza d'acqua sulla strada.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title">Quiz di Riepilogo</h2>
+        <p class="lesson-text" style="font-size: 0.95rem;">Verifica di aver compreso le leggi di Snell e i fenomeni della riflessione totale.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Fisica.</p>
+</footer>
+
+<script src="riflessione-rifrazione.js"></script>
+<script src="../../js/main.js"></script>
+</body>
+</html>
