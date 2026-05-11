@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel Art - Lezione Interattiva MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        .back-button { display: inline-flex; align-items: center; color: var(--text-muted); text-decoration: none; margin-bottom: 2rem; font-weight: 600; transition: color 0.3s ease, transform 0.3s ease; }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+        .sub-hero { padding: 4rem 0 2rem; text-align: left; }
+        .sub-hero-title { font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; margin-bottom: 1rem; }
+
+        .timeline { position: relative; padding-left: 2.5rem; margin: 2rem 0; }
+        .timeline::before { content: ''; position: absolute; left: 0.6rem; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--chem-color), rgba(245,158,11,0.1)); }
+        .timeline-item { position: relative; margin-bottom: 2rem; }
+        .timeline-item::before { content: ''; position: absolute; left: -1.95rem; top: 0.4rem; width: 10px; height: 10px; border-radius: 50%; background: var(--chem-color); box-shadow: 0 0 8px var(--chem-glow); }
+        .timeline-year { font-size: 0.8rem; font-weight: 700; color: var(--chem-color); letter-spacing: 1px; margin-bottom: 0.3rem; }
+        .timeline-text { font-size: 0.97rem; color: var(--text-muted); line-height: 1.6; }
+        .timeline-text strong { color: var(--text-main); }
+
+        .editor-box { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 1.5rem; margin: 1.5rem 0; }
+        .pixel-grid { display: grid; grid-template-columns: repeat(16, 1fr); gap: 1px; background: rgba(0,0,0,0.5); padding: 4px; border-radius: 8px; max-width: 480px; aspect-ratio: 1; margin: 0 auto; }
+        .pixel-cell { background: #1a1f2e; cursor: pointer; transition: filter 0.1s; aspect-ratio: 1; }
+        .pixel-cell:hover { filter: brightness(1.4); }
+
+        .palette { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1rem; justify-content: center; }
+        .palette-swatch { width: 38px; height: 38px; border-radius: 8px; cursor: pointer; border: 2px solid rgba(255,255,255,0.1); transition: all 0.15s; }
+        .palette-swatch.active { border-color: var(--chem-color); box-shadow: 0 0 12px var(--chem-glow); transform: scale(1.1); }
+
+        .editor-controls { display: flex; gap: 0.7rem; flex-wrap: wrap; margin: 1rem 0; justify-content: center; }
+        .ed-btn { background: var(--chem-color); color: #fff; border: none; padding: 0.55rem 1rem; border-radius: 8px; cursor: pointer; font-weight: 700; font-family: inherit; font-size: 0.9rem; transition: transform 0.2s; }
+        .ed-btn:hover { transform: translateY(-2px); }
+        .ed-btn.secondary { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: var(--text-main); }
+
+        .sprite-showcase { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+        .sprite-display { background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 12px; text-align: center; }
+        .sprite-canvas { width: 128px; height: 128px; image-rendering: pixelated; image-rendering: crisp-edges; margin: 0 auto; display: block; background: #1a1f2e; border-radius: 4px; }
+        .sprite-label { color: var(--text-muted); font-size: 0.85rem; margin-top: 0.6rem; font-family: monospace; }
+
+        .bit-depth-card { background: rgba(0,0,0,0.3); padding: 1.2rem; border-radius: 12px; border-top: 3px solid var(--chem-color); }
+        .bit-depth-card h4 { color: var(--chem-color); font-family: monospace; margin-bottom: 0.6rem; }
+        .bit-demo { height: 60px; border-radius: 6px; margin-top: 0.6rem; display: flex; }
+        .bit-demo span { flex: 1; }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="informatica.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Informatica
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Pixel <span class="gradient-text">Art</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+            Dai videogiochi degli anni '80 ai capolavori indie moderni: l'arte di disegnare con pochi quadratini colorati ha conquistato tre generazioni.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Da Atari a Stardew Valley: una Storia di Pixel</h2>
+        <p class="lesson-text">
+            Negli anni '70 i computer avevano pochissima memoria e schermi a bassa risoluzione: per disegnare qualunque cosa servivano <strong>pochissimi quadratini colorati</strong>, chiamati <em>pixel</em> (picture element). Cio che nacque per necessita e diventato, decenni dopo, una vera e propria forma d'arte.
+        </p>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-year">1977</div>
+                <p class="timeline-text"><strong>Atari 2600</strong>: 160x192 pixel, 128 colori ma solo 4 visibili contemporaneamente per riga. Giochi come <em>Space Invaders</em> e <em>Pac-Man</em> definiscono l'estetica del pixel.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1985</div>
+                <p class="timeline-text">Esce <strong>Super Mario Bros</strong> per NES: Mario e composto da appena 16x16 pixel e 3 colori. I baffi servivano per non disegnare la bocca, il cappello per non disegnare i capelli.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1991</div>
+                <p class="timeline-text"><strong>Super Nintendo</strong> e <strong>Sega Genesis</strong>: l'epoca d'oro dei 16-bit. Sprite piu ricchi, sfondi multilivello (parallasse). Sonic, Street Fighter II, Final Fantasy VI.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2009</div>
+                <p class="timeline-text"><strong>Minecraft</strong> esce in beta: il pixel diventa volumetrico (voxel). Markus "Notch" Persson dimostra che la grafica retro puo battere i tripla-A fotorealistici.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2016-2018</div>
+                <p class="timeline-text">Boom della pixel art indie: <strong>Stardew Valley</strong> (un solo sviluppatore!), <strong>Celeste</strong>, <strong>Undertale</strong>, <strong>Shovel Knight</strong>. La pixel art non e nostalgia: e una scelta artistica deliberata.</p>
+            </div>
+        </div>
+
+        <div style="background: rgba(245,158,11,0.06); border-left: 4px solid var(--chem-color); padding: 1.5rem; border-radius: 0 10px 10px 0;">
+            <p class="lesson-text" style="margin-bottom: 0;">
+                <strong>Curiosita:</strong> il celebre fungo verde 1-UP di Mario fu colorato di verde solo perche la palette del NES non aveva abbastanza spazio per un colore "diverso" da quello dei tubi. Un vincolo tecnico divenne icona.
+            </p>
+        </div>
+    </section>
+
+    <section class="lesson-section" style="border-left: 4px solid var(--chem-color);">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Bit per Pixel: come si Codificano i Colori</h2>
+        <p class="lesson-text">
+            Ogni pixel sullo schermo deve essere memorizzato come un numero. Quanti <strong>bit</strong> usiamo per pixel determina quanti colori diversi possiamo rappresentare. La regola e: <em>N bit = 2<sup>N</sup> colori</em>.
+        </p>
+
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.2rem; margin: 1.5rem 0;">
+            <div class="bit-depth-card">
+                <h4>1-bit (monocromatico)</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">2 colori (bianco/nero). Usato dal Macintosh originale (1984) e dal Game Boy (1989, in realta 2-bit verde).</p>
+                <div class="bit-demo"><span style="background:#000;"></span><span style="background:#fff;"></span></div>
+            </div>
+            <div class="bit-depth-card">
+                <h4>4-bit (16 colori)</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">16 colori. Era la palette EGA dei PC IBM anni '80, e quella del Commodore 64.</p>
+                <div class="bit-demo">
+                    <span style="background:#000"></span><span style="background:#00f"></span><span style="background:#080"></span><span style="background:#088"></span>
+                    <span style="background:#800"></span><span style="background:#808"></span><span style="background:#840"></span><span style="background:#ccc"></span>
+                    <span style="background:#888"></span><span style="background:#00f"></span><span style="background:#0f0"></span><span style="background:#0ff"></span>
+                    <span style="background:#f00"></span><span style="background:#f0f"></span><span style="background:#ff0"></span><span style="background:#fff"></span>
+                </div>
+            </div>
+            <div class="bit-depth-card">
+                <h4>8-bit (256 colori)</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">256 colori scelti da una palette. Era lo standard delle console 8-bit (NES, Sega Master System) e delle GIF.</p>
+                <div class="bit-demo" id="palette-256"></div>
+            </div>
+            <div class="bit-depth-card">
+                <h4>24-bit RGB (true color)</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">8 bit per ogni canale R, G, B: 256x256x256 = <strong>16,7 milioni</strong> di colori. Lo standard moderno.</p>
+                <div class="bit-demo" style="background: linear-gradient(90deg, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000);"></div>
+            </div>
+        </div>
+
+        <div style="background: rgba(0,0,0,0.25); border-radius: 10px; padding: 1.3rem; font-family: monospace; font-size: 0.92rem; color: var(--text-muted); margin-top: 1rem;">
+            Esempio RGB: <span style="color:#ef4444;font-weight:700;">rosso puro</span> = <strong style="color:var(--text-main)">(255, 0, 0)</strong> = #FF0000 = <span style="color:var(--chem-color)">11111111 00000000 00000000</span><br>
+            <span style="color:var(--chem-color);font-weight:700;">giallo Mario</span> = <strong style="color:var(--text-main)">(252, 188, 0)</strong> = #FCBC00<br>
+            <span style="color:#10b981;font-weight:700;">verde Yoshi</span> = <strong style="color:var(--text-main)">(0, 168, 0)</strong> = #00A800
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Editor Pixel Art Interattivo</h2>
+        <p class="lesson-text">
+            Disegna il tuo sprite 16x16! Clicca su un colore della palette, poi clicca (o trascina) sulla griglia per dipingere. Questa griglia ha la stessa dimensione dello sprite originale di Mario.
+        </p>
+
+        <div class="editor-box">
+            <div class="pixel-grid" id="pixel-grid"></div>
+            <div class="palette" id="palette"></div>
+            <div class="editor-controls">
+                <button class="ed-btn" id="ed-clear">Pulisci</button>
+                <button class="ed-btn secondary" id="ed-mario">Carica Mario</button>
+                <button class="ed-btn secondary" id="ed-heart">Carica Cuore</button>
+                <button class="ed-btn secondary" id="ed-export">Esporta come PNG</button>
+            </div>
+            <p style="text-align: center; color: var(--text-muted); font-size: 0.85rem; margin-top: 0.5rem;">
+                Suggerimento: tieni premuto il mouse e trascina per disegnare piu pixel.
+            </p>
+        </div>
+    </section>
+
+    <section class="lesson-section" style="border-left: 4px solid var(--physics-color);">
+        <h2 class="lesson-title" style="color: var(--physics-color);">Sprite e Tile: i Mattoni dei Videogiochi</h2>
+        <p class="lesson-text">
+            Negli anni '80-'90 la memoria era preziosissima. Per non disegnare ogni schermata da capo, i designer usavano due tecniche:
+        </p>
+
+        <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0;">
+            <div class="card" style="padding: 1.3rem; border-top: 3px solid var(--physics-color);">
+                <h4 style="color: var(--physics-color); margin-bottom: 0.5rem;">Sprite</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Piccola immagine (8x8 o 16x16 pixel) che rappresenta un <strong>personaggio o oggetto in movimento</strong>: Mario, Pac-Man, un proiettile. Si muovono indipendentemente sullo schermo.</p>
+            </div>
+            <div class="card" style="padding: 1.3rem; border-top: 3px solid var(--chem-color);">
+                <h4 style="color: var(--chem-color); margin-bottom: 0.5rem;">Tile</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Tasselli (di solito 16x16) che si <strong>ripetono per costruire i livelli</strong>. Il prato di Mario sono lo stesso tile ripetuto 1000 volte. Pochi tile = mega-livelli con pochissima memoria.</p>
+            </div>
+        </div>
+
+        <div class="sprite-showcase">
+            <div class="sprite-display">
+                <canvas class="sprite-canvas" id="sprite-mario" width="16" height="16"></canvas>
+                <div class="sprite-label">Mario (16x16)</div>
+            </div>
+            <div class="sprite-display">
+                <canvas class="sprite-canvas" id="sprite-heart" width="16" height="16"></canvas>
+                <div class="sprite-label">Cuore Zelda</div>
+            </div>
+            <div class="sprite-display">
+                <canvas class="sprite-canvas" id="sprite-coin" width="16" height="16"></canvas>
+                <div class="sprite-label">Moneta</div>
+            </div>
+            <div class="sprite-display">
+                <canvas class="sprite-canvas" id="sprite-ghost" width="16" height="16"></canvas>
+                <div class="sprite-label">Fantasma</div>
+            </div>
+        </div>
+
+        <p class="lesson-text">
+            <strong>Pokemon Rosso e Blu (1996)</strong> ha 151 sprite per i Pokemon, ognuno disegnato in 56x56 pixel con appena 4 sfumature di grigio: ogni sprite occupa meno di 200 byte di memoria, eppure una generazione intera li riconosce a colpo d'occhio.
+        </p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Trasformazioni: Zoom, Flip, Rotazioni</h2>
+        <p class="lesson-text">
+            I videogiochi sono pieni di trucchi per riusare lo stesso sprite. Disegnare Link che guarda a destra e poi <strong>specchiarlo</strong> e gratis in termini di memoria. Vediamo le trasformazioni base:
+        </p>
+
+        <div class="sprite-showcase">
+            <div class="sprite-display">
+                <canvas class="sprite-canvas" id="trans-original" width="16" height="16"></canvas>
+                <div class="sprite-label">Originale</div>
+            </div>
+            <div class="sprite-display">
+                <canvas class="sprite-canvas" id="trans-flip" width="16" height="16"></canvas>
+                <div class="sprite-label">Flip orizzontale</div>
+            </div>
+            <div class="sprite-display">
+                <canvas class="sprite-canvas" id="trans-rot" width="16" height="16"></canvas>
+                <div class="sprite-label">Rotazione 90&deg;</div>
+            </div>
+            <div class="sprite-display">
+                <canvas class="sprite-canvas" id="trans-zoom" width="16" height="16"></canvas>
+                <div class="sprite-label">Zoom 2x (nearest neighbor)</div>
+            </div>
+        </div>
+
+        <p class="lesson-text">
+            <strong>Lo zoom della pixel art</strong> usa l'algoritmo <em>nearest neighbor</em>: ogni pixel viene moltiplicato senza sfocature. E proprio quello che NON vuoi quando ingrandisci una foto, ma e essenziale per la pixel art che deve rimanere "croccante".
+        </p>
+    </section>
+
+    <section class="lesson-section" style="background: rgba(245,158,11,0.03); border-left: 4px solid var(--chem-color);">
+        <h2 class="lesson-title" style="color: var(--chem-color);">PNG vs JPG: con o senza Perdita</h2>
+        <p class="lesson-text">
+            Quando salvi un'immagine, hai due grandi famiglie di formati. La differenza e fondamentale per la pixel art:
+        </p>
+
+        <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0;">
+            <div class="card" style="padding: 1.5rem; border-top: 3px solid var(--physics-color);">
+                <h4 style="color: var(--physics-color); margin-bottom: 0.5rem;">PNG (lossless)</h4>
+                <p style="font-size: 0.92rem; color: var(--text-muted); margin-bottom: 0.6rem;">Compressione <strong>senza perdita</strong>: ogni pixel e preservato esattamente. Supporta la <strong>trasparenza</strong> (canale alfa). Il file e piu grande, ma la qualita e perfetta.</p>
+                <div style="font-family:monospace; font-size:0.85rem; color: var(--physics-color);">USA PER: pixel art, screenshot, loghi, icone</div>
+            </div>
+            <div class="card" style="padding: 1.5rem; border-top: 3px solid #EF4444;">
+                <h4 style="color: #EF4444; margin-bottom: 0.5rem;">JPG/JPEG (lossy)</h4>
+                <p style="font-size: 0.92rem; color: var(--text-muted); margin-bottom: 0.6rem;">Compressione <strong>con perdita</strong>: butta via dettagli che l'occhio umano nota poco. File piccoli, ma su un pixel rosso isolato crea <em>artefatti</em> attorno (i famosi "JPG artifacts").</p>
+                <div style="font-family:monospace; font-size:0.85rem; color: #EF4444;">USA PER: foto naturali. NON USARE per pixel art!</div>
+            </div>
+        </div>
+
+        <div style="background: rgba(0,0,0,0.3); padding: 1.3rem; border-radius: 10px; font-family: monospace; font-size: 0.92rem;">
+            <span style="color: var(--text-muted);">// Dimensione tipica di un'immagine 1024x1024:</span><br>
+            <span style="color: var(--chem-color);">PNG (pixel art):</span> ~30 KB (poche righe, molti colori uguali)<br>
+            <span style="color: var(--chem-color);">PNG (foto):</span> ~2-5 MB<br>
+            <span style="color: var(--chem-color);">JPG (foto, qualita 80):</span> ~150-300 KB<br>
+            <span style="color: var(--chem-color);">JPG (pixel art):</span> orribile! Aloni grigi attorno ad ogni colore.
+        </div>
+
+        <p class="lesson-text" style="margin-top: 1rem;">
+            <strong>WebP</strong> (Google, 2010) e <strong>AVIF</strong> (2019) sono formati moderni che offrono <em>sia</em> lossy <em>che</em> lossless con compressioni migliori del 30-50%. Ormai tutti i browser li supportano.
+        </p>
+    </section>
+
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Quiz di Riepilogo</h2>
+        <p class="lesson-text" style="font-size: 0.95rem;">Verifica di aver compreso pixel, sprite e formati immagine.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Informatica.</p>
+</footer>
+
+<script src="pixel-art.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

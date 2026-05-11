@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commesso Viaggiatore - Lezione Interattiva MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        .back-button { display: inline-flex; align-items: center; color: var(--text-muted); text-decoration: none; margin-bottom: 2rem; font-weight: 600; transition: color 0.3s ease, transform 0.3s ease; }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+        .sub-hero { padding: 4rem 0 2rem; text-align: left; }
+        .sub-hero-title { font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; margin-bottom: 1rem; }
+
+        .complexity-box { background: rgba(0,0,0,0.3); padding: 1.5rem; border-radius: 12px; margin: 1.5rem 0; }
+        .complexity-row { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; margin-bottom: 0.6rem; font-family: monospace; }
+        .complexity-row .n { color: var(--chem-color); font-weight: 700; min-width: 80px; }
+        .complexity-row .val { color: var(--text-main); }
+
+        .map-box { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 1.5rem; margin: 1.5rem 0; }
+        .map-canvas { width: 100%; max-width: 720px; aspect-ratio: 16/10; background: #0B0E14; border-radius: 10px; display: block; margin: 0 auto; cursor: crosshair; }
+        .map-controls { display: flex; gap: 0.7rem; flex-wrap: wrap; margin-top: 1rem; justify-content: center; }
+        .m-btn { background: var(--chem-color); color: #fff; border: none; padding: 0.6rem 1.1rem; border-radius: 8px; cursor: pointer; font-weight: 700; font-family: inherit; font-size: 0.95rem; }
+        .m-btn.secondary { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: var(--text-main); }
+        .m-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .stats-row { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1rem; justify-content: center; }
+        .stat-pill { background: rgba(0,0,0,0.3); padding: 0.7rem 1.2rem; border-radius: 10px; min-width: 130px; text-align: center; }
+        .stat-pill-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
+        .stat-pill-val { font-family: monospace; font-size: 1.3rem; font-weight: 800; color: var(--chem-color); }
+        .stat-pill-val.nn { color: var(--physics-color); }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="informatica.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Informatica
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Il <span class="gradient-text">Commesso Viaggiatore</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+            Il problema piu famoso dell'informatica teorica: visitare N citta nel minor tempo possibile. Sembra facile, ma con 30 citta nemmeno il piu potente supercomputer ce la fa.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Il Problema (TSP)</h2>
+        <p class="lesson-text">
+            <strong>Travelling Salesman Problem</strong> (TSP), in italiano problema del commesso viaggiatore. L'enunciato e disarmante:
+        </p>
+
+        <div style="background: rgba(245,158,11,0.06); border-left: 4px solid var(--chem-color); padding: 1.5rem; border-radius: 0 10px 10px 0; margin: 1.5rem 0;">
+            <p style="font-style: italic; font-size: 1.05rem;">
+                "Dato un insieme di N citta e le distanze tra ognuna, trovare il <strong>percorso piu breve</strong> che le visiti tutte una volta sola e torni alla citta di partenza."
+            </p>
+        </div>
+
+        <p class="lesson-text">
+            Con 4 citta lo risolvi a mente. Con 10 ci mette un secondo un PC. Con 25 ci vogliono giorni. Con 100 nemmeno tutti i computer della Terra messi insieme ce la farebbero in tempo prima della morte termica dell'universo. Il TSP e il <strong>simbolo</strong> di una classe enorme di problemi: quelli intrattabili in pratica.
+        </p>
+
+        <p class="lesson-text">
+            Il TSP fu formalizzato negli anni '30 dal matematico <strong>Karl Menger</strong> a Vienna. Da allora, e diventato uno dei problemi piu studiati in informatica e in matematica applicata.
+        </p>
+    </section>
+
+    <section class="lesson-section" style="border-left: 4px solid var(--chem-color);">
+        <h2 class="lesson-title" style="color: var(--chem-color);">La Maledizione del Fattoriale</h2>
+        <p class="lesson-text">
+            Perche il TSP e cosi difficile? Per provare <em>tutte</em> le combinazioni di N citta servono <strong>N!</strong> permutazioni (in realta (N-1)!/2 per simmetria, ma l'ordine di grandezza non cambia). Il fattoriale cresce in modo <em>mostruoso</em>:
+        </p>
+
+        <div class="complexity-box">
+            <div class="complexity-row"><span class="n">N = 5</span><span class="val">5! = 120 percorsi</span><span style="color:var(--text-muted)">→ istante</span></div>
+            <div class="complexity-row"><span class="n">N = 10</span><span class="val">10! = 3.628.800</span><span style="color:var(--text-muted)">→ frazione di secondo</span></div>
+            <div class="complexity-row"><span class="n">N = 15</span><span class="val">15! = 1.307.674.368.000</span><span style="color:var(--text-muted)">→ ~20 minuti a 1 miliardo/sec</span></div>
+            <div class="complexity-row"><span class="n">N = 20</span><span class="val">20! ≈ 2.43 × 10¹⁸</span><span style="color:var(--text-muted)">→ ~77 anni</span></div>
+            <div class="complexity-row"><span class="n">N = 25</span><span class="val">25! ≈ 1.55 × 10²⁵</span><span style="color:var(--text-muted)">→ ~500 milioni di anni</span></div>
+            <div class="complexity-row"><span class="n">N = 60</span><span class="val">60! ≈ 8 × 10⁸¹</span><span style="color:var(--text-muted)">→ piu degli atomi nell'universo</span></div>
+        </div>
+
+        <p class="lesson-text">
+            <strong>Calcolatore interattivo:</strong> inserisci N e scopri quanto cresce N!:
+        </p>
+
+        <div class="complexity-box">
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
+                <label style="color: var(--text-muted);">N =</label>
+                <input type="number" id="fact-n" value="10" min="0" max="170" style="width: 80px; padding: 0.5rem; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.15); color: var(--text-main); border-radius: 6px; font-family: monospace; font-size: 1.1rem; text-align: center;">
+                <span style="color: var(--text-muted);">→ N! =</span>
+                <span id="fact-result" style="color: var(--chem-color); font-family: monospace; font-size: 1.2rem; font-weight: 700;">3.628.800</span>
+            </div>
+            <div id="fact-time" style="margin-top: 0.8rem; color: var(--text-muted); font-size: 0.9rem;"></div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Mappa Interattiva: prova tu stesso!</h2>
+        <p class="lesson-text">
+            <strong>Clicca</strong> sulla mappa per piazzare delle citta. Poi premi "Risolvi (brute force)" per provare TUTTI i percorsi possibili oppure "Nearest neighbor" per un'euristica veloce. Confronta i due risultati: l'euristica e quasi sempre <em>buona</em>, raramente perfetta.
+        </p>
+
+        <div class="map-box">
+            <canvas class="map-canvas" id="map-canvas"></canvas>
+            <div class="map-controls">
+                <button class="m-btn" id="solve-brute">Risolvi (brute force)</button>
+                <button class="m-btn secondary" id="solve-nn">Nearest neighbor</button>
+                <button class="m-btn secondary" id="clear-map">Pulisci mappa</button>
+                <button class="m-btn secondary" id="random-cities">Genera 8 citta casuali</button>
+            </div>
+            <div class="stats-row">
+                <div class="stat-pill">
+                    <div class="stat-pill-label">Citta</div>
+                    <div class="stat-pill-val" id="city-count">0</div>
+                </div>
+                <div class="stat-pill">
+                    <div class="stat-pill-label">Brute force</div>
+                    <div class="stat-pill-val" id="brute-dist">—</div>
+                </div>
+                <div class="stat-pill">
+                    <div class="stat-pill-label">Nearest neighbor</div>
+                    <div class="stat-pill-val nn" id="nn-dist">—</div>
+                </div>
+            </div>
+            <p style="text-align: center; color: var(--text-muted); font-size: 0.85rem; margin-top: 1rem;">
+                Il brute force e limitato a 9 citta per evitare di bloccare il browser (9! = 362.880 percorsi).
+            </p>
+        </div>
+    </section>
+
+    <section class="lesson-section" style="border-left: 4px solid var(--physics-color);">
+        <h2 class="lesson-title" style="color: var(--physics-color);">P vs NP: il Mistero da Un Milione di Dollari</h2>
+        <p class="lesson-text">
+            Il TSP appartiene alla classe <strong>NP-completi</strong>. Il significato di P e NP e una delle questioni piu profonde dell'informatica teorica.
+        </p>
+
+        <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0;">
+            <div class="card" style="padding: 1.5rem; border-top: 3px solid var(--physics-color);">
+                <h4 style="color: var(--physics-color); margin-bottom: 0.5rem; font-family: monospace;">Classe P</h4>
+                <p style="font-size: 0.92rem; color: var(--text-muted);">Problemi risolvibili in <strong>tempo polinomiale</strong>: ordinare un array, trovare il massimo, cercare in una lista. Crescita "ragionevole" col numero di dati.</p>
+            </div>
+            <div class="card" style="padding: 1.5rem; border-top: 3px solid #EF4444;">
+                <h4 style="color: #EF4444; margin-bottom: 0.5rem; font-family: monospace;">Classe NP</h4>
+                <p style="font-size: 0.92rem; color: var(--text-muted);">Problemi per cui, data una soluzione, si verifica velocemente se e giusta, ma trovarla potrebbe richiedere tempo esponenziale. Il TSP e il sudoku N×N sono qui.</p>
+            </div>
+        </div>
+
+        <p class="lesson-text">
+            La domanda da un milione di dollari (letteralmente: e uno dei <em>Millennium Prize Problems</em> del Clay Institute): <strong>P = NP?</strong> Ovvero, esiste un algoritmo veloce (polinomiale) per i problemi NP? Nessuno lo sa. La maggior parte degli informatici crede di no, ma <em>nessuno l'ha mai dimostrato</em>. Se P=NP, salterebbero crittografia, blockchain e tante altre cose.
+        </p>
+
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.2rem; margin: 1.5rem 0;">
+            <div class="card" style="padding: 1.3rem;">
+                <h4 style="color: var(--chem-color); margin-bottom: 0.5rem;">Altri problemi NP-completi</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Sudoku N×N, knapsack, colorazione di grafi, SAT booleano, Tetris ottimale. Tutti "equivalenti": risolverne uno velocemente significherebbe risolverli tutti.</p>
+            </div>
+            <div class="card" style="padding: 1.3rem;">
+                <h4 style="color: var(--physics-color); margin-bottom: 0.5rem;">Cultura pop</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Nel film <em>Travelling Salesman</em> (2012) quattro matematici risolvono P=NP e il governo USA decide cosa farne. Su NUMB3RS e Big Bang Theory ne parlano spesso.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Algoritmi Euristici: "Quasi" e meglio di "Mai"</h2>
+        <p class="lesson-text">
+            Se non possiamo avere la <em>soluzione ottima</em> in tempo ragionevole, possiamo accontentarci di una <strong>buona soluzione</strong>. E' qui che entrano in gioco gli <em>algoritmi euristici</em>: regole pratiche che danno risultati eccellenti, anche se non garantiti come ottimi.
+        </p>
+
+        <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0;">
+            <div class="card" style="padding: 1.5rem; border-top: 3px solid var(--chem-color);">
+                <h4 style="color: var(--chem-color); margin-bottom: 0.5rem;">Nearest Neighbor (vicino piu prossimo)</h4>
+                <p style="font-size: 0.92rem; color: var(--text-muted);">Parti da una citta. Vai alla piu vicina non ancora visitata. Ripeti finche tutte sono visitate. <strong>Complessita O(N²)</strong>: con 1000 citta finisce in millisecondi. Tipicamente entro il 25% dall'ottimo.</p>
+            </div>
+            <div class="card" style="padding: 1.5rem; border-top: 3px solid var(--physics-color);">
+                <h4 style="color: var(--physics-color); margin-bottom: 0.5rem;">Simulated Annealing</h4>
+                <p style="font-size: 0.92rem; color: var(--text-muted);">Ispirato al <em>raffreddamento dei metalli</em>: parte da un percorso casuale, fa piccole modifiche (scambi di citta) e ogni tanto accetta peggioramenti per "uscire dai minimi locali". A bassa temperatura "congela" sulla soluzione.</p>
+            </div>
+        </div>
+
+        <p class="lesson-text">
+            Esistono decine di altri euristici: <em>2-opt</em>, <em>Lin-Kernighan</em> (il piu efficace), algoritmi genetici (popolazioni di percorsi che si "incrociano" come il DNA), reti neurali. Per TSP con 10.000 citta, Lin-Kernighan trova in pochi minuti soluzioni a meno dell'1% dall'ottimo.
+        </p>
+
+        <div style="background: rgba(0,0,0,0.3); padding: 1.3rem; border-radius: 10px; font-family: monospace; font-size: 0.92rem;">
+<span style="color: var(--text-muted);"># Python: Nearest Neighbor in 10 righe</span><br>
+<span style="color: var(--chem-color);">def</span> nearest_neighbor(cities):<br>
+&nbsp;&nbsp;path = [0]<br>
+&nbsp;&nbsp;<span style="color: var(--physics-color);">while</span> len(path) &lt; len(cities):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;last = path[-1]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;remaining = [i <span style="color: var(--physics-color);">for</span> i <span style="color: var(--physics-color);">in</span> range(len(cities)) <span style="color: var(--physics-color);">if</span> i <span style="color: var(--physics-color);">not in</span> path]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;next_city = min(remaining, key=<span style="color: var(--chem-color);">lambda</span> c: dist(cities[last], cities[c]))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;path.append(next_city)<br>
+&nbsp;&nbsp;<span style="color: var(--physics-color);">return</span> path + [0]
+        </div>
+    </section>
+
+    <section class="lesson-section" style="background: rgba(245,158,11,0.03); border-left: 4px solid var(--chem-color);">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Applicazioni Reali</h2>
+        <p class="lesson-text">
+            Il TSP non e un gioco da matematici: e <strong>ovunque</strong> nella logistica moderna. Ogni miglioramento dell'1% vale miliardi di euro.
+        </p>
+
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.2rem; margin: 1.5rem 0;">
+            <div class="card" style="padding: 1.3rem;">
+                <div style="font-size: 1.8rem; margin-bottom: 0.5rem;">📦</div>
+                <h4 style="color: var(--chem-color); margin-bottom: 0.5rem;">Amazon</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Ogni giorno ottimizza i percorsi di milioni di pacchi. I furgoncini Prime ricalcolano la rotta ad ogni consegna basandosi su traffico e priorita.</p>
+            </div>
+            <div class="card" style="padding: 1.3rem;">
+                <div style="font-size: 1.8rem; margin-bottom: 0.5rem;">🚚</div>
+                <h4 style="color: var(--physics-color); margin-bottom: 0.5rem;">UPS ORION</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Il sistema ORION di UPS, basato su euristici TSP, evita le svolte a sinistra (perdita di tempo). Risparmiati 16 milioni di litri di carburante l'anno.</p>
+            </div>
+            <div class="card" style="padding: 1.3rem;">
+                <div style="font-size: 1.8rem; margin-bottom: 0.5rem;">💻</div>
+                <h4 style="color: var(--math-color); margin-bottom: 0.5rem;">Microchip</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Le macchine che "trivellano" i circuiti stampati visitano migliaia di buchi: l'ordine ottimale e un TSP. Risparmiare un secondo per circuito = milioni in produzione.</p>
+            </div>
+            <div class="card" style="padding: 1.3rem;">
+                <div style="font-size: 1.8rem; margin-bottom: 0.5rem;">🧬</div>
+                <h4 style="color: #EC4899; margin-bottom: 0.5rem;">Sequenziamento DNA</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Ricostruire un genoma da frammenti sovrapposti e una variante del TSP: ogni frammento e una "citta", la sovrapposizione la "distanza".</p>
+            </div>
+            <div class="card" style="padding: 1.3rem;">
+                <div style="font-size: 1.8rem; margin-bottom: 0.5rem;">🛰️</div>
+                <h4 style="color: #A855F7; margin-bottom: 0.5rem;">Satelliti e telescopi</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Il telescopio Hubble e James Webb ottimizzano l'ordine di osservazione delle stelle target per minimizzare i tempi di puntamento.</p>
+            </div>
+            <div class="card" style="padding: 1.3rem;">
+                <div style="font-size: 1.8rem; margin-bottom: 0.5rem;">🍕</div>
+                <h4 style="color: var(--chem-color); margin-bottom: 0.5rem;">Delivery food</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Glovo, Deliveroo, Just Eat: i rider non scelgono a caso. App backend calcola TSP con vincoli (tempo di cottura, scadenza ordine).</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Quiz di Riepilogo</h2>
+        <p class="lesson-text" style="font-size: 0.95rem;">Verifica la tua comprensione di TSP, P vs NP ed euristici.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Informatica.</p>
+</footer>
+
+<script src="commesso-viaggiatore.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

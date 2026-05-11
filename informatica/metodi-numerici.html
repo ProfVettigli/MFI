@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metodi Numerici - Lezione Interattiva MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        .back-button { display: inline-flex; align-items: center; color: var(--text-muted); text-decoration: none; margin-bottom: 2rem; font-weight: 600; transition: color 0.3s ease, transform 0.3s ease; }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+        .sub-hero { padding: 4rem 0 2rem; text-align: left; }
+        .sub-hero-title { font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; margin-bottom: 1rem; }
+
+        .graph-box { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 1.5rem; margin: 1.5rem 0; }
+        .graph-canvas { width: 100%; max-width: 640px; height: 360px; background: #0B0E14; border-radius: 10px; display: block; margin: 0 auto; }
+        .graph-controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-top: 1rem; }
+        .ctrl-block { background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 10px; }
+        .ctrl-block label { display: block; color: var(--chem-color); font-family: monospace; margin-bottom: 0.4rem; font-weight: 700; font-size: 0.9rem; }
+        .ctrl-block input[type="range"] { width: 100%; accent-color: var(--chem-color); }
+        .ctrl-val { color: var(--text-muted); font-family: monospace; font-size: 0.9rem; }
+
+        .iter-table { width: 100%; max-width: 560px; margin: 1rem auto; border-collapse: collapse; background: rgba(0,0,0,0.3); border-radius: 10px; overflow: hidden; font-family: monospace; }
+        .iter-table th, .iter-table td { padding: 0.6rem 1rem; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.9rem; }
+        .iter-table th { background: rgba(245,158,11,0.15); color: var(--chem-color); }
+        .iter-table td.converged { color: var(--physics-color); font-weight: 800; }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="informatica.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Informatica
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Metodi <span class="gradient-text">Numerici</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+            Quando la matematica non ha la formula esatta, il computer non si arrende: la approssima. Newton, Eulero e l'arte di calcolare "abbastanza vicino" alla verita.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Perche Servono i Metodi Numerici</h2>
+        <p class="lesson-text">
+            A scuola si studiano le equazioni di primo e secondo grado: per loro esiste una <strong>formula chiusa</strong> (la celebre formula del Delta). Ma <em>la maggior parte delle equazioni reali non si puo risolvere a mano</em>. Prova a risolvere:
+        </p>
+
+        <div style="text-align: center; font-family: monospace; font-size: 1.6rem; color: var(--chem-color); font-weight: 800; margin: 2rem 0;">
+            cos(x) = x
+        </div>
+
+        <p class="lesson-text">
+            Sembra innocua. Ma <strong>nessuna formula algebrica produce la soluzione</strong>: x non si "isola". Eppure la risposta esiste e vale circa <strong>0.7390851...</strong>. Per trovarla servono i metodi numerici: algoritmi che <em>iterano</em> avvicinandosi sempre di piu alla soluzione.
+        </p>
+
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.2rem; margin: 1.5rem 0;">
+            <div class="card" style="padding: 1.3rem; border-top: 3px solid var(--chem-color);">
+                <h4 style="color: var(--chem-color); margin-bottom: 0.5rem;">Equazioni trascendenti</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Contengono seni, coseni, esponenziali, logaritmi mescolati a x: niente formula chiusa.</p>
+            </div>
+            <div class="card" style="padding: 1.3rem; border-top: 3px solid var(--physics-color);">
+                <h4 style="color: var(--physics-color); margin-bottom: 0.5rem;">Equazioni differenziali</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Quelle che descrivono moto, temperatura, popolazioni. Quasi sempre vanno integrate numericamente.</p>
+            </div>
+            <div class="card" style="padding: 1.3rem; border-top: 3px solid var(--math-color);">
+                <h4 style="color: var(--math-color); margin-bottom: 0.5rem;">Integrali "ostici"</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Anche <em>e<sup>-x²</sup></em> (campana di Gauss) non ha primitiva elementare: si integra numericamente.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section" style="border-left: 4px solid var(--chem-color);">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Newton-Raphson: il Metodo della Tangente</h2>
+        <p class="lesson-text">
+            Inventato da <strong>Isaac Newton</strong> nel 1669 (e raffinato da Raphson nel 1690), e l'algoritmo piu famoso per trovare lo zero di una funzione: il valore <em>x</em> per cui <em>f(x) = 0</em>.
+        </p>
+        <p class="lesson-text">
+            L'idea geometrica e elegantissima: parti da un punto x<sub>0</sub>, traccia la <strong>tangente</strong> alla curva in quel punto, leggi dove la tangente incrocia l'asse x: e il tuo prossimo x<sub>1</sub>. Ripeti. Dopo pochissimi passaggi sei <em>incollato</em> allo zero.
+        </p>
+
+        <div style="text-align: center; font-family: monospace; font-size: 1.4rem; color: var(--chem-color); font-weight: 800; margin: 1.5rem 0; background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 10px;">
+            x<sub>n+1</sub> = x<sub>n</sub> &minus; f(x<sub>n</sub>) / f&prime;(x<sub>n</sub>)
+        </div>
+
+        <p class="lesson-text">
+            Visualizziamolo. La funzione qui sotto e <strong>f(x) = x&sup3; &minus; x &minus; 2</strong>, che ha uno zero attorno a x &asymp; 1.521. Cambia il punto iniziale con lo slider: vedrai le tangenti successive convergere allo zero (o, talvolta, divergere se parti male!).
+        </p>
+
+        <div class="graph-box">
+            <canvas class="graph-canvas" id="newton-canvas" width="640" height="360"></canvas>
+            <div class="graph-controls">
+                <div class="ctrl-block">
+                    <label>Punto iniziale x₀: <span class="ctrl-val" id="newton-x0-val">2.5</span></label>
+                    <input type="range" min="-3" max="3" step="0.05" value="2.5" id="newton-x0">
+                </div>
+                <div class="ctrl-block">
+                    <label>Numero iterazioni: <span class="ctrl-val" id="newton-it-val">5</span></label>
+                    <input type="range" min="1" max="10" step="1" value="5" id="newton-it">
+                </div>
+            </div>
+            <table class="iter-table">
+                <thead><tr><th>n</th><th>x<sub>n</sub></th><th>f(x<sub>n</sub>)</th></tr></thead>
+                <tbody id="newton-iters"></tbody>
+            </table>
+        </div>
+
+        <p class="lesson-text" style="font-size: 0.93rem; color: var(--text-muted);">
+            <strong>Velocita di convergenza:</strong> Newton-Raphson e <em>quadratico</em>: ad ogni iterazione il numero di cifre corrette raddoppia. Per questo bastano 5-6 iterazioni per ottenere 15 cifre decimali esatte.
+        </p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Bisezione: il Metodo "Lento ma Sicuro"</h2>
+        <p class="lesson-text">
+            Newton e veloce, ma puo fallire se la derivata e zero o se parti troppo lontano. La <strong>bisezione</strong> e l'algoritmo opposto: piu lenta, ma <em>non sbaglia mai</em>. Si basa sul teorema degli zeri (Bolzano).
+        </p>
+        <p class="lesson-text">
+            <strong>Idea:</strong> hai un intervallo <em>[a, b]</em> in cui sai che la funzione cambia segno (cioe f(a)&middot;f(b) &lt; 0). Lo zero e li dentro. Calcoli il punto medio c = (a+b)/2 e tieni la meta dell'intervallo che contiene ancora il cambio di segno. Ripeti.
+        </p>
+
+        <div class="graph-box">
+            <canvas class="graph-canvas" id="bisect-canvas" width="640" height="320"></canvas>
+            <div class="graph-controls">
+                <div class="ctrl-block">
+                    <label>Iterazione: <span class="ctrl-val" id="bisect-it-val">3</span> di 10</label>
+                    <input type="range" min="1" max="10" step="1" value="3" id="bisect-it">
+                </div>
+            </div>
+        </div>
+
+        <p class="lesson-text" style="font-size: 0.93rem; color: var(--text-muted);">
+            <strong>Convergenza:</strong> ad ogni passo l'intervallo si dimezza. Per ottenere k cifre corrette servono circa 3.3&middot;k iterazioni. Lento ma <em>garantito</em>: e l'algoritmo che usano i compilatori per la libreria matematica nei casi limite.
+        </p>
+    </section>
+
+    <section class="lesson-section" style="border-left: 4px solid var(--physics-color);">
+        <h2 class="lesson-title" style="color: var(--physics-color);">Integrazione Numerica: Area Sotto la Curva</h2>
+        <p class="lesson-text">
+            Calcolare un integrale significa trovare l'area sotto una curva. Quando la primitiva non esiste, si approssima con tante <strong>strisce sottili</strong>. Piu strisce, piu l'approssimazione e accurata.
+        </p>
+
+        <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0;">
+            <div class="card" style="padding: 1.5rem; border-top: 3px solid var(--chem-color);">
+                <h4 style="color: var(--chem-color); margin-bottom: 0.5rem;">Metodo dei rettangoli</h4>
+                <p style="font-size: 0.92rem; color: var(--text-muted);">L'area di ogni striscia e approssimata da un rettangolo. Semplice ma poco preciso, soprattutto per curve "ripide".</p>
+            </div>
+            <div class="card" style="padding: 1.5rem; border-top: 3px solid var(--physics-color);">
+                <h4 style="color: var(--physics-color); margin-bottom: 0.5rem;">Metodo dei trapezi</h4>
+                <p style="font-size: 0.92rem; color: var(--text-muted);">Ogni striscia e un trapezio: si "raccordano" i punti consecutivi con un segmento. Molto piu preciso a parita di strisce.</p>
+            </div>
+        </div>
+
+        <div class="graph-box">
+            <p style="text-align: center; color: var(--text-muted); font-family: monospace; margin-bottom: 0.5rem;">
+                f(x) = sin(x) + 1.5, integrale tra 0 e &pi;
+            </p>
+            <canvas class="graph-canvas" id="integral-canvas" width="640" height="320"></canvas>
+            <div class="graph-controls">
+                <div class="ctrl-block">
+                    <label>Numero strisce N: <span class="ctrl-val" id="strips-val">8</span></label>
+                    <input type="range" min="2" max="60" step="1" value="8" id="strips">
+                </div>
+                <div class="ctrl-block">
+                    <label>Metodo:</label>
+                    <select id="int-method" style="width: 100%; padding: 0.4rem; background: rgba(0,0,0,0.4); color: var(--text-main); border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; font-family: monospace;">
+                        <option value="rect">Rettangoli</option>
+                        <option value="trap" selected>Trapezi</option>
+                    </select>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 1rem; font-family: monospace; color: var(--text-main);">
+                <div style="color: var(--text-muted); font-size: 0.9rem;">Valore esatto: <strong style="color: var(--physics-color);">π·1.5 + 2 ≈ 6.7124</strong></div>
+                <div style="margin-top: 0.5rem;">Approssimazione: <strong id="int-result" style="color: var(--chem-color); font-size: 1.2rem;">6.71</strong></div>
+                <div style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.3rem;">Errore: <span id="int-error">0.00</span></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Errore Numerico: Assoluto vs Relativo</h2>
+        <p class="lesson-text">
+            Lavorare in modo "approssimato" significa accettare un <strong>errore</strong>. Si misura in due modi:
+        </p>
+
+        <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0;">
+            <div class="card" style="padding: 1.5rem; border-top: 3px solid var(--chem-color);">
+                <h4 style="color: var(--chem-color); margin-bottom: 0.5rem; font-family: monospace;">Errore assoluto</h4>
+                <p style="font-size: 0.92rem; color: var(--text-muted);">|valore_vero &minus; valore_approssimato|. Espresso nell'unita della grandezza misurata.</p>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem; font-family: monospace;">Esempio: |3.1416 &minus; π| ≈ 0.00007</p>
+            </div>
+            <div class="card" style="padding: 1.5rem; border-top: 3px solid var(--physics-color);">
+                <h4 style="color: var(--physics-color); margin-bottom: 0.5rem; font-family: monospace;">Errore relativo</h4>
+                <p style="font-size: 0.92rem; color: var(--text-muted);">errore_assoluto / |valore_vero|. Adimensionale, di solito in percentuale.</p>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem; font-family: monospace;">Esempio: 0.00007 / 3.1416 ≈ 0.002%</p>
+            </div>
+        </div>
+
+        <div style="background: rgba(239,68,68,0.06); border-left: 4px solid #EF4444; padding: 1.5rem; border-radius: 0 10px 10px 0; margin-top: 1rem;">
+            <p class="lesson-text" style="margin-bottom: 0;">
+                <strong>Catastrofe del missile Patriot (1991):</strong> durante la Guerra del Golfo, un missile Patriot fallì un'intercettazione causando 28 morti. Causa: un <em>errore numerico di soli 0.34 secondi</em> accumulato in 100 ore di funzionamento (la rappresentazione binaria di 0.1 non e finita). I metodi numerici hanno conseguenze vere.
+            </p>
+        </div>
+    </section>
+
+    <section class="lesson-section" style="background: rgba(245,158,11,0.03); border-left: 4px solid var(--chem-color);">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Applicazioni Reali: Dove li Trovi</h2>
+
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.2rem; margin: 1.5rem 0;">
+            <div class="card" style="padding: 1.3rem;">
+                <div style="font-size: 1.8rem; margin-bottom: 0.5rem;">🌦️</div>
+                <h4 style="color: var(--chem-color); margin-bottom: 0.5rem;">Previsioni meteo</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">L'atmosfera e descritta da equazioni di Navier-Stokes, irrisolvibili analiticamente. Il supercomputer ECMWF a Bologna le risolve numericamente ogni 6 ore.</p>
+            </div>
+            <div class="card" style="padding: 1.3rem;">
+                <div style="font-size: 1.8rem; margin-bottom: 0.5rem;">🏎️</div>
+                <h4 style="color: var(--physics-color); margin-bottom: 0.5rem;">Simulazione fisica</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Crash test in F1, motori CFD, motore fisico di Unity/Unreal: tutto integrazione numerica di equazioni del moto.</p>
+            </div>
+            <div class="card" style="padding: 1.3rem;">
+                <div style="font-size: 1.8rem; margin-bottom: 0.5rem;">🤖</div>
+                <h4 style="color: var(--math-color); margin-bottom: 0.5rem;">Machine learning</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">L'addestramento delle reti neurali (ChatGPT incluso) e <em>discesa del gradiente</em>: un Newton-Raphson generalizzato applicato miliardi di volte.</p>
+            </div>
+            <div class="card" style="padding: 1.3rem;">
+                <div style="font-size: 1.8rem; margin-bottom: 0.5rem;">📈</div>
+                <h4 style="color: #EC4899; margin-bottom: 0.5rem;">Finanza</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Il prezzo di opzioni e derivati (modello Black-Scholes) viene calcolato risolvendo equazioni differenziali con metodi numerici Monte Carlo.</p>
+            </div>
+            <div class="card" style="padding: 1.3rem;">
+                <div style="font-size: 1.8rem; margin-bottom: 0.5rem;">🎬</div>
+                <h4 style="color: #A855F7; margin-bottom: 0.5rem;">Effetti speciali</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">L'acqua di "Avatar 2", il fuoco di "Dune", i tessuti di Pixar: tutti integrati numericamente (metodo SPH, FEM).</p>
+            </div>
+            <div class="card" style="padding: 1.3rem;">
+                <div style="font-size: 1.8rem; margin-bottom: 0.5rem;">🚀</div>
+                <h4 style="color: var(--chem-color); margin-bottom: 0.5rem;">Aerospazio</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">SpaceX calcola la traiettoria di Falcon 9 risolvendo numericamente le equazioni di Keplero con correzioni di Einstein.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Quiz di Riepilogo</h2>
+        <p class="lesson-text" style="font-size: 0.95rem;">Verifica la tua comprensione dei metodi numerici.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Informatica.</p>
+</footer>
+
+<script src="metodi-numerici.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>
