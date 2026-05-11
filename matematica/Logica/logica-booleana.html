@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logica Booleana - Lezione Interattiva MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+        .sub-hero {
+            padding: 4rem 0 2rem;
+            text-align: left;
+        }
+        .sub-hero-title {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        /* Gate visualizer */
+        .gate-box {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        .gate-inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .gate-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .gate-label {
+            font-size: 1.1rem;
+            font-weight: 600;
+            min-width: 30px;
+            color: var(--text-muted);
+        }
+        .bit-btn {
+            width: 56px;
+            height: 56px;
+            border-radius: 10px;
+            border: 2px solid rgba(255,255,255,0.15);
+            background: var(--surface-hover);
+            color: var(--text-main);
+            font-size: 1.4rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: monospace;
+        }
+        .bit-btn.on {
+            background: var(--math-color);
+            border-color: var(--math-color);
+            color: white;
+            box-shadow: 0 0 16px var(--math-glow);
+        }
+        .bit-btn.off {
+            background: rgba(239,68,68,0.15);
+            border-color: #EF4444;
+            color: #EF4444;
+        }
+        .gate-output {
+            padding: 1.2rem 2rem;
+            border-radius: 10px;
+            font-size: 1.4rem;
+            font-weight: 800;
+            text-align: center;
+            border-left: 5px solid var(--text-muted);
+            background: rgba(0,0,0,0.3);
+            transition: all 0.3s;
+            font-family: monospace;
+        }
+        .gate-output.out-1 {
+            border-left-color: var(--math-color);
+            color: var(--math-color);
+            box-shadow: 0 0 20px var(--math-glow);
+        }
+        .gate-output.out-0 {
+            border-left-color: #EF4444;
+            color: #EF4444;
+        }
+
+        /* Truth table */
+        .logic-table {
+            width: 100%;
+            max-width: 460px;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .logic-table th, .logic-table td {
+            padding: 0.9rem 1.2rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-family: monospace;
+            font-size: 1rem;
+        }
+        .logic-table th {
+            background: rgba(255,255,255,0.05);
+            font-weight: 700;
+            color: var(--math-color);
+            font-family: inherit;
+            letter-spacing: 0.03em;
+        }
+        .logic-table td.val-1 { color: var(--math-color); font-weight: 700; }
+        .logic-table td.val-0 { color: #EF4444; font-weight: 700; }
+
+        /* Gate SVG symbols */
+        .gate-symbol {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 0;
+        }
+        .gate-symbol svg {
+            width: 120px;
+            height: 80px;
+            filter: drop-shadow(0 0 8px rgba(59,130,246,0.3));
+        }
+
+        /* History timeline */
+        .timeline {
+            position: relative;
+            padding-left: 2.5rem;
+            margin: 2rem 0;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0.6rem;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--math-color), rgba(59,130,246,0.1));
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -1.95rem;
+            top: 0.4rem;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--math-color);
+            box-shadow: 0 0 8px var(--math-glow);
+        }
+        .timeline-year {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--math-color);
+            letter-spacing: 1px;
+            margin-bottom: 0.3rem;
+        }
+        .timeline-text { font-size: 0.97rem; color: var(--text-muted); line-height: 1.6; }
+        .timeline-text strong { color: var(--text-main); }
+
+        /* Circuit builder */
+        .circuit-builder {
+            background: rgba(0,0,0,0.25);
+            border-radius: 16px;
+            padding: 2rem;
+            font-family: monospace;
+        }
+        .circuit-expr {
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.05em;
+        }
+        .circuit-expr span { color: var(--math-color); font-weight: 800; }
+        .circuit-controls {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+        .circuit-result {
+            font-size: 1.3rem;
+            font-weight: 700;
+            padding: 1rem;
+            border-radius: 10px;
+            background: rgba(0,0,0,0.3);
+            transition: all 0.3s;
+        }
+
+        /* Truth btn guesser */
+        .truth-btn {
+            background: var(--surface-hover);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: var(--text-main);
+            width: 44px; height: 44px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: monospace;
+        }
+        .truth-btn.t-true { background: var(--math-color); border-color: var(--math-color); color: white; }
+        .truth-btn.t-false { background: #EF4444; border-color: #EF4444; color: white; }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="logica.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Logica
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Logica <span class="gradient-text">Booleana</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+            Il linguaggio segreto dei computer: come i transistor di un chip e le porte logiche AND, OR e NOT traducono il pensiero matematico in milioni di decisioni al secondo.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <!-- STORIA -->
+    <section class="lesson-section">
+        <h2 class="lesson-title">Il Matematico che Inventò il Linguaggio dei Computer</h2>
+        <p class="lesson-text">
+            Nel 1854, in un'epoca in cui i computer non esistevano nemmeno come concetto, un matematico autodidatta inglese di nome <strong>George Boole</strong> pubblicò un libro dal titolo austero: <em>"An Investigation of the Laws of Thought"</em>. La sua idea era rivoluzionaria: tradurre il ragionamento logico in <strong>pura algebra</strong>, con simboli e regole precise come quelle dell'aritmetica.
+        </p>
+
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+            <div class="card" style="padding: 1.5rem; border-top: 3px solid var(--math-color);">
+                <div style="font-size: 3rem; text-align:center; margin-bottom: 0.8rem;">📚</div>
+                <h4 style="color: var(--math-color); text-align:center; margin-bottom: 0.5rem;">George Boole (1815–1864)</h4>
+                <p style="font-size: 0.93rem; color: var(--text-muted);">Figlio di un calzolaio, imparò il latino e il greco da solo. Non ebbe mai un dottorato ma divenne professore universitario grazie al suo genio. La sua algebra aveva solo due valori: <strong style="color:var(--text-main)">vero e falso</strong>.</p>
+            </div>
+            <div class="card" style="padding: 1.5rem; border-top: 3px solid var(--physics-color);">
+                <div style="font-size: 3rem; text-align:center; margin-bottom: 0.8rem;">⚡</div>
+                <h4 style="color: var(--physics-color); text-align:center; margin-bottom: 0.5rem;">Claude Shannon (1916–2001)</h4>
+                <p style="font-size: 0.93rem; color: var(--text-muted);">Quasi un secolo dopo, nel 1937, lo studente del MIT Shannon ebbe il colpo di genio: applicare l'algebra di Boole ai <strong style="color:var(--text-main)">circuiti elettrici</strong>. Interruttore chiuso = 1 (vero), interruttore aperto = 0 (falso). Nacque così l'elettronica digitale.</p>
+            </div>
+        </div>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-year">1854</div>
+                <p class="timeline-text"><strong>George Boole</strong> pubblica <em>"An Investigation of the Laws of Thought"</em>. L'algebra booleana nasce come sistema matematico puro, senza applicazioni pratiche in vista.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1937</div>
+                <p class="timeline-text"><strong>Claude Shannon</strong>, nella sua tesi magistrale al MIT, dimostra che i circuiti elettrici possono implementare l'algebra di Boole. È una delle tesi più importanti del XX secolo.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1947</div>
+                <p class="timeline-text">Invenzione del <strong>transistor</strong> ai Bell Labs. Un transistor è un interruttore microscopico: esattamente l'elemento fisico per realizzare le porte logiche di Shannon.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">Oggi</div>
+                <p class="timeline-text">Un moderno chip Apple M-series contiene oltre <strong>25 miliardi di transistor</strong>. Ogni transistor è una porta logica che applica l'algebra di Boole del 1854.</p>
+            </div>
+        </div>
+
+        <div style="background: rgba(59,130,246,0.06); border-left: 4px solid var(--math-color); padding: 1.5rem; border-radius: 0 10px 10px 0; margin-top: 1rem;">
+            <p class="lesson-text" style="margin-bottom: 0;">
+                <strong>Il ponte tra matematica e computer:</strong> Boole dimostrò che la logica può essere ridotta a equazioni. Shannon dimostrò che le equazioni booleane possono essere realizzate fisicamente con interruttori elettrici. Il risultato è il computer digitale.
+            </p>
+        </div>
+    </section>
+
+    <!-- CONCETTO BASE: 0 e 1 -->
+    <section class="lesson-section" style="border-left: 4px solid #F59E0B;">
+        <h2 class="lesson-title" style="color: #F59E0B;">Il Sistema Binario: Solo 0 e 1</h2>
+        <p class="lesson-text">
+            Nell'algebra booleana esistono soltanto <strong>due valori possibili</strong>. Nella logica matematica li chiamiamo Vero e Falso; nell'elettronica digitale diventano 1 e 0 (tensione alta, tensione bassa). Questi due valori si chiamano <strong>bit</strong> (Binary digIT).
+        </p>
+
+        <div class="grid" style="grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin: 2rem 0;">
+            <div style="background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.2); border-radius: 12px; padding: 1.5rem; text-align: center;">
+                <div style="font-size: 3.5rem; font-weight: 900; color: var(--math-color); font-family: monospace;">1</div>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem;">Vero · Alta tensione · Interruttore chiuso · ON</p>
+            </div>
+            <div style="display: flex; align-items: center; justify-content: center; font-size: 2rem; color: var(--text-muted);">↔</div>
+            <div style="background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2); border-radius: 12px; padding: 1.5rem; text-align: center;">
+                <div style="font-size: 3.5rem; font-weight: 900; color: #EF4444; font-family: monospace;">0</div>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem;">Falso · Bassa tensione · Interruttore aperto · OFF</p>
+            </div>
+        </div>
+
+        <p class="lesson-text">
+            Tutto ciò che un computer elabora — immagini, video, testo, musica, intelligenza artificiale — è in ultima analisi una lunghissima sequenza di 0 e 1 che vengono combinati tramite <strong>porte logiche</strong>.
+        </p>
+        <div style="background: rgba(0,0,0,0.2); border-radius: 10px; padding: 1.5rem; font-family: monospace; font-size: 1rem; color: var(--text-muted); margin-top: 1rem; letter-spacing: 0.05em;">
+            La lettera <strong style="color:var(--text-main)">A</strong> in ASCII = <span style="color: var(--math-color);">01000001</span><br>
+            Il pixel rosso puro RGB = <span style="color: var(--math-color);">11111111</span> <span style="color:#EF4444;">00000000</span> <span style="color:#EF4444;">00000000</span><br>
+            Il numero 42 in binario = <span style="color: var(--math-color);">00101010</span>
+        </div>
+    </section>
+
+    <!-- PORTA AND -->
+    <section class="lesson-section">
+        <h2 class="lesson-title">Porta Logica AND</h2>
+        <p class="lesson-text">
+            La porta AND produce <strong>1 (vero) solo quando TUTTE le sue entrate sono 1</strong>. Con due ingressi A e B, il risultato è 1 soltanto se A=1 <em>e</em> B=1. Se anche uno solo è 0, l'uscita è 0.
+        </p>
+        <p class="lesson-text">
+            <strong>Esempio dalla vita reale:</strong> La cassaforte di una banca apre solo se <em>sia</em> il direttore <em>che</em> il vicedirettore inseriscono la propria chiave contemporaneamente. Entrambi devono essere presenti (= 1).
+        </p>
+
+        <div class="gate-box">
+            <h3 style="color: var(--math-color); margin-bottom: 1.5rem;">Porta AND interattiva — <span style="font-family: monospace; font-size: 1rem; font-weight: 400;">A AND B</span></h3>
+            <div style="display: flex; gap: 3rem; flex-wrap: wrap; align-items: flex-start;">
+                <div>
+                    <div class="gate-inputs">
+                        <div class="gate-row">
+                            <span class="gate-label">A</span>
+                            <button class="bit-btn on" id="and-a">1</button>
+                            <span style="color: var(--text-muted); font-size: 0.9rem;">← clicca per cambiare</span>
+                        </div>
+                        <div class="gate-row">
+                            <span class="gate-label">B</span>
+                            <button class="bit-btn on" id="and-b">1</button>
+                        </div>
+                    </div>
+                    <div class="gate-output out-1" id="and-out">A AND B = 1</div>
+                </div>
+
+                <div>
+                    <!-- AND gate SVG symbol -->
+                    <div class="gate-symbol">
+                        <svg viewBox="0 0 120 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <line x1="10" y1="25" x2="40" y2="25" stroke="#94A3B8" stroke-width="2"/>
+                            <line x1="10" y1="55" x2="40" y2="55" stroke="#94A3B8" stroke-width="2"/>
+                            <line x1="80" y1="40" x2="110" y2="40" stroke="#3B82F6" stroke-width="2"/>
+                            <path d="M40 15 L40 65 L65 65 Q90 65 90 40 Q90 15 65 15 Z" stroke="#3B82F6" stroke-width="2.5" fill="rgba(59,130,246,0.08)"/>
+                            <text x="55" y="44" fill="#3B82F6" font-size="13" font-weight="700" font-family="monospace" text-anchor="middle">AND</text>
+                            <text x="5" y="29" fill="#94A3B8" font-size="11" font-family="monospace">A</text>
+                            <text x="5" y="59" fill="#94A3B8" font-size="11" font-family="monospace">B</text>
+                        </svg>
+                    </div>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); text-align: center;">Simbolo standard IEC della porta AND</p>
+                </div>
+            </div>
+        </div>
+
+        <h3 style="margin: 2rem 0 1rem; font-size: 1.1rem;">Tavola di Verità — AND</h3>
+        <table class="logic-table">
+            <thead><tr><th>A</th><th>B</th><th>A AND B</th></tr></thead>
+            <tbody>
+                <tr><td class="val-1">1</td><td class="val-1">1</td><td class="val-1">1</td></tr>
+                <tr><td class="val-1">1</td><td class="val-0">0</td><td class="val-0">0</td></tr>
+                <tr><td class="val-0">0</td><td class="val-1">1</td><td class="val-0">0</td></tr>
+                <tr><td class="val-0">0</td><td class="val-0">0</td><td class="val-0">0</td></tr>
+            </tbody>
+        </table>
+        <p class="lesson-text" style="font-size: 0.93rem; color: var(--text-muted);">
+            Regola da ricordare: l'AND è <em>esigente</em>. Tutti devono essere 1, altrimenti il risultato è 0. Un solo 0 "contamina" l'intera espressione.
+        </p>
+    </section>
+
+    <!-- PORTA OR -->
+    <section class="lesson-section" style="border-left: 4px solid var(--physics-color);">
+        <h2 class="lesson-title">Porta Logica OR</h2>
+        <p class="lesson-text">
+            La porta OR produce <strong>1 quando ALMENO UNA delle entrate è 1</strong>. L'uscita è 0 solo nel caso in cui <em>tutte</em> le entrate siano 0.
+        </p>
+        <p class="lesson-text">
+            <strong>Esempio dalla vita reale:</strong> L'allarme di casa suona se viene aperta la porta frontale <em>oppure</em> la finestra del piano terra. Basta che uno dei due sensori rilevi un'apertura.
+        </p>
+
+        <div class="gate-box" style="border-color: rgba(16,185,129,0.15);">
+            <h3 style="color: var(--physics-color); margin-bottom: 1.5rem;">Porta OR interattiva — <span style="font-family: monospace; font-size: 1rem; font-weight: 400;">A OR B</span></h3>
+            <div style="display: flex; gap: 3rem; flex-wrap: wrap; align-items: flex-start;">
+                <div>
+                    <div class="gate-inputs">
+                        <div class="gate-row">
+                            <span class="gate-label">A</span>
+                            <button class="bit-btn off" id="or-a" style="border-color:#EF4444; color:#EF4444; background: rgba(239,68,68,0.15);">0</button>
+                            <span style="color: var(--text-muted); font-size: 0.9rem;">← clicca per cambiare</span>
+                        </div>
+                        <div class="gate-row">
+                            <span class="gate-label">B</span>
+                            <button class="bit-btn on" id="or-b">1</button>
+                        </div>
+                    </div>
+                    <div class="gate-output out-1" id="or-out" style="border-left-color: var(--physics-color); color: var(--physics-color);">A OR B = 1</div>
+                </div>
+
+                <div>
+                    <div class="gate-symbol">
+                        <svg viewBox="0 0 120 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <line x1="10" y1="25" x2="38" y2="25" stroke="#94A3B8" stroke-width="2"/>
+                            <line x1="10" y1="55" x2="38" y2="55" stroke="#94A3B8" stroke-width="2"/>
+                            <line x1="82" y1="40" x2="110" y2="40" stroke="#10B981" stroke-width="2"/>
+                            <path d="M38 15 Q52 40 38 65 L65 65 Q95 65 88 40 Q95 15 65 15 Z" stroke="#10B981" stroke-width="2.5" fill="rgba(16,185,129,0.08)"/>
+                            <text x="60" y="44" fill="#10B981" font-size="13" font-weight="700" font-family="monospace" text-anchor="middle">OR</text>
+                            <text x="5" y="29" fill="#94A3B8" font-size="11" font-family="monospace">A</text>
+                            <text x="5" y="59" fill="#94A3B8" font-size="11" font-family="monospace">B</text>
+                        </svg>
+                    </div>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); text-align: center;">Simbolo standard IEC della porta OR</p>
+                </div>
+            </div>
+        </div>
+
+        <h3 style="margin: 2rem 0 1rem; font-size: 1.1rem;">Tavola di Verità — OR</h3>
+        <table class="logic-table">
+            <thead><tr><th>A</th><th>B</th><th>A OR B</th></tr></thead>
+            <tbody>
+                <tr><td class="val-1">1</td><td class="val-1">1</td><td class="val-1">1</td></tr>
+                <tr><td class="val-1">1</td><td class="val-0">0</td><td class="val-1">1</td></tr>
+                <tr><td class="val-0">0</td><td class="val-1">1</td><td class="val-1">1</td></tr>
+                <tr><td class="val-0">0</td><td class="val-0">0</td><td class="val-0">0</td></tr>
+            </tbody>
+        </table>
+        <p class="lesson-text" style="font-size: 0.93rem; color: var(--text-muted);">
+            Regola da ricordare: l'OR è <em>generoso</em>. Basta un singolo 1 tra gli ingressi per ottenere 1 in uscita. Solo quando tutti sono 0, l'uscita è 0.
+        </p>
+    </section>
+
+    <!-- PORTA NOT -->
+    <section class="lesson-section" style="border-left: 4px solid #EF4444;">
+        <h2 class="lesson-title" style="color: #EF4444;">Porta Logica NOT (Invertitore)</h2>
+        <p class="lesson-text">
+            La porta NOT è la più semplice: ha <strong>un solo ingresso</strong> e <strong>inverte</strong> il valore. Se entra 1, esce 0. Se entra 0, esce 1. Per questo viene chiamata anche <em>invertitore</em>.
+        </p>
+        <p class="lesson-text">
+            <strong>Esempio dalla vita reale:</strong> Un interruttore "normally closed" (normalmente chiuso): quando premi il pulsante (1), il circuito si apre (0). È il NOT nella sua forma più fisica.
+        </p>
+
+        <div class="gate-box" style="border-color: rgba(239,68,68,0.15);">
+            <h3 style="color: #EF4444; margin-bottom: 1.5rem;">Porta NOT interattiva — <span style="font-family: monospace; font-size: 1rem; font-weight: 400;">NOT A</span></h3>
+            <div style="display: flex; gap: 3rem; flex-wrap: wrap; align-items: flex-start;">
+                <div>
+                    <div class="gate-inputs">
+                        <div class="gate-row">
+                            <span class="gate-label">A</span>
+                            <button class="bit-btn on" id="not-a">1</button>
+                            <span style="color: var(--text-muted); font-size: 0.9rem;">← clicca per cambiare</span>
+                        </div>
+                    </div>
+                    <div class="gate-output out-0" id="not-out" style="border-left-color: #EF4444; color: #EF4444;">NOT A = 0</div>
+                </div>
+
+                <div>
+                    <div class="gate-symbol">
+                        <svg viewBox="0 0 120 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <line x1="10" y1="40" x2="35" y2="40" stroke="#94A3B8" stroke-width="2"/>
+                            <line x1="92" y1="40" x2="110" y2="40" stroke="#EF4444" stroke-width="2"/>
+                            <polygon points="35,15 35,65 83,40" stroke="#EF4444" stroke-width="2.5" fill="rgba(239,68,68,0.08)"/>
+                            <circle cx="89" cy="40" r="6" stroke="#EF4444" stroke-width="2.5" fill="rgba(239,68,68,0.15)"/>
+                            <text x="52" y="44" fill="#EF4444" font-size="12" font-weight="700" font-family="monospace" text-anchor="middle">NOT</text>
+                            <text x="5" y="44" fill="#94A3B8" font-size="11" font-family="monospace">A</text>
+                        </svg>
+                    </div>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); text-align: center;">Il cerchietto sull'uscita indica l'inversione</p>
+                </div>
+            </div>
+        </div>
+
+        <h3 style="margin: 2rem 0 1rem; font-size: 1.1rem;">Tavola di Verità — NOT</h3>
+        <table class="logic-table" style="max-width: 260px;">
+            <thead><tr><th>A</th><th>NOT A</th></tr></thead>
+            <tbody>
+                <tr><td class="val-1">1</td><td class="val-0">0</td></tr>
+                <tr><td class="val-0">0</td><td class="val-1">1</td></tr>
+            </tbody>
+        </table>
+        <p class="lesson-text" style="font-size: 0.93rem; color: var(--text-muted);">
+            Il NOT è l'operazione base della complementazione: trasforma ogni bit nel suo opposto. Nella notazione matematica si scrive spesso con una barra sopra: <strong>Ā</strong>.
+        </p>
+    </section>
+
+    <!-- COMBINARE LE PORTE -->
+    <section class="lesson-section" style="background: rgba(59,130,246,0.03);">
+        <h2 class="lesson-title">Combinare le Porte: Circuiti Complessi</h2>
+        <p class="lesson-text">
+            Le porte AND, OR e NOT sono i <em>mattoncini LEGO</em> dell'elettronica digitale. Combinate insieme, permettono di costruire qualsiasi calcolo immaginabile. Ecco due porte derivate, costruite combinando quelle base:
+        </p>
+
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+            <div class="card" style="padding: 1.5rem; border-top: 3px solid #F59E0B;">
+                <h4 style="color: #F59E0B; font-size: 1.1rem; margin-bottom: 0.8rem; font-family: monospace;">NAND = NOT( A AND B )</h4>
+                <p style="font-size: 0.93rem; color: var(--text-muted); margin-bottom: 1rem;">È un AND seguito da un NOT. Produce <strong style="color:var(--text-main)">0 solo quando entrambi gli ingressi sono 1</strong>, in tutti gli altri casi produce 1. È la porta "universale": con soli NAND si può costruire qualsiasi altro circuito.</p>
+                <table class="logic-table" style="max-width: 100%;">
+                    <thead><tr><th>A</th><th>B</th><th>NAND</th></tr></thead>
+                    <tbody>
+                        <tr><td class="val-1">1</td><td class="val-1">1</td><td class="val-0">0</td></tr>
+                        <tr><td class="val-1">1</td><td class="val-0">0</td><td class="val-1">1</td></tr>
+                        <tr><td class="val-0">0</td><td class="val-1">1</td><td class="val-1">1</td></tr>
+                        <tr><td class="val-0">0</td><td class="val-0">0</td><td class="val-1">1</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card" style="padding: 1.5rem; border-top: 3px solid #EC4899;">
+                <h4 style="color: #EC4899; font-size: 1.1rem; margin-bottom: 0.8rem; font-family: monospace;">NOR = NOT( A OR B )</h4>
+                <p style="font-size: 0.93rem; color: var(--text-muted); margin-bottom: 1rem;">È un OR seguito da un NOT. Produce <strong style="color:var(--text-main)">1 solo quando entrambi gli ingressi sono 0</strong>. Anche il NOR è una porta universale e viene usata nei circuiti CMOS dei chip moderni.</p>
+                <table class="logic-table" style="max-width: 100%;">
+                    <thead><tr><th>A</th><th>B</th><th>NOR</th></tr></thead>
+                    <tbody>
+                        <tr><td class="val-1">1</td><td class="val-1">1</td><td class="val-0">0</td></tr>
+                        <tr><td class="val-1">1</td><td class="val-0">0</td><td class="val-0">0</td></tr>
+                        <tr><td class="val-0">0</td><td class="val-1">1</td><td class="val-0">0</td></tr>
+                        <tr><td class="val-0">0</td><td class="val-0">0</td><td class="val-1">1</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- CIRCUITO INTERATTIVO -->
+    <section class="lesson-section">
+        <h2 class="lesson-title">Simulatore di Circuito</h2>
+        <p class="lesson-text">Metti alla prova le porte logiche combinando tre ingressi A, B e C con l'espressione <strong style="font-family: monospace;">(A AND B) OR (NOT C)</strong>. Cambia i valori e osserva come cambia l'uscita del circuito.</p>
+
+        <div class="circuit-builder">
+            <div class="circuit-expr">( <span id="disp-a">A=1</span> AND <span id="disp-b">B=1</span> ) OR ( NOT <span id="disp-c">C=0</span> )</div>
+            <div class="circuit-controls">
+                <button class="bit-btn on" id="circ-a" style="font-size:1rem;">A=1</button>
+                <button class="bit-btn on" id="circ-b" style="font-size:1rem;">B=1</button>
+                <button class="bit-btn off" id="circ-c" style="font-size:1rem; border-color:#EF4444; color:#EF4444; background:rgba(239,68,68,0.15);">C=0</button>
+            </div>
+            <div style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem; font-family: monospace;">
+                Calcolo: (<span id="step-ab">1 AND 1 = 1</span>) OR (NOT <span id="step-c">0 = 1</span>) =
+                <strong id="step-final" style="color: var(--math-color);">1 OR 1 = 1</strong>
+            </div>
+            <div class="circuit-result" id="circ-result" style="border-left: 5px solid var(--math-color); color: var(--math-color);">
+                Uscita del circuito: 1
+            </div>
+        </div>
+    </section>
+
+    <!-- PERCHÉ È IMPORTANTE -->
+    <section class="lesson-section" style="border-left: 4px solid var(--physics-color); background: rgba(16,185,129,0.03);">
+        <h2 class="lesson-title">Perché è Fondamentale in Informatica</h2>
+        <p class="lesson-text">
+            La logica booleana non è solo teoria: è il <em>substrato fisico</em> di ogni dispositivo digitale. Ecco dove la incontri ogni giorno:
+        </p>
+
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+            <div class="card" style="padding: 1.5rem;">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔍</div>
+                <h4 style="color: var(--physics-color); margin-bottom: 0.5rem;">Motori di Ricerca</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Quando cerchi <code style="background:rgba(255,255,255,0.1); padding: 0.1em 0.4em; border-radius:4px;">"Python AND tutorial NOT principianti"</code> su Google, stai usando letteralmente l'algebra booleana di Boole per filtrare i risultati.</p>
+            </div>
+            <div class="card" style="padding: 1.5rem;">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">⚙️</div>
+                <h4 style="color: var(--physics-color); margin-bottom: 0.5rem;">CPU e ALU</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">La Unità Aritmetico-Logica dentro il processore del tuo PC esegue addizioni, sottrazioni e confronti combinando milioni di porte AND, OR, NOT ogni nanosecondo.</p>
+            </div>
+            <div class="card" style="padding: 1.5rem;">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">💻</div>
+                <h4 style="color: var(--physics-color); margin-bottom: 0.5rem;">Programmazione</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">In ogni linguaggio di programmazione, le istruzioni <code style="background:rgba(255,255,255,0.1); padding: 0.1em 0.4em; border-radius:4px;">if</code>, <code style="background:rgba(255,255,255,0.1); padding: 0.1em 0.4em; border-radius:4px;">while</code>, <code style="background:rgba(255,255,255,0.1); padding: 0.1em 0.4em; border-radius:4px;">&&</code>, <code style="background:rgba(255,255,255,0.1); padding: 0.1em 0.4em; border-radius:4px;">||</code> sono implementazioni dirette delle porte logiche booleane.</p>
+            </div>
+            <div class="card" style="padding: 1.5rem;">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">🧠</div>
+                <h4 style="color: var(--physics-color); margin-bottom: 0.5rem;">Intelligenza Artificiale</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Le reti neurali artificiali che alimentano ChatGPT e altri modelli AI sono, a livello hardware, immense reti di porte logiche che elaborano miliardi di operazioni booleane al secondo.</p>
+            </div>
+        </div>
+
+        <div style="background: rgba(0,0,0,0.2); border-radius: 12px; padding: 1.5rem; font-family: monospace; font-size: 0.95rem; margin-top: 1rem;">
+            <span style="color: var(--text-muted);">// Python: le porte logiche nel codice</span><br>
+            <span style="color: #F59E0B;">a</span> = <span style="color: var(--math-color);">True</span>;&nbsp; <span style="color: #F59E0B;">b</span> = <span style="color: #EF4444;">False</span><br>
+            <span style="color: var(--text-muted);">print</span>(<span style="color: #F59E0B;">a</span> <span style="color: var(--math-color);">and</span> <span style="color: #F59E0B;">b</span>)&nbsp;&nbsp; <span style="color: var(--text-muted)"># AND → False</span><br>
+            <span style="color: var(--text-muted);">print</span>(<span style="color: #F59E0B;">a</span> <span style="color: var(--physics-color);">or</span> <span style="color: #F59E0B;">b</span>)&nbsp;&nbsp;&nbsp; <span style="color: var(--text-muted)"># OR → True</span><br>
+            <span style="color: var(--text-muted);">print</span>(<span style="color: #EF4444;">not</span> <span style="color: #F59E0B;">a</span>)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: var(--text-muted)"># NOT → False</span>
+        </div>
+    </section>
+
+    <!-- QUIZ -->
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title">Quiz di Riepilogo</h2>
+        <p class="lesson-text" style="font-size: 0.95rem;">Verifica di aver compreso la logica booleana e le porte logiche.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Matematica.</p>
+</footer>
+
+<script src="logica-booleana.js"></script>
+<script src="../../js/main.js"></script>
+</body>
+</html>
