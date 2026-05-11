@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foglio di Calcolo - Lezione Interattiva MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        .back-button { display: inline-flex; align-items: center; color: var(--text-muted); text-decoration: none; margin-bottom: 2rem; font-weight: 600; transition: color 0.3s ease, transform 0.3s ease; }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+        .sub-hero { padding: 4rem 0 2rem; text-align: left; }
+        .sub-hero-title { font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; margin-bottom: 1rem; }
+
+        .timeline { position: relative; padding-left: 2.5rem; margin: 2rem 0; }
+        .timeline::before { content: ''; position: absolute; left: 0.6rem; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--chem-color), rgba(245,158,11,0.1)); }
+        .timeline-item { position: relative; margin-bottom: 2rem; }
+        .timeline-item::before { content: ''; position: absolute; left: -1.95rem; top: 0.4rem; width: 10px; height: 10px; border-radius: 50%; background: var(--chem-color); box-shadow: 0 0 8px var(--chem-glow); }
+        .timeline-year { font-size: 0.8rem; font-weight: 700; color: var(--chem-color); letter-spacing: 1px; margin-bottom: 0.3rem; }
+        .timeline-text { font-size: 0.97rem; color: var(--text-muted); line-height: 1.6; }
+        .timeline-text strong { color: var(--text-main); }
+
+        .ss-wrapper { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 2rem; margin: 1.5rem 0; overflow-x: auto; }
+        .ss-grid { display: grid; grid-template-columns: 36px repeat(4, minmax(110px, 1fr)); gap: 2px; background: rgba(255,255,255,0.05); border-radius: 10px; padding: 2px; min-width: 540px; }
+        .ss-cell { background: rgba(0,0,0,0.35); padding: 0; min-height: 44px; position: relative; }
+        .ss-cell input { width: 100%; height: 100%; padding: 0.5rem; background: transparent; border: none; color: var(--text-main); font-family: monospace; font-size: 0.95rem; outline: none; min-height: 44px; }
+        .ss-cell input:focus { background: rgba(245,158,11,0.1); box-shadow: inset 0 0 0 2px var(--chem-color); }
+        .ss-header { background: rgba(245,158,11,0.2); text-align: center; padding: 0.5rem; font-weight: 700; color: var(--chem-color); font-family: monospace; min-height: 44px; display: flex; align-items: center; justify-content: center; }
+        .ss-rowhead { background: rgba(245,158,11,0.15); text-align: center; padding: 0.5rem; font-weight: 700; color: var(--chem-color); font-family: monospace; display: flex; align-items: center; justify-content: center; }
+        .ss-cell.computed { background: rgba(16,185,129,0.1); }
+        .ss-cell.computed input { color: var(--physics-color); font-weight: 700; }
+        .ss-cell.error input { color: #EF4444; }
+
+        .chart-controls { display: flex; gap: 1rem; flex-wrap: wrap; margin: 1rem 0; align-items: center; }
+        .chart-input { width: 80px; padding: 0.5rem; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15); color: var(--text-main); border-radius: 6px; font-family: monospace; }
+        #chart-canvas { display: block; background: rgba(0,0,0,0.3); border-radius: 10px; width: 100%; max-width: 560px; height: 320px; }
+
+        .formula-card { background: rgba(0,0,0,0.25); border-radius: 10px; padding: 1rem 1.3rem; margin-bottom: 0.7rem; border-left: 3px solid var(--chem-color); }
+        .formula-card code { color: var(--chem-color); font-weight: 700; font-size: 0.95rem; }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="informatica.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Informatica
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Foglio di <span class="gradient-text">Calcolo</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+            Da VisiCalc del 1979 a Excel e Google Sheets: l'invenzione che ha trasformato i personal computer da giocattoli a strumenti professionali.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title" style="color: var(--chem-color);">L'App che Vendette i Primi Mac</h2>
+        <p class="lesson-text">
+            Sai cos'e una "killer application"? E un programma cosi utile che da solo giustifica l'acquisto di un intero computer. La prima killer app della storia fu un foglio di calcolo: <strong>VisiCalc</strong>, lanciato nel 1979 da due studenti di Harvard, Dan Bricklin e Bob Frankston. Prima di VisiCalc, i contabili facevano le previsioni con la matita su grandi fogli a quadretti (i veri "spreadsheets"). Dopo, le facevano in pochi secondi.
+        </p>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-year">1979</div>
+                <p class="timeline-text"><strong>VisiCalc</strong> debutta sull'Apple II. In meno di un anno, la quota di Apple II venduti per uso aziendale esplode. E la prova che un computer puo essere uno strumento di lavoro.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1983</div>
+                <p class="timeline-text"><strong>Lotus 1-2-3</strong> esce per MS-DOS. Veloce, robusto, integra anche grafici e database. Diventa il software piu venduto al mondo per quasi un decennio.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1985</div>
+                <p class="timeline-text"><strong>Microsoft Excel</strong> debutta sul Macintosh (si, prima che su Windows!). Con la sua interfaccia grafica WYSIWYG, conquistera il mercato negli anni '90.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2006</div>
+                <p class="timeline-text"><strong>Google Sheets</strong> arriva sul web: prima volta che piu persone possono modificare un foglio di calcolo contemporaneamente. La collaborazione in tempo reale diventa lo standard.</p>
+            </div>
+        </div>
+
+        <div style="background: rgba(245,158,11,0.06); border-left: 4px solid var(--chem-color); padding: 1.5rem; border-radius: 0 10px 10px 0;">
+            <p class="lesson-text" style="margin-bottom: 0;">
+                <strong>Aneddoto:</strong> Bricklin non brevetto VisiCalc. Disse poi: "Forse avremmo dovuto, ma all'epoca brevettare il software era considerato impossibile." Persero miliardi, ma cambiarono il mondo.
+            </p>
+        </div>
+    </section>
+
+    <section class="lesson-section" style="border-left: 4px solid var(--chem-color);">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Celle, Riferimenti e Formule</h2>
+        <p class="lesson-text">
+            Un foglio di calcolo e una griglia di <strong>celle</strong>, ognuna identificata da una <em>coordinata alfanumerica</em>: la lettera indica la colonna, il numero indica la riga. Esempio: <code style="background:rgba(255,255,255,0.1); padding:0.1em 0.4em; border-radius:4px;">A1</code> e la cella in alto a sinistra, <code style="background:rgba(255,255,255,0.1); padding:0.1em 0.4em; border-radius:4px;">B3</code> e la seconda colonna, terza riga.
+        </p>
+        <p class="lesson-text">
+            In una cella puoi inserire tre cose:
+        </p>
+        <ul class="lesson-text" style="margin-left: 1.5rem;">
+            <li>Un <strong>numero</strong>: 42, 3.14, -7</li>
+            <li>Una <strong>stringa</strong>: "Nome", "Voto", "Maria"</li>
+            <li>Una <strong>formula</strong>: comincia con <code style="background:rgba(255,255,255,0.1); padding:0.1em 0.4em; border-radius:4px;">=</code> ed e cio che rende un foglio di calcolo magico.</li>
+        </ul>
+
+        <p class="lesson-text">
+            Quando scrivi <code style="background:rgba(255,255,255,0.1); padding:0.1em 0.4em; border-radius:4px;">=A1+B1</code> in una cella, il programma <em>calcola</em> la somma del contenuto di A1 e B1 ogni volta che quei valori cambiano. E come un piccolo programma sempre in esecuzione.
+        </p>
+
+        <div class="formula-card">
+            <code>=A1+B1</code> &nbsp; somma due celle
+        </div>
+        <div class="formula-card">
+            <code>=A1*2</code> &nbsp; moltiplica una cella per una costante
+        </div>
+        <div class="formula-card">
+            <code>=SUM(A1:A4)</code> &nbsp; somma un intervallo di celle
+        </div>
+        <div class="formula-card">
+            <code>=AVERAGE(B1:B3)</code> &nbsp; media aritmetica
+        </div>
+        <div class="formula-card">
+            <code>=MAX(C1:C4)</code> &nbsp; il valore massimo di un intervallo
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Mini-Spreadsheet Interattivo</h2>
+        <p class="lesson-text">
+            Prova un foglio di calcolo in miniatura, direttamente qui nella pagina. Inserisci numeri o formule del tipo <code style="background:rgba(255,255,255,0.1); padding:0.1em 0.4em; border-radius:4px;">=A1+B1</code>, <code style="background:rgba(255,255,255,0.1); padding:0.1em 0.4em; border-radius:4px;">=SUM(A1:A4)</code>, <code style="background:rgba(255,255,255,0.1); padding:0.1em 0.4em; border-radius:4px;">=A1*2</code>. Premi Invio o clicca fuori per calcolare.
+        </p>
+
+        <div class="ss-wrapper">
+            <div class="ss-grid" id="spreadsheet">
+                <div class="ss-header"></div>
+                <div class="ss-header">A</div>
+                <div class="ss-header">B</div>
+                <div class="ss-header">C</div>
+                <div class="ss-header">D</div>
+            </div>
+            <div style="margin-top: 1rem; display: flex; gap: 0.7rem; flex-wrap: wrap;">
+                <button id="ss-load-demo" style="background: var(--chem-color); color: #fff; border: none; padding: 0.6rem 1.1rem; border-radius: 8px; cursor: pointer; font-weight: 700; font-family: inherit;">Carica esempio</button>
+                <button id="ss-clear" style="background: rgba(255,255,255,0.1); color: var(--text-main); border: 1px solid rgba(255,255,255,0.2); padding: 0.6rem 1.1rem; border-radius: 8px; cursor: pointer; font-weight: 600; font-family: inherit;">Pulisci tutto</button>
+                <span id="ss-status" style="color: var(--text-muted); align-self: center;"></span>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section" style="border-left: 4px solid var(--physics-color);">
+        <h2 class="lesson-title" style="color: var(--physics-color);">Funzioni Indispensabili</h2>
+        <p class="lesson-text">
+            Excel ha oltre 500 funzioni predefinite, ma in pratica con una decina te la cavi nel 90% dei casi. Queste tre fanno la differenza tra "uso il foglio come una calcolatrice" e "lo uso come Stark con J.A.R.V.I.S.":
+        </p>
+
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+            <div class="card" style="padding: 1.5rem; border-top: 3px solid var(--chem-color);">
+                <h4 style="color: var(--chem-color); font-family: monospace; margin-bottom: 0.5rem;">IF</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.7rem;">Decide cosa restituire in base a una condizione.</p>
+                <code style="background:rgba(0,0,0,0.3); display:block; padding: 0.5rem; border-radius: 6px; color: var(--chem-color); font-size: 0.85rem;">=IF(A1&gt;=18;"maggiorenne";"minorenne")</code>
+            </div>
+            <div class="card" style="padding: 1.5rem; border-top: 3px solid var(--physics-color);">
+                <h4 style="color: var(--physics-color); font-family: monospace; margin-bottom: 0.5rem;">COUNTIF</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.7rem;">Conta quante celle di un intervallo soddisfano una condizione.</p>
+                <code style="background:rgba(0,0,0,0.3); display:block; padding: 0.5rem; border-radius: 6px; color: var(--physics-color); font-size: 0.85rem;">=COUNTIF(B1:B30;"&gt;=6")</code>
+            </div>
+            <div class="card" style="padding: 1.5rem; border-top: 3px solid var(--math-color);">
+                <h4 style="color: var(--math-color); font-family: monospace; margin-bottom: 0.5rem;">VLOOKUP</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.7rem;">Cerca un valore in una tabella e restituisce un dato della stessa riga.</p>
+                <code style="background:rgba(0,0,0,0.3); display:block; padding: 0.5rem; border-radius: 6px; color: var(--math-color); font-size: 0.85rem;">=VLOOKUP("Maria";A1:C30;3;FALSE)</code>
+            </div>
+        </div>
+
+        <p class="lesson-text" style="font-size: 0.95rem;">
+            <strong>Esempio pratico:</strong> hai una tabella con i voti di tutti gli studenti del liceo (3000 righe). Con un VLOOKUP trovi il voto di Maria in matematica in mezzo secondo. Senza, ti tocca scorrere a mano. Indovina quale opzione scelse Tony Stark per gestire i prototipi delle armature.
+        </p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Grafici: dai numeri alle immagini</h2>
+        <p class="lesson-text">
+            Un foglio di calcolo non e solo numeri: e anche un <strong>visualizzatore</strong>. Con un click puoi trasformare una colonna di dati in un grafico a barre, una torta o una curva. La regola fondamentale: il grafico giusto dipende dal tipo di dato.
+        </p>
+
+        <div class="ss-wrapper">
+            <h3 style="color: var(--chem-color); margin-bottom: 1rem;">Visualizzatore di Grafici Interattivo</h3>
+            <p style="color: var(--text-muted); font-size: 0.93rem; margin-bottom: 1rem;">
+                Inserisci 4 valori e scegli il tipo di grafico. I valori rappresentano (ad esempio) la popolarita di 4 piattaforme social.
+            </p>
+            <div class="chart-controls">
+                <label style="color: var(--text-muted); font-size: 0.9rem;">A: <input type="number" id="chart-a" class="chart-input" value="42"></label>
+                <label style="color: var(--text-muted); font-size: 0.9rem;">B: <input type="number" id="chart-b" class="chart-input" value="28"></label>
+                <label style="color: var(--text-muted); font-size: 0.9rem;">C: <input type="number" id="chart-c" class="chart-input" value="18"></label>
+                <label style="color: var(--text-muted); font-size: 0.9rem;">D: <input type="number" id="chart-d" class="chart-input" value="12"></label>
+                <button id="chart-bar" style="background: var(--chem-color); color: #fff; border: none; padding: 0.6rem 1.1rem; border-radius: 8px; cursor: pointer; font-weight: 700; font-family: inherit;">Barre</button>
+                <button id="chart-pie" style="background: var(--physics-color); color: #fff; border: none; padding: 0.6rem 1.1rem; border-radius: 8px; cursor: pointer; font-weight: 700; font-family: inherit;">Torta</button>
+            </div>
+            <canvas id="chart-canvas" width="560" height="320"></canvas>
+        </div>
+
+        <div style="background: rgba(16,185,129,0.06); border-left: 4px solid var(--physics-color); padding: 1.2rem; border-radius: 0 10px 10px 0; margin-top: 1rem;">
+            <p class="lesson-text" style="margin-bottom: 0;">
+                <strong>Regola d'oro:</strong> usa il grafico a <em>torta</em> per le percentuali (parti di un tutto) e quello a <em>barre</em> per confrontare valori indipendenti. Mai usare le torte con piu di 5-6 fette: diventano illeggibili.
+            </p>
+        </div>
+    </section>
+
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Quiz di Riepilogo</h2>
+        <p class="lesson-text" style="font-size: 0.95rem;">Verifica quanto sai sui fogli di calcolo.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Informatica.</p>
+</footer>
+
+<script src="foglio-calcolo.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>
