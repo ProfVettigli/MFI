@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arduino e Raspberry - Lezione Interattiva MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+        .sub-hero {
+            padding: 4rem 0 2rem;
+            text-align: left;
+        }
+        .sub-hero-title {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 2.5rem;
+            margin: 2rem 0;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0.6rem;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #F59E0B, rgba(245,158,11,0.1));
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -1.95rem;
+            top: 0.4rem;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #F59E0B;
+            box-shadow: 0 0 8px rgba(245,158,11,0.6);
+        }
+        .timeline-year {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #F59E0B;
+            letter-spacing: 1px;
+            margin-bottom: 0.3rem;
+        }
+        .timeline-text { font-size: 0.97rem; color: var(--text-muted); line-height: 1.6; }
+        .timeline-text strong { color: var(--text-main); }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .comparison-table th, .comparison-table td {
+            padding: 1rem 1.2rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.95rem;
+        }
+        .comparison-table th {
+            background: rgba(255,255,255,0.05);
+            font-weight: 700;
+            color: #F59E0B;
+            letter-spacing: 0.03em;
+        }
+        .comparison-table td {
+            color: var(--text-muted);
+        }
+        .comparison-table strong {
+            color: var(--text-main);
+        }
+
+        .led-simulator {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+        .led-display {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.3);
+            border: 3px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 0 0 rgba(0,0,0,0);
+        }
+        .led-display.led-on {
+            background: rgba(239,68,68,0.4);
+            border-color: #EF4444;
+            box-shadow: 0 0 20px rgba(239,68,68,0.6);
+        }
+        .led-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .btn-control {
+            background: rgba(245,158,11,0.2);
+            border: 2px solid #F59E0B;
+            color: #F59E0B;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        .btn-control:hover {
+            background: #F59E0B;
+            color: #1a1a2e;
+        }
+        .btn-control:active {
+            transform: scale(0.95);
+        }
+
+        .pinout-svg {
+            background: rgba(0,0,0,0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .pinout-svg svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .code-block {
+            background: rgba(0,0,0,0.3);
+            border-left: 4px solid #F59E0B;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            color: #E8E8E8;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        .use-case-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        .use-case-card {
+            background: rgba(0,0,0,0.2);
+            border: 1px solid rgba(245,158,11,0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        .use-case-card h4 {
+            color: #F59E0B;
+            margin-bottom: 0.8rem;
+            font-size: 1.05rem;
+        }
+        .use-case-card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="informatica.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Informatica
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Arduino <span class="gradient-text">e Raspberry</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+            Dal microcontrollore al minicomputer: scopri come piattaforme open-source hanno democratizzato l'elettronica programmabile e reso il mondo degli IoT accessibile a tutti.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Una Breve Storia dell'Elettronica Programmabile</h2>
+        <p class="lesson-text">
+            Per decenni, creare sistemi elettronici programmabili era il privilegio di ingegneri con laboratori costosi e anni di esperienza. Tutto cambiò quando due progetti rivoluzionari democratizzarono il settore: Arduino e Raspberry Pi.
+        </p>
+
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+            <div class="card" style="padding: 1.5rem; border-top: 3px solid #F59E0B;">
+                <div style="font-size: 3rem; text-align:center; margin-bottom: 0.8rem;">🔧</div>
+                <h4 style="color: #F59E0B; text-align:center; margin-bottom: 0.5rem;">Arduino (2005)</h4>
+                <p style="font-size: 0.93rem; color: var(--text-muted);">Creato a Ivrea, Italia, da Massimo Banzi e colleghi. Arduino è una piattaforma <strong style="color:var(--text-main);">open-source, economica e facile da usare</strong> costruita intorno al microcontrollore Atmel ATmega. Milioni di maker in tutto il mondo hanno imparato l'elettronica con Arduino.</p>
+            </div>
+            <div class="card" style="padding: 1.5rem; border-top: 3px solid #10B981;">
+                <div style="font-size: 3rem; text-align:center; margin-bottom: 0.8rem;">🖥️</div>
+                <h4 style="color: #10B981; text-align:center; margin-bottom: 0.5rem;">Raspberry Pi (2012)</h4>
+                <p style="font-size: 0.93rem; color: var(--text-muted);">Inventato dalla Raspberry Pi Foundation in UK per insegnare informatica nelle scuole. A differenza di Arduino, è un <strong style="color:var(--text-main);">vero minicomputer</strong> con processore ARM, Linux nativo, e persino una porta HDMI per collegare monitor e tastiera.</p>
+            </div>
+        </div>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-year">2005</div>
+                <p class="timeline-text"><strong>Arduino è nato</strong> a Ivrea, presso l'Interaction Design Institute. L'obiettivo era creare una piattaforma economica per chiunque potesse programmare senza master in Ingegneria Elettronica.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2008</div>
+                <p class="timeline-text"><strong>Prima Arduino Uno</strong> viene distribuita. La scheda diventa lo standard di fatto per maker, artisti, e hobbisti.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2012</div>
+                <p class="timeline-text"><strong>Nasce Raspberry Pi</strong> per insegnare informatica nelle scuole. Un computer completo per meno di 50 dollari con Linux, GPIO per sensori, e supporto a Python e C++.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">Oggi</div>
+                <p class="timeline-text">Arduino e Raspberry Pi insieme hanno generato un ecosistema globale di <strong>maker, IoT developer e insegnanti</strong>. Rimangono le più popolari e insegnate.</p>
+            </div>
+        </div>
+
+        <div style="background: rgba(245,158,11,0.06); border-left: 4px solid #F59E0B; padding: 1.5rem; border-radius: 0 10px 10px 0; margin-top: 1rem;">
+            <p class="lesson-text" style="margin-bottom: 0;">
+                <strong>L'impatto culturale:</strong> Grazie ad Arduino e Raspberry Pi, milioni di persone hanno imparato che la tecnologia non è un "black box" del silicio, ma qualcosa di comprensibile, modificabile e creativo.
+            </p>
+        </div>
+    </section>
+
+    <section class="lesson-section" style="border-left: 4px solid #F59E0B;">
+        <h2 class="lesson-title" style="color: #F59E0B;">Microcontroller vs Single Board Computer</h2>
+        <p class="lesson-text">
+            La differenza tra Arduino e Raspberry Pi non è tanto nel prezzo, quanto nella <strong>filosofia e nell'architettura hardware</strong>.
+        </p>
+
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th>Aspetto</th>
+                    <th>Arduino (Microcontroller)</th>
+                    <th>Raspberry Pi (SoC)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Tipo</strong></td>
+                    <td>Microcontrollore (8/16-bit)</td>
+                    <td>Single Board Computer (ARM 32/64-bit)</td>
+                </tr>
+                <tr>
+                    <td><strong>Sistema Operativo</strong></td>
+                    <td>Nessuno (firmware diretto)</td>
+                    <td>Linux completo</td>
+                </tr>
+                <tr>
+                    <td><strong>Memoria RAM</strong></td>
+                    <td>2 KB (Arduino Uno)</td>
+                    <td>1-8 GB</td>
+                </tr>
+                <tr>
+                    <td><strong>Velocità di Clock</strong></td>
+                    <td>16 MHz</td>
+                    <td>1-2 GHz</td>
+                </tr>
+                <tr>
+                    <td><strong>Caso d'Uso</strong></td>
+                    <td>Controllo tempo-reale, sensori</td>
+                    <td>Elaborazione dati, server web</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p class="lesson-text" style="margin-top: 1rem;">
+            <strong>In poche parole:</strong> Arduino è perfetto per controllare LED, motori, sensori. Raspberry è un vero computer che può fare rete, eseguire server web, analizzare dati complessi e osservare webcam.
+        </p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Anatomia di una Scheda: Pinout di Arduino Uno</h2>
+        <p class="lesson-text">
+            Ogni pin di Arduino serve a uno scopo preciso.
+        </p>
+
+        <div class="pinout-svg">
+            <svg viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg">
+                <rect width="400" height="500" fill="rgba(0,0,0,0.3)" rx="10"/>
+                <rect x="50" y="50" width="300" height="400" fill="rgba(20,20,30,0.8)" stroke="#F59E0B" stroke-width="2" rx="5"/>
+                <text x="200" y="80" text-anchor="middle" font-size="14" font-weight="bold" fill="#F59E0B">Arduino Uno</text>
+                <g id="left-pins">
+                    <text x="70" y="120" font-size="10" fill="#10B981" font-weight="bold">GND</text>
+                    <circle cx="80" cy="125" r="5" fill="#EF4444"/>
+                    <text x="70" y="150" font-size="10" fill="#10B981">5V</text>
+                    <circle cx="80" cy="155" r="5" fill="#EF4444"/>
+                    <text x="70" y="180" font-size="10" fill="#3B82F6">D0-D13</text>
+                    <circle cx="80" cy="185" r="5" fill="#3B82F6"/>
+                    <text x="70" y="250" font-size="10" fill="#3B82F6">A0-A5</text>
+                    <circle cx="80" cy="255" r="5" fill="#3B82F6"/>
+                </g>
+                <rect x="150" y="440" width="100" height="30" fill="rgba(0,0,0,0.5)" stroke="#F59E0B" stroke-width="1" rx="3"/>
+                <text x="200" y="460" text-anchor="middle" font-size="12" fill="#F59E0B" font-weight="bold">USB</text>
+            </svg>
+        </div>
+
+        <ul style="list-style:none; padding-left:0; color:var(--text-muted); font-size:0.95rem; line-height:1.8;">
+            <li style="margin-bottom:0.8rem;"><span style="color:#EF4444;">●</span> <strong style="color:var(--text-main);">GND</strong> e <strong style="color:var(--text-main);">5V</strong>: Alimentazione</li>
+            <li style="margin-bottom:0.8rem;"><span style="color:#3B82F6;">●</span> <strong style="color:var(--text-main);">D0-D13 (Digital Pins)</strong>: Leggono/scrivono 0 o 1</li>
+            <li style="margin-bottom:0.8rem;"><span style="color:#3B82F6;">●</span> <strong style="color:var(--text-main);">A0-A5 (Analog Input)</strong>: Leggono tensioni da 0 a 5V</li>
+        </ul>
+    </section>
+
+    <section class="lesson-section" style="border-left: 4px solid #10B981;">
+        <h2 class="lesson-title" style="color: #10B981;">Lo Sketch di Base: setup() e loop()</h2>
+        <p class="lesson-text">
+            Ogni programma Arduino (detto <strong>sketch</strong>) ha sempre questa struttura:
+        </p>
+
+        <div class="code-block">
+void setup() {<br>
+&nbsp;&nbsp;pinMode(13, OUTPUT);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#10B981;">//Configura pin 13</span><br>
+}<br>
+<br>
+void loop() {<br>
+&nbsp;&nbsp;digitalWrite(13, HIGH);&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#10B981;">//Accendi</span><br>
+&nbsp;&nbsp;delay(1000);<br>
+&nbsp;&nbsp;digitalWrite(13, LOW);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#10B981;">//Spegni</span><br>
+&nbsp;&nbsp;delay(1000);<br>
+}
+        </div>
+
+        <ul style="list-style:none; padding-left:0; color:var(--text-muted); font-size:0.95rem; line-height:1.8;">
+            <li style="margin-bottom:0.8rem;"><strong style="color:var(--text-main);">setup()</strong> → Eseguita una sola volta all'avvio</li>
+            <li style="margin-bottom:0.8rem;"><strong style="color:var(--text-main);">loop()</strong> → Eseguita infinitamente in ciclo</li>
+        </ul>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Simulatore Interattivo: LED che Lampeggia</h2>
+        <p class="lesson-text">
+            Clicca sui pulsanti per simulare il codice Arduino.
+        </p>
+
+        <div class="led-simulator">
+            <div class="led-display" id="led-display">
+                💡
+            </div>
+            <div class="led-controls">
+                <button class="btn-control" id="btn-on">Accendi LED (HIGH)</button>
+                <button class="btn-control" id="btn-off">Spegni LED (LOW)</button>
+                <button class="btn-control" id="btn-blink">Lampeggia (loop)</button>
+                <button class="btn-control" id="btn-stop">Ferma</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section" style="border-left: 4px solid #F59E0B; background: rgba(245,158,11,0.03);">
+        <h2 class="lesson-title">Casi d'Uso e Applicazioni</h2>
+        <p class="lesson-text">
+            Arduino e Raspberry Pi sono il cuore di migliaia di progetti IoT, automazione domestica e prototipazione.
+        </p>
+
+        <div class="use-case-grid">
+            <div class="use-case-card">
+                <h4>Automazione Domestica</h4>
+                <p>Controllare luci, riscaldamento, irrigazione tramite sensori di movimento.</p>
+            </div>
+            <div class="use-case-card">
+                <h4>Stazioni Meteo</h4>
+                <p>Sensori di temperatura, umidità, pressione e vento connessi al cloud.</p>
+            </div>
+            <div class="use-case-card">
+                <h4>Robot Autonomi</h4>
+                <p>Arduino controlla motori, Raspberry Pi "pensa" e decide le mosse.</p>
+            </div>
+            <div class="use-case-card">
+                <h4>Industria 4.0</h4>
+                <p>Sensori misurano vibrazioni, temperatura, pressione di macchinari.</p>
+            </div>
+            <div class="use-case-card">
+                <h4>Prototipazione</h4>
+                <p>Startup usano Arduino e Raspberry per MVP veloci e affidabili.</p>
+            </div>
+            <div class="use-case-card">
+                <h4>Educazione STEM</h4>
+                <p>Insegnanti insegnano elettronica e programmazione a costo basso.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title">Quiz di Riepilogo</h2>
+        <p class="lesson-text" style="font-size: 0.95rem;">Verifica di aver compreso i concetti fondamentali di Arduino e Raspberry Pi.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Informatica.</p>
+</footer>
+
+<script src="arduino-raspberry.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>
