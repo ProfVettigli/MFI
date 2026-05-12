@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teoria del Caos - Lezione Interattiva MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+    <script>
+      MathJax = { tex: { inlineMath: [['\\(', '\\)']] } };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+
+    <style>
+        .back-button {
+            display: inline-flex; align-items: center;
+            color: var(--text-muted); text-decoration: none;
+            margin-bottom: 2rem; font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+        .sub-hero { padding: 4rem 0 2rem; text-align: left; }
+        .sub-hero-title { font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; margin-bottom: 1rem; }
+
+        .chaos-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .slider-row { display: flex; align-items: center; gap: 1rem; margin: 1rem 0; flex-wrap: wrap; }
+        .slider-row label { min-width: 130px; color: var(--text-muted); font-weight: 600; }
+        .slider-row input[type=range] { flex: 1; min-width: 180px; accent-color: var(--chem-color); }
+        .value-pill { background: rgba(236,107,6,0.15); color: var(--chem-color); padding: 0.3rem 0.7rem; border-radius: 8px; font-family: monospace; font-weight: 700; min-width: 50px; text-align: center; }
+
+        canvas.chaos-canvas {
+            width: 100%; max-width: 600px;
+            background: rgba(0,0,0,0.25);
+            border-radius: 10px; display: block; margin: 1.5rem auto;
+            border: 1px solid rgba(236,107,6,0.2);
+        }
+
+        .section-title { font-size: 1.4rem; font-weight: 700; margin-top: 3rem; margin-bottom: 1rem; }
+        .formula-box { background: rgba(236,107,6,0.08); border-left: 4px solid var(--chem-color); padding: 1.2rem 1.5rem; border-radius: 8px; margin: 1.5rem 0; font-size: 0.95rem; }
+
+        .concept-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 2rem 0; }
+        @media (max-width: 768px) { .concept-row { grid-template-columns: 1fr; } }
+        .concept-box { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1.5rem; }
+        .concept-box h4 { color: var(--chem-color); margin-bottom: 0.8rem; }
+
+        .info-box { background: rgba(236,107,6,0.1); padding: 1rem; border-radius: 8px; border-left: 4px solid var(--chem-color); margin: 1.5rem 0; }
+
+        .trajectory-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+        .trajectory-item { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 1rem; }
+        .trajectory-item p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; margin: 0.5rem 0; }
+        .trajectory-item code { background: rgba(0,0,0,0.3); padding: 0.2rem 0.4rem; border-radius: 3px; font-size: 0.85rem; color: var(--chem-color); }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="../probabilita-statistica.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Probabilità e Statistica
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Teoria del <span class="gradient-text">Caos</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+            Un battito d'ali di farfalla in Brasile provoca un tornado in Texas? Scopri il caos deterministico, i sistemi sensibili e gli attrattori strani.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <!-- BUTTERFLY EFFECT -->
+    <section class="chaos-card">
+        <h2 class="section-title">1. Effetto Farfalla (Butterfly Effect)</h2>
+        <p>Piccole variazioni nelle condizioni iniziali producono cambiamenti drammatici nell'evoluzione di un sistema. Edward Lorenz scoprì questo nel 1963 studiando il meteo.</p>
+
+        <div class="formula-box">
+            Sistema deterministico ma <strong>sensibile alle condizioni iniziali</strong> = Caos deterministico<br>
+            Non è imprevedibilità assoluta, ma <strong>dipendenza esponenziale</strong> dai dati iniziali.
+        </div>
+
+        <div class="info-box">
+            <p><strong>Paradosso:</strong> Le equazioni sono deterministiche (se conosci x(0), conosci x(t) per ogni t). Eppure è impossibile predire il comportamento a lungo termine perché gli errori iniziali si amplificano esponenzialmente.</p>
+        </div>
+    </section>
+
+    <!-- MAPPA LOGISTICA -->
+    <section class="chaos-card">
+        <h2 class="section-title">2. Mappa Logistica</h2>
+        <p>Un semplice modello iterativo che mostra come il caos nasca da una regola deterministica:</p>
+
+        <div class="formula-box">
+            \(x_{n+1} = r \cdot x_n (1 - x_n)\)<br>
+            dove \(r\) è il parametro di controllo (tasso di crescita), \(x_n \in [0, 1]\)
+        </div>
+
+        <h3>Simulatore Interattivo</h3>
+        <div class="slider-row">
+            <label for="logistic-r">Parametro r:</label>
+            <input type="range" id="logistic-r" min="0" max="4" value="2.5" step="0.05">
+            <span class="value-pill" id="r-display">2.50</span>
+        </div>
+
+        <div class="slider-row">
+            <label for="logistic-x0">Valore iniziale x₀:</label>
+            <input type="range" id="logistic-x0" min="0.01" max="0.99" value="0.5" step="0.01">
+            <span class="value-pill" id="x0-display">0.50</span>
+        </div>
+
+        <canvas id="logisticCanvas" class="chaos-canvas" width="600" height="400"></canvas>
+
+        <div class="trajectory-grid">
+            <div class="trajectory-item">
+                <p><strong>r ∈ [0, 1]:</strong> Sistema converge a 0</p>
+            </div>
+            <div class="trajectory-item">
+                <p><strong>r ∈ [1, 3]:</strong> Converge a un punto fisso stabile</p>
+            </div>
+            <div class="trajectory-item">
+                <p><strong>r ∈ [3, 1+√6]:</strong> Biforcazione: 2 punti stabili</p>
+            </div>
+            <div class="trajectory-item">
+                <p><strong>r > 1+√6 ≈ 3.45:</strong> Caos, attrattore strano, doppio periodo</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- BIFURCAZIONE -->
+    <section class="chaos-card">
+        <h2 class="section-title">3. Diagramma di Biforcazione</h2>
+        <p>Come cambia il comportamento al variare del parametro r? Il diagramma di biforcazione mostra tutti i possibili stati stazionari:</p>
+
+        <canvas id="bifurcationCanvas" class="chaos-canvas" width="600" height="400" style="margin-top: 1.5rem;"></canvas>
+
+        <p style="text-align: center; color: var(--text-muted); font-size: 0.9rem; margin-top: 1rem;">
+            Le ramificazioni in "Y" indicano biforcazioni. L'area nera a destra è il caos. Le strisce bianche sono "finestre di ordine" nel caos.
+        </p>
+    </section>
+
+    <!-- ATTRATTORE DI LORENZ -->
+    <section class="chaos-card">
+        <h2 class="section-title">4. Attrattore di Lorenz</h2>
+        <p>Un sistema di 3 equazioni differenziali che modella la convezione termica dell'atmosfera:</p>
+
+        <div class="formula-box">
+            \(\frac{dx}{dt} = \sigma(y - x)\)<br>
+            \(\frac{dy}{dt} = x(\rho - z) - y\)<br>
+            \(\frac{dz}{dt} = xy - \beta z\)<br>
+            Parametri classici: σ ≈ 10, ρ ≈ 28, β ≈ 8/3
+        </div>
+
+        <div class="concept-row">
+            <div class="concept-box">
+                <h4>Proprietà Attrattore</h4>
+                <p>Traiettorie convergono verso un insieme frattale 2-dimensionale nello spazio 3D. Forma caratteristica: due "ali" di farfalla.</p>
+            </div>
+            <div class="concept-box">
+                <h4>Caos Deterministico</h4>
+                <p>Due orbite inizialmente vicine divergono esponenzialmente (LE > 0). Eppure il sistema non "esplode" ma rimane confinato.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CARATTERISTICHE DEL CAOS -->
+    <section class="chaos-card">
+        <h2 class="section-title">5. Caratteristiche dei Sistemi Caotici</h2>
+
+        <div class="trajectory-grid">
+            <div class="trajectory-item">
+                <h4 style="color: var(--chem-color); margin-bottom: 0.5rem;">Sensibilità IC</h4>
+                <p>Dipendenza esponenziale dalle condizioni iniziali. Esponente di Lyapunov λ > 0.</p>
+            </div>
+            <div class="trajectory-item">
+                <h4 style="color: var(--chem-color); margin-bottom: 0.5rem;">Deterministico</h4>
+                <p>Le equazioni sono completamente deterministiche, senza randomness. Eppure impredittibile.</p>
+            </div>
+            <div class="trajectory-item">
+                <h4 style="color: var(--chem-color); margin-bottom: 0.5rem;">Attrattori Strani</h4>
+                <p>Geometria frattale. Insieme di Cantor, curve di Peano. Dimensione non intera.</p>
+            </div>
+            <div class="trajectory-item">
+                <h4 style="color: var(--chem-color); margin-bottom: 0.5rem;">Biforcazioni</h4>
+                <p>Cambio qualitativo della dinamica al variare di parametri. Raddoppiamento di periodo.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- APPLICAZIONI -->
+    <section class="chaos-card">
+        <h2 class="section-title">6. Applicazioni Reali</h2>
+
+        <ul style="color: var(--text-muted); line-height: 2; margin: 1rem 0;">
+            <li><strong>Meteo:</strong> Limite della prevedibilità ~ 2 settimane (a causa del caos)</li>
+            <li><strong>Orbite planetarie:</strong> Système Solaire è stabile ma caotico su scale di tempo lunghe</li>
+            <li><strong>Laser:</strong> Comportamento caotico nei laser ad alta potenza</li>
+            <li><strong>Biologia:</strong> Battiti cardiaci, ritmi cerebrali mostrano dinamiche caotiche</li>
+            <li><strong>Economia:</strong> Mercati finanziari mostrano proprietà caotiche</li>
+            <li><strong>Criptografia:</strong> Sequenze caotiche per generare chiavi pseudo-random</li>
+        </ul>
+
+        <div class="info-box">
+            <p><strong>Paradosso della Prevedibilità:</strong> Conosciamo le leggi esatte che governano molti sistemi, eppure non possiamo prevedere il loro comportamento a lungo termine. Questo è uno dei misteri più affascinanti della fisica moderna.</p>
+        </div>
+    </section>
+
+</main>
+
+<footer style="text-align: center; padding: 2rem 0; color: var(--text-muted); font-size: 0.9rem; margin-top: 4rem; border-top: 1px solid rgba(255,255,255,0.1);">
+    MFI © 2026 | Teoria del Caos
+</footer>
+
+<script src="teoria-caos.js"></script>
+</body>
+</html>

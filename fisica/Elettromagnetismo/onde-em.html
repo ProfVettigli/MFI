@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Onde Elettromagnetiche - Lezione Interattiva MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+        .sub-hero {
+            padding: 4rem 0 2rem;
+            text-align: left;
+        }
+        .sub-hero-title {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .formula-box {
+            background: rgba(16,185,129,0.06);
+            border-left: 4px solid var(--physics-color);
+            padding: 1.5rem;
+            border-radius: 0 10px 10px 0;
+            margin: 1.5rem 0;
+            font-family: monospace;
+            font-size: 1.15rem;
+            color: var(--text-main);
+            letter-spacing: 0.04em;
+        }
+
+        .spectrum-chart {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 0.5rem;
+            margin: 1.5rem 0;
+            align-items: flex-end;
+        }
+        .spectrum-bar {
+            padding: 0.8rem 0.5rem;
+            border-radius: 6px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #fff;
+        }
+        .spectrum-bar:hover {
+            transform: scaleY(1.1);
+        }
+
+        .interactive-box {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        .slider-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+        .slider-label {
+            min-width: 150px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+        .slider-row input[type="range"] {
+            flex: 1;
+            min-width: 200px;
+            accent-color: var(--physics-color);
+        }
+        .slider-val {
+            font-family: monospace;
+            color: var(--physics-color);
+            font-weight: 700;
+            min-width: 120px;
+            text-align: right;
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            background: #050810;
+            border-radius: 10px;
+            margin-top: 1rem;
+        }
+
+        .wave-display {
+            background: rgba(0,0,0,0.3);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        .wave-display strong {
+            color: var(--physics-color);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        .info-card {
+            background: rgba(0,0,0,0.2);
+            border-top: 3px solid var(--physics-color);
+            border-radius: 10px;
+            padding: 1.5rem;
+        }
+        .info-card h4 { color: var(--physics-color); margin-bottom: 0.5rem; }
+        .info-card p { font-size: 0.92rem; color: var(--text-muted); }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="../elettromagnetismo.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Elettromagnetismo
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Onde <span class="gradient-text">Elettromagnetiche</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+            La luce non è misteriosa: è solo un'onda elettromagnetica che i nostri occhi riescono a percepire. Lo spettro completo contiene miliardi di frequenze.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">La Luce è Onda?</h2>
+        <p class="lesson-text">
+            Per centuries, scienziati dibatterono se la luce fosse una particella (Newton) o un'onda (Huygens). Nel 1873, Maxwell risolse il dibattito: la luce è un'onda <strong>elettromagnetica</strong>, composta da un campo elettrico che oscilla <em>perpendiculare</em> a un campo magnetico che oscilla allo stesso modo.
+        </p>
+        <p class="lesson-text">
+            Entrambi i campi oscillano perpendicolarmente alla direzione di propagazione, e la loro velocità di propagazione è:
+        </p>
+        <div class="formula-box">
+            c = λ &middot; f = 3 × 10⁸ m/s
+            <div style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem; font-family: inherit;">
+                dove λ (lambda) è la lunghezza d'onda e f è la frequenza.
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Lo Spettro Elettromagnetico</h2>
+        <p class="lesson-text">
+            La luce visibile (il violetto al rosso) occupa solo una minuscola fetta dello spettro EM. Ogni tipo di radiazione è caratterizzato dalla sua frequenza (o lunghezza d'onda):
+        </p>
+
+        <div class="spectrum-chart">
+            <div class="spectrum-bar" style="height: 80px; background: linear-gradient(to right, #8B0000, #FF4500);" title="Onde radio">
+                <div style="margin-top: 5px;">📻 Radio</div>
+                <div style="font-size: 0.65rem;">MHz</div>
+            </div>
+            <div class="spectrum-bar" style="height: 100px; background: linear-gradient(to right, #FF4500, #FFD700);" title="Microonde">
+                <div style="margin-top: 8px;">🍕 Microonde</div>
+                <div style="font-size: 0.65rem;">GHz</div>
+            </div>
+            <div class="spectrum-bar" style="height: 60px; background: linear-gradient(to right, #FFD700, #FF6347);" title="Infrarosso">
+                <div style="margin-top: 2px;">🔴 IR</div>
+                <div style="font-size: 0.65rem;">THz</div>
+            </div>
+            <div class="spectrum-bar" style="height: 180px; background: linear-gradient(to right, #FF1493, #00FF00, #0000FF, #8B008B);" title="Luce Visibile">
+                <div style="margin-top: 60px;">👁️ Visibile</div>
+                <div style="font-size: 0.65rem;">400-700 nm</div>
+            </div>
+            <div class="spectrum-bar" style="height: 120px; background: linear-gradient(to right, #8B008B, #4B0082);" title="Ultravioletto">
+                <div style="margin-top: 20px;">☀️ UV</div>
+                <div style="font-size: 0.65rem;">PHz</div>
+            </div>
+            <div class="spectrum-bar" style="height: 140px; background: linear-gradient(to right, #4B0082, #191970);" title="Raggi X">
+                <div style="margin-top: 30px;">🦴 X-ray</div>
+                <div style="font-size: 0.65rem;">EHz</div>
+            </div>
+            <div class="spectrum-bar" style="height: 160px; background: #000080;" title="Raggi Gamma">
+                <div style="margin-top: 50px;">☢️ Gamma</div>
+                <div style="font-size: 0.65rem;">ZHz</div>
+            </div>
+        </div>
+
+        <p class="lesson-text">
+            Tutte queste radiazioni viaggiano alla stessa velocità c nel vuoto. La differenza è la <strong>lunghezza d'onda</strong> (e inversamente proporzionale, la <strong>frequenza</strong>). Le onde radio hanno lunghezze d'onda di km, mentre i raggi gamma di 10⁻¹² m.
+        </p>
+    </section>
+
+    <section class="lesson-section" style="border-left: 4px solid var(--physics-color);">
+        <h2 class="lesson-title">Visualizzatore Interattivo di Onde EM</h2>
+        <p class="lesson-text">
+            Regola la frequenza e vedi come cambia la lunghezza d'onda. Osserva come il tipo di radiazione cambia e come l'onda visuale si trasforma.
+        </p>
+
+        <div class="interactive-box">
+            <div class="slider-row">
+                <span class="slider-label">Frequenza (Hz)</span>
+                <input type="range" id="freq-slider" min="3" max="24" step="0.5" value="14">
+                <span class="slider-val" id="freq-val">10¹⁴ Hz</span>
+            </div>
+            <div class="wave-display">
+                Lunghezza d'onda λ = <strong id="wavelength">750 nm</strong><br>
+                Tipo di radiazione: <strong id="rad-type">Luce rossa visibile</strong><br>
+                Velocità: <strong>3.00 × 10⁸ m/s</strong>
+            </div>
+
+            <h3 style="margin-top: 1.5rem; color: var(--physics-color);">Visualizzazione dell'onda</h3>
+            <canvas id="wave-canvas" width="900" height="300"></canvas>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Applicazioni per Tipo di Radiazione</h2>
+        <div class="info-grid">
+            <div class="info-card" style="border-top-color: var(--math-color);">
+                <h4 style="color: var(--math-color);">Radio (MHz-GHz)</h4>
+                <p>Radiodiffusione, TV, WiFi, telefonia mobile. Lunghezze d'onda da millimetri a metri.</p>
+            </div>
+            <div class="info-card" style="border-top-color: #F59E0B;">
+                <h4 style="color: #F59E0B;">Infrarosso</h4>
+                <p>Sensori termici, telecamere notturne, riscaldamento. La maggior parte del calore è radiazione IR.</p>
+            </div>
+            <div class="info-card" style="border-top-color: #EF4444;">
+                <h4 style="color: #EF4444;">Visibile (400-700 nm)</h4>
+                <p>La banda che i nostri occhi percepiscono. Dai fotoni violetti (alta energia) ai fotoni rossi (bassa energia).</p>
+            </div>
+            <div class="info-card" style="border-top-color: #A855F7;">
+                <h4 style="color: #A855F7;">Ultravioletto</h4>
+                <p>Sterilizzazione, indice UV solare. Energia sufficiente a rompere le molecole biologiche (causa scottature).</p>
+            </div>
+            <div class="info-card" style="border-top-color: #06B6D4;">
+                <h4 style="color: #06B6D4;">Raggi X</h4>
+                <p>Radiografia medica, fluoroscopia. Penetrano i tessuti molli ma non le ossa (ad alto assorbimento).</p>
+            </div>
+            <div class="info-card" style="border-top-color: #EC4899;">
+                <h4 style="color: #EC4899;">Raggi Gamma</h4>
+                <p>Radiazione nucleare, sterilizzazione industriale, medicina nucleare. Estremamente pericolosi per il DNA.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Proprietà Ondulatorie della Luce</h2>
+        <p class="lesson-text">
+            Poiché la luce è un'onda EM, obbedisce alle stesse leggi di tutte le onde:
+        </p>
+        <div class="info-grid">
+            <div class="info-card">
+                <h4>Rifrazione</h4>
+                <p>La luce cambia velocità passando da un mezzo all'altro, causando un cambio di direzione. Ecco come funzionano le lenti.</p>
+            </div>
+            <div class="info-card">
+                <h4>Diffrazione</h4>
+                <p>La luce piega attorno agli ostacoli. Questo è il motivo per cui puoi sentire il suono dietro un muro ma non vedere.</p>
+            </div>
+            <div class="info-card">
+                <h4>Interferenza</h4>
+                <p>Due onde luminose possono sommarsi (interferenza costruttiva) o annullarsi (interferenza distruttiva).</p>
+            </div>
+            <div class="info-card">
+                <h4>Polarizzazione</h4>
+                <p>La luce naturale oscilla in tutte le direzioni. La luce polarizzata oscilla in una sola direzione (occhiali da sole).</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title">Quiz di Riepilogo</h2>
+        <p class="lesson-text" style="font-size: 0.95rem;">Verifica la tua comprensione delle onde elettromagnetiche.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Fisica.</p>
+</footer>
+
+<script src="onde-em.js"></script>
+<script src="../../js/main.js"></script>
+</body>
+</html>

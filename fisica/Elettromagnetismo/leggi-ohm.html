@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leggi di Ohm e Peltier - Lezione Interattiva MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+        .sub-hero {
+            padding: 4rem 0 2rem;
+            text-align: left;
+        }
+        .sub-hero-title {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .formula-box {
+            background: rgba(16,185,129,0.06);
+            border-left: 4px solid var(--physics-color);
+            padding: 1.5rem;
+            border-radius: 0 10px 10px 0;
+            margin: 1.5rem 0;
+            font-family: monospace;
+            font-size: 1.15rem;
+            color: var(--text-main);
+            letter-spacing: 0.04em;
+        }
+
+        .interactive-box {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        .input-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+        .input-label {
+            min-width: 120px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+        .input-field {
+            flex: 1;
+            min-width: 150px;
+            padding: 0.7rem;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 6px;
+            color: #fff;
+            font-family: monospace;
+            font-size: 1rem;
+        }
+        .input-field:focus {
+            outline: none;
+            border-color: var(--physics-color);
+            box-shadow: 0 0 8px rgba(16,185,129,0.3);
+        }
+        .input-unit {
+            min-width: 60px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .result-box {
+            background: rgba(0,0,0,0.3);
+            border-left: 5px solid var(--physics-color);
+            padding: 1.2rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+            font-family: monospace;
+            font-size: 1.05rem;
+        }
+        .result-box strong {
+            color: var(--physics-color);
+        }
+
+        .power-meter {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+        }
+        .power-bar {
+            height: 30px;
+            background: linear-gradient(to right, #22c55e, #eab308, #ef4444);
+            border-radius: 6px;
+            position: relative;
+            margin-bottom: 0.5rem;
+        }
+        .power-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        .info-card {
+            background: rgba(0,0,0,0.2);
+            border-top: 3px solid var(--physics-color);
+            border-radius: 10px;
+            padding: 1.5rem;
+        }
+        .info-card h4 { color: var(--physics-color); margin-bottom: 0.5rem; }
+        .info-card p { font-size: 0.92rem; color: var(--text-muted); }
+
+        .material-select {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+        }
+        .mat-btn {
+            background: var(--surface-hover);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: var(--text-main);
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+        .mat-btn:hover { background: rgba(16,185,129,0.15); border-color: var(--physics-color); }
+        .mat-btn.active { background: var(--physics-color); color: white; border-color: var(--physics-color); }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="../elettromagnetismo.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Elettromagnetismo
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Leggi di Ohm e <span class="gradient-text">Peltier</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+            La relazione fondamentale tra tensione, corrente e resistenza. E poi: come il calore si trasforma in energia elettrica e viceversa.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Georg Simon Ohm e la Sua Legge</h2>
+        <p class="lesson-text">
+            Nel 1827, il fisico tedesco <strong>Georg Simon Ohm</strong> scoprì empiricamente che in un conduttore la corrente è direttamente proporzionale alla tensione applicata e inversamente proporzionale alla resistenza del materiale. Questa relazione semplicissima ma potentissima è la base di tutta l'elettrotecnica moderna.
+        </p>
+        <div class="formula-box">
+            V = I &middot; R
+            <div style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem; font-family: inherit;">
+                Tensione (V, Volt) = Corrente (I, Ampere) × Resistenza (R, Ohm)
+            </div>
+        </div>
+        <p class="lesson-text">
+            Questa semplice equazione governa tutto: dagli interruttori della tua casa ai circuiti nei tuoi dispositivi. Se un materiale non obbedisce a questa legge lineare, si chiama <em>non-ohmico</em> (come i diodi e i transistor).
+        </p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Calcolatore Interattivo di Ohm</h2>
+        <p class="lesson-text">
+            Usa il calcolatore per esplorare la relazione tra tensione, corrente e resistenza. Modifica due valori e il terzo si calcola automaticamente. Monitora anche la potenza dissipata!
+        </p>
+
+        <div class="interactive-box">
+            <div class="input-row">
+                <span class="input-label">Tensione (V)</span>
+                <input type="number" id="ohm-v" class="input-field" value="12" min="0" step="0.1">
+                <span class="input-unit">Volt</span>
+            </div>
+
+            <div class="input-row">
+                <span class="input-label">Corrente (I)</span>
+                <input type="number" id="ohm-i" class="input-field" value="2" min="0" step="0.01">
+                <span class="input-unit">Ampere</span>
+            </div>
+
+            <div class="input-row">
+                <span class="input-label">Resistenza (R)</span>
+                <input type="number" id="ohm-r" class="input-field" value="6" min="0" step="0.1">
+                <span class="input-unit">Ohm (Ω)</span>
+            </div>
+
+            <div class="result-box">
+                Potenza P = V × I = <strong id="power-result">24 W</strong>
+                <div style="margin-top: 0.8rem; font-size: 0.9rem; color: var(--text-muted);">
+                    Energia dissipata per second: <strong id="energy-result">24 Joule/s</strong>
+                </div>
+            </div>
+
+            <div class="power-meter">
+                <div class="power-label">Intensità della potenza</div>
+                <div class="power-bar" id="power-bar" style="width: 50%;"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section" style="border-left: 4px solid #F59E0B;">
+        <h2 class="lesson-title" style="color: #F59E0B;">Resistività dei Materiali</h2>
+        <p class="lesson-text">
+            La resistenza dipende dal materiale. Alcuni materiali (conduttori) hanno bassissima resistenza, altri (isolanti) enorme. La <strong>resistività ρ</strong> è una proprietà intrinseca del materiale:
+        </p>
+        <div class="formula-box" style="border-color: #F59E0B; background: rgba(245,158,11,0.06);">
+            R = ρ &middot; (L / A)
+            <div style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem; font-family: inherit;">
+                dove L è la lunghezza del conduttore e A è l'area della sezione trasversale.
+            </div>
+        </div>
+
+        <h3 style="margin-top: 1.5rem; color: #F59E0B;">Seleziona un materiale per vedere la sua resistività:</h3>
+        <div class="material-select">
+            <button class="mat-btn active" data-material="rame">🧲 Rame (1.68×10⁻⁸)</button>
+            <button class="mat-btn" data-material="alluminio">⚙️ Alluminio (2.65×10⁻⁸)</button>
+            <button class="mat-btn" data-material="nichrome">🔴 Nichrome (1.1×10⁻⁶)</button>
+            <button class="mat-btn" data-material="carbonio">⚫ Carbonio (3.5×10⁻⁵)</button>
+            <button class="mat-btn" data-material="vetro">🟦 Vetro (>10¹⁶)</button>
+        </div>
+        <div id="material-info" style="margin-top: 1rem; padding: 1rem; background: rgba(0,0,0,0.2); border-radius: 8px; color: var(--text-muted);">
+            Il rame è un ottimo conduttore. Anche l'alluminio è eccellente. Il nichrome è usato nelle resistenze di riscaldamento.
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Effetto Seebeck e Celle Peltier</h2>
+        <p class="lesson-text">
+            Nel 1821 il fisico tedesco <strong>Thomas Johann Seebeck</strong> scoprì un effetto affascinante: se riscaldi una giunzione tra due metalli diversi, genera una piccola tensione! Questo è il <strong>effetto Seebeck</strong>, base dei termocoppie.
+        </p>
+        <div class="formula-box">
+            V = α &middot; ΔT
+            <div style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem; font-family: inherit;">
+                α è il coefficiente Seebeck del materiale, ΔT è la differenza di temperatura.
+            </div>
+        </div>
+
+        <h3 style="margin: 1.5rem 0 1rem; color: #F59E0B;">Effetto Peltier (Seebeck Inverso)</h3>
+        <p class="lesson-text">
+            <strong>Jean Peltier</strong> scoprì che l'effetto Seebeck è reversibile: se passi una corrente attraverso una giunzione di metalli diversi, uno lato si riscalda e l'altro si raffredda! Questo è il principio delle <strong>celle Peltier</strong>, usate per il raffreddamento termionico.
+        </p>
+        <ul style="margin: 1.5rem 0; color: var(--text-muted);">
+            <li style="margin-bottom: 0.8rem;"><strong>Applicazione Seebeck:</strong> Thermos intelligenti che misurano la temperatura. Termocoppie per forni. Generatori geotermici.</li>
+            <li style="margin-bottom: 0.8rem;"><strong>Applicazione Peltier:</strong> Frigoriferi portatili per il campeggio. Raffreddamento di componenti elettronici. Sistemi di climate control in auto di lusso.</li>
+        </ul>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Dissipazione di Potenza</h2>
+        <p class="lesson-text">
+            Quando la corrente passa attraverso una resistenza, parte dell'energia elettrica si trasforma in calore (effetto Joule). Questa è la base dei riscaldatori elettrici, delle lampadine incandescenti e dei fusibili.
+        </p>
+        <div class="info-grid">
+            <div class="info-card" style="border-top-color: var(--math-color);">
+                <h4 style="color: var(--math-color);">Formula della Potenza</h4>
+                <p>P = V × I = I² × R = V² / R<br>L'energia dissipata in Watt dipende da come colleghi tensione, corrente e resistenza.</p>
+            </div>
+            <div class="info-card" style="border-top-color: #F59E0B;">
+                <h4 style="color: #F59E0B;">Fusibili e Protezioni</h4>
+                <p>Un fusibile è un filo con bassa resistenza che si fonde se la corrente supera un certo valore, proteggendo i circuiti da sovraccarichi.</p>
+            </div>
+            <div class="info-card" style="border-top-color: #EF4444;">
+                <h4 style="color: #EF4444;">Riscaldatori Elettrici</h4>
+                <p>Un elemento riscaldante è una resistenza ad alta resistenza. Con la stessa tensione, più R significa più calore dissipato per unità di corrente.</p>
+            </div>
+            <div class="info-card" style="border-top-color: #A855F7;">
+                <h4 style="color: #A855F7;">Effetto Joule</h4>
+                <p>L'energia cinetica degli elettroni si trasforma in vibrazione termica del reticolo cristallino. È questo che riscalda il filo.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title">Quiz di Riepilogo</h2>
+        <p class="lesson-text" style="font-size: 0.95rem;">Verifica la tua comprensione della legge di Ohm, Seebeck e Peltier.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Fisica.</p>
+</footer>
+
+<script src="leggi-ohm.js"></script>
+<script src="../../js/main.js"></script>
+</body>
+</html>

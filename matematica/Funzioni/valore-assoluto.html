@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Funzione Valore Assoluto - MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- MathJax -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s, transform 0.3s;
+        }
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+        .back-icon {
+            margin-right: 0.5rem;
+        }
+
+        .abs-gradient {
+            background: linear-gradient(135deg, #f59e0b, #fbbf24);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .explorer-panel {
+            display: grid;
+            grid-template-columns: 1fr 280px;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .canvas-wrapper {
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+        }
+
+        #abs-canvas {
+            width: 100%;
+            height: 400px;
+            display: block;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+        }
+
+        .control-panel {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .btn-option {
+            padding: 0.6rem 0.8rem;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            background: transparent;
+            color: var(--text-main);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .btn-option:hover {
+            border-color: var(--math-color);
+            color: var(--math-color);
+        }
+
+        .btn-option.active {
+            background: var(--math-color);
+            border-color: var(--math-color);
+            color: white;
+        }
+
+        .slider-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .slider-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--math-color);
+            letter-spacing: 1px;
+        }
+
+        .slider-value {
+            font-family: 'Fira Code', monospace;
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            background: var(--math-color);
+            cursor: pointer;
+            border-radius: 50%;
+            box-shadow: 0 0 8px rgba(245, 158, 11, 0.5);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            background: var(--math-color);
+            cursor: pointer;
+            border-radius: 50%;
+            border: none;
+            box-shadow: 0 0 8px rgba(245, 158, 11, 0.5);
+        }
+
+        .info-box {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid var(--math-color);
+            border-radius: 12px;
+            padding: 0.8rem;
+            font-size: 0.8rem;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-label {
+            color: var(--text-muted);
+        }
+
+        .info-value {
+            font-family: 'Fira Code', monospace;
+            color: var(--math-color);
+            font-weight: 700;
+        }
+
+        @media (max-width: 768px) {
+            .explorer-panel {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="lesson-header">
+        <div class="container" style="padding: 4rem 0 2rem;">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <a href="funzioni.html" class="back-button">
+                    <span class="back-icon">&larr;</span> Torna a Funzioni
+                </a>
+            </div>
+            <h1 class="lesson-title" style="font-size: clamp(2.2rem, 5vw, 3.5rem); margin-bottom: 1rem;">
+                <span class="abs-gradient">Funzione Valore Assoluto</span>
+            </h1>
+            <p class="lesson-subtitle">
+                La funzione che "positivizza" tutto: proprietà e trasformazioni geometriche.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- 1. DEFINIZIONE -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">1. Cos'è il Valore Assoluto?</h2>
+            <p class="lesson-text">
+                Il <strong>valore assoluto</strong> di un numero \(x\), indicato \(|x|\), è la sua <strong>distanza dallo zero</strong> sulla retta numerica. Sempre non-negativo:
+            </p>
+            <div style="background: rgba(255,255,255,0.02); padding: 2rem; border-radius: 20px; text-align: center; margin: 2rem 0;">
+                $$|x| = \begin{cases} x & \text{se } x \geq 0 \\ -x & \text{se } x < 0 \end{cases}$$
+            </div>
+            <p class="lesson-text">
+                Esempi: \(|5| = 5\), \(|-5| = 5\), \(|0| = 0\). Geomtricamente: \(|x|\) è la distanza da \(x\) all'origine.
+            </p>
+        </section>
+
+        <!-- 2. PROPRIETÀ -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">2. Proprietà Fondamentali</h2>
+            <div class="card" style="border-left: 4px solid var(--math-color); background: rgba(245, 158, 11, 0.05);">
+                <ul style="margin: 0; font-size: 0.95rem;">
+                    <li>\(|x| \geq 0\) per ogni \(x \in \mathbb{R}\).</li>
+                    <li>\(|x| = 0 \Leftrightarrow x = 0\).</li>
+                    <li>\(|x| = |-x|\) (simmetria rispetto all'origine).</li>
+                    <li>\(|xy| = |x| \cdot |y|\) (proprietà moltiplicativa).</li>
+                    <li>\(|x + y| \leq |x| + |y|\) (disuguaglianza triangolare).</li>
+                    <li>\(||x| - |y|| \leq |x - y|\).</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 3. LABORATORIO INTERATTIVO -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">3. Explorer: Trasformazioni di |x|</h2>
+            <p class="lesson-text">
+                Esplora come il grafico cambia con diverse trasformazioni. Seleziona una funzione e modifica i parametri:
+            </p>
+
+            <div class="explorer-panel">
+                <div class="canvas-wrapper">
+                    <canvas id="abs-canvas"></canvas>
+                </div>
+
+                <div class="control-panel">
+                    <div>
+                        <div class="slider-label" style="margin-bottom: 0.8rem;">Funzione</div>
+                        <div class="btn-group">
+                            <button class="btn-option active" onclick="selectFunction('basic')">y = |x|</button>
+                            <button class="btn-option" onclick="selectFunction('shifted')">y = |x - h|</button>
+                            <button class="btn-option" onclick="selectFunction('transformed')">y = a|x| + b</button>
+                            <button class="btn-option" onclick="selectFunction('double')">y = ||x| - c|</button>
+                        </div>
+                    </div>
+
+                    <div id="sliders-container">
+                        <div class="slider-group">
+                            <label class="slider-label">a (pendenza)</label>
+                            <input type="range" id="param-a" min="0.1" max="3" step="0.1" value="1">
+                            <div class="slider-value" id="value-a">1.0</div>
+                        </div>
+                    </div>
+
+                    <div class="info-box">
+                        <div class="info-item">
+                            <span class="info-label">f(2)</span>
+                            <span class="info-value" id="f-value">2</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">f(-2)</span>
+                            <span class="info-value" id="f-neg-value">2</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <p class="lesson-text" style="margin-top: 1.5rem; font-style: italic; color: var(--text-muted);">
+                Prova: cosa succede al grafico quando \(a < 0\) in \(y = a|x|\)? Come si sposta la funzione con \(h\)?
+            </p>
+        </section>
+
+        <!-- 4. GRAFICI COMUNI -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">4. Grafici Comunemente Usati</h2>
+            <p class="lesson-text">
+                Alcuni grafici classici che combinano il valore assoluto:
+            </p>
+            <ul class="lesson-text" style="margin-left: 2rem; list-style-type: disc;">
+                <li>\(y = |x|\) — forma a "V", vertice in origine, inclinazione 1.</li>
+                <li>\(y = -|x|\) — forma rovesciata a "V", massimo in origine.</li>
+                <li>\(y = ||x| - 1|\) — due "V" affiancate, rappresenta la distanza da \(\pm 1\).</li>
+                <li>\(y = |x - 2| + 3\) — traslazione: spostamento a destra di 2 e in alto di 3.</li>
+                <li>\(y = 2|x| - 1\) — "V" più stretto, riflesso verso il basso.</li>
+            </ul>
+        </section>
+
+        <!-- 5. APPLICAZIONI -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">5. Applicazioni nel Mondo Reale</h2>
+            <ul class="lesson-text" style="margin-left: 2rem; list-style-type: disc;">
+                <li><strong>Distanza:</strong> La distanza tra due numeri \(a\) e \(b\) è \(|a - b|\).</li>
+                <li><strong>Errore di misura:</strong> Se misuriamo un valore \(x\) con errore \(\epsilon\), il valore reale è in \(|x - x_{\text{reale}}| \leq \epsilon\).</li>
+                <li><strong>Moduli di elasticità:</strong> Resistenza dei materiali alla deformazione.</li>
+                <li><strong>Controllo della qualità:</strong> Verificare se un componente rientra nelle tolleranze \(\pm\) range.</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Matematica.</p>
+    </footer>
+
+    <script src="../../js/main.js"></script>
+    <script src="valore-assoluto.js"></script>
+</body>
+</html>

@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fiber Optics - Interactive Lesson MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+        .sub-hero {
+            padding: 4rem 0 2rem;
+            text-align: left;
+        }
+        .sub-hero-title {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .canvas-wrap {
+            background: rgba(0,0,0,0.35);
+            border-radius: 12px;
+            padding: 1.2rem;
+            margin: 1.5rem 0;
+            text-align: center;
+            border: 1px solid rgba(59,130,246,0.15);
+        }
+        canvas {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+            border-radius: 8px;
+            background: #060a10;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin: 1rem 0;
+            align-items: center;
+            justify-content: center;
+        }
+        .ctrl {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            min-width: 180px;
+        }
+        .ctrl label {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .ctrl input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            background: rgba(59,130,246,0.25);
+            border-radius: 3px;
+            outline: none;
+        }
+        .ctrl input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--physics-color);
+            cursor: pointer;
+            box-shadow: 0 0 8px var(--physics-glow);
+        }
+        .val-display {
+            font-family: monospace;
+            color: var(--physics-color);
+            font-weight: 700;
+            font-size: 1.05rem;
+        }
+
+        .info-box {
+            background: rgba(59,130,246,0.07);
+            border-left: 4px solid var(--physics-color);
+            border-radius: 0 0.75rem 0.75rem 0;
+            padding: 1.25rem 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .info-box .formula {
+            font-family: 'Courier New', monospace;
+            font-size: 1.2rem;
+            color: var(--physics-color);
+            text-align: center;
+            padding: 0.5rem 0;
+            font-weight: 700;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .feature-card {
+            background: rgba(59,130,246,0.08);
+            border-radius: 8px;
+            padding: 1.2rem;
+            border-left: 4px solid var(--physics-color);
+        }
+        .feature-card strong {
+            color: var(--physics-color);
+        }
+
+        .lesson-section { margin: 2.5rem 0; }
+        .lesson-title {
+            font-size: 1.55rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 1.2rem;
+            border-left: 4px solid var(--physics-color);
+            padding-left: 1rem;
+        }
+        .lesson-text {
+            color: var(--text-muted);
+            line-height: 1.7;
+            font-size: 0.98rem;
+            margin-bottom: 1rem;
+        }
+
+        .bandwidth-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background: rgba(0,0,0,0.25);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .bandwidth-table th, .bandwidth-table td {
+            padding: 0.85rem 1.2rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.97rem;
+        }
+        .bandwidth-table th {
+            background: rgba(59,130,246,0.1);
+            color: var(--physics-color);
+            font-weight: 700;
+            letter-spacing: 0.03em;
+        }
+        .bandwidth-table td.num {
+            font-family: monospace;
+            color: var(--physics-color);
+            font-weight: 700;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="../ottica.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Back to Optics
+            </a>
+        </div>
+        <h1 class="sub-hero-title">CLIL: Fiber <span class="gradient-text">Optics</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+            How information travels at the speed of light through hair-thin glass wires using total internal reflection. The technology powering the modern internet.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">What is Fiber Optics?</h2>
+        <p class="lesson-text">
+            An optical fiber is an extremely thin, flexible transparent fiber made of glass or plastic. Light travels along the fiber from one end to the other, bouncing off the walls thanks to total internal reflection. A single fiber can carry thousands of simultaneous conversations or gigabits of data per second over hundreds of kilometers without significant loss.
+        </p>
+        <p class="lesson-text">
+            Optical fibers have revolutionized telecommunications. They are faster, cheaper, lighter, and more secure than copper wires. Modern submarine cables connect continents, carrying over 99% of all intercontinental data traffic.
+        </p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Total Internal Reflection: The Key to Optical Confinement</h2>
+        <p class="lesson-text">
+            Recall from earlier that when light travels from a denser medium (higher refractive index) to a less dense one, there is a critical angle beyond which total internal reflection occurs. All light bounces back, none escapes.
+        </p>
+
+        <div class="info-box">
+            <div class="formula">sin(θ<sub>c</sub>) = n<sub>2</sub> / n<sub>1</sub></div>
+            <p style="margin: 0.7rem 0 0; color: var(--text-muted); text-align: center; font-size: 0.95rem;">
+                For a glass fiber with n ≈ 1.48 surrounded by air (n = 1.00), θ<sub>c</sub> ≈ 42.2°.
+            </p>
+        </div>
+
+        <p class="lesson-text">
+            An optical fiber is designed so that light entering at one end will bounce off the cylindrical walls at angles greater than the critical angle, trapping the light inside. It travels in a zigzag pattern, always reflected, never escaping through the sides.
+        </p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Interactive Fiber Optics Simulator</h2>
+        <p class="lesson-text">
+            Adjust the angle of the entering ray and observe how it bounces inside the fiber. When the angle is shallow (grazing), the ray reflects efficiently along the entire length. When it's too steep, it escapes through the wall.
+        </p>
+
+        <div class="canvas-wrap">
+            <canvas id="fiberCanvas" width="640" height="320"></canvas>
+            <div class="controls">
+                <div class="ctrl">
+                    <label>Entry Angle (°): <span class="val-display" id="fiberAngleVal">30</span></label>
+                    <input type="range" id="fiberAngle" min="0" max="80" value="30" step="5">
+                </div>
+            </div>
+            <div style="background: rgba(0,0,0,0.4); border-radius: 8px; padding: 1rem; margin-top: 0.8rem; font-family: monospace; font-size: 0.95rem; color: var(--text-muted);">
+                <div>Critical angle θ<sub>c</sub> ≈ 42°</div>
+                <div id="fiberStatus" style="color: var(--physics-color); font-weight: 700; margin-top: 0.4rem;">✓ Ray confined (efficient transmission)</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Structure of an Optical Fiber</h2>
+        <p class="lesson-text">
+            A typical optical fiber consists of three layers: the core (where light travels), the cladding (lower refractive index), and the coating (protective jacket).
+        </p>
+
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔵</div>
+                <strong>Core</strong>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-muted);">
+                    Ultra-pure silica glass with diameter 8-50 micrometers. Index n ≈ 1.48. Light travels here, bouncing along the length.
+                </p>
+            </div>
+            <div class="feature-card">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">⭕</div>
+                <strong>Cladding</strong>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-muted);">
+                    Silica glass with slightly lower refractive index (n ≈ 1.46). Creates the boundary that causes total internal reflection.
+                </p>
+            </div>
+            <div class="feature-card">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">🟦</div>
+                <strong>Coating</strong>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-muted);">
+                    Plastic or rubber protection layer (250-500 μm diameter). Shields the fiber from bending, moisture, and damage.
+                </p>
+            </div>
+            <div class="feature-card">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">📦</div>
+                <strong>Cable Assembly</strong>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-muted);">
+                    Multiple fibers bundled together with strength members and outer sheath. Submarine cables: 2-24 fibers with steel armoring.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Types of Optical Fibers</h2>
+        <p class="lesson-text">
+            Fibers are classified by how light propagates through them. Single-mode fibers allow only one path (low dispersion, long distance). Multi-mode fibers allow many paths (easier coupling, shorter distance).
+        </p>
+
+        <table class="bandwidth-table">
+            <thead><tr><th>Type</th><th>Core Diameter</th><th>Max Distance</th><th>Bandwidth</th><th>Application</th></tr></thead>
+            <tbody>
+                <tr><td><strong>Single-Mode</strong></td><td class="num">8-10 μm</td><td class="num">100+ km</td><td class="num">THz</td><td>Long-distance, internet backbone</td></tr>
+                <tr><td><strong>Multi-Mode (Graded)</strong></td><td class="num">50 μm</td><td class="num">2 km</td><td class="num">400+ MHz</td><td>Local networks, data centers</td></tr>
+                <tr><td><strong>Multi-Mode (Step)</strong></td><td class="num">62.5 μm</td><td class="num">300 m</td><td class="num">200 MHz</td><td>Legacy systems, short distances</td></tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Bandwidth and Communication</h2>
+        <p class="lesson-text">
+            The main advantage of optical fibers is <strong>massive bandwidth</strong>. A single fiber can carry terabits per second using wavelength-division multiplexing (WDM), where different colors of light carry different signals simultaneously. This is why fiber optics dominates global telecommunications.
+        </p>
+
+        <div class="info-box">
+            <p style="margin: 0; color: var(--text-muted);">
+                <strong style="color: var(--physics-color);">Wavelength Division Multiplexing:</strong> By using different infrared wavelengths (typically 1310 nm and 1550 nm), multiple independent data streams can travel through a single fiber without interfering. Modern systems use 50+ wavelengths per fiber.
+            </p>
+        </div>
+
+        <p class="lesson-text">
+            A single transatlantic fiber cable can carry the equivalent of ~100 million simultaneous phone calls. The speed of data in fiber is about 2/3 the speed of light (200,000 km/s), slightly reduced compared to c due to the refractive index of glass.
+        </p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Advantages of Fiber Optics</h2>
+
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">⚡</div>
+                <strong>High Bandwidth</strong>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-muted);">
+                    Terabits per second. Can be upgraded with new equipment at endpoints without replacing cables.
+                </p>
+            </div>
+            <div class="feature-card">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">📏</div>
+                <strong>Low Attenuation</strong>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-muted);">
+                    Light loses only ~0.2 dB/km. Amplification only needed every ~80 km for very long distances.
+                </p>
+            </div>
+            <div class="feature-card">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔒</div>
+                <strong>Secure Transmission</strong>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-muted);">
+                    Cannot be tapped without breaking the fiber. Perfect for military and financial data.
+                </p>
+            </div>
+            <div class="feature-card">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">⚖️</div>
+                <strong>Lightweight</strong>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-muted);">
+                    Much lighter than copper. Submarine cables are thinner and cheaper to lay than electrical cables.
+                </p>
+            </div>
+            <div class="feature-card">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">🌐</div>
+                <strong>Immune to Interference</strong>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-muted);">
+                    No electromagnetic interference. Safe near power lines. No crosstalk between fibers.
+                </p>
+            </div>
+            <div class="feature-card">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔬</div>
+                <strong>Precise Control</strong>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-muted);">
+                    Laser sources and detectors can be tuned precisely. Easy to manage and monitor signals.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">The Fiber Optics Revolution</h2>
+        <p class="lesson-text">
+            Invented in 1966 by Charles K. Kao and George A. Hockham, who won the 2009 Nobel Prize in Physics, optical fibers initially showed too much loss. The breakthrough came in 1970 when Corning Glass Works produced fibers with attenuation below 20 dB/km. By the 1980s, fiber became the standard for long-distance telecommunications.
+        </p>
+        <p class="lesson-text">
+            Today, fiber optics are everywhere: from intercontinental submarine cables to fiber-to-the-home (FTTH) networks. The recent technology of "fiber to every building" is bringing gigabit internet to millions of homes worldwide. The physics of total internal reflection, discovered centuries ago, is the invisible superhighway of the modern information age.
+        </p>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 MFI - Interactive Didactic Platform. Physics Section.</p>
+</footer>
+
+<script src="clil-fiber-optics.js"></script>
+<script src="../../js/main.js"></script>
+</body>
+</html>

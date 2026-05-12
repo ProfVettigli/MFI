@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Funzioni Goniometriche - MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- MathJax -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s, transform 0.3s;
+        }
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+        .back-icon {
+            margin-right: 0.5rem;
+        }
+
+        .gonio-gradient {
+            background: linear-gradient(135deg, #0891b2, #06b6d4);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .dual-panel {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .panel-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+        }
+
+        .unit-circle {
+            width: 100%;
+            aspect-ratio: 1;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            display: block;
+        }
+
+        #gonio-graph {
+            width: 100%;
+            height: 300px;
+            display: block;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+        }
+
+        .slider-container {
+            margin-top: 1.5rem;
+        }
+
+        .slider-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #06b6d4;
+            letter-spacing: 1px;
+            margin-bottom: 0.8rem;
+            display: block;
+        }
+
+        .slider-value {
+            font-family: 'Fira Code', monospace;
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-top: 0.5rem;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+            margin: 0.8rem 0;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            background: #06b6d4;
+            cursor: pointer;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            background: #06b6d4;
+            cursor: pointer;
+            border-radius: 50%;
+            border: none;
+            box-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
+        }
+
+        .value-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: rgba(6, 182, 212, 0.1);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            border-radius: 12px;
+        }
+
+        .value-item {
+            text-align: center;
+        }
+
+        .value-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+        }
+
+        .value-num {
+            font-family: 'Fira Code', monospace;
+            color: #06b6d4;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .function-selector {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .fn-btn {
+            flex: 1;
+            padding: 0.5rem;
+            border: 2px solid rgba(6, 182, 212, 0.3);
+            background: transparent;
+            color: var(--text-main);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .fn-btn:hover {
+            border-color: #06b6d4;
+            color: #06b6d4;
+        }
+
+        .fn-btn.active {
+            background: #06b6d4;
+            border-color: #06b6d4;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .dual-panel {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="lesson-header">
+        <div class="container" style="padding: 4rem 0 2rem;">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <a href="funzioni.html" class="back-button">
+                    <span class="back-icon">&larr;</span> Torna a Funzioni
+                </a>
+            </div>
+            <h1 class="lesson-title" style="font-size: clamp(2.2rem, 5vw, 3.5rem); margin-bottom: 1rem;">
+                <span class="gonio-gradient">Funzioni Goniometriche</span>
+            </h1>
+            <p class="lesson-subtitle">
+                Seno, coseno e tangente: il cerchio unitario e il ritmo periodico dell'universo.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- 1. IL CERCHIO UNITARIO -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">1. Il Cerchio Unitario</h2>
+            <p class="lesson-text">
+                Le funzioni goniometriche (trigonometriche) nascono dal <strong>cerchio unitario</strong>: un cerchio di raggio 1 centrato nell'origine. Se consideriamo un angolo \(\theta\), le coordinate del punto sul cerchio sono:
+            </p>
+            <div style="background: rgba(255,255,255,0.02); padding: 2rem; border-radius: 20px; text-align: center; margin: 2rem 0;">
+                $$P(\theta) = (\cos\theta, \sin\theta)$$
+            </div>
+            <p class="lesson-text">
+                Dove \(\cos\theta\) è la coordinata \(x\) (componente orizzontale) e \(\sin\theta\) è la coordinata \(y\) (componente verticale). La <strong>tangente</strong> è il rapporto: \(\tan\theta = \frac{\sin\theta}{\cos\theta}\).
+            </p>
+        </section>
+
+        <!-- 2. PROPRIETÀ -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">2. Proprietà Fondamentali</h2>
+            <div class="card" style="border-left: 4px solid #06b6d4; background: rgba(6, 182, 212, 0.05);">
+                <p style="font-size: 0.95rem; margin-bottom: 0.5rem;"><strong>Identità Pitagorica:</strong> \(\sin^2\theta + \cos^2\theta = 1\) (dal teorema di Pitagora).</p>
+                <p style="font-size: 0.95rem; margin-bottom: 0.5rem;"><strong>Periodicità:</strong> \(\sin(\theta + 2\pi) = \sin\theta\) e \(\cos(\theta + 2\pi) = \cos\theta\). Periodo = \(2\pi\) radianti.</p>
+                <p style="font-size: 0.95rem; margin-bottom: 0.5rem;"><strong>Simmetrie:</strong> \(\sin(-\theta) = -\sin\theta\) (dispari), \(\cos(-\theta) = \cos\theta\) (pari).</p>
+                <p style="font-size: 0.95rem; margin: 0;"><strong>Intervalli:</strong> \(-1 \leq \sin\theta \leq 1\) e \(-1 \leq \cos\theta \leq 1\).</p>
+            </div>
+        </section>
+
+        <!-- 3. LABORATORIO INTERATTIVO -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">3. Laboratorio Interattivo</h2>
+            <p class="lesson-text">
+                Muovi il punto sul cerchio unitario e osserva come cambiano seno, coseno e tangente:
+            </p>
+
+            <div class="dual-panel">
+                <!-- Cerchio Unitario -->
+                <div class="panel-box">
+                    <h4 style="color: #06b6d4; margin-bottom: 1rem; text-align: center;">Cerchio Unitario</h4>
+                    <canvas id="unit-circle" class="unit-circle"></canvas>
+
+                    <div class="slider-container">
+                        <label class="slider-label">Angolo (radianti)</label>
+                        <input type="range" id="angle-slider" min="0" max="6.283" step="0.01" value="0.785">
+                        <div class="slider-value" id="angle-display">0.79 rad (45°)</div>
+                    </div>
+                </div>
+
+                <!-- Grafici della Sinusoide -->
+                <div class="panel-box">
+                    <h4 style="color: #06b6d4; margin-bottom: 0.8rem; text-align: center;">Funzione Selezionata</h4>
+                    <div class="function-selector">
+                        <button class="fn-btn active" onclick="selectFunction('sin')">sin(θ)</button>
+                        <button class="fn-btn" onclick="selectFunction('cos')">cos(θ)</button>
+                        <button class="fn-btn" onclick="selectFunction('tan')">tan(θ)</button>
+                    </div>
+                    <canvas id="gonio-graph"></canvas>
+                </div>
+            </div>
+
+            <!-- Valori numerici -->
+            <div class="value-grid">
+                <div class="value-item">
+                    <div class="value-label">sin(θ)</div>
+                    <div class="value-num" id="sin-value">0.71</div>
+                </div>
+                <div class="value-item">
+                    <div class="value-label">cos(θ)</div>
+                    <div class="value-num" id="cos-value">0.71</div>
+                </div>
+                <div class="value-item">
+                    <div class="value-label">tan(θ)</div>
+                    <div class="value-num" id="tan-value">1.00</div>
+                </div>
+                <div class="value-item">
+                    <div class="value-label">Angolo (gradi)</div>
+                    <div class="value-num" id="degree-value">45°</div>
+                </div>
+            </div>
+
+            <p class="lesson-text" style="margin-top: 1.5rem; font-style: italic; color: var(--text-muted);">
+                Prova: cosa accade quando \(\theta = \pi/2\)? E quando \(\theta = \pi\)? Come cambia la tangente nei quadranti?
+            </p>
+        </section>
+
+        <!-- 4. GRAFICI PERIODICI -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">4. Grafici e Periodicità</h2>
+            <p class="lesson-text">
+                Seno e coseno producono onde: il loro grafico si ripete ogni \(2\pi\) radianti. La tangente ha periodo \(\pi\) ed è discontinua negli asintoti verticali \(\theta = \pi/2 + k\pi\).
+            </p>
+            <ul class="lesson-text" style="margin-left: 2rem; list-style-type: disc;">
+                <li>\(\sin(0) = 0\), \(\sin(\pi/2) = 1\), \(\sin(\pi) = 0\), \(\sin(3\pi/2) = -1\).</li>
+                <li>\(\cos(0) = 1\), \(\cos(\pi/2) = 0\), \(\cos(\pi) = -1\), \(\cos(3\pi/2) = 0\).</li>
+                <li>\(\tan(0) = 0\), \(\tan(\pi/4) = 1\), \(\tan(\pi/2) = \text{undefined}\).</li>
+            </ul>
+        </section>
+
+        <!-- 5. APPLICAZIONI -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">5. Applicazioni nel Mondo Reale</h2>
+            <ul class="lesson-text" style="margin-left: 2rem; list-style-type: disc;">
+                <li><strong>Onde sonore ed elettromagnetiche:</strong> Rappresentate come \(A\sin(\omega t + \phi)\), dove \(A\) è ampiezza, \(\omega\) frequenza angolare, \(\phi\) fase.</li>
+                <li><strong>Moti armonici:</strong> Un pendolo, una molla oscillante, segue \(x(t) = A\cos(\omega t + \phi)\).</li>
+                <li><strong>Navigazione GPS:</strong> Triangolazione usando angoli e funzioni trigonometriche.</li>
+                <li><strong>Architettura e ingegneria:</strong> Progettazione di archi, cupole, strutture ondulate.</li>
+                <li><strong>Elaborazione di segnali:</strong> Trasformate di Fourier decompongono segnali in sinusoidi.</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Matematica.</p>
+    </footer>
+
+    <script src="../../js/main.js"></script>
+    <script src="funzioni-goniometriche.js"></script>
+</body>
+</html>

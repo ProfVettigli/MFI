@@ -3,6 +3,287 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Funzioni Polinomiali - MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- MathJax -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s, transform 0.3s;
+        }
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+        .back-icon {
+            margin-right: 0.5rem;
+        }
+
+        .poly-gradient {
+            background: linear-gradient(135deg, #7c3aed, #a78bfa);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .interactive-panel {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .canvas-wrapper {
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+        }
+
+        #poly-canvas {
+            width: 100%;
+            height: 400px;
+            display: block;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+        }
+
+        .control-panel {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .slider-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .slider-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--math-color);
+            letter-spacing: 1px;
+        }
+
+        .slider-value {
+            font-family: 'Fira Code', monospace;
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            background: var(--math-color);
+            cursor: pointer;
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--math-glow);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            background: var(--math-color);
+            cursor: pointer;
+            border-radius: 50%;
+            border: none;
+            box-shadow: 0 0 10px var(--math-glow);
+        }
+
+        .info-box {
+            background: rgba(124, 58, 237, 0.1);
+            border: 1px solid var(--math-color);
+            border-radius: 12px;
+            padding: 1rem;
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+
+        .info-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+        }
+
+        .info-value {
+            font-family: 'Fira Code', monospace;
+            color: var(--math-color);
+            font-weight: 700;
+        }
+
+        @media (max-width: 768px) {
+            .interactive-panel {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="lesson-header">
+        <div class="container" style="padding: 4rem 0 2rem;">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <a href="funzioni.html" class="back-button">
+                    <span class="back-icon">&larr;</span> Torna a Funzioni
+                </a>
+            </div>
+            <h1 class="lesson-title" style="font-size: clamp(2.2rem, 5vw, 3.5rem); margin-bottom: 1rem;">
+                <span class="poly-gradient">Funzioni Polinomiali</span>
+            </h1>
+            <p class="lesson-subtitle">
+                Grado, radici e il comportamento all'infinito: come i polinomi descrivono il mondo.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- 1. DEFINIZIONE E GRADO -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">1. Cos'è una Funzione Polinomiale?</h2>
+            <p class="lesson-text">
+                Una <strong>funzione polinomiale</strong> è una funzione della forma:
+            </p>
+            <div style="background: rgba(255,255,255,0.02); padding: 2rem; border-radius: 20px; text-align: center; margin: 2rem 0;">
+                $$f(x) = a_n x^n + a_{n-1} x^{n-1} + \cdots + a_1 x + a_0$$
+            </div>
+            <p class="lesson-text">
+                dove \(a_i\) sono i <strong>coefficienti</strong> (numeri reali) e \(n\) è il <strong>grado</strong> del polinomio (il maggiore esponente). I polinomi sono funzioni continue e derivabili su tutto \(\mathbb{R}\).
+            </p>
+        </section>
+
+        <!-- 2. GRADO E COMPORTAMENTO -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">2. Il Grado Determina il Comportamento</h2>
+            <div class="card" style="border-left: 4px solid var(--math-color); background: rgba(124, 58, 237, 0.05);">
+                <p style="font-size: 0.95rem; margin: 0;">
+                    <strong>Grado 0:</strong> \(f(x) = c\) (costante) — una retta orizzontale.<br>
+                    <strong>Grado 1:</strong> \(f(x) = ax + b\) (lineare) — una retta inclinata.<br>
+                    <strong>Grado 2:</strong> \(f(x) = ax^2 + bx + c\) (quadratica) — una parabola.<br>
+                    <strong>Grado 3:</strong> \(f(x) = ax^3 + bx^2 + cx + d\) (cubica) — una curva a "S".
+                </p>
+            </div>
+            <p class="lesson-text" style="margin-top: 1.5rem;">
+                Il <strong>comportamento all'infinito</strong> (quando \(x \to \pm\infty\)) è dominato dal termine di grado più alto:
+            </p>
+            <div style="background: rgba(255,255,255,0.02); padding: 1.5rem; border-radius: 12px; text-align: center; margin: 1.5rem 0;">
+                Se \(a_n > 0\) e \(n\) è pari: \(\lim_{x \to \pm\infty} f(x) = +\infty\)<br>
+                Se \(a_n < 0\) e \(n\) è pari: \(\lim_{x \to \pm\infty} f(x) = -\infty\)<br>
+                Se \(n\) è dispari: comportamento opposto ai due lati.
+            </div>
+        </section>
+
+        <!-- 3. RADICI -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">3. Le Radici (Zeri)</h2>
+            <p class="lesson-text">
+                Le <strong>radici</strong> (o <strong>zeri</strong>) di un polinomio sono i valori di \(x\) per cui \(f(x) = 0\). Geometricamente, sono i punti dove il grafico interseca l'asse \(x\).
+            </p>
+            <p class="lesson-text">
+                Un polinomio di grado \(n\) ha <strong>al massimo</strong> \(n\) radici reali. Per il <strong>Teorema Fondamentale dell'Algebra</strong>, ha esattamente \(n\) radici nel campo complesso (contando molteplicità).
+            </p>
+        </section>
+
+        <!-- 4. LABORATORIO INTERATTIVO -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">4. Laboratorio Interattivo</h2>
+            <p class="lesson-text">
+                Modifica i coefficienti e osserva come cambia il grafico. Per una funzione quadratica \(f(x) = ax^2 + bx + c\):
+            </p>
+
+            <div class="interactive-panel">
+                <div class="canvas-wrapper">
+                    <canvas id="poly-canvas"></canvas>
+                </div>
+
+                <div class="control-panel">
+                    <div class="slider-group">
+                        <label class="slider-label">a (x²)</label>
+                        <input type="range" id="slider-a" min="-5" max="5" step="0.1" value="1">
+                        <div class="slider-value" id="value-a">1.0</div>
+                    </div>
+
+                    <div class="slider-group">
+                        <label class="slider-label">b (x)</label>
+                        <input type="range" id="slider-b" min="-10" max="10" step="0.1" value="0">
+                        <div class="slider-value" id="value-b">0.0</div>
+                    </div>
+
+                    <div class="slider-group">
+                        <label class="slider-label">c (costante)</label>
+                        <input type="range" id="slider-c" min="-10" max="10" step="0.1" value="0">
+                        <div class="slider-value" id="value-c">0.0</div>
+                    </div>
+
+                    <div class="info-box">
+                        <div class="info-label">Vertice</div>
+                        <div class="info-value" id="vertex-info">(-0.0, 0.0)</div>
+                        <div class="info-label" style="margin-top: 1rem;">Radici</div>
+                        <div class="info-value" id="roots-info">---</div>
+                    </div>
+                </div>
+            </div>
+
+            <p class="lesson-text" style="margin-top: 1.5rem; font-style: italic; color: var(--text-muted);">
+                Prova: cosa succede quando \(a = 0\)? Che forma ha il grafico quando \(a < 0\)? Come cambiano le radici al variare di \(c\)?
+            </p>
+        </section>
+
+        <!-- 5. APPLICAZIONI -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">5. Applicazioni nel Mondo Reale</h2>
+            <ul class="lesson-text" style="margin-left: 2rem; list-style-type: disc;">
+                <li><strong>Traiettorie balistiche:</strong> Un proiettile lanciato segue una parabola (polinomio di grado 2).</li>
+                <li><strong>Ottimizzazione:</strong> Trovare il massimo profitto o il minimo costo spesso coinvolge polinomi.</li>
+                <li><strong>Approssimazione di funzioni:</strong> Con il "Teorema di Taylor", qualsiasi funzione liscio si può approssimare con un polinomio.</li>
+                <li><strong>Interpolazione:</strong> Conoscere alcuni punti e trovare il polinomio che li connette.</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Matematica.</p>
+    </footer>
+
+    <script src="../../js/main.js"></script>
+    <script src="funzioni-polinomiali.js"></script>
+</body>
+</html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Funzioni Polinomiali - Lezione Interattiva MFI</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

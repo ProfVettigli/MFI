@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Funzione Radice Quadrata - MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- MathJax -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s, transform 0.3s;
+        }
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+        .back-icon {
+            margin-right: 0.5rem;
+        }
+
+        .sqrt-gradient {
+            background: linear-gradient(135deg, #10b981, #34d399);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .graph-container {
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+        }
+
+        canvas {
+            width: 100%;
+            height: 400px;
+            display: block;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+        }
+
+        .domain-display {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .domain-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(16, 185, 129, 0.5);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .domain-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .domain-value {
+            font-family: 'Fira Code', monospace;
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--math-color);
+        }
+
+        .slider-container {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+        }
+
+        .slider-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--math-color);
+            letter-spacing: 1px;
+            margin-bottom: 0.8rem;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            background: var(--math-color);
+            cursor: pointer;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            background: var(--math-color);
+            cursor: pointer;
+            border-radius: 50%;
+            border: none;
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+        }
+
+        .info-panel {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--math-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.8rem;
+        }
+
+        .info-label {
+            color: var(--text-muted);
+        }
+
+        .info-value {
+            font-family: 'Fira Code', monospace;
+            color: var(--math-color);
+            font-weight: 700;
+        }
+
+        @media (max-width: 768px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+            .domain-display {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="lesson-header">
+        <div class="container" style="padding: 4rem 0 2rem;">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <a href="funzioni.html" class="back-button">
+                    <span class="back-icon">&larr;</span> Torna a Funzioni
+                </a>
+            </div>
+            <h1 class="lesson-title" style="font-size: clamp(2.2rem, 5vw, 3.5rem); margin-bottom: 1rem;">
+                <span class="sqrt-gradient">Funzione Radice Quadrata</span>
+            </h1>
+            <p class="lesson-subtitle">
+                L'inversa del quadrato: dominii, grafici e il significato geometrico della radice.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- 1. DEFINIZIONE -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">1. Cos'è la Radice Quadrata?</h2>
+            <p class="lesson-text">
+                La <strong>funzione radice quadrata</strong> è definita come:
+            </p>
+            <div style="background: rgba(255,255,255,0.02); padding: 2rem; border-radius: 20px; text-align: center; margin: 2rem 0;">
+                $$f(x) = \sqrt{x}$$
+            </div>
+            <p class="lesson-text">
+                Essa rappresenta il <strong>valore positivo</strong> \(y\) tale che \(y^2 = x\). È la funzione inversa di \(f(x) = x^2\) (per \(x \geq 0\)).
+            </p>
+        </section>
+
+        <!-- 2. DOMINIO E CODOMINIO -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">2. Dominio e Codominio</h2>
+            <p class="lesson-text">
+                A differenza della parabola \(y = x^2\) che è definita su tutto \(\mathbb{R}\), la radice quadrata ha limitazioni:
+            </p>
+
+            <div class="domain-display">
+                <div class="domain-box">
+                    <div class="domain-title">Dominio (Input)</div>
+                    <div class="domain-value">\(x \geq 0\)</div>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">Non possiamo estrarre la radice di numeri negativi (nei reali).</p>
+                </div>
+                <div class="domain-box">
+                    <div class="domain-title">Codominio (Output)</div>
+                    <div class="domain-value">\(y \geq 0\)</div>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">La radice è sempre positiva o zero.</p>
+                </div>
+            </div>
+
+            <div class="card" style="border-left: 4px solid var(--math-color); background: rgba(16, 185, 129, 0.05);">
+                <p style="font-size: 0.95rem; margin: 0;">
+                    In notazione di intervallo: \(\text{Dom}(f) = [0, +\infty)\) e \(\text{Codom}(f) = [0, +\infty)\).<br>
+                    La funzione radice è una <strong>bigezione</strong> dal suo dominio al suo codominio.
+                </p>
+            </div>
+        </section>
+
+        <!-- 3. LABORATORIO INTERATTIVO -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">3. Laboratorio Interattivo: Radice vs. Quadrato</h2>
+            <p class="lesson-text">
+                Seleziona un punto sulla curva \(f(x) = x^2\). Osserva come il suo inverso \(f^{-1}(x) = \sqrt{x}\) riflette i dati attraverso la linea \(y = x\):
+            </p>
+
+            <div class="slider-container">
+                <div class="slider-label">Scegli un valore x</div>
+                <input type="range" id="x-slider" min="0" max="10" step="0.1" value="2">
+                <div class="info-panel">
+                    <div class="info-item">
+                        <span class="info-label">Input (x)</span>
+                        <span class="info-value" id="input-x">2.0</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">√x</span>
+                        <span class="info-value" id="output-sqrt">1.41</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">x²</span>
+                        <span class="info-value" id="output-square">4.00</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="comparison-grid">
+                <div class="graph-container">
+                    <h4 style="color: var(--math-color); margin-bottom: 1rem; text-align: center;">f(x) = x²</h4>
+                    <canvas id="square-canvas"></canvas>
+                </div>
+
+                <div class="graph-container">
+                    <h4 style="color: var(--math-color); margin-bottom: 1rem; text-align: center;">f(x) = √x</h4>
+                    <canvas id="sqrt-canvas"></canvas>
+                </div>
+            </div>
+
+            <p class="lesson-text" style="margin-top: 1.5rem; font-style: italic; color: var(--text-muted);">
+                Osserva: il grafico della radice ha forma di "mezza parabola coricata". Cresce rapidamente all'inizio, poi più lentamente.
+            </p>
+        </section>
+
+        <!-- 4. PROPRIETÀ -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">4. Proprietà della Radice Quadrata</h2>
+            <ul class="lesson-text" style="margin-left: 2rem; list-style-type: disc;">
+                <li>\(\sqrt{0} = 0\): La radice di zero è zero.</li>
+                <li>\(\sqrt{1} = 1\): La radice di uno è uno.</li>
+                <li>\(\sqrt{ab} = \sqrt{a} \cdot \sqrt{b}\) (per \(a, b \geq 0\)): La radice di un prodotto è il prodotto delle radici.</li>
+                <li>\(\sqrt{\frac{a}{b}} = \frac{\sqrt{a}}{\sqrt{b}}\) (per \(a, b \geq 0, b \neq 0\)): La radice di una frazione.</li>
+                <li>\((\sqrt{x})^2 = x\) e \(\sqrt{x^2} = |x|\): Inverse, con attenzione ai segni.</li>
+                <li><strong>Crescente su \([0, +\infty)\):</strong> Se \(a < b\), allora \(\sqrt{a} < \sqrt{b}\).</li>
+            </ul>
+        </section>
+
+        <!-- 5. APPLICAZIONI -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">5. Applicazioni nel Mondo Reale</h2>
+            <ul class="lesson-text" style="margin-left: 2rem; list-style-type: disc;">
+                <li><strong>Teorema di Pitagora:</strong> Se un triangolo rettangolo ha cateti \(a\) e \(b\), l'ipotenusa è \(c = \sqrt{a^2 + b^2}\).</li>
+                <li><strong>Distanza euclidea:</strong> La distanza tra due punti \((x_1, y_1)\) e \((x_2, y_2)\) è \(d = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}\).</li>
+                <li><strong>Deviazione standard:</strong> In statistica, la "radice della media dei quadrati delle deviazioni" misura la dispersione.</li>
+                <li><strong>Velocità e accelerazione:</strong> In fisica, la radice appare in formule su caduta libera e moti oscillatori.</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Matematica.</p>
+    </footer>
+
+    <script src="../../js/main.js"></script>
+    <script src="radice-quadrata.js"></script>
+</body>
+</html>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campo Magnetico - Lezione Interattiva MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+        .sub-hero {
+            padding: 4rem 0 2rem;
+            text-align: left;
+        }
+        .sub-hero-title {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .formula-box {
+            background: rgba(16,185,129,0.06);
+            border-left: 4px solid var(--physics-color);
+            padding: 1.5rem;
+            border-radius: 0 10px 10px 0;
+            margin: 1.5rem 0;
+            font-family: monospace;
+            font-size: 1.15rem;
+            color: var(--text-main);
+            letter-spacing: 0.04em;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 2.5rem;
+            margin: 2rem 0;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0.6rem;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--physics-color), rgba(16,185,129,0.1));
+        }
+        .timeline-item { position: relative; margin-bottom: 2rem; }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -1.95rem;
+            top: 0.4rem;
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            background: var(--physics-color);
+            box-shadow: 0 0 8px var(--physics-glow);
+        }
+        .timeline-year {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--physics-color);
+            letter-spacing: 1px;
+            margin-bottom: 0.3rem;
+        }
+        .timeline-text { font-size: 0.97rem; color: var(--text-muted); line-height: 1.6; }
+        .timeline-text strong { color: var(--text-main); }
+
+        .interactive-box {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        .slider-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+        .slider-label {
+            min-width: 130px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+        .slider-row input[type="range"] {
+            flex: 1;
+            min-width: 200px;
+            accent-color: var(--physics-color);
+        }
+        .slider-val {
+            font-family: monospace;
+            color: var(--physics-color);
+            font-weight: 700;
+            min-width: 100px;
+            text-align: right;
+        }
+        canvas {
+            display: block;
+            width: 100%;
+            background: #050810;
+            border-radius: 10px;
+            margin-top: 1rem;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        .info-card {
+            background: rgba(0,0,0,0.2);
+            border-top: 3px solid var(--physics-color);
+            border-radius: 10px;
+            padding: 1.5rem;
+        }
+        .info-card h4 { color: var(--physics-color); margin-bottom: 0.5rem; }
+        .info-card p { font-size: 0.92rem; color: var(--text-muted); }
+
+        .magnet-controls {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+        .magnet-btn {
+            background: var(--surface-hover);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: var(--text-main);
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .magnet-btn:hover { background: rgba(16,185,129,0.15); border-color: var(--physics-color); }
+        .magnet-btn.active { background: var(--physics-color); color: white; border-color: var(--physics-color); }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="../elettromagnetismo.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Elettromagnetismo
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Campo <span class="gradient-text">Magnetico</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+            Dal mitico magnetite ai moderni motori elettrici: come i magneti orientano gli elettroni e generano forze invisibili che muovono il mondo.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">La Magia della Bussola</h2>
+        <p class="lesson-text">
+            Attorno al 1000 d.C., i navigatori cinesi scoprirono il magnetite, una pietra naturale che orienta sempre verso Nord. Per oltre mille anni il meccanismo rimase un mistero. Non c'era carica visibile, eppure la forza era reale e potentissima.
+        </p>
+        <p class="lesson-text">
+            Nel 1820 il fisico danese <strong>Hans Christian Ørsted</strong> fece un esperimento rivoluzionario: collocò una bussola accanto a un filo percorso da corrente elettrica. L'ago si spostò! La corrente generava un campo magnetico. Nacque così il <em>elettromagnetismo</em>.
+        </p>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-year">1000 d.C.</div>
+                <p class="timeline-text">I navigatori cinesi scoprono il <strong>magnetite</strong>, una pietra che orienta verso Nord. Il fenomeno rimane inspiegabile per secoli.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1600</div>
+                <p class="timeline-text"><strong>William Gilbert</strong>, medico della regina Elisabetta, dimostra che la Terra stessa è un enorme magnete con poli Nord e Sud.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1820</div>
+                <p class="timeline-text"><strong>Ørsted</strong> scopre che un filo con corrente genera un campo magnetico, deviando l'ago della bussola. Nasce l'elettromagnetismo.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1831</div>
+                <p class="timeline-text"><strong>Faraday</strong> scopre l'induzione: un campo magnetico <em>variabile</em> genera corrente elettrica. È il principio della dinamo e del trasformatore.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">La Forza di Lorentz</h2>
+        <p class="lesson-text">
+            Una carica q che si muove con velocità <strong>v</strong> dentro un campo magnetico <strong>B</strong> subisce una forza perpendicolare sia a v che a B. Questa è la <strong>forza di Lorentz</strong>, scoperta dal fisico olandese Hendrik Lorentz nel 1892.
+        </p>
+        <div class="formula-box">
+            <strong>F</strong> = q (<strong>v</strong> × <strong>B</strong>)
+            <div style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem; font-family: inherit;">
+                Il simbolo × significa prodotto vettoriale. Direzione: regola della mano destra.
+            </div>
+        </div>
+        <p class="lesson-text">
+            A differenza della forza di Coulomb (parallela al campo), la forza di Lorentz è <strong>perpendicolare</strong> sia al moto che al campo. Per questo una carica in campo magnetico segue un'orbita circolare, come un pianeta attorno al sole magnetico.
+        </p>
+
+        <h3 style="margin: 2rem 0 1rem; color: var(--physics-color);">Applicazione: Il Ciclotrone</h3>
+        <p class="lesson-text">
+            Nel 1931 Ernest Lawrence inventò il <strong>ciclotrone</strong>, un acceleratore di particelle che sfrutta la forza di Lorentz. La particella orbita in un campo magnetico sempre più veloce, utilizzato nei moderni PET scanner ospedalieri.
+        </p>
+    </section>
+
+    <section class="lesson-section" style="border-left: 4px solid var(--physics-color);">
+        <h2 class="lesson-title">Il Campo Magnetico di un Magnete</h2>
+        <p class="lesson-text">
+            Ogni magnete ha un <strong>dipolo magnetico</strong>: un polo Nord (+) e un polo Sud (−). A differenza delle cariche elettriche (che possono essere isolate), i poli magnetici arrivano sempre in coppia. Se dividi un magnete a metà, ottieni due magneti più piccoli, ognuno con i due poli.
+        </p>
+        <div class="formula-box">
+            B = (μ₀ / 4π) · (2m / r³)
+            <div style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem; font-family: inherit;">
+                m è il momento di dipolo magnetico, μ₀ = 4π×10⁻⁷ T·m/A (permeabilità magnetica del vuoto)
+            </div>
+        </div>
+        <p class="lesson-text">
+            Il campo magnetico si misura in <strong>Tesla (T)</strong>. La Terra genera un campo di circa 50 μT. Un magnete da frigorifero produce circa 5 mT. Un moderno scanner MRI usa campi da 1 a 3 Tesla.
+        </p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Visualizzatore Linee di Campo Magnetico</h2>
+        <p class="lesson-text">
+            Come il campo elettrico, anche il campo magnetico può essere visualizzato tramite <strong>linee di campo</strong>. Escono dal polo Nord ed entrano nel polo Sud. Aggiungi magneti e sperimenta i loro campi sovrapposti.
+        </p>
+        <div class="interactive-box">
+            <div class="magnet-controls">
+                <button class="magnet-btn active" id="mode-dipole">Dipolo (N-S)</button>
+                <button class="magnet-btn" id="mode-ns">Nord + Sud separati</button>
+                <button class="magnet-btn" id="mode-clear">Cancella tutto</button>
+            </div>
+            <canvas id="magnet-canvas" width="900" height="480"></canvas>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.8rem;">
+                Verde: linee escono da Nord. Rosso: linee entrano in Sud. Clicca sulla tela per aggiungere magneti.
+            </p>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Applicazioni Reali</h2>
+        <div class="info-grid">
+            <div class="info-card" style="border-top-color: var(--math-color);">
+                <h4 style="color: var(--math-color);">Motore Elettrico</h4>
+                <p>Una bobina con corrente in un campo magnetico subisce una coppia (torsione). Cambiando la corrente col commutatore, la bobina ruota continuamente.</p>
+            </div>
+            <div class="info-card" style="border-top-color: #F59E0B;">
+                <h4 style="color: #F59E0B;">Risonanza Magnetica (MRI)</h4>
+                <p>Un campo magnetico di 1-3 Tesla orienta gli spin nucleari nel corpo. Un impulso radiofrequenza li eccita, e al rilassamento emettono segnali che creano immagini dettagliate.</p>
+            </div>
+            <div class="info-card" style="border-top-color: #EF4444;">
+                <h4 style="color: #EF4444;">Altoparlanti</h4>
+                <p>Una bobina mobile in un campo magnetico permanente trasmette le vibrazioni all'aria, convertendo segnali elettrici in suono.</p>
+            </div>
+            <div class="info-card" style="border-top-color: #A855F7;">
+                <h4 style="color: #A855F7;">Aurora Boreale</h4>
+                <p>Il vento solare (particelle cariche) è catturato dal campo magnetico terrestre, accelerato lungo le linee di campo verso i poli, ionizzando l'atmosfera.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title">Quiz di Riepilogo</h2>
+        <p class="lesson-text" style="font-size: 0.95rem;">Verifica la tua comprensione del campo magnetico e della forza di Lorentz.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Fisica.</p>
+</footer>
+
+<script src="campo-magnetico.js"></script>
+<script src="../../js/main.js"></script>
+</body>
+</html>
