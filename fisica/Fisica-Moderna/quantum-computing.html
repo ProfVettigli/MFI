@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Computer Quantistici - Lezione Interattiva MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        .back-button { display: inline-flex; align-items: center; color: var(--text-muted); text-decoration: none; margin-bottom: 2rem; font-weight: 600; transition: color 0.3s ease, transform 0.3s ease; }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+        .sub-hero { padding: 4rem 0 2rem; text-align: left; }
+        .sub-hero-title { font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; margin-bottom: 1rem; }
+        .lesson-title { color: var(--physics-color) !important; }
+
+        .interactive-box {
+            background: rgba(20,184,166,0.04);
+            border: 1px solid rgba(20,184,166,0.18);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .bloch-sphere {
+            width: 100%;
+            max-width: 400px;
+            height: 400px;
+            margin: 1rem auto;
+        }
+
+        .card { background: rgba(0,0,0,0.2); border-radius: 12px; padding: 1.5rem; margin: 1rem 0; }
+        .card strong { color: var(--physics-color); }
+
+        .formula { font-family: 'Cambria Math', Cambria, serif; font-size: 1.3rem; text-align: center; padding: 1rem; background: rgba(0,0,0,0.25); border-radius: 10px; margin: 1rem 0; }
+
+        .timeline { position: relative; padding-left: 2.5rem; margin: 2rem 0; }
+        .timeline::before { content: ''; position: absolute; left: 0.6rem; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--physics-color), rgba(20,184,166,0.1)); }
+        .timeline-item { position: relative; margin-bottom: 2rem; }
+        .timeline-item::before { content: ''; position: absolute; left: -1.95rem; top: 0.4rem; width: 10px; height: 10px; border-radius: 50%; background: var(--physics-color); box-shadow: 0 0 8px rgba(20,184,166,0.5); }
+        .timeline-year { font-size: 0.8rem; font-weight: 700; color: var(--physics-color); letter-spacing: 1px; margin-bottom: 0.3rem; }
+        .timeline-text { font-size: 0.97rem; color: var(--text-muted); line-height: 1.6; }
+        .timeline-text strong { color: var(--text-main); }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="fisica-moderna.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Fisica Moderna
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Computer <span class="gradient-text">Quantistici</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+            Qubit, sovrapposizione, entanglement e algoritmi quantistici che rivoluzionano il calcolo.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Dai Bit ai Qubit</h2>
+        <p class="lesson-text">
+            Un <strong>bit classico</strong> è 0 oppure 1. Un <strong>qubit (quantum bit)</strong> è una particella quantistica in <strong>sovrapposizione</strong>: è 0 E 1 simultaneamente fino alla misurazione, quando collassa a uno dei due stati.
+        </p>
+        <p class="lesson-text">
+            Formalmente, uno stato qubit è: |ψ⟩ = α|0⟩ + β|1⟩, dove α e β sono ampiezze di probabilità complesse (|α|² + |β|² = 1).
+        </p>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-year">1985</div>
+                <p class="timeline-text"><strong>David Deutsch</strong> propone il computer quantistico teorico capace di esecuzione parallela massiva.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1994</div>
+                <p class="timeline-text"><strong>Peter Shor</strong> scopre l'algoritmo per fattorizzare numeri grandi in tempo polinomiale — una minaccia per la crittografia RSA.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2016-2019</div>
+                <p class="timeline-text"><strong>IBM, Google, IonQ</strong> costruiscono i primi computer quantistici praticabili (50-100+ qubit).</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2023</div>
+                <p class="timeline-text">Google afferma di aver raggiunto la "quantum advantage": superiorità computazionale su problemi specifici.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Sovrapposizione ed Entanglement</h2>
+        <p class="lesson-text">
+            <strong>Sovrapposizione:</strong> Con N qubit, un computer quantistico esplora contemporaneamente 2^N stati. Con 300 qubit, questo è più di 10^90 stati — maggiore del numero di atomi nell'universo!
+        </p>
+
+        <div class="interactive-box">
+            <h3 style="color: var(--physics-color); margin-bottom: 1rem;">Sfera di Bloch: Visualizzazione dello Stato del Qubit</h3>
+            <p style="font-size: 0.95rem; color: var(--text-muted);">Un qubit è rappresentato da un punto sulla sfera di Bloch: i poli sono gli autostati |0⟩ e |1⟩, l'equatore è la sovrapposizione pura.</p>
+            <canvas id="bloch-canvas" class="bloch-sphere"></canvas>
+            <p style="font-size: 0.88rem; color: var(--text-muted); margin-top: 1rem; text-align: center;">Le operazioni quantistiche (gate) ruotano il vettore di stato sulla sfera.</p>
+        </div>
+
+        <p class="lesson-text">
+            <strong>Entanglement:</strong> Due o più qubit possono essere "aggrovigliati" — uno stato non può essere descritto come il prodotto di stati individuali. Misurare un qubit influenza istantaneamente l'altro, anche se distanti. Einstein la chiamò "azione spettrale a distanza".
+        </p>
+        <div class="formula">|ψ⟩ = (1/√2)(|00⟩ + |11⟩)   ← Bell state (massimamente entangled)</div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">L'Algoritmo di Shor</h2>
+        <p class="lesson-text">
+            Uno dei risultati più importanti: <strong>Peter Shor (1994)</strong> scoprì un algoritmo quantistico che fattorizza numeri N in tempo polinomiale O(log³ N), mentre i migliori algoritmi classici impiegano tempo esponenziale.
+        </p>
+        <p class="lesson-text">
+            Questo è un disastro per la crittografia RSA, sulla quale si basa la maggior parte delle comunicazioni sicure moderne. Un computer quantistico con ~1000 qubit logici potrebbe rompere la crittografia di internet.
+        </p>
+
+        <div style="background: rgba(20,184,166,0.06); border-left: 4px solid var(--physics-color); padding: 1.2rem; border-radius: 0 10px 10px 0; margin: 1.5rem 0;">
+            <p class="lesson-text" style="margin-bottom: 0; font-size: 1rem;">
+                <strong>Conseguenze Geopolitiche:</strong> I servizi segreti probabilmente stanno già raccogliendo dati crittati RSA oggi, aspettando il giorno in cui avranno un computer quantistico per decifrarli. Questo ha spinto gli sforzi per "crittografia post-quantistica" già oggi.
+            </p>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Sfide Pratiche: Decoerenza e Correzione degli Errori</h2>
+        <p class="lesson-text">
+            Il grande problema: i qubit sono <strong>fragili</strong>. L'ambiente (calore, radiazione, vibrazioni) causa <strong>decoerenza</strong> — il qubit "perde" la sua sovrapposizione quantistica e collassa a uno stato classico casuale. I tempi di coerenza vanno da microsecondi a millisecondi.
+        </p>
+
+        <div class="interactive-box">
+            <div class="card">
+                <strong>Qubit Superconduttori (IBM, Google):</strong> Basati su giunzioni Josephson, controllati con microonde. Decoerenza ~100 µs.
+            </div>
+            <div class="card">
+                <strong>Ioni Intrappolati (IonQ, Honeywell):</strong> Ioni rari controllati con laser. Decoerenza ~1 s. Più stabili ma scalabilità difficile.
+            </div>
+            <div class="card">
+                <strong>Fotoni (Xanadu):</strong> Fotoni manipolati con ottiche integrate. Perdita ottica è il limite principale.
+            </div>
+        </div>
+
+        <p class="lesson-text">
+            La correzione quantistica degli errori richiede migliaia di qubit fisici per proteggere uno "qubit logico". Siamo ancora lontani dal calcolo quantistico praticabile su larga scala.
+        </p>
+    </section>
+
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title">Quiz di Riepilogo</h2>
+        <p class="lesson-text" style="font-size: 0.95rem;">Metti alla prova la tua comprensione dei computer quantistici.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Fisica.</p>
+</footer>
+
+<script src="quantum-computing.js"></script>
+<script src="../../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capacità e Condensatori - Lezione Interattiva MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+        .sub-hero {
+            padding: 4rem 0 2rem;
+            text-align: left;
+        }
+        .sub-hero-title {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .formula-box {
+            background: rgba(239,68,68,0.06);
+            border-left: 4px solid var(--physics-color);
+            padding: 1.5rem;
+            border-radius: 0 10px 10px 0;
+            margin: 1.5rem 0;
+            font-family: monospace;
+            font-size: 1.15rem;
+            color: var(--text-main);
+            letter-spacing: 0.04em;
+        }
+
+        .interactive-box {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        .input-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+        .input-label {
+            min-width: 120px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+        .input-field {
+            flex: 1;
+            min-width: 150px;
+            padding: 0.7rem;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 6px;
+            color: #fff;
+            font-family: monospace;
+            font-size: 1rem;
+        }
+        .input-field:focus {
+            outline: none;
+            border-color: var(--physics-color);
+            box-shadow: 0 0 8px rgba(239,68,68,0.3);
+        }
+        .input-unit {
+            min-width: 80px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .result-box {
+            background: rgba(0,0,0,0.3);
+            border-left: 5px solid var(--physics-color);
+            padding: 1.2rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+            font-family: monospace;
+            font-size: 1.05rem;
+        }
+        .result-box strong {
+            color: var(--physics-color);
+        }
+
+        .slider-container {
+            margin: 1.5rem 0;
+        }
+        .slider-label {
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        .slider {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(255,255,255,0.1);
+            outline: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--physics-color);
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(239,68,68,0.5);
+        }
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--physics-color);
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 0 10px rgba(239,68,68,0.5);
+        }
+
+        .capacitor-visual {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 200px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 12px;
+            margin: 1.5rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .plate {
+            width: 40px;
+            background: rgba(239,68,68,0.3);
+            border: 2px solid var(--physics-color);
+            border-radius: 4px;
+            height: 120px;
+            position: relative;
+        }
+        .plate.positive {
+            margin-right: 20px;
+            background: rgba(239,68,68,0.2);
+        }
+        .plate.negative {
+            margin-left: 20px;
+            background: rgba(59,130,246,0.2);
+            border-color: #3b82f6;
+        }
+
+        .gap-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 10px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        .info-card {
+            background: rgba(0,0,0,0.2);
+            border-top: 3px solid var(--physics-color);
+            border-radius: 10px;
+            padding: 1.5rem;
+        }
+        .info-card h4 { color: var(--physics-color); margin-bottom: 0.5rem; }
+        .info-card p { font-size: 0.92rem; color: var(--text-muted); }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="../elettromagnetismo.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Elettromagnetismo
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Capacità e <span class="gradient-text">Condensatori</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+            Come i condensatori immagazzinano carica e energia. Scopri il ruolo della geometria, dei materiali e della fisica dietro ogni componente.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Che cos'è un Condensatore?</h2>
+        <p class="lesson-text">
+            Un <strong>condensatore</strong> è un dispositivo che immagazzina carica elettrica (e quindi energia). È composto da due <strong>piatti (o armature) conduttori</strong> separati da un materiale isolante chiamato <strong>dielettrico</strong>. Quando colleghi una batteria, un piatto accumula carica positiva e l'altro carica negativa.
+        </p>
+        <p class="lesson-text">
+            La capacità di immagazzinare carica dipende da tre fattori fisici:
+        </p>
+        <ul style="margin: 1.5rem 0; color: var(--text-muted);">
+            <li style="margin-bottom: 0.8rem;"><strong>Area dei piatti (A):</strong> Piatti più grandi → più capacità</li>
+            <li style="margin-bottom: 0.8rem;"><strong>Distanza tra i piatti (d):</strong> Piatti più vicini → più capacità</li>
+            <li style="margin-bottom: 0.8rem;"><strong>Tipo di dielettrico (ε):</strong> Il materiale isolante amplifica la capacità</li>
+        </ul>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">La Formula della Capacità</h2>
+        <p class="lesson-text">
+            La <strong>capacità C</strong> è definita come il rapporto tra la carica Q immagazzinata e la tensione V applicata:
+        </p>
+        <div class="formula-box">
+            C = Q / V
+            <div style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem; font-family: inherit;">
+                Capacità (C, Farad) = Carica (Q, Coulomb) / Tensione (V, Volt)
+            </div>
+        </div>
+        <p class="lesson-text">
+            Per un condensatore a piatti paralleli:
+        </p>
+        <div class="formula-box">
+            C = ε₀ · ε_r · A / d
+            <div style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem; font-family: inherit;">
+                ε₀ = 8.85×10⁻¹² F/m (costante dielettrica), ε_r = relativa, A = area, d = distanza
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Visualizzatore Interattivo di Condensatore</h2>
+        <p class="lesson-text">
+            Modifica l'area dei piatti, la distanza e la permittività relativa. Osserva come cambia la capacità!
+        </p>
+
+        <div class="interactive-box">
+            <div class="slider-container">
+                <label class="slider-label">Area dei piatti (A): <span id="area-value">10</span> cm²</label>
+                <input type="range" id="area-slider" class="slider" min="1" max="50" value="10" step="1">
+            </div>
+
+            <div class="slider-container">
+                <label class="slider-label">Distanza tra i piatti (d): <span id="distance-value">2</span> mm</label>
+                <input type="range" id="distance-slider" class="slider" min="0.5" max="10" value="2" step="0.1">
+            </div>
+
+            <div class="slider-container">
+                <label class="slider-label">Costante dielettrica (ε_r): <span id="epsilon-value">1</span></label>
+                <input type="range" id="epsilon-slider" class="slider" min="1" max="10" value="1" step="0.1">
+            </div>
+
+            <div class="result-box">
+                Capacità C = <strong id="capacity-result">44.3 pF</strong>
+            </div>
+
+            <div class="capacitor-visual">
+                <div class="plate positive"></div>
+                <div class="plate negative"></div>
+                <div class="gap-label">Gap</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Energia Immagazzinata</h2>
+        <p class="lesson-text">
+            Un condensatore carico immagazzina energia nel suo campo elettrico. Questa energia può essere usata per alimentare un circuito quando il condensatore si scarica.
+        </p>
+        <div class="formula-box">
+            E = ½ · C · V²
+            <div style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem; font-family: inherit;">
+                L'energia immagazzinata dipende dalla capacità e dal quadrato della tensione.
+            </div>
+        </div>
+
+        <div class="interactive-box">
+            <div class="input-row">
+                <span class="input-label">Capacità (C)</span>
+                <input type="number" id="energy-c" class="input-field" value="1" min="0" step="0.01">
+                <span class="input-unit">μF</span>
+            </div>
+
+            <div class="input-row">
+                <span class="input-label">Tensione (V)</span>
+                <input type="number" id="energy-v" class="input-field" value="10" min="0" step="1">
+                <span class="input-unit">Volt</span>
+            </div>
+
+            <div class="result-box">
+                Energia E = <strong id="energy-result">50 μJ</strong>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Tipi di Condensatori</h2>
+        <div class="info-grid">
+            <div class="info-card">
+                <h4>Condensatore a Piatti Paralleli</h4>
+                <p>Due armature piatte e parallele separate da un dielettrico. La geometria più semplice e più analizzata teoricamente.</p>
+            </div>
+            <div class="info-card">
+                <h4>Condensatore Cilindrico</h4>
+                <p>Un cilindro conduttore dentro un altro. Usato in cavi coassiali. Più compatto rispetto ai piatti paralleli.</p>
+            </div>
+            <div class="info-card">
+                <h4>Condensatore Sferico</h4>
+                <p>Una sfera dentro un'altra sfera conduttrice. Raramente usato in pratica, ma importante dal punto di vista teorico.</p>
+            </div>
+            <div class="info-card">
+                <h4>Condensatore Elettrolitico</h4>
+                <p>Usa un dielettrico di ossido tra metallo e electrolita. Enorme capacità in poco spazio. Polarizzato: rispetta la polarità!</p>
+            </div>
+            <div class="info-card">
+                <h4>Condensatore Ceramico</h4>
+                <p>Usa ceramica come dielettrico. Piccolo, economico, stabile. Molto usato in circuiti digitali e analogici.</p>
+            </div>
+            <div class="info-card">
+                <h4>Condensatore di Carta</h4>
+                <p>Storico. Carta tra fogli di alluminio arrotolato. Buona stabilità termica ma ingombrante rispetto ai moderni.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Applicazioni Pratiche</h2>
+        <ul style="color: var(--text-muted); line-height: 1.8;">
+            <li><strong>Filtri:</strong> I condensatori bloccano la corrente continua ma lasciano passare le componenti AC</li>
+            <li><strong>Accumulo temporaneo di energia:</strong> Flash delle fotocamere, backlight di emergenza</li>
+            <li><strong>Accoppiamento e disaccoppiamento:</strong> Nei circuiti analogici per isolare componenti a diversi livelli DC</li>
+            <li><strong>Stabilizzazione di tensione:</strong> Vicino ai chip integrati per assorbire picchi di corrente</li>
+            <li><strong>Motori AC:</strong> Un condensatore in serie fornisce sfasamento per il motor avvio</li>
+        </ul>
+    </section>
+
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title">Quiz di Riepilogo</h2>
+        <p class="lesson-text" style="font-size: 0.95rem;">Testa la tua comprensione della capacità e dei condensatori.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Fisica.</p>
+</footer>
+
+<script src="capacita.js"></script>
+<script src="../../js/main.js"></script>
+</body>
+</html>

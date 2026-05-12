@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLIL: Tesla vs Edison - Interactive Lesson MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+        .sub-hero {
+            padding: 4rem 0 2rem;
+            text-align: left;
+        }
+        .sub-hero-title {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .formula-box {
+            background: rgba(180,83,9,0.06);
+            border-left: 4px solid var(--physics-color);
+            padding: 1.5rem;
+            border-radius: 0 10px 10px 0;
+            margin: 1.5rem 0;
+            font-family: monospace;
+            font-size: 1.1rem;
+            color: var(--text-main);
+            letter-spacing: 0.04em;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .profile-card {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            border-top: 4px solid var(--physics-color);
+        }
+
+        .profile-card h3 {
+            color: var(--physics-color);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .timeline {
+            margin: 2rem 0;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            padding-left: 2rem;
+            border-left: 2px solid var(--physics-color);
+        }
+
+        .timeline-year {
+            font-weight: 800;
+            color: var(--physics-color);
+            min-width: 80px;
+        }
+
+        .timeline-content {
+            color: var(--text-muted);
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .comparison-table thead {
+            background: rgba(0,0,0,0.4);
+        }
+
+        .comparison-table th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--physics-color);
+            border-bottom: 2px solid var(--physics-color);
+        }
+
+        .comparison-table td {
+            padding: 0.8rem 1rem;
+            color: var(--text-muted);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .comparison-table tr:hover {
+            background: rgba(0,0,0,0.3);
+        }
+
+        .achievement-list {
+            list-style: none;
+            padding: 0;
+            margin: 1.5rem 0;
+        }
+
+        .achievement-list li {
+            padding: 0.8rem;
+            margin-bottom: 0.5rem;
+            background: rgba(0,0,0,0.2);
+            border-left: 3px solid var(--physics-color);
+            border-radius: 4px;
+            color: var(--text-muted);
+        }
+
+        .achievement-list li:before {
+            content: "✓ ";
+            color: #22c55e;
+            font-weight: 800;
+            margin-right: 0.5rem;
+        }
+
+        .interactive-box {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        .info-card {
+            background: rgba(0,0,0,0.2);
+            border-top: 3px solid var(--physics-color);
+            border-radius: 10px;
+            padding: 1.5rem;
+        }
+        .info-card h4 { color: var(--physics-color); margin-bottom: 0.5rem; }
+        .info-card p { font-size: 0.92rem; color: var(--text-muted); }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="../elettromagnetismo.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Back to Electromagnetism
+            </a>
+        </div>
+        <h1 class="sub-hero-title">CLIL: <span class="gradient-text">Tesla vs Edison</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+            The War of Currents: How two electrical giants shaped the modern world. DC vs AC: The Niagara Falls Showdown.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">The War of Currents</h2>
+        <p class="lesson-text">
+            In the late 1880s, America witnessed one of the greatest technological rivalries in history: <strong>Thomas Alva Edison</strong> championed <strong>Direct Current (DC)</strong>, while <strong>Nikola Tesla</strong> and his backer <strong>George Westinghouse</strong> promoted <strong>Alternating Current (AC)</strong>. This wasn't just about physics—it was about money, pride, and the future of electrical power distribution.
+        </p>
+        <p class="lesson-text">
+            Edison had already built the world's first power station in Manhattan, supplying DC to thousands of customers. But AC technology promised something Edison couldn't deliver: <strong>efficient long-distance power transmission</strong>. The stage was set for an epic battle.
+        </p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Thomas Alva Edison (1847-1931)</h2>
+
+        <div class="profile-card" style="border-top-color: #EF4444;">
+            <h3 style="color: #EF4444;">The Inventor of the Modern Age</h3>
+            <p style="color: var(--text-muted); margin-bottom: 1rem;">
+                Edison was a prolific American inventor and businessman who revolutionized the world through electric lighting. He believed in DC because he understood it first, invested billions in it, and didn't want to change his mind.
+            </p>
+
+            <h4 style="color: #EF4444; margin: 1rem 0 0.5rem;">Key Achievements:</h4>
+            <ul class="achievement-list">
+                <li>Invented the incandescent light bulb (1879) that lasted hours, not minutes</li>
+                <li>Built the first commercial power station (Pearl Street Station, NYC, 1882)</li>
+                <li>Over 1,093 patents in the US alone</li>
+                <li>Founded General Electric, one of the largest companies in the world</li>
+            </ul>
+
+            <h4 style="color: #EF4444; margin: 1rem 0 0.5rem;">Why Edison Opposed AC:</h4>
+            <ul class="achievement-list" style="margin-bottom: 0;">
+                <li>DC technology was proven and profitable</li>
+                <li>High voltage AC was dangerous (as Edison demonstrated publicly)</li>
+                <li>AC threatened his entire business model and investments</li>
+                <li>Financial losses: he refused to adapt until too late</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Nikola Tesla (1856-1943)</h2>
+
+        <div class="profile-card" style="border-top-color: #4F46E5;">
+            <h3 style="color: #4F46E5;">The Visionary Engineer</h3>
+            <p style="color: var(--text-muted); margin-bottom: 1rem;">
+                Tesla was a Serbian-American inventor and engineer whose discoveries in electromagnetism and electrical transmission shaped the modern world. He understood that <strong>AC was the future</strong>.
+            </p>
+
+            <h4 style="color: #4F46E5; margin: 1rem 0 0.5rem;">Key Achievements:</h4>
+            <ul class="achievement-list">
+                <li>Invented the induction motor, which runs on AC (1888)</li>
+                <li>Designed the system for Niagara Falls power station (1893)</li>
+                <li>Over 300 patents worldwide</li>
+                <li>Pioneered wireless transmission and radio technology</li>
+                <li>Envisioned wireless power transmission (not yet practical)</li>
+            </ul>
+
+            <h4 style="color: #4F46E5; margin: 1rem 0 0.5rem;">Why Tesla Championed AC:</h4>
+            <ul class="achievement-list" style="margin-bottom: 0;">
+                <li>AC could be stepped up/down with transformers, reducing transmission losses</li>
+                <li>Induction motors were simpler and more efficient than DC motors</li>
+                <li>AC generators matched nature's oscillatory patterns</li>
+                <li>Vision of wireless power transmission (theoretical)</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">DC vs AC: The Technical Battle</h2>
+
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th>Feature</th>
+                    <th style="color: #EF4444;">Direct Current (Edison)</th>
+                    <th style="color: #4F46E5;">Alternating Current (Tesla)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="font-weight: 600;">Direction</td>
+                    <td>Always flows one way</td>
+                    <td>Changes direction periodically</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Transformers</td>
+                    <td>Cannot use transformers to change voltage</td>
+                    <td>Transformers work perfectly, voltage easily changed</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Transmission Loss</td>
+                    <td>P = I²R (very high at low voltage, long distance)</td>
+                    <td>At high voltage, same power = less current = fewer losses</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Distance</td>
+                    <td>Efficient only 1-2 miles from generator</td>
+                    <td>Efficient for hundreds of miles</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Motors</td>
+                    <td>Complex commutators, brushes, maintenance</td>
+                    <td>Simple induction motors, more reliable</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Safety</td>
+                    <td>Safer at high voltage (less current)</td>
+                    <td>More dangerous at high voltage (higher volts)</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Cost (1880s)</td>
+                    <td>Already installed, existing infrastructure</td>
+                    <td>New technology, requires transformers</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">The Niagara Falls Test (1895)</h2>
+        <p class="lesson-text">
+            The decisive moment came at <strong>Niagara Falls</strong>. Westinghouse and Tesla won the contract to build a power station there. In 1895, they successfully generated AC electricity at Niagara and transmitted it 20 miles to Buffalo, New York—a distance impossible with DC technology.
+        </p>
+
+        <div style="background: rgba(0,0,0,0.2); border-left: 4px solid var(--physics-color); padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0;">
+            <h3 style="color: var(--physics-color); margin-bottom: 1rem;">The Physics That Won:</h3>
+            <p style="color: var(--text-muted); margin-bottom: 1rem;">
+                Power loss in transmission: <strong>P_loss = I² × R</strong>
+            </p>
+            <ul style="color: var(--text-muted);">
+                <li>If you need to deliver 1 MW: Using DC at 100V requires 10,000 Amperes. Massive wire, huge losses!</li>
+                <li>Using AC at 10,000V only requires 100 Amperes. Transformers step it down at destination.</li>
+                <li><strong>Result:</strong> AC wins. Edison's DC couldn't compete over distance.</li>
+            </ul>
+        </div>
+
+        <p class="lesson-text">
+            This success proved that <strong>AC was superior for large-scale power distribution</strong>. Edison's empire began to crumble. Westinghouse and Tesla's system spread across America and eventually the world.
+        </p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Edison's Campaign Against AC</h2>
+        <p class="lesson-text">
+            Desperate to save his DC business, Edison launched a vicious smear campaign against AC. He hired scientists to publicly electrocute animals with AC current to show its "danger." His team even lobbied to name capital punishment by electrocution "being Westinghoused"—linking Tesla's patron to death row.
+        </p>
+        <p class="lesson-text">
+            Despite these tactics, the laws of physics—and economics—were on AC's side. Edison's DC empire fragmented. By 1892, his General Electric company merged with Thomson-Houston Electric, which backed AC. Edison was removed from leadership of his own company.
+        </p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">The Modern Legacy</h2>
+        <div class="info-grid">
+            <div class="info-card">
+                <h4>AC Won the War</h4>
+                <p>Today, 99% of the world uses AC for power distribution. Transformers and high-voltage transmission are the backbone of civilization.</p>
+            </div>
+            <div class="info-card">
+                <h4>Edison's Light Bulb</h4>
+                <p>Edison's greatest invention, the incandescent bulb, still powers millions of homes (though LEDs are replacing them). His impact wasn't wasted.</p>
+            </div>
+            <div class="info-card">
+                <h4>Tesla's Genius</h4>
+                <p>Tesla was a theoretical visionary who sometimes overestimated what was possible (wireless transmission, oscillators). But his AC system changed everything.</p>
+            </div>
+            <div class="info-card">
+                <h4>Westinghouse's Business</h4>
+                <p>George Westinghouse, the businessman backing Tesla, understood that the future was AC. His decision to support Tesla proved profitable and world-changing.</p>
+            </div>
+            <div class="info-card">
+                <h4>DC Still Exists</h4>
+                <p>Modern electronics (phones, computers, LEDs) use DC. But they're powered by AC from the grid, converted down with transformers and rectifiers.</p>
+            </div>
+            <div class="info-card">
+                <h4>The Lesson</h4>
+                <p>Sometimes the best technology wins. But it takes vision (Tesla), business sense (Westinghouse), and time for innovation to defeat entrenched power.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title">Quiz: The War of Currents</h2>
+        <p class="lesson-text" style="font-size: 0.95rem;">Test your understanding of Edison, Tesla, and the battle between DC and AC.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 MFI - Interactive Educational Platform. Physics Section.</p>
+</footer>
+
+<script src="clil-tesla-edison.js"></script>
+<script src="../../js/main.js"></script>
+</body>
+</html>

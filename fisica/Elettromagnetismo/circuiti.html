@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circuiti Elettrici - Lezione Interattiva MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+        .sub-hero {
+            padding: 4rem 0 2rem;
+            text-align: left;
+        }
+        .sub-hero-title {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .formula-box {
+            background: rgba(99,102,241,0.06);
+            border-left: 4px solid var(--physics-color);
+            padding: 1.5rem;
+            border-radius: 0 10px 10px 0;
+            margin: 1.5rem 0;
+            font-family: monospace;
+            font-size: 1.15rem;
+            color: var(--text-main);
+            letter-spacing: 0.04em;
+        }
+
+        .interactive-box {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .circuit-input-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+        .circuit-label {
+            min-width: 120px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+        .circuit-input {
+            flex: 1;
+            min-width: 150px;
+            padding: 0.7rem;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 6px;
+            color: #fff;
+            font-family: monospace;
+            font-size: 1rem;
+        }
+        .circuit-input:focus {
+            outline: none;
+            border-color: var(--physics-color);
+            box-shadow: 0 0 8px rgba(99,102,241,0.3);
+        }
+        .circuit-unit {
+            min-width: 80px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .result-box {
+            background: rgba(0,0,0,0.3);
+            border-left: 5px solid var(--physics-color);
+            padding: 1.2rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+            font-family: monospace;
+            font-size: 1.05rem;
+        }
+        .result-box strong {
+            color: var(--physics-color);
+        }
+
+        .circuit-type-tabs {
+            display: flex;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            flex-wrap: wrap;
+        }
+        .circuit-tab {
+            background: var(--surface-hover);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: var(--text-main);
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+        }
+        .circuit-tab:hover { background: rgba(99,102,241,0.15); border-color: var(--physics-color); }
+        .circuit-tab.active { background: var(--physics-color); color: white; border-color: var(--physics-color); }
+
+        .resistor-visual {
+            width: 30px;
+            height: 8px;
+            background: #fff;
+            border: 1px solid #fff;
+            border-radius: 2px;
+            margin: 0 5px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        .info-card {
+            background: rgba(0,0,0,0.2);
+            border-top: 3px solid var(--physics-color);
+            border-radius: 10px;
+            padding: 1.5rem;
+        }
+        .info-card h4 { color: var(--physics-color); margin-bottom: 0.5rem; }
+        .info-card p { font-size: 0.92rem; color: var(--text-muted); }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="../elettromagnetismo.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Elettromagnetismo
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Circuiti <span class="gradient-text">Elettrici</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+            Le leggi di Kirchhoff e come analizzare circuiti in serie e parallelo. Calcola resistenza totale e potenza dissipata.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Struttura di un Circuito Elettrico</h2>
+        <p class="lesson-text">
+            Un circuito elettrico è un percorso chiuso per il flusso di corrente elettrica. Contiene una <strong>sorgente di tensione</strong> (batteria), <strong>componenti</strong> (resistori, condensatori, etc.) e <strong>conduttori</strong> (fili).
+        </p>
+        <p class="lesson-text">
+            Affinché la corrente fluisca, il circuito deve essere <strong>chiuso</strong>. Se c'è una rottura (interruttore aperto), non c'è circuito completo e la corrente non scorre.
+        </p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Leggi di Kirchhoff</h2>
+        <p class="lesson-text">
+            <strong>Gustav Kirchhoff</strong> ha formulato due leggi fondamentali per analizzare circuiti complessi:
+        </p>
+
+        <div style="background: rgba(0,0,0,0.2); border-left: 4px solid var(--physics-color); padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0;">
+            <h3 style="color: var(--physics-color); margin-bottom: 1rem;">Legge dei Nodi (Corrente)</h3>
+            <p style="color: var(--text-muted); margin-bottom: 1rem;">
+                La somma delle correnti che entrano in un nodo è uguale alla somma delle correnti che escono.
+            </p>
+            <div class="formula-box" style="background: transparent; border-color: var(--physics-color);">
+                Σ I_in = Σ I_out
+            </div>
+        </div>
+
+        <div style="background: rgba(0,0,0,0.2); border-left: 4px solid #F59E0B; padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0;">
+            <h3 style="color: #F59E0B; margin-bottom: 1rem;">Legge delle Maglie (Tensione)</h3>
+            <p style="color: var(--text-muted); margin-bottom: 1rem;">
+                La somma delle tensioni attorno a una maglia chiusa è zero.
+            </p>
+            <div class="formula-box" style="background: transparent; border-color: #F59E0B;">
+                Σ V = 0 (in una maglia chiusa)
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Resistenze in Serie</h2>
+        <p class="lesson-text">
+            Quando i resistori sono <strong>in serie</strong>, la corrente passa attraverso tutti uno dopo l'altro. La resistenza totale è la <strong>somma</strong> di tutte le resistenze:
+        </p>
+        <div class="formula-box">
+            R_totale = R₁ + R₂ + R₃ + ...
+            <div style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem; font-family: inherit;">
+                La corrente è uguale in tutti i resistori. La tensione si divide tra loro.
+            </div>
+        </div>
+
+        <div class="interactive-box">
+            <h3 style="color: var(--text-main); margin-bottom: 1.5rem;">Calcolo Resistenza in Serie</h3>
+
+            <div class="circuit-input-row">
+                <span class="circuit-label">R₁</span>
+                <input type="number" id="series-r1" class="circuit-input" value="10" min="0" step="1">
+                <span class="circuit-unit">Ω</span>
+            </div>
+
+            <div class="circuit-input-row">
+                <span class="circuit-label">R₂</span>
+                <input type="number" id="series-r2" class="circuit-input" value="20" min="0" step="1">
+                <span class="circuit-unit">Ω</span>
+            </div>
+
+            <div class="circuit-input-row">
+                <span class="circuit-label">R₃</span>
+                <input type="number" id="series-r3" class="circuit-input" value="15" min="0" step="1">
+                <span class="circuit-unit">Ω</span>
+            </div>
+
+            <div class="circuit-input-row">
+                <span class="circuit-label">Tensione (V)</span>
+                <input type="number" id="series-v" class="circuit-input" value="12" min="0" step="1">
+                <span class="circuit-unit">Volt</span>
+            </div>
+
+            <div class="result-box">
+                R_totale = <strong id="series-r-total">45 Ω</strong>
+                <div style="margin-top: 0.8rem; font-size: 0.9rem; color: var(--text-muted);">
+                    Corrente I = <strong id="series-i">0.27 A</strong> | Potenza P = <strong id="series-p">3.2 W</strong>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Resistenze in Parallelo</h2>
+        <p class="lesson-text">
+            Quando i resistori sono <strong>in parallelo</strong>, la tensione è uguale su tutti, ma la corrente si divide. La resistenza totale è <strong>minore</strong> di qualsiasi resistore singolo:
+        </p>
+        <div class="formula-box">
+            1/R_totale = 1/R₁ + 1/R₂ + 1/R₃ + ...
+            <div style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem; font-family: inherit;">
+                Per due resistori: R_totale = (R₁ × R₂) / (R₁ + R₂)
+            </div>
+        </div>
+
+        <div class="interactive-box">
+            <h3 style="color: var(--text-main); margin-bottom: 1.5rem;">Calcolo Resistenza in Parallelo</h3>
+
+            <div class="circuit-input-row">
+                <span class="circuit-label">R₁</span>
+                <input type="number" id="parallel-r1" class="circuit-input" value="20" min="0" step="1">
+                <span class="circuit-unit">Ω</span>
+            </div>
+
+            <div class="circuit-input-row">
+                <span class="circuit-label">R₂</span>
+                <input type="number" id="parallel-r2" class="circuit-input" value="20" min="0" step="1">
+                <span class="circuit-unit">Ω</span>
+            </div>
+
+            <div class="circuit-input-row">
+                <span class="circuit-label">R₃</span>
+                <input type="number" id="parallel-r3" class="circuit-input" value="20" min="0" step="1">
+                <span class="circuit-unit">Ω</span>
+            </div>
+
+            <div class="circuit-input-row">
+                <span class="circuit-label">Tensione (V)</span>
+                <input type="number" id="parallel-v" class="circuit-input" value="12" min="0" step="1">
+                <span class="circuit-unit">Volt</span>
+            </div>
+
+            <div class="result-box">
+                R_totale = <strong id="parallel-r-total">6.67 Ω</strong>
+                <div style="margin-top: 0.8rem; font-size: 0.9rem; color: var(--text-muted);">
+                    Corrente totale I = <strong id="parallel-i">1.8 A</strong> | Potenza P = <strong id="parallel-p">21.6 W</strong>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Potenza nei Circuiti</h2>
+        <p class="lesson-text">
+            La <strong>potenza</strong> è l'energia consumata per unità di tempo. In un circuito resistivo, la potenza dissipata è:
+        </p>
+        <div class="formula-box">
+            P = V × I = I² × R = V² / R
+            <div style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem; font-family: inherit;">
+                Potenza (P, Watt) = Tensione × Corrente
+            </div>
+        </div>
+        <p class="lesson-text">
+            È per questo che aumentando la tensione o la corrente, la potenza dissipata (e il calore) aumenta drasticamente. Un riscaldatore da 2000 W consuma molta più energia di una lampadina da 40 W!
+        </p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Configurazioni Miste</h2>
+        <div class="info-grid">
+            <div class="info-card">
+                <h4>Serie + Parallelo</h4>
+                <p>Alcuni resistori in serie con un gruppo in parallelo. Analizza per gruppi: calcola il parallelo, poi lo somma agli altri in serie.</p>
+            </div>
+            <div class="info-card">
+                <h4>Ponte di Wheatstone</h4>
+                <p>Una configurazione classica per misurare resistenze sconosciute. Si equilibra quando R₁/R₂ = R₃/R₄.</p>
+            </div>
+            <div class="info-card">
+                <h4>Circuito RC</h4>
+                <p>Resistore + Condensatore. Il condensatore si carica attraverso il resistore. Importante in filtri e temporizzatori.</p>
+            </div>
+            <div class="info-card">
+                <h4>Circuito RLC</h4>
+                <p>Resistore + Induttore + Condensatore. Oscillatorio. Fondamentale nella radiofrequenza e nell'elettronica analogica.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title">Quiz di Riepilogo</h2>
+        <p class="lesson-text" style="font-size: 0.95rem;">Testa la tua comprensione dei circuiti, delle leggi di Kirchhoff e delle configurazioni serie/parallelo.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Fisica.</p>
+</footer>
+
+<script src="circuiti.js"></script>
+<script src="../../js/main.js"></script>
+</body>
+</html>

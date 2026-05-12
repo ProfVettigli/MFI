@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Triangoli Rettangoli - MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- MathJax -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s, transform 0.3s;
+        }
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+        .back-icon {
+            margin-right: 0.5rem;
+        }
+
+        .triangle-gradient {
+            background: linear-gradient(135deg, #7c3aed, #a78bfa);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .triangle-canvas-container {
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        canvas {
+            width: 100%;
+            height: 400px;
+            display: block;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+        }
+
+        .slider-container {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+        }
+
+        .slider-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--math-color);
+            letter-spacing: 1px;
+            margin-bottom: 0.8rem;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            background: var(--math-color);
+            cursor: pointer;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(124, 58, 237, 0.5);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            background: var(--math-color);
+            cursor: pointer;
+            border-radius: 50%;
+            border: none;
+            box-shadow: 0 0 10px rgba(124, 58, 237, 0.5);
+        }
+
+        .info-panel {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .info-box {
+            background: rgba(124, 58, 237, 0.1);
+            border: 1px solid var(--math-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .info-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            margin-bottom: 0.8rem;
+        }
+
+        .info-value {
+            font-family: 'Fira Code', monospace;
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--math-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .formula-section {
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 4px solid var(--math-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .formula-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--math-color);
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        .math-formula {
+            font-family: 'Fira Code', monospace;
+            color: var(--text-main);
+            margin: 0.8rem 0;
+        }
+    </style>
+</head>
+<body>
+    <header class="hero" style="background: linear-gradient(135deg, #7c3aed, #a78bfa);">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <a href="funzioni.html" class="back-button" style="color: white; border: none; background: none; margin-bottom: 0;">
+                    <span class="back-icon">&larr;</span> Torna a Funzioni
+                </a>
+            </div>
+            <h1 class="hero-title">Triangoli Rettangoli</h1>
+            <p class="hero-subtitle">Trigonometria pratica: SOHCAHTOA, Pitagora e il calcolo di lati e angoli.</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <section style="max-width: 900px; margin: 0 auto;">
+            <h2>Explorer Interattivo</h2>
+            <p>Modifica l'angolo acuto o uno dei lati e osserva come cambiano tutti i valori del triangolo rettangolo.</p>
+
+            <div class="triangle-canvas-container">
+                <canvas id="triangle-canvas"></canvas>
+            </div>
+
+            <div class="slider-container">
+                <label class="slider-label">Angolo Acuto (in gradi)</label>
+                <input type="range" id="angle-slider" min="10" max="80" value="35" step="1">
+                <div class="info-value" style="margin-top: 0.8rem;">θ = <span id="angle-display">35</span>°</div>
+            </div>
+
+            <div class="info-panel">
+                <div class="info-box">
+                    <div class="info-title">Lato Adiacente (a)</div>
+                    <div class="info-value" id="adjacent-value">70.24</div>
+                    <div style="font-size: 0.85rem; color: var(--text-muted);">Adiacente all'angolo</div>
+                </div>
+                <div class="info-box">
+                    <div class="info-title">Lato Opposto (b)</div>
+                    <div class="info-value" id="opposite-value">49.15</div>
+                    <div style="font-size: 0.85rem; color: var(--text-muted);">Opposto all'angolo</div>
+                </div>
+                <div class="info-box">
+                    <div class="info-title">Ipotenusa (c)</div>
+                    <div class="info-value" id="hypotenuse-value">85.50</div>
+                    <div style="font-size: 0.85rem; color: var(--text-muted);">Lato più lungo</div>
+                </div>
+                <div class="info-box">
+                    <div class="info-title">Angolo Complementare</div>
+                    <div class="info-value" id="complement-value">55</div>
+                    <div style="font-size: 0.85rem; color: var(--text-muted);">90° - θ</div>
+                </div>
+            </div>
+
+            <h2>Le Formule Fondamentali</h2>
+
+            <div class="formula-section">
+                <div class="formula-title">SOHCAHTOA</div>
+                <div style="overflow-x: auto;">
+                    $$\sin\theta = \frac{\text{Opposto}}{\text{Ipotenusa}}, \quad \cos\theta = \frac{\text{Adiacente}}{\text{Ipotenusa}}, \quad \tan\theta = \frac{\text{Opposto}}{\text{Adiacente}}$$
+                </div>
+            </div>
+
+            <div class="formula-section">
+                <div class="formula-title">Teorema di Pitagora</div>
+                <div style="overflow-x: auto;">
+                    $$a^2 + b^2 = c^2$$
+                </div>
+                <p style="margin-top: 1rem; color: var(--text-muted);">Il quadrato dell'ipotenusa è uguale alla somma dei quadrati degli altri due lati.</p>
+            </div>
+
+            <div class="formula-section">
+                <div class="formula-title">Calcolo dei Lati</div>
+                <div style="overflow-x: auto;">
+                    $$a = c \cdot \cos\theta, \quad b = c \cdot \sin\theta$$
+                </div>
+                <div style="overflow-x: auto; margin-top: 0.8rem;">
+                    $$c = \sqrt{a^2 + b^2}$$
+                </div>
+            </div>
+
+            <h2>Applicazioni Pratiche</h2>
+            <p>I triangoli rettangoli appaiono ovunque:</p>
+            <ul style="line-height: 1.8; margin: 1.5rem 0; color: var(--text-muted);">
+                <li><strong>Architettura:</strong> calcolo di pendenze, altezze di edifici usando l'angolo di elevazione</li>
+                <li><strong>Navigazione:</strong> determinazione di direzioni e distanze con rotte angolari</li>
+                <li><strong>Fisica:</strong> decomposizione di forze, velocità in componenti orizzontali e verticali</li>
+                <li><strong>Topografia:</strong> misure di terreni e mappe usando triangolazioni</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Matematica.</p>
+    </footer>
+
+    <script src="triangoli-rettangoli.js"></script>
+    <script src="../../js/main.js"></script>
+</body>
+</html>

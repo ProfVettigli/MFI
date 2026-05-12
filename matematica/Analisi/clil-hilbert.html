@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLIL: Hilbert's Problems - Lezione Interattiva MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        .back-button { display: inline-flex; align-items: center; color: var(--text-muted); text-decoration: none; margin-bottom: 2rem; font-weight: 600; transition: color 0.3s, transform 0.3s; }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+        .sub-hero { padding: 4rem 0 2rem; text-align: left; }
+        .sub-hero-title { font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; margin-bottom: 1rem; }
+        .lang-toggle { display: flex; gap: 0.5rem; margin-bottom: 2rem; }
+        .lang-toggle button { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-main); padding: 0.6rem 1.2rem; border-radius: 8px; font-family: monospace; cursor: pointer; font-weight: 600; transition: all 0.2s; font-size: 0.95rem; }
+        .lang-toggle button.active { background: var(--math-color); border-color: var(--math-color); color: white; }
+        .widget-box { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 2rem; margin: 2rem 0; }
+        .widget-title { color: var(--math-color); margin-bottom: 1rem; font-size: 1.2rem; font-weight: 700; }
+        .problem-list { display: grid; gap: 1.5rem; margin: 2rem 0; }
+        .problem-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; padding: 1.5rem; transition: all 0.2s; }
+        .problem-card:hover { background: rgba(255,255,255,0.04); border-color: var(--math-color); }
+        .problem-num { display: inline-block; font-weight: 800; font-size: 1.3rem; color: var(--math-color); margin-right: 0.7rem; min-width: 35px; }
+        .problem-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text-main); }
+        .problem-desc { color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 0.8rem; }
+        .status-badge { display: inline-block; padding: 0.3rem 0.8rem; border-radius: 999px; font-size: 0.8rem; font-weight: 700; }
+        .status-solved { background: rgba(34, 197, 94, 0.15); color: #22c55e; }
+        .status-open { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
+        .filter-row { display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+        .filter-row button { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-main); padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-size: 0.9rem; transition: all 0.2s; }
+        .filter-row button.active { background: var(--math-color); border-color: var(--math-color); color: white; }
+        .lang-it { display: block; }
+        .lang-en { display: none; }
+        body.lang-en .lang-it { display: none; }
+        body.lang-en .lang-en { display: block; }
+        .riemann-box { background: rgba(220, 38, 38, 0.1); border-left: 4px solid #dc2626; padding: 1.5rem; border-radius: 0 10px 10px 0; margin: 1.5rem 0; }
+        .riemann-title { color: #dc2626; font-weight: 700; margin-bottom: 0.5rem; }
+        canvas.stats { width: 100%; max-width: 600px; height: 300px; background: rgba(0,0,0,0.3); border-radius: 10px; display: block; margin: 1rem auto; }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="studio-funzione.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span>
+                <span class="lang-it">Torna a Studio di Funzione</span>
+                <span class="lang-en">Back to Function Study</span>
+            </a>
+        </div>
+        <h1 class="sub-hero-title">
+            <span class="lang-it">CLIL: I 23 Problemi di Hilbert</span>
+            <span class="lang-en">CLIL: Hilbert's 23 Problems</span>
+        </h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 900px; font-weight: 300;">
+            <span class="lang-it">I problemi che hanno dato forma alla matematica del XX secolo. Scopri quali sono stati risolti, quali restano aperti, e l'affascinante Ipotesi di Riemann.</span>
+            <span class="lang-en">The problems that shaped 20th-century mathematics. Discover which have been solved, which remain open, and the fascinating Riemann Hypothesis.</span>
+        </p>
+    </div>
+
+    <div class="container">
+        <div class="lang-toggle" style="justify-content: center;">
+            <button class="active" onclick="setLanguage('it')">Italiano 🇮🇹</button>
+            <button onclick="setLanguage('en')">English 🇬🇧</button>
+        </div>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">
+            <span class="lang-it">Chi era David Hilbert?</span>
+            <span class="lang-en">Who was David Hilbert?</span>
+        </h2>
+        <p class="lesson-text">
+            <span class="lang-it">
+                David Hilbert (1862-1943) è uno dei più grandi matematici del XX secolo. Nel 1900, al Congresso Internazionale dei Matematici di Parigi, presentò una lista di 23 problemi aperti che riteneva fondamentali per il futuro della matematica.
+            </span>
+            <span class="lang-en">
+                David Hilbert (1862-1943) was one of the greatest mathematicians of the 20th century. In 1900, at the International Congress of Mathematicians in Paris, he presented a list of 23 open problems he believed to be fundamental to the future of mathematics.
+            </span>
+        </p>
+        <p class="lesson-text">
+            <span class="lang-it">
+                Questa lista si è rivelata profeticamente corretta: la risoluzione di questi problemi ha guidato lo sviluppo della matematica e della logica per tutto il secolo.
+            </span>
+            <span class="lang-en">
+                This list proved to be prophetically correct: solving these problems has guided the development of mathematics and logic throughout the century.
+            </span>
+        </p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">
+            <span class="lang-it">Statistiche dei Problemi</span>
+            <span class="lang-en">Problems Statistics</span>
+        </h2>
+        <canvas class="stats" id="stats-canvas"></canvas>
+        <div style="text-align: center; margin-top: 1.5rem; color: var(--text-muted); font-size: 0.95rem;">
+            <span class="lang-it">
+                📊 13 problemi completamente risolti, 5 parzialmente risolti, 4 ancora aperti (alcuni discutibili)
+            </span>
+            <span class="lang-en">
+                📊 13 problems completely solved, 5 partially solved, 4 still open (some controversial)
+            </span>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">
+            <span class="lang-it">Filtri e Ricerca</span>
+            <span class="lang-en">Filters and Search</span>
+        </h2>
+        <div class="filter-row">
+            <button class="active" onclick="filterProblems('all')">
+                <span class="lang-it">Tutti</span>
+                <span class="lang-en">All</span>
+            </button>
+            <button onclick="filterProblems('solved')">
+                <span class="lang-it">✓ Risolti</span>
+                <span class="lang-en">✓ Solved</span>
+            </button>
+            <button onclick="filterProblems('open')">
+                <span class="lang-it">? Aperti</span>
+                <span class="lang-en">? Open</span>
+            </button>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <div class="problem-list" id="problems-list"></div>
+    </section>
+
+    <section class="lesson-section" style="border-left: 4px solid #dc2626;">
+        <h2 class="lesson-title" style="color: #dc2626;">
+            <span class="lang-it">La Stella dei Problemi Aperti: L'Ipotesi di Riemann</span>
+            <span class="lang-en">The Star of Open Problems: The Riemann Hypothesis</span>
+        </h2>
+
+        <div class="riemann-box">
+            <div class="riemann-title">
+                <span class="lang-it">🎯 Problema 8 (ancora aperto - Premio Clay $1,000,000)</span>
+                <span class="lang-en">🎯 Problem 8 (still open - Clay Prize $1,000,000)</span>
+            </div>
+        </div>
+
+        <p class="lesson-text">
+            <span class="lang-it">
+                L'<strong>Ipotesi di Riemann</strong> è uno dei problemi più importanti della matematica moderna. Riguarda la distribuzione dei numeri primi e gli zeri della funzione zeta di Riemann.
+            </span>
+            <span class="lang-en">
+                The <strong>Riemann Hypothesis</strong> is one of the most important problems in modern mathematics. It concerns the distribution of prime numbers and the zeros of the Riemann zeta function.
+            </span>
+        </p>
+
+        <div style="background: rgba(0,0,0,0.3); border-radius: 10px; padding: 1.5rem; margin: 1.5rem 0; border-left: 4px solid var(--math-color);">
+            <p style="font-family: monospace; text-align: center; font-size: 1.15rem; color: var(--math-color); margin: 0;">
+                <span class="lang-it">Tutti gli zeri non banali di ζ(s) hanno parte reale = 1/2</span>
+                <span class="lang-en">All non-trivial zeros of ζ(s) have real part = 1/2</span>
+            </p>
+        </div>
+
+        <p class="lesson-text">
+            <span class="lang-it">
+                Se vera, fornisce informazioni precise sulla distribuzione dei numeri primi. Verificata numericamente per i primi 13 trilioni di zeri, ma ancora non dimostrata rigorosamente.
+            </span>
+            <span class="lang-en">
+                If true, it provides precise information about the distribution of prime numbers. Verified numerically for the first 13 trillion zeros, but still not rigorously proven.
+            </span>
+        </p>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 MFI - Matematica.</p>
+</footer>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script src="clil-hilbert.js"></script>
+</body>
+
+</html>

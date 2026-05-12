@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atomic Energy - Interactive Lesson MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        .back-button { display: inline-flex; align-items: center; color: var(--text-muted); text-decoration: none; margin-bottom: 2rem; font-weight: 600; transition: color 0.3s ease, transform 0.3s ease; }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+        .sub-hero { padding: 4rem 0 2rem; text-align: left; }
+        .sub-hero-title { font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; margin-bottom: 1rem; }
+        .lesson-title { color: var(--physics-color) !important; }
+
+        .interactive-box {
+            background: rgba(239,68,68,0.04);
+            border: 1px solid rgba(239,68,68,0.18);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+        }
+        .slider-row { display: flex; align-items: center; gap: 1rem; margin: 1rem 0; flex-wrap: wrap; }
+        .slider-row label { min-width: 140px; font-weight: 600; color: var(--text-muted); }
+        .slider-row input[type=range] { flex: 1; min-width: 200px; accent-color: var(--physics-color); }
+        .slider-row .value { font-family: monospace; font-weight: 800; color: var(--physics-color); min-width: 90px; }
+
+        .result-box {
+            background: rgba(0,0,0,0.3);
+            border-left: 5px solid var(--physics-color);
+            padding: 1.2rem 1.5rem;
+            border-radius: 0 10px 10px 0;
+            margin-top: 1.2rem;
+            font-family: monospace;
+            font-size: 1.05rem;
+        }
+
+        canvas.diagram { width: 100%; max-width: 500px; height: 380px; background: rgba(0,0,0,0.35); border-radius: 12px; display: block; }
+
+        .formula { font-family: 'Cambria Math', Cambria, serif; font-size: 1.4rem; text-align: center; padding: 1rem; background: rgba(0,0,0,0.25); border-radius: 10px; margin: 1rem 0; }
+        .formula em { color: var(--physics-color); font-style: italic; }
+
+        .timeline { position: relative; padding-left: 2.5rem; margin: 2rem 0; }
+        .timeline::before { content: ''; position: absolute; left: 0.6rem; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--physics-color), rgba(239,68,68,0.1)); }
+        .timeline-item { position: relative; margin-bottom: 2rem; }
+        .timeline-item::before { content: ''; position: absolute; left: -1.95rem; top: 0.4rem; width: 10px; height: 10px; border-radius: 50%; background: var(--physics-color); box-shadow: 0 0 8px rgba(239,68,68,0.5); }
+        .timeline-year { font-size: 0.8rem; font-weight: 700; color: var(--physics-color); letter-spacing: 1px; margin-bottom: 0.3rem; }
+        .timeline-text { font-size: 0.97rem; color: var(--text-muted); line-height: 1.6; }
+        .timeline-text strong { color: var(--text-main); }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="fisica-moderna.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Back to Fisica Moderna
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Atomic <span class="gradient-text">Energy</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+            Explore the nucleus: binding energy, nuclear forces, fission, fusion, and the mass-energy equivalence that powers stars and devastated cities.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">The Nucleus: Protons and Neutrons</h2>
+        <p class="lesson-text">
+            Inside every atom lies a nucleus: a tiny, incredibly dense clump of matter containing protons and neutrons bound together by the <strong>strong nuclear force</strong> — the most powerful force in nature, but only at subatomic scales.
+        </p>
+        <p class="lesson-text">
+            The <strong>atomic number Z</strong> is the number of protons (defines the element). The <strong>mass number A</strong> is the total number of protons and neutrons. The difference N = A − Z is the number of neutrons. Nuclei with the same Z but different N are called <strong>isotopes</strong>.
+        </p>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-year">1938</div>
+                <p class="timeline-text"><strong>Otto Hahn & Fritz Strassmann</strong> discover nuclear fission: uranium-235 splits into lighter nuclei, releasing enormous energy.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1942</div>
+                <p class="timeline-text"><strong>Enrico Fermi</strong> creates the first nuclear reactor, demonstrating controlled fission. The atomic age begins.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1945</div>
+                <p class="timeline-text">The Manhattan Project culminates in Hiroshima and Nagasaki. Nuclear physics becomes inseparable from geopolitics.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2020s</div>
+                <p class="timeline-text">Fusion research accelerates: ITER, NIF, and private companies race to achieve net-positive fusion energy — the ultimate energy source.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Binding Energy and Mass Defect</h2>
+        <p class="lesson-text">
+            A nucleus is <strong>lighter than the sum of its constituent protons and neutrons</strong>. This missing mass is the <strong>mass defect</strong> Δm:
+        </p>
+        <div class="formula">Δm = (Z·m_p + N·m_n) − M_nucleus</div>
+        <p class="lesson-text">
+            Einstein's E = mc² converts this mass defect into <strong>binding energy</strong>:
+        </p>
+        <div class="formula">B.E. = Δm·c²</div>
+        <p class="lesson-text">
+            This binding energy is the "glue" holding the nucleus together. It's why fission and fusion release so much energy: you're converting some binding energy into kinetic energy of the products!
+        </p>
+
+        <div class="interactive-box">
+            <h3 style="color: var(--physics-color); margin-bottom: 1rem;">Binding Energy Explorer</h3>
+            <p style="font-size: 0.95rem; color: var(--text-muted);">Calculate binding energy per nucleon for different nuclei.</p>
+            <div class="slider-row">
+                <label for="mass-number">Mass Number (A):</label>
+                <input type="range" id="mass-number" min="4" max="240" step="1" value="56">
+                <span class="value" id="mass-val">A = 56 (Fe)</span>
+            </div>
+            <div class="result-box">
+                Binding Energy: <strong id="binding-energy">8.79 MeV/nucleon</strong><br>
+                Total B.E.: <strong id="total-be">492 MeV</strong>
+            </div>
+            <canvas id="be-curve" class="diagram"></canvas>
+            <p style="font-size: 0.88rem; color: var(--text-muted); margin-top: 0.5rem;">Iron-56 has the highest binding energy per nucleon — the most stable nucleus!</p>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Fission vs Fusion</h2>
+        <p class="lesson-text">
+            <strong>Fission:</strong> A heavy nucleus (like U-235) absorbs a neutron and splits into two smaller nuclei. Light nuclei have less binding energy per nucleon, so energy is released. One neutron can trigger a chain reaction — the basis of nuclear weapons and reactors.
+        </p>
+        <p class="lesson-text">
+            <strong>Fusion:</strong> Two light nuclei (like deuterium and tritium) collide and fuse into a heavier nucleus. The product has higher binding energy per nucleon, so energy is released. This powers stars and is the "holy grail" of clean energy.
+        </p>
+
+        <div style="background: rgba(239,68,68,0.06); border-left: 4px solid var(--physics-color); padding: 1.2rem; border-radius: 0 10px 10px 0; margin: 1.5rem 0;">
+            <p class="lesson-text" style="margin-bottom: 0; font-size: 1rem;">
+                <strong>Why is fusion so hard?</strong> Nuclei are positively charged and repel each other violently. You need either extreme temperatures (like in stars) or laser compression (like in NIF) to overcome this Coulomb barrier. But when fusion happens, the energy released is astronomical — millions of times more than chemical reactions!
+            </p>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">The Manhattan Project & Its Legacy</h2>
+        <p class="lesson-text">
+            From 1942-1945, the greatest scientific collaboration in history was undertaken in secret: the Manhattan Project. Thousands of physicists, chemists, and engineers from the US, UK, and Canada raced to build the first atomic bomb before Nazi Germany.
+        </p>
+        <p class="lesson-text">
+            The project succeeded, but at a moral cost. August 6 and 9, 1945: Hiroshima and Nagasaki vaporized 200,000 lives. Nuclear physics transformed from pure science into the arbiter of geopolitics. The threat of nuclear annihilation defined the Cold War and continues to shape global politics today.
+        </p>
+        <p class="lesson-text">
+            Yet nuclear energy also gave us power plants providing baseload electricity, medical isotopes for PET scans and cancer treatment, and the theoretical foundation for understanding stellar nucleosynthesis — how elements were forged in the Big Bang and dying stars.
+        </p>
+    </section>
+
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title">Quiz Summary</h2>
+        <p class="lesson-text" style="font-size: 0.95rem;">Test your understanding of nuclear physics and atomic energy.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 MFI - Interactive Physics Platform. Physics Section.</p>
+</footer>
+
+<script src="clil-atomic-energy.js"></script>
+<script src="../../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Denaro e Prezzi - MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- MathJax -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s, transform 0.3s;
+        }
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+        .back-icon {
+            margin-right: 0.5rem;
+        }
+
+        .converter-section {
+            background: rgba(16, 185, 129, 0.1);
+            border: 2px solid rgba(16, 185, 129, 0.5);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .converter-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--math-color);
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .converter-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .input-label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .input-group input {
+            padding: 0.8rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 8px;
+            color: var(--text-main);
+            font-family: 'Fira Code', monospace;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--math-color);
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
+        }
+
+        .select-currency {
+            padding: 0.8rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 8px;
+            color: var(--text-main);
+            font-size: 0.95rem;
+        }
+
+        .select-currency:focus {
+            outline: none;
+            border-color: var(--math-color);
+        }
+
+        .result-box {
+            background: rgba(16, 185, 129, 0.2);
+            border: 2px solid var(--math-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .result-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .result-value {
+            font-family: 'Fira Code', monospace;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--math-color);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .info-card-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 0.8rem;
+        }
+
+        .info-card-content {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .formula-section {
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 4px solid var(--math-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .formula-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--math-color);
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        .example-box {
+            background: rgba(245, 158, 11, 0.1);
+            border: 2px solid rgba(245, 158, 11, 0.5);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .example-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #f59e0b;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="hero" style="background: linear-gradient(135deg, #059669, #10b981);">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <a href="economia-matematica.html" class="back-button" style="color: white; border: none; background: none; margin-bottom: 0;">
+                    <span class="back-icon">&larr;</span> Torna a Economia
+                </a>
+            </div>
+            <h1 class="hero-title">Denaro e Prezzi</h1>
+            <p class="hero-subtitle">Valuta, conversione, inflazione e parità del potere d'acquisto: come si misura il valore reale.</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <section style="max-width: 1000px; margin: 0 auto;">
+            <h2>Convertitore di Valuta Interattivo</h2>
+
+            <div class="converter-section">
+                <div class="converter-title">Convertitore Valute</div>
+                <div class="converter-grid">
+                    <div>
+                        <div class="input-group">
+                            <label class="input-label">Importo</label>
+                            <input type="number" id="amount-input" value="100" min="0" step="0.01">
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Valuta Originale</label>
+                            <select id="from-currency" class="select-currency">
+                                <option value="EUR">EUR - Euro</option>
+                                <option value="USD">USD - Dollaro USA</option>
+                                <option value="GBP">GBP - Sterlina Britannica</option>
+                                <option value="JPY">JPY - Yen Giapponese</option>
+                                <option value="CHF">CHF - Franco Svizzero</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="input-group">
+                            <label class="input-label">Tasso di Cambio</label>
+                            <input type="number" id="exchange-rate" value="1.10" min="0" step="0.01">
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Valuta Destinazione</label>
+                            <select id="to-currency" class="select-currency">
+                                <option value="EUR">EUR - Euro</option>
+                                <option value="USD" selected>USD - Dollaro USA</option>
+                                <option value="GBP">GBP - Sterlina Britannica</option>
+                                <option value="JPY">JPY - Yen Giapponese</option>
+                                <option value="CHF">CHF - Franco Svizzero</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result-box">
+                    <div class="result-label">Risultato Conversione</div>
+                    <div class="result-value" id="conversion-result">110 USD</div>
+                </div>
+            </div>
+
+            <h2>Cos'è il Denaro?</h2>
+
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="info-card-title">💎 Mezzo di Scambio</div>
+                    <div class="info-card-content">
+                        Accettato da tutti come pagamento. Elimina la necessità del baratto diretto (doppia coincidenza).
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-card-title">📦 Conservazione di Valore</div>
+                    <div class="info-card-content">
+                        Mantiene potere d'acquisto nel tempo. Permette di risparmiare per spese future.
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-card-title">📏 Unità di Conto</div>
+                    <div class="info-card-content">
+                        Misura comune dei prezzi. Facilita il confronto tra beni eterogenei.
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-card-title">🔍 Standard Differito</div>
+                    <div class="info-card-content">
+                        Misura i debiti. Permette contratti in denaro (mutui, prestiti).
+                    </div>
+                </div>
+            </div>
+
+            <h2>Dalla Nascita dei Prezzi</h2>
+
+            <div class="formula-section">
+                <div class="formula-title">Equazione Quantitativa di Fisher</div>
+                <div style="overflow-x: auto;">
+                    $$M \cdot V = P \cdot Q$$
+                </div>
+                <p style="margin-top: 1rem; color: var(--text-muted);">
+                    Dove: M = quantità di denaro, V = velocità di circolazione, P = livello dei prezzi, Q = quantità di beni.
+                </p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">Esempio Pratico</div>
+                <p style="color: var(--text-muted); line-height: 1.8;">
+                    Se in un'economia circolano €1000 e ogni euro cambia mano 5 volte/anno, allora M·V = €5000. Se vengono prodotti 10 auto, il prezzo unitario è P = €500. Se raddoppia M a €2000 (senza aumentare Q), il prezzo salirà a P = €1000 (inflazione).
+                </p>
+            </div>
+
+            <h2>Inflazione e Potere d'Acquisto</h2>
+
+            <div class="formula-section">
+                <div class="formula-title">Tasso di Inflazione</div>
+                <div style="overflow-x: auto;">
+                    $$\pi = \frac{P_t - P_{t-1}}{P_{t-1}} \times 100\%$$
+                </div>
+                <p style="margin-top: 1rem; color: var(--text-muted);">
+                    Misura la velocità con cui i prezzi aumentano nel tempo.
+                </p>
+            </div>
+
+            <div class="formula-section">
+                <div class="formula-title">Valore Reale (Deflazionato)</div>
+                <div style="overflow-x: auto;">
+                    $$\text{Valore Reale} = \frac{\text{Valore Nominale}}{1 + \pi_t + \pi_{t-1} + ...}$$
+                </div>
+                <p style="margin-top: 1rem; color: var(--text-muted);">
+                    Elimina l'effetto dell'inflazione per confrontare valori reali nel tempo.
+                </p>
+            </div>
+
+            <h2>Parità del Potere d'Acquisto (PPA)</h2>
+
+            <div class="formula-section">
+                <div class="formula-title">Teoria della PPA</div>
+                <div style="overflow-x: auto;">
+                    $$E = \frac{P_{\text{domestico}}}{P_{\text{estero}}}$$
+                </div>
+                <p style="margin-top: 1rem; color: var(--text-muted);">
+                    Il tasso di cambio uguaglia il rapporto dei livelli dei prezzi. Se un paniere costa €100 in Italia e $110 negli USA, il tasso dovrebbe essere 1 EUR = 1.1 USD.
+                </p>
+            </div>
+
+            <div class="example-box">
+                <div class="example-title">Big Mac Index</div>
+                <p style="color: var(--text-muted); line-height: 1.8;">
+                    "The Economist" usa il Big Mac come paniere di riferimento. Nel 2024: €5 in Italia, £4 nel UK, $5.15 USA. Questo suggerisce se le valute sono sopra/sottovalutate rispetto alla PPA teorica.
+                </p>
+            </div>
+
+            <h2>Applicazioni Pratiche</h2>
+            <ul style="line-height: 1.8; margin: 1.5rem 0; color: var(--text-muted);">
+                <li><strong>Investimenti Internazionali:</strong> Convertire rendimenti reali in valuta domestica</li>
+                <li><strong>Stipendi Reali:</strong> Confrontare salari in periodi inflazionistici diversi</li>
+                <li><strong>Prestiti:</strong> Tasso di interesse reale = nominale - inflazione attesa</li>
+                <li><strong>Bilanci:</strong> Aggiustare storici con inflazione per confronti omogenei</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Matematica.</p>
+    </footer>
+
+    <script src="denaro.js"></script>
+    <script src="../../js/main.js"></script>
+</body>
+</html>
