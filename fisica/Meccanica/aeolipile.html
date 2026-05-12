@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aeolipila di Erone — Meccanica | MFI</title>
+    <meta name="description" content="Lezione sulla Aeolipila di Erone: il primo motore a vapore della storia, principi di termodinamica e reazione.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+    <style>
+        .back-button { display:inline-flex; align-items:center; color:var(--text-muted); text-decoration:none; margin-bottom:2rem; font-weight:600; transition:color 0.3s ease, transform 0.3s ease; }
+        .back-button:hover { color:var(--text-main); transform:translateX(-5px); }
+        .sub-hero { padding:4rem 0 2rem; text-align:left; }
+        .sub-hero-title { font-size:clamp(2.2rem, 4vw, 3.2rem); font-weight:800; margin-bottom:1rem; }
+        .lesson-section { margin-bottom:3rem; padding:2.5rem; border-radius:1rem; border:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.03); }
+        .lesson-title { font-size:1.5rem; font-weight:700; margin-bottom:1.2rem; color:var(--physics-color); }
+        .lesson-text { color:var(--text-muted); line-height:1.8; margin-bottom:1.1rem; font-size:1.02rem; }
+        .info-box { background:rgba(16,185,129,0.07); border-left:4px solid var(--physics-color); border-radius:0 0.75rem 0.75rem 0; padding:1.25rem 1.5rem; margin:1.5rem 0; }
+        .callout { display:flex; gap:1rem; align-items:flex-start; background:rgba(16,185,129,0.07); border:1px solid rgba(16,185,129,0.22); border-radius:0.75rem; padding:1.2rem 1.5rem; margin:1.5rem 0; }
+        .callout-icon { font-size:1.5rem; flex-shrink:0; }
+        .callout p { margin:0; color:var(--text-muted); font-size:0.97rem; line-height:1.7; }
+        .callout p strong { color:#6ee7b7; }
+        .simulator-widget { background:rgba(0,0,0,0.25); border-radius:14px; padding:2rem; margin:1.5rem 0; }
+        canvas { display:block; margin:0 auto; max-width:100%; border-radius:8px; background:rgba(0,0,0,0.3); }
+        .controls-row { display:flex; gap:1.5rem; flex-wrap:wrap; align-items:flex-end; justify-content:center; margin-top:1.2rem; }
+        .ctrl-group { display:flex; flex-direction:column; gap:0.3rem; min-width:180px; }
+        .ctrl-group label { color:var(--text-muted); font-size:0.82rem; text-transform:uppercase; letter-spacing:0.05em; }
+        .ctrl-group input[type=range] { -webkit-appearance:none; width:100%; height:6px; background:rgba(16,185,129,0.25); border-radius:3px; outline:none; }
+        .ctrl-group input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:18px; height:18px; border-radius:50%; background:var(--physics-color); cursor:pointer; box-shadow:0 0 8px var(--physics-glow); }
+        .ctrl-group input[type=range]::-moz-range-thumb { width:18px; height:18px; border-radius:50%; background:var(--physics-color); cursor:pointer; border:none; }
+        .ctrl-value { color:var(--physics-color); font-weight:700; font-family:monospace; }
+        .readout { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:1.5rem; }
+        .readout-card { background:rgba(0,0,0,0.3); border-radius:10px; padding:1.2rem; text-align:center; border-top:3px solid var(--physics-color); }
+        .readout-label { font-size:0.85rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.5rem; }
+        .readout-value { font-size:1.6rem; font-weight:800; color:var(--physics-color); font-family:monospace; }
+        .buttons-row { display:flex; gap:1rem; justify-content:center; margin-top:1.5rem; }
+        button { padding:0.7rem 1.5rem; background:var(--physics-color); color:#fff; border:none; border-radius:8px; cursor:pointer; font-weight:700; transition:background 0.2s; }
+        button:hover { background:#0d9d6f; }
+        .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:1.5rem; margin:2rem 0; }
+        .card { padding:1.5rem; border-radius:10px; border-top:3px solid var(--physics-color); background:rgba(16,185,129,0.05); }
+        .quiz-container { background:rgba(16,185,129,0.05); border:1px solid rgba(16,185,129,0.22); border-radius:10px; padding:2rem; margin:2rem 0; }
+        .quiz-question { margin-bottom:1.5rem; }
+        .quiz-question-text { font-weight:600; color:var(--text-main); margin-bottom:0.8rem; }
+        .quiz-options { display:flex; flex-direction:column; gap:0.6rem; }
+        .quiz-option { background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.1); border-radius:6px; padding:0.8rem 1rem; cursor:pointer; color:var(--text-muted); transition:all 0.2s; }
+        .quiz-option:hover { background:rgba(16,185,129,0.15); border-color:var(--physics-color); }
+        .quiz-option input { margin-right:0.7rem; }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align:center; margin-bottom:2.5rem;">
+            <a href="../meccanica.html" class="back-button" style="margin-bottom:0;">
+                <span style="margin-right:0.5rem; font-size:1.2rem;">&larr;</span> Torna a Meccanica
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Aeolipila: Il Primo <span class="gradient-text">Motore a Vapore</span></h1>
+        <p style="font-size:1.15rem; color:var(--text-muted); max-width:800px; font-weight:300;">
+            Erone di Alessandria e il genio antico: quando la reazione spinge una sfera di vapore verso il cielo.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">La Storia: Erone di Alessandria (~1 AD)</h2>
+        <p class="lesson-text">
+            <strong>Erone</strong> (Heron) fu un matematico e ingegnere greco del I secolo dopo Cristo. Visse ad Alessandria d'Egitto e inventò la <strong>aeolipila</strong> (aeoli = vento, pila = palla), il primo dispositivo motorizzato della storia.
+        </p>
+
+        <div class="callout">
+            <div class="callout-icon">🎓</div>
+            <p><strong>Importanza storica:</strong> L'aeolipila dimostrò che il vapore poteva generare movimento. Erone scrisse almeno tre libri: <em>Pneumatica</em>, <em>Automatica</em>, e <em>Dioptra</em> (un antico teodolite).</p>
+        </div>
+
+        <p class="lesson-text">
+            Purtroppo, la sua invenzione rimase un giocattolo. Non fu mai industrializzata perché l'economia romana si basava sulla schiavitù. Bisognò aspettare oltre 1600 anni prima che Newcomen e Watt reinventassero il motore a vapore per le miniere inglesi (1712).
+        </p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Come Funziona l'Aeolipila</h2>
+        <p class="lesson-text">
+            L'aeolipila è una sfera cava montata su un asse orizzontale. Due tubi ricurvi sporgono dalla sfera e soffia vapor d'acqua:
+        </p>
+
+        <div class="info-box">
+            <p style="margin:0;"><strong>Meccanismo:</strong></p>
+            <p style="margin:0.5rem 0 0;">1. La sfera è riempita d'acqua e riscaldata da una fonte di calore sottostante.</p>
+            <p style="margin:0.5rem 0 0;">2. L'acqua evapora e crea pressione di vapore all'interno.</p>
+            <p style="margin:0.5rem 0 0;">3. Il vapore esce dai tubi ricurvi tangenziali alla sfera.</p>
+            <p style="margin:0.5rem 0 0;">4. Per la <strong>Terza Legge di Newton</strong> (azione-reazione), la sfera ruota in senso opposto.</p>
+        </div>
+
+        <p class="lesson-text">
+            Questa è la stessa fisica dei moderni <strong>sprinkler da giardino</strong>: l'acqua esce a velocità v, quindi la sfera riceve una spinta opposta di magnitude \( F = \frac{dm}{dt} \cdot v \), dove \( \frac{dm}{dt} \) è il flusso di massa.
+        </p>
+
+        <div class="callout">
+            <div class="callout-icon">💡</div>
+            <p><strong>Paradosso:</strong> Se uno sprinkler "risucchiasse" invece di spingere l'acqua (pompa in reverse), ruoterebbe nel verso opposto! Questo illustra il principio di conservazione della quantità di moto.</p>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Simulatore: Aeolipila Rotante</h2>
+        <p class="lesson-text">
+            Modifica la temperatura e osserva come la pressione del vapore accelera la rotazione.
+        </p>
+
+        <div class="simulator-widget">
+            <canvas id="aeolipile-canvas" width="700" height="500"></canvas>
+
+            <div class="controls-row">
+                <div class="ctrl-group">
+                    <label>Temperatura: <span class="ctrl-value" id="temp-display">80</span> °C</label>
+                    <input type="range" id="temp-slider" min="0" max="200" value="80" step="10">
+                </div>
+                <div class="ctrl-group">
+                    <label>Massa acqua: <span class="ctrl-value" id="mass-display">500</span> g</label>
+                    <input type="range" id="mass-slider" min="100" max="1000" value="500" step="50">
+                </div>
+            </div>
+
+            <div class="readout">
+                <div class="readout-card">
+                    <div class="readout-label">Pressione vapore</div>
+                    <div class="readout-value" id="pressure-aeolipile">0.1 bar</div>
+                </div>
+                <div class="readout-card">
+                    <div class="readout-label">RPM (Giri/min)</div>
+                    <div class="readout-value" id="rpm-display">0 RPM</div>
+                </div>
+            </div>
+
+            <div class="buttons-row">
+                <button id="start-btn">Accendi Fuoco</button>
+                <button id="stop-btn">Spegni Fuoco</button>
+                <button id="reset-btn">Reimposta</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Termodinamica dell'Aeolipila</h2>
+        <p class="lesson-text">
+            L'aeolipila illustra il ciclo termodinamico di base di un motore a vapore:
+        </p>
+
+        <div class="info-box">
+            <p style="margin:0;"><strong>Ciclo Rankine semplificato:</strong></p>
+            <p style="margin:0.5rem 0 0;">1. <strong>Ebollizione:</strong> Calore aumenta l'energia interna dell'acqua.</p>
+            <p style="margin:0.5rem 0 0;">2. <strong>Evaporazione:</strong> Fase liquida → vapore (calore latente).</p>
+            <p style="margin:0.5rem 0 0;">3. <strong>Espansione:</strong> Il vapore si espande, facendo lavoro meccanico (spinge la sfera).</p>
+            <p style="margin:0.5rem 0 0;">4. <strong>Condensazione:</strong> Il vapore raffredda e ritorna a liquido (ciclo chiude).</p>
+        </div>
+
+        <p class="lesson-text">
+            L'efficienza termodinamica è bassa perché il vapore non viene ri-condensato: la sfera ruota per un po', poi l'acqua finisce e il fuoco si spegne. Un motore moderno ricondensa il vapore e ripete il ciclo continuamente.
+        </p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Applicazioni Pratiche Storiche</h2>
+
+        <div class="grid">
+            <div class="card">
+                <h4 style="color:var(--physics-color); margin-bottom:0.8rem;">Porte di Templi Automatiche</h4>
+                <p style="font-size:0.93rem; color:var(--text-muted);">Erone usò la pressione del vapore per aprire e chiudere le porte dei templi, affascinando i fedeli con "miracoli" meccanici.</p>
+            </div>
+            <div class="card">
+                <h4 style="color:var(--physics-color); margin-bottom:0.8rem;">Fontane Animate</h4>
+                <p style="font-size:0.93rem; color:var(--text-muted);">Dispositivi idraulici e pneumatici per fontane che cambiavano forma e direzione dell'acqua automaticamente.</p>
+            </div>
+            <div class="card">
+                <h4 style="color:var(--physics-color); margin-bottom:0.8rem;">Macchine di Assedio</h4>
+                <p style="font-size:0.93rem; color:var(--text-muted);">Catapulte azionate a vapore e compressed-air, documentate nei trattati militari di Erone.</p>
+            </div>
+            <div class="card">
+                <h4 style="color:var(--physics-color); margin-bottom:0.8rem;">Organi Musicali</h4>
+                <p style="font-size:0.93rem; color:var(--text-muted);">L'idraulis (organo idraulico) usava pressione d'acqua per controllare le note: proto-programmazione!</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Grafici Pressione vs RPM</h2>
+        <p class="lesson-text">
+            Osserva come la pressione del vapore (in funzione della temperatura) impatta direttamente sui giri della sfera.
+        </p>
+
+        <div class="simulator-widget">
+            <canvas id="pressure-rpm-graph" width="700" height="350"></canvas>
+        </div>
+    </section>
+
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title">Quiz di Riepilogo</h2>
+        <p class="lesson-text" style="font-size:0.95rem;">Verifica la tua comprensione di Erone, motori a vapore e termodinamica.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size:1.2rem; margin-top:2rem;"></div>
+    </section>
+
+</main>
+
+<footer><p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Fisica.</p></footer>
+
+<script src="aeolipile.js"></script>
+<script src="../../js/main.js"></script>
+</body>
+</html>
