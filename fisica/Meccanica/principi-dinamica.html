@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Principi della Dinamica — Meccanica | MFI</title>
+    <meta name="description" content="Lezione interattiva sui tre principi della dinamica di Newton: inerzia, F=ma, azione-reazione. Simulatore forza-accelerazione.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+    <style>
+        .back-button { display:inline-flex; align-items:center; color:var(--text-muted); text-decoration:none; margin-bottom:2rem; font-weight:600; transition:color 0.3s ease, transform 0.3s ease; }
+        .back-button:hover { color:var(--text-main); transform:translateX(-5px); }
+        .sub-hero { padding:4rem 0 2rem; text-align:left; }
+        .sub-hero-title { font-size:clamp(2.2rem, 4vw, 3.2rem); font-weight:800; margin-bottom:1rem; }
+        .lesson-section { margin-bottom:3rem; padding:2.5rem; border-radius:1rem; border:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.03); }
+        .lesson-title { font-size:1.5rem; font-weight:700; margin-bottom:1.2rem; color:var(--physics-color); }
+        .lesson-text { color:var(--text-muted); line-height:1.8; margin-bottom:1.1rem; font-size:1.02rem; }
+        .info-box { background:rgba(16,185,129,0.07); border-left:4px solid var(--physics-color); border-radius:0 0.75rem 0.75rem 0; padding:1.25rem 1.5rem; margin:1.5rem 0; }
+        .callout { display:flex; gap:1rem; align-items:flex-start; background:rgba(16,185,129,0.07); border:1px solid rgba(16,185,129,0.22); border-radius:0.75rem; padding:1.2rem 1.5rem; margin:1.5rem 0; }
+        .callout-icon { font-size:1.5rem; flex-shrink:0; }
+        .callout p { margin:0; color:var(--text-muted); font-size:0.97rem; line-height:1.7; }
+        .callout p strong { color:#6ee7b7; }
+        .callout.blue { background:rgba(59,130,246,0.07); border-color:rgba(59,130,246,0.22); }
+        .callout.blue p strong { color:#93c5fd; }
+        .simulator-widget { background:rgba(0,0,0,0.25); border-radius:14px; padding:2rem; margin:1.5rem 0; }
+        canvas { display:block; margin:0 auto; max-width:100%; border-radius:8px; background:rgba(0,0,0,0.3); }
+        .controls-row { display:flex; gap:1.5rem; flex-wrap:wrap; align-items:flex-end; justify-content:center; margin-top:1.2rem; }
+        .ctrl-group { display:flex; flex-direction:column; gap:0.3rem; min-width:180px; }
+        .ctrl-group label { color:var(--text-muted); font-size:0.82rem; text-transform:uppercase; letter-spacing:0.05em; }
+        .ctrl-group input[type=range] { -webkit-appearance:none; width:100%; height:6px; background:rgba(16,185,129,0.25); border-radius:3px; outline:none; }
+        .ctrl-group input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:18px; height:18px; border-radius:50%; background:var(--physics-color); cursor:pointer; box-shadow:0 0 8px var(--physics-glow); }
+        .ctrl-group input[type=range]::-moz-range-thumb { width:18px; height:18px; border-radius:50%; background:var(--physics-color); cursor:pointer; border:none; }
+        .ctrl-value { color:var(--physics-color); font-weight:700; font-family:monospace; }
+        .readout { display:grid; grid-template-columns:1fr 1fr 1fr; gap:1rem; margin-top:1.5rem; }
+        .readout-card { background:rgba(0,0,0,0.3); border-radius:10px; padding:1.2rem; text-align:center; border-top:3px solid var(--physics-color); }
+        .readout-label { font-size:0.85rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.5rem; }
+        .readout-value { font-size:1.6rem; font-weight:800; color:var(--physics-color); font-family:monospace; }
+        .principle-card { background:rgba(0,0,0,0.2); border-radius:10px; padding:1.5rem; border-left:4px solid var(--physics-color); margin:1rem 0; }
+        .principle-num { font-size:0.8rem; color:var(--physics-color); font-weight:700; text-transform:uppercase; letter-spacing:1px; }
+        .principle-title { font-size:1.15rem; font-weight:700; color:var(--text-main); margin:0.5rem 0 0.8rem; }
+        .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:1.5rem; margin:2rem 0; }
+        .card { padding:1.5rem; border-radius:10px; border-top:3px solid var(--physics-color); background:rgba(16,185,129,0.05); }
+        .quiz-container { background:rgba(16,185,129,0.05); border:1px solid rgba(16,185,129,0.22); border-radius:10px; padding:2rem; margin:2rem 0; }
+        .quiz-question { margin-bottom:1.5rem; }
+        .quiz-question-text { font-weight:600; color:var(--text-main); margin-bottom:0.8rem; }
+        .quiz-options { display:flex; flex-direction:column; gap:0.6rem; }
+        .quiz-option { background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.1); border-radius:6px; padding:0.8rem 1rem; cursor:pointer; color:var(--text-muted); transition:all 0.2s; }
+        .quiz-option:hover { background:rgba(16,185,129,0.15); border-color:var(--physics-color); }
+        .quiz-option input { margin-right:0.7rem; }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align:center; margin-bottom:2.5rem;">
+            <a href="../meccanica.html" class="back-button" style="margin-bottom:0;">
+                <span style="margin-right:0.5rem; font-size:1.2rem;">&larr;</span> Torna a Meccanica
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Principi della <span class="gradient-text">Dinamica</span></h1>
+        <p style="font-size:1.15rem; color:var(--text-muted); max-width:800px; font-weight:300;">
+            Quando Isaac Newton osservò una mela cadere, intuì il legame tra forze e moto. Le tre leggi della dinamica spiegano come il moto di tutti i corpi cambia sotto l'azione di forze.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">La Mela di Newton e la Nascita della Dinamica</h2>
+        <p class="lesson-text">
+            Nel 1666, mentre Cambridge era chiusa per la Grande Peste, Isaac Newton si ritirò a Woolsthorpe. Osservando una mela cadere dall'albero, ebbe l'intuizione che la stessa forza che attira la mela verso la Terra mantiene la Luna in orbita. Questo riflesso lo portò a formulare i tre principi della dinamica, pubblicati nel 1687 nei <em>Principia</em>.
+        </p>
+
+        <div class="callout blue">
+            <div class="callout-icon">🍎</div>
+            <p><strong>La leggenda della mela:</strong> Sebbene romanticizzato, il racconto rimane affascinante. Newton intuì di collegare fenomeni terrestri (caduta) con celesti (orbite). Un'intuizione che rivoluzionò la scienza.</p>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">I Tre Principi della Dinamica</h2>
+
+        <div class="principle-card">
+            <div class="principle-num">Primo Principio</div>
+            <div class="principle-title">Principio di Inerzia</div>
+            <p class="lesson-text">
+                Un corpo continua nel suo stato di quiete o di moto rettilineo uniforme finché nessuna forza agisce su di esso. L'inerzia è la resistenza al cambiamento dello stato di moto.
+            </p>
+            <p class="lesson-text" style="font-style:italic;">
+                \( \vec{F}_{netta} = 0 \Rightarrow \vec{a} = 0 \)
+            </p>
+        </div>
+
+        <div class="principle-card">
+            <div class="principle-num">Secondo Principio</div>
+            <div class="principle-title">Legge Fondamentale della Dinamica</div>
+            <p class="lesson-text">
+                L'accelerazione di un corpo è direttamente proporzionale alla forza netta che agisce su di esso e inversamente proporzionale alla sua massa.
+            </p>
+            <p class="lesson-text" style="font-style:italic;">
+                \( \vec{F} = m \vec{a} \)
+            </p>
+        </div>
+
+        <div class="principle-card">
+            <div class="principle-num">Terzo Principio</div>
+            <div class="principle-title">Principio di Azione-Reazione</div>
+            <p class="lesson-text">
+                Quando un corpo A esercita una forza su un corpo B, il corpo B esercita su A una forza uguale in modulo e direzione ma opposta in verso.
+            </p>
+            <p class="lesson-text" style="font-style:italic;">
+                \( \vec{F}_{A \to B} = -\vec{F}_{B \to A} \)
+            </p>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Simulatore Interattivo: Forza e Accelerazione</h2>
+        <p class="lesson-text">
+            Modifica la massa, la forza applicata e l'attrito per osservare come cambia l'accelerazione. Nota come raddoppiando la massa, l'accelerazione si dimezza.
+        </p>
+
+        <div class="simulator-widget">
+            <canvas id="simulator-canvas" width="700" height="300"></canvas>
+
+            <div class="controls-row">
+                <div class="ctrl-group">
+                    <label>Massa: <span class="ctrl-value" id="mass-display">5.0</span> kg</label>
+                    <input type="range" id="mass-slider" min="1" max="10" value="5" step="0.5">
+                </div>
+                <div class="ctrl-group">
+                    <label>Forza: <span class="ctrl-value" id="force-display">10.0</span> N</label>
+                    <input type="range" id="force-slider" min="0" max="50" value="10" step="1">
+                </div>
+                <div class="ctrl-group">
+                    <label>Attrito: <span class="ctrl-value" id="friction-display">0</span>%</label>
+                    <input type="range" id="friction-slider" min="0" max="0.8" value="0" step="0.1">
+                </div>
+            </div>
+
+            <div class="readout">
+                <div class="readout-card">
+                    <div class="readout-label">Massa</div>
+                    <div class="readout-value" id="mass-readout">5.0 kg</div>
+                </div>
+                <div class="readout-card">
+                    <div class="readout-label">Forza Netta</div>
+                    <div class="readout-value" id="force-readout">10.00 N</div>
+                </div>
+                <div class="readout-card">
+                    <div class="readout-label">Accelerazione</div>
+                    <div class="readout-value" id="accel-readout">2.00 m/s²</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Grafico F vs a (F = ma)</h2>
+        <p class="lesson-text">
+            Questo grafico mostra come l'accelerazione varia linearmente con la forza applicata. La pendenza della retta è 1/m.
+        </p>
+
+        <div class="simulator-widget">
+            <canvas id="graph-canvas" width="650" height="400"></canvas>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Sistemi di Riferimento Inerziali</h2>
+        <p class="lesson-text">
+            I tre principi di Newton sono validi solo nei <strong>sistemi di riferimento inerziali</strong>, cioè sistemi che non accelerano. Un sistema in accelerazione (come una macchina che frena) è non-inerziale.
+        </p>
+
+        <div class="grid">
+            <div class="card">
+                <h4 style="color:var(--physics-color); margin-bottom:0.8rem;">Sistema Inerziale</h4>
+                <p style="font-size:0.93rem; color:var(--text-muted);">Non accelera. I principi di Newton valgono. Esempio: un treno che si muove a velocità costante.</p>
+            </div>
+            <div class="card">
+                <h4 style="color:#f59e0b; margin-bottom:0.8rem;">Sistema Non-Inerziale</h4>
+                <p style="font-size:0.93rem; color:var(--text-muted);">Accelera. Occorre introdurre <strong>forze fittizie</strong> per mantenere i principi. Esempio: ascensore che accelera verso l'alto.</p>
+            </div>
+        </div>
+
+        <div class="callout">
+            <div class="callout-icon">🚗</div>
+            <p><strong>Esperienza comune:</strong> quando una macchina frena bruscamente, ti senti spinto in avanti (primo principio: continui nel tuo moto). Nel sistema di riferimento della macchina (non-inerziale), sembri accelerare verso avanti, anche se nessuna forza reale ti spinge in quella direzione.</p>
+        </div>
+    </section>
+
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title">Quiz di Riepilogo</h2>
+        <p class="lesson-text" style="font-size:0.95rem;">Verifica la tua comprensione dei tre principi della dinamica.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size:1.2rem; margin-top:2rem;"></div>
+    </section>
+
+</main>
+
+<footer><p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Fisica.</p></footer>
+
+<script src="principi-dinamica.js"></script>
+<script src="../../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pendolo Semplice — Meccanica | MFI</title>
+    <meta name="description" content="Lezione interattiva sul pendolo semplice: moto periodico, periodo T=2π√(L/g), isocronismo Galileo, frequenza. Simulatore pendolo animato.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+    <style>
+        .back-button { display:inline-flex; align-items:center; color:var(--text-muted); text-decoration:none; margin-bottom:2rem; font-weight:600; transition:color 0.3s ease, transform 0.3s ease; }
+        .back-button:hover { color:var(--text-main); transform:translateX(-5px); }
+        .sub-hero { padding:4rem 0 2rem; text-align:left; }
+        .sub-hero-title { font-size:clamp(2.2rem, 4vw, 3.2rem); font-weight:800; margin-bottom:1rem; }
+        .lesson-section { margin-bottom:3rem; padding:2.5rem; border-radius:1rem; border:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.03); }
+        .lesson-title { font-size:1.5rem; font-weight:700; margin-bottom:1.2rem; color:var(--physics-color); }
+        .lesson-text { color:var(--text-muted); line-height:1.8; margin-bottom:1.1rem; font-size:1.02rem; }
+        .info-box { background:rgba(16,185,129,0.07); border-left:4px solid var(--physics-color); border-radius:0 0.75rem 0.75rem 0; padding:1.25rem 1.5rem; margin:1.5rem 0; }
+        .callout { display:flex; gap:1rem; align-items:flex-start; background:rgba(16,185,129,0.07); border:1px solid rgba(16,185,129,0.22); border-radius:0.75rem; padding:1.2rem 1.5rem; margin:1.5rem 0; }
+        .callout-icon { font-size:1.5rem; flex-shrink:0; }
+        .callout p { margin:0; color:var(--text-muted); font-size:0.97rem; line-height:1.7; }
+        .callout p strong { color:#6ee7b7; }
+        .callout.blue { background:rgba(59,130,246,0.07); border-color:rgba(59,130,246,0.22); }
+        .callout.blue p strong { color:#93c5fd; }
+        .simulator-widget { background:rgba(0,0,0,0.25); border-radius:14px; padding:2rem; margin:1.5rem 0; }
+        canvas { display:block; margin:0 auto; max-width:100%; border-radius:8px; background:rgba(0,0,0,0.3); }
+        .controls-row { display:flex; gap:1.5rem; flex-wrap:wrap; align-items:flex-end; justify-content:center; margin-top:1.2rem; }
+        .ctrl-group { display:flex; flex-direction:column; gap:0.3rem; min-width:180px; }
+        .ctrl-group label { color:var(--text-muted); font-size:0.82rem; text-transform:uppercase; letter-spacing:0.05em; }
+        .ctrl-group input[type=range] { -webkit-appearance:none; width:100%; height:6px; background:rgba(16,185,129,0.25); border-radius:3px; outline:none; }
+        .ctrl-group input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:18px; height:18px; border-radius:50%; background:var(--physics-color); cursor:pointer; box-shadow:0 0 8px var(--physics-glow); }
+        .ctrl-group input[type=range]::-moz-range-thumb { width:18px; height:18px; border-radius:50%; background:var(--physics-color); cursor:pointer; border:none; }
+        .ctrl-value { color:var(--physics-color); font-weight:700; font-family:monospace; }
+        .readout { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:1.5rem; }
+        .readout-card { background:rgba(0,0,0,0.3); border-radius:10px; padding:1.2rem; text-align:center; border-top:3px solid var(--physics-color); }
+        .readout-label { font-size:0.85rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.5rem; }
+        .readout-value { font-size:1.6rem; font-weight:800; color:var(--physics-color); font-family:monospace; }
+        .buttons-row { display:flex; gap:1rem; justify-content:center; margin-top:1.5rem; }
+        button { padding:0.7rem 1.5rem; background:var(--physics-color); color:#fff; border:none; border-radius:8px; cursor:pointer; font-weight:700; transition:background 0.2s; }
+        button:hover { background:#0d9d6f; }
+        .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:1.5rem; margin:2rem 0; }
+        .card { padding:1.5rem; border-radius:10px; border-top:3px solid var(--physics-color); background:rgba(16,185,129,0.05); }
+        .quiz-container { background:rgba(16,185,129,0.05); border:1px solid rgba(16,185,129,0.22); border-radius:10px; padding:2rem; margin:2rem 0; }
+        .quiz-question { margin-bottom:1.5rem; }
+        .quiz-question-text { font-weight:600; color:var(--text-main); margin-bottom:0.8rem; }
+        .quiz-options { display:flex; flex-direction:column; gap:0.6rem; }
+        .quiz-option { background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.1); border-radius:6px; padding:0.8rem 1rem; cursor:pointer; color:var(--text-muted); transition:all 0.2s; }
+        .quiz-option:hover { background:rgba(16,185,129,0.15); border-color:var(--physics-color); }
+        .quiz-option input { margin-right:0.7rem; }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align:center; margin-bottom:2.5rem;">
+            <a href="../meccanica.html" class="back-button" style="margin-bottom:0;">
+                <span style="margin-right:0.5rem; font-size:1.2rem;">&larr;</span> Torna a Meccanica
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Pendolo <span class="gradient-text">Semplice</span></h1>
+        <p style="font-size:1.15rem; color:var(--text-muted); max-width:800px; font-weight:300;">
+            Un pendolo è più che un giocattolo: è una finestra sul moto periodico. Scopri come il periodo dipende dalla lunghezza e perché Galileo rimase affascinato dalle oscillazioni di un lampadario.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">La Scoperta di Galileo e l'Isocronismo</h2>
+        <p class="lesson-text">
+            Secondo la leggenda, nel 1581 Galileo Galilei si trovava nella Cattedrale di Pisa durante una messa. Osservando una lampada che oscillava dopo essere stata accesa, notò qualcosa di straordinario: il tempo impiegato per completare un'oscillazione sembrava sempre lo stesso, indipendentemente da quanto ampiamente oscillasse.
+        </p>
+
+        <p class="lesson-text">
+            Misurò il tempo usando il proprio polso, e scoprì che le oscillazioni erano isocrone, cioè avevano tutte lo stesso periodo. Questa osservazione lo ispirò a inventare l'<strong>isocronismo</strong>, che divenne fondamentale per lo sviluppo dell'orologio a pendolo più di mezzo secolo dopo.
+        </p>
+
+        <div class="callout blue">
+            <div class="callout-icon">⏰</div>
+            <p><strong>L'orologio a pendolo:</strong> Nel 1641, il figlio di Galileo descrisse un disegno di suo padre per un orologio basato su un pendolo. Fu Christiaan Huygens che lo realizzò nel 1656, creando uno dei più importanti strumenti di misura del tempo.</p>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Moto Periodico e Periodo</h2>
+        <p class="lesson-text">
+            Un <strong>moto periodico</strong> è un moto che si ripete identicamente a se stesso a intervalli regolari di tempo. Il pendolo oscilla su e giù continuamente, ritornando alla posizione iniziale dopo ogni ciclo completo.
+        </p>
+
+        <div class="info-box">
+            <p style="margin:0;"><strong>Periodo (T):</strong> il tempo necessario per completare un'oscillazione completa (andata e ritorno).</p>
+            <p style="margin:0.5rem 0 0;"><strong>Frequenza (f):</strong> il numero di oscillazioni completate in 1 secondo. \( f = 1/T \)</p>
+            <p style="margin:0.5rem 0 0;"><strong>Formula del periodo:</strong> \( T = 2\pi \sqrt{\frac{L}{g}} \)</p>
+            <p style="margin:0.5rem 0 0;">dove L è la lunghezza della corda e g è l'accelerazione di gravità.</p>
+        </div>
+
+        <p class="lesson-text">
+            Una cosa sorprendente: il periodo <em>non dipende dalla massa</em> della pallina! Due pendoli di lunghezza uguale ma massa diversa oscillano con lo stesso periodo. Dipende solo da <strong>L</strong> e da <strong>g</strong>.
+        </p>
+
+        <div class="callout">
+            <div class="callout-icon">💡</div>
+            <p><strong>Perché il periodo dipende da √L?</strong> Se raddoppi la lunghezza, il periodo non raddoppia: aumenta di √2 (≈ 1.414). Questo è il risultato della ricerca dell'equilibrio tra l'aumento della distanza e l'aumento della forza di restituzione.</p>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Simulatore Interattivo: Pendolo Animato</h2>
+        <p class="lesson-text">
+            Modifica la lunghezza della corda e la gravità per osservare come cambia il periodo del pendolo. Avvia l'animazione per vedere l'oscillazione in tempo reale.
+        </p>
+
+        <div class="simulator-widget">
+            <canvas id="pendulum-canvas" width="700" height="400"></canvas>
+
+            <div class="controls-row">
+                <div class="ctrl-group">
+                    <label>Lunghezza L: <span class="ctrl-value" id="length-display">1.00</span> m</label>
+                    <input type="range" id="length-slider" min="0.5" max="2.0" value="1.0" step="0.1">
+                </div>
+                <div class="ctrl-group">
+                    <label>Ampiezza θ: <span class="ctrl-value" id="angle-display">17.2</span>°</label>
+                    <input type="range" id="angle-slider" min="0.1" max="0.5" value="0.3" step="0.05">
+                </div>
+                <div class="ctrl-group">
+                    <label>Gravità g: <span class="ctrl-value" id="g-display">9.81</span> m/s²</label>
+                    <input type="range" id="g-slider" min="3" max="20" value="9.81" step="0.5">
+                </div>
+            </div>
+
+            <div class="buttons-row">
+                <button id="play-btn">Avvia</button>
+                <button id="reset-btn">Reimposta</button>
+            </div>
+
+            <div class="readout">
+                <div class="readout-card">
+                    <div class="readout-label">Periodo T</div>
+                    <div class="readout-value" id="period-readout">2.006 s</div>
+                </div>
+                <div class="readout-card">
+                    <div class="readout-label">Frequenza f</div>
+                    <div class="readout-value" id="frequency-readout">0.50 Hz</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Applicazioni Pratiche del Pendolo</h2>
+        <p class="lesson-text">
+            Sebbene gli orologi a pendolo siano meno comuni oggi, il principio del pendolo è sfruttato in molte applicazioni:
+        </p>
+
+        <div class="grid">
+            <div class="card">
+                <h4 style="color:var(--physics-color); margin-bottom:0.8rem;">Orologi a Pendolo</h4>
+                <p style="font-size:0.93rem; color:var(--text-muted);">La loro accuratezza è straordinaria: un orologio a pendolo ben mantenuto può perdere o guadagnare solo pochi secondi al mese.</p>
+            </div>
+            <div class="card">
+                <h4 style="color:var(--physics-color); margin-bottom:0.8rem;">Misurazione della Gravità</h4>
+                <p style="font-size:0.93rem; color:var(--text-muted);">Misurando il periodo di un pendolo noto, possiamo determinare g in diverse posizioni sulla Terra (variabilità: circa 0.5%).</p>
+            </div>
+            <div class="card">
+                <h4 style="color:var(--physics-color); margin-bottom:0.8rem;">Ammortizzatori Antisismici</h4>
+                <p style="font-size:0.93rem; color:var(--text-muted);">Grattacieli usano pendoli tuned mass damper per assorbire le vibrazioni sismiche ed evitare il crollo.</p>
+            </div>
+            <div class="card">
+                <h4 style="color:var(--physics-color); margin-bottom:0.8rem;">Metronomo</h4>
+                <p style="font-size:0.93rem; color:var(--text-muted);">Un pendolo regolabile permette ai musicisti di tenere un tempo costante durante le prove e le esecuzioni.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Limiti della Formula: L'Approssimazione del Pendolo Semplice</h2>
+        <p class="lesson-text">
+            La formula \( T = 2\pi \sqrt{L/g} \) è esatta solo per oscillazioni di <strong>piccolo angolo</strong> (tipicamente θ &lt; 15°). Per angoli più grandi, il periodo aumenta leggermente. Questo è dovuto al fatto che la forza di restituzione non è perfettamente proporzionale all'angolo per grandi ampiezze.
+        </p>
+
+        <div class="callout">
+            <div class="callout-icon">📏</div>
+            <p><strong>Piccoli angoli:</strong> Per θ ≤ 15°, l'errore è minore dell'1%. Ma se oscilli il pendolo da 45°, il periodo è circa 10% più lungo del previsto dalla formula semplice. Questo è il motivo per cui Galileo poté osservare l'isocronismo solo con oscillazioni piccole.</p>
+        </div>
+    </section>
+
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title">Quiz di Riepilogo</h2>
+        <p class="lesson-text" style="font-size:0.95rem;">Verifica la tua comprensione del pendolo semplice, del periodo e dell'isocronismo.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size:1.2rem; margin-top:2rem;"></div>
+    </section>
+
+</main>
+
+<footer><p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Fisica.</p></footer>
+
+<script src="pendolo-semplice.js"></script>
+<script src="../../js/main.js"></script>
+</body>
+</html>
