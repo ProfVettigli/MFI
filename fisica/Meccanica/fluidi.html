@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fluidi — Meccanica | MFI</title>
+    <meta name="description" content="Lezione interattiva sui fluidi: pressione, principio di Archimede, galleggiamento, dinamica e viscosità. Simulatori interattivi.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+    <style>
+        .back-button { display:inline-flex; align-items:center; color:var(--text-muted); text-decoration:none; margin-bottom:2rem; font-weight:600; transition:color 0.3s ease, transform 0.3s ease; }
+        .back-button:hover { color:var(--text-main); transform:translateX(-5px); }
+        .sub-hero { padding:4rem 0 2rem; text-align:left; }
+        .sub-hero-title { font-size:clamp(2.2rem, 4vw, 3.2rem); font-weight:800; margin-bottom:1rem; }
+        .lesson-section { margin-bottom:3rem; padding:2.5rem; border-radius:1rem; border:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.03); }
+        .lesson-title { font-size:1.5rem; font-weight:700; margin-bottom:1.2rem; color:var(--physics-color); }
+        .lesson-text { color:var(--text-muted); line-height:1.8; margin-bottom:1.1rem; font-size:1.02rem; }
+        .info-box { background:rgba(16,185,129,0.07); border-left:4px solid var(--physics-color); border-radius:0 0.75rem 0.75rem 0; padding:1.25rem 1.5rem; margin:1.5rem 0; }
+        .callout { display:flex; gap:1rem; align-items:flex-start; background:rgba(16,185,129,0.07); border:1px solid rgba(16,185,129,0.22); border-radius:0.75rem; padding:1.2rem 1.5rem; margin:1.5rem 0; }
+        .callout-icon { font-size:1.5rem; flex-shrink:0; }
+        .callout p { margin:0; color:var(--text-muted); font-size:0.97rem; line-height:1.7; }
+        .callout p strong { color:#6ee7b7; }
+        .simulator-widget { background:rgba(0,0,0,0.25); border-radius:14px; padding:2rem; margin:1.5rem 0; }
+        canvas { display:block; margin:0 auto; max-width:100%; border-radius:8px; background:rgba(0,0,0,0.3); }
+        .controls-row { display:flex; gap:1.5rem; flex-wrap:wrap; align-items:flex-end; justify-content:center; margin-top:1.2rem; }
+        .ctrl-group { display:flex; flex-direction:column; gap:0.3rem; min-width:180px; }
+        .ctrl-group label { color:var(--text-muted); font-size:0.82rem; text-transform:uppercase; letter-spacing:0.05em; }
+        .ctrl-group input[type=range] { -webkit-appearance:none; width:100%; height:6px; background:rgba(16,185,129,0.25); border-radius:3px; outline:none; }
+        .ctrl-group input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:18px; height:18px; border-radius:50%; background:var(--physics-color); cursor:pointer; box-shadow:0 0 8px var(--physics-glow); }
+        .ctrl-group input[type=range]::-moz-range-thumb { width:18px; height:18px; border-radius:50%; background:var(--physics-color); cursor:pointer; border:none; }
+        .ctrl-value { color:var(--physics-color); font-weight:700; font-family:monospace; }
+        .readout { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:1.5rem; }
+        .readout-card { background:rgba(0,0,0,0.3); border-radius:10px; padding:1.2rem; text-align:center; border-top:3px solid var(--physics-color); }
+        .readout-label { font-size:0.85rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.5rem; }
+        .readout-value { font-size:1.6rem; font-weight:800; color:var(--physics-color); font-family:monospace; }
+        .buttons-row { display:flex; gap:1rem; justify-content:center; margin-top:1.5rem; }
+        button { padding:0.7rem 1.5rem; background:var(--physics-color); color:#fff; border:none; border-radius:8px; cursor:pointer; font-weight:700; transition:background 0.2s; }
+        button:hover { background:#0d9d6f; }
+        .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:1.5rem; margin:2rem 0; }
+        .card { padding:1.5rem; border-radius:10px; border-top:3px solid var(--physics-color); background:rgba(16,185,129,0.05); }
+        .quiz-container { background:rgba(16,185,129,0.05); border:1px solid rgba(16,185,129,0.22); border-radius:10px; padding:2rem; margin:2rem 0; }
+        .quiz-question { margin-bottom:1.5rem; }
+        .quiz-question-text { font-weight:600; color:var(--text-main); margin-bottom:0.8rem; }
+        .quiz-options { display:flex; flex-direction:column; gap:0.6rem; }
+        .quiz-option { background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.1); border-radius:6px; padding:0.8rem 1rem; cursor:pointer; color:var(--text-muted); transition:all 0.2s; }
+        .quiz-option:hover { background:rgba(16,185,129,0.15); border-color:var(--physics-color); }
+        .quiz-option input { margin-right:0.7rem; }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align:center; margin-bottom:2.5rem;">
+            <a href="../meccanica.html" class="back-button" style="margin-bottom:0;">
+                <span style="margin-right:0.5rem; font-size:1.2rem;">&larr;</span> Torna a Meccanica
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Fluidi: Pressione, Galleggiamento e <span class="gradient-text">Dinamica</span></h1>
+        <p style="font-size:1.15rem; color:var(--text-muted); max-width:800px; font-weight:300;">
+            Dall'equilibrio dei corpi galleggianti al principio di Bernoulli: scopri come si muovono i liquidi e i gas.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Statica dei Fluidi: Pressione e Archimede</h2>
+        <p class="lesson-text">
+            Un <strong>fluido</strong> è una sostanza che assume la forma del contenitore (liquidi e gas). La <strong>pressione</strong> è la forza per unità di area: \( P = F/A \) in Pascal (Pa).
+        </p>
+
+        <div class="info-box">
+            <p style="margin:0;"><strong>Pressione idrostatica:</strong> \( P = \rho g h \), dove ρ è la densità, g la gravità, h la profondità.</p>
+            <p style="margin:0.5rem 0 0;"><strong>Principio di Archimede:</strong> Un corpo immerso riceve una spinta verso l'alto uguale al peso del fluido spostato.</p>
+            <p style="margin:0.5rem 0 0;"><strong>Formula:</strong> \( F_{spinta} = \rho_{fluido} \cdot V_{immerso} \cdot g \)</p>
+        </div>
+
+        <p class="lesson-text">
+            Se la spinta supera il peso, il corpo galleggia. Se sono uguali, rimane in equilibrio (come un sottomarino). Se la spinta è minore, il corpo affonda.
+        </p>
+
+        <div class="callout">
+            <div class="callout-icon">⚓</div>
+            <p><strong>Aneddoto:</strong> Archimede (287-212 AC) scoprì il principio mentre faceva un bagno. Saltò fuori e corse nudo per le strade gridando "Eureka!" (Ho trovato!).</p>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Simulatore Interattivo: Galleggiamento</h2>
+        <p class="lesson-text">
+            Modifica la densità dell'oggetto e del liquido per osservare quando affonda, galleggia o rimane in equilibrio.
+        </p>
+
+        <div class="simulator-widget">
+            <canvas id="buoyancy-canvas" width="700" height="450"></canvas>
+
+            <div class="controls-row">
+                <div class="ctrl-group">
+                    <label>Densità oggetto: <span class="ctrl-value" id="object-density-display">0.5</span> g/cm³</label>
+                    <input type="range" id="object-density-slider" min="0.1" max="2.0" value="0.5" step="0.1">
+                </div>
+                <div class="ctrl-group">
+                    <label>Densità liquido: <span class="ctrl-value" id="liquid-density-display">1.0</span> g/cm³</label>
+                    <input type="range" id="liquid-density-slider" min="0.5" max="2.0" value="1.0" step="0.1">
+                </div>
+            </div>
+
+            <div class="readout">
+                <div class="readout-card">
+                    <div class="readout-label">Peso oggetto</div>
+                    <div class="readout-value" id="weight-readout">5.0 N</div>
+                </div>
+                <div class="readout-card">
+                    <div class="readout-label">Spinta Archimede</div>
+                    <div class="readout-value" id="buoyancy-readout">5.0 N</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Dinamica dei Fluidi: Bernoulli e Viscosità</h2>
+        <p class="lesson-text">
+            Quando un fluido scorre, l'<strong>equazione di Bernoulli</strong> descrive la conservazione dell'energia:
+        </p>
+
+        <div class="info-box">
+            <p style="margin:0;"><strong>Bernoulli:</strong> \( P + \frac{1}{2}\rho v^2 + \rho g h = \text{costante} \)</p>
+            <p style="margin:0.5rem 0 0;">Pressione statica + Pressione dinamica + Pressione idrostatica = costante</p>
+        </div>
+
+        <p class="lesson-text">
+            La <strong>viscosità</strong> è la resistenza di un fluido al flusso. Miele, olio e melassa hanno alta viscosità. L'aria ha bassa viscosità. La viscosità dipende dalla temperatura: l'olio caldo scorre più facilmente.
+        </p>
+
+        <div class="callout">
+            <div class="callout-icon">💨</div>
+            <p><strong>Applicazione di Bernoulli:</strong> Un aeroplano vola perché l'aria scorre più veloce sulla parte superiore dell'ala, causando minore pressione e quindi portanza. Questo è il principio della navigazione.
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Simulatore di Pressione</h2>
+        <p class="lesson-text">
+            Osserva come la pressione aumenta con la profondità in un contenitore d'acqua. Visualizza le frecce di pressione.
+        </p>
+
+        <div class="simulator-widget">
+            <canvas id="pressure-canvas" width="700" height="400"></canvas>
+
+            <div class="controls-row">
+                <div class="ctrl-group">
+                    <label>Profondità: <span class="ctrl-value" id="depth-display">0.5</span> m</label>
+                    <input type="range" id="depth-slider" min="0.1" max="10" value="0.5" step="0.1">
+                </div>
+                <div class="ctrl-group">
+                    <label>Densità fluido: <span class="ctrl-value" id="fluid-density-display">1000</span> kg/m³</label>
+                    <input type="range" id="fluid-density-slider" min="500" max="2000" value="1000" step="100">
+                </div>
+            </div>
+
+            <div class="readout">
+                <div class="readout-card">
+                    <div class="readout-label">Pressione idrostatica</div>
+                    <div class="readout-value" id="pressure-readout">4.9 kPa</div>
+                </div>
+                <div class="readout-card">
+                    <div class="readout-label">Pressione atmosferica</div>
+                    <div class="readout-value">101 kPa</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Applicazioni Pratiche</h2>
+
+        <div class="grid">
+            <div class="card">
+                <h4 style="color:var(--physics-color); margin-bottom:0.8rem;">Navi e Sommergibili</h4>
+                <p style="font-size:0.93rem; color:var(--text-muted);">Il principio di Archimede determina quando una nave galleggia. I sommergibili controllano i ballast per immergersi o emergere.</p>
+            </div>
+            <div class="card">
+                <h4 style="color:var(--physics-color); margin-bottom:0.8rem;">Pompe Idrauliche</h4>
+                <p style="font-size:0.93rem; color:var(--text-muted);">Usano la pressione per trasmettere forza attraverso fluidi incomprimibili, moltiplicando la potenza.</p>
+            </div>
+            <div class="card">
+                <h4 style="color:var(--physics-color); margin-bottom:0.8rem;">Aerodinamica Aerosolida</h4>
+                <p style="font-size:0.93rem; color:var(--text-muted);">Bernoulli spiega la portanza delle ali e il curveball nel baseball: la velocità crea una differenza di pressione.</p>
+            </div>
+            <div class="card">
+                <h4 style="color:var(--physics-color); margin-bottom:0.8rem;">Sifoni e Acquedotti</h4>
+                <p style="font-size:0.93rem; color:var(--text-muted);">L'acqua scorre da un livello superiore a uno inferiore senza pompe grazie alla pressione idrostatica e Bernoulli.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title">Quiz di Riepilogo</h2>
+        <p class="lesson-text" style="font-size:0.95rem;">Verifica la tua comprensione di Archimede, pressione, Bernoulli e viscosità.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size:1.2rem; margin-top:2rem;"></div>
+    </section>
+
+</main>
+
+<footer><p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Fisica.</p></footer>
+
+<script src="fluidi.js"></script>
+<script src="../../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meccanica Lagrangiana — Meccanica | MFI</title>
+    <meta name="description" content="Lezione sulla Meccanica Lagrangiana: approccio energetico, Lagrangiano, principio di minima azione, sistemi conservativi.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+    <style>
+        .back-button { display:inline-flex; align-items:center; color:var(--text-muted); text-decoration:none; margin-bottom:2rem; font-weight:600; transition:color 0.3s ease, transform 0.3s ease; }
+        .back-button:hover { color:var(--text-main); transform:translateX(-5px); }
+        .sub-hero { padding:4rem 0 2rem; text-align:left; }
+        .sub-hero-title { font-size:clamp(2.2rem, 4vw, 3.2rem); font-weight:800; margin-bottom:1rem; }
+        .lesson-section { margin-bottom:3rem; padding:2.5rem; border-radius:1rem; border:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.03); }
+        .lesson-title { font-size:1.5rem; font-weight:700; margin-bottom:1.2rem; color:var(--physics-color); }
+        .lesson-text { color:var(--text-muted); line-height:1.8; margin-bottom:1.1rem; font-size:1.02rem; }
+        .info-box { background:rgba(16,185,129,0.07); border-left:4px solid var(--physics-color); border-radius:0 0.75rem 0.75rem 0; padding:1.25rem 1.5rem; margin:1.5rem 0; }
+        .callout { display:flex; gap:1rem; align-items:flex-start; background:rgba(16,185,129,0.07); border:1px solid rgba(16,185,129,0.22); border-radius:0.75rem; padding:1.2rem 1.5rem; margin:1.5rem 0; }
+        .callout-icon { font-size:1.5rem; flex-shrink:0; }
+        .callout p { margin:0; color:var(--text-muted); font-size:0.97rem; line-height:1.7; }
+        .callout p strong { color:#6ee7b7; }
+        .simulator-widget { background:rgba(0,0,0,0.25); border-radius:14px; padding:2rem; margin:1.5rem 0; }
+        canvas { display:block; margin:0 auto; max-width:100%; border-radius:8px; background:rgba(0,0,0,0.3); }
+        .controls-row { display:flex; gap:1.5rem; flex-wrap:wrap; align-items:flex-end; justify-content:center; margin-top:1.2rem; }
+        .ctrl-group { display:flex; flex-direction:column; gap:0.3rem; min-width:180px; }
+        .ctrl-group label { color:var(--text-muted); font-size:0.82rem; text-transform:uppercase; letter-spacing:0.05em; }
+        .ctrl-group input[type=range] { -webkit-appearance:none; width:100%; height:6px; background:rgba(16,185,129,0.25); border-radius:3px; outline:none; }
+        .ctrl-group input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:18px; height:18px; border-radius:50%; background:var(--physics-color); cursor:pointer; box-shadow:0 0 8px var(--physics-glow); }
+        .ctrl-group input[type=range]::-moz-range-thumb { width:18px; height:18px; border-radius:50%; background:var(--physics-color); cursor:pointer; border:none; }
+        .ctrl-value { color:var(--physics-color); font-weight:700; font-family:monospace; }
+        .readout { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:1.5rem; }
+        .readout-card { background:rgba(0,0,0,0.3); border-radius:10px; padding:1.2rem; text-align:center; border-top:3px solid var(--physics-color); }
+        .readout-label { font-size:0.85rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.5rem; }
+        .readout-value { font-size:1.6rem; font-weight:800; color:var(--physics-color); font-family:monospace; }
+        .buttons-row { display:flex; gap:1rem; justify-content:center; margin-top:1.5rem; }
+        button { padding:0.7rem 1.5rem; background:var(--physics-color); color:#fff; border:none; border-radius:8px; cursor:pointer; font-weight:700; transition:background 0.2s; }
+        button:hover { background:#0d9d6f; }
+        .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:1.5rem; margin:2rem 0; }
+        .card { padding:1.5rem; border-radius:10px; border-top:3px solid var(--physics-color); background:rgba(16,185,129,0.05); }
+        .quiz-container { background:rgba(16,185,129,0.05); border:1px solid rgba(16,185,129,0.22); border-radius:10px; padding:2rem; margin:2rem 0; }
+        .quiz-question { margin-bottom:1.5rem; }
+        .quiz-question-text { font-weight:600; color:var(--text-main); margin-bottom:0.8rem; }
+        .quiz-options { display:flex; flex-direction:column; gap:0.6rem; }
+        .quiz-option { background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.1); border-radius:6px; padding:0.8rem 1rem; cursor:pointer; color:var(--text-muted); transition:all 0.2s; }
+        .quiz-option:hover { background:rgba(16,185,129,0.15); border-color:var(--physics-color); }
+        .quiz-option input { margin-right:0.7rem; }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align:center; margin-bottom:2.5rem;">
+            <a href="../meccanica.html" class="back-button" style="margin-bottom:0;">
+                <span style="margin-right:0.5rem; font-size:1.2rem;">&larr;</span> Torna a Meccanica
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Meccanica <span class="gradient-text">Lagrangiana</span></h1>
+        <p style="font-size:1.15rem; color:var(--text-muted); max-width:800px; font-weight:300;">
+            Un approccio rivoluzionario alla fisica: dall'energia al principio di minima azione.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Newtoniana vs Lagrangiana: Due Visioni della Fisica</h2>
+        <p class="lesson-text">
+            La meccanica di Newton si basa su <strong>forze</strong>: \( F = ma \). Si analizzano le accelerazioni e come le forze cambiano il movimento.
+        </p>
+
+        <p class="lesson-text">
+            La meccanica di Lagrange (sviluppata nel 1788) si basa su <strong>energia</strong>: la differenza tra energia cinetica e potenziale. È un approccio più elegante e potente.
+        </p>
+
+        <div class="info-box">
+            <p style="margin:0;"><strong>Newtoniana:</strong> Analizza forze → accelerazioni → traiettorie. Buona per sistemi semplici.</p>
+            <p style="margin:0.5rem 0 0;"><strong>Lagrangiana:</strong> Analizza energia → moto. Elegante per sistemi complessi (pendoli accoppiati, molécule, relatività).</p>
+        </div>
+
+        <div class="callout">
+            <div class="callout-icon">⚡</div>
+            <p><strong>Vantaggi di Lagrange:</strong> Non devi preoccuparti di forze di vincolo (una corda che limita il movimento). L'energia fa tutto il lavoro. È anche la base della Relatività Generale di Einstein!</p>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Il Lagrangiano L = T - V</h2>
+        <p class="lesson-text">
+            Il <strong>Lagrangiano</strong> è una funzione definita come:
+        </p>
+
+        <div class="info-box">
+            <p style="margin:0;"><strong>\( \mathcal{L} = T - V \)</strong></p>
+            <p style="margin:0.5rem 0 0;">dove:</p>
+            <p style="margin:0.3rem 0 0;"><strong>T</strong> = energia cinetica = \( \frac{1}{2}m v^2 \)</p>
+            <p style="margin:0.3rem 0 0;"><strong>V</strong> = energia potenziale = \( mgh \) (per gravità) o \( \frac{1}{2}kx^2 \) (per molla)</p>
+        </div>
+
+        <p class="lesson-text">
+            A differenza della meccanica newtoniana che somma T + V per trovare l'energia totale, Lagrange sottrae: \( \mathcal{L} = T - V \).
+        </p>
+
+        <p class="lesson-text">
+            Il Lagrangiano contiene tutte le informazioni sul sistema. Le equazioni di moto si derivano dal <strong>Principio di Minima Azione</strong> (Hamilton).
+        </p>
+
+        <div class="info-box">
+            <p style="margin:0;"><strong>Equazioni di Eulero-Lagrange:</strong></p>
+            <p style="margin:0.5rem 0 0;">\( \frac{d}{dt}\frac{\partial \mathcal{L}}{\partial \dot{q}} - \frac{\partial \mathcal{L}}{\partial q} = 0 \)</p>
+            <p style="margin:0.3rem 0 0;">dove q è la coordinata generalizzata (posizione, angolo, ecc.) e \( \dot{q} \) è la sua derivata temporale (velocità).</p>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Esempio: Pendolo Semplice</h2>
+        <p class="lesson-text">
+            Applichiamo il formalismo Lagrangiano al pendolo. La coordinata generalizzata è l'angolo \( \theta \).
+        </p>
+
+        <div class="info-box">
+            <p style="margin:0;"><strong>Energia cinetica:</strong> \( T = \frac{1}{2}m L^2 \dot{\theta}^2 \)</p>
+            <p style="margin:0.5rem 0 0;"><strong>Energia potenziale:</strong> \( V = -mgL \cos(\theta) \) (prendendo il minimo come riferimento)</p>
+            <p style="margin:0.5rem 0 0;"><strong>Lagrangiano:</strong> \( \mathcal{L} = \frac{1}{2}m L^2 \dot{\theta}^2 + mgL \cos(\theta) \)</p>
+            <p style="margin:0.5rem 0 0;"><strong>Equazione di moto:</strong> \( m L^2 \ddot{\theta} + mgL \sin(\theta) = 0 \)</p>
+            <p style="margin:0.5rem 0 0;">che semplifica a: \( \ddot{\theta} + \frac{g}{L} \sin(\theta) = 0 \)</p>
+        </div>
+
+        <p class="lesson-text">
+            Questa è l'identica equazione che Newton avrebbe derivato con F = ma, ma otteniamo qui senza analizzare le forze! Solo da energia e Lagrangiano.
+        </p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Il Principio di Minima Azione</h2>
+        <p class="lesson-text">
+            Il <strong>Principio di Minima Azione</strong> (o Principio di Hamilton) afferma che un sistema prende il percorso che minimizza (o rende stazionaria) l'<strong>azione S</strong>:
+        </p>
+
+        <div class="info-box">
+            <p style="margin:0;"><strong>\( S = \int_{t_1}^{t_2} \mathcal{L} \, dt \)</strong></p>
+            <p style="margin:0.5rem 0 0;">L'azione è l'integrale del Lagrangiano nel tempo.</p>
+        </div>
+
+        <p class="lesson-text">
+            Il sistema segue il percorso che rende l'azione <strong>stazionaria</strong> (minimo, massimo, o punto di sella). Questa è una proprietà universale della natura.
+        </p>
+
+        <div class="callout">
+            <div class="callout-icon">🌈</div>
+            <p><strong>Bellezza della natura:</strong> La luce prende il percorso di minimo tempo (Principio di Fermat). I sistemi meccanici prendono il percorso di minima azione. Sembra che la natura "scelga" il percorso più "economico"!</p>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Simulatore: Sistemi Conservativi</h2>
+        <p class="lesson-text">
+            Modifica l'energia iniziale e osserva il diagramma di energia cinetica e potenziale.
+        </p>
+
+        <div class="simulator-widget">
+            <canvas id="energy-diagram" width="700" height="400"></canvas>
+
+            <div class="controls-row">
+                <div class="ctrl-group">
+                    <label>Energia totale: <span class="ctrl-value" id="total-energy-display">50</span> J</label>
+                    <input type="range" id="total-energy-slider" min="10" max="200" value="50" step="10">
+                </div>
+                <div class="ctrl-group">
+                    <label>Posizione x: <span class="ctrl-value" id="position-display">0</span> m</label>
+                    <input type="range" id="position-slider" min="-5" max="5" value="0" step="0.5">
+                </div>
+            </div>
+
+            <div class="readout">
+                <div class="readout-card">
+                    <div class="readout-label">Energia Cinetica</div>
+                    <div class="readout-value" id="kinetic-energy">50 J</div>
+                </div>
+                <div class="readout-card">
+                    <div class="readout-label">Energia Potenziale</div>
+                    <div class="readout-value" id="potential-energy">0 J</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Visualizzatore di Azione: Percorso Variazionale</h2>
+        <p class="lesson-text">
+            Il sistema sceglie il percorso che minimizza l'azione. Osserva come varia l'azione per percorsi diversi.
+        </p>
+
+        <div class="simulator-widget">
+            <canvas id="action-canvas" width="700" height="350"></canvas>
+            <div class="buttons-row">
+                <button id="show-action-btn">Mostra Azione Minima</button>
+                <button id="show-varied-btn">Mostra Percorsi Variati</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Conservazione dell'Energia in Sistemi Lagrangiani</h2>
+        <p class="lesson-text">
+            In un sistema conservativo (senza forze dissipative), l'energia totale \( E = T + V \) è costante:
+        </p>
+
+        <div class="info-box">
+            <p style="margin:0;"><strong>\( E = T + V = \text{costante} \)</strong></p>
+            <p style="margin:0.5rem 0 0;">Durante il moto, l'energia cinetica e potenziale si scambiano, ma la somma rimane fissa.</p>
+        </div>
+
+        <p class="lesson-text">
+            Ad esempio, in un pendolo:
+        </p>
+        <ul style="color:var(--text-muted); font-size:0.97rem;">
+            <li>Nel punto più alto (θ = 90°): T = 0, V = massima. Il pendolo è momentaneamente fermo.</li>
+            <li>Nel punto più basso (θ = 0°): T = massima, V = minima. Il pendolo si muove più velocemente.</li>
+            <li>In mezzo: T e V si bilanciano, ma T + V = costante.</li>
+        </ul>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Vantaggi della Meccanica Lagrangiana</h2>
+
+        <div class="grid">
+            <div class="card">
+                <h4 style="color:var(--physics-color); margin-bottom:0.8rem;">Semplicità Teorica</h4>
+                <p style="font-size:0.93rem; color:var(--text-muted);">Derivare le equazioni di moto da L è meccanico. Niente forze nascoste o vincoli complicati.</p>
+            </div>
+            <div class="card">
+                <h4 style="color:var(--physics-color); margin-bottom:0.8rem;">Sistemi Complessi</h4>
+                <p style="font-size:0.93rem; color:var(--text-muted);">Pendoli accoppiati, molécule, campi quantistici: Lagrange gestisce tutto elegantemente.</p>
+            </div>
+            <div class="card">
+                <h4 style="color:var(--physics-color); margin-bottom:0.8rem;">Simmetrie e Conservazione</h4>
+                <p style="font-size:0.93rem; color:var(--text-muted);">Dal Lagrangiano emergono le leggi di conservazione (energia, momento, ecc.) automaticamente.</p>
+            </div>
+            <div class="card">
+                <h4 style="color:var(--physics-color); margin-bottom:0.8rem;">Relatività</h4>
+                <p style="font-size:0.93rem; color:var(--text-muted);">Einstein usò il Lagrangiano nella Relatività Generale. È il linguaggio della fisica moderna.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Da Lagrange a Einstein e Oltre</h2>
+        <p class="lesson-text">
+            La Meccanica Lagrangiana non è solo un trucco matematico—è la foundation della fisica moderna:
+        </p>
+
+        <ul style="color:var(--text-muted); font-size:0.97rem; line-height:1.8;">
+            <li><strong>Meccanica Quantistica:</strong> L'equazione di Schrödinger e il formalismo path-integral di Feynman sono derivati dal Principio di Minima Azione.</li>
+            <li><strong>Relatività Generale:</strong> Einstein formulò la gravità usando il Lagrangiano della Relatività Generale (l'azione di Einstein-Hilbert).</li>
+            <li><strong>Teoria dei Campi:</strong> La Lagrangiana del modello standard della particella (QCD, QED) descrive tutte le forze dell'universo (eccetto gravità).</li>
+            <li><strong>Meccanica Statistica:</strong> Il Lagrangiano + Hamiltoniana descrivono sistemi con miliardi di particelle.</li>
+        </ul>
+    </section>
+
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title">Quiz di Riepilogo</h2>
+        <p class="lesson-text" style="font-size:0.95rem;">Verifica la tua comprensione di Lagrangiana, azione e energia.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size:1.2rem; margin-top:2rem;"></div>
+    </section>
+
+</main>
+
+<footer><p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Fisica.</p></footer>
+
+<script src="meccanica-lagrangiana.js"></script>
+<script src="../../js/main.js"></script>
+</body>
+</html>
