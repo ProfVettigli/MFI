@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strumenti di Misura - Lezione Interattiva MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+        .sub-hero {
+            padding: 4rem 0 2rem;
+            text-align: left;
+        }
+        .sub-hero-title {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .formula-box {
+            background: rgba(236,72,153,0.06);
+            border-left: 4px solid var(--physics-color);
+            padding: 1.5rem;
+            border-radius: 0 10px 10px 0;
+            margin: 1.5rem 0;
+            font-family: monospace;
+            font-size: 1.15rem;
+            color: var(--text-main);
+            letter-spacing: 0.04em;
+        }
+
+        .instrument-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .instrument-card {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            border-top: 4px solid var(--physics-color);
+        }
+
+        .instrument-card h3 {
+            color: var(--physics-color);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .instrument-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .circuit-diagram {
+            background: rgba(0,0,0,0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            text-align: center;
+            font-family: monospace;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+
+        .circuit-example {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .example-title {
+            font-weight: 600;
+            color: var(--physics-color);
+            margin-bottom: 1rem;
+        }
+
+        .warning-box {
+            background: rgba(239,68,68,0.1);
+            border-left: 4px solid #ef4444;
+            padding: 1.5rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1.5rem 0;
+            color: var(--text-muted);
+        }
+
+        .warning-box strong {
+            color: #ef4444;
+        }
+
+        .success-box {
+            background: rgba(34,197,94,0.1);
+            border-left: 4px solid #22c55e;
+            padding: 1.5rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1.5rem 0;
+            color: var(--text-muted);
+        }
+
+        .success-box strong {
+            color: #22c55e;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .comparison-table thead {
+            background: rgba(0,0,0,0.4);
+        }
+
+        .comparison-table th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--physics-color);
+            border-bottom: 2px solid var(--physics-color);
+        }
+
+        .comparison-table td {
+            padding: 0.8rem 1rem;
+            color: var(--text-muted);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .comparison-table tr:hover {
+            background: rgba(0,0,0,0.3);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        .info-card {
+            background: rgba(0,0,0,0.2);
+            border-top: 3px solid var(--physics-color);
+            border-radius: 10px;
+            padding: 1.5rem;
+        }
+        .info-card h4 { color: var(--physics-color); margin-bottom: 0.5rem; }
+        .info-card p { font-size: 0.92rem; color: var(--text-muted); }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="../elettromagnetismo.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Elettromagnetismo
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Strumenti di <span class="gradient-text">Misura</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+            Amperometro, voltmetro, ohmetro: come si collegano e come usarli correttamente per misurare senza danneggiare il circuito.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">La Resistenza Interna degli Strumenti</h2>
+        <p class="lesson-text">
+            Un aspetto cruciale della misurazione è che <strong>nessuno strumento è perfetto</strong>. Ogni strumento di misura ha una resistenza interna che influenza il circuito che sta misurando. Lo strumento ideale non esiste, ma possiamo scegliere strumenti che minimizzano questo effetto.
+        </p>
+        <p class="lesson-text">
+            La <strong>filosofia della misurazione</strong> è: uno strumento deve misurare senza influenzare il sistema che sta misurand. Ma in pratica, deve compromesso tra praticità e accuratezza.
+        </p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">L'Amperometro</h2>
+        <p class="lesson-text">
+            Un <strong>amperometro</strong> misura la corrente elettrica che scorre in un circuito. Per misurare la corrente, la corrente deve scorrere <strong>attraverso</strong> lo strumento, non intorno ad esso.
+        </p>
+
+        <div class="instrument-card" style="border-top-color: #EF4444;">
+            <h3 style="color: #EF4444;">📊 Amperometro</h3>
+
+            <h4 style="color: #EF4444; margin: 1rem 0;">Collegamento:</h4>
+            <div class="circuit-diagram">
+                —— [Batteria] ——<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Resistore]<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[A]<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Amperometro)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+                —— ————————————
+            </div>
+
+            <h4 style="color: #EF4444; margin: 1rem 0;">Caratteristiche:</h4>
+            <ul style="color: var(--text-muted); margin: 1rem 0; padding-left: 1.5rem;">
+                <li><strong>Resistenza interna:</strong> Molto bassa (qualche milliohm a pochi ohm)</li>
+                <li><strong>Collegamento:</strong> Sempre <strong>IN SERIE</strong> con il circuito</li>
+                <li><strong>Portata:</strong> Varia (mA, A, decine di A)</li>
+                <li><strong>Pericolo:</strong> Se collegato in parallelo, cortocircuita il circuito!</li>
+            </ul>
+
+            <div class="warning-box">
+                <strong>⚠️ Attenzione:</strong> Controllare sempre la portata dell'amperometro. Se prevedi corrente > 1 A, usa la scala appropriata. Collegare un amperometro da 10 mA a un circuito da 1 A lo distruggerà!
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Il Voltmetro</h2>
+        <p class="lesson-text">
+            Un <strong>voltmetro</strong> misura la differenza di potenziale (tensione) tra due punti. Per misurare la tensione, il voltmetro non deve far scorrere corrente significativa, altrimenti cambierebbe il potenziale stesso.
+        </p>
+
+        <div class="instrument-card" style="border-top-color: #3B82F6;">
+            <h3 style="color: #3B82F6;">⚡ Voltmetro</h3>
+
+            <h4 style="color: #3B82F6; margin: 1rem 0;">Collegamento:</h4>
+            <div class="circuit-diagram">
+                —— [Batteria] —— (A)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[V]<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Voltmetro in parallelo)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Resistore]<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+                —— ————————————— (B)
+            </div>
+
+            <h4 style="color: #3B82F6; margin: 1rem 0;">Caratteristiche:</h4>
+            <ul style="color: var(--text-muted); margin: 1rem 0; padding-left: 1.5rem;">
+                <li><strong>Resistenza interna:</strong> Molto alta (megaohm)</li>
+                <li><strong>Collegamento:</strong> Sempre <strong>IN PARALLELO</strong> tra i due punti da misurare</li>
+                <li><strong>Portata:</strong> Varia (mV, V, centinaia di V)</li>
+                <li><strong>Ideale:</strong> Resistenza infinita (non assorbe corrente)</li>
+            </ul>
+
+            <div class="success-box">
+                <strong>✓ Consiglio:</strong> Il voltmetro ha alta resistenza per assorbire poca corrente. Un voltmetro ideale non influenza il circuito perché non consuma corrente.
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">L'Ohmetro</h2>
+        <p class="lesson-text">
+            Un <strong>ohmetro</strong> misura la resistenza di un componente. Ha una batteria interna che inietta una corrente conosciuta e misura la tensione risultante per calcolare R = V/I.
+        </p>
+
+        <div class="instrument-card" style="border-top-color: #A855F7;">
+            <h3 style="color: #A855F7;">🔌 Ohmetro</h3>
+
+            <h4 style="color: #A855F7; margin: 1rem 0;">Uso Corretto:</h4>
+            <ul style="color: var(--text-muted); margin: 1rem 0; padding-left: 1.5rem;">
+                <li><strong>SPEGNI il circuito:</strong> L'ohmetro ha una batteria interna, non deve incontrare altre tensioni</li>
+                <li><strong>Stacca il componente:</strong> Misura il resistore da solo, non in circuito</li>
+                <li><strong>Tocca i due terminali:</strong> L'ohmetro inietta la corrente e calcola la resistenza</li>
+                <li><strong>Leggi il valore:</strong> Scegli la scala adatta (Ω, kΩ, MΩ)</li>
+            </ul>
+
+            <div class="warning-box">
+                <strong>⚠️ Errore Comune:</strong> Misurare un resistore mentre è alimentato o in circuito. L'ohmetro potrebbe danneggiarsi se incontra una tensione esterna!
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Il Multimetro (Tester Digitale)</h2>
+        <p class="lesson-text">
+            Un <strong>multimetro</strong> (o "tester") è uno strumento che combina amperometro, voltmetro e ohmetro in un unico dispositivo. È lo strumento più versatile per l'hobbista e il tecnico.
+        </p>
+
+        <div class="instrument-card" style="border-top-color: #10B981;">
+            <h3 style="color: #10B981;">📱 Multimetro Digitale</h3>
+
+            <h4 style="color: #10B981; margin: 1rem 0;">Funzioni Principali:</h4>
+            <ul style="color: var(--text-muted); margin: 1rem 0; padding-left: 1.5rem;">
+                <li><strong>Voltmetro DC/AC:</strong> Misura tensione continua e alternata</li>
+                <li><strong>Amperometro DC/AC:</strong> Misura corrente (con limite di portata)</li>
+                <li><strong>Ohmetro:</strong> Misura resistenza</li>
+                <li><strong>Continuità:</strong> Beep se il circuito è chiuso</li>
+                <li><strong>Diodi:</strong> Testa diodi e transistor</li>
+                <li><strong>Capacità:</strong> Alcuni modelli misurano capacità</li>
+            </ul>
+
+            <h4 style="color: #10B981; margin: 1rem 0;">Come Usare:</h4>
+            <ol style="color: var(--text-muted); margin: 1rem 0; padding-left: 1.5rem;">
+                <li>Seleziona la funzione (V, mA, Ω, etc.)</li>
+                <li>Seleziona la portata appropriata o "AUTO"</li>
+                <li>Collega i puntali rosso (+) e nero (GND)</li>
+                <li>Per voltaggio: parallelo. Per corrente: serie. Per resistenza: staccato.</li>
+                <li>Leggi il valore sul display</li>
+            </ol>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Confronto degli Strumenti</h2>
+
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th>Strumento</th>
+                    <th>Misura</th>
+                    <th>Collegamento</th>
+                    <th>Resistenza Ideale</th>
+                    <th>Pericolo Principale</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="font-weight: 600;">Amperometro</td>
+                    <td>Corrente (A)</td>
+                    <td>In serie</td>
+                    <td>0 Ω (zero)</td>
+                    <td>Collegare in parallelo = cortocircuito</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Voltmetro</td>
+                    <td>Tensione (V)</td>
+                    <td>In parallelo</td>
+                    <td>∞ Ω (infinito)</td>
+                    <td>Non assorbe corrente</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Ohmetro</td>
+                    <td>Resistenza (Ω)</td>
+                    <td>Staccato dal circuito</td>
+                    <td>Ha batteria interna</td>
+                    <td>Misurare in circuito alimentato</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Multimetro</td>
+                    <td>Tutti (V, A, Ω)</td>
+                    <td>Dipende dalla funzione</td>
+                    <td>Dipende dalla funzione</td>
+                    <td>Sbagliare la scala o il collegamento</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Esempio Pratico: Misurare un Circuito Semplice</h2>
+
+        <div class="circuit-example">
+            <div class="example-title">Circuito: [Batteria 12V] — [Resistore 100Ω] — [Terra]</div>
+
+            <div style="margin: 1.5rem 0;">
+                <h4 style="color: var(--physics-color); margin-bottom: 0.5rem;">1. Misurare la Tensione sui due lati del resistore</h4>
+                <p style="color: var(--text-muted); margin: 0.5rem 0;">
+                    Collega il voltmetro in <strong>parallelo</strong> ai capi del resistore. Aspetti: ~12V (la batteria fornisce questa tensione)
+                </p>
+            </div>
+
+            <div style="margin: 1.5rem 0;">
+                <h4 style="color: var(--physics-color); margin-bottom: 0.5rem;">2. Misurare la Corrente nel circuito</h4>
+                <p style="color: var(--text-muted); margin: 0.5rem 0;">
+                    Scollega il circuito e collega l'amperometro in <strong>serie</strong>. Aspetti: 12V / 100Ω = 0.12 A = 120 mA
+                </p>
+            </div>
+
+            <div style="margin: 1.5rem 0;">
+                <h4 style="color: var(--physics-color); margin-bottom: 0.5rem;">3. Verificare la Resistenza</h4>
+                <p style="color: var(--text-muted); margin: 0.5rem 0;">
+                    Scollega il resistore dal circuito. Collega l'ohmetro ai due terminali. Aspetti: 100 Ω
+                </p>
+            </div>
+
+            <div style="margin: 1.5rem 0;">
+                <h4 style="color: var(--physics-color); margin-bottom: 0.5rem;">4. Calcolo della Potenza</h4>
+                <p style="color: var(--text-muted); margin: 0.5rem 0;">
+                    P = V × I = 12V × 0.12A = 1.44 W (o P = I²R = (0.12)² × 100 = 1.44 W ✓)
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Errori Comuni da Evitare</h2>
+        <div class="info-grid">
+            <div class="info-card" style="border-top-color: #EF4444;">
+                <h4 style="color: #EF4444;">Amperometro in Parallelo</h4>
+                <p>MALE! Crea un cortocircuito. Danneggia lo strumento e il circuito.</p>
+            </div>
+            <div class="info-card" style="border-top-color: #3B82F6;">
+                <h4 style="color: #3B82F6;">Voltmetro in Serie</h4>
+                <p>MALE! Non misura nulla utilmente. Riduce drasticamente la corrente.</p>
+            </div>
+            <div class="info-card" style="border-top-color: #A855F7;">
+                <h4 style="color: #A855F7;">Ohmetro su Circuito Alimentato</h4>
+                <p>MALE! L'ohmetro potrebbe danneggiarsi con tensioni esterne.</p>
+            </div>
+            <div class="info-card" style="border-top-color: #10B981;">
+                <h4 style="color: #10B981;">Sbagliare la Portata</h4>
+                <p>Sempre inizia con la portata più alta. Regola al più preciso se il valore è piccolo.</p>
+            </div>
+            <div class="info-card" style="border-top-color: #F59E0B;">
+                <h4 style="color: #F59E0B;">Non Controllare i Puntali</h4>
+                <p>Puntali rotti o sporchi danno letture sbagliate. Verificali prima di misurare.</p>
+            </div>
+            <div class="info-card" style="border-top-color: #EC4899;">
+                <h4 style="color: #EC4899;">Polarità Invertita</h4>
+                <p>I multimetri digitali indicano il segno. Se negativo, inverti i puntali (solo per DC).</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title">Quiz di Riepilogo</h2>
+        <p class="lesson-text" style="font-size: 0.95rem;">Testa la tua comprensione degli strumenti di misura e di come usarli correttamente.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Fisica.</p>
+</footer>
+
+<script src="strumenti-misura.js"></script>
+<script src="../../js/main.js"></script>
+</body>
+</html>
