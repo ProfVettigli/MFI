@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semaforo con Arduino - Lezione Interattiva MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+        .sub-hero {
+            padding: 4rem 0 2rem;
+            text-align: left;
+        }
+        .sub-hero-title {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .traffic-light {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            background: rgba(0,0,0,0.5);
+            border-radius: 20px;
+            padding: 1.5rem;
+            width: 120px;
+            height: auto;
+        }
+        .traffic-light-led {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto;
+            background: rgba(0,0,0,0.3);
+            border: 3px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+            box-shadow: none;
+        }
+        .traffic-light-led.red {
+            background: rgba(239,68,68,0.4);
+            border-color: #EF4444;
+            box-shadow: 0 0 20px rgba(239,68,68,0.6);
+        }
+        .traffic-light-led.yellow {
+            background: rgba(245,158,11,0.4);
+            border-color: #F59E0B;
+            box-shadow: 0 0 20px rgba(245,158,11,0.6);
+        }
+        .traffic-light-led.green {
+            background: rgba(16,185,129,0.4);
+            border-color: #10B981;
+            box-shadow: 0 0 20px rgba(16,185,129,0.6);
+        }
+
+        .simulator-container {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+        .simulator-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .btn-control {
+            background: rgba(245,158,11,0.2);
+            border: 2px solid #F59E0B;
+            color: #F59E0B;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        .btn-control:hover {
+            background: #F59E0B;
+            color: #1a1a2e;
+        }
+        .btn-control:active {
+            transform: scale(0.95);
+        }
+
+        .component-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .component-table th, .component-table td {
+            padding: 1rem 1.2rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.95rem;
+        }
+        .component-table th {
+            background: rgba(255,255,255,0.05);
+            font-weight: 700;
+            color: #F59E0B;
+            letter-spacing: 0.03em;
+        }
+        .component-table td {
+            color: var(--text-muted);
+        }
+
+        .code-block {
+            background: rgba(0,0,0,0.3);
+            border-left: 4px solid #F59E0B;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: #E8E8E8;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        .circuit-svg {
+            background: rgba(0,0,0,0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .circuit-svg svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .status-display {
+            background: rgba(0,0,0,0.2);
+            border-left: 4px solid #F59E0B;
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            font-family: monospace;
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="informatica.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Informatica
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Semaforo <span class="gradient-text">con Arduino</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+            Costruisci il tuo primo circuito di automazione: controlla tre LED con Arduino simulando il ciclo semaforico e scopri il PWM per regolare la luminosità.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Cosa Serve: Componenti e Schema</h2>
+        <p class="lesson-text">
+            Un semaforo Arduino è uno dei primi progetti che impara chi inizia con l'elettronica. È semplice ma insegna concetti fondamentali: programmazione sequenziale, temporizzazione, e controllo di più output contemporaneamente.
+        </p>
+
+        <h3 style="margin-top: 2rem; margin-bottom: 1rem; font-size: 1.15rem; color: #F59E0B; font-weight: 600;">Componenti Necessari</h3>
+
+        <table class="component-table">
+            <thead>
+                <tr>
+                    <th>Componente</th>
+                    <th>Quantità</th>
+                    <th>Descrizione</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Arduino Uno</strong></td>
+                    <td>1</td>
+                    <td>Microcontrollore principale</td>
+                </tr>
+                <tr>
+                    <td><strong>LED Rosso</strong></td>
+                    <td>1</td>
+                    <td>LED 5mm (stop)</td>
+                </tr>
+                <tr>
+                    <td><strong>LED Giallo</strong></td>
+                    <td>1</td>
+                    <td>LED 5mm (attenzione)</td>
+                </tr>
+                <tr>
+                    <td><strong>LED Verde</strong></td>
+                    <td>1</td>
+                    <td>LED 5mm (via libera)</td>
+                </tr>
+                <tr>
+                    <td><strong>Resistori</strong></td>
+                    <td>3</td>
+                    <td>220 Ohm (proteggono i LED)</td>
+                </tr>
+                <tr>
+                    <td><strong>Cavetti</strong></td>
+                    <td>~10</td>
+                    <td>Collegamento del circuito</td>
+                </tr>
+                <tr>
+                    <td><strong>Breadboard</strong></td>
+                    <td>1</td>
+                    <td>Basetta per prototipi senza saldature</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3 style="margin-top: 2rem; margin-bottom: 1rem; font-size: 1.15rem; color: #F59E0B; font-weight: 600;">Schema Circuito</h3>
+        <p class="lesson-text">
+            Ogni LED ha due connessioni: l'anodo (gamba lunga, positivo) va al pin di Arduino attraverso una resistenza. Il catodo (gamba corta, negativo) va a GND (massa).
+        </p>
+
+        <div class="circuit-svg">
+            <svg viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg">
+                <rect width="500" height="300" fill="rgba(0,0,0,0.1)"/>
+                <text x="250" y="30" text-anchor="middle" font-size="16" font-weight="bold" fill="#F59E0B">Circuito Semaforo Arduino</text>
+
+                <g id="arduino">
+                    <rect x="20" y="80" width="100" height="150" fill="rgba(59,130,246,0.1)" stroke="#3B82F6" stroke-width="2" rx="5"/>
+                    <text x="70" y="100" text-anchor="middle" font-size="12" font-weight="bold" fill="#3B82F6">Arduino</text>
+                    <text x="30" y="130" font-size="10" fill="#3B82F6">Pin 8</text>
+                    <text x="30" y="160" font-size="10" fill="#3B82F6">Pin 9</text>
+                    <text x="30" y="190" font-size="10" fill="#3B82F6">Pin 10</text>
+                    <text x="30" y="220" font-size="10" fill="#3B82F6">GND</text>
+                </g>
+
+                <g id="red-led">
+                    <circle cx="250" cy="100" r="20" fill="rgba(239,68,68,0.3)" stroke="#EF4444" stroke-width="2"/>
+                    <text x="250" y="105" text-anchor="middle" font-size="10" fill="#EF4444" font-weight="bold">RED</text>
+                    <line x1="120" y1="130" x2="230" y2="100" stroke="#94A3B8" stroke-width="2"/>
+                    <text x="175" y="115" font-size="9" fill="#F59E0B">R: 220Ω</text>
+                </g>
+
+                <g id="yellow-led">
+                    <circle cx="250" cy="160" r="20" fill="rgba(245,158,11,0.3)" stroke="#F59E0B" stroke-width="2"/>
+                    <text x="250" y="165" text-anchor="middle" font-size="10" fill="#F59E0B" font-weight="bold">YEL</text>
+                    <line x1="120" y1="160" x2="230" y2="160" stroke="#94A3B8" stroke-width="2"/>
+                    <text x="175" y="175" font-size="9" fill="#F59E0B">R: 220Ω</text>
+                </g>
+
+                <g id="green-led">
+                    <circle cx="250" cy="220" r="20" fill="rgba(16,185,129,0.3)" stroke="#10B981" stroke-width="2"/>
+                    <text x="250" y="225" text-anchor="middle" font-size="10" fill="#10B981" font-weight="bold">GRN</text>
+                    <line x1="120" y1="190" x2="230" y2="220" stroke="#94A3B8" stroke-width="2"/>
+                    <text x="175" y="235" font-size="9" fill="#F59E0B">R: 220Ω</text>
+                </g>
+
+                <g id="gnd">
+                    <line x1="270" y1="100" x2="370" y2="100" stroke="#EF4444" stroke-width="2"/>
+                    <line x1="370" y1="100" x2="370" y2="260" stroke="#EF4444" stroke-width="2"/>
+                    <line x1="270" y1="160" x2="370" y2="160" stroke="#F59E0B" stroke-width="2"/>
+                    <line x1="370" y1="160" x2="370" y2="260" stroke="#F59E0B" stroke-width="2"/>
+                    <line x1="270" y1="220" x2="370" y2="220" stroke="#10B981" stroke-width="2"/>
+                    <line x1="370" y1="220" x2="370" y2="260" stroke="#10B981" stroke-width="2"/>
+                    <line x1="120" y1="220" x2="370" y2="220" stroke="#10B981" stroke-width="2"/>
+                    <text x="380" y="270" font-size="10" fill="#10B981" font-weight="bold">GND (Massa)</text>
+                </g>
+            </svg>
+        </div>
+
+        <p class="lesson-text" style="font-size: 0.9rem; color: var(--text-muted);">
+            <strong>Nota importante:</strong> Ogni LED ha un <strong>limite di corrente</strong> (ca. 20 mA). La resistenza 220 Ohm limita questa corrente proteggendo sia il LED che il pin di Arduino.
+        </p>
+    </section>
+
+    <section class="lesson-section" style="border-left: 4px solid #F59E0B;">
+        <h2 class="lesson-title" style="color: #F59E0B;">Codice Arduino per il Semaforo</h2>
+        <p class="lesson-text">
+            Ecco il codice C++ che fa lampeggiare il semaforo con il ciclo: Rosso 5 sec → Giallo 2 sec → Verde 5 sec.
+        </p>
+
+        <div class="code-block">
+const int RED = 8;&nbsp;&nbsp;&nbsp;<span style="color:#10B981;">//Pin 8</span><br>
+const int YELLOW = 9;&nbsp;<span style="color:#10B981;">//Pin 9</span><br>
+const int GREEN = 10;&nbsp;<span style="color:#10B981;">//Pin 10</span><br>
+<br>
+void setup() {<br>
+&nbsp;&nbsp;pinMode(RED, OUTPUT);<br>
+&nbsp;&nbsp;pinMode(YELLOW, OUTPUT);<br>
+&nbsp;&nbsp;pinMode(GREEN, OUTPUT);<br>
+}<br>
+<br>
+void loop() {<br>
+&nbsp;&nbsp;<span style="color:#10B981;">//Rosso: STOP</span><br>
+&nbsp;&nbsp;digitalWrite(RED, HIGH);<br>
+&nbsp;&nbsp;digitalWrite(YELLOW, LOW);<br>
+&nbsp;&nbsp;digitalWrite(GREEN, LOW);<br>
+&nbsp;&nbsp;delay(5000);<br>
+<br>
+&nbsp;&nbsp;<span style="color:#10B981;">//Giallo: ATTENZIONE</span><br>
+&nbsp;&nbsp;digitalWrite(RED, LOW);<br>
+&nbsp;&nbsp;digitalWrite(YELLOW, HIGH);<br>
+&nbsp;&nbsp;digitalWrite(GREEN, LOW);<br>
+&nbsp;&nbsp;delay(2000);<br>
+<br>
+&nbsp;&nbsp;<span style="color:#10B981;">//Verde: VIA LIBERA</span><br>
+&nbsp;&nbsp;digitalWrite(RED, LOW);<br>
+&nbsp;&nbsp;digitalWrite(YELLOW, LOW);<br>
+&nbsp;&nbsp;digitalWrite(GREEN, HIGH);<br>
+&nbsp;&nbsp;delay(5000);<br>
+}
+        </div>
+
+        <p class="lesson-text">
+            Nota: <code style="background:rgba(255,255,255,0.1); padding:0.2em 0.4em; border-radius:3px;">delay(5000)</code> blocca il programma per 5000 millisecondi (5 secondi). È semplice ma funziona bene per questa applicazione.
+        </p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Simulatore Interattivo: Semaforo</h2>
+        <p class="lesson-text">
+            Premi "Avvia Ciclo" per visualizzare il semaforo che si accende in sequenza.
+        </p>
+
+        <div class="simulator-container">
+            <div class="traffic-light">
+                <div class="traffic-light-led" id="led-red"></div>
+                <div class="traffic-light-led" id="led-yellow"></div>
+                <div class="traffic-light-led" id="led-green"></div>
+            </div>
+            <div class="simulator-controls">
+                <button class="btn-control" id="btn-start">Avvia Ciclo</button>
+                <button class="btn-control" id="btn-stop">Ferma</button>
+            </div>
+        </div>
+
+        <div class="status-display" id="status-display">
+            Stato: Pronto
+        </div>
+    </section>
+
+    <section class="lesson-section" style="border-left: 4px solid #10B981;">
+        <h2 class="lesson-title" style="color: #10B981;">PWM: Pulse Width Modulation</h2>
+        <p class="lesson-text">
+            Se vuoi controllare non solo l'accensione/spegnimento (HIGH/LOW) ma anche la luminosità di un LED, usi il <strong>PWM (Pulse Width Modulation)</strong>. Arduino ha 6 pin PWM: 3, 5, 6, 9, 10, 11.
+        </p>
+
+        <p class="lesson-text">
+            Con PWM accendi e spegni il LED molto velocemente (500+ volte al secondo). Controllando quanto tempo rimane acceso vs. spento, percepisci una variazione di luminosità. Ecco un esempio:
+        </p>
+
+        <div class="code-block">
+analogWrite(pin, brightness);<br>
+<span style="color:#10B981;">//brightness: 0 (spento) ... 255 (piena luminosità)</span><br>
+<br>
+void setup() {<br>
+&nbsp;&nbsp;pinMode(3, OUTPUT);<br>
+}<br>
+<br>
+void loop() {<br>
+&nbsp;&nbsp;<span style="color:#10B981;">//Incrementa la luminosità da 0 a 255</span><br>
+&nbsp;&nbsp;for (int i = 0; i &lt;= 255; i++) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;analogWrite(3, i);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;delay(10);<br>
+&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;<span style="color:#10B981;">//Decrementa da 255 a 0</span><br>
+&nbsp;&nbsp;for (int i = 255; i &gt;= 0; i--) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;analogWrite(3, i);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;delay(10);<br>
+&nbsp;&nbsp;}<br>
+}
+        </div>
+
+        <p class="lesson-text" style="font-size: 0.9rem;">
+            <strong>Caso d'uso:</strong> Con PWM puoi regolare la luminosità di un LED, la velocità di un motore, o il tono di un buzzer. È la base di molti progetti Arduino avanzati.
+        </p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Variante Pedonale: Semaforo con Pulsante</h2>
+        <p class="lesson-text">
+            Un semaforo realistico ha un pulsante per i pedoni. Ecco come modificare il codice per attendere il pulsante prima di cambiare da Rosso a Verde:
+        </p>
+
+        <div class="code-block">
+const int RED = 8;<br>
+const int GREEN = 10;<br>
+const int BUTTON = 2;&nbsp;<span style="color:#10B981;">//Pulsante su pin 2</span><br>
+<br>
+void setup() {<br>
+&nbsp;&nbsp;pinMode(RED, OUTPUT);<br>
+&nbsp;&nbsp;pinMode(GREEN, OUTPUT);<br>
+&nbsp;&nbsp;pinMode(BUTTON, INPUT);<br>
+}<br>
+<br>
+void loop() {<br>
+&nbsp;&nbsp;digitalWrite(RED, HIGH);&nbsp;&nbsp;&nbsp;<span style="color:#10B981;">//Rosso</span><br>
+&nbsp;&nbsp;<br>
+&nbsp;&nbsp;<span style="color:#10B981;">//Aspetta che il pedone premi il pulsante</span><br>
+&nbsp;&nbsp;while (digitalRead(BUTTON) == LOW) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;delay(50);<br>
+&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;delay(500);&nbsp;<span style="color:#10B981;">//Debouncing</span><br>
+&nbsp;&nbsp;<br>
+&nbsp;&nbsp;digitalWrite(RED, LOW);<br>
+&nbsp;&nbsp;digitalWrite(GREEN, HIGH);&nbsp;&nbsp;<span style="color:#10B981;">//Verde</span><br>
+&nbsp;&nbsp;delay(5000);<br>
+&nbsp;&nbsp;digitalWrite(GREEN, LOW);<br>
+}
+        </div>
+
+        <p class="lesson-text">
+            Con questa modifica, il semaforo rimane rosso finché il pedone non preme il pulsante. È un comportamento più realistico e utile.
+        </p>
+    </section>
+
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title">Quiz di Riepilogo</h2>
+        <p class="lesson-text" style="font-size: 0.95rem;">Verifica di aver compreso il progetto del semaforo Arduino.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Informatica.</p>
+</footer>
+
+<script src="arduino-semaforo.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>
