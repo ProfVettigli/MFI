@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crisi della Fisica Classica - Lezione Interattiva MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        .back-button { display: inline-flex; align-items: center; color: var(--text-muted); text-decoration: none; margin-bottom: 2rem; font-weight: 600; transition: color 0.3s ease, transform 0.3s ease; }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+        .sub-hero { padding: 4rem 0 2rem; text-align: left; }
+        .sub-hero-title { font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; margin-bottom: 1rem; }
+        .lesson-title { color: var(--physics-color) !important; }
+
+        .interactive-box {
+            background: rgba(16,185,129,0.04);
+            border: 1px solid rgba(16,185,129,0.18);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+        }
+        .slider-row { display: flex; align-items: center; gap: 1rem; margin: 1rem 0; flex-wrap: wrap; }
+        .slider-row label { min-width: 140px; font-weight: 600; color: var(--text-muted); }
+        .slider-row input[type=range] { flex: 1; min-width: 200px; accent-color: var(--physics-color); }
+        .slider-row .value { font-family: monospace; font-weight: 800; color: var(--physics-color); min-width: 90px; }
+
+        .result-box {
+            background: rgba(0,0,0,0.3);
+            border-left: 5px solid var(--physics-color);
+            padding: 1.2rem 1.5rem;
+            border-radius: 0 10px 10px 0;
+            margin-top: 1.2rem;
+            font-family: monospace;
+            font-size: 1.05rem;
+        }
+        .result-box strong { color: var(--physics-color); font-size: 1.3rem; }
+
+        canvas.diagram { width: 100%; max-width: 480px; height: 360px; background: rgba(0,0,0,0.35); border-radius: 12px; display: block; }
+
+        .formula { font-family: 'Cambria Math', Cambria, serif; font-size: 1.4rem; text-align: center; padding: 1rem; background: rgba(0,0,0,0.25); border-radius: 10px; margin: 1rem 0; }
+        .formula em { color: var(--physics-color); font-style: italic; }
+
+        .timeline { position: relative; padding-left: 2.5rem; margin: 2rem 0; }
+        .timeline::before { content: ''; position: absolute; left: 0.6rem; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--physics-color), rgba(16,185,129,0.1)); }
+        .timeline-item { position: relative; margin-bottom: 2rem; }
+        .timeline-item::before { content: ''; position: absolute; left: -1.95rem; top: 0.4rem; width: 10px; height: 10px; border-radius: 50%; background: var(--physics-color); box-shadow: 0 0 8px var(--physics-glow); }
+        .timeline-year { font-size: 0.8rem; font-weight: 700; color: var(--physics-color); letter-spacing: 1px; margin-bottom: 0.3rem; }
+        .timeline-text { font-size: 0.97rem; color: var(--text-muted); line-height: 1.6; }
+        .timeline-text strong { color: var(--text-main); }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="../fisica-moderna.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Fisica Moderna
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Crisi della <span class="gradient-text">Fisica Classica</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+            Alla fine dell'800, la fisica sembrava completa. Ma tre esperimenti la demolirono: il corpo nero, l'effetto fotoelettrico e l'effetto Compton. Erano gli albori della meccanica quantistica.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Il Fallimento della Fisica Classica</h2>
+        <p class="lesson-text">
+            Nel 1900, il fisico inglese <strong>Lord Kelvin</strong> disse che la fisica era praticamente completa, rimasto solo da spiegare una "piccola nube oscura". Quella nube nascondeva il più grande terremoto scientifico della storia moderna.
+        </p>
+        <p class="lesson-text">
+            La meccanica newtoniana, l'ottica ondulatoria e l'elettromagnetismo di Maxwell sembravano fornire una descrizione completa della natura. Eppure tre fenomeni sperimentali sfidavano spietatamente questa visione:
+        </p>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-year">1900</div>
+                <p class="timeline-text"><strong>Planck</strong> propone la quantizzazione dell'energia per risolvere il problema del corpo nero: nasce la costante h = 6.626 × 10⁻³⁴ J·s.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1905</div>
+                <p class="timeline-text"><strong>Einstein</strong> spiega l'effetto fotoelettrico assumendo che la luce sia costituita da "pacchetti" di energia: i fotoni.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1923</div>
+                <p class="timeline-text"><strong>Compton</strong> misura lo scattering di raggi X su elettroni, confermando definitivamente la natura corpuscolare della luce.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1926</div>
+                <p class="timeline-text"><strong>Schrödinger</strong> formula l'equazione d'onda; nasce la meccanica quantistica moderna.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Il Problema del Corpo Nero — Catastrofe Ultravioletta</h2>
+        <p class="lesson-text">
+            Immagina un contenitore perfettamente isolato, con pareti che assorbono e riemettono radiazione. All'interno, luce e materia raggiungono l'equilibrio termico. La domanda semplice: <em>quanto è intensa la luce a ogni frequenza?</em>
+        </p>
+        <p class="lesson-text">
+            La fisica classica prediceva (dal teorema di equipartizione di Boltzmann) che ogni modo vibrazionale della radiazione dovesse avere energia media kT. Il disastro: a frequenze alte, l'energia irradiata dovrebbe divergere all'infinito — un'assurdità chiamata <strong>"catastrofe ultravioletta"</strong>.
+        </p>
+        <p class="lesson-text">
+            Nel 1900, <strong>Max Planck</strong> azzardò un'ipotesi radicale: l'energia non è continua, ma viene emessa in <strong>quanti</strong> discreti, ognuno di energia E = hf, dove h è una nuova costante universale (la costante di Planck). Questa semplice assunzione risolveva perfettamente il problema.
+        </p>
+
+        <div class="interactive-box">
+            <h3 style="color: var(--physics-color); margin-bottom: 1rem;">Simulatore di Corpo Nero</h3>
+            <p style="font-size: 0.95rem; color: var(--text-muted);">Regola la temperatura del corpo nero e osserva lo spettro classico (che diverge) e quello quantistico di Planck (realista).</p>
+            <div class="slider-row">
+                <label for="bb-temp">Temperatura (K):</label>
+                <input type="range" id="bb-temp" min="500" max="5000" step="100" value="2500">
+                <span class="value" id="bb-temp-val">2500 K</span>
+            </div>
+            <canvas id="bb-canvas" class="diagram" style="max-width: 100%; height: 350px; margin-top: 1rem;"></canvas>
+            <div class="result-box">
+                Lunghezza d'onda di picco (Wien): <strong id="bb-peak">1160 nm</strong> (infrarosso)
+            </div>
+            <p style="font-size: 0.88rem; color: var(--text-muted); margin-top: 0.5rem;">La curva blu è il modello classico (errato); la rossa è la formula di Planck (corretta).</p>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Effetto Fotoelettrico — La Scoperta del Fotone</h2>
+        <p class="lesson-text">
+            Se illumini un metallo con luce ultravioletta, gli elettroni superficiali sono strappati via e creano una corrente. Questo è l'<strong>effetto fotoelettrico</strong>. Ma il comportamento è strano:
+        </p>
+        <ul style="color: var(--text-muted); font-size: 0.95rem; margin: 1.5rem 0;">
+            <li><strong>Non dipende dall'intensità della luce.</strong> Illumina più intensamente, gli elettroni non vengono espulsi più velocemente — solo in maggior numero.</li>
+            <li><strong>Dipende dalla frequenza.</strong> Solo luce al di sopra di una soglia di frequenza f₀ riesce a staccare gli elettroni. Al di sotto, nulla accade, anche con luce molto intensa.</li>
+            <li><strong>L'energia cinetica degli elettroni è indipendente dall'intensità.</strong> È proporzionale solo alla frequenza.</li>
+        </ul>
+
+        <p class="lesson-text">
+            Nel 1905, <strong>Albert Einstein</strong> spiegò tutto con un'idea audace: la luce non è un'onda continua, ma un flusso di <strong>fotoni</strong>, ogni fotone ha energia E = hf. L'effetto fotoelettrico diventa semplice:
+        </p>
+        <div class="formula">hf = Φ + K<sub>e</sub></div>
+        <p class="lesson-text">
+            Dove Φ è la funzione lavoro (l'energia minima per estrarre un elettrone) e K<sub>e</sub> è l'energia cinetica dell'elettrone espulso. Per questo lavoro, Einstein vinse il Nobel nel 1921 (non per la relatività!)
+        </p>
+
+        <div class="interactive-box">
+            <h3 style="color: var(--physics-color); margin-bottom: 1rem;">Calcolatore Effetto Fotoelettrico</h3>
+            <p style="font-size: 0.95rem; color: var(--text-muted);">Scegli un metallo e regola la frequenza della luce. Calcolerai l'energia cinetica degli elettroni espulsi.</p>
+            <div class="slider-row">
+                <label for="pe-freq">Frequenza (×10¹⁴ Hz):</label>
+                <input type="range" id="pe-freq" min="3" max="20" step="0.1" value="10">
+                <span class="value" id="pe-freq-val">10.0 × 10¹⁴ Hz</span>
+            </div>
+            <div class="result-box">
+                Energia fotone: <strong id="pe-e">4.14 eV</strong><br>
+                Funzione lavoro (sodio): <strong id="pe-phi">2.28 eV</strong><br>
+                Energia cinetica: <strong id="pe-ke">1.86 eV</strong><br>
+                <span style="color: var(--text-muted); font-size: 0.9rem;">Soglia: 5.5 × 10¹⁴ Hz</span>
+            </div>
+            <p style="font-size: 0.88rem; color: var(--text-muted); margin-top: 0.5rem;">Se l'energia cinetica è negativa, gli elettroni non vengono espulsi.</p>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Effetto Compton — Conferma della Natura Corpuscolare della Luce</h2>
+        <p class="lesson-text">
+            Nel 1923, il fisico americano <strong>Arthur Compton</strong> condusse un esperimento fondamentale: fece urtare raggi X su una lamina di grafite e misurò la lunghezza d'onda della radiazione riflessa.
+        </p>
+        <p class="lesson-text">
+            Il risultato sconcertante: la lunghezza d'onda aumentava! Secondo la fisica classica, ciò era impossibile: un'onda non cambia frequenza quando urta materia. Invece, se consideri i raggi X come fotoni che urtano gli elettroni in collisioni elastiche, tutto si spiega perfettamente:
+        </p>
+        <div class="formula">λ' − λ = (h / m<em><sub>e</sub></em>c)(1 − cos θ)</div>
+        <p class="lesson-text">
+            Dove θ è l'angolo di scattering. Il fotone trasferisce energia all'elettrone e "rallenta", aumentando di lunghezza d'onda. Questo effetto prova definitivamente che la luce ha natura corpuscolare (fotonica) oltre a quella ondulatoria.
+        </p>
+
+        <div style="background: rgba(16,185,129,0.06); border-left: 4px solid var(--physics-color); padding: 1.2rem; border-radius: 0 10px 10px 0; margin-top: 1rem;">
+            <p class="lesson-text" style="margin-bottom: 0; font-size: 1rem;">
+                <strong>Dualismo onda-particella:</strong> Luce e materia hanno una natura duplice — si comportano come onde in certi contesti (diffrazione, interferenza) e come particelle in altri (effetto fotoelettrico, Compton). Questa è una delle idee più profonde e controintuitive della fisica.
+            </p>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">I Pilastri della Fisica Moderna</h2>
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+            <div class="card" style="padding: 1.5rem;">
+                <div style="font-size: 2rem;">💡</div>
+                <h4 style="color: var(--physics-color);">Costante di Planck</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">h = 6.626 × 10⁻³⁴ J·s. Una delle costanti più importanti della natura. Misura la dimensione dei quanti.</p>
+            </div>
+            <div class="card" style="padding: 1.5rem;">
+                <div style="font-size: 2rem;">📡</div>
+                <h4 style="color: var(--physics-color);">Quantizzazione dell'Energia</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">L'energia non è continua: viene emessa in pacchetti discreti, i quanti. E = hf.</p>
+            </div>
+            <div class="card" style="padding: 1.5rem;">
+                <div style="font-size: 2rem;">🌊</div>
+                <h4 style="color: var(--physics-color);">Dualismo Onda-Particella</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Elettroni e fotoni sono sia onde che particelle. La realtà è più complessa di due categorie.</p>
+            </div>
+            <div class="card" style="padding: 1.5rem;">
+                <div style="font-size: 2rem;">🔬</div>
+                <h4 style="color: var(--physics-color);">Rivoluzione Scientifica</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">La meccanica quantistica cambia il modo di pensare alla scienza: determinismo cede il posto alla probabilità.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title">Quiz di Riepilogo</h2>
+        <p class="lesson-text" style="font-size: 0.95rem;">Metti alla prova la tua comprensione della crisi della fisica classica.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Fisica.</p>
+</footer>
+
+<script src="crisi-fisica-classica.js"></script>
+<script src="../../js/main.js"></script>
+</body>
+</html>

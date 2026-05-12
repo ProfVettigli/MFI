@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mercato e Monopolio - Lezione Interattiva MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+    <script>
+      MathJax = { tex: { inlineMath: [['\\(', '\\)']] } };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+
+    <style>
+        .back-button {
+            display: inline-flex; align-items: center;
+            color: var(--text-muted); text-decoration: none;
+            margin-bottom: 2rem; font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+        .sub-hero { padding: 4rem 0 2rem; text-align: left; }
+        .sub-hero-title { font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; margin-bottom: 1rem; }
+
+        .market-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .slider-row { display: flex; align-items: center; gap: 1rem; margin: 1rem 0; flex-wrap: wrap; }
+        .slider-row label { min-width: 120px; color: var(--text-muted); font-weight: 600; }
+        .slider-row input[type=range] { flex: 1; min-width: 180px; accent-color: var(--math-color); }
+        .value-pill {
+            background: rgba(59,130,246,0.15);
+            color: var(--math-color);
+            padding: 0.3rem 0.7rem;
+            border-radius: 8px;
+            font-family: monospace; font-weight: 700; min-width: 50px; text-align: center;
+        }
+
+        canvas.market-canvas {
+            width: 100%; max-width: 700px;
+            background: rgba(0,0,0,0.25);
+            border-radius: 10px; display: block; margin: 1.5rem auto;
+        }
+
+        .section-title { font-size: 1.4rem; font-weight: 700; margin-top: 3rem; margin-bottom: 1rem; }
+        .formula-box {
+            background: rgba(59,130,246,0.08);
+            border-left: 4px solid var(--math-color);
+            padding: 1.2rem 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        .concept-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 2rem 0; }
+        @media (max-width: 768px) { .concept-row { grid-template-columns: 1fr; } }
+
+        .concept-box {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        .concept-box h4 { color: var(--math-color); margin-bottom: 0.8rem; }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="economia-matematica.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Economia
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Mercato e <span class="gradient-text">Monopolio</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+            Domanda e offerta costruiscono il mercato. La loro interazione determina prezzo e quantità. Cosa accade quando un'azienda controlla tutto?
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <!-- DOMANDA E OFFERTA -->
+    <section class="market-card">
+        <h2 class="section-title">1. Domanda e Offerta</h2>
+        <p>Nel mercato di <strong>concorrenza perfetta</strong>:</p>
+        <ul style="color: var(--text-muted); line-height: 1.8;">
+            <li><strong>Domanda:</strong> Quantità che i consumatori vogliono comprare a ogni prezzo</li>
+            <li><strong>Offerta:</strong> Quantità che i produttori vogliono vendere a ogni prezzo</li>
+            <li><strong>Equilibrio:</strong> Il punto dove domanda = offerta</li>
+        </ul>
+
+        <div class="formula-box">
+            Domanda tipica: \(Q_d = a - bp\) dove \(a\) è la quantità massima, \(b\) è la sensibilità al prezzo<br>
+            Offerta tipica: \(Q_s = c + dp\) dove \(c\) è quantità minima, \(d\) è elasticità
+        </div>
+
+        <h3>Grafico Interattivo: Muovi il prezzo</h3>
+        <div class="slider-row">
+            <label for="demand-price">Prezzo:</label>
+            <input type="range" id="demand-price" min="1" max="100" value="50" step="1">
+            <span class="value-pill" id="price-display">50</span>
+        </div>
+        <canvas id="marketCanvas" class="market-canvas" width="700" height="400"></canvas>
+    </section>
+
+    <!-- EQUILIBRIO DI MERCATO -->
+    <section class="market-card">
+        <h2 class="section-title">2. Equilibrio di Mercato</h2>
+        <p>All'equilibrio: \(Q_d = Q_s\)</p>
+
+        <div class="concept-row">
+            <div class="concept-box">
+                <h4>Se Prezzo > Equilibrio</h4>
+                <p>Offerta supera domanda → Eccesso di magazzino → Imprese abbassano prezzo</p>
+            </div>
+            <div class="concept-box">
+                <h4>Se Prezzo &lt; Equilibrio</h4>
+                <p>Domanda supera offerta → Carenza → Consumatori premono per prezzo più alto</p>
+            </div>
+        </div>
+
+        <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 10px; text-align: center; margin: 1.5rem 0;">
+            <strong>Prezzo di Equilibrio:</strong> <span id="eq-price" style="color: var(--math-color); font-family: monospace; font-size: 1.1rem;">-</span>
+            <br><strong>Quantità di Equilibrio:</strong> <span id="eq-qty" style="color: var(--math-color); font-family: monospace; font-size: 1.1rem;">-</span>
+        </div>
+    </section>
+
+    <!-- MONOPOLIO -->
+    <section class="market-card">
+        <h2 class="section-title">3. Monopolio</h2>
+        <p>Un'unica impresa controlla il mercato. Non compete con rivali, ma decide il prezzo secondo:</p>
+
+        <div class="formula-box">
+            <strong>Ricavo Totale:</strong> \(R = p \times Q\)<br>
+            <strong>Ricavo Marginale:</strong> \(RM = \frac{dR}{dQ}\)<br>
+            <strong>Massimizzazione Profitto:</strong> Monopolista sceglie \(Q\) dove \(RM = CM\)
+        </div>
+
+        <div class="concept-row">
+            <div class="concept-box">
+                <h4>Concorrenza Perfetta</h4>
+                <p>Tanti venditori, prezzo = Costo Marginale, equilibrio efficiente</p>
+            </div>
+            <div class="concept-box">
+                <h4>Monopolio</h4>
+                <p>Un venditore, prezzo &gt; Costo Marginale, allocazione inefficiente, deadweight loss</p>
+            </div>
+        </div>
+
+        <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 1.5rem;">
+            <strong>Barriere all'entrata:</strong> Brevetti, economie di scala, controllo risorse, licenze permettono al monopolista di mantenere il potere.
+        </p>
+    </section>
+
+    <!-- SURPLUS -->
+    <section class="market-card">
+        <h2 class="section-title">4. Surplus Consumatore e Produttore</h2>
+
+        <div class="formula-box">
+            <strong>Surplus Consumatore:</strong> Differenza tra ciò che pagherebbe e ciò che paga<br>
+            \(SC = \int_0^{Q^*} P_d(Q) \, dQ - P^* \times Q^*\)<br><br>
+            <strong>Surplus Produttore:</strong> Differenza tra prezzo ricevuto e costo di produzione
+        </div>
+
+        <p style="background: rgba(255,193,7,0.1); padding: 1rem; border-radius: 8px; border-left: 4px solid #FFC107; margin: 1.5rem 0;">
+            In <strong>concorrenza perfetta</strong> il surplus totale è massimizzato. In <strong>monopolio</strong> parte del surplus del consumatore è trasferita al produttore, e c'è una perdita secca (deadweight loss).
+        </p>
+    </section>
+
+</main>
+
+<footer style="text-align: center; padding: 2rem 0; color: var(--text-muted); font-size: 0.9rem; margin-top: 4rem; border-top: 1px solid rgba(255,255,255,0.1);">
+    MFI © 2026 | Economia e Monopolio
+</footer>
+
+<script src="mercato-monopolio.js"></script>
+</body>
+</html>

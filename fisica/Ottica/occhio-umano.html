@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L'Occhio Umano - Lezione Interattiva MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+        .sub-hero {
+            padding: 4rem 0 2rem;
+            text-align: left;
+        }
+        .sub-hero-title {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .canvas-wrap {
+            background: rgba(0,0,0,0.35);
+            border-radius: 12px;
+            padding: 1.2rem;
+            margin: 1.5rem 0;
+            text-align: center;
+            border: 1px solid rgba(59,130,246,0.15);
+        }
+        canvas {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+            border-radius: 8px;
+            background: #060a10;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin: 1rem 0;
+            align-items: center;
+            justify-content: center;
+        }
+        .ctrl {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            min-width: 180px;
+        }
+        .ctrl label {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .ctrl input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            background: rgba(59,130,246,0.25);
+            border-radius: 3px;
+            outline: none;
+        }
+        .ctrl input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--physics-color);
+            cursor: pointer;
+            box-shadow: 0 0 8px var(--physics-glow);
+        }
+        .val-display {
+            font-family: monospace;
+            color: var(--physics-color);
+            font-weight: 700;
+            font-size: 1.05rem;
+        }
+
+        .info-box {
+            background: rgba(59,130,246,0.07);
+            border-left: 4px solid var(--physics-color);
+            border-radius: 0 0.75rem 0.75rem 0;
+            padding: 1.25rem 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .eye-parts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .eye-part {
+            background: rgba(59,130,246,0.08);
+            border-radius: 8px;
+            padding: 1.2rem;
+            border-left: 4px solid var(--physics-color);
+        }
+        .eye-part strong {
+            color: var(--physics-color);
+        }
+
+        .vision-demo {
+            background: rgba(0,0,0,0.5);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+        .vision-display {
+            width: 100%;
+            max-width: 400px;
+            height: 240px;
+            margin: 0 auto;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #1e1b4b, #0f172a);
+            border: 2px solid rgba(59,130,246,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            filter: blur(0px);
+            transition: filter 0.2s ease;
+        }
+
+        .defect-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .defect-card {
+            background: rgba(59,130,246,0.05);
+            border: 1px solid rgba(59,130,246,0.2);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+        .defect-title {
+            color: var(--physics-color);
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .defect-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .lesson-section { margin: 2.5rem 0; }
+        .lesson-title {
+            font-size: 1.55rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 1.2rem;
+            border-left: 4px solid var(--physics-color);
+            padding-left: 1rem;
+        }
+        .lesson-text {
+            color: var(--text-muted);
+            line-height: 1.7;
+            font-size: 0.98rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="../ottica.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Ottica
+            </a>
+        </div>
+        <h1 class="sub-hero-title">L'Occhio <span class="gradient-text">Umano</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+            Una macchina ottica sofisticatissima: come la cornea, il cristallino e la retina creano la visione. E cosa accade quando qualcosa non va.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Come Vediamo: Una Meraviglia Biologica</h2>
+        <p class="lesson-text">
+            L'occhio umano è un sistema ottico straordinario, raffinato da milioni di anni di evoluzione. Quando guardiamo un oggetto, la luce riflessa da esso entra nell'occhio, viene focalizzata da un sistema di lenti biologiche, e forma un'immagine capovolta sulla retina. Qui, milioni di cellule fotosensibili traducono questa immagine in segnali nervosi che il cervello interpreta come visione.
+        </p>
+        <p class="lesson-text">
+            A differenza di una fotocamera, l'occhio è <strong>dinamico</strong>: varia costantemente la sua capacità di messa a fuoco, regola la quantità di luce che entra, e il cervello elabora le immagini da entrambi gli occhi in stereoscopia per percepiamo la profondità.
+        </p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Anatomia dell'Occhio: Struttura e Funzione</h2>
+
+        <div class="canvas-wrap">
+            <canvas id="eyeCanvas" width="640" height="420"></canvas>
+            <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 1rem;">Diagramma interattivo della sezione trasversale dell'occhio umano.</p>
+        </div>
+
+        <div class="eye-parts-grid">
+            <div class="eye-part">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">👁️</div>
+                <strong>Cornea</strong>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-muted);">
+                    Strato trasparente esterno. Svolge il 75% della focalizzazione della luce. Ha un raggio di curvatura fisso.
+                </p>
+            </div>
+            <div class="eye-part">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">💧</div>
+                <strong>Umore Acqueo</strong>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-muted);">
+                    Liquido trasparente che riempie la parte anteriore dell'occhio. Nutre la cornea e il cristallino. Mantiene la pressione intraoculare.
+                </p>
+            </div>
+            <div class="eye-part">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔴</div>
+                <strong>Iride</strong>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-muted);">
+                    Muscolo circolare pigmentato. Determina il colore degli occhi e controlla il diametro della pupilla per regolare la luminosità.
+                </p>
+            </div>
+            <div class="eye-part">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">⭕</div>
+                <strong>Pupilla</strong>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-muted);">
+                    Apertura nella parte centrale dell'iride. Più piccola alla luce, più grande al buio. Controlla la quantità di luce che entra.
+                </p>
+            </div>
+            <div class="eye-part">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔵</div>
+                <strong>Cristallino</strong>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-muted);">
+                    Lente biologica trasparente. Cambia forma per mettere a fuoco a distanze diverse. Invecchiando diventa meno flessibile (presbiopia).
+                </p>
+            </div>
+            <div class="eye-part">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">🎬</div>
+                <strong>Retina</strong>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-muted);">
+                    Tessuto sensibile alla luce. Contiene ~126 milioni di cellule: bastoncelli (visione in bianco-nero) e coni (visione a colori).
+                </p>
+            </div>
+            <div class="eye-part">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">🧠</div>
+                <strong>Nervo Ottico</strong>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-muted);">
+                    Trasmette i segnali dalla retina al cervello. Ogni occhio ha ~1.2 milioni di fibre nervose.
+                </p>
+            </div>
+            <div class="eye-part">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">🌌</div>
+                <strong>Corpo Vitreo</strong>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-muted);">
+                    Gel trasparente che riempie la parte posteriore. Mantiene la forma dell'occhio e permette alla luce di raggiungere la retina.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">L'Accomodazione: Messa a Fuoco Dinamica</h2>
+        <p class="lesson-text">
+            Quando guardi un oggetto vicino, i <strong>muscoli ciliari</strong> (anello di muscoli liscio) si contraggono, rilassando le fibre di sospensione del cristallino. Il cristallino diventa più arrotondato e aumenta la sua potenza di focalizzazione. Quando l'oggetto è lontano, i muscoli si rilassano e il cristallino si appiattisce. Questo processo è chiamato <strong>accomodazione</strong>.
+        </p>
+
+        <div class="canvas-wrap">
+            <canvas id="accommodationCanvas" width="640" height="300"></canvas>
+            <div class="controls">
+                <div class="ctrl">
+                    <label>Distanza oggetto: <span class="val-display" id="distanceVal">50 cm</span></label>
+                    <input type="range" id="distanceSlider" min="10" max="500" value="50" step="10">
+                </div>
+            </div>
+            <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.8rem;">Osserva come il cristallino cambia forma per mantenere l'immagine a fuoco sulla retina.</p>
+        </div>
+
+        <div class="info-box">
+            <p style="margin: 0; color: var(--text-muted);">
+                <strong style="color: var(--physics-color);">Punto Prossimo e Punto Remoto:</strong> Il punto prossimo è la distanza minima a cui puoi focalizzare con chiarezza (circa 25 cm in un giovane adulto). Il punto remoto è la distanza massima (infinito per un occhio normale).
+            </p>
+        </div>
+
+        <p class="lesson-text">
+            Con l'età, il cristallino perde elasticità. Intorno ai 45 anni la messa a fuoco su oggetti vicini diventa difficile: questa è la <strong>presbiopia</strong>, che si corregge con occhiali da lettura.
+        </p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Simulatore di Visione: Sfocata vs. Nitida</h2>
+        <p class="lesson-text">
+            Sposta lo slider qui sotto per simulare la visione sfocata (come accade con la miopia) e la visione nitida (accomodazione normale). Il "testo di prova" diventa progressivamente più sfocato man mano che aumenti il "difetto".
+        </p>
+
+        <div class="vision-demo">
+            <div class="vision-display" id="visionDisplay">
+                <div id="visionText" style="filter: blur(0px);">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </div>
+            </div>
+            <div class="controls" style="margin-top: 1.5rem;">
+                <div class="ctrl">
+                    <label>Nitidezza visiva: <span class="val-display" id="focusVal">100%</span></label>
+                    <input type="range" id="focusSlider" min="0" max="15" value="0" step="1">
+                </div>
+            </div>
+            <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 1rem;">A 0 = visione perfetta. Aumentando il valore, simuli miopia lieve, miopia moderata, fino a visione molto sfocata.</p>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Difetti della Vista: Quando la Geometria Non Va Bene</h2>
+        <p class="lesson-text">
+            Un occhio perfetto mette a fuoco i raggi paralleli (oggetti lontani) esattamente sulla retina. Se la lunghezza dell'occhio è troppo lunga, o la cornea/cristallino troppo convessi, l'immagine si forma <strong>davanti</strong> alla retina: è la <strong>miopia</strong>.
+        </p>
+
+        <div class="defect-cards">
+            <div class="defect-card">
+                <div class="defect-icon">🔴</div>
+                <div class="defect-title">Miopia (visione corta)</div>
+                <p style="font-size: 0.92rem; color: var(--text-muted); margin-bottom: 0.8rem;">
+                    Oggetti lontani appaiono sfocati, oggetti vicini sono nitidi. Causata da occhio troppo lungo o cornea troppo curva.
+                </p>
+                <p style="font-size: 0.85rem; color: var(--physics-color);"><strong>Correzione:</strong> Lente divergente (concava) che disperde i raggi.</p>
+            </div>
+            <div class="defect-card">
+                <div class="defect-icon">🟢</div>
+                <div class="defect-title">Ipermetropia (visione lunga)</div>
+                <p style="font-size: 0.92rem; color: var(--text-muted); margin-bottom: 0.8rem;">
+                    Oggetti vicini sono sfocati, oggetti lontani sono nitidi. Causata da occhio troppo corto o cornea poco curva.
+                </p>
+                <p style="font-size: 0.85rem; color: var(--physics-color);"><strong>Correzione:</strong> Lente convergente (convessa) che concentra i raggi.</p>
+            </div>
+            <div class="defect-card">
+                <div class="defect-icon">🟡</div>
+                <div class="defect-title">Astigmatismo</div>
+                <p style="font-size: 0.92rem; color: var(--text-muted); margin-bottom: 0.8rem;">
+                    La cornea o il cristallino hanno curvatura irregolare (asimmetrica). Linee verticali e orizzontali si focalizzano diversamente.
+                </p>
+                <p style="font-size: 0.85rem; color: var(--physics-color);"><strong>Correzione:</strong> Lente cilindrica che corregge in una sola direzione.</p>
+            </div>
+            <div class="defect-card">
+                <div class="defect-icon">⚪</div>
+                <div class="defect-title">Presbiopia (invecchiamento)</div>
+                <p style="font-size: 0.92rem; color: var(--text-muted); margin-bottom: 0.8rem;">
+                    Il cristallino perde elasticità con l'età (~45 anni+). Difficile focalizzare su oggetti vicini.
+                </p>
+                <p style="font-size: 0.85rem; color: var(--physics-color);"><strong>Correzione:</strong> Occhiali bifocali o progressive.</p>
+            </div>
+            <div class="defect-card">
+                <div class="defect-icon">🌓</div>
+                <div class="defect-title">Daltonismo</div>
+                <p style="font-size: 0.92rem; color: var(--text-muted); margin-bottom: 0.8rem;">
+                    Deficit nei coni della retina. Difficoltà a distinguere certi colori (rosso-verde è il più comune, ~8% uomini).
+                </p>
+                <p style="font-size: 0.85rem; color: var(--physics-color);"><strong>Causa:</strong> Genetica. Nessuna vera cura, ma filtri speciali aiutano.</p>
+            </div>
+            <div class="defect-card">
+                <div class="defect-icon">🌀</div>
+                <div class="defect-title">Distacco di Retina</div>
+                <p style="font-size: 0.92rem; color: var(--text-muted); margin-bottom: 0.8rem;">
+                    La retina si stacca dal tessuto sottostante. Perdita parziale o totale della visione in quella zona.
+                </p>
+                <p style="font-size: 0.85rem; color: var(--physics-color);"><strong>Emergenza:</strong> Richiede chirurgia urgente.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Correzione con Lenti: La Geometria della Visione</h2>
+        <p class="lesson-text">
+            Una lente è caratterizzata dalla sua <strong>distanza focale</strong> f. Per la miopia usiamo lenti divergenti (f negativa), per l'ipermetropia lenti convergenti (f positiva). La potenza di una lente si misura in <strong>diottrie</strong> (D), dove:
+        </p>
+
+        <div class="info-box">
+            <p style="margin: 0; font-family: monospace; text-align: center; font-size: 1.1rem; color: var(--physics-color); font-weight: 700;">
+                Potenza (D) = 1 / f (in metri)
+            </p>
+            <p style="margin: 0.7rem 0 0; color: var(--text-muted); text-align: center; font-size: 0.95rem;">
+                Un'occhiale da -2.0 D corregge la miopia con f = -0.5 m. Un occhiale da +2.5 D corregge l'ipermetropia con f = 0.4 m.
+            </p>
+        </div>
+
+        <p class="lesson-text">
+            Le lenti a contatto appoggiandosi direttamente sulla cornea permettono una visione più naturale e un campo visivo più ampio rispetto agli occhiali. La chirurgia refrattiva (LASIK) modifica la curvatura della cornea con un laser eccimero, cambiando permanentemente il potere di focalizzazione.
+        </p>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Fisica.</p>
+</footer>
+
+<script src="occhio-umano.js"></script>
+<script src="../../js/main.js"></script>
+</body>
+</html>

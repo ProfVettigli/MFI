@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perché il Cielo è Blu - Lezione Interattiva MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+        .sub-hero {
+            padding: 4rem 0 2rem;
+            text-align: left;
+        }
+        .sub-hero-title {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .canvas-wrap {
+            background: rgba(0,0,0,0.35);
+            border-radius: 12px;
+            padding: 1.2rem;
+            margin: 1.5rem 0;
+            text-align: center;
+            border: 1px solid rgba(59,130,246,0.15);
+        }
+        canvas {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+            border-radius: 8px;
+            background: #001a2e;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin: 1rem 0;
+            align-items: center;
+            justify-content: center;
+        }
+        .ctrl {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            min-width: 180px;
+        }
+        .ctrl label {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .ctrl input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            background: rgba(59,130,246,0.25);
+            border-radius: 3px;
+            outline: none;
+        }
+        .ctrl input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--physics-color);
+            cursor: pointer;
+            box-shadow: 0 0 8px var(--physics-glow);
+        }
+        .val-display {
+            font-family: monospace;
+            color: var(--physics-color);
+            font-weight: 700;
+            font-size: 1.05rem;
+        }
+
+        .info-box {
+            background: rgba(59,130,246,0.07);
+            border-left: 4px solid var(--physics-color);
+            border-radius: 0 0.75rem 0.75rem 0;
+            padding: 1.25rem 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .info-box .formula {
+            font-family: 'Courier New', monospace;
+            font-size: 1.2rem;
+            color: var(--physics-color);
+            text-align: center;
+            padding: 0.5rem 0;
+            font-weight: 700;
+        }
+
+        .spectrum-bar {
+            display: flex;
+            height: 40px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 1.5rem 0;
+        }
+        .spectrum-band {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .explanation-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .exp-card {
+            background: rgba(59,130,246,0.08);
+            border-radius: 8px;
+            padding: 1.2rem;
+            border-left: 4px solid var(--physics-color);
+        }
+        .exp-card strong {
+            color: var(--physics-color);
+        }
+
+        .lesson-section { margin: 2.5rem 0; }
+        .lesson-title {
+            font-size: 1.55rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 1.2rem;
+            border-left: 4px solid var(--physics-color);
+            padding-left: 1rem;
+        }
+        .lesson-text {
+            color: var(--text-muted);
+            line-height: 1.7;
+            font-size: 0.98rem;
+            margin-bottom: 1rem;
+        }
+
+        .wavelength-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background: rgba(0,0,0,0.25);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .wavelength-table th, .wavelength-table td {
+            padding: 0.85rem 1.2rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.97rem;
+        }
+        .wavelength-table th {
+            background: rgba(59,130,246,0.1);
+            color: var(--physics-color);
+            font-weight: 700;
+            letter-spacing: 0.03em;
+        }
+        .wavelength-table td.num {
+            font-family: monospace;
+            color: var(--physics-color);
+            font-weight: 700;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="../ottica.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Ottica
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Perché il Cielo è <span class="gradient-text">Blu?</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+            Lo scattering Rayleigh: come le molecole dell'aria diffondono la luce solare, e perché il blu viene disperso più del rosso. Una lezione sulla natura ondulatoria della luce.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">La Domanda Millenaria</h2>
+        <p class="lesson-text">
+            "Perché il cielo è blu?" è una domanda che l'umanità si pone da millenni. Leonardo da Vinci pensava che il blu venisse riflesso dagli oceani. Nel 1871, lo scienziato britannico <strong>Lord Rayleigh</strong> fornì la risposta corretta: il blu viene diffuso dalle molecole dell'atmosfera tramite un meccanismo chiamato <strong>scattering Rayleigh</strong>.
+        </p>
+        <p class="lesson-text">
+            La luce solare entra nell'atmosfera ricca di azoto (N₂) e ossigeno (O₂). Quando la luce della lunghezza d'onda più corta (blu, violetto) incontra queste molecole, viene deviata in tutte le direzioni. La luce della lunghezza d'onda più lunga (rosso) passa quasi indisturbata. Questa è la spiegazione: la luce che vediamo proviene da tutte le direzioni del cielo, ed è principalmente blu perché il blu viene diffuso più efficacemente.
+        </p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Cos'è lo Scattering Rayleigh?</h2>
+        <p class="lesson-text">
+            Lo scattering (diffusione) è il processo per cui una particella o una molecola riemette la luce in tutte le direzioni anziché lasciarla proseguire dritta. Per le particelle molto più piccole della lunghezza d'onda della luce (come le molecole dell'aria), la potenza diffusa dipende dalla quarta potenza della frequenza della luce, o equivalentemente, dalla quarta potenza dell'inverso della lunghezza d'onda.
+        </p>
+
+        <div class="info-box">
+            <div class="formula">P<sub>diffusa</sub> ∝ 1 / λ⁴</div>
+            <p style="margin: 0.7rem 0 0; color: var(--text-muted); text-align: center; font-size: 0.95rem;">
+                La potenza diffusa è inversamente proporzionale alla quarta potenza della lunghezza d'onda.
+            </p>
+        </div>
+
+        <p class="lesson-text">
+            Per la luce blu (λ ≈ 450 nm) il denominatore è (450)⁴. Per la luce rossa (λ ≈ 700 nm) è (700)⁴. Il rapporto tra i due è (700/450)⁴ ≈ 9.5. Quindi il blu viene diffuso circa 10 volte più intensamente del rosso! Questo è il motivo per cui il cielo appare blu.
+        </p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Simulatore di Scattering: Colore vs. Lunghezza d'Onda</h2>
+        <p class="lesson-text">
+            Modifica la lunghezza d'onda della luce incidente e osserva come cambia l'intensità della diffusione. Quando riduci la lunghezza d'onda (verso il blu), la diffusione aumenta drasticamente (∝ 1/λ⁴). Quando aumenti la lunghezza d'onda (verso il rosso), la diffusione diminuisce.
+        </p>
+
+        <div class="canvas-wrap">
+            <canvas id="scatteringCanvas" width="640" height="380"></canvas>
+            <div class="controls">
+                <div class="ctrl">
+                    <label>Lunghezza d'onda: <span class="val-display" id="wavelengthVal">500 nm</span></label>
+                    <input type="range" id="wavelengthSlider" min="380" max="750" value="500" step="10">
+                </div>
+            </div>
+            <div style="background: rgba(0,0,0,0.4); border-radius: 8px; padding: 1rem; margin-top: 0.8rem; font-family: monospace; font-size: 0.95rem; color: var(--text-muted);">
+                <div>Intensità relativa di scattering: <span id="intensityVal" style="color: var(--physics-color); font-weight: 700;">100%</span></div>
+            </div>
+            <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.8rem;">Osserva le particelle diffondere la luce. Più corta è la lunghezza d'onda, più intenso è lo scattering.</p>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Lo Spettro Della Luce Visibile</h2>
+        <p class="lesson-text">
+            La luce visibile copre lunghezze d'onda da circa 380 nm (violetto) a 750 nm (rosso infrarosso). I colori dello spettro sono spesso ricordati con l'acronimo ROYGBIV (Rosso, Arancione, Giallo, Verde, Blu, Indaco, Violetto).
+        </p>
+
+        <div class="spectrum-bar">
+            <div class="spectrum-band" style="background-color: #9d0000;">Rosso<br>700 nm</div>
+            <div class="spectrum-band" style="background-color: #ff5000;">Arancione<br>620 nm</div>
+            <div class="spectrum-band" style="background-color: #ffff00; color: #333;">Giallo<br>580 nm</div>
+            <div class="spectrum-band" style="background-color: #00aa00;">Verde<br>540 nm</div>
+            <div class="spectrum-band" style="background-color: #0000ff;">Blu<br>470 nm</div>
+            <div class="spectrum-band" style="background-color: #4b0082;">Violetto<br>380 nm</div>
+        </div>
+
+        <table class="wavelength-table">
+            <thead><tr><th>Colore</th><th>Lunghezza d'onda</th><th>Frequenza</th><th>Scattering Relativo</th></tr></thead>
+            <tbody>
+                <tr><td>Rosso</td><td class="num">700 nm</td><td class="num">4.3 × 10¹⁴ Hz</td><td class="num">1.0</td></tr>
+                <tr><td>Arancione</td><td class="num">620 nm</td><td class="num">4.8 × 10¹⁴ Hz</td><td class="num">2.0</td></tr>
+                <tr><td>Giallo</td><td class="num">580 nm</td><td class="num">5.2 × 10¹⁴ Hz</td><td class="num">3.1</td></tr>
+                <tr><td>Verde</td><td class="num">540 nm</td><td class="num">5.6 × 10¹⁴ Hz</td><td class="num">4.6</td></tr>
+                <tr><td>Blu</td><td class="num">470 nm</td><td class="num">6.4 × 10¹⁴ Hz</td><td class="num">8.5</td></tr>
+                <tr><td>Violetto</td><td class="num">380 nm</td><td class="num">7.9 × 10¹⁴ Hz</td><td class="num">21.6</td></tr>
+            </tbody>
+        </table>
+
+        <p class="lesson-text" style="font-size: 0.93rem;">
+            Noti come il violetto venga diffuso più di 20 volte più intensamente del rosso! Eppure il cielo appare blu, non violetto, perché la luce solare contiene meno violetto (è assorbito dall'alta atmosfera) e i nostri occhi sono più sensibili al blu.
+        </p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Perché il Tramonto è Rosso?</h2>
+        <p class="lesson-text">
+            Quando il Sole è basso all'orizzonte al tramonto, la luce deve attraversare un percorso molto più lungo nell'atmosfera. Il blu e il verde, essendo fortemente diffusi, vengono rimossi dal raggio di luce. Rimangono principalmente i colori con lunghezze d'onda più lunghe: arancione e rosso. Ecco perché il tramonto è rosso (e talvolta spettacolarmente arancione).
+        </p>
+
+        <div class="info-box">
+            <p style="margin: 0; color: var(--text-muted);">
+                <strong style="color: var(--physics-color);">La Lunghezza del Percorso Ottico:</strong> Quando il Sole è allo zenith, la luce percorre circa 1 unità di atmosfera. Al tramonto, con il Sole a 6° sull'orizzonte, percorre circa 10 unità di atmosfera. Questo permette al blu di essere diffuso completamente, lasciando solo il rosso.
+            </p>
+        </div>
+
+        <p class="lesson-text">
+            In giorni con inquinamento o polveri atmosferiche particolarmente intense, il tramonto può essere ancora più spettacolare, poiché le particelle più grandi aggiungono ulteriore scattering. Eruzioni vulcaniche che rilasciano cenere nell'atmosfera possono colorare i tramonti di un rosso ancora più intenso per giorni.
+        </p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">L'Atmosfera: Un Laboratorio Naturale</h2>
+
+        <div class="explanation-cards">
+            <div class="exp-card">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔵</div>
+                <strong>Cielo Blu</strong>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-muted);">
+                    La diffusione di Rayleigh delle molecole di N₂ e O₂ disperde il blu in tutte le direzioni. Il cielo appare blu da qualsiasi direzione tu guardi.
+                </p>
+            </div>
+            <div class="exp-card">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">🌅</div>
+                <strong>Tramonto Rosso</strong>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-muted);">
+                    Percorso ottico lungo = blu completamente rimosso. Rimane solo il rosso/arancione diretto dal Sole verso di te.
+                </p>
+            </div>
+            <div class="exp-card">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">🌍</div>
+                <strong>Luna Rossa</strong>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-muted);">
+                    Durante un'eclissi lunare totale, la luce solare passa attorno alla Terra attraverso l'atmosfera. Solo il rosso raggiunge la Luna.
+                </p>
+            </div>
+            <div class="exp-card">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">⚪</div>
+                <strong>Cielo Bianco di Sera</strong>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-muted);">
+                    Poco dopo il tramonto, il cielo ancora illuminato appare biancastro. La sorgente di luce è principalmente riflessa dalle nuvole.
+                </p>
+            </div>
+            <div class="exp-card">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">🌫️</div>
+                <strong>Nebbia Bianca</strong>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-muted);">
+                    Le goccioline d'acqua nella nebbia sono molto più grandi delle molecole di aria (Mie scattering). Diffondono tutto uniformemente: aspetto bianco.
+                </p>
+            </div>
+            <div class="exp-card">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">💙</div>
+                <strong>Oceani Blu</strong>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-muted);">
+                    L'acqua assorbe principalmente il rosso, riflettendo il blu. Combinato con lo scattering Rayleigh dell'aria: blu intenso.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">La Natura Ondulatoria della Luce</h2>
+        <p class="lesson-text">
+            Lo scattering Rayleigh è una prova diretta che la luce è un'onda. Se la luce fosse composta da particelle (fotoni con massa), la dipendenza dalla lunghezza d'onda sarebbe diversa. La formula esatta di Rayleigh emerge dalla teoria ondulatoria della luce e dalle equazioni di Maxwell dell'elettromagnetismo.
+        </p>
+        <p class="lesson-text">
+            In realtà, sappiamo oggi che la luce è sia particella che onda (dualità onda-particella). Ma il fatto che la diffusione segua la legge λ⁻⁴ mostra che gli aspetti ondulatori dominano quando la luce interagisce con oggetti più piccoli della sua lunghezza d'onda.
+        </p>
+
+        <div class="info-box">
+            <p style="margin: 0; color: var(--text-muted);">
+                <strong style="color: var(--physics-color);">Nobel Prize 1933:</strong> Lord Rayleigh (John William Strutt, 1842-1919) vinse il Nobel per la Fisica nel 1904 per le sue ricerche sul moto di fluidi e su le radiazioni. Lo scattering Rayleigh rimane uno dei fenomeni ottici più eleganti e importanti della fisica moderna.
+            </p>
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Fisica.</p>
+</footer>
+
+<script src="cielo-blu.js"></script>
+<script src="../../js/main.js"></script>
+</body>
+</html>

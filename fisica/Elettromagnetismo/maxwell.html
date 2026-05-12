@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equazioni di Maxwell - Lezione Interattiva MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+        .sub-hero {
+            padding: 4rem 0 2rem;
+            text-align: left;
+        }
+        .sub-hero-title {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .formula-box {
+            background: rgba(16,185,129,0.06);
+            border-left: 4px solid var(--physics-color);
+            padding: 1.5rem;
+            border-radius: 0 10px 10px 0;
+            margin: 1.5rem 0;
+            font-family: monospace;
+            font-size: 1.1rem;
+            color: var(--text-main);
+            letter-spacing: 0.02em;
+            line-height: 1.8;
+        }
+
+        .maxwell-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        .maxwell-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-left: 4px solid var(--physics-color);
+            border-radius: 10px;
+            padding: 1.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .maxwell-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.05);
+            border-color: var(--physics-color);
+        }
+        .maxwell-card h3 {
+            font-size: 1.3rem;
+            color: var(--physics-color);
+            margin-bottom: 0.8rem;
+        }
+        .maxwell-card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+        .maxwell-formula {
+            background: rgba(0,0,0,0.3);
+            padding: 0.8rem;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            color: #fff;
+            text-align: center;
+        }
+
+        .interactive-box {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        .diagram-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            flex-wrap: wrap;
+        }
+        .diagram-box {
+            background: #050810;
+            border: 1px solid rgba(16,185,129,0.3);
+            border-radius: 8px;
+            padding: 1.5rem;
+            flex: 1;
+            min-width: 200px;
+        }
+        .diagram-title {
+            font-weight: 700;
+            color: var(--physics-color);
+            margin-bottom: 0.8rem;
+            font-size: 0.95rem;
+        }
+        .diagram-text {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        .info-card {
+            background: rgba(0,0,0,0.2);
+            border-top: 3px solid var(--physics-color);
+            border-radius: 10px;
+            padding: 1.5rem;
+        }
+        .info-card h4 { color: var(--physics-color); margin-bottom: 0.5rem; }
+        .info-card p { font-size: 0.92rem; color: var(--text-muted); }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="../elettromagnetismo.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Elettromagnetismo
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Equazioni di <span class="gradient-text">Maxwell</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+            Le quattro leggi che unificano l'elettricità e il magnetismo, e predicono l'esistenza della luce come onda elettromagnetica.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">James Clerk Maxwell e l'Unificazione</h2>
+        <p class="lesson-text">
+            Nel 1865 il fisico scozzese <strong>James Clerk Maxwell</strong> scrisse quattro equazioni differenziali che riassumono <em>tutto</em> l'elettromagnetismo classico. Riunificò il lavoro di Coulomb, Faraday, Ampère e Ørsted in una teoria coerente. La sua conclusione fu stupefacente: la luce è un'onda elettromagnetica!
+        </p>
+        <p class="lesson-text">
+            Einstein stesso definì le equazioni di Maxwell come le <strong>fondamenta dell'universo moderno</strong>. Sono alla base di radio, televisione, WiFi, telefonia mobile, raggi X, radar e miliardi di dispositivi moderni.
+        </p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Le Quattro Equazioni</h2>
+
+        <div class="maxwell-grid">
+            <div class="maxwell-card">
+                <h3>1️⃣ Legge di Gauss (E)</h3>
+                <p>Un campo elettrico parte dalle cariche positive e termina su quelle negative. Il flusso di E attraverso una superficie chiusa è proporzionale alla carica racchiusa.</p>
+                <div class="maxwell-formula">∮ E · dA = Q_enc / ε₀</div>
+            </div>
+
+            <div class="maxwell-card">
+                <h3>2️⃣ Legge di Gauss (B)</h3>
+                <p>I poli magnetici non possono essere isolati (non esistono monopoli). Il flusso di B attraverso qualsiasi superficie chiusa è sempre zero.</p>
+                <div class="maxwell-formula">∮ B · dA = 0</div>
+            </div>
+
+            <div class="maxwell-card">
+                <h3>3️⃣ Legge di Faraday</h3>
+                <p>Un campo magnetico <strong>variabile</strong> induce un campo elettrico circolare. Questo è il principio dei trasformatori e delle dinamo.</p>
+                <div class="maxwell-formula">∮ E · dl = −dΦ_B / dt</div>
+            </div>
+
+            <div class="maxwell-card">
+                <h3>4️⃣ Legge di Ampère-Maxwell</h3>
+                <p>Una corrente elettrica genera un campo magnetico circolare (Ampère). Maxwell aggiunge: anche un campo elettrico <strong>variabile</strong> genera B.</p>
+                <div class="maxwell-formula">∮ B · dl = μ₀(I + ε₀ dΦ_E/dt)</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section" style="border-left: 4px solid var(--physics-color);">
+        <h2 class="lesson-title">La Simmetria Rivelata</h2>
+        <p class="lesson-text">
+            Quello che Maxwell realizzò è una <strong>simmetria profonda</strong>:
+        </p>
+        <ul style="margin: 1.5rem 0; color: var(--text-muted);">
+            <li style="margin-bottom: 0.8rem;"><strong>Cariche statiche</strong> → Campo E</li>
+            <li style="margin-bottom: 0.8rem;"><strong>Correnti stazionarie</strong> → Campo B</li>
+            <li style="margin-bottom: 0.8rem;"><strong>Campo E variabile</strong> → Campo B (Ampère-Maxwell)</li>
+            <li style="margin-bottom: 0.8rem;"><strong>Campo B variabile</strong> → Campo E (Faraday)</li>
+        </ul>
+        <p class="lesson-text">
+            Se cambi il campo E nel tempo, questo genera un B. Se B cambia, genera di nuovo un E. I due si propagano insieme: è la <strong>luce</strong>!
+        </p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Visualizzatore Interattivo</h2>
+        <p class="lesson-text">
+            Esamina come le quattro leggi di Maxwell descrivono situazioni reali. Clicca su un diagramma per visualizzare il campo generato.
+        </p>
+
+        <div class="interactive-box">
+            <div class="diagram-row">
+                <div class="diagram-box">
+                    <div class="diagram-title">📍 Gauss (E)</div>
+                    <div class="diagram-text">Una carica puntiforme genera campo E radiale. Le linee escono dalla carica.</div>
+                    <div style="margin-top: 0.8rem; padding: 0.8rem; background: rgba(16,185,129,0.1); border-radius: 4px; font-size: 0.8rem; color: var(--physics-color);">
+                        E ∝ Q / r²
+                    </div>
+                </div>
+                <div class="diagram-box">
+                    <div class="diagram-title">🧲 Gauss (B)</div>
+                    <div class="diagram-text">Non esistono poli magnetici isolati. Ogni magnete ha sempre N e S insieme.</div>
+                    <div style="margin-top: 0.8rem; padding: 0.8rem; background: rgba(16,185,129,0.1); border-radius: 4px; font-size: 0.8rem; color: var(--physics-color);">
+                        ∮ B = 0 (no monopoli)
+                    </div>
+                </div>
+            </div>
+
+            <div class="diagram-row">
+                <div class="diagram-box">
+                    <div class="diagram-title">⚙️ Faraday</div>
+                    <div class="diagram-text">Un magnete che si muove vicino a una bobina genera corrente nella bobina stessa.</div>
+                    <div style="margin-top: 0.8rem; padding: 0.8rem; background: rgba(16,185,129,0.1); border-radius: 4px; font-size: 0.8rem; color: var(--physics-color);">
+                        dB/dt → ℰ = −dΦ_B/dt
+                    </div>
+                </div>
+                <div class="diagram-box">
+                    <div class="diagram-title">⚡ Ampère-Maxwell</div>
+                    <div class="diagram-text">Una corrente in un filo genera campo B circolare. Un campo E variabile fa lo stesso.</div>
+                    <div style="margin-top: 0.8rem; padding: 0.8rem; background: rgba(16,185,129,0.1); border-radius: 4px; font-size: 0.8rem; color: var(--physics-color);">
+                        I, dE/dt → B circolare
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">La Velocità della Luce</h2>
+        <p class="lesson-text">
+            Dalle equazioni di Maxwell emerge una costante fondamentale: la velocità di propagazione delle onde elettromagnetiche nel vuoto è
+        </p>
+        <div class="formula-box" style="text-align: center; font-size: 1.4rem;">
+            c = 1 / √(μ₀ε₀) ≈ 3 × 10⁸ m/s
+        </div>
+        <p class="lesson-text">
+            Maxwell calcolò questa velocità usando solo costanti fisiche note (permeabilità magnetica μ₀ e costante dielettrica ε₀), e scoprì che corrispondeva esattamente alla velocità della luce misurata da astronomi! Realizzò così che <strong>la luce è un'onda elettromagnetica</strong>.
+        </p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Conseguenze e Applicazioni</h2>
+        <div class="info-grid">
+            <div class="info-card" style="border-top-color: var(--math-color);">
+                <h4 style="color: var(--math-color);">Trasformatori</h4>
+                <p>Sfruttano la legge di Faraday: una bobina primaria con corrente AC crea un B variabile che induce corrente nella bobina secondaria.</p>
+            </div>
+            <div class="info-card" style="border-top-color: #F59E0B;">
+                <h4 style="color: #F59E0B;">Antenne</h4>
+                <p>Una carica oscillante crea un E variabile, che genera B variabile. L'onda EM risultante si propaga nello spazio a velocità c.</p>
+            </div>
+            <div class="info-card" style="border-top-color: #EF4444;">
+                <h4 style="color: #EF4444;">Universo Visibile</h4>
+                <p>Tutte le radiazioni che osserviamo (visibile, IR, UV, raggi X, radio) sono onde EM descritte perfettamente dalle equazioni di Maxwell.</p>
+            </div>
+            <div class="info-card" style="border-top-color: #A855F7;">
+                <h4 style="color: #A855F7;">Relatività Speciale</h4>
+                <p>Einstein sviluppò la teoria della relatività proprio cercare di capire come mai la velocità della luce (c) è costante in tutte le equazioni di Maxwell.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title">Quiz di Riepilogo</h2>
+        <p class="lesson-text" style="font-size: 0.95rem;">Verifica la tua comprensione delle equazioni di Maxwell.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Fisica.</p>
+</footer>
+
+<script src="maxwell.js"></script>
+<script src="../../js/main.js"></script>
+</body>
+</html>
