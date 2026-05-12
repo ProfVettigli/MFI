@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Derivate - Lezione Interattiva MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        .back-button { display: inline-flex; align-items: center; color: var(--text-muted); text-decoration: none; margin-bottom: 2rem; font-weight: 600; transition: color 0.3s, transform 0.3s; }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+        .sub-hero { padding: 4rem 0 2rem; text-align: left; }
+        .sub-hero-title { font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; margin-bottom: 1rem; }
+        .widget-box { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 2rem; margin: 2rem 0; }
+        .widget-title { color: var(--math-color); margin-bottom: 1rem; font-size: 1.2rem; font-weight: 700; }
+        canvas.graph { width: 100%; max-width: 600px; height: 360px; background: rgba(0,0,0,0.3); border-radius: 10px; display: block; margin: 1rem auto; }
+        .ctrl-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap; }
+        .ctrl-row label { min-width: 110px; color: var(--text-muted); font-family: monospace; font-size: 0.95rem; }
+        input[type=range] { flex: 1; min-width: 180px; accent-color: var(--math-color); }
+        .val-display { font-family: monospace; color: var(--math-color); min-width: 80px; font-weight: 700; }
+        .result-card { background: rgba(59,130,246,0.06); border-left: 4px solid var(--math-color); padding: 1rem 1.2rem; border-radius: 0 10px 10px 0; margin-top: 1rem; font-family: monospace; font-size: 1rem; }
+        .formula-block { background: rgba(0,0,0,0.3); border-radius: 10px; padding: 1.2rem; margin: 1rem 0; font-size: 1.05rem; border-left: 3px solid var(--math-color); }
+        .pill { display: inline-block; padding: 0.2rem 0.7rem; border-radius: 999px; background: rgba(59,130,246,0.15); color: var(--math-color); font-size: 0.8rem; font-weight: 700; margin-right: 0.4rem; }
+        .func-pick { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+        .func-pick button { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-main); padding: 0.5rem 1rem; border-radius: 8px; font-family: monospace; cursor: pointer; font-size: 0.95rem; transition: all 0.2s; }
+        .func-pick button.active { background: var(--math-color); border-color: var(--math-color); color: white; }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="studio-funzione.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Studio di Funzione
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Derivate e <span class="gradient-text">Teoremi</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+            La velocità di variazione: scopri come misurare il tasso di cambiamento e applica i grandi teoremi dell'analisi.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">La Derivata come Limite</h2>
+        <p class="lesson-text">
+            Immagina di guidare un'auto: la velocità istantanea non è determinata dalla velocità media su 1 km, ma dal tuo contachilometri <em>in questo preciso istante</em>. Come misurare questa velocità? Prendi l'intervallo di tempo sempre più piccolo e guarda il rapporto tra distanza e tempo.
+        </p>
+        <p class="lesson-text">
+            La <strong>derivata</strong> di una funzione \(f\) nel punto \(c\) è il limite del rapporto incrementale:
+        </p>
+        <div class="formula-block" style="text-align: center; font-size: 1.3rem;">
+            \(\displaystyle f'(c) = \lim_{h \to 0} \frac{f(c+h) - f(c)}{h}\)
+        </div>
+        <p class="lesson-text">
+            Questo numero \(f'(c)\) rappresenta la <strong>pendenza della tangente</strong> al grafico nel punto \(c\). Se è positivo, la funzione cresce; se negativo, decresce.
+        </p>
+
+        <div class="widget-box">
+            <h3 class="widget-title">Visualizzatore della Tangente</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">Sposta il punto sulla curva con il cursore. La retta blu è la tangente; la sua pendenza è la derivata \(f'(x)\).</p>
+            <div class="func-pick" id="deriv-func-pick">
+                <button class="active" data-fn="quad">x²</button>
+                <button data-fn="cube">x³</button>
+                <button data-fn="sin">sin(x)</button>
+                <button data-fn="exp">e^x</button>
+            </div>
+            <div class="ctrl-row">
+                <label>Punto x =</label>
+                <input type="range" id="deriv-x" min="-3" max="3" step="0.1" value="1">
+                <span class="val-display" id="deriv-x-val">1.00</span>
+            </div>
+            <canvas class="graph" id="deriv-canvas" width="600" height="360"></canvas>
+            <div class="result-card">
+                f'(x) = <span id="deriv-val-result">2.00</span> · Tangente: y = <span id="tang-eq">2x - 1</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section" style="border-left: 4px solid #F59E0B;">
+        <h2 class="lesson-title" style="color: #F59E0B;">Regole di Derivazione</h2>
+        <p class="lesson-text">
+            Calcolare la derivata dal limite ogni volta sarebbe noioso. I matematici hanno scoperto scorciatoie —le <strong>regole di derivazione</strong>— che ti permettono di calcolare quasi istantaneamente la derivata di una funzione:
+        </p>
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin: 1.5rem 0;">
+            <div class="card" style="padding: 1.5rem;">
+                <h4 style="color: #F59E0B;">Potenza</h4>
+                <p style="font-family: monospace; font-size: 1rem; margin: 1rem 0; color: var(--math-color);">\((x^n)' = n x^{n-1}\)</p>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Esempio: \((x^3)' = 3x^2\)</p>
+            </div>
+            <div class="card" style="padding: 1.5rem;">
+                <h4 style="color: #F59E0B;">Somma</h4>
+                <p style="font-family: monospace; font-size: 1rem; margin: 1rem 0; color: var(--math-color);">\((f + g)' = f' + g'\)</p>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Derivare termine per termine</p>
+            </div>
+            <div class="card" style="padding: 1.5rem;">
+                <h4 style="color: #F59E0B;">Prodotto</h4>
+                <p style="font-family: monospace; font-size: 1rem; margin: 1rem 0; color: var(--math-color);">\((f \cdot g)' = f' g + f g'\)</p>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Regola di Leibniz</p>
+            </div>
+            <div class="card" style="padding: 1.5rem;">
+                <h4 style="color: #F59E0B;">Catena</h4>
+                <p style="font-family: monospace; font-size: 1rem; margin: 1rem 0; color: var(--math-color);">\((f \circ g)' = f'(g) \cdot g'\)</p>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Composizione di funzioni</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section" style="border-left: 4px solid var(--physics-color);">
+        <h2 class="lesson-title" style="color: var(--physics-color);">Teorema di Rolle e Lagrange</h2>
+        <p class="lesson-text">
+            Nel 1652, Michel Rolle scoprì un fatto geniale: <strong>se una funzione continua parte e arriva alla stessa altezza, deve avere almeno un punto dove la tangente è orizzontale</strong> (cioè dove la derivata vale 0).
+        </p>
+        <div class="formula-block" style="text-align: center; font-size: 1.2rem;">
+            <strong>Teorema di Rolle:</strong> Se \(f\) è continua su \([a,b]\) e \(f(a) = f(b)\), allora \(\exists c \in (a,b)\) con \(f'(c) = 0\).
+        </div>
+        <p class="lesson-text" style="margin-top: 1.5rem;">
+            Joseph-Louis Lagrange generalizzò questo nel 1797: <strong>il tasso di variazione medio è raggiunto da qualche punto interno</strong>.
+        </p>
+        <div class="formula-block" style="text-align: center; font-size: 1.2rem;">
+            <strong>Teorema del Valor Medio:</strong> \(\displaystyle \exists c \in (a,b) \quad f'(c) = \frac{f(b) - f(a)}{b - a}\)
+        </div>
+
+        <div class="widget-box">
+            <h3 class="widget-title">Explorer di Rolle e Lagrange</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">Scegli gli estremi \(a\) e \(b\). Il grafico mostra il punto \(c\) dove la derivata raggiunge il valore medio.</p>
+            <div class="ctrl-row">
+                <label>a =</label>
+                <input type="range" id="rolle-a" min="-2" max="0" step="0.1" value="-2">
+                <span class="val-display" id="rolle-a-val">-2.0</span>
+            </div>
+            <div class="ctrl-row">
+                <label>b =</label>
+                <input type="range" id="rolle-b" min="1" max="3" step="0.1" value="2">
+                <span class="val-display" id="rolle-b-val">2.0</span>
+            </div>
+            <canvas class="graph" id="rolle-canvas" width="600" height="360"></canvas>
+            <div class="result-card" id="rolle-result">Pendenza media = ... · Punto critico c = ...</div>
+        </div>
+    </section>
+
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title">Quiz di Riepilogo</h2>
+        <p class="lesson-text" style="font-size: 0.95rem;">Testa la tua comprensione di derivate e teoremi fondamentali.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+    </section>
+
+</main>
+
+<footer><p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Matematica.</p></footer>
+
+<script src="derivate-teoremi.js"></script>
+<script src="../../js/main.js"></script>
+</body>
+</html>
