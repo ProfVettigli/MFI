@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teoria dei Giochi - MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- MathJax -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s, transform 0.3s;
+        }
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+        .back-icon {
+            margin-right: 0.5rem;
+        }
+
+        .payoff-matrix {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+            background: rgba(16, 185, 129, 0.05);
+            border: 2px solid rgba(16, 185, 129, 0.5);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .payoff-matrix th,
+        .payoff-matrix td {
+            padding: 1rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .payoff-matrix th {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--math-color);
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        .payoff-cell {
+            font-family: 'Fira Code', monospace;
+            position: relative;
+            padding: 1.5rem 1rem !important;
+        }
+
+        .payoff-p1 {
+            color: #3b82f6;
+            font-weight: 700;
+        }
+
+        .payoff-p2 {
+            color: #ef4444;
+            font-weight: 700;
+        }
+
+        .nash-highlight {
+            background: rgba(16, 185, 129, 0.3) !important;
+            border: 2px solid var(--math-color) !important;
+        }
+
+        .game-section {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .game-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .formula-section {
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 4px solid var(--math-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .formula-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--math-color);
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        .insight-box {
+            background: rgba(245, 158, 11, 0.1);
+            border: 2px solid rgba(245, 158, 11, 0.5);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .insight-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #f59e0b;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .concept-card {
+            background: rgba(16, 185, 129, 0.1);
+            border: 2px solid rgba(16, 185, 129, 0.5);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .concept-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 0.8rem;
+        }
+
+        .concept-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .slider-section {
+            background: rgba(16, 185, 129, 0.1);
+            border: 2px solid rgba(16, 185, 129, 0.5);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .slider-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: var(--math-color);
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            background: var(--math-color);
+            cursor: pointer;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            background: var(--math-color);
+            cursor: pointer;
+            border-radius: 50%;
+            border: none;
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+        }
+
+        .value-display {
+            font-family: 'Fira Code', monospace;
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--math-color);
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="hero" style="background: linear-gradient(135deg, #059669, #10b981);">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <a href="economia-matematica.html" class="back-button" style="color: white; border: none; background: none; margin-bottom: 0;">
+                    <span class="back-icon">&larr;</span> Torna a Economia
+                </a>
+            </div>
+            <h1 class="hero-title">Teoria dei Giochi</h1>
+            <p class="hero-subtitle">Dilemma del prigioniero, equilibrio di Nash, giochi 2×2: interazioni strategiche e conflitto.</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <section style="max-width: 1000px; margin: 0 auto;">
+            <h2>Fondamenti della Teoria dei Giochi</h2>
+            <p>La teoria dei giochi analizza situazioni in cui il risultato finale dipende dalle scelte di più decisori (giocatori). Cada giocatore massimizza la propria utilità considerando le scelte altrui.</p>
+
+            <div class="concept-grid">
+                <div class="concept-card">
+                    <div class="concept-title">Giocatore</div>
+                    <div class="concept-desc">
+                        Un agente che prende decisioni. Può essere persona, azienda, stato. Ha una funzione di utilità.
+                    </div>
+                </div>
+
+                <div class="concept-card">
+                    <div class="concept-title">Strategia</div>
+                    <div class="concept-desc">
+                        Un piano d'azione completo. Specificamente cosa fare per ogni situazione possibile nel gioco.
+                    </div>
+                </div>
+
+                <div class="concept-card">
+                    <div class="concept-title">Payoff</div>
+                    <div class="concept-desc">
+                        Il risultato/premio di ogni giocatore per una data combinazione di strategie. Misurato in utilità.
+                    </div>
+                </div>
+
+                <div class="concept-card">
+                    <div class="concept-title">Equilibrio di Nash</div>
+                    <div class="concept-desc">
+                        Combinazione di strategie dove nessuno può migliorare cambiando strategia unilateralmente.
+                    </div>
+                </div>
+            </div>
+
+            <h2>Il Dilemma del Prigioniero</h2>
+
+            <div class="game-section">
+                <div class="game-title">Scenario</div>
+                <p style="color: var(--text-muted); line-height: 1.8;">
+                    Due prigionieri sospettati di un crimine. Interrogati separatamente. Scelta: Confessare o Tacere. Se confessi e l'altro tace: sei libero, lui prende 5 anni. Se entrambi confessate: 3 anni ciascuno. Se entrambi taciuti: 1 anno ciascuno.
+                </p>
+
+                <div style="overflow-x: auto; margin-top: 1.5rem;">
+                    <table class="payoff-matrix">
+                        <thead>
+                            <tr>
+                                <th style="text-align: left;">Giocatore 1 \ Giocatore 2</th>
+                                <th>Confessa</th>
+                                <th>Tace</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th style="text-align: left;">Confessa</th>
+                                <td class="payoff-cell nash-highlight">
+                                    <span class="payoff-p1">-3</span>, <span class="payoff-p2">-3</span>
+                                </td>
+                                <td class="payoff-cell">
+                                    <span class="payoff-p1">0</span>, <span class="payoff-p2">-5</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th style="text-align: left;">Tace</th>
+                                <td class="payoff-cell">
+                                    <span class="payoff-p1">-5</span>, <span class="payoff-p2">0</span>
+                                </td>
+                                <td class="payoff-cell">
+                                    <span class="payoff-p1">-1</span>, <span class="payoff-p2">-1</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="insight-box">
+                    <div class="insight-title">Il Paradosso</div>
+                    <div style="color: var(--text-muted); line-height: 1.8;">
+                        L'<strong>equilibrio di Nash è (Confessa, Confessa)</strong> con payoff (-3, -3). Ma l'esito <strong>Pareto-ottimale è (Tace, Tace)</strong> con payoff (-1, -1). Nessun giocatore vuole un accordo non vincolante perché ha incentivo a tradire!
+                    </div>
+                </div>
+            </div>
+
+            <h2>Concetto di Equilibrio di Nash</h2>
+
+            <div class="formula-section">
+                <div class="formula-title">Definizione Formale</div>
+                <p style="color: var(--text-muted); margin: 1rem 0; line-height: 1.8;">
+                    Una combinazione di strategie <span style="font-family: 'Fira Code';">(s₁*, s₂*, ..., sₙ*)</span> è un equilibrio di Nash se per ogni giocatore i:
+                </p>
+                <div style="overflow-x: auto;">
+                    $$u_i(s_i^*, s_{-i}^*) \geq u_i(s_i, s_{-i}^*) \quad \forall s_i$$
+                </div>
+                <p style="margin-top: 1rem; color: var(--text-muted);">Nessun giocatore può aumentare il proprio payoff cambiando stratia unilateralmente, dato che gli altri giocano il loro equilibrio.</p>
+            </div>
+
+            <h2>Giochi 2×2 Classici</h2>
+
+            <div class="game-section">
+                <div class="game-title">1. Caccia al Cervo (Coordination Game)</div>
+                <p style="color: var(--text-muted); margin-bottom: 1rem;">Due cacciatori: insieme cacciano cervo (payoff 4 per entrambi). Separati, cacciare lepre (payoff 3 garantito). Chi caccerà il cervo?</p>
+                <div style="overflow-x: auto;">
+                    <table class="payoff-matrix">
+                        <thead>
+                            <tr>
+                                <th style="text-align: left;">Cacciatore 1</th>
+                                <th>Cervo</th>
+                                <th>Lepre</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th style="text-align: left;">Cervo</th>
+                                <td class="payoff-cell nash-highlight"><span class="payoff-p1">4</span>, <span class="payoff-p2">4</span></td>
+                                <td class="payoff-cell"><span class="payoff-p1">0</span>, <span class="payoff-p2">3</span></td>
+                            </tr>
+                            <tr>
+                                <th style="text-align: left;">Lepre</th>
+                                <td class="payoff-cell"><span class="payoff-p1">3</span>, <span class="payoff-p2">0</span></td>
+                                <td class="payoff-cell nash-highlight"><span class="payoff-p1">3</span>, <span class="payoff-p2">3</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p style="margin-top: 1rem; color: var(--text-muted);"><strong>Nash equilibria:</strong> (Cervo, Cervo) e (Lepre, Lepre). Coordinamento difficile!</p>
+            </div>
+
+            <div class="game-section">
+                <div class="game-title">2. Battaglia dei Sessi</div>
+                <p style="color: var(--text-muted); margin-bottom: 1rem;">Coppia: lui preferisce Opera, lei preferisce Calcio. Entrambi preferiscono stare insieme. Conflitto di gusti!</p>
+                <div style="overflow-x: auto;">
+                    <table class="payoff-matrix">
+                        <thead>
+                            <tr>
+                                <th style="text-align: left;">Donna</th>
+                                <th>Opera</th>
+                                <th>Calcio</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th style="text-align: left;">Opera</th>
+                                <td class="payoff-cell nash-highlight"><span class="payoff-p1">2</span>, <span class="payoff-p2">1</span></td>
+                                <td class="payoff-cell"><span class="payoff-p1">0</span>, <span class="payoff-p2">0</span></td>
+                            </tr>
+                            <tr>
+                                <th style="text-align: left;">Calcio</th>
+                                <td class="payoff-cell"><span class="payoff-p1">0</span>, <span class="payoff-p2">0</span></td>
+                                <td class="payoff-cell nash-highlight"><span class="payoff-p1">1</span>, <span class="payoff-p2">2</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p style="margin-top: 1rem; color: var(--text-muted);"><strong>Nash equilibria:</strong> (Opera, Opera) e (Calcio, Calcio). Plus: equilibrio misto con probabilità.</p>
+            </div>
+
+            <h2>Strategie Miste</h2>
+
+            <div class="formula-section">
+                <div class="formula-title">Equilibrio Misto (esempio)</div>
+                <p style="color: var(--text-muted); margin: 1rem 0; line-height: 1.8;">
+                    Quando non esiste equilibrio "puro" (giocatori che scelgono una sola azione), i giocatori giocano strategie probabilistiche per indifferenza.
+                </p>
+                <div style="overflow-x: auto;">
+                    $$\sigma_i = (p, 1-p) \quad \text{dove } p \in [0, 1]$$
+                </div>
+                <p style="margin-top: 1rem; color: var(--text-muted);">Il giocatore mescola le azioni con probabilità p e 1-p per rendere l'avversario indifferente.</p>
+            </div>
+
+            <div class="slider-section">
+                <div class="slider-label">Varia il Payoff di una Cella (Dilemma Prigioniero modificato)</div>
+                <input type="range" id="payoff-slider" min="-5" max="0" value="-3" step="0.1">
+                <div class="value-display">Payoff (Confessa, Confessa): <span id="payoff-display">-3</span></div>
+                <p style="color: var(--text-muted); margin-top: 1rem; font-size: 0.9rem;">
+                    Osserva come cambia la struttura del gioco quando il payoff mutuale cambia. A che punto l'equilibrio diventa cooperativo?
+                </p>
+            </div>
+
+            <h2>Applicazioni Pratiche</h2>
+            <ul style="line-height: 1.8; margin: 1.5rem 0; color: var(--text-muted);">
+                <li><strong>Cartelli e Collusione:</strong> Oligopolisti tentano di cooperare (Tace) ma hanno incentivo a defezionare (Confessa)</li>
+                <li><strong>Corsa agli Armamenti:</strong> Nazioni cooperano ma temono il tradimento (dilemma prigioniero)</li>
+                <li><strong>Aste:</strong> Strategie in base alla propria valutazione e al comportamento atteso degli altri</li>
+                <li><strong>Mercati Finanziari:</strong> Run bancari, bolle speculative: equilibri multipli, coordinamento cruciale</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Matematica.</p>
+    </footer>
+
+    <script src="teoria-giochi.js"></script>
+    <script src="../../js/main.js"></script>
+</body>
+</html>

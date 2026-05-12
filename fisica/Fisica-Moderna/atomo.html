@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Struttura dell'Atomo - Lezione Interattiva MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        .back-button { display: inline-flex; align-items: center; color: var(--text-muted); text-decoration: none; margin-bottom: 2rem; font-weight: 600; transition: color 0.3s ease, transform 0.3s ease; }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+        .sub-hero { padding: 4rem 0 2rem; text-align: left; }
+        .sub-hero-title { font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; margin-bottom: 1rem; }
+        .lesson-title { color: var(--physics-color) !important; }
+
+        .interactive-box {
+            background: rgba(244,113,33,0.04);
+            border: 1px solid rgba(244,113,33,0.18);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .slider-row { display: flex; align-items: center; gap: 1rem; margin: 1rem 0; flex-wrap: wrap; }
+        .slider-row label { min-width: 100px; font-weight: 600; color: var(--text-muted); }
+        .slider-row input[type=range] { flex: 1; min-width: 150px; accent-color: var(--physics-color); }
+        .slider-row .value { font-family: monospace; font-weight: 800; color: var(--physics-color); min-width: 80px; }
+
+        canvas.diagram { width: 100%; max-width: 450px; height: 380px; background: rgba(0,0,0,0.35); border-radius: 12px; display: block; margin: 0 auto; }
+
+        .card { background: rgba(0,0,0,0.2); border-radius: 12px; padding: 1.5rem; margin: 1rem 0; }
+        .card strong { color: var(--physics-color); }
+
+        .formula { font-family: 'Cambria Math', Cambria, serif; font-size: 1.3rem; text-align: center; padding: 1rem; background: rgba(0,0,0,0.25); border-radius: 10px; margin: 1rem 0; }
+
+        .quantum-numbers { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+        .number-box { background: rgba(0,0,0,0.3); border-left: 4px solid var(--physics-color); padding: 1rem; border-radius: 0 8px 8px 0; }
+        .number-box strong { font-size: 1.2rem; color: var(--physics-color); display: block; margin-bottom: 0.3rem; }
+
+        .timeline { position: relative; padding-left: 2.5rem; margin: 2rem 0; }
+        .timeline::before { content: ''; position: absolute; left: 0.6rem; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--physics-color), rgba(244,113,33,0.1)); }
+        .timeline-item { position: relative; margin-bottom: 2rem; }
+        .timeline-item::before { content: ''; position: absolute; left: -1.95rem; top: 0.4rem; width: 10px; height: 10px; border-radius: 50%; background: var(--physics-color); box-shadow: 0 0 8px rgba(244,113,33,0.5); }
+        .timeline-year { font-size: 0.8rem; font-weight: 700; color: var(--physics-color); letter-spacing: 1px; margin-bottom: 0.3rem; }
+        .timeline-text { font-size: 0.97rem; color: var(--text-muted); line-height: 1.6; }
+        .timeline-text strong { color: var(--text-main); }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="fisica-moderna.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Fisica Moderna
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Struttura dell'<span class="gradient-text">Atomo</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+            Dai modelli planetari di Bohr agli orbitali quantistici: scopri come gli elettroni abitano lo spazio atomico.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">L'Evoluzione dei Modelli Atomici</h2>
+        <p class="lesson-text">
+            La nostra comprensione dell'atomo ha subito trasformazioni radicali nel corso di un secolo. Ogni nuovo modello ha smantellato la certezza precedente.
+        </p>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-year">1903</div>
+                <p class="timeline-text"><strong>Thomson</strong>: Modello "budino alle uvette" — elettroni dispersi in una sfera di carica positiva. Completamente sbagliato.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1909</div>
+                <p class="timeline-text"><strong>Rutherford & Geiger</strong> eseguono l'esperimento della lamina d'oro: scoperta del nucleo atomico compatto. La maggior parte dello spazio è vuoto!</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1913</div>
+                <p class="timeline-text"><strong>Bohr</strong> propone il modello planetario: orbite circolari quantizzate. Spiega lo spettro dell'idrogeno, ma fallisce per atomi complessi.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1926</div>
+                <p class="timeline-text"><strong>Schrödinger</strong> sviluppa la meccanica ondulatoria. Gli orbitali non sono orbite, ma distribuzioni di probabilità — "nuvole di carica".</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Numeri Quantici e Orbitali</h2>
+        <p class="lesson-text">
+            La soluzione dell'equazione di Schrödinger per l'atomo di idrogeno fornisce funzioni d'onda caratterizzate da <strong>tre numeri quantici</strong>:
+        </p>
+
+        <div class="quantum-numbers">
+            <div class="number-box">
+                <strong>n (principale)</strong>
+                1, 2, 3, ... ∞<br>
+                Energia e grandezza dell'orbitale
+            </div>
+            <div class="number-box">
+                <strong>l (angolare)</strong>
+                0, 1, 2, ... n-1<br>
+                Forma: s, p, d, f
+            </div>
+            <div class="number-box">
+                <strong>m_l (magnetico)</strong>
+                −l, ..., 0, ..., +l<br>
+                Orientazione nello spazio
+            </div>
+            <div class="number-box">
+                <strong>m_s (spin)</strong>
+                ±½<br>
+                Rotazione intrinseca
+            </div>
+        </div>
+
+        <p class="lesson-text">
+            Ogni combinazione di numeri quantici definisce un <strong>orbitale atomico</strong> — non una traiettoria, ma una regione di spazio dove è probabile trovare l'elettrone. La forma dipende da l: gli orbitali s sono sferici, p sono lobati, d e f sono ancora più complessi.
+        </p>
+
+        <div class="interactive-box">
+            <h3 style="color: var(--physics-color); margin-bottom: 1rem;">Visualizzatore di Orbitali Atomici</h3>
+            <p style="font-size: 0.95rem; color: var(--text-muted);">Esplora come variano gli orbitali con i numeri quantici.</p>
+            <div class="slider-row">
+                <label for="orbital-n">Livello n:</label>
+                <input type="range" id="orbital-n" min="1" max="4" step="1" value="2">
+                <span class="value" id="orbital-n-val">n=2</span>
+            </div>
+            <div class="slider-row">
+                <label for="orbital-l">Momento l:</label>
+                <input type="range" id="orbital-l" min="0" max="2" step="1" value="0">
+                <span class="value" id="orbital-l-val">l=0 (s)</span>
+            </div>
+            <canvas id="orbital-canvas" class="diagram"></canvas>
+            <p style="font-size: 0.88rem; color: var(--text-muted); margin-top: 1rem; text-align: center;">Densità di probabilità radiale: più scuro = probabilità maggiore di trovare l'elettrone.</p>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Principio di Esclusione e Tavola Periodica</h2>
+        <p class="lesson-text">
+            Il grande mistero: perché gli elementi si ripetono in un pattern? Perché il cloro (17 elettroni) è simile al fluoro (9 elettroni)? La risposta è il <strong>Principio di Esclusione di Pauli (1925)</strong>:
+        </p>
+        <div class="formula">Due elettroni non possono occupare lo stesso stato quantistico</div>
+        <p class="lesson-text">
+            Questo principio semplice ha conseguenze enormi. Forza gli elettroni a riempire gli orbitali in ordine (aufbau). Gli strati esterni (che determinano la reattività chimica) si ripetono ogni 8 elementi (una volta pieni gli orbitali p). Questa è l'origine della <strong>tavola periodica</strong>!
+        </p>
+
+        <div style="background: rgba(244,113,33,0.06); border-left: 4px solid var(--physics-color); padding: 1.2rem; border-radius: 0 10px 10px 0; margin: 1.5rem 0;">
+            <p class="lesson-text" style="margin-bottom: 0; font-size: 1rem;">
+                <strong>Lo Spin:</strong> Ogni elettrone ha uno "spin" intrinseco: ±½ ℏ. Non è una rotazione reale, ma una proprietà quantistica pura. Lo spin magnetico crea le righe spettrali fini osservate.
+            </p>
+        </div>
+    </section>
+
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title">Quiz di Riepilogo</h2>
+        <p class="lesson-text" style="font-size: 0.95rem;">Metti alla prova la tua comprensione della struttura atomica.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Fisica.</p>
+</footer>
+
+<script src="atomo.js"></script>
+<script src="../../js/main.js"></script>
+</body>
+</html>

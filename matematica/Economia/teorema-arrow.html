@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teorema di Arrow - MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- MathJax -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s, transform 0.3s;
+        }
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+        .back-icon {
+            margin-right: 0.5rem;
+        }
+
+        .theorem-box {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(239, 68, 68, 0.05));
+            border: 2px solid rgba(239, 68, 68, 0.5);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .theorem-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #ef4444;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        .theorem-content {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+
+        .conditions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .condition-card {
+            background: rgba(16, 185, 129, 0.1);
+            border: 2px solid rgba(16, 185, 129, 0.5);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .condition-number {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--math-color);
+            letter-spacing: 1px;
+            margin-bottom: 0.8rem;
+        }
+
+        .condition-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 0.8rem;
+        }
+
+        .condition-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .formula-section {
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 4px solid var(--math-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .formula-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--math-color);
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        .example-box {
+            background: rgba(245, 158, 11, 0.1);
+            border: 2px solid rgba(245, 158, 11, 0.5);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .example-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #f59e0b;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        .vote-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+        }
+
+        .vote-table th,
+        .vote-table td {
+            padding: 0.8rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .vote-table th {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--math-color);
+            font-weight: 700;
+        }
+
+        .paradox-alert {
+            background: rgba(239, 68, 68, 0.1);
+            border: 2px solid rgba(239, 68, 68, 0.5);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            color: #fca5a5;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <header class="hero" style="background: linear-gradient(135deg, #059669, #10b981);">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <a href="economia-matematica.html" class="back-button" style="color: white; border: none; background: none; margin-bottom: 0;">
+                    <span class="back-icon">&larr;</span> Torna a Economia
+                </a>
+            </div>
+            <h1 class="hero-title">Teorema di Arrow</h1>
+            <p class="hero-subtitle">Il paradosso del voto: perché è matematicamente impossibile creare un sistema perfetto.</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <section style="max-width: 1000px; margin: 0 auto;">
+            <div class="theorem-box">
+                <div class="theorem-title">Il Teorema dell'Impossibilità di Arrow</div>
+                <div class="theorem-content">
+                    Kenneth Arrow (1951) provò che <strong>non esiste alcun sistema di voto</strong> che soddisfi contemporaneamente quattro condizioni apparentemente ragionevoli. Questo è uno dei risultati più profundi dell'economia del benessere.
+                </div>
+            </div>
+
+            <h2>Le Quattro Condizioni Impossibili</h2>
+
+            <div class="conditions-grid">
+                <div class="condition-card">
+                    <div class="condition-number">1. Dominio Universale</div>
+                    <div class="condition-title">Tutti i Gusti Contano</div>
+                    <div class="condition-desc">
+                        La funzione di scelta sociale deve accettare qualsiasi preferenza individuale: nessun gusto vietato.
+                    </div>
+                </div>
+
+                <div class="condition-card">
+                    <div class="condition-number">2. Unanimità (Pareto)</div>
+                    <div class="condition-title">Se Tutti Concordano...</div>
+                    <div class="condition-desc">
+                        Se tutti i cittadini preferiscono A a B, la società deve preferire A a B.
+                    </div>
+                </div>
+
+                <div class="condition-card">
+                    <div class="condition-number">3. Indipendenza</div>
+                    <div class="condition-title">Solo A vs B Conta</div>
+                    <div class="condition-desc">
+                        La preferenza collettiva tra A e B dipende solo dalle preferenze individuali tra A e B, non da C.
+                    </div>
+                </div>
+
+                <div class="condition-card">
+                    <div class="condition-number">4. Non Dittatura</div>
+                    <div class="condition-title">Nessun Despota</div>
+                    <div class="condition-desc">
+                        Non esiste un cittadino la cui preferenza determina sempre la scelta sociale.
+                    </div>
+                </div>
+            </div>
+
+            <div class="paradox-alert">
+                ⚠️ Teorema di Arrow: TUTTE e QUATTRO le condizioni NON POSSONO essere soddisfatte simultaneamente.
+            </div>
+
+            <h2>Un Esempio: Il Paradosso di Condorcet</h2>
+
+            <div class="example-box">
+                <div class="example-title">Tre Cittadini, Tre Scelte (Pizza, Gelato, Insalata)</div>
+
+                <div style="margin: 1.5rem 0; font-weight: 600; color: var(--text-main);">Preferenze Individuali:</div>
+                <table class="vote-table">
+                    <thead>
+                        <tr>
+                            <th>Alice</th>
+                            <th>Bob</th>
+                            <th>Carla</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1. Pizza</td>
+                            <td>1. Gelato</td>
+                            <td>1. Insalata</td>
+                        </tr>
+                        <tr>
+                            <td>2. Gelato</td>
+                            <td>2. Insalata</td>
+                            <td>2. Pizza</td>
+                        </tr>
+                        <tr>
+                            <td>3. Insalata</td>
+                            <td>3. Pizza</td>
+                            <td>3. Gelato</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div style="margin: 1.5rem 0; font-weight: 600; color: var(--text-main);">Risultato di Voto per Paia (Maggioranza):</div>
+                <ul style="line-height: 1.8; color: var(--text-muted);">
+                    <li><strong>Pizza vs Gelato:</strong> Pizza vince (Alice, Carla) 2-1</li>
+                    <li><strong>Gelato vs Insalata:</strong> Gelato vince (Alice, Bob) 2-1</li>
+                    <li><strong>Insalata vs Pizza:</strong> Insalata vince (Bob, Carla) 2-1</li>
+                </ul>
+
+                <div class="paradox-alert" style="margin-top: 1.5rem;">
+                    CICLO IMPOSSIBILE: Pizza > Gelato > Insalata > Pizza 🔄 Nessuna scelta "migliore" per la società!
+                </div>
+            </div>
+
+            <h2>Implicazioni Pratiche</h2>
+
+            <div class="conditions-grid">
+                <div class="condition-card">
+                    <div class="condition-title">Democrazia Maggioritaria</div>
+                    <div class="condition-desc">
+                        Voti semplici a maggioranza possono creare cicli e risultati instabili (Arrow dimostra questo matematicamente).
+                    </div>
+                </div>
+
+                <div class="condition-card">
+                    <div class="condition-title">Elezioni Multicroisa</div>
+                    <div class="condition-desc">
+                        Non esiste un metodo perfetto. Plurality, Borda, runoff: tutti violano qualche condizione razionale.
+                    </div>
+                </div>
+
+                <div class="condition-card">
+                    <div class="condition-title">Aggregazione Preferenze</div>
+                    <div class="condition-desc">
+                        In aziende, comitati, governi: aggregare preferenze è intrinsecamente difficile.
+                    </div>
+                </div>
+
+                <div class="condition-card">
+                    <div class="condition-title">Scelta Costituzionale</div>
+                    <div class="condition-desc">
+                        Le regole di voto devono essere scelte ex-ante con consapevolezza dei loro limiti.
+                    </div>
+                </div>
+            </div>
+
+            <h2>La Dimostrazione (Intuizione)</h2>
+
+            <div class="formula-section">
+                <div class="formula-title">Logica della Prova</div>
+                <ol style="color: var(--text-muted); line-height: 2;">
+                    <li><strong>Ipotesi:</strong> Funzione f aggreghi preferenze individuali in preferenza collettiva</li>
+                    <li><strong>Per l'unanimità:</strong> se tutti preferiscono A, la società deve preferire A</li>
+                    <li><strong>Per l'indipendenza:</strong> scambiare solo A e B non cambia la relazione A-B collettiva</li>
+                    <li><strong>Conseguenza:</strong> Esiste un insieme "decisivo" che determina il risultato (Arrow, Lemma)</li>
+                    <li><strong>Iterazione:</strong> Questo insieme si restringe a un singolo individuo (il dittatore)</li>
+                    <li><strong>Contraddizione:</strong> Un dittatore viola il requisito di non dittatura</li>
+                </ol>
+            </div>
+
+            <h2>Vie d'Uscita</h2>
+            <ul style="line-height: 1.8; margin: 1.5rem 0; color: var(--text-muted);">
+                <li><strong>Rilassare il dominio:</strong> Limitare i tipi di preferenze ammesse (es. single-peaked)</li>
+                <li><strong>Metriche cardinali:</strong> Usare utilità numeriche, non solo ranking (es. media ponderata)</li>
+                <li><strong>Accettare l'impotenza:</strong> Riconoscere che una "migliore" scelta collettiva non esiste</li>
+                <li><strong>Istituzioni:</strong> Delegare a esperti, comitati deliberativi, rappresentanza strutturata</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Matematica.</p>
+    </footer>
+
+    <script src="../../js/main.js"></script>
+</body>
+</html>

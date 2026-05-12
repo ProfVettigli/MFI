@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equazioni Goniometriche - MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- MathJax -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s, transform 0.3s;
+        }
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+        .back-icon {
+            margin-right: 0.5rem;
+        }
+
+        .eq-gradient {
+            background: linear-gradient(135deg, #7c3aed, #a78bfa);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .canvas-container {
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        canvas {
+            width: 100%;
+            height: 400px;
+            display: block;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+        }
+
+        .controls-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .control-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .control-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            background: var(--math-color);
+            cursor: pointer;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(124, 58, 237, 0.5);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            background: var(--math-color);
+            cursor: pointer;
+            border-radius: 50%;
+            border: none;
+            box-shadow: 0 0 10px rgba(124, 58, 237, 0.5);
+        }
+
+        .value-display {
+            font-family: 'Fira Code', monospace;
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--math-color);
+            margin-top: 0.8rem;
+        }
+
+        .solver-section {
+            background: rgba(124, 58, 237, 0.1);
+            border: 2px solid rgba(124, 58, 237, 0.5);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .solver-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--math-color);
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .solutions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .solution-badge {
+            background: rgba(124, 58, 237, 0.2);
+            border: 1px solid var(--math-color);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .solution-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .solution-value {
+            font-family: 'Fira Code', monospace;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--math-color);
+        }
+
+        .formula-section {
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 4px solid var(--math-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .formula-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--math-color);
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="hero" style="background: linear-gradient(135deg, #7c3aed, #a78bfa);">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <a href="funzioni.html" class="back-button" style="color: white; border: none; background: none; margin-bottom: 0;">
+                    <span class="back-icon">&larr;</span> Torna a Funzioni
+                </a>
+            </div>
+            <h1 class="hero-title">Equazioni Goniometriche</h1>
+            <p class="hero-subtitle">Risoluzione di sin(x)=k, cos(x)=k e disequazioni: visualizzazione su cerchio unitario.</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <section style="max-width: 1000px; margin: 0 auto;">
+            <h2>Risolutore Visuale</h2>
+            <p>Modifica il valore k per risolvere equazioni goniometriche. Le soluzioni sono evidenziate sul cerchio unitario.</p>
+
+            <div class="controls-grid">
+                <div class="control-box">
+                    <div class="control-label">Valore di k per sin(x) = k</div>
+                    <input type="range" id="sin-slider" min="-1" max="1" value="0.5" step="0.05">
+                    <div class="value-display" id="sin-value">sin(x) = 0.50</div>
+                </div>
+                <div class="control-box">
+                    <div class="control-label">Valore di k per cos(x) = k</div>
+                    <input type="range" id="cos-slider" min="-1" max="1" value="0.5" step="0.05">
+                    <div class="value-display" id="cos-value">cos(x) = 0.50</div>
+                </div>
+            </div>
+
+            <div class="canvas-container">
+                <canvas id="unit-circle-canvas"></canvas>
+            </div>
+
+            <div class="solver-section">
+                <div class="solver-title">Soluzioni per sin(x) = k [0, 2π)</div>
+                <div class="solutions-grid" id="sin-solutions">
+                    <div class="solution-badge">
+                        <div class="solution-label">α</div>
+                        <div class="solution-value" id="sin-alpha">0.52 rad</div>
+                    </div>
+                    <div class="solution-badge">
+                        <div class="solution-label">π - α</div>
+                        <div class="solution-value" id="sin-beta">2.62 rad</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="solver-section">
+                <div class="solver-title">Soluzioni per cos(x) = k [0, 2π)</div>
+                <div class="solutions-grid" id="cos-solutions">
+                    <div class="solution-badge">
+                        <div class="solution-label">α</div>
+                        <div class="solution-value" id="cos-alpha">1.05 rad</div>
+                    </div>
+                    <div class="solution-badge">
+                        <div class="solution-label">2π - α</div>
+                        <div class="solution-value" id="cos-beta">5.23 rad</div>
+                    </div>
+                </div>
+            </div>
+
+            <h2>Formule di Risoluzione</h2>
+
+            <div class="formula-section">
+                <div class="formula-title">Equazioni Elementari</div>
+                <div style="overflow-x: auto;">
+                    $$\sin x = k \Rightarrow x = \arcsin(k) + 2\pi n, \quad x = \pi - \arcsin(k) + 2\pi n$$
+                </div>
+                <div style="overflow-x: auto; margin-top: 0.8rem;">
+                    $$\cos x = k \Rightarrow x = \pm\arccos(k) + 2\pi n$$
+                </div>
+                <div style="overflow-x: auto; margin-top: 0.8rem;">
+                    $$\tan x = k \Rightarrow x = \arctan(k) + \pi n$$
+                </div>
+            </div>
+
+            <div class="formula-section">
+                <div class="formula-title">Forma Generale</div>
+                <p style="margin-bottom: 1rem; color: var(--text-muted);">Per ogni soluzione principale α, la forma generale include tutti gli angoli coterminali:</p>
+                <div style="overflow-x: auto;">
+                    $$x = \alpha + 2\pi n, \quad n \in \mathbb{Z}$$
+                </div>
+            </div>
+
+            <h2>Disequazioni Goniometriche</h2>
+            <p>Le disequazioni si risolvono usando il cerchio unitario: trova gli archi dove la funzione soddisfa la condizione.</p>
+            <ul style="line-height: 1.8; margin: 1.5rem 0; color: var(--text-muted);">
+                <li><strong>sin(x) > k:</strong> archi dove il seno è sopra il valore k</li>
+                <li><strong>cos(x) < k:</strong> archi dove il coseno è a sinistra del valore k</li>
+                <li><strong>tan(x) ≥ k:</strong> intervalli dove la tangente supera il valore k (escludendo asintoti)</li>
+            </ul>
+
+            <div class="formula-section">
+                <div class="formula-title">Metodo di Risoluzione</div>
+                <ol style="color: var(--text-muted); line-height: 2;">
+                    <li>Disegna il cerchio unitario</li>
+                    <li>Traccia la retta y = k per sin(x) o x = k per cos(x)</li>
+                    <li>Identifica i punti di intersezione (soluzioni dell'equazione associata)</li>
+                    <li>Seleziona gli archi che soddisfano la disuguaglianza</li>
+                    <li>Scrivi la soluzione in forma di intervalli</li>
+                </ol>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Matematica.</p>
+    </footer>
+
+    <script src="equazioni-goniometriche.js"></script>
+    <script src="../../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noether's Theorem - Interactive Lesson MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        .back-button { display: inline-flex; align-items: center; color: var(--text-muted); text-decoration: none; margin-bottom: 2rem; font-weight: 600; transition: color 0.3s ease, transform 0.3s ease; }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+        .sub-hero { padding: 4rem 0 2rem; text-align: left; }
+        .sub-hero-title { font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; margin-bottom: 1rem; }
+        .lesson-title { color: var(--physics-color) !important; }
+
+        .interactive-box {
+            background: rgba(236,72,153,0.04);
+            border: 1px solid rgba(236,72,153,0.18);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .card { background: rgba(0,0,0,0.2); border-radius: 12px; padding: 1.5rem; margin: 1rem 0; }
+        .card strong { color: var(--physics-color); }
+
+        .formula { font-family: 'Cambria Math', Cambria, serif; font-size: 1.4rem; text-align: center; padding: 1rem; background: rgba(0,0,0,0.25); border-radius: 10px; margin: 1rem 0; }
+
+        .timeline { position: relative; padding-left: 2.5rem; margin: 2rem 0; }
+        .timeline::before { content: ''; position: absolute; left: 0.6rem; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--physics-color), rgba(236,72,153,0.1)); }
+        .timeline-item { position: relative; margin-bottom: 2rem; }
+        .timeline-item::before { content: ''; position: absolute; left: -1.95rem; top: 0.4rem; width: 10px; height: 10px; border-radius: 50%; background: var(--physics-color); box-shadow: 0 0 8px rgba(236,72,153,0.5); }
+        .timeline-year { font-size: 0.8rem; font-weight: 700; color: var(--physics-color); letter-spacing: 1px; margin-bottom: 0.3rem; }
+        .timeline-text { font-size: 0.97rem; color: var(--text-muted); line-height: 1.6; }
+        .timeline-text strong { color: var(--text-main); }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="fisica-moderna.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Back to Fisica Moderna
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Noether's <span class="gradient-text">Theorem</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+            Emmy Noether: symmetries, conservation laws, and the deep connection between physical symmetries and the laws that govern the universe.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Emmy Noether: The Woman Who Changed Physics</h2>
+        <p class="lesson-text">
+            In 1915, at age 33, <strong>Emmy Noether</strong> (1882–1935) proved a theorem so profound that it fundamentally changed how physicists understand the universe. David Hilbert called her "a creative mathematical genius," yet she struggled for decades to gain academic recognition in male-dominated German academia.
+        </p>
+        <p class="lesson-text">
+            Noether's Theorem reveals a stunning fact: <strong>every continuous symmetry in nature corresponds to a conservation law</strong>. This single insight unifies mechanics, thermodynamics, electromagnetism, and modern quantum field theory. It's one of the most important theorems in theoretical physics.
+        </p>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-year">1882</div>
+                <p class="timeline-text">Emmy Noether born in Erlangen, Germany. Her father is mathematician Max Noether.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1915</div>
+                <p class="timeline-text"><strong>Noether's Theorem:</strong> Proves that symmetries of Lagrangian correspond to conservation laws. Einstein recognizes its importance for general relativity.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1933</div>
+                <p class="timeline-text">The Nazi regime dismisses Noether for being Jewish and female. She emigrates to the USA.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1935</div>
+                <p class="timeline-text">Emmy Noether dies at age 53 of complications from surgery. Her legacy reshapes fundamental physics for centuries to come.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Symmetries and Conservation Laws</h2>
+        <p class="lesson-text">
+            A <strong>symmetry</strong> is a transformation that leaves a physical system's laws unchanged. For example:
+        </p>
+
+        <div class="interactive-box">
+            <div class="card">
+                <strong>1. Space Translation (Homogeneity of Space)</strong><br>
+                If you move an experiment from one location to another, the laws of physics don't change. <br>
+                ⟹ <strong>Conservation of Momentum</strong>
+            </div>
+            <div class="card">
+                <strong>2. Time Translation (Homogeneity of Time)</strong><br>
+                If you perform an experiment today or tomorrow (in an isolated system), the results are the same.<br>
+                ⟹ <strong>Conservation of Energy</strong>
+            </div>
+            <div class="card">
+                <strong>3. Spatial Rotation (Isotropy of Space)</strong><br>
+                Physics laws don't depend on which direction you're facing. Rotate an isolated system, and the laws stay the same.<br>
+                ⟹ <strong>Conservation of Angular Momentum</strong>
+            </div>
+            <div class="card">
+                <strong>4. Gauge Symmetry (in Electromagnetism)</strong><br>
+                You can add a gradient of a scalar field to the potential without changing physical observables.<br>
+                ⟹ <strong>Conservation of Electric Charge</strong>
+            </div>
+        </div>
+
+        <p class="lesson-text">
+            Each symmetry is connected to a conservation law. This is <strong>Noether's Theorem</strong> in a nutshell.
+        </p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">The Mathematical Statement</h2>
+        <p class="lesson-text">
+            For a system with Lagrangian density ℒ, if a continuous symmetry transformation δq<sup>i</sup> leaves the action invariant (δS = 0), then there exists a conserved current:
+        </p>
+        <div class="formula">∂<sub>μ</sub> J<sup>μ</sup> = 0</div>
+        <p class="lesson-text">
+            This means <strong>∫ J<sup>0</sup> d<sup>3</sup>x = Q</strong> is conserved in time. The quantity Q is what we call the "charge" associated with that symmetry (charge, momentum, angular momentum, etc.).
+        </p>
+
+        <p class="lesson-text">
+            In simpler classical mechanics language: if the Lagrangian L doesn't depend explicitly on a generalized coordinate q<sup>i</sup>, then the conjugate momentum p<sup>i</sup> = ∂L/∂q̇<sup>i</sup> is conserved.
+        </p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Modern Implications</h2>
+        <p class="lesson-text">
+            Noether's Theorem is the foundation of modern particle physics:
+        </p>
+
+        <div class="interactive-box">
+            <div class="card">
+                <strong>Gauge Symmetries & Force Unification:</strong> The electromagnetic, weak, and strong interactions are understood as gauge symmetries. Each boson (photon, W±, Z, gluon) arises from requiring local gauge invariance.
+            </div>
+            <div class="card">
+                <strong>Standard Model:</strong> The entire particle zoo is organized by the symmetry group SU(3) × SU(2) × U(1). Particle interactions follow from requiring invariance under these transformations.
+            </div>
+            <div class="card">
+                <strong>Dark Matter & New Physics:</strong> Hypothetical new symmetries (supersymmetry, extra dimensions) would lead to new conservation laws and new particles we haven't yet discovered.
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title">Quiz Summary</h2>
+        <p class="lesson-text" style="font-size: 0.95rem;">Test your understanding of symmetries and Noether's Theorem.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 MFI - Interactive Physics Platform. Physics Section.</p>
+</footer>
+
+<script src="clil-noether.js"></script>
+<script src="../../js/main.js"></script>
+</body>
+</html>

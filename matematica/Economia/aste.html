@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teoria delle Aste - MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- MathJax -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s, transform 0.3s;
+        }
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+        .back-icon {
+            margin-right: 0.5rem;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .info-card {
+            background: rgba(16, 185, 129, 0.1);
+            border: 2px solid rgba(16, 185, 129, 0.5);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .info-card-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--math-color);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .info-content {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .formula-section {
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 4px solid var(--math-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .formula-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--math-color);
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .comparison-table th {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--math-color);
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        .comparison-table tr:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .strategy-badge {
+            display: inline-block;
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid var(--math-color);
+            color: var(--math-color);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin: 0.3rem 0.3rem 0.3rem 0;
+        }
+    </style>
+</head>
+<body>
+    <header class="hero" style="background: linear-gradient(135deg, #059669, #10b981);">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <a href="economia-matematica.html" class="back-button" style="color: white; border: none; background: none; margin-bottom: 0;">
+                    <span class="back-icon">&larr;</span> Torna a Economia
+                </a>
+            </div>
+            <h1 class="hero-title">Teoria delle Aste</h1>
+            <p class="hero-subtitle">Inglese, olandese, sigillata: strategie ottimali per vincere un'asta.</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <section style="max-width: 1000px; margin: 0 auto;">
+            <h2>Tipi di Aste</h2>
+
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="info-card-title">📈 Asta Inglese (Ascending Bid)</div>
+                    <div class="info-content">
+                        <p>Il prezzo parte basso e aumenta. Chi offre di più vince. Trasparente e intuitiva: il vincitore paga il secondo prezzo + 1 unità.</p>
+                        <div style="margin-top: 1rem; font-weight: 600;">Strategia: Aumenta finché il bene vale il prezzo</div>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-card-title">📉 Asta Olandese (Descending Bid)</div>
+                    <div class="info-content">
+                        <p>Il prezzo parte alto e cala. Il primo a dire "stop" vince al prezzo attuale. Rapida e strategica.</p>
+                        <div style="margin-top: 1rem; font-weight: 600;">Strategia: Valutazione privata vs rischio</div>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-card-title">📮 Asta Sigillata (Sealed Bid)</div>
+                    <div class="info-content">
+                        <p>Tutti scrivono l'offerta in busta chiusa. Chi offre più vince. Variante: paga il secondo prezzo (Vickrey).</p>
+                        <div style="margin-top: 1rem; font-weight: 600;">Strategia: Offri il valore vero</div>
+                    </div>
+                </div>
+            </div>
+
+            <h2>Confronto delle Aste</h2>
+
+            <div style="overflow-x: auto;">
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Aspetto</th>
+                            <th>Inglese</th>
+                            <th>Olandese</th>
+                            <th>Sigillata (1° prezzo)</th>
+                            <th>Sigillata (2° prezzo)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Prezzo vincente</strong></td>
+                            <td>Secondo prezzo + ε</td>
+                            <td>Primo prezzo effettivo</td>
+                            <td>Primo prezzo (massimo)</td>
+                            <td>Secondo prezzo</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Informazione</strong></td>
+                            <td>Pubblica</td>
+                            <td>Pubblica</td>
+                            <td>Privata</td>
+                            <td>Privata</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Velocità</strong></td>
+                            <td>Lenta</td>
+                            <td>Rapida</td>
+                            <td>Veloce</td>
+                            <td>Veloce</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Strategia dominante</strong></td>
+                            <td>Offri il valore</td>
+                            <td>Calcolo del rischio</td>
+                            <td>Offri meno del valore</td>
+                            <td>Offri il valore</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h2>Analisi Strategica</h2>
+
+            <div class="formula-section">
+                <div class="formula-title">Teorema di Equivalenza di Myerson</div>
+                <p style="color: var(--text-muted); margin: 1rem 0;">
+                    Con valutazioni indipendenti e distribuite identicamente, le aste Inglese, Olandese, Sigillata a 1° prezzo, e Sigillata a 2° prezzo (Vickrey) generano lo <strong>stesso ricavo atteso</strong>.
+                </p>
+            </div>
+
+            <div class="formula-section">
+                <div class="formula-title">Funzione di Offerta: 1° Prezzo Sigillato</div>
+                <div style="overflow-x: auto;">
+                    $$b(v) = v - \int_0^v \frac{F(t)^{n-1}}{F(v)^{n-1}} dt$$
+                </div>
+                <p style="margin-top: 1rem; color: var(--text-muted);">Dove v è la valutazione, F è la distribuzione cumulata, n è il numero di bidder.</p>
+            </div>
+
+            <h2>Fenomeni Reali in Asta</h2>
+
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="info-card-title">🎯 Winner's Curse</div>
+                    <div class="info-content">
+                        In aste con valutazione comune (es. diritti petroliferi), il vincitore ha probabilmente sovrastimato il valore. Risultato: losses.
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-card-title">💰 Shilling (Bid Shading)</div>
+                    <div class="info-content">
+                        Offrire meno del valore personale per risparmiare è razionale in aste al 1° prezzo. Più bidder = offerta più vicina al valore.
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-card-title">⏰ Dynamic Bidding</div>
+                    <div class="info-content">
+                        In aste inglesi reali, lasciar parlare gli altri rivela informazioni. Segnali strategici e psicologia giocano ruoli cruciali.
+                    </div>
+                </div>
+            </div>
+
+            <h2>Applicazioni Pratiche</h2>
+            <ul style="line-height: 1.8; margin: 1.5rem 0; color: var(--text-muted);">
+                <li><strong>eBay & Mercati Online:</strong> Aste inglesi con sniping (ultimi secondi)</li>
+                <li><strong>Appalti Pubblici:</strong> Aste sigillate al 1° prezzo per evitare collusione</li>
+                <li><strong>Diritti Petroliferi:</strong> Valutazione comune, alto rischio di winner's curse</li>
+                <li><strong>Spettro Telecom:</strong> Multi-round sealed-bid per allocazione efficiente</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Matematica.</p>
+    </footer>
+
+    <script src="../../js/main.js"></script>
+</body>
+</html>

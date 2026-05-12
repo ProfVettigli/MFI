@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evoluzione Stellare - Lezione Interattiva MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        .back-button { display: inline-flex; align-items: center; color: var(--text-muted); text-decoration: none; margin-bottom: 2rem; font-weight: 600; transition: color 0.3s ease, transform 0.3s ease; }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+        .sub-hero { padding: 4rem 0 2rem; text-align: left; }
+        .sub-hero-title { font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; margin-bottom: 1rem; }
+        .lesson-title { color: var(--physics-color) !important; }
+
+        .interactive-box {
+            background: rgba(250,204,21,0.04);
+            border: 1px solid rgba(250,204,21,0.18);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+        }
+
+        canvas.diagram { width: 100%; max-width: 500px; height: 420px; background: rgba(0,0,0,0.35); border-radius: 12px; display: block; margin: 0 auto; }
+
+        .card { background: rgba(0,0,0,0.2); border-radius: 12px; padding: 1.5rem; margin: 1rem 0; }
+        .card strong { color: var(--physics-color); }
+
+        .formula { font-family: 'Cambria Math', Cambria, serif; font-size: 1.3rem; text-align: center; padding: 1rem; background: rgba(0,0,0,0.25); border-radius: 10px; margin: 1rem 0; }
+
+        .lifecycle { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
+        .stage { background: rgba(0,0,0,0.3); border-radius: 12px; padding: 1.2rem; text-align: center; }
+        .stage-number { font-size: 2rem; font-weight: 800; color: var(--physics-color); margin-bottom: 0.5rem; }
+        .stage-name { font-weight: 700; margin-bottom: 0.5rem; }
+        .stage-desc { font-size: 0.85rem; color: var(--text-muted); }
+
+        .timeline { position: relative; padding-left: 2.5rem; margin: 2rem 0; }
+        .timeline::before { content: ''; position: absolute; left: 0.6rem; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--physics-color), rgba(250,204,21,0.1)); }
+        .timeline-item { position: relative; margin-bottom: 2rem; }
+        .timeline-item::before { content: ''; position: absolute; left: -1.95rem; top: 0.4rem; width: 10px; height: 10px; border-radius: 50%; background: var(--physics-color); box-shadow: 0 0 8px rgba(250,204,21,0.5); }
+        .timeline-year { font-size: 0.8rem; font-weight: 700; color: var(--physics-color); letter-spacing: 1px; margin-bottom: 0.3rem; }
+        .timeline-text { font-size: 0.97rem; color: var(--text-muted); line-height: 1.6; }
+        .timeline-text strong { color: var(--text-main); }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="fisica-moderna.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Fisica Moderna
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Evoluzione <span class="gradient-text">Stellare</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+            Dalla nebulosa al buco nero: il ciclo di vita delle stelle e il diagramma di Hertzsprung-Russell che rivela i segreti dell'universo.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Il Ciclo di Vita Stellare</h2>
+        <p class="lesson-text">
+            Una stella non è statica. Nasce, vive e muore — il ciclo della sua vita è governato dalla lotta eterna tra <strong>gravità</strong> (che la comprime) e <strong>pressione di radiazione</strong> (che la espande).
+        </p>
+
+        <div class="lifecycle">
+            <div class="stage">
+                <div class="stage-number">1</div>
+                <div class="stage-name">Nube di Gas</div>
+                <div class="stage-desc">Collasso gravitazionale di una nebulosa. La temperatura sale.</div>
+            </div>
+            <div class="stage">
+                <div class="stage-number">2</div>
+                <div class="stage-name">Protostella</div>
+                <div class="stage-desc">Il nucleo raggiunge 10⁶ K. Non abbastanza per la fusione ancora.</div>
+            </div>
+            <div class="stage">
+                <div class="stage-number">3</div>
+                <div class="stage-name">Sequenza Principale</div>
+                <div class="stage-desc">Fusione di H → He. 90% della vita della stella (miliardi di anni).</div>
+            </div>
+            <div class="stage">
+                <div class="stage-number">4</div>
+                <div class="stage-name">Gigante Rossa</div>
+                <div class="stage-desc">H esaurito. Fusione di He nel nucleo. L'atmosfera si espande.</div>
+            </div>
+            <div class="stage">
+                <div class="stage-number">5</div>
+                <div class="stage-name">Nebulosa Planetaria</div>
+                <div class="stage-desc">Gli strati esterni si disperdono nello spazio.</div>
+            </div>
+            <div class="stage">
+                <div class="stage-number">6</div>
+                <div class="stage-name">Nana Bianca</div>
+                <div class="stage-desc">Nucleo densissimo. Si raffredda lentamente per miliardi di anni.</div>
+            </div>
+        </div>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-year">1911</div>
+                <p class="timeline-text"><strong>Hertzsprung & Russell</strong> sviluppano il diagramma H-R tracciando stelle per luminosità vs temperatura superficiale.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1938</div>
+                <p class="timeline-text"><strong>Hans Bethe</strong> scopre le reazioni nucleari che alimentano il Sole: fusione pp (protone-protone).</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1966</div>
+                <p class="timeline-text"><strong>Jocelyn Bell Burnell</strong> scopre le pulsar: stelle di neutroni che ruotano velocissimamente.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2020s</div>
+                <p class="timeline-text">Osservazioni di onde gravitazionali da fusioni di buchi neri confermano le previsioni di Einstein e la relatività generale.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Il Diagramma di Hertzsprung-Russell</h2>
+        <p class="lesson-text">
+            Il diagramma H-R è uno strumento fondamentale dell'astronomia. Ogni stella occcupa una posizione nel diagramma determinata da due proprietà fisiche:
+        </p>
+        <ul style="color: var(--text-muted); font-size: 0.95rem; margin: 1.5rem 0;">
+            <li><strong>Luminosità (asse y):</strong> Potenza totale della stella — quanta energia irradia al secondo.</li>
+            <li><strong>Temperatura superficiale (asse x):</strong> Colore della stella — blu significa calda, rossa significa fredda.</li>
+        </ul>
+
+        <div class="interactive-box">
+            <h3 style="color: var(--physics-color); margin-bottom: 1rem;">Diagramma di Hertzsprung-Russell Interattivo</h3>
+            <p style="font-size: 0.95rem; color: var(--text-muted);">Osserva come le stelle si distribuiscono nel diagramma. La "Sequenza Principale" è il ramo dominante.</p>
+            <canvas id="hr-diagram" class="diagram"></canvas>
+            <p style="font-size: 0.88rem; color: var(--text-muted); margin-top: 1rem; text-align: center;">Le stelle seguono tracce evolutive ben definite: la Sequenza Principale, il ramo gigante e il ramo della nana bianca.</p>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Fusione Nucleare nelle Stelle</h2>
+        <p class="lesson-text">
+            Cosa alimenta il Sole per 10 miliardi di anni? <strong>Fusione nucleare</strong>. Nel nucleo, a temperature > 10⁷ K, i nuclei di idrogeno si schiantano a vicenda superando la barriera di Coulomb e fondersi in elio:
+        </p>
+        <div class="formula">4 ¹H → ⁴He + 2e⁺ + 2ν + 26.7 MeV</div>
+        <p class="lesson-text">
+            Questo processo è lentissimo — una probabilità incredibilmente bassa per ogni collisione. Ma il Sole contiene 10⁵⁷ nuclei, quindi miliardi di reazioni avvengono ogni secondo. Questo è come il Sole converte ~600 milioni di tonnellate di idrogeno in elio ogni secondo, perdendo ~4 milioni di tonnellate di massa come energia (E=mc²).
+        </p>
+
+        <div style="background: rgba(250,204,21,0.06); border-left: 4px solid var(--physics-color); padding: 1.2rem; border-radius: 0 10px 10px 0; margin: 1.5rem 0;">
+            <p class="lesson-text" style="margin-bottom: 0; font-size: 1rem;">
+                <strong>Nucleosintesi Stellare:</strong> Nel nucleo di stelle massicce, la temperatura sale così alto che avviene la fusione di elementi più pesanti: elio → carbonio → ossigeno → silicio → ferro. Quando il nucleo diviene interamente ferro, la stella non può più bruciare — il ferro è il limite. La stella collassa e scoppia in supernova, spargendo gli elementi pesanti in una nuova nebulosa. Ecco perché siamo fatti di "polvere di stelle"!
+            </p>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Destini Stellari: Dall'Esplosione al Buco Nero</h2>
+        <p class="lesson-text">
+            Il destino finale di una stella dipende dalla sua <strong>massa iniziale</strong>:
+        </p>
+
+        <div class="interactive-box">
+            <div class="card">
+                <strong>M < 0.5 M☉:</strong> Nana rossa che si raffredda lentamente. Vive più a lungo dell'universo attuale!
+            </div>
+            <div class="card">
+                <strong>0.5 M☉ < M < 8 M☉ (come il Sole):</strong> Gigante rossa → Nebulosa planetaria → Nana bianca (densità ~10⁹ kg/cm³).
+            </div>
+            <div class="card">
+                <strong>8 M☉ < M < 20 M☉:</strong> Supernova di collasso del nucleo → Stella di neutroni (densità ~10¹⁷ kg/cm³, 20 km di diametro).
+            </div>
+            <div class="card">
+                <strong>M > 20 M☉:</strong> Collasso completo → Buco nero (singolarità, orizzonte degli eventi). Non c'è supporto — nulla può fermare la gravità.
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title">Quiz di Riepilogo</h2>
+        <p class="lesson-text" style="font-size: 0.95rem;">Metti alla prova la tua comprensione dell'evoluzione stellare.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Fisica.</p>
+</footer>
+
+<script src="evoluzione-stellare.js"></script>
+<script src="../../js/main.js"></script>
+</body>
+</html>

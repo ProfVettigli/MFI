@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modello Standard - Lezione Interattiva MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        .back-button { display: inline-flex; align-items: center; color: var(--text-muted); text-decoration: none; margin-bottom: 2rem; font-weight: 600; transition: color 0.3s ease, transform 0.3s ease; }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+        .sub-hero { padding: 4rem 0 2rem; text-align: left; }
+        .sub-hero-title { font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; margin-bottom: 1rem; }
+        .lesson-title { color: var(--physics-color) !important; }
+
+        .interactive-box {
+            background: rgba(139,92,246,0.04);
+            border: 1px solid rgba(139,92,246,0.18);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .particle-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 1rem; margin: 2rem 0; }
+        .particle-card { background: rgba(0,0,0,0.3); border: 1px solid rgba(139,92,246,0.3); border-radius: 10px; padding: 1rem; text-align: center; }
+        .particle-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .particle-name { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.3rem; }
+        .particle-props { font-size: 0.8rem; color: var(--text-muted); }
+
+        .force-comparison { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
+        .force-card { background: rgba(0,0,0,0.3); border-left: 4px solid var(--physics-color); border-radius: 0 10px 10px 0; padding: 1.2rem; }
+        .force-card strong { color: var(--physics-color); display: block; margin-bottom: 0.5rem; font-size: 1.05rem; }
+        .force-card p { font-size: 0.85rem; color: var(--text-muted); margin: 0.3rem 0; }
+
+        .timeline { position: relative; padding-left: 2.5rem; margin: 2rem 0; }
+        .timeline::before { content: ''; position: absolute; left: 0.6rem; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--physics-color), rgba(139,92,246,0.1)); }
+        .timeline-item { position: relative; margin-bottom: 2rem; }
+        .timeline-item::before { content: ''; position: absolute; left: -1.95rem; top: 0.4rem; width: 10px; height: 10px; border-radius: 50%; background: var(--physics-color); box-shadow: 0 0 8px rgba(139,92,246,0.5); }
+        .timeline-year { font-size: 0.8rem; font-weight: 700; color: var(--physics-color); letter-spacing: 1px; margin-bottom: 0.3rem; }
+        .timeline-text { font-size: 0.97rem; color: var(--text-muted); line-height: 1.6; }
+        .timeline-text strong { color: var(--text-main); }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="fisica-moderna.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Fisica Moderna
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Modello <span class="gradient-text">Standard</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+            I mattoni fondamentali dell'universo: quark, leptoni, bosoni e le quattro forze che governano tutta la realtà.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Il Modello Standard della Fisica delle Particelle</h2>
+        <p class="lesson-text">
+            Il Modello Standard è la teoria più riuscita mai formulata: unifica la meccanica quantistica con tre delle quattro forze fondamentali. È stato testato milioni di volte negli acceleratori di particelle e non ha mai fallito (fino ad ora).
+        </p>
+        <p class="lesson-text">
+            Il Modello Standard descrive tutto ciò che vediamo: da te agli atomi all'interno di te, alle stelle lontanissime. Solo la gravità rimane fuori dal quadro — una "ferita aperta" della fisica moderna.
+        </p>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-year">1973</div>
+                <p class="timeline-text">Il Modello Standard nasce dalla fusione di tre teorie: elettromagnetismo, forza debole, forza forte (QCD).</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1983</div>
+                <p class="timeline-text"><strong>Rubbia & van der Meer</strong> scoprono i bosoni W e Z che mediano la forza debole. Validazione straordinaria del Modello Standard.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2012</div>
+                <p class="timeline-text"><strong>Higgs & Englert</strong> vincono il Nobel quando il bosone di Higgs è scoperto al CERN LHC. Ulteriore conferma del Modello Standard.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2030s</div>
+                <p class="timeline-text">Futuri acceleratori cercheranno particelle oltre il Modello Standard: particelle supersimmetriche, stranezze nel comportamento dei neutrini, asimmetria materia-antimateria.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Quark e Leptoni: I Mattoni Fondamentali</h2>
+        <p class="lesson-text">
+            Tutto è fatto di due tipi di fermioni elementari:
+        </p>
+
+        <div class="interactive-box">
+            <div style="margin-bottom: 2rem;">
+                <h3 style="color: var(--physics-color); margin-bottom: 1rem;">Quark (6 tipi)</h3>
+                <p style="color: var(--text-muted); margin-bottom: 1rem;">Combinazioni di 3 quark formano protoni e neutroni. Legati dalla forza forte (QCD).</p>
+                <div class="particle-grid">
+                    <div class="particle-card">
+                        <div class="particle-icon">↑</div>
+                        <div class="particle-name">Up (u)</div>
+                        <div class="particle-props">Carica: +2/3</div>
+                    </div>
+                    <div class="particle-card">
+                        <div class="particle-icon">↓</div>
+                        <div class="particle-name">Down (d)</div>
+                        <div class="particle-props">Carica: −1/3</div>
+                    </div>
+                    <div class="particle-card">
+                        <div class="particle-icon">✧</div>
+                        <div class="particle-name">Charm (c)</div>
+                        <div class="particle-props">Carica: +2/3</div>
+                    </div>
+                    <div class="particle-card">
+                        <div class="particle-icon">✦</div>
+                        <div class="particle-name">Strange (s)</div>
+                        <div class="particle-props">Carica: −1/3</div>
+                    </div>
+                    <div class="particle-card">
+                        <div class="particle-icon">⚡</div>
+                        <div class="particle-name">Top (t)</div>
+                        <div class="particle-props">Carica: +2/3</div>
+                    </div>
+                    <div class="particle-card">
+                        <div class="particle-icon">❉</div>
+                        <div class="particle-name">Bottom (b)</div>
+                        <div class="particle-props">Carica: −1/3</div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: var(--physics-color); margin-bottom: 1rem;">Leptoni (6 tipi)</h3>
+                <p style="color: var(--text-muted); margin-bottom: 1rem;">Particelle indivisibili. Non sentono la forza forte, solo quella debole ed elettromagnetica.</p>
+                <div class="particle-grid">
+                    <div class="particle-card">
+                        <div class="particle-icon">e−</div>
+                        <div class="particle-name">Elettrone</div>
+                        <div class="particle-props">Carica: −1</div>
+                    </div>
+                    <div class="particle-card">
+                        <div class="particle-icon">μ−</div>
+                        <div class="particle-name">Muone</div>
+                        <div class="particle-props">Carica: −1</div>
+                    </div>
+                    <div class="particle-card">
+                        <div class="particle-icon">τ−</div>
+                        <div class="particle-name">Tau</div>
+                        <div class="particle-props">Carica: −1</div>
+                    </div>
+                    <div class="particle-card">
+                        <div class="particle-icon">νₑ</div>
+                        <div class="particle-name">Neutrino e</div>
+                        <div class="particle-props">Carica: 0</div>
+                    </div>
+                    <div class="particle-card">
+                        <div class="particle-icon">νμ</div>
+                        <div class="particle-name">Neutrino μ</div>
+                        <div class="particle-props">Carica: 0</div>
+                    </div>
+                    <div class="particle-card">
+                        <div class="particle-icon">ντ</div>
+                        <div class="particle-name">Neutrino τ</div>
+                        <div class="particle-props">Carica: 0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Bosoni Mediatori: I Messaggeri delle Forze</h2>
+        <p class="lesson-text">
+            Secondo la teoria quantistica dei campi, le forze sono mediate da particelle di scambio chiamate <strong>bosoni gauge</strong>:
+        </p>
+
+        <div class="force-comparison">
+            <div class="force-card">
+                <strong>Fotone (γ)</strong>
+                <p>Mediat l'<strong>Elettromagnetismo</strong></p>
+                <p>Massa: 0 | Range: infinito | Teoria: QED</p>
+            </div>
+            <div class="force-card">
+                <strong>W e Z</strong>
+                <p>Mediano la <strong>Forza Debole</strong></p>
+                <p>Massa: 80-91 GeV | Range: 10⁻¹⁸ m | Beta decay</p>
+            </div>
+            <div class="force-card">
+                <strong>Gluone (g)</strong>
+                <p>Mediano la <strong>Forza Forte</strong></p>
+                <p>Massa: 0 | Range: confine nucleare | QCD</p>
+            </div>
+            <div class="force-card">
+                <strong>Bosone di Higgs (H)</strong>
+                <p>Conferisce massa alle particelle</p>
+                <p>Massa: 125 GeV | Scoperto: 2012 | Meccanismo Higgs</p>
+            </div>
+        </div>
+
+        <p class="lesson-text">
+            <strong>La Grande Assenza:</strong> Il Modello Standard non include la gravità. Non c'è bosone gravitone rilevato. Questo è il grande problema irrisolto della fisica contemporanea.
+        </p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Oltre il Modello Standard</h2>
+        <p class="lesson-text">
+            Il Modello Standard è incompleto. Tante domande rimangono:
+        </p>
+
+        <div style="background: rgba(139,92,246,0.06); border-left: 4px solid var(--physics-color); padding: 1.2rem; border-radius: 0 10px 10px 0; margin: 1.5rem 0;">
+            <ul style="color: var(--text-muted); font-size: 0.95rem;">
+                <li><strong>Materia Oscura (85% dell'universo):</strong> Non vediamo. Non interagisce con la luce. Cosa è?</li>
+                <li><strong>Energia Oscura (68% dell'universo):</strong> Accelera l'espansione cosmica. Più grande dei normali atomi. Ignota.</li>
+                <li><strong>Asimmetria Materia-Antimateria:</strong> Perché l'universo ha più materia che antimateria?</li>
+                <li><strong>Massa dei Neutrini:</strong> Hanno massa, ma piccolissima. Perché?</li>
+                <li><strong>Grande Unificazione:</strong> Possono tutte e tre le forze unirsi a energie altissime?</li>
+                <li><strong>Quantizzazione della Gravità:</strong> Come unifichiamo la relatività generale con la meccanica quantistica?</li>
+            </ul>
+        </div>
+
+        <p class="lesson-text">
+            Il prossimo grande acceleratore (ILC, CLIC, Future Circular Collider) spera di svelare nuove particelle e simmetrie nascoste oltre il Modello Standard. La fisica non è finita — è appena iniziata!
+        </p>
+    </section>
+
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title">Quiz di Riepilogo</h2>
+        <p class="lesson-text" style="font-size: 0.95rem;">Metti alla prova la tua comprensione del Modello Standard.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Fisica.</p>
+</footer>
+
+<script src="modello-standard.js"></script>
+<script src="../../js/main.js"></script>
+</body>
+</html>

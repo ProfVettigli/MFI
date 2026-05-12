@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corrente Alternata - Lezione Interattiva MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+        .sub-hero {
+            padding: 4rem 0 2rem;
+            text-align: left;
+        }
+        .sub-hero-title {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .formula-box {
+            background: rgba(79,70,229,0.06);
+            border-left: 4px solid var(--physics-color);
+            padding: 1.5rem;
+            border-radius: 0 10px 10px 0;
+            margin: 1.5rem 0;
+            font-family: monospace;
+            font-size: 1.15rem;
+            color: var(--text-main);
+            letter-spacing: 0.04em;
+        }
+
+        .interactive-box {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .slider-container {
+            margin: 1.5rem 0;
+        }
+        .slider-label {
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        .slider {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(255,255,255,0.1);
+            outline: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--physics-color);
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(79,70,229,0.5);
+        }
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--physics-color);
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 0 10px rgba(79,70,229,0.5);
+        }
+
+        .wave-canvas {
+            width: 100%;
+            height: 250px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 12px;
+            margin: 1.5rem 0;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .result-box {
+            background: rgba(0,0,0,0.3);
+            border-left: 5px solid var(--physics-color);
+            padding: 1.2rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+            font-family: monospace;
+            font-size: 1.05rem;
+        }
+        .result-box strong {
+            color: var(--physics-color);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        .info-card {
+            background: rgba(0,0,0,0.2);
+            border-top: 3px solid var(--physics-color);
+            border-radius: 10px;
+            padding: 1.5rem;
+        }
+        .info-card h4 { color: var(--physics-color); margin-bottom: 0.5rem; }
+        .info-card p { font-size: 0.92rem; color: var(--text-muted); }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="../elettromagnetismo.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Elettromagnetismo
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Corrente <span class="gradient-text">Alternata</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+            Sinusoidi, frequenza, RMS e trasformatori. Scopri come l'energia raggiunge le tue case e i tuoi dispositivi.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Corrente Continua vs Alternata</h2>
+        <p class="lesson-text">
+            La <strong>corrente continua (DC)</strong> scorre sempre nella stessa direzione, a intensità costante (come da una batteria). La <strong>corrente alternata (AC)</strong> cambia direzione periodicamente, oscillando tra valori positivi e negativi.
+        </p>
+        <p class="lesson-text">
+            Nelle nostre case, usiamo AC a 50 Hz (in Europa) o 60 Hz (negli USA), che significa 50 o 60 cicli completi al secondo. Perché? Perché è efficiente da trasportare su lunghe distanze con i trasformatori!
+        </p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Onda Sinusoidale AC</h2>
+        <p class="lesson-text">
+            La forma più comune di AC è una <strong>sinusoide</strong>. La tensione o corrente istantanea è:
+        </p>
+        <div class="formula-box">
+            V(t) = V₀ · sin(2π·f·t)
+            <div style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem; font-family: inherit;">
+                V₀ = ampiezza (picco), f = frequenza (Hz), t = tempo (s)
+            </div>
+        </div>
+
+        <p class="lesson-text">
+            Il <strong>periodo T = 1/f</strong> è il tempo per un ciclo completo.
+        </p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Simulatore AC Interattivo</h2>
+        <p class="lesson-text">
+            Modifica l'ampiezza e la frequenza per vedere come cambia l'onda sinusoidale. Osserva il valore RMS che corrisponde al DC equivalente per la potenza.
+        </p>
+
+        <div class="interactive-box">
+            <div class="slider-container">
+                <label class="slider-label">Ampiezza (V₀): <span id="amplitude-value">10</span> V</label>
+                <input type="range" id="amplitude-slider" class="slider" min="1" max="20" value="10" step="1">
+            </div>
+
+            <div class="slider-container">
+                <label class="slider-label">Frequenza (f): <span id="frequency-value">50</span> Hz</label>
+                <input type="range" id="frequency-slider" class="slider" min="1" max="100" value="50" step="1">
+            </div>
+
+            <canvas id="wave-canvas" class="wave-canvas"></canvas>
+
+            <div class="result-box">
+                <div>Valore picco: <strong id="peak-value">10 V</strong></div>
+                <div style="margin-top: 0.5rem;">Valore RMS: <strong id="rms-value">7.07 V</strong></div>
+                <div style="margin-top: 0.5rem;">Periodo: <strong id="period-value">20 ms</strong></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Il Valore RMS (Root Mean Square)</h2>
+        <p class="lesson-text">
+            Il valore <strong>RMS</strong> è il valore equivalente di una corrente continua che dissiperebbe la stessa potenza su una resistenza. È il valore che i voltmetri AC mostrano per default.
+        </p>
+        <div class="formula-box">
+            V_RMS = V₀ / √2 ≈ 0.707 × V₀
+            <div style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem; font-family: inherit;">
+                Se la presa di casa è 230 V, questo è il valore RMS. Il picco è ~325 V!
+            </div>
+        </div>
+        <p class="lesson-text">
+            La potenza dissipata è: <strong>P = V_RMS × I_RMS × cos(φ)</strong>, dove cos(φ) è il fattore di potenza.
+        </p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">I Trasformatori</h2>
+        <p class="lesson-text">
+            Un <strong>trasformatore</strong> è un dispositivo che cambia il livello di tensione (e corrente) in un circuito AC, senza perdite (idealmente). È il cuore della distribuzione elettrica moderna.
+        </p>
+        <div class="formula-box">
+            V_primaria / V_secondaria = N_primaria / N_secondaria
+            <div style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem; font-family: inherit;">
+                Il rapporto di tensione è uguale al rapporto del numero di spire.
+            </div>
+        </div>
+
+        <div style="background: rgba(0,0,0,0.2); border-left: 4px solid var(--physics-color); padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0;">
+            <h3 style="color: var(--physics-color); margin-bottom: 1rem;">Step-Up vs Step-Down</h3>
+            <ul style="color: var(--text-muted); margin: 0;">
+                <li><strong>Step-up:</strong> Aumenta la tensione (diminuisce la corrente). Usato per trasportare energia su lunghe distanze.</li>
+                <li><strong>Step-down:</strong> Diminuisce la tensione (aumenta la corrente). Usato nelle stazioni di distribuzione locale e nei caricabatterie.</li>
+            </ul>
+        </div>
+
+        <p class="lesson-text">
+            Conservazione della potenza: <strong>P_in = P_out</strong>, quindi V₁·I₁ = V₂·I₂
+        </p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">La Distribuzione Elettrica</h2>
+        <div class="info-grid">
+            <div class="info-card">
+                <h4>Generazione</h4>
+                <p>Centrale elettrica genera AC a ~20 kV</p>
+            </div>
+            <div class="info-card">
+                <h4>Step-up</h4>
+                <p>Trasformatore alza a 110-400 kV per trasmissione</p>
+            </div>
+            <div class="info-card">
+                <h4>Trasmissione</h4>
+                <p>Cavi ad alta tensione trasportano l'energia su centinaia di km</p>
+            </div>
+            <div class="info-card">
+                <h4>Step-down Regionale</h4>
+                <p>Trasformatore riduce a 10-30 kV</p>
+            </div>
+            <div class="info-card">
+                <h4>Step-down Locale</h4>
+                <p>Trasformatore riduce a 400/230 V per le case</p>
+            </div>
+            <div class="info-card">
+                <h4>Utilizzo</h4>
+                <p>Alimenta motori, luci e tutti i dispositivi in casa</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Vantaggi dell'AC</h2>
+        <ul style="color: var(--text-muted); line-height: 1.8;">
+            <li><strong>Trasformatori:</strong> Facile cambiare tensione senza perdite significative</li>
+            <li><strong>Minori perdite in trasmissione:</strong> Ad alta tensione e bassa corrente, le perdite resistive V²/R sono inferiori</li>
+            <li><strong>Motori AC:</strong> Più semplici, robusti e efficienti dei motori DC</li>
+            <li><strong>Generazione:</strong> I generatori AC (alternatori) sono il metodo naturale per convertire energia meccanica in elettrica</li>
+        </ul>
+    </section>
+
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title">Quiz di Riepilogo</h2>
+        <p class="lesson-text" style="font-size: 0.95rem;">Testa la tua comprensione della corrente alternata, dei trasformatori e della distribuzione elettrica.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Fisica.</p>
+</footer>
+
+<script src="corrente-alternata.js"></script>
+<script src="../../js/main.js"></script>
+</body>
+</html>
