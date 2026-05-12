@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenti Razionali - Lezione Interattiva MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+    <script>
+      MathJax = { tex: { inlineMath: [['\\(', '\\)']] } };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+
+    <style>
+        .back-button {
+            display: inline-flex; align-items: center;
+            color: var(--text-muted); text-decoration: none;
+            margin-bottom: 2rem; font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+        .sub-hero { padding: 4rem 0 2rem; text-align: left; }
+        .sub-hero-title { font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; margin-bottom: 1rem; }
+
+        .util-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .timeline { position: relative; padding-left: 2.5rem; margin: 2rem 0; }
+        .timeline::before {
+            content: ''; position: absolute; left: 0.6rem; top: 0; bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--math-color), rgba(59,130,246,0.1));
+        }
+        .timeline-item { position: relative; margin-bottom: 2rem; }
+        .timeline-item::before {
+            content: ''; position: absolute; left: -1.95rem; top: 0.4rem;
+            width: 10px; height: 10px; border-radius: 50%;
+            background: var(--math-color); box-shadow: 0 0 8px var(--math-glow);
+        }
+        .timeline-year { font-size: 0.8rem; font-weight: 700; color: var(--math-color); letter-spacing: 1px; margin-bottom: 0.3rem; }
+        .timeline-text { font-size: 0.97rem; color: var(--text-muted); line-height: 1.6; }
+        .timeline-text strong { color: var(--text-main); }
+
+        .slider-row { display: flex; align-items: center; gap: 1rem; margin: 1rem 0; flex-wrap: wrap; }
+        .slider-row label { min-width: 130px; color: var(--text-muted); font-weight: 600; }
+        .slider-row input[type=range] { flex: 1; min-width: 180px; accent-color: var(--math-color); }
+        .value-pill {
+            background: rgba(59,130,246,0.15);
+            color: var(--math-color);
+            padding: 0.3rem 0.7rem;
+            border-radius: 8px;
+            font-family: monospace; font-weight: 700; min-width: 50px; text-align: center;
+        }
+        .result-box {
+            margin-top: 1rem; padding: 1rem 1.5rem;
+            border-radius: 10px; background: rgba(0,0,0,0.3);
+            font-size: 1.2rem; font-weight: 600; text-align: center;
+            border-left: 5px solid var(--math-color);
+        }
+
+        canvas.util-canvas {
+            width: 100%; max-width: 600px;
+            background: rgba(0,0,0,0.25);
+            border-radius: 10px; display: block; margin: 1rem auto;
+        }
+
+        .choice-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+        .choice-card {
+            background: rgba(255,255,255,0.04);
+            border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 12px; padding: 1.2rem; cursor: pointer;
+            transition: all 0.2s; text-align: center;
+        }
+        .choice-card:hover { background: rgba(59,130,246,0.08); border-color: var(--math-color); }
+        .choice-card.selected { background: rgba(59,130,246,0.15); border-color: var(--math-color); box-shadow: 0 0 16px var(--math-glow); }
+        .choice-card h4 { color: var(--math-color); margin-bottom: 0.5rem; font-size: 1rem; }
+        .choice-card .price { color: #F59E0B; font-weight: 700; font-family: monospace; }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="economia-matematica.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Economia
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Agenti <span class="gradient-text">Razionali</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+            Come prendiamo le decisioni? Dietro ogni scelta — dal panino in mensa allo stipendio di Gordon Gekko — si nasconde un modello matematico chiamato <em>Homo Economicus</em>.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <!-- STORIA -->
+    <section class="lesson-section">
+        <h2 class="lesson-title">L'Uomo Economico: Una Macchina che Massimizza</h2>
+        <p class="lesson-text">
+            Nel 1776 lo scozzese <strong>Adam Smith</strong> pubblicò <em>"La Ricchezza delle Nazioni"</em>. Tra le sue pagine c'è la famosa frase sulla "mano invisibile": ognuno, perseguendo il proprio interesse, contribuisce senza saperlo al bene collettivo. Da qui nasce l'idea di un agente economico perfettamente razionale, ribattezzato dagli economisti vittoriani <strong>Homo Economicus</strong>.
+        </p>
+
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+            <div class="card" style="padding: 1.5rem; border-top: 3px solid var(--math-color);">
+                <div style="font-size: 3rem; text-align:center; margin-bottom: 0.8rem;">🎩</div>
+                <h4 style="color: var(--math-color); text-align:center; margin-bottom: 0.5rem;">Homo Economicus</h4>
+                <p style="font-size: 0.93rem; color: var(--text-muted);">Conosce <strong style="color:var(--text-main)">tutte</strong> le alternative, ha preferenze <strong style="color:var(--text-main)">coerenti</strong>, calcola <strong style="color:var(--text-main)">istantaneamente</strong> e sceglie sempre l'opzione che <strong style="color:var(--text-main)">massimizza la sua utilità</strong>.</p>
+            </div>
+            <div class="card" style="padding: 1.5rem; border-top: 3px solid #F59E0B;">
+                <div style="font-size: 3rem; text-align:center; margin-bottom: 0.8rem;">🧠</div>
+                <h4 style="color: #F59E0B; text-align:center; margin-bottom: 0.5rem;">Homo Sapiens (la realtà)</h4>
+                <p style="font-size: 0.93rem; color: var(--text-muted);">Daniel Kahneman, premio Nobel 2002, ha mostrato che gli umani veri usano <strong style="color:var(--text-main)">scorciatoie</strong> (euristiche), si lasciano influenzare dalle emozioni e dalla pubblicità. È la cosiddetta <em>finanza comportamentale</em>.</p>
+            </div>
+        </div>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-year">1776</div>
+                <p class="timeline-text"><strong>Adam Smith</strong> introduce la mano invisibile: l'interesse personale come motore del benessere collettivo.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1789</div>
+                <p class="timeline-text"><strong>Jeremy Bentham</strong> propone l'<em>utilitarismo</em>: ogni azione si misura in unità di piacere e dolore (gli "utils").</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1871</div>
+                <p class="timeline-text"><strong>William Stanley Jevons</strong> e <strong>Carl Menger</strong> introducono l'utilità marginale: il valore di un bene dipende da quanto già se ne possiede.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1944</div>
+                <p class="timeline-text"><strong>von Neumann e Morgenstern</strong> formalizzano la teoria dell'utilità attesa per decisioni in condizioni di incertezza.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2002</div>
+                <p class="timeline-text"><strong>Kahneman</strong> riceve il Nobel: l'Homo Economicus non esiste, esiste l'umano che sbaglia in modo prevedibile.</p>
+            </div>
+        </div>
+
+        <div style="background: rgba(59,130,246,0.06); border-left: 4px solid var(--math-color); padding: 1.5rem; border-radius: 0 10px 10px 0; margin-top: 1rem;">
+            <p class="lesson-text" style="margin-bottom: 0;">
+                <strong>L'idea chiave:</strong> per fare matematica, supponiamo che ognuno abbia una <em>funzione di utilità</em> \(U(x)\) che misura quanto è soddisfatto dal consumo del bene \(x\), e che scelga sempre il consumo che la rende massima sotto un vincolo di budget.
+            </p>
+        </div>
+    </section>
+
+    <!-- ASSIOMI -->
+    <section class="lesson-section" style="border-left: 4px solid #F59E0B;">
+        <h2 class="lesson-title" style="color: #F59E0B;">Gli Assiomi della Razionalità</h2>
+        <p class="lesson-text">
+            Perché un agente sia "razionale" nel senso degli economisti, deve rispettare due regole base sulle sue preferenze \(\succ\) (leggere "è preferito a"):
+        </p>
+
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+            <div class="card" style="padding: 1.5rem;">
+                <h4 style="color: #F59E0B; margin-bottom: 0.5rem;">1. Completezza</h4>
+                <p style="font-size: 0.95rem; color: var(--text-muted);">Per ogni coppia di alternative A e B, l'agente sa dire se preferisce A, preferisce B, oppure è indifferente. Niente "non saprei". <br>Formalmente: \(A \succ B\), \(B \succ A\) o \(A \sim B\).</p>
+            </div>
+            <div class="card" style="padding: 1.5rem;">
+                <h4 style="color: #F59E0B; margin-bottom: 0.5rem;">2. Transitività</h4>
+                <p style="font-size: 0.95rem; color: var(--text-muted);">Se preferisci la pizza al sushi, e il sushi all'hamburger, allora preferisci la pizza all'hamburger. <br>Formalmente: \(A \succ B\) e \(B \succ C\) \(\Rightarrow A \succ C\).</p>
+            </div>
+        </div>
+
+        <div class="util-card" style="background: rgba(245,158,11,0.05); border-color: rgba(245,158,11,0.2);">
+            <h3 style="color: #F59E0B; margin-bottom: 1rem;">Esperimento: Sei Razionale?</h3>
+            <p style="color: var(--text-muted); margin-bottom: 1rem;">Clicca su ognuna delle tre coppie per indicare la tua preferenza. Vedremo se le tue scelte rispettano la transitività!</p>
+            <div id="trans-test">
+                <div class="slider-row">
+                    <span style="min-width: 180px;">Pizza margherita</span>
+                    <button class="quiz-btn" data-pair="ab" data-choice="a" style="padding: 0.5rem 1rem; flex: 0; min-width: 80px;">scegli</button>
+                    <span style="color: var(--text-muted);">vs</span>
+                    <button class="quiz-btn" data-pair="ab" data-choice="b" style="padding: 0.5rem 1rem; flex: 0; min-width: 80px;">scegli</button>
+                    <span style="min-width: 180px;">Sushi all you can eat</span>
+                </div>
+                <div class="slider-row">
+                    <span style="min-width: 180px;">Sushi all you can eat</span>
+                    <button class="quiz-btn" data-pair="bc" data-choice="b" style="padding: 0.5rem 1rem; flex: 0; min-width: 80px;">scegli</button>
+                    <span style="color: var(--text-muted);">vs</span>
+                    <button class="quiz-btn" data-pair="bc" data-choice="c" style="padding: 0.5rem 1rem; flex: 0; min-width: 80px;">scegli</button>
+                    <span style="min-width: 180px;">Hamburger gourmet</span>
+                </div>
+                <div class="slider-row">
+                    <span style="min-width: 180px;">Pizza margherita</span>
+                    <button class="quiz-btn" data-pair="ac" data-choice="a" style="padding: 0.5rem 1rem; flex: 0; min-width: 80px;">scegli</button>
+                    <span style="color: var(--text-muted);">vs</span>
+                    <button class="quiz-btn" data-pair="ac" data-choice="c" style="padding: 0.5rem 1rem; flex: 0; min-width: 80px;">scegli</button>
+                    <span style="min-width: 180px;">Hamburger gourmet</span>
+                </div>
+            </div>
+            <div class="result-box" id="trans-result" style="border-left-color: var(--text-muted); color: var(--text-muted);">Effettua tutte e tre le scelte per il verdetto.</div>
+        </div>
+    </section>
+
+    <!-- FUNZIONE UTILITÀ -->
+    <section class="lesson-section">
+        <h2 class="lesson-title">La Funzione di Utilità</h2>
+        <p class="lesson-text">
+            Una <strong>funzione di utilità</strong> trasforma le preferenze in numeri. La più famosa è la funzione logaritmica di Bernoulli: \(U(x) = \ln(x)\). L'idea è semplice ma rivoluzionaria: la soddisfazione cresce, ma sempre più lentamente. È la <strong>utilità marginale decrescente</strong>.
+        </p>
+        <p class="lesson-text">
+            <strong>Esempio Wall Street:</strong> per Gordon Gekko, passare da 1 a 2 milioni di dollari di stipendio dà un'enorme soddisfazione; passare da 100 a 101 milioni gli cambia poco. Il primo milione vale più del centesimo.
+        </p>
+
+        <div class="util-card">
+            <h3 style="color: var(--math-color); margin-bottom: 1rem;">Esploratore di funzioni di utilità</h3>
+            <div class="slider-row">
+                <label>Tipo di funzione</label>
+                <select id="util-type" style="padding: 0.5rem; background: var(--surface-hover); color: var(--text-main); border: 1px solid rgba(255,255,255,0.15); border-radius: 6px;">
+                    <option value="log">U(x) = ln(x) — logaritmica</option>
+                    <option value="sqrt">U(x) = √x — radice</option>
+                    <option value="lin">U(x) = x — lineare (neutrale al rischio)</option>
+                    <option value="quad">U(x) = x² — quadratica (amante del rischio)</option>
+                </select>
+            </div>
+            <div class="slider-row">
+                <label>Quantità x</label>
+                <input type="range" id="util-x" min="1" max="100" value="20">
+                <span class="value-pill" id="util-x-val">20</span>
+            </div>
+            <canvas id="util-canvas" class="util-canvas" width="600" height="320"></canvas>
+            <div class="result-box" id="util-out">U(20) = ln(20) ≈ 3.00</div>
+        </div>
+
+        <div style="background: rgba(0,0,0,0.2); border-radius: 10px; padding: 1.2rem; margin-top: 1rem;">
+            <p style="color: var(--text-muted); margin-bottom: 0.5rem;"><strong style="color: var(--text-main);">Lettura del grafico:</strong></p>
+            <ul style="color: var(--text-muted); padding-left: 1.5rem; font-size: 0.95rem;">
+                <li><strong>Concava</strong> (ln, √x): l'agente è <em>avverso al rischio</em>. Preferisce 50 € sicuri a una lotteria che dà 0 o 100 € con uguale probabilità.</li>
+                <li><strong>Lineare</strong> (x): l'agente è <em>neutrale al rischio</em>. Gli è indifferente.</li>
+                <li><strong>Convessa</strong> (x²): l'agente è <em>amante del rischio</em>. È il giocatore del Casinò di <em>Casino Royale</em>.</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- VINCOLO DI BUDGET -->
+    <section class="lesson-section" style="border-left: 4px solid #F59E0B;">
+        <h2 class="lesson-title" style="color: #F59E0B;">Il Vincolo di Bilancio</h2>
+        <p class="lesson-text">
+            Nessuno ha risorse infinite (nemmeno Tony Stark, e lo sappiamo perché in <em>Avengers: Endgame</em> il finanziamento del viaggio nel tempo è il suo cruccio). Se hai un reddito \(R\), puoi acquistare quantità \(x\) e \(y\) di due beni con prezzi \(p_x\) e \(p_y\) solo se:
+        </p>
+        <div style="background: rgba(0,0,0,0.3); padding: 1.2rem; border-radius: 10px; text-align: center; font-size: 1.4rem; font-family: monospace; color: #F59E0B; margin: 1.5rem 0;">
+            \(p_x \cdot x + p_y \cdot y \le R\)
+        </div>
+
+        <div class="util-card" style="background: rgba(245,158,11,0.04);">
+            <h3 style="color: #F59E0B; margin-bottom: 1rem;">Ottimizzatore di paniere</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem;">Sei uno studente con un budget settimanale. Quante pizze (\(x\)) e quanti caffè (\(y\)) puoi permetterti?</p>
+            <div class="slider-row">
+                <label>Budget R (€)</label>
+                <input type="range" id="bud-r" min="10" max="100" value="50">
+                <span class="value-pill" id="bud-r-val">50</span>
+            </div>
+            <div class="slider-row">
+                <label>Prezzo pizza p<sub>x</sub></label>
+                <input type="range" id="bud-px" min="2" max="15" value="8">
+                <span class="value-pill" id="bud-px-val">8</span>
+            </div>
+            <div class="slider-row">
+                <label>Prezzo caffè p<sub>y</sub></label>
+                <input type="range" id="bud-py" min="1" max="8" value="2">
+                <span class="value-pill" id="bud-py-val">2</span>
+            </div>
+            <canvas id="bud-canvas" class="util-canvas" width="600" height="340"></canvas>
+            <div class="result-box" id="bud-out" style="border-left-color: #F59E0B; color: #F59E0B;">
+                Paniere ottimo: 3 pizze + 13 caffè (utilità ≈ 4.97)
+            </div>
+        </div>
+    </section>
+
+    <!-- SCELTE CONCRETE -->
+    <section class="lesson-section">
+        <h2 class="lesson-title">Mettiti alla Prova: Lo Studente Razionale</h2>
+        <p class="lesson-text">
+            Hai 10 € in tasca per il pranzo a scuola. Ogni opzione ti dà una certa utilità (soddisfazione) ed ha un prezzo. Quale combinazione di alternative scegli per massimizzare l'utilità totale rimanendo entro il budget?
+        </p>
+
+        <div class="choice-grid" id="lunch-grid">
+            <div class="choice-card" data-id="0" data-price="4" data-util="6">
+                <h4>Panino caldo</h4>
+                <div class="price">4 €</div>
+                <div style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.4rem;">Utilità: 6</div>
+            </div>
+            <div class="choice-card" data-id="1" data-price="3" data-util="4">
+                <h4>Insalata</h4>
+                <div class="price">3 €</div>
+                <div style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.4rem;">Utilità: 4</div>
+            </div>
+            <div class="choice-card" data-id="2" data-price="2" data-util="3">
+                <h4>Bibita</h4>
+                <div class="price">2 €</div>
+                <div style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.4rem;">Utilità: 3</div>
+            </div>
+            <div class="choice-card" data-id="3" data-price="3" data-util="5">
+                <h4>Pizzetta</h4>
+                <div class="price">3 €</div>
+                <div style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.4rem;">Utilità: 5</div>
+            </div>
+            <div class="choice-card" data-id="4" data-price="1" data-util="2">
+                <h4>Mela</h4>
+                <div class="price">1 €</div>
+                <div style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.4rem;">Utilità: 2</div>
+            </div>
+            <div class="choice-card" data-id="5" data-price="2" data-util="2">
+                <h4>Dolcetto</h4>
+                <div class="price">2 €</div>
+                <div style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.4rem;">Utilità: 2</div>
+            </div>
+        </div>
+
+        <div class="result-box" id="lunch-out">Budget: 10 € · Speso: 0 € · Utilità totale: 0</div>
+        <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem; text-align: center;">
+            <em>Suggerimento: l'agente razionale massimizza l'utilità per euro speso!</em>
+        </p>
+    </section>
+
+    <!-- LIMITI -->
+    <section class="lesson-section" style="background: rgba(59,130,246,0.03);">
+        <h2 class="lesson-title">I Limiti dell'Homo Economicus</h2>
+        <p class="lesson-text">
+            Il modello dell'agente perfettamente razionale è elegante ma ha grossi limiti, come hanno mostrato Kahneman, Tversky e la <em>finanza comportamentale</em>. Ecco le principali "anomalie":
+        </p>
+
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+            <div class="card" style="padding: 1.3rem;">
+                <h4 style="color: var(--math-color); margin-bottom: 0.5rem;">Avversione alla perdita</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Perdere 100 € fa più male di quanto piaccia guadagnarne 100. Asimmetria che spiega perché tenere azioni in rosso a lungo è così comune.</p>
+            </div>
+            <div class="card" style="padding: 1.3rem;">
+                <h4 style="color: var(--math-color); margin-bottom: 0.5rem;">Effetto inquadramento</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">"Carne 90% magra" e "carne con 10% di grasso" sono identiche, ma la prima frase vende di più.</p>
+            </div>
+            <div class="card" style="padding: 1.3rem;">
+                <h4 style="color: var(--math-color); margin-bottom: 0.5rem;">Ancoraggio</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Il prezzo iniziale "barrato" (250 € → 99 €) condiziona la percezione del vero valore. Tutti gli e-commerce lo sanno.</p>
+            </div>
+            <div class="card" style="padding: 1.3rem;">
+                <h4 style="color: var(--math-color); margin-bottom: 0.5rem;">Razionalità limitata</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Herbert Simon: non abbiamo tempo né capacità di calcolo per ottimizzare tutto. Spesso ci accontentiamo (<em>satisficing</em>).</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- QUIZ -->
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title">Quiz di Riepilogo</h2>
+        <p class="lesson-text" style="font-size: 0.95rem;">Verifica di aver capito come ragiona (in teoria) un agente economico.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Matematica.</p>
+</footer>
+
+<script src="agenti-razionali.js"></script>
+<script src="../../js/main.js"></script>
+</body>
+</html>

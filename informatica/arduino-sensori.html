@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sensori Ambientali - Lezione Interattiva MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        .back-button { display: inline-flex; align-items: center; color: var(--text-muted); text-decoration: none; margin-bottom: 2rem; font-weight: 600; transition: color 0.3s ease, transform 0.3s ease; }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+        .sub-hero { padding: 4rem 0 2rem; text-align: left; }
+        .sub-hero-title { font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; margin-bottom: 1rem; }
+
+        .widget-box { background: rgba(245,158,11,0.1); border: 2px solid rgba(245,158,11,0.3); border-radius: 16px; padding: 2rem; margin: 2rem 0; }
+
+        .adc-slider-container { display: flex; flex-direction: column; gap: 1.5rem; }
+        .slider-group { display: flex; flex-direction: column; gap: 1rem; }
+        .slider-label { font-weight: 600; color: var(--text-main); font-size: 1.1rem; }
+        .slider { width: 100%; height: 8px; border-radius: 5px; background: rgba(245,158,11,0.2); outline: none; -webkit-appearance: none; appearance: none; }
+        .slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 24px; height: 24px; border-radius: 50%; background: var(--chem-color); cursor: pointer; transition: all 0.2s; }
+        .slider::-moz-range-thumb { width: 24px; height: 24px; border-radius: 50%; background: var(--chem-color); cursor: pointer; border: none; transition: all 0.2s; }
+        .slider::-webkit-slider-thumb:hover { box-shadow: 0 0 12px var(--chem-color); }
+        .slider::-moz-range-thumb:hover { box-shadow: 0 0 12px var(--chem-color); }
+
+        .adc-display { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; }
+        .adc-cell { background: rgba(0,0,0,0.25); border-radius: 10px; padding: 1.2rem; text-align: center; }
+        .adc-label { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.5rem; }
+        .adc-value { font-family: monospace; font-size: 1.8rem; font-weight: 800; color: var(--chem-color); }
+
+        .thermometer-widget { background: rgba(245,158,11,0.1); border: 2px solid rgba(245,158,11,0.3); border-radius: 16px; padding: 2rem; margin: 2rem 0; }
+        .thermometer-container { display: flex; align-items: flex-end; gap: 2rem; margin: 2rem 0; }
+        .thermometer-scale { display: flex; flex-direction: column; justify-content: space-between; font-size: 0.9rem; color: var(--text-muted); height: 300px; }
+        .thermometer-bar { width: 60px; height: 300px; background: linear-gradient(to top, #FF0000, #FFFF00, #00FFFF); border-radius: 30px; border: 2px solid rgba(245,158,11,0.3); position: relative; overflow: hidden; }
+        .thermometer-fill { position: absolute; bottom: 0; width: 100%; background: linear-gradient(to top, #FF0000, #FF6600, #FFFF00, #00FF00, #00FFFF, #0000FF); transition: height 0.3s ease; border-radius: 30px 30px 0 0; }
+        .thermometer-value { position: absolute; right: -60px; top: 50%; transform: translateY(-50%); font-size: 1.3rem; font-weight: 700; color: var(--chem-color); white-space: nowrap; }
+
+        .code-box { background: rgba(0,0,0,0.25); border-left: 4px solid var(--chem-color); border-radius: 8px; padding: 1.2rem; font-family: monospace; font-size: 0.9rem; color: #a0aec0; overflow-x: auto; margin: 1.5rem 0; }
+
+        .sensor-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin: 1.5rem 0; }
+        .sensor-card { background: rgba(0,0,0,0.25); border-left: 4px solid var(--chem-color); border-radius: 10px; padding: 1.5rem; }
+        .sensor-card h4 { color: var(--chem-color); margin-bottom: 0.8rem; }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="informatica.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Informatica
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Sensori <span class="gradient-text">Ambientali</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+            Dal mondo analogico al digitale: come Arduino legge temperature, umidità e luminosità attraverso convertitori ADC.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Tipi di Sensori</h2>
+        <p class="lesson-text">
+            I sensori trasformano grandezze fisiche in segnali elettrici. Arduino può leggerli e interpretarli per reagire all'ambiente.
+        </p>
+
+        <div class="sensor-grid">
+            <div class="sensor-card">
+                <h4>Sensore di Temperatura (DHT22/LM35)</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Misura la temperatura ambientale in Celsius. Fondamentale per meteo-stazioni e sistemi di controllo clima.</p>
+            </div>
+            <div class="sensor-card">
+                <h4>Sensore di Umidità (DHT22)</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Rileva l'umidità relativa dell'aria in percentuale. Spesso integrato con il sensore di temperatura.</p>
+            </div>
+            <div class="sensor-card">
+                <h4>Sensore di Luminosità (LDR/BH1750)</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Misura l'intensità della luce. Usato in sistemi di illuminazione automatica.</p>
+            </div>
+            <div class="sensor-card">
+                <h4>Sensore di Pressione</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Rileva la pressione atmosferica. Utile per previsioni meteo e altimetri.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title" style="color: var(--chem-color);">ADC: Analogico ↔ Digitale</h2>
+        <p class="lesson-text">
+            I sensori spesso forniscono segnali <strong>analogici</strong> (una tensione continua tra 0V e 5V). Arduino ha una CPU digitale che capisce solo 0 e 1, quindi occorre un <strong>convertitore ADC</strong> (Analog-to-Digital Converter) per tradurre.
+        </p>
+
+        <div style="background: rgba(245,158,11,0.06); border-left: 4px solid var(--chem-color); padding: 1.5rem; border-radius: 0 10px 10px 0; margin: 1.5rem 0;">
+            <p class="lesson-text" style="margin-bottom: 0;">
+                <strong>Fatto:</strong> Arduino UNO ha un ADC a <strong>10 bit</strong>, che significa può distinguere 2^10 = 1024 livelli diversi. Una tensione tra 0V e 5V viene mappata a un numero tra 0 e 1023.
+            </p>
+        </div>
+
+        <h3 style="margin: 2rem 0 1rem; color: var(--chem-color);">Formula di Conversione</h3>
+        <div style="background: rgba(0,0,0,0.25); padding: 1.2rem; border-radius: 10px; font-family: monospace; color: var(--chem-color); margin-bottom: 1rem; font-size: 1.1rem; text-align: center;">
+            Tensione (V) = (Valore ADC / 1023) × 5
+        </div>
+        <p class="lesson-text">Se l'ADC legge 512, la tensione è (512 / 1023) × 5 ≈ 2.5V</p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Visualizzatore ADC Interattivo</h2>
+        <p class="lesson-text">Sposta lo slider per simulare il valore di un sensore analogico. Vedi come la tensione (0-5V) diventa un valore digitale (0-1023).</p>
+
+        <div class="widget-box">
+            <h3 style="color: var(--chem-color); margin-bottom: 1.5rem;">Simulatore ADC</h3>
+            <div class="adc-slider-container">
+                <div class="slider-group">
+                    <label class="slider-label">Tensione di Ingresso (0-5V)</label>
+                    <input type="range" min="0" max="5" step="0.01" value="2.5" class="slider" id="voltage-slider">
+                </div>
+                <div class="adc-display">
+                    <div class="adc-cell">
+                        <div class="adc-label">Tensione (V)</div>
+                        <div class="adc-value" id="voltage-display">2.50</div>
+                    </div>
+                    <div class="adc-cell">
+                        <div class="adc-label">Valore ADC (0-1023)</div>
+                        <div class="adc-value" id="adc-display">512</div>
+                    </div>
+                    <div class="adc-cell">
+                        <div class="adc-label">Percentuale</div>
+                        <div class="adc-value" id="percent-display">50%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Conversione Celsius e Lettura Sensore</h2>
+        <p class="lesson-text">
+            Un sensore LM35 fornisce una tensione proporzionale alla temperatura: <strong>10mV per ogni grado Celsius</strong>.
+        </p>
+
+        <h3 style="margin: 2rem 0 1rem; color: var(--chem-color);">Formula per LM35</h3>
+        <div style="background: rgba(0,0,0,0.25); padding: 1.2rem; border-radius: 10px; font-family: monospace; color: var(--chem-color); margin-bottom: 1rem; font-size: 1.1rem; text-align: center;">
+            Temperatura (°C) = (Tensione in V) × 100
+        </div>
+        <p class="lesson-text">Se la tensione è 2.5V, la temperatura è 2.5 × 100 = 250°C (troppo calda!).</p>
+
+        <h3 style="margin: 2rem 0 1rem; color: var(--chem-color);">Codice per LM35</h3>
+        <div class="code-box">const int sensorPin = A0;
+
+void setup() {
+  Serial.begin(9600);
+}
+
+void loop() {
+  int adcValue = analogRead(sensorPin);
+  float voltage = (adcValue / 1023.0) * 5.0;
+  float tempC = voltage * 100;
+
+  Serial.print("Temperatura: ");
+  Serial.print(tempC);
+  Serial.println(" C");
+  delay(1000);
+}
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Termometro Grafico Interattivo</h2>
+        <p class="lesson-text">Sposta lo slider per modificare la temperatura e vedi il colore cambiare da blu (freddo) a rosso (caldo).</p>
+
+        <div class="thermometer-widget">
+            <h3 style="color: var(--chem-color); margin-bottom: 1.5rem;">Termometro con Scala Colori</h3>
+
+            <div style="margin-bottom: 2rem;">
+                <label class="slider-label" style="margin-bottom: 1rem;">Temperatura (-20°C a +50°C)</label>
+                <input type="range" min="-20" max="50" step="1" value="20" class="slider" id="temp-slider">
+            </div>
+
+            <div class="thermometer-container">
+                <div class="thermometer-scale">
+                    <div>+50°C</div>
+                    <div>+25°C</div>
+                    <div>0°C</div>
+                    <div>-20°C</div>
+                </div>
+                <div style="position: relative; display: flex; align-items: flex-end;">
+                    <div class="thermometer-bar">
+                        <div class="thermometer-fill" id="thermometer-fill"></div>
+                        <div class="thermometer-value" id="temp-value">+20°C</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 2rem; background: rgba(0,0,0,0.25); padding: 1.5rem; border-radius: 10px;">
+                <h4 style="color: var(--chem-color); margin-bottom: 1rem;">Legenda Colori</h4>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem;">
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <div style="width: 20px; height: 20px; background: #0000FF; border-radius: 4px;"></div>
+                        <span style="font-size: 0.9rem;">Freddo (-20°C a 0°C)</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <div style="width: 20px; height: 20px; background: #00FF00; border-radius: 4px;"></div>
+                        <span style="font-size: 0.9rem;">Moderato (0°C a 25°C)</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <div style="width: 20px; height: 20px; background: #FF6600; border-radius: 4px;"></div>
+                        <span style="font-size: 0.9rem;">Caldo (25°C a 40°C)</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <div style="width: 20px; height: 20px; background: #FF0000; border-radius: 4px;"></div>
+                        <span style="font-size: 0.9rem;">Molto Caldo (40°C a 50°C)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Logging Dati con Serial.print</h2>
+        <p class="lesson-text">
+            Arduino comunica con il computer (e con noi) attraverso la <strong>porta seriale</strong>. La funzione <strong>Serial.print()</strong> invia dati al Monitor Seriale, permettendo di loggare letture sensori in tempo reale.
+        </p>
+
+        <h3 style="margin: 2rem 0 1rem; color: var(--chem-color);">Funzioni di Output</h3>
+        <div style="background: rgba(0,0,0,0.25); border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0;">
+            <div style="margin-bottom: 1.5rem;">
+                <h4 style="color: var(--chem-color); font-family: monospace;">Serial.print(data)</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Stampa il dato senza andare a capo</p>
+            </div>
+            <div style="margin-bottom: 1.5rem;">
+                <h4 style="color: var(--chem-color); font-family: monospace;">Serial.println(data)</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Stampa il dato e va a capo</p>
+            </div>
+            <div>
+                <h4 style="color: var(--chem-color); font-family: monospace;">Serial.begin(9600)</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Inizializza la comunicazione seriale alla velocità di 9600 baud</p>
+            </div>
+        </div>
+
+        <h3 style="margin: 2rem 0 1rem; color: var(--chem-color);">Esempio di Logging</h3>
+        <div class="code-box">void setup() {
+  Serial.begin(9600);
+}
+
+void loop() {
+  int light = analogRead(A0);
+  int temp = analogRead(A1);
+
+  Serial.print("Luce: ");
+  Serial.print(light);
+  Serial.print(" | Temp: ");
+  Serial.println(temp);
+
+  delay(1000);
+}
+        </div>
+        <p class="lesson-text" style="font-size: 0.95rem;">Nel Monitor Seriale vedrai uscite come: "Luce: 512 | Temp: 768"</p>
+    </section>
+
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Quiz di Riepilogo</h2>
+        <p class="lesson-text" style="font-size: 0.95rem;">Metti alla prova quanto hai imparato sui sensori e sull'ADC di Arduino.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Informatica.</p>
+</footer>
+
+<script src="arduino-sensori.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

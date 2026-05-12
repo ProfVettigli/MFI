@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grand Unified Theory - Interactive Lesson MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        .back-button { display: inline-flex; align-items: center; color: var(--text-muted); text-decoration: none; margin-bottom: 2rem; font-weight: 600; transition: color 0.3s ease, transform 0.3s ease; }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+        .sub-hero { padding: 4rem 0 2rem; text-align: left; }
+        .sub-hero-title { font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; margin-bottom: 1rem; }
+        .lesson-title { color: var(--physics-color) !important; }
+
+        .interactive-box {
+            background: rgba(30,58,138,0.04);
+            border: 1px solid rgba(30,58,138,0.18);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .card { background: rgba(0,0,0,0.2); border-radius: 12px; padding: 1.5rem; margin: 1rem 0; }
+        .card strong { color: var(--physics-color); }
+
+        .formula { font-family: 'Cambria Math', Cambria, serif; font-size: 1.3rem; text-align: center; padding: 1rem; background: rgba(0,0,0,0.25); border-radius: 10px; margin: 1rem 0; }
+
+        .timeline { position: relative; padding-left: 2.5rem; margin: 2rem 0; }
+        .timeline::before { content: ''; position: absolute; left: 0.6rem; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--physics-color), rgba(30,58,138,0.1)); }
+        .timeline-item { position: relative; margin-bottom: 2rem; }
+        .timeline-item::before { content: ''; position: absolute; left: -1.95rem; top: 0.4rem; width: 10px; height: 10px; border-radius: 50%; background: var(--physics-color); box-shadow: 0 0 8px rgba(30,58,138,0.5); }
+        .timeline-year { font-size: 0.8rem; font-weight: 700; color: var(--physics-color); letter-spacing: 1px; margin-bottom: 0.3rem; }
+        .timeline-text { font-size: 0.97rem; color: var(--text-muted); line-height: 1.6; }
+        .timeline-text strong { color: var(--text-main); }
+
+        .force-diagram { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1rem; margin: 2rem 0; }
+        .force-box { background: rgba(0,0,0,0.3); border-left: 4px solid var(--physics-color); padding: 1.2rem; border-radius: 0 8px 8px 0; text-align: center; }
+        .force-box strong { font-size: 1.1rem; }
+        .force-box p { font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem; }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="fisica-moderna.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Back to Fisica Moderna
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Grand Unified <span class="gradient-text">Theory</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+            Unifying the four fundamental forces, symmetry breaking, and the quest for a Theory of Everything through superstrings.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">The Four Fundamental Forces</h2>
+        <p class="lesson-text">
+            All interactions in the universe are mediated by four fundamental forces. At high energies, they begin to merge into unified theories.
+        </p>
+
+        <div class="force-diagram">
+            <div class="force-box">
+                <strong>Strong Nuclear</strong>
+                <p>Binds quarks & gluons. Strongest force, but very short range.</p>
+            </div>
+            <div class="force-box">
+                <strong>Electromagnetic</strong>
+                <p>Binds electrons to nuclei. Photons carry this force.</p>
+            </div>
+            <div class="force-box">
+                <strong>Weak Nuclear</strong>
+                <p>Beta decay. Mediated by W and Z bosons.</p>
+            </div>
+            <div class="force-box">
+                <strong>Gravity</strong>
+                <p>Weakest force. Spacetime curvature. Gravitons theorized but undetected.</p>
+            </div>
+        </div>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-year">1967</div>
+                <p class="timeline-text"><strong>Sheldon Glashow, Abdus Salam, Steven Weinberg</strong> unify electromagnetic and weak forces into the electroweak interaction.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1973</div>
+                <p class="timeline-text">The <strong>Standard Model</strong> is completed: strong, electromagnetic, and weak forces unified under SU(3) × SU(2) × U(1).</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1974-1980s</div>
+                <p class="timeline-text"><strong>Grand Unification Theories (GUTs)</strong> proposed to merge strong and electroweak forces at extreme energies (10<sup>15</sup> GeV).</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1970s-Present</div>
+                <p class="timeline-text"><strong>Superstring Theory</strong> attempts to include gravity and unify all four forces in 10+ dimensions.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Electroweak Unification</h2>
+        <p class="lesson-text">
+            The electromagnetic and weak forces seem completely different at low energies. But in 1967, an elegant symmetry emerged: at high energies, they merge into a single <strong>electroweak interaction</strong>.
+        </p>
+        <p class="lesson-text">
+            This unification only became experimentally accessible in 2012 with the discovery of the <strong>Higgs boson</strong> at the LHC. The Higgs mechanism explains why W and Z bosons are massive while the photon is massless — through <strong>spontaneous symmetry breaking</strong>.
+        </p>
+        <div class="formula">SU(2) × U(1) → U(1)<sub>EM</sub>  (at low energies)</div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Grand Unification & Super-Symmetry</h2>
+        <p class="lesson-text">
+            <strong>GUT Hypothesis:</strong> At energies around 10<sup>15</sup> GeV, the strong, electromagnetic, and weak forces merge into a single grand unified force. This predicts:
+        </p>
+
+        <div class="interactive-box">
+            <div class="card">
+                <strong>Proton Decay:</strong> Predicted lifetime ~10<sup>34</sup> years (not observed yet). If true, violates baryon number conservation.
+            </div>
+            <div class="card">
+                <strong>Magnetic Monopoles:</strong> Theoretical particles with a single magnetic "charge." Never observed.
+            </div>
+            <div class="card">
+                <strong>Supersymmetry (SUSY):</strong> Every fermion has a bosonic partner, and vice versa. Explains hierarchy problem, dark matter candidate.
+            </div>
+        </div>
+
+        <p class="lesson-text">
+            Despite elegant mathematical structure, GUTs lack experimental confirmation. The LHC has not found evidence for proton decay, monopoles, or supersymmetric particles (yet).
+        </p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">String Theory & The Theory of Everything</h2>
+        <p class="lesson-text">
+            The holy grail: a single theory explaining all forces, including gravity. <strong>String theory</strong> proposes that fundamental particles are not points but tiny vibrating strings living in 10 or 11 dimensions.
+        </p>
+        <p class="lesson-text">
+            <strong>Why strings?</strong> Point particles lead to infinities in quantum field theory. But strings have <strong>natural cutoff scales</strong> and automatically predict gravity (one vibrational mode is the graviton).
+        </p>
+
+        <div style="background: rgba(30,58,138,0.06); border-left: 4px solid var(--physics-color); padding: 1.2rem; border-radius: 0 10px 10px 0; margin: 1.5rem 0;">
+            <p class="lesson-text" style="margin-bottom: 0; font-size: 1rem;">
+                <strong>The Challenge:</strong> String theory requires 6 or 7 extra spatial dimensions compactified at scales 10<sup>−33</sup> cm. It makes very few testable predictions. After 50+ years, no experimental confirmation. Critics argue it's not science but sophisticated mathematics.
+            </p>
+        </div>
+
+        <p class="lesson-text">
+            Alternative approaches like <strong>Loop Quantum Gravity</strong> and <strong>Asymptotic Safety</strong> offer different paths to quantum gravity without extra dimensions.
+        </p>
+    </section>
+
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title">Quiz Summary</h2>
+        <p class="lesson-text" style="font-size: 0.95rem;">Test your understanding of grand unification and the search for a Theory of Everything.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 MFI - Interactive Physics Platform. Physics Section.</p>
+</footer>
+
+<script src="clil-gut.js"></script>
+<script src="../../js/main.js"></script>
+</body>
+</html>

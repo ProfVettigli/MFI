@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Massimi e Minimi - Lezione Interattiva MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        .back-button { display: inline-flex; align-items: center; color: var(--text-muted); text-decoration: none; margin-bottom: 2rem; font-weight: 600; transition: color 0.3s, transform 0.3s; }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+        .sub-hero { padding: 4rem 0 2rem; text-align: left; }
+        .sub-hero-title { font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; margin-bottom: 1rem; }
+        .widget-box { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 2rem; margin: 2rem 0; }
+        .widget-title { color: var(--math-color); margin-bottom: 1rem; font-size: 1.2rem; font-weight: 700; }
+        canvas.graph { width: 100%; max-width: 600px; height: 360px; background: rgba(0,0,0,0.3); border-radius: 10px; display: block; margin: 1rem auto; }
+        .ctrl-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap; }
+        .ctrl-row label { min-width: 80px; color: var(--text-muted); font-family: monospace; font-size: 0.95rem; }
+        input[type=range] { flex: 1; min-width: 150px; accent-color: var(--math-color); }
+        .val-display { font-family: monospace; color: var(--math-color); min-width: 70px; font-weight: 700; }
+        .result-card { background: rgba(59,130,246,0.06); border-left: 4px solid var(--math-color); padding: 1rem 1.2rem; border-radius: 0 10px 10px 0; margin-top: 1rem; font-family: monospace; font-size: 0.95rem; }
+        .formula-block { background: rgba(0,0,0,0.3); border-radius: 10px; padding: 1.2rem; margin: 1rem 0; font-size: 1.05rem; border-left: 3px solid var(--math-color); }
+        .pill { display: inline-block; padding: 0.2rem 0.7rem; border-radius: 999px; background: rgba(59,130,246,0.15); color: var(--math-color); font-size: 0.8rem; font-weight: 700; margin-right: 0.4rem; }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="studio-funzione.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Studio di Funzione
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Massimi e <span class="gradient-text">Minimi</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+            Scopri i punti di vetta e di valle: ottimizzazione, test della derivata, e problemi pratici di massimo e minimo.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Punti Critici e il Test della Derivata Prima</h2>
+        <p class="lesson-text">
+            Quando cerchi il monte più alto di una catena montuosa, sai che in cima il terreno deve essere piatto (pendenza = 0) per almeno un istante. Allo stesso modo, i massimi e minimi locali di una funzione si trovano dove la derivata vale zero —questi si chiamano <strong>punti critici</strong>.
+        </p>
+        <p class="lesson-text">
+            Il <strong>test della derivata prima</strong> ti dice di che tipo è il punto critico:
+        </p>
+        <div class="formula-block">
+            <strong>• Se \(f'(x)\) cambia da + a −:</strong> massimo locale in \(x\)<br>
+            <strong>• Se \(f'(x)\) cambia da − a +:</strong> minimo locale in \(x\)<br>
+            <strong>• Se \(f'(x)\) non cambia segno:</strong> punto di flesso
+        </div>
+
+        <div class="widget-box">
+            <h3 class="widget-title">Explorer Parabola: \(y = ax^2 + bx + c\)</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">Modifica i coefficienti per vedere come cambia il vertice (massimo o minimo). Il punto rosso è il massimo/minimo.</p>
+            <div class="ctrl-row">
+                <label>a =</label>
+                <input type="range" id="para-a" min="-3" max="3" step="0.1" value="1">
+                <span class="val-display" id="para-a-val">1.0</span>
+            </div>
+            <div class="ctrl-row">
+                <label>b =</label>
+                <input type="range" id="para-b" min="-5" max="5" step="0.1" value="0">
+                <span class="val-display" id="para-b-val">0.0</span>
+            </div>
+            <div class="ctrl-row">
+                <label>c =</label>
+                <input type="range" id="para-c" min="-5" max="5" step="0.1" value="0">
+                <span class="val-display" id="para-c-val">0.0</span>
+            </div>
+            <canvas class="graph" id="parabola-canvas" width="600" height="360"></canvas>
+            <div class="result-card" id="parabola-result">Vertice: (... , ...) · Tipo: ...</div>
+        </div>
+    </section>
+
+    <section class="lesson-section" style="border-left: 4px solid #F59E0B;">
+        <h2 class="lesson-title" style="color: #F59E0B;">Test della Derivata Seconda</h2>
+        <p class="lesson-text">
+            Se calcolare il segno della derivata prima attorno al punto critico è laborioso, c'è una scorciatoia: la <strong>derivata seconda</strong> ti dice immediatamente se è un massimo o minimo.
+        </p>
+        <div class="formula-block" style="text-align: center; font-size: 1.2rem;">
+            Se \(f'(c) = 0\) allora:<br>
+            \(f''(c) > 0\) → minimo locale | \(f''(c) < 0\) → massimo locale
+        </div>
+        <p class="lesson-text">
+            La derivata seconda misura anche la <strong>concavità</strong>: la curva è "a coppa" (concava) oppure "a tetto" (convessa)?
+        </p>
+
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin: 1.5rem 0;">
+            <div class="card" style="padding: 1.5rem;">
+                <h4 style="color: #F59E0B;">Concavo (∪)</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">\(f''(x) > 0\): la curva "sorride", il minimo è in fondo</p>
+            </div>
+            <div class="card" style="padding: 1.5rem;">
+                <h4 style="color: #F59E0B;">Convesso (∩)</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">\(f''(x) < 0\): la curva "piange", il massimo è in cima</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section" style="border-left: 4px solid var(--physics-color);">
+        <h2 class="lesson-title" style="color: var(--physics-color);">Problemi di Ottimizzazione Pratica</h2>
+        <p class="lesson-text">
+            In realtà, il calcolo di massimi e minimi è uno strumento potentissimo per risolvere <strong>problemi di ingegneria, economia, fisica</strong>. Vuoi costruire una scatola con area superficiale minima? Vuoi massimizzare il profitto di un'azienda? Vuoi trovare il tempo di arrivo più veloce? In tutti questi casi usi la derivata.
+        </p>
+
+        <div class="widget-box">
+            <h3 class="widget-title">Problema: Scatola Aperta da Foglio Quadrato</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">Da un foglio quadrato (lato 10) ritagli quadratini agli angoli (lato \(x\)). Qual è il valore di \(x\) che massimizza il volume?</p>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 1rem;">
+                Volume: \(V(x) = x(10-2x)^2\) dove \(0 < x < 5\)
+            </p>
+            <div class="ctrl-row">
+                <label>x =</label>
+                <input type="range" id="box-x" min="0.1" max="4.9" step="0.1" value="1.5">
+                <span class="val-display" id="box-x-val">1.5</span>
+            </div>
+            <canvas class="graph" id="box-canvas" width="600" height="360"></canvas>
+            <div class="result-card" id="box-result">Volume massimo ≈ ... a x ≈ ...</div>
+        </div>
+    </section>
+
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title">Quiz di Riepilogo</h2>
+        <p class="lesson-text" style="font-size: 0.95rem;">Verifica la comprensione su massimi, minimi e ottimizzazione.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+    </section>
+
+</main>
+
+<footer><p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Matematica.</p></footer>
+
+<script src="massimi-minimi.js"></script>
+<script src="../../js/main.js"></script>
+</body>
+</html>

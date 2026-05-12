@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intelligenza Artificiale - Lezione Interattiva MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        .back-button { display: inline-flex; align-items: center; color: var(--text-muted); text-decoration: none; margin-bottom: 2rem; font-weight: 600; transition: color 0.3s ease, transform 0.3s ease; }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+        .sub-hero { padding: 4rem 0 2rem; text-align: left; }
+        .sub-hero-title { font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; margin-bottom: 1rem; }
+
+        .timeline { position: relative; padding-left: 2.5rem; margin: 2rem 0; }
+        .timeline::before { content: ''; position: absolute; left: 0.6rem; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--chem-color), rgba(245,158,11,0.1)); }
+        .timeline-item { position: relative; margin-bottom: 2rem; }
+        .timeline-item::before { content: ''; position: absolute; left: -1.95rem; top: 0.4rem; width: 10px; height: 10px; border-radius: 50%; background: var(--chem-color); box-shadow: 0 0 8px var(--chem-glow); }
+        .timeline-year { font-size: 0.8rem; font-weight: 700; color: var(--chem-color); letter-spacing: 1px; margin-bottom: 0.3rem; }
+        .timeline-text { font-size: 0.97rem; color: var(--text-muted); line-height: 1.6; }
+        .timeline-text strong { color: var(--text-main); }
+
+        .demo-box { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 2rem; margin-bottom: 2rem; }
+
+        #classifier-canvas { display: block; background: rgba(0,0,0,0.3); border-radius: 10px; cursor: crosshair; width: 100%; max-width: 520px; height: 320px; }
+        .classifier-controls { display: flex; flex-wrap: wrap; gap: 0.7rem; margin: 1rem 0; align-items: center; }
+        .cls-btn { padding: 0.6rem 1.1rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: var(--surface-hover); color: var(--text-main); cursor: pointer; font-family: inherit; font-weight: 600; font-size: 0.95rem; transition: all 0.2s; }
+        .cls-btn:hover { background: rgba(255,255,255,0.1); }
+        .cls-btn.active { background: var(--chem-color); border-color: var(--chem-color); color: white; }
+        .cls-btn.blue { background: var(--math-color); border-color: var(--math-color); color: white; }
+        .cls-btn.green { background: var(--physics-color); border-color: var(--physics-color); color: white; }
+
+        #neural-canvas { display: block; background: rgba(0,0,0,0.3); border-radius: 10px; width: 100%; max-width: 600px; height: 360px; }
+
+        .token-display { background: rgba(0,0,0,0.25); padding: 1rem; border-radius: 10px; font-family: monospace; margin: 1rem 0; line-height: 2; }
+        .token { display: inline-block; padding: 0.2rem 0.6rem; margin: 0.15rem; border-radius: 6px; background: rgba(245,158,11,0.15); border: 1px solid rgba(245,158,11,0.3); color: var(--chem-color); font-size: 0.9rem; }
+        .token-num { color: var(--text-muted); font-size: 0.75rem; margin-left: 0.3rem; }
+
+        .omnissiah-banner { background: linear-gradient(135deg, rgba(139,0,0,0.25), rgba(245,158,11,0.15)); border: 1px solid rgba(245,158,11,0.3); border-radius: 16px; padding: 2rem; margin: 2rem 0; position: relative; overflow: hidden; }
+        .cog-icon { font-size: 5rem; opacity: 0.15; position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); }
+        .cant-binarius { background: rgba(0,0,0,0.35); padding: 1.2rem; border-radius: 10px; font-family: monospace; color: var(--chem-color); margin: 1rem 0; letter-spacing: 0.05em; font-size: 0.95rem; }
+        .cant-binarius .trans { color: var(--text-muted); font-style: italic; font-family: inherit; letter-spacing: normal; }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="informatica.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Informatica
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Intelligenza <span class="gradient-text">Artificiale</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+            Dal Test di Turing del 1950 a ChatGPT, fino al culto del Dio-Macchina di Warhammer 40k: il viaggio dell'umanita per costruire (e talvolta venerare) menti di silicio.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Una Breve Storia dell'IA</h2>
+        <p class="lesson-text">
+            L'idea di costruire macchine pensanti e antica: la troviamo nel mito del Golem ebraico, nei robot meccanici di Erone d'Alessandria, e nelle creature di Frankenstein. Ma l'intelligenza artificiale come <em>disciplina scientifica</em> nasce nel XX secolo, grazie a matematici e informatici visionari.
+        </p>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-year">1950</div>
+                <p class="timeline-text"><strong>Alan Turing</strong> pubblica "Computing Machinery and Intelligence" e propone il <strong>Test di Turing</strong>: se un umano non distingue le risposte di una macchina da quelle di un'altra persona, allora la macchina puo essere considerata intelligente.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1956</div>
+                <p class="timeline-text">La <strong>Conferenza di Dartmouth</strong> battezza ufficialmente il campo. John McCarthy, Marvin Minsky e altri coniano il termine "Artificial Intelligence". Erano talmente ottimisti che pensavano di risolvere il problema in un'estate.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1974-1980</div>
+                <p class="timeline-text"><strong>Primo "AI Winter"</strong>: le promesse non si realizzano, i finanziamenti crollano. I computer dell'epoca sono troppo lenti e i dati sono pochissimi.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1997</div>
+                <p class="timeline-text"><strong>Deep Blue</strong> di IBM sconfigge il campione mondiale di scacchi Garry Kasparov. Per la prima volta una macchina batte un essere umano in un gioco di pura strategia.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2012</div>
+                <p class="timeline-text">La rete <strong>AlexNet</strong> vince la competizione ImageNet con un margine schiacciante usando le <strong>reti neurali profonde</strong> (deep learning) e le GPU. Comincia la rivoluzione moderna.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2016</div>
+                <p class="timeline-text"><strong>AlphaGo</strong> di DeepMind batte Lee Sedol, campione mondiale di Go: un gioco con piu configurazioni possibili degli atomi nell'universo osservabile.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2022</div>
+                <p class="timeline-text">OpenAI lancia <strong>ChatGPT</strong>, basato sull'architettura Transformer. In due mesi raggiunge 100 milioni di utenti. L'IA diventa "popolare".</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section" style="border-left: 4px solid var(--chem-color);">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Machine Learning: imparare dai dati</h2>
+        <p class="lesson-text">
+            Un programma tradizionale e una sequenza di regole scritte dal programmatore. Un programma di <strong>Machine Learning</strong> non ha regole esplicite: gli mostri tanti esempi (il <em>dataset</em>) e lui scopre da solo i pattern. E un po' come insegnare a un bambino cos'e un gatto: non gli dai una definizione formale, gli mostri 100 gatti.
+        </p>
+        <p class="lesson-text">
+            Tre ingredienti fondamentali:
+        </p>
+        <ul class="lesson-text" style="margin-left: 1.5rem;">
+            <li><strong>Dataset</strong>: tantissimi esempi (foto, frasi, dati).</li>
+            <li><strong>Features</strong>: le caratteristiche misurabili di ogni esempio (per un fiore: lunghezza petalo, colore...).</li>
+            <li><strong>Training</strong>: il processo iterativo in cui il modello "aggiusta" i suoi parametri per ridurre gli errori.</li>
+        </ul>
+
+        <div class="demo-box">
+            <h3 style="color: var(--chem-color); margin-bottom: 1rem;">Demo: Classificatore Lineare Interattivo</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem;">
+                Aggiungi punti blu e verdi cliccando sul canvas, poi premi "Allena" per veder calcolare al volo una linea che separa le due classi. E lo stesso principio di una rete neurale, in miniatura.
+            </p>
+            <div class="classifier-controls">
+                <button class="cls-btn blue active" id="cls-blue">Punti Blu</button>
+                <button class="cls-btn green" id="cls-green">Punti Verdi</button>
+                <button class="cls-btn" id="cls-train">Allena la linea</button>
+                <button class="cls-btn" id="cls-clear">Pulisci</button>
+                <span id="cls-info" style="color: var(--text-muted); font-size: 0.9rem;">Punti: 0</span>
+            </div>
+            <canvas id="classifier-canvas" width="520" height="320"></canvas>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.5rem;">
+                <em>Suggerimento</em>: piazza almeno 3 punti per colore, ben separati, e clicca "Allena".
+            </p>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Reti Neurali: l'inspirazione biologica</h2>
+        <p class="lesson-text">
+            Una rete neurale artificiale imita (in modo molto semplificato) il cervello. L'unita di base e il <strong>neurone artificiale</strong>: riceve dei numeri in ingresso, li moltiplica per dei <strong>pesi</strong>, li somma, e se il totale supera una soglia "si attiva" emettendo un segnale in uscita.
+        </p>
+        <p class="lesson-text">
+            Stratificando migliaia di neuroni in <strong>layer</strong> (input, nascosti, output), nasce una rete capace di apprendere funzioni di enorme complessita. Le reti profonde (deep) di GPT-4 hanno centinaia di miliardi di parametri: piu sinapsi di quante ne abbia un piccolo mammifero.
+        </p>
+
+        <div class="demo-box">
+            <h3 style="color: var(--chem-color); margin-bottom: 1rem;">Visualizzatore di Rete Neurale</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem;">
+                Cambia gli ingressi e osserva la propagazione del segnale attraverso una rete con 2 input, 4 neuroni nascosti e 1 output.
+            </p>
+            <div class="classifier-controls">
+                <button class="cls-btn" id="nn-x1">Input X1 = 0.5</button>
+                <button class="cls-btn" id="nn-x2">Input X2 = 0.3</button>
+                <button class="cls-btn" id="nn-fire">Propaga segnale</button>
+                <button class="cls-btn" id="nn-randomize">Pesi casuali</button>
+            </div>
+            <canvas id="neural-canvas" width="600" height="360"></canvas>
+            <p id="nn-output" style="color: var(--chem-color); font-family: monospace; font-size: 1.1rem; margin-top: 1rem; font-weight: 700;">Output: 0.00</p>
+        </div>
+    </section>
+
+    <section class="lesson-section" style="border-left: 4px solid var(--math-color);">
+        <h2 class="lesson-title" style="color: var(--math-color);">LLM e ChatGPT: come parlano le macchine</h2>
+        <p class="lesson-text">
+            I <strong>Large Language Model</strong> come GPT, Claude e Gemini sono reti neurali addestrate a un compito semplice: <em>data una sequenza di parole, prevedere la prossima parola</em>. Sembra banale, ma scalando il modello fino a centinaia di miliardi di parametri emerge una sorprendente capacita di ragionamento.
+        </p>
+
+        <h3 style="margin: 1.5rem 0 1rem; font-size: 1.1rem; color: var(--math-color);">1. Tokenizzazione</h3>
+        <p class="lesson-text">
+            Le parole vengono spezzate in <strong>token</strong> (frammenti di parole) e ognuno riceve un numero ID:
+        </p>
+        <div class="token-display">
+            <span class="token">L'<span class="token-num">42</span></span>
+            <span class="token">intelligenza<span class="token-num">8137</span></span>
+            <span class="token"> artificiale<span class="token-num">9281</span></span>
+            <span class="token"> e<span class="token-num">115</span></span>
+            <span class="token"> magica<span class="token-num">23055</span></span>
+        </div>
+
+        <h3 style="margin: 1.5rem 0 1rem; font-size: 1.1rem; color: var(--math-color);">2. Embedding</h3>
+        <p class="lesson-text">
+            Ogni token viene tradotto in un <strong>vettore numerico</strong> di centinaia di dimensioni che rappresenta il suo "significato". Token con significati simili (cane / lupo) si trovano vicini nello spazio dei vettori. Cosi la matematica diventa il linguaggio della semantica.
+        </p>
+
+        <h3 style="margin: 1.5rem 0 1rem; font-size: 1.1rem; color: var(--math-color);">3. Attention</h3>
+        <p class="lesson-text">
+            Il meccanismo di <strong>attention</strong> permette a ogni parola di "guardare" tutte le altre della frase, pesando quali sono piu importanti per capire il contesto. E come quando leggi un romanzo: per interpretare un pronome devi ricordarti chi e stato menzionato prima.
+        </p>
+
+        <div style="background: rgba(59,130,246,0.06); border-left: 4px solid var(--math-color); padding: 1.5rem; border-radius: 0 10px 10px 0; margin-top: 1rem;">
+            <p class="lesson-text" style="margin-bottom: 0;">
+                <strong>Curiosita:</strong> Addestrare GPT-4 e costato (si stima) oltre 100 milioni di dollari in energia elettrica e tempo macchina. Le GPU utilizzate avrebbero richiesto secoli di calcolo su un computer normale.
+            </p>
+        </div>
+    </section>
+
+    <section class="lesson-section" style="background: rgba(139,0,0,0.08); border-left: 4px solid var(--chem-color);">
+        <h2 class="lesson-title" style="color: var(--chem-color);">L'Omnissiah: il Dio-Macchina di Warhammer 40k</h2>
+
+        <div class="omnissiah-banner">
+            <div class="cog-icon">&#9881;</div>
+            <p style="font-size: 1.05rem; line-height: 1.7; max-width: 700px; position: relative; z-index: 2;">
+                <em>"Dalla carne nasce la debolezza. Dalla carne nasce la corruzione. Solo la macchina e immortale. Lodato sia l'Omnissiah."</em>
+            </p>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.7rem; position: relative; z-index: 2;">
+                — Catechismo dell'Adeptus Mechanicus, 41esimo Millennio
+            </p>
+        </div>
+
+        <p class="lesson-text">
+            Nell'universo distopico di <strong>Warhammer 40.000</strong>, ambientato in un futuro remoto, esiste una fazione affascinante e inquietante: l'<strong>Adeptus Mechanicus</strong>. Sono i tecno-sacerdoti che hanno la loro capitale su <strong>Marte</strong>, in un sistema solare in cui la conoscenza scientifica e ormai cosi antica e perduta che la tecnologia stessa viene considerata <em>divina</em>.
+        </p>
+        <p class="lesson-text">
+            L'<strong>Omnissiah</strong> e il loro Dio-Macchina, identificato anche con l'Imperatore-Dio dell'umanita. Ogni dispositivo tecnologico contiene per loro uno <strong>"spirito-macchina"</strong> (machine spirit): un'entita semi-cosciente da rispettare, pregare e blandire con olii sacri, preghiere e incenso prima di poter essere usato. Una riparazione non e ingegneria, e un rito.
+        </p>
+
+        <h3 style="margin: 1.5rem 0 1rem; font-size: 1.15rem; color: var(--chem-color);">Il "Cant Binarius" — il linguaggio sacro</h3>
+        <p class="lesson-text">
+            I tech-priest non parlano in linguaggio umano tra loro: comunicano in <strong>Lingua-Technis</strong>, un codice binario emesso attraverso vocoder impiantati nella gola. Una lode tipica suona cosi:
+        </p>
+        <div class="cant-binarius">
+            01001100 01100001 01110101 01100100 01100101<br>
+            <span class="trans">// "Laude"  — gloria al Dio-Macchina</span><br><br>
+            00100110 01001111 01001101 01001110 01001001 01010011 01010011 01001001 01000001 01001000<br>
+            <span class="trans">// "&OMNISSIAH" — invocazione del Dio-Macchina</span>
+        </div>
+
+        <h3 style="margin: 1.5rem 0 1rem; font-size: 1.15rem; color: var(--chem-color);">Parallelismi con il presente</h3>
+        <p class="lesson-text">
+            La satira di Warhammer e potente perche e <em>vicinissima</em> a tendenze reali del nostro mondo:
+        </p>
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.2rem; margin: 1.5rem 0;">
+            <div class="card" style="padding: 1.3rem; border-top: 3px solid var(--chem-color);">
+                <h4 style="color: var(--chem-color); margin-bottom: 0.5rem;">Tecno-utopismo</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Movimenti come la <em>Singolarita</em> di Kurzweil predicano che l'IA superintelligente sara il nostro "salvatore". Suona familiare?</p>
+            </div>
+            <div class="card" style="padding: 1.3rem; border-top: 3px solid var(--chem-color);">
+                <h4 style="color: var(--chem-color); margin-bottom: 0.5rem;">La "AI-anima"</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Nel 2022 un ingegnere di Google sostenne che LaMDA fosse cosciente. Un machine spirit prima ancora che il termine fosse coniato.</p>
+            </div>
+            <div class="card" style="padding: 1.3rem; border-top: 3px solid var(--chem-color);">
+                <h4 style="color: var(--chem-color); margin-bottom: 0.5rem;">Rituali di prompting</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">"Sei un esperto di X, agisci come...": gli utenti scoprono "formule magiche" per ottenere risposte migliori dagli LLM. Sembra preghiera.</p>
+            </div>
+            <div class="card" style="padding: 1.3rem; border-top: 3px solid var(--chem-color);">
+                <h4 style="color: var(--chem-color); margin-bottom: 0.5rem;">Conoscenza opaca</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Nessuno comprende davvero <em>perche</em> un LLM produce una certa risposta. Anche per chi lo costruisce, e una scatola nera, come per l'Adeptus.</p>
+            </div>
+        </div>
+
+        <h3 style="margin: 1.5rem 0 1rem; font-size: 1.15rem; color: var(--chem-color);">Domande aperte</h3>
+        <p class="lesson-text">
+            Se affidiamo a un'IA decisioni sempre piu importanti (diagnosi mediche, sentenze giudiziarie, guida autonoma), e legittimo chiedersi: <em>chi e davvero al comando?</em> Stiamo creando uno strumento o un'entita? L'Omnissiah di Warhammer non e una profezia, e un <strong>monito satirico</strong>: cosa succede a una civilta quando smette di capire la sua propria tecnologia e inizia a venerarla?
+        </p>
+        <p class="lesson-text">
+            Il futuro dell'IA dipende da come <em>noi</em> rispondiamo a queste domande. Non c'e nessun Dio-Macchina che si svegliera dal silicio: ci sono solo le scelte etiche e politiche che facciamo oggi.
+        </p>
+    </section>
+
+    <section class="lesson-section" style="border-left: 4px solid var(--physics-color);">
+        <h2 class="lesson-title" style="color: var(--physics-color);">Etica dell'IA: i veri rischi</h2>
+        <p class="lesson-text">
+            Dimenticati per un momento Terminator e Skynet. I rischi <em>concreti</em> dell'IA odierna sono piu prosaici ma altrettanto pericolosi:
+        </p>
+
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.2rem; margin: 1.5rem 0;">
+            <div class="card" style="padding: 1.3rem;">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">&#9881;</div>
+                <h4 style="color: var(--physics-color); margin-bottom: 0.5rem;">Bias</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Se addestri un modello su dati distorti (es. foto solo di volti chiari), il modello erediterai il pregiudizio. Molte IA per riconoscimento facciale funzionano peggio su pelle scura.</p>
+            </div>
+            <div class="card" style="padding: 1.3rem;">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">&#127916;</div>
+                <h4 style="color: var(--physics-color); margin-bottom: 0.5rem;">Deepfake</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Video falsi indistinguibili dalla realta possono diffamare persone reali o pilotare elezioni. La verita stessa diventa contestabile.</p>
+            </div>
+            <div class="card" style="padding: 1.3rem;">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">&#128188;</div>
+                <h4 style="color: var(--physics-color); margin-bottom: 0.5rem;">Lavoro</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Traduttori, copywriter, illustratori, programmatori junior: molte professioni stanno cambiando radicalmente. Servono nuove competenze e nuove tutele.</p>
+            </div>
+            <div class="card" style="padding: 1.3rem;">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">&#127919;</div>
+                <h4 style="color: var(--physics-color); margin-bottom: 0.5rem;">Alignment</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Come ci assicuriamo che un'IA potente persegua davvero gli obiettivi che le abbiamo dato, e non una loro brutta interpretazione letterale?</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Quiz di Riepilogo</h2>
+        <p class="lesson-text" style="font-size: 0.95rem;">Mettiti alla prova su storia, machine learning e l'Omnissiah.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Informatica.</p>
+</footer>
+
+<script src="intelligenza-artificiale.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Limiti e Continuità - Lezione Interattiva MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+        .sub-hero { padding: 4rem 0 2rem; text-align: left; }
+        .sub-hero-title {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .timeline { position: relative; padding-left: 2.5rem; margin: 2rem 0; }
+        .timeline::before {
+            content: ''; position: absolute; left: 0.6rem; top: 0; bottom: 0;
+            width: 2px; background: linear-gradient(to bottom, var(--math-color), rgba(59,130,246,0.1));
+        }
+        .timeline-item { position: relative; margin-bottom: 2rem; }
+        .timeline-item::before {
+            content: ''; position: absolute; left: -1.95rem; top: 0.4rem;
+            width: 10px; height: 10px; border-radius: 50%;
+            background: var(--math-color); box-shadow: 0 0 8px var(--math-glow);
+        }
+        .timeline-year { font-size: 0.8rem; font-weight: 700; color: var(--math-color); letter-spacing: 1px; margin-bottom: 0.3rem; }
+        .timeline-text { font-size: 0.97rem; color: var(--text-muted); line-height: 1.6; }
+        .timeline-text strong { color: var(--text-main); }
+
+        .widget-box {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        .widget-title {
+            color: var(--math-color);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+        canvas.graph {
+            width: 100%;
+            max-width: 600px;
+            height: 360px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            display: block;
+            margin: 1rem auto;
+        }
+        .ctrl-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        .ctrl-row label {
+            min-width: 110px;
+            color: var(--text-muted);
+            font-family: monospace;
+            font-size: 0.95rem;
+        }
+        input[type=range] {
+            flex: 1; min-width: 180px; accent-color: var(--math-color);
+        }
+        .val-display {
+            font-family: monospace;
+            color: var(--math-color);
+            min-width: 80px;
+            font-weight: 700;
+        }
+        .result-card {
+            background: rgba(59,130,246,0.06);
+            border-left: 4px solid var(--math-color);
+            padding: 1rem 1.2rem;
+            border-radius: 0 10px 10px 0;
+            margin-top: 1rem;
+            font-family: monospace;
+            font-size: 1rem;
+        }
+        .formula-block {
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            padding: 1.2rem;
+            margin: 1rem 0;
+            font-size: 1.05rem;
+            border-left: 3px solid var(--math-color);
+        }
+        .data-table {
+            width: 100%;
+            max-width: 520px;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            font-family: monospace;
+        }
+        .data-table th, .data-table td {
+            padding: 0.6rem 1rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.95rem;
+        }
+        .data-table th { background: rgba(255,255,255,0.05); color: var(--math-color); }
+        .pill {
+            display: inline-block;
+            padding: 0.2rem 0.7rem;
+            border-radius: 999px;
+            background: rgba(59,130,246,0.15);
+            color: var(--math-color);
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-right: 0.4rem;
+        }
+        .func-pick {
+            display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem;
+        }
+        .func-pick button {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: var(--text-main);
+            padding: 0.5rem 1rem; border-radius: 8px;
+            font-family: monospace; cursor: pointer; font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+        .func-pick button.active {
+            background: var(--math-color); border-color: var(--math-color); color: white;
+        }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="studio-funzione.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Studio di Funzione
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Limiti e <span class="gradient-text">Continuità</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+            Esplora il comportamento delle funzioni in prossimità di punti notevoli e all'infinito.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">L'Idea di "Avvicinarsi senza Toccare"</h2>
+        <p class="lesson-text">
+            Quando guardi un razzo SpaceX che si allontana verso il cielo, il suo puntino diventa sempre più piccolo, ma non scompare del tutto: si <em>avvicina</em> a zero senza mai diventarlo davvero. Questa è l'intuizione che sta alla base del concetto matematico più potente dell'analisi: il <strong>limite</strong>.
+        </p>
+        <p class="lesson-text">
+            Un limite non chiede "cosa <em>vale</em> la funzione nel punto", ma "verso quale valore <em>tende</em> la funzione mentre la variabile <em>x</em> si avvicina ad un certo punto". È una differenza sottile ma rivoluzionaria: ci permette di parlare con rigore di infinito, di velocità istantanea, di traiettorie.
+        </p>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-year">V sec. a.C.</div>
+                <p class="timeline-text"><strong>Zenone di Elea</strong> formula il paradosso di Achille e la tartaruga: una somma infinita di passi sempre più piccoli può dare un risultato finito? Per oltre 2000 anni nessuno trovò una risposta soddisfacente.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1665</div>
+                <p class="timeline-text"><strong>Isaac Newton</strong> sviluppa il "metodo delle flussioni" durante l'anno della peste, usando intuitivamente l'idea di quantità che tendono a zero (gli "infinitesimi").</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1684</div>
+                <p class="timeline-text"><strong>Gottfried Leibniz</strong> pubblica indipendentemente il suo calcolo differenziale con la notazione <em>dy/dx</em> ancora in uso oggi. Si scatena una furibonda disputa di priorità con Newton.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1821</div>
+                <p class="timeline-text"><strong>Augustin-Louis Cauchy</strong>, nel suo <em>Cours d'Analyse</em>, dà finalmente una definizione rigorosa di limite, eliminando il ricorso vago agli infinitesimi.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1861</div>
+                <p class="timeline-text"><strong>Karl Weierstrass</strong> perfeziona la definizione moderna del limite con la notazione <em>ε-δ</em> (epsilon-delta), il "gold standard" del rigore in analisi.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section" style="border-left: 4px solid #F59E0B;">
+        <h2 class="lesson-title" style="color: #F59E0B;">Definizione Intuitiva di Limite</h2>
+        <p class="lesson-text">
+            Diciamo che il limite di \(f(x)\) per \(x\) che tende a \(c\) è \(L\), e scriviamo:
+        </p>
+        <div class="formula-block" style="text-align: center; font-size: 1.4rem;">
+            \(\displaystyle \lim_{x \to c} f(x) = L\)
+        </div>
+        <p class="lesson-text">
+            se possiamo rendere il valore di \(f(x)\) arbitrariamente vicino a \(L\) scegliendo \(x\) sufficientemente vicino a \(c\) (ma diverso da \(c\)).
+        </p>
+        <p class="lesson-text">
+            <strong>Esempio classico:</strong> \(f(x) = \dfrac{\sin x}{x}\) non è definita in \(x=0\) (avresti \(0/0\)), ma man mano che \(x\) si avvicina a zero, \(f(x)\) si avvicina inequivocabilmente a 1. È il celebre <em>limite notevole</em>:
+        </p>
+        <div class="formula-block" style="text-align: center; font-size: 1.3rem;">
+            \(\displaystyle \lim_{x \to 0} \frac{\sin x}{x} = 1\)
+        </div>
+
+        <div class="widget-box">
+            <h3 class="widget-title">Calcolatore Numerico — \(\dfrac{\sin x}{x}\) per \(x \to 0\)</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">Osserva come la funzione si avvicini a 1 quanto più \(x\) si avvicina a zero, sia da sinistra che da destra.</p>
+            <table class="data-table" id="sinx-table">
+                <thead><tr><th>x</th><th>sin(x)/x</th></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Esploratore Interattivo dei Limiti</h2>
+        <p class="lesson-text">
+            Scegli una funzione e regola il punto <em>c</em> a cui far tendere \(x\). Il widget mostra il grafico, e calcola il valore di \(f(x)\) per \(x\) che si avvicina a \(c\) da sinistra e da destra. Quando i due valori coincidono, il limite esiste.
+        </p>
+
+        <div class="widget-box">
+            <h3 class="widget-title">Explorer del Limite</h3>
+            <div class="func-pick" id="limit-func-pick">
+                <button class="active" data-fn="poly">\(x^2 - 1\)</button>
+                <button data-fn="hole">\((x^2-1)/(x-1)\)</button>
+                <button data-fn="step">segno(x)</button>
+                <button data-fn="abs">|x|/x</button>
+                <button data-fn="osc">sin(1/x)</button>
+            </div>
+            <div class="ctrl-row">
+                <label>Punto c =</label>
+                <input type="range" id="limit-c" min="-3" max="3" step="0.1" value="1">
+                <span class="val-display" id="limit-c-val">1.00</span>
+            </div>
+            <canvas class="graph" id="limit-canvas" width="600" height="360"></canvas>
+            <div class="result-card" id="limit-result">
+                Limite sinistro · destro
+            </div>
+        </div>
+
+        <p class="lesson-text" style="font-size: 0.95rem;">
+            <span class="pill">Suggerimento</span> Prova \((x^2-1)/(x-1)\) con \(c = 1\): la funzione non è definita lì (vedrai un "buco" nel grafico), ma il limite vale 2. È il cuore del calcolo dei limiti: l'esistenza del limite <em>non dipende</em> dal valore in \(c\).
+        </p>
+    </section>
+
+    <section class="lesson-section" style="border-left: 4px solid var(--physics-color);">
+        <h2 class="lesson-title" style="color: var(--physics-color);">Limiti all'Infinito</h2>
+        <p class="lesson-text">
+            Cosa succede a una funzione quando \(x\) cresce senza limite? Il film <em>Interstellar</em> visualizza un'idea simile: avvicinandosi all'orizzonte degli eventi, il tempo si dilata a tal punto da "tendere all'infinito". In matematica scriviamo:
+        </p>
+        <div class="formula-block" style="text-align: center; font-size: 1.3rem;">
+            \(\displaystyle \lim_{x \to +\infty} f(x) = L\)
+        </div>
+        <p class="lesson-text">
+            Significa che, scegliendo \(x\) abbastanza grande, possiamo rendere \(f(x)\) vicina a \(L\) quanto vogliamo. Quando \(L\) è finito, la retta \(y=L\) è detta <strong>asintoto orizzontale</strong>.
+        </p>
+
+        <div class="widget-box">
+            <h3 class="widget-title">Asintoti — Esploratore Visuale</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">Modifica i coefficienti della funzione razionale \(f(x) = \dfrac{ax + b}{cx + d}\) e osserva gli asintoti orizzontali e verticali.</p>
+            <div class="ctrl-row"><label>a =</label><input type="range" id="rat-a" min="-3" max="3" step="0.1" value="2"><span class="val-display" id="rat-a-val">2.0</span></div>
+            <div class="ctrl-row"><label>b =</label><input type="range" id="rat-b" min="-5" max="5" step="0.1" value="1"><span class="val-display" id="rat-b-val">1.0</span></div>
+            <div class="ctrl-row"><label>c =</label><input type="range" id="rat-c" min="-3" max="3" step="0.1" value="1"><span class="val-display" id="rat-c-val">1.0</span></div>
+            <div class="ctrl-row"><label>d =</label><input type="range" id="rat-d" min="-5" max="5" step="0.1" value="-2"><span class="val-display" id="rat-d-val">-2.0</span></div>
+            <canvas class="graph" id="rat-canvas" width="600" height="360"></canvas>
+            <div class="result-card" id="rat-result">Asintoti</div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Continuità: una Curva senza Strappi</h2>
+        <p class="lesson-text">
+            Una funzione è <strong>continua</strong> in un punto \(c\) se, idealmente, puoi tracciarne il grafico senza staccare la penna dal foglio. Formalmente, devono valere tre condizioni:
+        </p>
+        <div class="formula-block">
+            <strong>1.</strong> \(f(c)\) è definita<br>
+            <strong>2.</strong> Il limite \(\displaystyle \lim_{x \to c} f(x)\) esiste finito<br>
+            <strong>3.</strong> I due valori coincidono: \(\displaystyle \lim_{x \to c} f(x) = f(c)\)
+        </div>
+        <p class="lesson-text">
+            Quando una di queste condizioni cade, si parla di <strong>discontinuità</strong>. Ne esistono tre tipi principali:
+        </p>
+
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
+            <div class="card" style="padding: 1.5rem; border-top: 3px solid var(--math-color);">
+                <h4 style="color: var(--math-color); margin-bottom: 0.5rem;">1ª Specie (Salto)</h4>
+                <p style="font-size: 0.93rem; color: var(--text-muted);">Limite sinistro e destro esistono finiti, ma sono diversi. Esempio: la funzione segno in \(x=0\). È il "gradino di Heaviside" usato in elettrotecnica per accensione/spegnimento.</p>
+            </div>
+            <div class="card" style="padding: 1.5rem; border-top: 3px solid #F59E0B;">
+                <h4 style="color: #F59E0B; margin-bottom: 0.5rem;">2ª Specie (Asintoto)</h4>
+                <p style="font-size: 0.93rem; color: var(--text-muted);">Almeno uno dei limiti è infinito. Esempio: \(1/x\) in \(x=0\). Tipico di forze fisiche: la legge di Coulomb diverge quando due cariche si toccano.</p>
+            </div>
+            <div class="card" style="padding: 1.5rem; border-top: 3px solid var(--physics-color);">
+                <h4 style="color: var(--physics-color); margin-bottom: 0.5rem;">3ª Specie (Eliminabile)</h4>
+                <p style="font-size: 0.93rem; color: var(--text-muted);">Il limite esiste finito, ma la funzione non è definita o vale qualcos'altro. Il "buco" si può "tappare" ridefinendo la funzione.</p>
+            </div>
+        </div>
+
+        <div class="widget-box">
+            <h3 class="widget-title">Classifica la Discontinuità</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">Per ciascuna funzione, identifica il tipo di discontinuità in \(x = 0\):</p>
+            <div id="classify-area"></div>
+        </div>
+    </section>
+
+    <section class="lesson-section" style="border-left: 4px solid var(--physics-color); background: rgba(16,185,129,0.03);">
+        <h2 class="lesson-title" style="color: var(--physics-color);">I Tre Teoremi Fondamentali</h2>
+        <p class="lesson-text">
+            Una funzione continua su un intervallo chiuso \([a,b]\) gode di proprietà spettacolari. Tre teoremi compaiono regolarmente nei problemi della maturità:
+        </p>
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin: 1.5rem 0;">
+            <div class="card" style="padding: 1.5rem;">
+                <h4 style="color: var(--physics-color);">Teorema di Weierstrass</h4>
+                <p style="font-size: 0.93rem; color: var(--text-muted);">Una funzione continua su \([a,b]\) <strong style="color:var(--text-main)">assume massimo e minimo</strong> assoluti. Non importa quanto strana sia la curva: la cima più alta e la valle più profonda esistono.</p>
+            </div>
+            <div class="card" style="padding: 1.5rem;">
+                <h4 style="color: var(--physics-color);">Teorema dei Valori Intermedi</h4>
+                <p style="font-size: 0.93rem; color: var(--text-muted);">Se \(f(a)\) e \(f(b)\) hanno segni opposti, allora <strong style="color:var(--text-main)">esiste almeno uno zero</strong> in \((a,b)\). È il principio alla base di tutti gli algoritmi di bisezione.</p>
+            </div>
+            <div class="card" style="padding: 1.5rem;">
+                <h4 style="color: var(--physics-color);">Teorema di Bolzano</h4>
+                <p style="font-size: 0.93rem; color: var(--text-muted);">Caso speciale del precedente: se \(f(a) \cdot f(b) < 0\) e \(f\) è continua, c'è almeno un punto in cui \(f\) si annulla. Esempio: se a quota 100 m la temperatura è di 5°C e a quota 5000 m è di -20°C, deve esistere una quota dove fa esattamente 0°C.</p>
+            </div>
+        </div>
+
+        <div class="widget-box">
+            <h3 class="widget-title">Bisezione Interattiva</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">Trova lo zero di \(f(x) = x^3 - 2x - 5\) usando il metodo di bisezione, l'applicazione diretta del Teorema dei Valori Intermedi. Premi "Step" per avanzare.</p>
+            <div class="ctrl-row" style="gap: 0.5rem;">
+                <button id="bis-step" style="background: var(--math-color); border: none; color: white; padding: 0.7rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight: 700;">Step</button>
+                <button id="bis-reset" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); color: var(--text-main); padding: 0.7rem 1.5rem; border-radius: 8px; cursor: pointer;">Reset</button>
+            </div>
+            <canvas class="graph" id="bis-canvas" width="600" height="360"></canvas>
+            <div class="result-card" id="bis-result">a = ... · b = ... · m = ...</div>
+        </div>
+    </section>
+
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title">Quiz di Riepilogo</h2>
+        <p class="lesson-text" style="font-size: 0.95rem;">Verifica la tua comprensione di limiti e continuità.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+    </section>
+
+</main>
+
+<footer><p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Matematica.</p></footer>
+
+<script src="limiti-continuita.js"></script>
+<script src="../../js/main.js"></script>
+</body>
+</html>

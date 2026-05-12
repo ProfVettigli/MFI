@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistemi Ottici - Lezione Interattiva MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+        .sub-hero {
+            padding: 4rem 0 2rem;
+            text-align: left;
+        }
+        .sub-hero-title {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .canvas-wrap {
+            background: rgba(0,0,0,0.35);
+            border-radius: 12px;
+            padding: 1.2rem;
+            margin: 1.5rem 0;
+            text-align: center;
+            border: 1px solid rgba(16,185,129,0.15);
+        }
+        canvas {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+            border-radius: 8px;
+            background: #060a10;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin: 1rem 0;
+            align-items: center;
+            justify-content: center;
+        }
+        .ctrl {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            min-width: 180px;
+        }
+        .ctrl label {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .ctrl input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            background: rgba(16,185,129,0.25);
+            border-radius: 3px;
+            outline: none;
+        }
+        .ctrl input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--physics-color);
+            cursor: pointer;
+            box-shadow: 0 0 8px var(--physics-glow);
+        }
+        .ctrl select {
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(16,185,129,0.3);
+            color: var(--text-main);
+            padding: 0.5rem 0.7rem;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+        .val-display {
+            font-family: monospace;
+            color: var(--physics-color);
+            font-size: 0.9rem;
+        }
+
+        .section {
+            margin: 3rem 0;
+        }
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-main);
+            border-left: 4px solid var(--physics-color);
+            padding-left: 1rem;
+        }
+
+        .formula {
+            background: rgba(16,185,129,0.08);
+            border-left: 3px solid var(--physics-color);
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.05rem;
+            overflow-x: auto;
+        }
+
+        .quiz-container {
+            background: rgba(59,130,246,0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        .quiz-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text-main);
+        }
+        .quiz-item {
+            background: rgba(0,0,0,0.3);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            border-left: 3px solid var(--physics-color);
+        }
+        .quiz-question {
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: var(--text-main);
+        }
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .quiz-option {
+            padding: 0.6rem;
+            background: rgba(0,0,0,0.5);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+        .quiz-option:hover {
+            background: rgba(16,185,129,0.2);
+            border-color: var(--physics-color);
+        }
+        .quiz-option.selected {
+            background: rgba(16,185,129,0.3);
+            border-color: var(--physics-color);
+        }
+        .quiz-option.correct {
+            background: rgba(34,197,94,0.3);
+            border-color: #22c55e;
+            color: #22c55e;
+        }
+        .quiz-option.incorrect {
+            background: rgba(239,68,68,0.3);
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+        .feedback {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        footer {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../ottica.html" class="back-button">← Torna a Ottica</a>
+
+        <div class="sub-hero">
+            <h1 class="sub-hero-title">Sistemi Ottici</h1>
+            <p style="color: var(--text-muted); font-size: 1.1rem;">Lenti, specchi e formazione delle immagini</p>
+        </div>
+
+        <!-- SEZIONE 1: LENTI -->
+        <div class="section">
+            <h2 class="section-title">Lenti Ottiche</h2>
+            <p>Le lenti sono dispositivi ottici costituiti da materiali trasparenti (vetro, plastica) con superfici curve che focalizzano o disperdono la luce.</p>
+
+            <h3 style="margin-top: 1.5rem; color: var(--text-muted);">Tipi di Lenti</h3>
+            <ul style="margin-left: 2rem; line-height: 1.8;">
+                <li><strong>Lenti Convergenti (Convesse)</strong>: Raccolgono i raggi paralleli in un punto (fuoco). Usate per ingrandire, in microscopi e telescopi.</li>
+                <li><strong>Lenti Divergenti (Concave)</strong>: Disperdono i raggi paralleli. Utilizzate per correggere la miopia.</li>
+            </ul>
+
+            <div class="formula">
+                Equazione della Lente Sottile:<br>
+                1/f = 1/p + 1/q<br><br>
+                Dove:<br>
+                • f = distanza focale<br>
+                • p = distanza oggetto<br>
+                • q = distanza immagine
+            </div>
+
+            <h3 style="margin-top: 1.5rem; color: var(--text-muted);">Ingrandimento</h3>
+            <div class="formula">
+                m = -q/p = h'/h<br><br>
+                • m > 0: immagine diritta<br>
+                • m < 0: immagine capovolta
+            </div>
+        </div>
+
+        <!-- SEZIONE 2: SIMULATORE LENTE -->
+        <div class="section">
+            <h2 class="section-title">Simulatore Interattivo: Lente Convergente</h2>
+            <div class="canvas-wrap">
+                <canvas id="lensCanvas" width="600" height="400"></canvas>
+            </div>
+            <div class="controls">
+                <div class="ctrl">
+                    <label for="objectDist">Distanza Oggetto (cm)</label>
+                    <input type="range" id="objectDist" min="5" max="100" value="30" step="1">
+                    <div class="val-display" id="objVal">30 cm</div>
+                </div>
+                <div class="ctrl">
+                    <label for="focalLen">Distanza Focale (cm)</label>
+                    <input type="range" id="focalLen" min="5" max="50" value="15" step="1">
+                    <div class="val-display" id="focalVal">15 cm</div>
+                </div>
+            </div>
+            <div style="text-align: center; color: var(--text-muted); margin-top: 1rem;">
+                <p id="imageDist">Distanza Immagine: Calcolo in corso...</p>
+                <p id="magnif">Ingrandimento: Calcolo in corso...</p>
+                <p id="imgType" style="color: var(--physics-color);">Tipo immagine: —</p>
+            </div>
+        </div>
+
+        <!-- SEZIONE 3: SPECCHI SFERICI -->
+        <div class="section">
+            <h2 class="section-title">Specchi Sferici</h2>
+            <p>Gli specchi sferici riflettono la luce e seguono le stesse equazioni delle lenti (con convenzione di segni diversa).</p>
+
+            <h3 style="margin-top: 1.5rem; color: var(--text-muted);">Specchio Concavo</h3>
+            <ul style="margin-left: 2rem; line-height: 1.8;">
+                <li>Focalizza i raggi paralleli in un punto (fuoco reale)</li>
+                <li>Usato in telescopi riflettori, fari, specchi ingranditori</li>
+                <li>Può produrre immagini reali o virtuali</li>
+            </ul>
+
+            <h3 style="margin-top: 1.5rem; color: var(--text-muted);">Specchio Convesso</h3>
+            <ul style="margin-left: 2rem; line-height: 1.8;">
+                <li>Disperde i raggi paralleli (fuoco virtuale)</li>
+                <li>Usato negli specchietti retrovisori (ampio campo visivo)</li>
+                <li>Produce sempre immagini virtuali, ridotte, diritte</li>
+            </ul>
+
+            <div class="formula">
+                Equazione dello Specchio Sferico:<br>
+                1/f = 1/p + 1/q<br><br>
+                (Identica alla lente sottile)
+            </div>
+        </div>
+
+        <!-- SEZIONE 4: TRACCIAMENTO RAGGI -->
+        <div class="section">
+            <h2 class="section-title">Tracciamento dei Raggi</h2>
+            <div class="canvas-wrap">
+                <canvas id="rayCanvas" width="700" height="350"></canvas>
+            </div>
+            <div class="controls">
+                <div class="ctrl">
+                    <label for="systemType">Tipo Sistema</label>
+                    <select id="systemType">
+                        <option value="lens">Lente Convergente</option>
+                        <option value="mirror">Specchio Concavo</option>
+                        <option value="divergent">Lente Divergente</option>
+                    </select>
+                </div>
+            </div>
+            <p style="color: var(--text-muted); text-align: center; margin-top: 1rem;">
+                I tre raggi principali determinano la posizione e le dimensioni dell'immagine.
+            </p>
+        </div>
+
+        <!-- QUIZ -->
+        <div class="quiz-container">
+            <h2 class="quiz-title">Quiz - Verifica la Comprensione</h2>
+
+            <div class="quiz-item">
+                <div class="quiz-question">1. Una lente convergente ha fuoco a f=10 cm. Un oggetto è a p=15 cm. Dove si forma l'immagine?</div>
+                <div class="quiz-options">
+                    <div class="quiz-option" data-quiz="q1" data-correct="false">A) A 5 cm (reale, rimpicciolita)</div>
+                    <div class="quiz-option" data-quiz="q1" data-correct="true">B) A 30 cm (reale, ingrandita)</div>
+                    <div class="quiz-option" data-quiz="q1" data-correct="false">C) A -15 cm (virtuale)</div>
+                    <div class="quiz-option" data-quiz="q1" data-correct="false">D) Non si forma immagine</div>
+                </div>
+                <div class="feedback" id="feedback-q1"></div>
+            </div>
+
+            <div class="quiz-item">
+                <div class="quiz-question">2. Qual è la principale differenza tra una lente convergente e una divergente?</div>
+                <div class="quiz-options">
+                    <div class="quiz-option" data-quiz="q2" data-correct="false">A) Il colore del vetro</div>
+                    <div class="quiz-option" data-quiz="q2" data-correct="true">B) La curvatura: convessa vs concava</div>
+                    <div class="quiz-option" data-quiz="q2" data-correct="false">C) La dimensione totale</div>
+                    <div class="quiz-option" data-quiz="q2" data-correct="false">D) Non c'è differenza sostanziale</div>
+                </div>
+                <div class="feedback" id="feedback-q2"></div>
+            </div>
+
+            <div class="quiz-item">
+                <div class="quiz-question">3. Uno specchio convesso produce sempre immagini:</div>
+                <div class="quiz-options">
+                    <div class="quiz-option" data-quiz="q3" data-correct="false">A) Reali e diritte</div>
+                    <div class="quiz-option" data-quiz="q3" data-correct="true">B) Virtuali, ridotte e diritte</div>
+                    <div class="quiz-option" data-quiz="q3" data-correct="false">C) Reali e capovolte</div>
+                    <div class="quiz-option" data-quiz="q3" data-correct="false">D) Virtuali e capovolte</div>
+                </div>
+                <div class="feedback" id="feedback-q3"></div>
+            </div>
+
+            <div class="quiz-item">
+                <div class="quiz-question">4. Se l'ingrandimento m = -2, significa:</div>
+                <div class="quiz-options">
+                    <div class="quiz-option" data-quiz="q4" data-correct="true">A) L'immagine è capovolta e 2 volte più grande</div>
+                    <div class="quiz-option" data-quiz="q4" data-correct="false">B) L'immagine è dritta e 2 volte più piccola</div>
+                    <div class="quiz-option" data-quiz="q4" data-correct="false">C) L'immagine è virtuale</div>
+                    <div class="quiz-option" data-quiz="q4" data-correct="false">D) Il fuoco è negativo</div>
+                </div>
+                <div class="feedback" id="feedback-q4"></div>
+            </div>
+
+            <div class="quiz-item">
+                <div class="quiz-question">5. La distanza focale di una lente dipende da:</div>
+                <div class="quiz-options">
+                    <div class="quiz-option" data-quiz="q5" data-correct="false">A) Solo dal raggio di curvatura</div>
+                    <div class="quiz-option" data-quiz="q5" data-correct="true">B) Dal raggio di curvatura e dall'indice di rifrazione del materiale</div>
+                    <div class="quiz-option" data-quiz="q5" data-correct="false">C) Dalla posizione dell'oggetto</div>
+                    <div class="quiz-option" data-quiz="q5" data-correct="false">D) Dalla distanza immagine</div>
+                </div>
+                <div class="feedback" id="feedback-q5"></div>
+            </div>
+
+            <div class="quiz-item">
+                <div class="quiz-question">6. Un oggetto è a p=20 cm da uno specchio concavo con f=10 cm. L'immagine è:</div>
+                <div class="quiz-options">
+                    <div class="quiz-option" data-quiz="q6" data-correct="false">A) Virtuale a 20 cm</div>
+                    <div class="quiz-option" data-quiz="q6" data-correct="true">B) Reale a 20 cm, capovolta, stessa dimensione</div>
+                    <div class="quiz-option" data-quiz="q6" data-correct="false">C) Reale a 10 cm, ingrandita</div>
+                    <div class="quiz-option" data-quiz="q6" data-correct="false">D) Non esiste</div>
+                </div>
+                <div class="feedback" id="feedback-q6"></div>
+            </div>
+
+            <div class="quiz-item">
+                <div class="quiz-question">7. Quale elemento ottico non è descritto dall'equazione 1/f = 1/p + 1/q?</div>
+                <div class="quiz-options">
+                    <div class="quiz-option" data-quiz="q7" data-correct="false">A) Specchio piano</div>
+                    <div class="quiz-option" data-quiz="q7" data-correct="false">B) Lente divergente</div>
+                    <div class="quiz-option" data-quiz="q7" data-correct="true">C) Nessuno - l'equazione vale per tutti i sistemi ottici semplici</div>
+                    <div class="quiz-option" data-quiz="q7" data-correct="false">D) Specchio sferico</div>
+                </div>
+                <div class="feedback" id="feedback-q7"></div>
+            </div>
+
+            <div class="quiz-item">
+                <div class="quiz-question">8. Il fuoco di una lente è il punto dove:</div>
+                <div class="quiz-options">
+                    <div class="quiz-option" data-quiz="q8" data-correct="true">A) I raggi paralleli al suo asse si concentrano dopo la rifrazione</div>
+                    <div class="quiz-option" data-quiz="q8" data-correct="false">B) Tutti i raggi si incrociano sempre</div>
+                    <div class="quiz-option" data-quiz="q8" data-correct="false">C) L'immagine diventa invisibile</div>
+                    <div class="quiz-option" data-quiz="q8" data-correct="false">D) Non si forma alcuna immagine</div>
+                </div>
+                <div class="feedback" id="feedback-q8"></div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Fisica 2026 - Lezione Interattiva MFI</p>
+        </footer>
+    </div>
+
+    <script src="../../js/main.js"></script>
+    <script src="sistemi-ottici.js"></script>
+</body>
+</html>

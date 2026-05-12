@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLIL: PSSC and Space Race — Mechanics | MFI</title>
+    <meta name="description" content="CLIL English lesson: Physical Science Study Committee (PSSC), Space Race history, rocket propulsion, and escape velocity.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+    <style>
+        .back-button { display:inline-flex; align-items:center; color:var(--text-muted); text-decoration:none; margin-bottom:2rem; font-weight:600; transition:color 0.3s ease, transform 0.3s ease; }
+        .back-button:hover { color:var(--text-main); transform:translateX(-5px); }
+        .sub-hero { padding:4rem 0 2rem; text-align:left; }
+        .sub-hero-title { font-size:clamp(2.2rem, 4vw, 3.2rem); font-weight:800; margin-bottom:1rem; }
+        .lesson-section { margin-bottom:3rem; padding:2.5rem; border-radius:1rem; border:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.03); }
+        .lesson-title { font-size:1.5rem; font-weight:700; margin-bottom:1.2rem; color:var(--physics-color); }
+        .lesson-text { color:var(--text-muted); line-height:1.8; margin-bottom:1.1rem; font-size:1.02rem; }
+        .info-box { background:rgba(16,185,129,0.07); border-left:4px solid var(--physics-color); border-radius:0 0.75rem 0.75rem 0; padding:1.25rem 1.5rem; margin:1.5rem 0; }
+        .callout { display:flex; gap:1rem; align-items:flex-start; background:rgba(16,185,129,0.07); border:1px solid rgba(16,185,129,0.22); border-radius:0.75rem; padding:1.2rem 1.5rem; margin:1.5rem 0; }
+        .callout-icon { font-size:1.5rem; flex-shrink:0; }
+        .callout p { margin:0; color:var(--text-muted); font-size:0.97rem; line-height:1.7; }
+        .callout p strong { color:#6ee7b7; }
+        .simulator-widget { background:rgba(0,0,0,0.25); border-radius:14px; padding:2rem; margin:1.5rem 0; }
+        canvas { display:block; margin:0 auto; max-width:100%; border-radius:8px; background:rgba(0,0,0,0.3); }
+        .controls-row { display:flex; gap:1.5rem; flex-wrap:wrap; align-items:flex-end; justify-content:center; margin-top:1.2rem; }
+        .ctrl-group { display:flex; flex-direction:column; gap:0.3rem; min-width:180px; }
+        .ctrl-group label { color:var(--text-muted); font-size:0.82rem; text-transform:uppercase; letter-spacing:0.05em; }
+        .ctrl-group input[type=range] { -webkit-appearance:none; width:100%; height:6px; background:rgba(16,185,129,0.25); border-radius:3px; outline:none; }
+        .ctrl-group input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:18px; height:18px; border-radius:50%; background:var(--physics-color); cursor:pointer; box-shadow:0 0 8px var(--physics-glow); }
+        .ctrl-group input[type=range]::-moz-range-thumb { width:18px; height:18px; border-radius:50%; background:var(--physics-color); cursor:pointer; border:none; }
+        .ctrl-value { color:var(--physics-color); font-weight:700; font-family:monospace; }
+        .readout { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:1.5rem; }
+        .readout-card { background:rgba(0,0,0,0.3); border-radius:10px; padding:1.2rem; text-align:center; border-top:3px solid var(--physics-color); }
+        .readout-label { font-size:0.85rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.5rem; }
+        .readout-value { font-size:1.6rem; font-weight:800; color:var(--physics-color); font-family:monospace; }
+        .buttons-row { display:flex; gap:1rem; justify-content:center; margin-top:1.5rem; }
+        button { padding:0.7rem 1.5rem; background:var(--physics-color); color:#fff; border:none; border-radius:8px; cursor:pointer; font-weight:700; transition:background 0.2s; }
+        button:hover { background:#0d9d6f; }
+        .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:1.5rem; margin:2rem 0; }
+        .card { padding:1.5rem; border-radius:10px; border-top:3px solid var(--physics-color); background:rgba(16,185,129,0.05); }
+        .quiz-container { background:rgba(16,185,129,0.05); border:1px solid rgba(16,185,129,0.22); border-radius:10px; padding:2rem; margin:2rem 0; }
+        .quiz-question { margin-bottom:1.5rem; }
+        .quiz-question-text { font-weight:600; color:var(--text-main); margin-bottom:0.8rem; }
+        .quiz-options { display:flex; flex-direction:column; gap:0.6rem; }
+        .quiz-option { background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.1); border-radius:6px; padding:0.8rem 1rem; cursor:pointer; color:var(--text-muted); transition:all 0.2s; }
+        .quiz-option:hover { background:rgba(16,185,129,0.15); border-color:var(--physics-color); }
+        .quiz-option input { margin-right:0.7rem; }
+        .timeline { margin:2rem 0; }
+        .timeline-item { display:flex; gap:1.5rem; margin:1.5rem 0; }
+        .timeline-year { min-width:100px; font-weight:700; color:var(--physics-color); }
+        .timeline-content { flex:1; padding:1rem; background:rgba(16,185,129,0.05); border-radius:8px; }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align:center; margin-bottom:2.5rem;">
+            <a href="../meccanica.html" class="back-button" style="margin-bottom:0;">
+                <span style="margin-right:0.5rem; font-size:1.2rem;">&larr;</span> Back to Mechanics
+            </a>
+        </div>
+        <h1 class="sub-hero-title">CLIL: PSSC and the <span class="gradient-text">Space Race</span></h1>
+        <p style="font-size:1.15rem; color:var(--text-muted); max-width:800px; font-weight:300;">
+            From the Cold War to the Moon: how physics education and rocket science changed the world.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">The Physical Science Study Committee (PSSC)</h2>
+        <p class="lesson-text">
+            After the Soviet Union launched <strong>Sputnik 1</strong> on October 4, 1957, the United States realized it was losing the technological race. In response, American scientists and educators founded the <strong>Physical Science Study Committee</strong> in 1956 (before Sputnik!) to revolutionize physics education.
+        </p>
+
+        <div class="info-box">
+            <p style="margin:0;"><strong>PSSC Mission:</strong> Create a modern, rigorous physics curriculum based on experimental science and real-world applications, not just memorization.</p>
+            <p style="margin:0.5rem 0 0;"><strong>Key Leaders:</strong> Jerrold Zacharias (MIT), funding from NSF (National Science Foundation).</p>
+            <p style="margin:0.5rem 0 0;"><strong>Impact:</strong> Transformed high school physics worldwide. Emphasis on: labs, computers, space exploration, nuclear physics.</p>
+        </div>
+
+        <p class="lesson-text">
+            The PSSC curriculum was revolutionary because it moved beyond Aristotle and Galileo to include 20th-century physics: quantum mechanics, relativity, atomic structure, and rocket science. Students built their own equipment and designed experiments—no cookbook labs!
+        </p>
+
+        <div class="callout">
+            <div class="callout-icon">🔬</div>
+            <p><strong>Educational Legacy:</strong> PSSC influenced physics teaching globally. Many countries adopted similar curricula. The philosophy remains: "learning by doing" and understanding the "why," not just the "how."</p>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Timeline of the Space Race (1957–1969)</h2>
+        <p class="lesson-text">
+            The competition between the USA and USSR to reach space and the Moon drove unprecedented investment in science and engineering.
+        </p>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-year">Oct 4, 1957</div>
+                <div class="timeline-content">
+                    <strong>Sputnik 1 (USSR)</strong><br>
+                    First artificial satellite. Orbits Earth in 96 minutes. Americans shocked.
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">Nov 3, 1957</div>
+                <div class="timeline-content">
+                    <strong>Sputnik 2 (USSR)</strong><br>
+                    Carries dog Laika. First living creature in space. Proves life can survive.
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">Jan 31, 1958</div>
+                <div class="timeline-content">
+                    <strong>Explorer 1 (USA)</strong><br>
+                    First American satellite. Discovers Van Allen radiation belts.
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">Apr 12, 1961</div>
+                <div class="timeline-content">
+                    <strong>Vostok 1 (USSR)</strong><br>
+                    Yuri Gagarin: first human in space. 108 minutes. Soviet victory.
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">May 5, 1961</div>
+                <div class="timeline-content">
+                    <strong>Mercury-Redstone 3 (USA)</strong><br>
+                    Alan Shepard: first American in space (suborbital, 15 min). Start of catch-up.
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">Jul 20, 1969</div>
+                <div class="timeline-content">
+                    <strong>Apollo 11 (USA)</strong><br>
+                    Neil Armstrong and Buzz Aldrin land on the Moon. Kennedy's goal achieved.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Rocket Propulsion: Newton's Third Law</h2>
+        <p class="lesson-text">
+            A rocket works because of <strong>Newton's Third Law: For every action, there is an equal and opposite reaction.</strong>
+        </p>
+
+        <div class="info-box">
+            <p style="margin:0;"><strong>The Rocket Equation (simplified):</strong></p>
+            <p style="margin:0.5rem 0 0;">\( F = \frac{dm}{dt} \cdot v_{e} \)</p>
+            <p style="margin:0.3rem 0 0;">where:</p>
+            <p style="margin:0.3rem 0 0;">F = thrust force (Newtons)</p>
+            <p style="margin:0.3rem 0 0;">\(\frac{dm}{dt}\) = mass flow rate (kg/s)</p>
+            <p style="margin:0.3rem 0 0;">\(v_e\) = exhaust velocity (m/s)</p>
+        </div>
+
+        <p class="lesson-text">
+            The rocket expels hot gases at high speed. By Newton's Third Law, the rocket experiences an equal and opposite force pushing it forward. The faster the exhaust and the more mass expelled, the greater the thrust.
+        </p>
+
+        <div class="info-box">
+            <p style="margin:0;"><strong>Tsiolkovsky Rocket Equation:</strong></p>
+            <p style="margin:0.5rem 0 0;">\( \Delta v = v_e \ln\left(\frac{m_0}{m_f}\right) \)</p>
+            <p style="margin:0.3rem 0 0;">where:</p>
+            <p style="margin:0.3rem 0 0;">\(\Delta v\) = change in velocity (m/s)</p>
+            <p style="margin:0.3rem 0 0;">m₀ = initial (wet) mass</p>
+            <p style="margin:0.3rem 0 0;">m_f = final (dry) mass</p>
+        </div>
+
+        <p class="lesson-text">
+            This equation shows that to achieve high speeds, you need either very fast exhaust or a very high fuel-to-payload ratio (lots of fuel!). For the Moon trip (~3.1 km/s), rockets need multiple stages that jettison fuel tanks.
+        </p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Simulator: Rocket Trajectory</h2>
+        <p class="lesson-text">
+            Modify thrust and initial velocity to see how far the rocket can go. Can you reach escape velocity?
+        </p>
+
+        <div class="simulator-widget">
+            <canvas id="rocket-canvas" width="700" height="450"></canvas>
+
+            <div class="controls-row">
+                <div class="ctrl-group">
+                    <label>Initial Velocity: <span class="ctrl-value" id="velocity-display">5</span> km/s</label>
+                    <input type="range" id="velocity-slider" min="1" max="15" value="5" step="0.5">
+                </div>
+                <div class="ctrl-group">
+                    <label>Launch Angle: <span class="ctrl-value" id="angle-display">45</span>°</label>
+                    <input type="range" id="angle-slider" min="0" max="90" value="45" step="5">
+                </div>
+            </div>
+
+            <div class="readout">
+                <div class="readout-card">
+                    <div class="readout-label">Escape Velocity (Earth)</div>
+                    <div class="readout-value">11.2 km/s</div>
+                </div>
+                <div class="readout-card">
+                    <div class="readout-label">Max Altitude Reached</div>
+                    <div class="readout-value" id="altitude-readout">0 km</div>
+                </div>
+            </div>
+
+            <div class="buttons-row">
+                <button id="launch-btn">Launch Rocket</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Escape Velocity: Breaking Free from Earth</h2>
+        <p class="lesson-text">
+            <strong>Escape velocity</strong> is the minimum speed needed for an object to break free from a celestial body without further propulsion.
+        </p>
+
+        <div class="info-box">
+            <p style="margin:0;"><strong>Escape Velocity Formula:</strong></p>
+            <p style="margin:0.5rem 0 0;">\( v_e = \sqrt{\frac{2GM}{R}} \)</p>
+            <p style="margin:0.3rem 0 0;">where:</p>
+            <p style="margin:0.3rem 0 0;">G = gravitational constant (6.67 × 10⁻¹¹ m³/kg·s²)</p>
+            <p style="margin:0.3rem 0 0;">M = mass of the body (kg)</p>
+            <p style="margin:0.3rem 0 0;">R = radius of the body (m)</p>
+        </div>
+
+        <p class="lesson-text">
+            For Earth, v_e ≈ 11.2 km/s (25,000 mph). This is 1.4× orbital velocity! All the Apollo rockets needed to reach this speed to escape Earth's gravity and travel to the Moon.
+        </p>
+
+        <div class="grid">
+            <div class="card">
+                <h4 style="color:var(--physics-color); margin-bottom:0.8rem;">Moon (1.4 × Earth's radius)</h4>
+                <p style="font-size:0.93rem; color:var(--text-muted);">Escape velocity ≈ 2.4 km/s. Much easier to leave!</p>
+            </div>
+            <div class="card">
+                <h4 style="color:var(--physics-color); margin-bottom:0.8rem;">Jupiter (11 × Earth's radius)</h4>
+                <p style="font-size:0.93rem; color:var(--text-muted);">Escape velocity ≈ 59.5 km/s. Extreme gravity!</p>
+            </div>
+            <div class="card">
+                <h4 style="color:var(--physics-color); margin-bottom:0.8rem;">Black Hole</h4>
+                <p style="font-size:0.93rem; color:var(--text-muted);">Escape velocity > speed of light. Nothing escapes!</p>
+            </div>
+            <div class="card">
+                <h4 style="color:var(--physics-color); margin-bottom:0.8rem;">Mars</h4>
+                <p style="font-size:0.93rem; color:var(--text-muted);">Escape velocity ≈ 5.0 km/s. Half of Earth's.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Interactive Δv Calculator</h2>
+        <p class="lesson-text">
+            Calculate the velocity change (Δv) using the Tsiolkovsky equation. Try different configurations.
+        </p>
+
+        <div class="simulator-widget">
+            <div class="controls-row">
+                <div class="ctrl-group">
+                    <label>Exhaust Velocity: <span class="ctrl-value" id="exhaust-vel-display">4000</span> m/s</label>
+                    <input type="range" id="exhaust-vel-slider" min="1000" max="5000" value="4000" step="100">
+                </div>
+                <div class="ctrl-group">
+                    <label>Fuel Ratio (m₀/m_f): <span class="ctrl-value" id="fuel-ratio-display">3</span></label>
+                    <input type="range" id="fuel-ratio-slider" min="1" max="10" value="3" step="0.5">
+                </div>
+            </div>
+
+            <div class="readout">
+                <div class="readout-card">
+                    <div class="readout-label">Delta-v (Δv)</div>
+                    <div class="readout-value" id="deltaV-result">0 m/s</div>
+                </div>
+                <div class="readout-card">
+                    <div class="readout-label">ln(Fuel Ratio)</div>
+                    <div class="readout-value" id="ln-ratio">0.00</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Why PSSC Mattered for the Space Race</h2>
+        <p class="lesson-text">
+            The PSSC curriculum trained a generation of engineers, scientists, and innovators who built the rockets, spacecraft, and systems that won the Space Race. Key technologies:
+        </p>
+
+        <div class="grid">
+            <div class="card">
+                <h4 style="color:var(--physics-color); margin-bottom:0.8rem;">Guidance Systems</h4>
+                <p style="font-size:0.93rem; color:var(--text-muted);">Inertial navigation required deep understanding of Newton's laws and calculus.</p>
+            </div>
+            <div class="card">
+                <h4 style="color:var(--physics-color); margin-bottom:0.8rem;">Propulsion</h4>
+                <p style="font-size:0.93rem; color:var(--text-muted);">Thermodynamics and fluid dynamics optimized rocket engines for maximum efficiency.</p>
+            </div>
+            <div class="card">
+                <h4 style="color:var(--physics-color); margin-bottom:0.8rem;">Orbital Mechanics</h4>
+                <p style="font-size:0.93rem; color:var(--text-muted);">Understanding Kepler's laws and conservation of energy made moon missions possible.</p>
+            </div>
+            <div class="card">
+                <h4 style="color:var(--physics-color); margin-bottom:0.8rem;">Computer Science</h4>
+                <p style="font-size:0.93rem; color:var(--text-muted);">Apollo's onboard computer (Apollo Guidance Computer) ran code written by engineers trained in PSSC-era physics.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title">Quiz Review</h2>
+        <p class="lesson-text" style="font-size:0.95rem;">Test your understanding of PSSC, the Space Race, and rocket physics.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size:1.2rem; margin-top:2rem;"></div>
+    </section>
+
+</main>
+
+<footer><p>&copy; 2026 MFI - Interactive Physics Platform. Section of Mechanics.</p></footer>
+
+<script src="clil-space-race.js"></script>
+<script src="../../js/main.js"></script>
+</body>
+</html>

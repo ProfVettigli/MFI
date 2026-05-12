@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buzzer Piezoelettrico - Lezione Interattiva MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        .back-button { display: inline-flex; align-items: center; color: var(--text-muted); text-decoration: none; margin-bottom: 2rem; font-weight: 600; transition: color 0.3s ease, transform 0.3s ease; }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+        .sub-hero { padding: 4rem 0 2rem; text-align: left; }
+        .sub-hero-title { font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; margin-bottom: 1rem; }
+
+        .piano-widget { background: rgba(245,158,11,0.1); border: 2px solid rgba(245,158,11,0.3); border-radius: 16px; padding: 2rem; margin: 2rem 0; }
+        .piano-keys { display: grid; grid-template-columns: repeat(auto-fit, minmax(60px, 1fr)); gap: 0.8rem; margin-bottom: 1.5rem; }
+        .piano-key { padding: 1rem 0.5rem; border-radius: 8px; border: 2px solid rgba(245,158,11,0.4); background: rgba(245,158,11,0.08); color: var(--text-main); font-weight: 700; cursor: pointer; transition: all 0.15s; text-align: center; font-size: 1rem; }
+        .piano-key:hover { background: rgba(245,158,11,0.2); border-color: var(--chem-color); }
+        .piano-key:active { background: var(--chem-color); color: white; transform: scale(0.95); }
+
+        .melody-widget { background: rgba(245,158,11,0.1); border: 2px solid rgba(245,158,11,0.3); border-radius: 16px; padding: 2rem; margin: 2rem 0; }
+        .melody-buttons { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+        .melody-btn { padding: 0.8rem 1.5rem; border-radius: 8px; border: 2px solid var(--chem-color); background: rgba(245,158,11,0.15); color: var(--chem-color); font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .melody-btn:hover { background: var(--chem-color); color: white; }
+        .melody-btn.playing { background: var(--chem-color); color: white; animation: pulse 0.5s ease-in-out; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.8; } }
+
+        .frequency-display { background: rgba(0,0,0,0.25); border-radius: 10px; padding: 1rem; font-family: monospace; color: var(--chem-color); font-size: 1.1rem; text-align: center; font-weight: 700; }
+        .code-box { background: rgba(0,0,0,0.25); border-left: 4px solid var(--chem-color); border-radius: 8px; padding: 1.2rem; font-family: monospace; font-size: 0.9rem; color: #a0aec0; overflow-x: auto; margin: 1.5rem 0; }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="informatica.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Informatica
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Buzzer <span class="gradient-text">Piezoelettrico</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+            Dal suono puro alle melodie: come Arduino pilota un buzzer per produrre frequenze, note musicali e brani completi.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title" style="color: var(--chem-color);">L'Effetto Piezoelettrico</h2>
+        <p class="lesson-text">
+            Un <strong>buzzer piezoelettrico</strong> sfrutta una proprietà straordinaria di certi materiali cristallini (come il quarzo): quando una corrente alternata li attraversa, vibrano meccanicamente. Vibrazione = suono.
+        </p>
+        <p class="lesson-text">
+            A differenza dei buzzer tradizionali che contengono un oscillatore interno, i <strong>buzzer passivi</strong> richiedono una forma d'onda continua dal microcontrollore. Arduino invia impulsi alla frequenza desiderata e il cristallo vibra di conseguenza, producendo il tono.
+        </p>
+
+        <div style="background: rgba(245,158,11,0.06); border-left: 4px solid var(--chem-color); padding: 1.5rem; border-radius: 0 10px 10px 0;">
+            <p class="lesson-text" style="margin-bottom: 0;">
+                <strong>Curiosità:</strong> La stessa tecnologia piezoelettrica usata nei buzzer Arduino si trova negli accendini elettronici, nei dispositivi medici ultrassonici e persino nei quarzi degli orologi!
+            </p>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Frequenze e Note Musicali</h2>
+        <p class="lesson-text">
+            Il suono è vibrazione dell'aria. La <strong>frequenza</strong> (misurata in Hertz, cioè cicli al secondo) determina l'<strong>altezza</strong> del suono. Frequenze basse = suoni gravi, frequenze alte = suoni acuti.
+        </p>
+
+        <div style="background: rgba(0,0,0,0.25); border-radius: 12px; padding: 1.5rem; margin: 2rem 0;">
+            <h3 style="color: var(--chem-color); margin-bottom: 1rem;">Frequenze delle Note Musicali (Scala C Maggiore)</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
+                <div style="background: rgba(245,158,11,0.1); padding: 1rem; border-radius: 8px; text-align: center;">
+                    <div style="font-weight: 700; color: var(--chem-color);">DO (C4)</div>
+                    <div style="font-size: 0.9rem; color: var(--text-muted);">261.63 Hz</div>
+                </div>
+                <div style="background: rgba(245,158,11,0.1); padding: 1rem; border-radius: 8px; text-align: center;">
+                    <div style="font-weight: 700; color: var(--chem-color);">RE (D4)</div>
+                    <div style="font-size: 0.9rem; color: var(--text-muted);">293.66 Hz</div>
+                </div>
+                <div style="background: rgba(245,158,11,0.1); padding: 1rem; border-radius: 8px; text-align: center;">
+                    <div style="font-weight: 700; color: var(--chem-color);">MI (E4)</div>
+                    <div style="font-size: 0.9rem; color: var(--text-muted);">329.63 Hz</div>
+                </div>
+                <div style="background: rgba(245,158,11,0.1); padding: 1rem; border-radius: 8px; text-align: center;">
+                    <div style="font-weight: 700; color: var(--chem-color);">FA (F4)</div>
+                    <div style="font-size: 0.9rem; color: var(--text-muted);">349.23 Hz</div>
+                </div>
+                <div style="background: rgba(245,158,11,0.1); padding: 1rem; border-radius: 8px; text-align: center;">
+                    <div style="font-weight: 700; color: var(--chem-color);">SOL (G4)</div>
+                    <div style="font-size: 0.9rem; color: var(--text-muted);">392.00 Hz</div>
+                </div>
+                <div style="background: rgba(245,158,11,0.1); padding: 1rem; border-radius: 8px; text-align: center;">
+                    <div style="font-weight: 700; color: var(--chem-color);">LA (A4)</div>
+                    <div style="font-size: 0.9rem; color: var(--text-muted);">440.00 Hz</div>
+                </div>
+                <div style="background: rgba(245,158,11,0.1); padding: 1rem; border-radius: 8px; text-align: center;">
+                    <div style="font-weight: 700; color: var(--chem-color);">SI (B4)</div>
+                    <div style="font-size: 0.9rem; color: var(--text-muted);">493.88 Hz</div>
+                </div>
+                <div style="background: rgba(245,158,11,0.1); padding: 1rem; border-radius: 8px; text-align: center;">
+                    <div style="font-weight: 700; color: var(--chem-color);">DO' (C5)</div>
+                    <div style="font-size: 0.9rem; color: var(--text-muted);">523.25 Hz</div>
+                </div>
+            </div>
+        </div>
+
+        <p class="lesson-text">
+            Ogni nota è il doppio della frequenza di quella 8 note prima. Questo intervallo si chiama <strong>ottava</strong> ed è il "salto" fondamentale della musica occidentale.
+        </p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Piano Interattivo</h2>
+        <p class="lesson-text">Clicca i tasti per sentire le note. Ascolta la sequenza e riconosci l'intervallo tra le frequenze!</p>
+
+        <div class="piano-widget">
+            <h3 style="color: var(--chem-color); margin-bottom: 1rem;">Piano a 8 Tasti</h3>
+            <div class="piano-keys" id="piano-keys"></div>
+            <div class="frequency-display" id="freq-display">Clicca un tasto</div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Funzione tone() su Arduino</h2>
+        <p class="lesson-text">
+            Arduino mette a disposizione due funzioni semplificate per pilotare un buzzer:
+        </p>
+
+        <div style="background: rgba(0,0,0,0.25); border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0;">
+            <h3 style="color: var(--chem-color); font-size: 1.1rem; margin-bottom: 1rem; font-family: monospace;">tone(pin, frequency, duration)</h3>
+            <ul style="margin-left: 1.5rem; color: var(--text-muted);">
+                <li><strong>pin:</strong> il numero del pin PWM (es. 9)</li>
+                <li><strong>frequency:</strong> frequenza in Hertz (es. 262 per il DO)</li>
+                <li><strong>duration:</strong> durata in millisecondi (opzionale)</li>
+            </ul>
+        </div>
+
+        <div style="background: rgba(0,0,0,0.25); border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0;">
+            <h3 style="color: var(--chem-color); font-size: 1.1rem; margin-bottom: 1rem; font-family: monospace;">noTone(pin)</h3>
+            <ul style="margin-left: 1.5rem; color: var(--text-muted);">
+                <li>Ferma la generazione del suono sul pin specificato</li>
+            </ul>
+        </div>
+
+        <h3 style="margin: 2rem 0 1rem; color: var(--chem-color);">Esempio Base</h3>
+        <div class="code-box">const int buzzerPin = 9;
+
+void setup() {
+  pinMode(buzzerPin, OUTPUT);
+}
+
+void loop() {
+  tone(buzzerPin, 262);
+  delay(500);
+  noTone(buzzerPin);
+  delay(250);
+}
+        </div>
+        <p class="lesson-text" style="font-size: 0.95rem;">Questo sketch fa suonare un DO per 500ms ogni 750ms. Semplice e ipnotizzante!</p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Melodie Famose</h2>
+        <p class="lesson-text">
+            Le melodie sono sequenze di note con durate diverse. Ecco tre brani famosi codificati per Arduino. Clicca per ascoltarli!
+        </p>
+
+        <div class="melody-widget">
+            <h3 style="color: var(--chem-color); margin-bottom: 1rem;">Melody Player</h3>
+            <div class="melody-buttons">
+                <button class="melody-btn" id="jingle-btn">Jingle Bells</button>
+                <button class="melody-btn" id="tetris-btn">Tetris</button>
+                <button class="melody-btn" id="starwars-btn">Star Wars</button>
+                <button class="melody-btn" id="stop-btn" style="border-color: #EF4444; color: #EF4444;">Stop</button>
+            </div>
+        </div>
+
+        <h3 style="margin: 2rem 0 1rem; color: var(--chem-color);">Esempio: Jingle Bells</h3>
+        <div class="code-box">int notes[] = {330, 330, 330, 330, 330, 330, 330, 392, 262, 294, 330};
+int durations[] = {375, 375, 375, 375, 375, 375, 375, 500, 250, 250, 500};
+
+void playMelody() {
+  for (int i = 0; i < 11; i++) {
+    tone(buzzerPin, notes[i], durations[i]);
+    delay(durations[i] + 50);
+  }
+  noTone(buzzerPin);
+}
+        </div>
+    </section>
+
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Quiz di Riepilogo</h2>
+        <p class="lesson-text" style="font-size: 0.95rem;">Metti alla prova quanto hai imparato sui buzzer Arduino.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Informatica.</p>
+</footer>
+
+<script src="arduino-buzzer.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Torre di Hanoi - Lezione Interattiva MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        .back-button { display: inline-flex; align-items: center; color: var(--text-muted); text-decoration: none; margin-bottom: 2rem; font-weight: 600; transition: color 0.3s ease, transform 0.3s ease; }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+        .sub-hero { padding: 4rem 0 2rem; text-align: left; }
+        .sub-hero-title { font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; margin-bottom: 1rem; }
+
+        .game-box { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 1.5rem 1rem; margin: 1.5rem 0; }
+        .hanoi-stage { position: relative; height: 280px; background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.4) 100%); border-radius: 12px; display: flex; align-items: flex-end; justify-content: space-around; padding: 1rem 0.5rem 1.5rem; gap: 1rem; overflow: hidden; }
+        .hanoi-stage::after { content: ''; position: absolute; bottom: 1.5rem; left: 2rem; right: 2rem; height: 6px; background: var(--chem-color); border-radius: 3px; opacity: 0.6; }
+        .hanoi-rod { flex: 1; position: relative; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; cursor: pointer; transition: background 0.15s; max-width: 28%; }
+        .hanoi-rod:hover { background: rgba(245,158,11,0.08); }
+        .hanoi-rod.selected { background: rgba(245,158,11,0.15); box-shadow: inset 0 0 0 2px var(--chem-color); }
+        .hanoi-rod::before { content: ''; position: absolute; bottom: 1.5rem; left: 50%; transform: translateX(-50%); width: 8px; height: 90%; background: linear-gradient(180deg, rgba(245,158,11,0.7), rgba(245,158,11,0.4)); border-radius: 4px; z-index: 0; }
+        .hanoi-rod-label { position: absolute; bottom: -0.2rem; color: var(--chem-color); font-family: monospace; font-weight: 700; font-size: 0.9rem; z-index: 3; }
+        .disc { position: relative; height: 26px; margin-bottom: 3px; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-family: monospace; font-size: 0.9rem; z-index: 2; box-shadow: 0 2px 6px rgba(0,0,0,0.4); transition: all 0.3s; }
+        .disc.top { box-shadow: 0 2px 6px rgba(0,0,0,0.4), 0 0 12px rgba(245,158,11,0.4); }
+
+        .controls-row { display: flex; gap: 0.8rem; flex-wrap: wrap; margin: 1rem 0; align-items: center; }
+        .h-btn { background: var(--chem-color); color: #fff; border: none; padding: 0.6rem 1.1rem; border-radius: 8px; cursor: pointer; font-weight: 700; font-family: inherit; font-size: 0.95rem; transition: all 0.2s; }
+        .h-btn:hover { transform: translateY(-2px); }
+        .h-btn.secondary { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: var(--text-main); }
+        .h-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+        .stats { display: flex; gap: 1.5rem; flex-wrap: wrap; margin: 1rem 0; }
+        .stat-card { background: rgba(0,0,0,0.3); padding: 0.8rem 1.3rem; border-radius: 10px; min-width: 110px; }
+        .stat-label { font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.2rem; }
+        .stat-value { font-family: monospace; font-size: 1.6rem; font-weight: 800; color: var(--chem-color); }
+        .stat-value.optimal { color: var(--physics-color); }
+
+        .calc-box { background: rgba(0,0,0,0.3); padding: 1.5rem; border-radius: 12px; margin: 1rem 0; }
+        .calc-row { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; margin-bottom: 1rem; }
+        .calc-input { width: 80px; padding: 0.5rem; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.15); color: var(--text-main); border-radius: 6px; font-family: monospace; font-size: 1.1rem; text-align: center; }
+        .calc-result { font-family: monospace; font-size: 1.3rem; color: var(--chem-color); font-weight: 700; }
+
+        .recursion-trace { font-family: monospace; background: rgba(0,0,0,0.35); padding: 1.2rem; border-radius: 10px; margin: 1rem 0; max-height: 280px; overflow-y: auto; font-size: 0.85rem; line-height: 1.5; }
+        .recursion-trace .level-0 { color: var(--chem-color); font-weight: 700; }
+        .recursion-trace .level-1 { color: var(--physics-color); padding-left: 1.5em; }
+        .recursion-trace .level-2 { color: var(--math-color); padding-left: 3em; }
+        .recursion-trace .level-3 { color: #EC4899; padding-left: 4.5em; }
+        .recursion-trace .level-4 { color: var(--text-muted); padding-left: 6em; }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="informatica.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Informatica
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Torre di <span class="gradient-text">Hanoi</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+            Un rompicapo millenario, una leggenda sulla fine del mondo, e l'algoritmo ricorsivo piu elegante mai scritto.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title" style="color: var(--chem-color);">La Leggenda dei Monaci di Hanoi</h2>
+        <p class="lesson-text">
+            Si racconta che in un antico tempio nei pressi di Hanoi, in Vietnam, ci sia una sala segreta con tre colonne di diamante. Sulla prima colonna sono infilati <strong>64 dischi d'oro</strong>, ordinati per dimensione: il piu grande in basso, il piu piccolo in cima. Da quando il mondo e stato creato, dei monaci si succedono giorno e notte per spostare i 64 dischi dalla prima colonna alla terza, rispettando due regole semplici:
+        </p>
+        <ol class="lesson-text" style="margin-left: 1.5rem;">
+            <li>Si puo spostare un solo disco alla volta, prendendo sempre quello in cima.</li>
+            <li>Un disco piu grande non puo mai essere posato sopra uno piu piccolo.</li>
+        </ol>
+        <p class="lesson-text">
+            Secondo la leggenda, il giorno in cui i monaci avranno completato il trasferimento, il mondo finira. La buona notizia? Con 64 dischi servono <strong>18.446.744.073.709.551.615 mosse</strong>: alla velocita di una mossa al secondo, i monaci impiegherebbero circa <strong>585 miliardi di anni</strong>. Abbiamo tempo.
+        </p>
+
+        <div style="background: rgba(245,158,11,0.06); border-left: 4px solid var(--chem-color); padding: 1.5rem; border-radius: 0 10px 10px 0;">
+            <p class="lesson-text" style="margin-bottom: 0;">
+                <strong>Verita storica:</strong> in realta il rompicapo fu inventato dal matematico francese <strong>Edouard Lucas</strong> nel 1883, ben prima che diventasse un classico dell'informatica. La leggenda dei monaci e stata aggiunta come marketing per vendere il gioco da tavolo.
+            </p>
+        </div>
+    </section>
+
+    <section class="lesson-section" style="border-left: 4px solid var(--chem-color);">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Le Regole del Gioco</h2>
+        <p class="lesson-text">
+            Le regole sono talmente semplici che un bambino le capisce, ma talmente strette da rendere il puzzle non banale. Sono solo tre:
+        </p>
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.2rem; margin: 1.5rem 0;">
+            <div class="card" style="padding: 1.3rem; border-top: 3px solid var(--chem-color);">
+                <div style="font-size: 1.6rem; margin-bottom: 0.5rem;">&#9398;</div>
+                <h4 style="color: var(--chem-color); margin-bottom: 0.5rem;">Un disco alla volta</h4>
+                <p style="font-size: 0.92rem; color: var(--text-muted);">Niente trucchi: si sposta un solo disco per mossa, sempre quello in cima alla pila.</p>
+            </div>
+            <div class="card" style="padding: 1.3rem; border-top: 3px solid var(--physics-color);">
+                <div style="font-size: 1.6rem; margin-bottom: 0.5rem;">&#9399;</div>
+                <h4 style="color: var(--physics-color); margin-bottom: 0.5rem;">Mai grande su piccolo</h4>
+                <p style="font-size: 0.92rem; color: var(--text-muted);">Un disco puo essere posato solo su un disco di dimensione maggiore o su una colonna vuota.</p>
+            </div>
+            <div class="card" style="padding: 1.3rem; border-top: 3px solid var(--math-color);">
+                <div style="font-size: 1.6rem; margin-bottom: 0.5rem;">&#9400;</div>
+                <h4 style="color: var(--math-color); margin-bottom: 0.5rem;">Obiettivo</h4>
+                <p style="font-size: 0.92rem; color: var(--text-muted);">Spostare tutti i dischi dalla colonna A alla colonna C, mantenendo la stessa pila ordinata.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Gioca alla Torre di Hanoi</h2>
+        <p class="lesson-text">
+            Clicca su una colonna per <strong>selezionarla</strong>, poi clicca su un'altra colonna per <strong>spostarci sopra</strong> il disco in cima. Il gioco impedisce le mosse illegali. Provaci con 3, 4 o 5 dischi: aumentando di poco il numero, esplode la difficolta.
+        </p>
+
+        <div class="game-box">
+            <div class="controls-row">
+                <label style="color: var(--text-muted); font-size: 0.9rem;">Numero di dischi:</label>
+                <select id="num-discs" class="calc-input" style="width: 70px;">
+                    <option value="3">3</option>
+                    <option value="4" selected>4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                </select>
+                <button class="h-btn" id="reset-game">Nuova Partita</button>
+                <button class="h-btn secondary" id="auto-solve">Risolvi Automaticamente</button>
+            </div>
+
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-label">Mosse</div>
+                    <div class="stat-value" id="move-count">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Minime possibili</div>
+                    <div class="stat-value optimal" id="optimal-moves">15</div>
+                </div>
+                <div class="stat-card" style="flex: 1; min-width: 200px;">
+                    <div class="stat-label">Stato</div>
+                    <div class="stat-value" id="game-status" style="font-size: 1rem;">Clicca una colonna per iniziare</div>
+                </div>
+            </div>
+
+            <div class="hanoi-stage" id="hanoi-stage">
+                <div class="hanoi-rod" data-rod="0">
+                    <div class="hanoi-rod-label">A</div>
+                </div>
+                <div class="hanoi-rod" data-rod="1">
+                    <div class="hanoi-rod-label">B</div>
+                </div>
+                <div class="hanoi-rod" data-rod="2">
+                    <div class="hanoi-rod-label">C</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section" style="border-left: 4px solid var(--physics-color);">
+        <h2 class="lesson-title" style="color: var(--physics-color);">La Soluzione Ricorsiva</h2>
+        <p class="lesson-text">
+            Esiste un trucco mentale che rende il problema banale: la <strong>ricorsione</strong>. Per spostare N dischi dalla colonna A alla colonna C usando B come supporto, basta:
+        </p>
+        <ol class="lesson-text" style="margin-left: 1.5rem;">
+            <li>Spostare i <em>primi N-1 dischi</em> da A a B (problema piu piccolo, stessa logica).</li>
+            <li>Spostare il <em>disco grande</em> da A a C (1 sola mossa).</li>
+            <li>Spostare gli <em>N-1 dischi</em> da B a C (problema piu piccolo, stessa logica).</li>
+        </ol>
+
+        <p class="lesson-text">
+            La ricorsione "fa parlare il problema con se stesso". E il caso base e ovvio: spostare 0 dischi non richiede mosse.
+        </p>
+
+        <div style="background: rgba(0,0,0,0.3); padding: 1.5rem; border-radius: 12px; font-family: monospace; font-size: 0.95rem; margin: 1rem 0;">
+<span style="color: var(--text-muted);">// pseudocodice della soluzione</span><br>
+<span style="color: var(--chem-color);">function</span> hanoi(n, A, B, C) {<br>
+&nbsp;&nbsp;<span style="color: var(--physics-color);">if</span> (n == 0) <span style="color: var(--physics-color);">return</span>;<br>
+&nbsp;&nbsp;hanoi(n-1, A, C, B);&nbsp;&nbsp;<span style="color: var(--text-muted);">// sposta n-1 da A a B</span><br>
+&nbsp;&nbsp;move disc <span style="color: var(--chem-color);">n</span> from A to C;<br>
+&nbsp;&nbsp;hanoi(n-1, B, A, C);&nbsp;&nbsp;<span style="color: var(--text-muted);">// sposta n-1 da B a C</span><br>
+}
+        </div>
+
+        <h3 style="margin: 1.5rem 0 1rem; font-size: 1.1rem; color: var(--physics-color);">Traccia di esecuzione</h3>
+        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 0.8rem;">
+            Clicca per generare la traccia ricorsiva per N dischi:
+        </p>
+        <div class="controls-row">
+            <select id="trace-n" class="calc-input" style="width: 70px;">
+                <option value="2">2</option>
+                <option value="3" selected>3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+            <button class="h-btn" id="generate-trace">Genera Traccia</button>
+        </div>
+        <div class="recursion-trace" id="trace-output"></div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Complessita: la Crescita Esponenziale</h2>
+        <p class="lesson-text">
+            Quante mosse servono per N dischi? L'analisi della soluzione ricorsiva da una formula chiarissima:
+        </p>
+        <div style="text-align: center; font-family: monospace; font-size: 1.8rem; color: var(--chem-color); font-weight: 800; margin: 2rem 0;">
+            T(N) = 2<sup>N</sup> - 1
+        </div>
+        <p class="lesson-text">
+            Si dimostra facilmente: per spostare N dischi servono <em>due volte</em> il numero di mosse per N-1 dischi, piu 1 mossa per il disco grande. Da cui T(N) = 2 &middot; T(N-1) + 1, e risolvendo si ottiene T(N) = 2<sup>N</sup> - 1.
+        </p>
+
+        <div class="calc-box">
+            <h3 style="color: var(--chem-color); margin-bottom: 1rem;">Calcolatore di Mosse</h3>
+            <div class="calc-row">
+                <label style="color: var(--text-muted);">N =</label>
+                <input type="number" id="calc-n" class="calc-input" value="10" min="0" max="64">
+                <span style="color: var(--text-muted);">dischi richiedono</span>
+                <span class="calc-result" id="calc-result">1.023 mosse</span>
+            </div>
+            <div id="calc-time" style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;"></div>
+        </div>
+
+        <p class="lesson-text">
+            Questo e un esempio di <strong>complessita esponenziale</strong> (O(2<sup>n</sup>)): la peggiore categoria di efficienza. Per ogni disco aggiunto, il tempo <em>raddoppia</em>. Per questo problemi NP-difficili (come il commesso viaggiatore) sono considerati intrattabili: la loro crescita esponenziale rende impossibile risolverli per istanze grandi.
+        </p>
+    </section>
+
+    <section class="lesson-section" style="background: rgba(245,158,11,0.03); border-left: 4px solid var(--chem-color);">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Ricorsione: pensare come Hanoi in codice</h2>
+        <p class="lesson-text">
+            La Torre di Hanoi e il problema piu citato nei corsi universitari per spiegare la <strong>ricorsione</strong>. Un algoritmo si dice ricorsivo quando, per risolvere un'istanza di un problema, <em>chiama se stesso</em> su istanze piu piccole, fino ad arrivare a un caso base banale.
+        </p>
+        <p class="lesson-text">
+            Esempi quotidiani di ricorsione:
+        </p>
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.2rem; margin: 1.5rem 0;">
+            <div class="card" style="padding: 1.3rem;">
+                <h4 style="color: var(--chem-color); margin-bottom: 0.5rem;">Esplora una cartella</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Per listare tutti i file in una cartella: visiti i file di questo livello, poi <em>per ogni sottocartella</em> applichi la stessa funzione.</p>
+            </div>
+            <div class="card" style="padding: 1.3rem;">
+                <h4 style="color: var(--physics-color); margin-bottom: 0.5rem;">Frattali</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">I fiocchi di Koch e i triangoli di Sierpinski si disegnano applicando una regola sempre piu piccola a parti di se stessi.</p>
+            </div>
+            <div class="card" style="padding: 1.3rem;">
+                <h4 style="color: var(--math-color); font-family: monospace; margin-bottom: 0.5rem;">Inception</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Un sogno dentro un sogno dentro un sogno: il film di Nolan e essenzialmente una ricorsione, con un caso base (il Limbo).</p>
+            </div>
+            <div class="card" style="padding: 1.3rem;">
+                <h4 style="color: #EC4899; margin-bottom: 0.5rem;">Fibonacci</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">F(n) = F(n-1) + F(n-2). La definizione stessa e ricorsiva, ed e l'esempio piu citato nelle interviste di lavoro.</p>
+            </div>
+        </div>
+
+        <div style="background: rgba(0,0,0,0.2); border-radius: 12px; padding: 1.5rem; font-family: monospace;">
+            <span style="color: var(--text-muted);"># Python: Torre di Hanoi in 4 righe</span><br>
+            <span style="color: var(--chem-color);">def</span> hanoi(n, a, b, c):<br>
+            &nbsp;&nbsp;<span style="color: var(--physics-color);">if</span> n == 0: <span style="color: var(--physics-color);">return</span><br>
+            &nbsp;&nbsp;hanoi(n-1, a, c, b)<br>
+            &nbsp;&nbsp;<span style="color: var(--text-muted);">print</span>(<span style="color: var(--chem-color);">f"sposta disco</span> {n} <span style="color: var(--chem-color);">da</span> {a} <span style="color: var(--chem-color);">a</span> {c}<span style="color: var(--chem-color);">"</span>)<br>
+            &nbsp;&nbsp;hanoi(n-1, b, a, c)
+        </div>
+    </section>
+
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Quiz di Riepilogo</h2>
+        <p class="lesson-text" style="font-size: 0.95rem;">Metti alla prova la tua comprensione di Hanoi e ricorsione.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Informatica.</p>
+</footer>
+
+<script src="torre-hanoi.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Onde Meccaniche — Meccanica | MFI</title>
+    <meta name="description" content="Lezione interattiva sulle onde meccaniche: trasversali, longitudinali, velocità del suono, lunghezza d'onda, effetto Doppler. Simulatori interattivi.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+    <style>
+        .back-button { display:inline-flex; align-items:center; color:var(--text-muted); text-decoration:none; margin-bottom:2rem; font-weight:600; transition:color 0.3s ease, transform 0.3s ease; }
+        .back-button:hover { color:var(--text-main); transform:translateX(-5px); }
+        .sub-hero { padding:4rem 0 2rem; text-align:left; }
+        .sub-hero-title { font-size:clamp(2.2rem, 4vw, 3.2rem); font-weight:800; margin-bottom:1rem; }
+        .lesson-section { margin-bottom:3rem; padding:2.5rem; border-radius:1rem; border:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.03); }
+        .lesson-title { font-size:1.5rem; font-weight:700; margin-bottom:1.2rem; color:var(--physics-color); }
+        .lesson-text { color:var(--text-muted); line-height:1.8; margin-bottom:1.1rem; font-size:1.02rem; }
+        .info-box { background:rgba(16,185,129,0.07); border-left:4px solid var(--physics-color); border-radius:0 0.75rem 0.75rem 0; padding:1.25rem 1.5rem; margin:1.5rem 0; }
+        .callout { display:flex; gap:1rem; align-items:flex-start; background:rgba(16,185,129,0.07); border:1px solid rgba(16,185,129,0.22); border-radius:0.75rem; padding:1.2rem 1.5rem; margin:1.5rem 0; }
+        .callout-icon { font-size:1.5rem; flex-shrink:0; }
+        .callout p { margin:0; color:var(--text-muted); font-size:0.97rem; line-height:1.7; }
+        .callout p strong { color:#6ee7b7; }
+        .simulator-widget { background:rgba(0,0,0,0.25); border-radius:14px; padding:2rem; margin:1.5rem 0; }
+        canvas { display:block; margin:0 auto; max-width:100%; border-radius:8px; background:rgba(0,0,0,0.3); }
+        .controls-row { display:flex; gap:1.5rem; flex-wrap:wrap; align-items:flex-end; justify-content:center; margin-top:1.2rem; }
+        .ctrl-group { display:flex; flex-direction:column; gap:0.3rem; min-width:180px; }
+        .ctrl-group label { color:var(--text-muted); font-size:0.82rem; text-transform:uppercase; letter-spacing:0.05em; }
+        .ctrl-group input[type=range] { -webkit-appearance:none; width:100%; height:6px; background:rgba(16,185,129,0.25); border-radius:3px; outline:none; }
+        .ctrl-group input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:18px; height:18px; border-radius:50%; background:var(--physics-color); cursor:pointer; box-shadow:0 0 8px var(--physics-glow); }
+        .ctrl-group input[type=range]::-moz-range-thumb { width:18px; height:18px; border-radius:50%; background:var(--physics-color); cursor:pointer; border:none; }
+        .ctrl-value { color:var(--physics-color); font-weight:700; font-family:monospace; }
+        .readout { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:1.5rem; }
+        .readout-card { background:rgba(0,0,0,0.3); border-radius:10px; padding:1.2rem; text-align:center; border-top:3px solid var(--physics-color); }
+        .readout-label { font-size:0.85rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.5rem; }
+        .readout-value { font-size:1.6rem; font-weight:800; color:var(--physics-color); font-family:monospace; }
+        .buttons-row { display:flex; gap:1rem; justify-content:center; margin-top:1.5rem; }
+        button { padding:0.7rem 1.5rem; background:var(--physics-color); color:#fff; border:none; border-radius:8px; cursor:pointer; font-weight:700; transition:background 0.2s; }
+        button:hover { background:#0d9d6f; }
+        .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:1.5rem; margin:2rem 0; }
+        .card { padding:1.5rem; border-radius:10px; border-top:3px solid var(--physics-color); background:rgba(16,185,129,0.05); }
+        .quiz-container { background:rgba(16,185,129,0.05); border:1px solid rgba(16,185,129,0.22); border-radius:10px; padding:2rem; margin:2rem 0; }
+        .quiz-question { margin-bottom:1.5rem; }
+        .quiz-question-text { font-weight:600; color:var(--text-main); margin-bottom:0.8rem; }
+        .quiz-options { display:flex; flex-direction:column; gap:0.6rem; }
+        .quiz-option { background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.1); border-radius:6px; padding:0.8rem 1rem; cursor:pointer; color:var(--text-muted); transition:all 0.2s; }
+        .quiz-option:hover { background:rgba(16,185,129,0.15); border-color:var(--physics-color); }
+        .quiz-option input { margin-right:0.7rem; }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align:center; margin-bottom:2.5rem;">
+            <a href="../meccanica.html" class="back-button" style="margin-bottom:0;">
+                <span style="margin-right:0.5rem; font-size:1.2rem;">&larr;</span> Torna a Meccanica
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Onde <span class="gradient-text">Meccaniche</span></h1>
+        <p style="font-size:1.15rem; color:var(--text-muted); max-width:800px; font-weight:300;">
+            Dalle oscillazioni di una corda al suono che raggiunge il nostro orecchio: scopri come le onde trasportano energia.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Caratteristiche delle Onde Meccaniche</h2>
+        <p class="lesson-text">
+            Un'<strong>onda meccanica</strong> è una perturbazione che si propaga in un mezzo elastico (corda, aria, acqua). Non trasporta materia, ma <strong>energia</strong>.
+        </p>
+
+        <div class="info-box">
+            <p style="margin:0;"><strong>Ampiezza (A):</strong> Massimo spostamento dalla posizione di equilibrio (metro).</p>
+            <p style="margin:0.5rem 0 0;"><strong>Periodo (T):</strong> Tempo per un'oscillazione completa (secondi).</p>
+            <p style="margin:0.5rem 0 0;"><strong>Frequenza (f):</strong> Oscillazioni per secondo, \( f = 1/T \) (Hz).</p>
+            <p style="margin:0.5rem 0 0;"><strong>Lunghezza d'onda (λ):</strong> Distanza tra due creste consecutive (metro).</p>
+            <p style="margin:0.5rem 0 0;"><strong>Velocità d'onda:</strong> \( v = \lambda \cdot f \)</p>
+        </div>
+
+        <p class="lesson-text">
+            Le onde trasversali oscillano perpendicolarmente alla direzione di propagazione (corda che vibra). Le onde longitudinali oscillano parallelamente alla direzione (suono nell'aria).
+        </p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Simulatore di Onda Sinusoidale</h2>
+        <p class="lesson-text">
+            Modifica frequenza e ampiezza per visualizzare come cambiano le caratteristiche dell'onda.
+        </p>
+
+        <div class="simulator-widget">
+            <canvas id="wave-canvas" width="700" height="350"></canvas>
+
+            <div class="controls-row">
+                <div class="ctrl-group">
+                    <label>Frequenza: <span class="ctrl-value" id="frequency-display">2</span> Hz</label>
+                    <input type="range" id="frequency-slider" min="1" max="5" value="2" step="0.5">
+                </div>
+                <div class="ctrl-group">
+                    <label>Ampiezza: <span class="ctrl-value" id="amplitude-display">50</span> px</label>
+                    <input type="range" id="amplitude-slider" min="20" max="100" value="50" step="10">
+                </div>
+            </div>
+
+            <div class="readout">
+                <div class="readout-card">
+                    <div class="readout-label">Periodo T</div>
+                    <div class="readout-value" id="period-readout">0.50 s</div>
+                </div>
+                <div class="readout-card">
+                    <div class="readout-label">Lunghezza d'onda λ</div>
+                    <div class="readout-value" id="wavelength-readout">314 px</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Il Suono: Onde Longitudinali</h2>
+        <p class="lesson-text">
+            Il suono è un'onda longitudinale che si propaga nell'aria (e in altri mezzi). La velocità del suono dipende dal mezzo:
+        </p>
+
+        <div class="info-box">
+            <p style="margin:0;"><strong>Velocità del suono:</strong></p>
+            <p style="margin:0.3rem 0 0;">Aria (20°C): ~343 m/s</p>
+            <p style="margin:0.3rem 0 0;">Acqua: ~1480 m/s</p>
+            <p style="margin:0.3rem 0 0;">Acciaio: ~5960 m/s</p>
+            <p style="margin:0.3rem 0 0;"><strong>Nota:</strong> Nel vuoto, il suono non si propaga.</p>
+        </div>
+
+        <p class="lesson-text">
+            La frequenza del suono determina il <strong>tono</strong>: da 20 Hz a 20 kHz è il range udibile umano. Bassi frequenza = bassi gravi, alta frequenza = suoni acuti.
+        </p>
+
+        <div class="callout">
+            <div class="callout-icon">🔊</div>
+            <p><strong>Decibel (dB):</strong> Misura il livello sonoro. \( L_{dB} = 10 \log_{10}(I/I_0) \) dove I₀ = 10⁻¹² W/m².</p>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Simulatore: Effetto Doppler</h2>
+        <p class="lesson-text">
+            La frequenza del suono cambia se la sorgente si muove verso o lontano dall'osservatore. Questo è l'effetto Doppler.
+        </p>
+
+        <div class="simulator-widget">
+            <canvas id="doppler-canvas" width="700" height="300"></canvas>
+
+            <div class="controls-row">
+                <div class="ctrl-group">
+                    <label>Velocità sorgente: <span class="ctrl-value" id="source-speed-display">0</span> m/s</label>
+                    <input type="range" id="source-speed-slider" min="-50" max="50" value="0" step="5">
+                </div>
+                <div class="ctrl-group">
+                    <label>Frequenza sorgente: <span class="ctrl-value" id="source-freq-display">440</span> Hz</label>
+                    <input type="range" id="source-freq-slider" min="200" max="800" value="440" step="20">
+                </div>
+            </div>
+
+            <div class="readout">
+                <div class="readout-card">
+                    <div class="readout-label">Frequenza osservata</div>
+                    <div class="readout-value" id="observed-freq-readout">440 Hz</div>
+                </div>
+                <div class="readout-card">
+                    <div class="readout-label">Cambio di frequenza</div>
+                    <div class="readout-value" id="freq-shift-readout">0 Hz</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Applicazioni Pratiche</h2>
+
+        <div class="grid">
+            <div class="card">
+                <h4 style="color:var(--physics-color); margin-bottom:0.8rem;">Radar e Sonar</h4>
+                <p style="font-size:0.93rem; color:var(--text-muted);">L'effetto Doppler è usato per misurare la velocità di auto e aerei (radar) e per rilevare oggetti sott'acqua (sonar).</p>
+            </div>
+            <div class="card">
+                <h4 style="color:var(--physics-color); margin-bottom:0.8rem;">Ultrasuoni Medici</h4>
+                <p style="font-size:0.93rem; color:var(--text-muted);">Onde sonore con frequenza > 20 kHz penetrano tessuti per creare immagini (ecografie) senza radiazioni.</p>
+            </div>
+            <div class="card">
+                <h4 style="color:var(--physics-color); margin-bottom:0.8rem;">Musica e Acustica</h4>
+                <p style="font-size:0.93rem; color:var(--text-muted);">Strumenti musicali producono onde diverse. Sale da concerto sono progettate per riflettere il suono perfettamente.</p>
+            </div>
+            <div class="card">
+                <h4 style="color:var(--physics-color); margin-bottom:0.8rem;">Astronomia: Redshift</h4>
+                <p style="font-size:0.93rem; color:var(--text-muted);">L'effetto Doppler per la luce (onde elettromagnetiche) rivela se le galassie si allontanano o avvicinano.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title">Quiz di Riepilogo</h2>
+        <p class="lesson-text" style="font-size:0.95rem;">Verifica la tua comprensione di onde, suono e effetto Doppler.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size:1.2rem; margin-top:2rem;"></div>
+    </section>
+
+</main>
+
+<footer><p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Fisica.</p></footer>
+
+<script src="onde-meccaniche.js"></script>
+<script src="../../js/main.js"></script>
+</body>
+</html>

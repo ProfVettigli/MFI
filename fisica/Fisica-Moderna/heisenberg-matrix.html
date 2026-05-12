@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meccanica delle Matrici - Lezione Interattiva MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        .back-button { display: inline-flex; align-items: center; color: var(--text-muted); text-decoration: none; margin-bottom: 2rem; font-weight: 600; transition: color 0.3s ease, transform 0.3s ease; }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+        .sub-hero { padding: 4rem 0 2rem; text-align: left; }
+        .sub-hero-title { font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; margin-bottom: 1rem; }
+        .lesson-title { color: var(--physics-color) !important; }
+
+        .interactive-box {
+            background: rgba(99,102,241,0.04);
+            border: 1px solid rgba(99,102,241,0.18);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+        }
+        .slider-row { display: flex; align-items: center; gap: 1rem; margin: 1rem 0; flex-wrap: wrap; }
+        .slider-row label { min-width: 140px; font-weight: 600; color: var(--text-muted); }
+        .slider-row input[type=range] { flex: 1; min-width: 200px; accent-color: var(--physics-color); }
+        .slider-row .value { font-family: monospace; font-weight: 800; color: var(--physics-color); min-width: 90px; }
+
+        .result-box {
+            background: rgba(0,0,0,0.3);
+            border-left: 5px solid var(--physics-color);
+            padding: 1.2rem 1.5rem;
+            border-radius: 0 10px 10px 0;
+            margin-top: 1.2rem;
+            font-family: monospace;
+            font-size: 1.05rem;
+        }
+        .result-box strong { color: var(--physics-color); font-size: 1.3rem; }
+
+        canvas.diagram { width: 100%; max-width: 480px; height: 360px; background: rgba(0,0,0,0.35); border-radius: 12px; display: block; }
+
+        .formula { font-family: 'Cambria Math', Cambria, serif; font-size: 1.4rem; text-align: center; padding: 1rem; background: rgba(0,0,0,0.25); border-radius: 10px; margin: 1rem 0; }
+        .formula em { color: var(--physics-color); font-style: italic; }
+
+        .matrix-display {
+            background: rgba(0,0,0,0.25);
+            border: 1px solid rgba(99,102,241,0.2);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            font-family: monospace;
+            text-align: center;
+        }
+
+        .timeline { position: relative; padding-left: 2.5rem; margin: 2rem 0; }
+        .timeline::before { content: ''; position: absolute; left: 0.6rem; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--physics-color), rgba(99,102,241,0.1)); }
+        .timeline-item { position: relative; margin-bottom: 2rem; }
+        .timeline-item::before { content: ''; position: absolute; left: -1.95rem; top: 0.4rem; width: 10px; height: 10px; border-radius: 50%; background: var(--physics-color); box-shadow: 0 0 8px rgba(99,102,241,0.5); }
+        .timeline-year { font-size: 0.8rem; font-weight: 700; color: var(--physics-color); letter-spacing: 1px; margin-bottom: 0.3rem; }
+        .timeline-text { font-size: 0.97rem; color: var(--text-muted); line-height: 1.6; }
+        .timeline-text strong { color: var(--text-main); }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="fisica-moderna.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Fisica Moderna
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Meccanica delle <span class="gradient-text">Matrici</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+            La formulazione algebrica di Heisenberg: operatori, autovalori e l'equivalenza con la meccanica ondulatoria di Schrödinger.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">La Rivoluzione di Heisenberg</h2>
+        <p class="lesson-text">
+            Nel 1925, <strong>Werner Heisenberg</strong> sviluppò un approccio completamente diverso alla meccanica quantistica rispetto a quello di Schrödinger. Mentre Schrödinger pensava a <strong>onde e funzioni d'onda</strong>, Heisenberg pensava ad <strong>algebra e matrici</strong>.
+        </p>
+        <p class="lesson-text">
+            La grande scoperta: gli <strong>osservabili fisici</strong> (posizione, momento, energia) non sono numeri ordinari, ma <strong>matrici infinite</strong> che agiscono su uno spazio vettoriale infinito-dimensionale. Quando si effettua una misura, il sistema "collassa" a uno degli <strong>autostati</strong> della matrice, e il valore misurato è uno dei suoi <strong>autovalori</strong>.
+        </p>
+        <p class="lesson-text">
+            Questa formulazione è radicalmente diversa, eppure — sorprendentemente — è <strong>completamente equivalente</strong> a quella di Schrödinger. Due linguaggi matematici diversi, una sola realtà quantistica.
+        </p>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-year">1925</div>
+                <p class="timeline-text"><strong>Heisenberg</strong> sviluppa la meccanica delle matrici, un approccio puramente algebrico alla meccanica quantistica.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1926</div>
+                <p class="timeline-text"><strong>Schrödinger</strong> pubblica la sua equazione d'onda. Inizialmente i due approcci sembrano incompatibili.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1926</div>
+                <p class="timeline-text"><strong>Schrödinger</strong> dimostra che le due formulazioni sono matematicamente equivalenti. È una trasformazione unitaria dello stesso spazio di Hilbert.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1930</div>
+                <p class="timeline-text"><strong>Dirac</strong> unifica i due approcci con la notazione bra-ket, il linguaggio universale della meccanica quantistica moderna.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Operatori e Matrici</h2>
+        <p class="lesson-text">
+            In meccanica classica, misurare una quantità significa semplicemente leggere il valore di una variabile. In meccanica quantistica, le cose sono più strane: le quantità osservabili sono rappresentate da <strong>operatori</strong> che agiscono sugli stati quantistici.
+        </p>
+        <p class="lesson-text">
+            Un operatore Â agisce su uno stato quantistico |ψ⟩ producendo un nuovo stato:
+        </p>
+        <div class="formula">Â |ψ⟩ = |φ⟩</div>
+        <p class="lesson-text">
+            Se lo stato |ψ⟩ è un <strong>autostato</strong> dell'operatore Â, allora:
+        </p>
+        <div class="formula">Â |ψ⟩ = a |ψ⟩</div>
+        <p class="lesson-text">
+            dove <em>a</em> è il <strong>autovalore</strong>. Questo numero <em>a</em> è il valore che misuriamo quando il sistema è in autostato. Se il sistema è in una sovrapposizione di autostati, la misurazione "collassa" a uno di essi casualmente.
+        </p>
+
+        <div class="interactive-box">
+            <h3 style="color: var(--physics-color); margin-bottom: 1rem;">Visualizzatore di Operatori Matriciali</h3>
+            <p style="font-size: 0.95rem; color: var(--text-muted);">Scegli un operatore e visualizza i suoi autovalori (energia permessa).</p>
+            <div class="slider-row">
+                <label for="matrix-n">Dimensione matrice (n):</label>
+                <input type="range" id="matrix-n" min="2" max="5" step="1" value="3">
+                <span class="value" id="matrix-n-val">n = 3</span>
+            </div>
+            <div class="matrix-display">
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">Esempio: Matrice Hamiltoniana 3×3 (livelli energetici)</p>
+                <canvas id="matrix-canvas" style="width: 100%; max-width: 300px; height: 200px; background: rgba(0,0,0,0.2); border-radius: 8px; display: block; margin: 1rem auto;"></canvas>
+            </div>
+            <div class="result-box">
+                Autovalori (Energie): <strong id="eigenvalues">E₁, E₂, E₃</strong><br>
+                Spazio di Hilbert: <strong id="hilbert-dim">ℋ = ℂⁿ</strong>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Le Relazioni di Commutazione</h2>
+        <p class="lesson-text">
+            Un risultato cruciale emerge dalla meccanica delle matrici: due operatori non commutano generalmente. Cioè:
+        </p>
+        <div class="formula">[Â, B̂] = ÂB̂ − B̂Â ≠ 0</div>
+        <p class="lesson-text">
+            La relazione di commutazione più importante è quella tra posizione e momento:
+        </p>
+        <div class="formula">[x̂, p̂] = iℏ</div>
+        <p class="lesson-text">
+            Questo commutatore non nullo è la <strong>fonte matematica del principio di indeterminazione di Heisenberg</strong>! Se due operatori commutano ([Â, B̂] = 0), allora è possibile misurare contemporaneamente i loro autovalori con precisione arbitraria. Se non commutano, come x̂ e p̂, esiste un limite fondamentale a quanto precisamente possiamo misurare entrambe le quantità simultaneamente.
+        </p>
+
+        <div style="background: rgba(99,102,241,0.06); border-left: 4px solid var(--physics-color); padding: 1.2rem; border-radius: 0 10px 10px 0; margin: 1.5rem 0;">
+            <p class="lesson-text" style="margin-bottom: 0; font-size: 1rem;">
+                <strong>Parentesi di Poisson:</strong> In meccanica classica, la parentesi di Poisson {A, B} controlla l'evoluzione temporale dei sistemi conservativi. Heisenberg scoprì che questa struttura si mantiene in meccanica quantistica, ma con il commutatore di operatori al posto della parentesi di Poisson, scalato da iℏ.
+            </p>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Equivalenza delle Formulazioni</h2>
+        <p class="lesson-text">
+            A prima vista, la meccanica ondulatoria di Schrödinger (equazione differenziale per ψ(x,t)) e la meccanica delle matrici di Heisenberg (algebra di operatori) sembrano incompatibili. Eppure sono identiche!
+        </p>
+        <p class="lesson-text">
+            La soluzione di Schrödinger ψ(x,t) rappresenta uno stato nel <strong>spazio di Hilbert</strong> — uno spazio vettoriale infinito-dimensionale. Quando decomponiamoψ(x,t) negli autostati energetici dell'Hamiltoniana, otteniamo i coefficienti della sovrapposizione. Questi coefficienti sono esattamente i vettori della matrice Hamiltoniana di Heisenberg!
+        </p>
+
+        <div class="matrix-display">
+            <strong>Trasformazione Unitaria</strong><br><br>
+            Rappresentazione di Schrödinger (base posizione):<br>
+            ψ(x,t) = ∑<sub>n</sub> c<sub>n</sub> φ<sub>n</sub>(x) e<sup>−iE<sub>n</sub>t/ℏ</sup><br><br>
+            ↓ (trasformazione unitaria U) ↓<br><br>
+            Rappresentazione di Heisenberg (base energetica):<br>
+            c<sub>n</sub>(t) = c<sub>n</sub>(0) e<sup>−iE<sub>n</sub>t/ℏ</sup>
+        </div>
+
+        <p class="lesson-text">
+            Le due rappresentazioni sono collegati da una <strong>trasformazione unitaria</strong>, una trasformazione di coordinate che preserva le lunghezze (probabilità). Tutti gli osservabili fisicamente rilevanti sono invarianti sotto questa trasformazione.
+        </p>
+    </section>
+
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title">Quiz di Riepilogo</h2>
+        <p class="lesson-text" style="font-size: 0.95rem;">Metti alla prova la tua comprensione della meccanica delle matrici e della formulazione di Heisenberg.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Fisica.</p>
+</footer>
+
+<script src="heisenberg-matrix.js"></script>
+<script src="../../js/main.js"></script>
+</body>
+</html>

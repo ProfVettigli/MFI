@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Il Corno di Gabriele - Lezione Interattiva MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <style>
+        .back-button { display: inline-flex; align-items: center; color: var(--text-muted); text-decoration: none; margin-bottom: 2rem; font-weight: 600; transition: color 0.3s, transform 0.3s; }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+        .sub-hero { padding: 4rem 0 2rem; text-align: left; }
+        .sub-hero-title { font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; margin-bottom: 1rem; }
+        .widget-box { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 2rem; margin: 2rem 0; }
+        .widget-title { color: var(--math-color); margin-bottom: 1rem; font-size: 1.2rem; font-weight: 700; }
+        #3d-container { width: 100%; max-width: 600px; height: 400px; background: rgba(0,0,0,0.3); border-radius: 10px; margin: 1rem auto; display: block; }
+        canvas.graph { width: 100%; max-width: 600px; height: 360px; background: rgba(0,0,0,0.3); border-radius: 10px; display: block; margin: 1rem auto; }
+        .ctrl-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap; }
+        .ctrl-row label { min-width: 120px; color: var(--text-muted); font-family: monospace; font-size: 0.95rem; }
+        input[type=range] { flex: 1; min-width: 150px; accent-color: var(--math-color); }
+        .val-display { font-family: monospace; color: var(--math-color); min-width: 100px; font-weight: 700; }
+        .result-card { background: rgba(59,130,246,0.06); border-left: 4px solid var(--math-color); padding: 1rem 1.2rem; border-radius: 0 10px 10px 0; margin-top: 1rem; font-family: monospace; font-size: 0.95rem; }
+        .formula-block { background: rgba(0,0,0,0.3); border-radius: 10px; padding: 1.2rem; margin: 1rem 0; font-size: 1.05rem; border-left: 3px solid var(--math-color); }
+        .paradox-box { background: rgba(255, 200, 87, 0.1); border: 2px solid #FFC857; border-radius: 10px; padding: 1.5rem; margin: 2rem 0; }
+        .paradox-title { color: #FFC857; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="studio-funzione.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Studio di Funzione
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Il Corno di Gabriele: <span class="gradient-text">Il Paradosso dell'Infinito</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+            Una figura geometrica con superficie infinita ma volume finito: uno dei paradossi più affascinanti della matematica.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Cos'è il Corno di Gabriele?</h2>
+        <p class="lesson-text">
+            Il <strong>Corno di Gabriele</strong> (Gabriel's Horn) è una superficie di rotazione costruita ruotando la curva \(y = \frac{1}{x}\) intorno all'asse x nel dominio \([1, \infty)\).
+        </p>
+        <p class="lesson-text">
+            Il nome deriva da un'allusione teologica: il corno del Giudizio Finale di Gabriele, che suona infinito ma con una capacità finita.
+        </p>
+        <div class="formula-block" style="text-align: center; font-size: 1.15rem;">
+            Superficie: \(\displaystyle S = 2\pi \int_1^\infty \frac{1}{x}\sqrt{1 + \frac{1}{x^4}} \, dx = \infty\) <br>
+            Volume: \(\displaystyle V = \pi \int_1^\infty \frac{1}{x^2} \, dx = \pi\)
+        </div>
+
+        <div class="widget-box">
+            <h3 class="widget-title">3D Rotazione Interattiva</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">Rotazione automatica del corno. Usa il mouse per interagire (click + drag per ruotare).</p>
+            <div id="3d-container"></div>
+            <div style="text-align: center; margin-top: 1rem; color: var(--text-muted); font-size: 0.9rem;">
+                💡 Trascina con il mouse per ruotare la vista
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section" style="border-left: 4px solid #FFC857;">
+        <h2 class="lesson-title" style="color: #FFC857;">Il Paradosso</h2>
+
+        <div class="paradox-box">
+            <div class="paradox-title">⚡ Il Paradosso dell'Infinito Finito</div>
+            <p style="color: var(--text-muted);">
+                Come è possibile che una figura abbia <strong>superficie infinita</strong> ma <strong>volume finito</strong>?
+            </p>
+            <p style="margin-top: 1rem; color: var(--text-main);">
+                Ciò significa che potresti riempire il corno di vernice (volume finito) ma non potresti coprire tutta la sua superficie (perimetro infinito)!
+            </p>
+        </div>
+
+        <p class="lesson-text">
+            Questo paradosso è risolto dalla nozione di <strong>convergenza e divergenza</strong> degli integrali impropri:
+        </p>
+
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin: 1.5rem 0;">
+            <div class="card" style="padding: 1.5rem; border-left: 4px solid #3b82f6;">
+                <h4 style="color: #3b82f6;">Volume Converge</h4>
+                <p style="font-family: monospace; font-size: 0.95rem; margin: 1rem 0; color: var(--math-color);">\(\int_1^\infty \frac{1}{x^2} \, dx = 1 < \infty\)</p>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">L'integrale converge a π.</p>
+            </div>
+            <div class="card" style="padding: 1.5rem; border-left: 4px solid #FFC857;">
+                <h4 style="color: #FFC857;">Superficie Diverge</h4>
+                <p style="font-family: monospace; font-size: 0.95rem; margin: 1rem 0; color: var(--math-color);">\(\int_1^\infty \frac{1}{x} \, dx = \infty\)</p>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">L'integrale diverge!</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Calcolo Interattivo</h2>
+        <p class="lesson-text">
+            Visualizza come volume e superficie cambiano quando consideri il corno da \(x = 1\) a \(x = a\) (valori finiti).
+        </p>
+
+        <div class="widget-box">
+            <h3 class="widget-title">Volume e Superficie Parziali</h3>
+            <div class="ctrl-row">
+                <label>Fino a x =</label>
+                <input type="range" id="horn-limit" min="1" max="10" step="0.2" value="3">
+                <span class="val-display" id="horn-limit-val">3.0</span>
+            </div>
+            <canvas class="graph" id="horn-canvas" width="600" height="360"></canvas>
+            <div class="result-card" id="horn-result">
+                Volume: ... <br>
+                Superficie: ...
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Implicazioni Matematiche e Fisiche</h2>
+        <p class="lesson-text">
+            Il Corno di Gabriele sfida l'intuizione e ha importanti conseguenze:
+        </p>
+        <ul style="color: var(--text-muted); font-size: 1rem; line-height: 1.8; margin: 1rem 0;">
+            <li><strong>Infinito non è uniforme:</strong> Non tutte le quantità infinite sono uguali.</li>
+            <li><strong>Convergenza vs Divergenza:</strong> Gli integrali impropri possono convergere o divergere indipendentemente.</li>
+            <li><strong>Misura e Dimensione:</strong> Mostra la differenza tra area, volume e lunghezza in infinito.</li>
+            <li><strong>Applicazioni fisiche:</strong> Rilevante in onde, campi elettromagnetici e analisi armonica.</li>
+        </ul>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 MFI - Matematica.</p>
+</footer>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="corno-gabriele.js"></script>
+</body>
+
+</html>

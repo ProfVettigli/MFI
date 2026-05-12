@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Microeconomia - MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- MathJax -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s, transform 0.3s;
+        }
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+        .back-icon {
+            margin-right: 0.5rem;
+        }
+
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .concept-card {
+            background: rgba(16, 185, 129, 0.1);
+            border: 2px solid rgba(16, 185, 129, 0.5);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .concept-icon {
+            font-size: 2rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .concept-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 0.8rem;
+        }
+
+        .concept-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .formula-section {
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 4px solid var(--math-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .formula-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--math-color);
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        .model-box {
+            background: rgba(59, 130, 246, 0.1);
+            border: 2px solid rgba(59, 130, 246, 0.5);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .model-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #60a5fa;
+            margin-bottom: 1rem;
+        }
+
+        .assumptions-list {
+            color: var(--text-muted);
+            line-height: 1.8;
+            margin: 1rem 0;
+        }
+
+        .implications-box {
+            background: rgba(245, 158, 11, 0.1);
+            border: 2px solid rgba(245, 158, 11, 0.5);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .implications-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #f59e0b;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        .implications-content {
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+    </style>
+</head>
+<body>
+    <header class="hero" style="background: linear-gradient(135deg, #059669, #10b981);">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <a href="economia-matematica.html" class="back-button" style="color: white; border: none; background: none; margin-bottom: 0;">
+                    <span class="back-icon">&larr;</span> Torna a Economia
+                </a>
+            </div>
+            <h1 class="hero-title">Microeconomia</h1>
+            <p class="hero-subtitle">Comportamento razionale degli agenti e dinamiche di mercato: da domanda e offerta all'equilibrio parziale.</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <section style="max-width: 1000px; margin: 0 auto;">
+            <h2>I Fondamenti della Microeconomia</h2>
+            <p>La microeconomia studia come agenti razionali prendono decisioni e come questi comportamenti si aggregano in equilibri di mercato.</p>
+
+            <div class="concept-grid">
+                <div class="concept-card">
+                    <div class="concept-icon">🧠</div>
+                    <div class="concept-title">Agenti Razionali</div>
+                    <div class="concept-desc">
+                        Decidono massimizzando utilità soggettiva. Hanno preferenze transitive e complete su tutte le opzioni disponibili.
+                    </div>
+                </div>
+
+                <div class="concept-card">
+                    <div class="concept-icon">💰</div>
+                    <div class="concept-title">Vincolo di Bilancio</div>
+                    <div class="concept-desc">
+                        Spesa totale = reddito. Limita le scelte possibili. La scelta ottima si trova sulla frontiera del vincolo.
+                    </div>
+                </div>
+
+                <div class="concept-card">
+                    <div class="concept-icon">📊</div>
+                    <div class="concept-title">Curva di Domanda</div>
+                    <div class="concept-desc">
+                        Relazione tra prezzo e quantità domandata. Normalmente inclinata negativamente (legge della domanda).
+                    </div>
+                </div>
+
+                <div class="concept-card">
+                    <div class="concept-icon">📈</div>
+                    <div class="concept-title">Curva di Offerta</div>
+                    <div class="concept-desc">
+                        Relazione tra prezzo e quantità offerta. Solitamente inclinata positivamente (maggior prezzo = più produzione).
+                    </div>
+                </div>
+
+                <div class="concept-card">
+                    <div class="concept-icon">⚖️</div>
+                    <div class="concept-title">Equilibrio di Mercato</div>
+                    <div class="concept-desc">
+                        Punto dove domanda = offerta. Prezzo e quantità si stabilizzano. Allocazione efficiente (Pareto).
+                    </div>
+                </div>
+
+                <div class="concept-card">
+                    <div class="concept-icon">🔄</div>
+                    <div class="concept-title">Elasticità</div>
+                    <div class="concept-desc">
+                        Misura la responsività di domanda/offerta a cambi di prezzo. Cruciale per politica economica e tassazione.
+                    </div>
+                </div>
+            </div>
+
+            <h2>Il Modello di Domanda e Offerta</h2>
+
+            <div class="formula-section">
+                <div class="formula-title">Funzione di Domanda</div>
+                <div style="overflow-x: auto;">
+                    $$Q_d = a - b \cdot P$$
+                </div>
+                <p style="margin-top: 1rem; color: var(--text-muted);">Quantità domandata diminuisce al crescere del prezzo. a = intercetta (preferenza), b = sensibilità al prezzo.</p>
+            </div>
+
+            <div class="formula-section">
+                <div class="formula-title">Funzione di Offerta</div>
+                <div style="overflow-x: auto;">
+                    $$Q_s = c + d \cdot P$$
+                </div>
+                <p style="margin-top: 1rem; color: var(--text-muted);">Quantità offerta aumenta al crescere del prezzo. c = costo base, d = sensibilità ai margini.</p>
+            </div>
+
+            <div class="formula-section">
+                <div class="formula-title">Equilibrio di Mercato</div>
+                <div style="overflow-x: auto;">
+                    $$Q_d = Q_s \Rightarrow a - b \cdot P^* = c + d \cdot P^*$$
+                </div>
+                <div style="overflow-x: auto; margin-top: 0.8rem;">
+                    $$P^* = \frac{a - c}{b + d}, \quad Q^* = a - b \cdot P^*$$
+                </div>
+            </div>
+
+            <h2>Surplus del Consumatore e del Produttore</h2>
+
+            <div class="model-box">
+                <div class="model-title">Surplus del Consumatore</div>
+                <div style="overflow-x: auto;">
+                    $$CS = \int_0^{Q^*} P_d(Q) \, dQ - P^* \cdot Q^*$$
+                </div>
+                <p style="margin-top: 1rem; color: var(--text-muted);">Beneficio che i consumatori ottengono pagando meno del loro prezzo di riserva.</p>
+            </div>
+
+            <div class="model-box">
+                <div class="model-title">Surplus del Produttore</div>
+                <div style="overflow-x: auto;">
+                    $$PS = P^* \cdot Q^* - \int_0^{Q^*} P_s(Q) \, dQ$$
+                </div>
+                <p style="margin-top: 1rem; color: var(--text-muted);">Profitto che i produttori ottengono vendendo a prezzo superiore al costo marginale.</p>
+            </div>
+
+            <h2>Elasticità della Domanda</h2>
+
+            <div class="formula-section">
+                <div class="formula-title">Elasticità Prezzo della Domanda</div>
+                <div style="overflow-x: auto;">
+                    $$E_p = \frac{\% \Delta Q_d}{\% \Delta P} = \frac{dQ_d/Q_d}{dP/P}$$
+                </div>
+                <div class="assumptions-list">
+                    <strong>Interpretazione:</strong>
+                    <ul style="margin-top: 0.5rem;">
+                        <li>|E| > 1: Domanda elastica (sensibile ai prezzi)</li>
+                        <li>|E| = 1: Elasticità unitaria</li>
+                        <li>|E| < 1: Domanda anelastica (poco sensibile)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="formula-section">
+                <div class="formula-title">Elasticità Incrociata</div>
+                <div style="overflow-x: auto;">
+                    $$E_{xy} = \frac{\% \Delta Q_x}{\% \Delta P_y}$$
+                </div>
+                <p style="margin-top: 1rem; color: var(--text-muted);">Misura come un bene risponde al prezzo di un altro bene. Positiva = sostituti, Negativa = complementi.</p>
+            </div>
+
+            <h2>Analisi di Equilibrio Parziale</h2>
+
+            <div class="implications-box">
+                <div class="implications-title">Come Funziona il Metodo</div>
+                <div class="implications-content">
+                    L'equilibrio parziale analizza un mercato specifico isolandolo dal resto dell'economia. Consente di:
+                    <ul style="margin-top: 1rem; line-height: 1.8;">
+                        <li>Prevedere effetti di tasse e sussidi</li>
+                        <li>Quantificare perdite di efficienza</li>
+                        <li>Comprendere come shock (offerta, domanda) alterano prezzi e quantità</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h2>Shock di Mercato: Esempi</h2>
+
+            <div class="concept-grid">
+                <div class="concept-card">
+                    <div class="concept-title">Aumento della Domanda</div>
+                    <div class="concept-desc">
+                        Curva D si sposta a destra. Prezzo e quantità salgono entrambi. Es: crisi climatica → domanda di pannelli solari.
+                    </div>
+                </div>
+
+                <div class="concept-card">
+                    <div class="concept-title">Riduzione dell'Offerta</div>
+                    <div class="concept-desc">
+                        Curva S si sposta a sinistra. Prezzo sale, quantità cala. Es: siccità → produzione agricola ridotta.
+                    </div>
+                </div>
+
+                <div class="concept-card">
+                    <div class="concept-title">Tassa sul Prezzo</div>
+                    <div class="concept-desc">
+                        Crea un wedge tra Pd e Ps. Perdita di surplus (deadweight loss). Gettito = tassa × quantità d'equilibrio.
+                    </div>
+                </div>
+
+                <div class="concept-card">
+                    <div class="concept-title">Controllo di Prezzo</div>
+                    <div class="concept-desc">
+                        Prezzo massimo (price ceiling) crea scarsità. Prezzo minimo (price floor) crea eccesso di offerta.
+                    </div>
+                </div>
+            </div>
+
+            <h2>Applicazioni Pratiche</h2>
+            <ul style="line-height: 1.8; margin: 1.5rem 0; color: var(--text-muted);">
+                <li><strong>Prezzi Agricoli:</strong> Supporto ai prezzi per stabilizzare il reddito degli agricoltori</li>
+                <li><strong>Mercato del Lavoro:</strong> Salario minimo, disoccupazione strutturale</li>
+                <li><strong>Tassazione:</strong> Chi paga davvero l'imposta? Dipende dall'elasticità relativa</li>
+                <li><strong>Regolazione:</strong> Prezzo-cap, controllo dell'accesso (monopoli naturali)</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Matematica.</p>
+    </footer>
+
+    <script src="../../js/main.js"></script>
+</body>
+</html>

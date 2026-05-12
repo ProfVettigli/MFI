@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interessi e Prestiti - Lezione Interattiva MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+    <script>
+      MathJax = { tex: { inlineMath: [['\\(', '\\)']] } };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+
+    <style>
+        .back-button {
+            display: inline-flex; align-items: center;
+            color: var(--text-muted); text-decoration: none;
+            margin-bottom: 2rem; font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+        .sub-hero { padding: 4rem 0 2rem; text-align: left; }
+        .sub-hero-title { font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; margin-bottom: 1rem; }
+
+        .card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 1.5rem; margin: 1.5rem 0; }
+
+        .slider-row { display: flex; align-items: center; gap: 1rem; margin: 1rem 0; flex-wrap: wrap; }
+        .slider-row label { min-width: 130px; color: var(--text-muted); font-weight: 600; font-size: 0.95rem; }
+        .slider-row input[type=range] { flex: 1; min-width: 150px; accent-color: var(--math-color); }
+        .slider-row input[type=number] { width: 100px; padding: 0.4rem; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; color: var(--text-main); font-family: monospace; }
+        .value-pill { background: rgba(59,130,246,0.15); color: var(--math-color); padding: 0.3rem 0.7rem; border-radius: 8px; font-family: monospace; font-weight: 700; min-width: 50px; text-align: center; }
+
+        .section-title { font-size: 1.4rem; font-weight: 700; margin-top: 3rem; margin-bottom: 1rem; }
+        .formula-box { background: rgba(59,130,246,0.08); border-left: 4px solid var(--math-color); padding: 1.2rem 1.5rem; border-radius: 8px; margin: 1.5rem 0; font-size: 0.95rem; }
+
+        .result-display { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+        .result-box { background: rgba(0,0,0,0.3); padding: 1rem 1.5rem; border-radius: 10px; border-left: 5px solid var(--math-color); text-align: center; }
+        .result-box .label { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+        .result-box .value { font-size: 1.4rem; font-weight: 700; color: var(--math-color); margin-top: 0.5rem; font-family: monospace; }
+
+        .comparison-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.95rem; }
+        .comparison-table th, .comparison-table td { padding: 0.8rem; border: 1px solid rgba(255,255,255,0.1); text-align: center; }
+        .comparison-table th { background: rgba(59,130,246,0.15); color: var(--math-color); font-weight: 700; }
+        .comparison-table tbody tr:hover { background: rgba(255,255,255,0.03); }
+
+        .concept-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 2rem 0; }
+        @media (max-width: 768px) { .concept-row { grid-template-columns: 1fr; } }
+        .concept-box { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1.5rem; }
+        .concept-box h4 { color: var(--math-color); margin-bottom: 0.8rem; }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="economia-matematica.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Economia
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Interessi e <span class="gradient-text">Prestiti</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+            Il denaro oggi vale più del denaro domani. Scopri come interesse semplice e composto trasformano i prestiti e gli investimenti.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <!-- INTERESSE SEMPLICE -->
+    <section class="card">
+        <h2 class="section-title">1. Interesse Semplice</h2>
+        <p>L'interesse semplice si calcola solo sul capitale iniziale, senza considerare gli interessi già accumulati.</p>
+
+        <div class="formula-box">
+            \(I = C \times i \times t\)<br>
+            \(M = C + I = C(1 + it)\)<br>
+            dove: \(C\) = capitale, \(i\) = tasso interesse (annuale), \(t\) = tempo (anni), \(M\) = montante
+        </div>
+
+        <div class="slider-row">
+            <label for="simple-capital">Capitale (€):</label>
+            <input type="number" id="simple-capital" value="1000" min="100" max="100000" step="100">
+            <span class="value-pill" id="simple-capital-display">1000</span>
+        </div>
+
+        <div class="slider-row">
+            <label for="simple-rate">Tasso (%):</label>
+            <input type="range" id="simple-rate" min="0.5" max="15" value="5" step="0.5">
+            <span class="value-pill" id="simple-rate-display">5%</span>
+        </div>
+
+        <div class="slider-row">
+            <label for="simple-time">Tempo (anni):</label>
+            <input type="range" id="simple-time" min="1" max="30" value="5" step="1">
+            <span class="value-pill" id="simple-time-display">5</span>
+        </div>
+
+        <div class="result-display">
+            <div class="result-box">
+                <div class="label">Interesse Totale</div>
+                <div class="value" id="simple-interest">250 €</div>
+            </div>
+            <div class="result-box">
+                <div class="label">Montante Finale</div>
+                <div class="value" id="simple-amount">1250 €</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- INTERESSE COMPOSTO -->
+    <section class="card">
+        <h2 class="section-title">2. Interesse Composto</h2>
+        <p>L'interesse composto si calcola su capitale + interessi precedenti. Questo è il motivo per cui "gli interessi generano interessi".</p>
+
+        <div class="formula-box">
+            \(M = C \left(1 + \frac{i}{n}\right)^{nt}\)<br>
+            Per capitalizzazione annuale: \(M = C(1 + i)^t\)<br>
+            dove \(n\) = numero di capitalizazioni per anno
+        </div>
+
+        <div class="slider-row">
+            <label for="compound-capital">Capitale (€):</label>
+            <input type="number" id="compound-capital" value="1000" min="100" max="100000" step="100">
+            <span class="value-pill" id="compound-capital-display">1000</span>
+        </div>
+
+        <div class="slider-row">
+            <label for="compound-rate">Tasso (%):</label>
+            <input type="range" id="compound-rate" min="0.5" max="15" value="5" step="0.5">
+            <span class="value-pill" id="compound-rate-display">5%</span>
+        </div>
+
+        <div class="slider-row">
+            <label for="compound-time">Tempo (anni):</label>
+            <input type="range" id="compound-time" min="1" max="30" value="5" step="1">
+            <span class="value-pill" id="compound-time-display">5</span>
+        </div>
+
+        <div class="slider-row">
+            <label for="compound-freq">Capitalizzazione:</label>
+            <select id="compound-freq" style="padding: 0.4rem; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; color: var(--text-main);">
+                <option value="1">Annuale</option>
+                <option value="2">Semestrale</option>
+                <option value="4">Trimestrale</option>
+                <option value="12">Mensile</option>
+                <option value="365">Giornaliera</option>
+            </select>
+        </div>
+
+        <div class="result-display">
+            <div class="result-box">
+                <div class="label">Interesse Totale</div>
+                <div class="value" id="compound-interest">276.28 €</div>
+            </div>
+            <div class="result-box">
+                <div class="label">Montante Finale</div>
+                <div class="value" id="compound-amount">1276.28 €</div>
+            </div>
+        </div>
+
+        <p style="background: rgba(255,193,7,0.1); padding: 1rem; border-radius: 8px; border-left: 4px solid #FFC107; margin: 1.5rem 0; font-size: 0.95rem;">
+            <strong>Osservazione:</strong> Noti la differenza? L'interesse composto genera più guadagno rispetto al semplice. Più frequente la capitalizzazione, più alto il rendimento.
+        </p>
+    </section>
+
+    <!-- CONFRONTO -->
+    <section class="card">
+        <h2 class="section-title">3. Confronto Semplice vs. Composto</h2>
+
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th>Aspetto</th>
+                    <th>Interesse Semplice</th>
+                    <th>Interesse Composto</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Formula</strong></td>
+                    <td>\(M = C(1 + it)\)</td>
+                    <td>\(M = C(1 + i)^t\)</td>
+                </tr>
+                <tr>
+                    <td><strong>Crescita</strong></td>
+                    <td>Lineare</td>
+                    <td>Esponenziale</td>
+                </tr>
+                <tr>
+                    <td><strong>Uso</strong></td>
+                    <td>Prestiti a breve termine</td>
+                    <td>Investimenti, mutui, risparmi</td>
+                </tr>
+                <tr>
+                    <td><strong>Rendimento</strong></td>
+                    <td>Minore</td>
+                    <td>Maggiore (tempo lungo)</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- APPLICAZIONI PRATICHE -->
+    <section class="card">
+        <h2 class="section-title">4. Mutui e Prestiti Reali</h2>
+
+        <div class="concept-row">
+            <div class="concept-box">
+                <h4>Mutuo Ipotecario</h4>
+                <p>Interesse composto mensile. Rata fissa copre capitale e interesse. Durata tipica: 20-30 anni. TAN (tasso nominale) vs TAEG (tasso effettivo).</p>
+            </div>
+            <div class="concept-box">
+                <h4>Prestito Personale</h4>
+                <p>Importo minore, durata breve. Spesso a interesse semplice o con capitalizzazione meno frequente. Approvazione più veloce.</p>
+            </div>
+        </div>
+
+        <div style="background: rgba(0,0,0,0.3); padding: 1.5rem; border-radius: 10px; margin: 2rem 0; border: 1px solid rgba(255,255,255,0.1);">
+            <h4 style="color: var(--math-color); margin-bottom: 1rem;">Formula Rata Mutuo (Ammortamento Italiano)</h4>
+            <p style="color: var(--text-muted); margin-bottom: 1rem;">Rata mensile = \(\frac{C \times i_m \times (1+i_m)^{n}}{(1+i_m)^{n} - 1}\)</p>
+            <p style="font-size: 0.9rem; color: var(--text-muted);">
+                dove \(i_m\) = tasso mensile (tasso annuale / 12), \(n\) = numero di mesi
+            </p>
+        </div>
+    </section>
+
+    <!-- CURIOSITÀ: POWER OF COMPOUNDING -->
+    <section class="card">
+        <h2 class="section-title">5. La Magia del Compounding</h2>
+        <p>Albert Einstein avrebbe detto: "L'interesse composto è la forza più potente dell'universo."</p>
+
+        <div style="background: rgba(59,130,246,0.1); padding: 1.5rem; border-radius: 10px; margin: 1.5rem 0;">
+            <p><strong>Esempio:</strong> 100€ al 5% composto annuale</p>
+            <ul style="color: var(--text-muted); line-height: 2; margin-top: 1rem;">
+                <li>Dopo 10 anni: 162.89€</li>
+                <li>Dopo 20 anni: 265.33€</li>
+                <li>Dopo 50 anni: 1146.39€</li>
+            </ul>
+            <p style="margin-top: 1rem; color: var(--text-muted); font-size: 0.9rem;">
+                Raddoppiare il tempo non raddoppia il guadagno: il compounding accelera esponenzialmente.
+            </p>
+        </div>
+    </section>
+
+</main>
+
+<footer style="text-align: center; padding: 2rem 0; color: var(--text-muted); font-size: 0.9rem; margin-top: 4rem; border-top: 1px solid rgba(255,255,255,0.1);">
+    MFI © 2026 | Interessi e Prestiti
+</footer>
+
+<script src="interessi-prestiti.js"></script>
+</body>
+</html>

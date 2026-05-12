@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crittografia - Lezione Interattiva MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        .back-button { display: inline-flex; align-items: center; color: var(--text-muted); text-decoration: none; margin-bottom: 2rem; font-weight: 600; transition: color 0.3s ease, transform 0.3s ease; }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+        .sub-hero { padding: 4rem 0 2rem; text-align: left; }
+        .sub-hero-title { font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; margin-bottom: 1rem; }
+
+        .timeline { position: relative; padding-left: 2.5rem; margin: 2rem 0; }
+        .timeline::before { content: ''; position: absolute; left: 0.6rem; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--chem-color), rgba(245,158,11,0.1)); }
+        .timeline-item { position: relative; margin-bottom: 2rem; }
+        .timeline-item::before { content: ''; position: absolute; left: -1.95rem; top: 0.4rem; width: 10px; height: 10px; border-radius: 50%; background: var(--chem-color); box-shadow: 0 0 8px var(--chem-glow); }
+        .timeline-year { font-size: 0.8rem; font-weight: 700; color: var(--chem-color); letter-spacing: 1px; margin-bottom: 0.3rem; }
+        .timeline-text { font-size: 0.97rem; color: var(--text-muted); line-height: 1.6; }
+        .timeline-text strong { color: var(--text-main); }
+
+        .cipher-box { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 2rem; margin: 1.5rem 0; }
+        .cipher-input { width: 100%; padding: 1rem; border-radius: 10px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: var(--text-main); font-family: monospace; font-size: 1.05rem; margin-bottom: 1rem; }
+        .cipher-output { background: rgba(0,0,0,0.4); padding: 1rem; border-radius: 10px; font-family: monospace; min-height: 3rem; color: var(--chem-color); font-size: 1.05rem; word-wrap: break-word; border-left: 4px solid var(--chem-color); margin-bottom: 1rem; }
+        .shift-slider { width: 100%; accent-color: var(--chem-color); margin: 1rem 0; }
+        .slider-row { display: flex; align-items: center; gap: 1rem; font-family: monospace; color: var(--text-muted); margin-bottom: 1rem; }
+        .alphabet-row { font-family: monospace; font-size: 0.95rem; letter-spacing: 0.15em; word-spacing: 0.2em; background: rgba(0,0,0,0.25); padding: 0.8rem; border-radius: 8px; margin-bottom: 0.5rem; overflow-x: auto; white-space: nowrap; }
+        .alphabet-row .highlight { color: var(--chem-color); font-weight: 800; }
+
+        .key-card { background: rgba(0,0,0,0.25); border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; border-left: 4px solid; }
+        .key-card.pub { border-left-color: var(--physics-color); }
+        .key-card.priv { border-left-color: #EF4444; }
+
+        .rsa-demo { background: rgba(0,0,0,0.3); padding: 1.5rem; border-radius: 12px; font-family: monospace; margin: 1rem 0; }
+        .rsa-step { padding: 0.5rem 0; color: var(--text-muted); }
+        .rsa-step strong { color: var(--chem-color); }
+        .rsa-btn { background: var(--chem-color); color: #fff; border: none; padding: 0.6rem 1.2rem; border-radius: 8px; cursor: pointer; font-weight: 700; font-family: inherit; }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="informatica.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Informatica
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Critto<span class="gradient-text">grafia</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+            Da Giulio Cesare a Bletchley Park, fino al lucchetto verde del tuo browser: la storia dei segreti scritti e l'arte di proteggerli con la matematica.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Una Storia Millenaria di Segreti</h2>
+        <p class="lesson-text">
+            Da quando esiste la scrittura, esistono i segreti. Generali, imperatori e amanti hanno sempre avuto bisogno di scambiarsi messaggi che <em>nessun altro</em> potesse leggere. La <strong>crittografia</strong> (dal greco <em>kryptos</em>, "nascosto", e <em>graphein</em>, "scrivere") e l'arte e la scienza di trasformare un messaggio in modo che solo il destinatario autorizzato lo possa capire.
+        </p>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-year">~50 a.C.</div>
+                <p class="timeline-text"><strong>Giulio Cesare</strong> usa il "cifrario a scorrimento": ogni lettera del messaggio viene sostituita con quella che si trova 3 posizioni piu avanti nell'alfabeto. Semplice ma efficace contro nemici analfabeti.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1553</div>
+                <p class="timeline-text"><strong>Giovan Battista Bellaso</strong> e poi <strong>Vigenere</strong> inventano il cifrario polialfabetico: si usa una parola-chiave per cambiare lo scorrimento ad ogni lettera. Per 300 anni fu considerato "indecifrabile".</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1918-1945</div>
+                <p class="timeline-text">La macchina <strong>Enigma</strong> dei nazisti utilizza rotori meccanici per generare cifrature mostruosamente complesse. Verra rotta a <strong>Bletchley Park</strong> da <strong>Alan Turing</strong> e dal suo team: si stima che questo abbia accorciato la Seconda Guerra Mondiale di 2 anni.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1977</div>
+                <p class="timeline-text">Rivest, Shamir e Adleman pubblicano l'algoritmo <strong>RSA</strong>: la prima crittografia a <em>chiave pubblica</em>. Rivoluziona Internet e rende possibile l'e-commerce sicuro.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">Oggi</div>
+                <p class="timeline-text">Ogni volta che vedi il lucchetto verde nel browser, miliardi di operazioni crittografiche vengono eseguite al secondo per proteggere le tue password, le tue carte di credito e le tue chat WhatsApp.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section" style="border-left: 4px solid var(--chem-color);">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Il Cifrario di Cesare Interattivo</h2>
+        <p class="lesson-text">
+            Il principio e semplicissimo: si sceglie un numero <strong>k</strong> (la chiave) e si sposta ogni lettera del messaggio di k posizioni nell'alfabeto. Con k=3, la A diventa D, la B diventa E, e cosi via. Cesare usava k=3, ma puoi scegliere qualunque valore.
+        </p>
+
+        <div class="cipher-box">
+            <h3 style="color: var(--chem-color); margin-bottom: 1rem;">Cifratore / Decifratore di Cesare</h3>
+
+            <label for="caesar-input" style="color: var(--text-muted); font-size: 0.9rem;">Testo in chiaro:</label>
+            <input type="text" id="caesar-input" class="cipher-input" value="HELLO WORLD" maxlength="120">
+
+            <div class="slider-row">
+                <span>Chiave k =</span>
+                <span id="shift-value" style="color: var(--chem-color); font-weight: 800; font-size: 1.3rem;">3</span>
+                <input type="range" id="shift-slider" class="shift-slider" min="0" max="25" value="3">
+            </div>
+
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.3rem;">Alfabeto in chiaro:</p>
+            <div class="alphabet-row" id="alpha-plain">A B C D E F G H I J K L M N O P Q R S T U V W X Y Z</div>
+
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.3rem;">Alfabeto cifrato:</p>
+            <div class="alphabet-row" id="alpha-cipher">D E F G H I J K L M N O P Q R S T U V W X Y Z A B C</div>
+
+            <label style="color: var(--text-muted); font-size: 0.9rem;">Testo cifrato:</label>
+            <div class="cipher-output" id="caesar-output">KHOOR ZRUOG</div>
+
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.5rem;">
+                Per decifrare basta usare la stessa chiave applicata al contrario, oppure k' = 26 - k.
+            </p>
+        </div>
+
+        <div style="background: rgba(245,158,11,0.06); border-left: 4px solid var(--chem-color); padding: 1.2rem; border-radius: 0 10px 10px 0;">
+            <p class="lesson-text" style="margin-bottom: 0;">
+                <strong>Punto debole:</strong> il cifrario di Cesare ha solo 25 chiavi possibili (k da 1 a 25). Un attaccante puo provarle tutte in pochi millisecondi. E un sistema buono solo per giocare, non per proteggere segreti veri.
+            </p>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Simmetrica vs Asimmetrica</h2>
+        <p class="lesson-text">
+            Le moderne tecniche di crittografia si dividono in due grandi famiglie. La differenza riguarda <em>chi conosce la chiave</em>:
+        </p>
+
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+            <div class="card" style="padding: 1.5rem; border-top: 3px solid var(--chem-color);">
+                <h4 style="color: var(--chem-color); margin-bottom: 0.5rem;">Simmetrica</h4>
+                <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 0.8rem;">Una sola chiave segreta, condivisa tra mittente e destinatario. Tipo: AES, ChaCha20.</p>
+                <p style="font-size: 0.85rem; color: var(--text-muted);"><strong style="color:var(--chem-color);">Pro:</strong> velocissima.<br><strong style="color:var(--chem-color);">Contro:</strong> bisogna scambiare la chiave in modo sicuro. Come?</p>
+            </div>
+            <div class="card" style="padding: 1.5rem; border-top: 3px solid var(--physics-color);">
+                <h4 style="color: var(--physics-color); margin-bottom: 0.5rem;">Asimmetrica</h4>
+                <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 0.8rem;">Due chiavi: una <em>pubblica</em> (per cifrare) e una <em>privata</em> (per decifrare). Tipo: RSA, ECC.</p>
+                <p style="font-size: 0.85rem; color: var(--text-muted);"><strong style="color:var(--physics-color);">Pro:</strong> nessuno scambio segreto necessario.<br><strong style="color:var(--physics-color);">Contro:</strong> molto piu lenta.</p>
+            </div>
+        </div>
+
+        <div class="key-card pub">
+            <h4 style="color: var(--physics-color); margin-bottom: 0.5rem;">&#128275; Chiave Pubblica</h4>
+            <p style="font-size: 0.95rem; color: var(--text-muted);">La condividi liberamente con tutti, anche pubblicandola online. Chiunque puo usarla per <strong>cifrare</strong> un messaggio destinato a te. E come un lucchetto aperto distribuito ai tuoi amici.</p>
+        </div>
+        <div class="key-card priv">
+            <h4 style="color: #EF4444; margin-bottom: 0.5rem;">&#128274; Chiave Privata</h4>
+            <p style="font-size: 0.95rem; color: var(--text-muted);">La tieni gelosamente nascosta sul tuo dispositivo. Solo lei puo <strong>decifrare</strong> i messaggi cifrati con la corrispondente chiave pubblica. E l'unica chiave che apre quel tipo di lucchetto.</p>
+        </div>
+    </section>
+
+    <section class="lesson-section" style="border-left: 4px solid var(--physics-color);">
+        <h2 class="lesson-title" style="color: var(--physics-color);">RSA: i Primi Enormi</h2>
+        <p class="lesson-text">
+            RSA si basa su un fatto matematico semplice ma potente: <strong>moltiplicare due numeri primi e facilissimo, ma fattorizzare il risultato e quasi impossibile</strong> se i primi sono abbastanza grandi.
+        </p>
+        <p class="lesson-text">
+            Mostra al tuo amico il numero <strong>91</strong> e chiedigli di trovarne i fattori primi: in pochi secondi ti dira 7 x 13. Mostragli pero un numero di 600 cifre, prodotto di due primi enormi: nemmeno tutti i supercomputer del pianeta combinati ce la farebbero in tempi ragionevoli (anche miliardi di anni).
+        </p>
+
+        <div class="rsa-demo">
+            <h3 style="color: var(--chem-color); margin-bottom: 1rem; font-family: inherit;">Mini-RSA Didattico</h3>
+            <div class="rsa-step">Scegli due primi piccoli p e q:</div>
+            <div class="rsa-step"><strong>p</strong> = <span id="rsa-p">11</span> &nbsp; <strong>q</strong> = <span id="rsa-q">13</span></div>
+            <div class="rsa-step">Modulo: <strong>n</strong> = p &times; q = <span id="rsa-n">143</span></div>
+            <div class="rsa-step">Funzione di Eulero: <strong>&phi;(n)</strong> = (p-1)(q-1) = <span id="rsa-phi">120</span></div>
+            <div class="rsa-step">Esponente pubblico: <strong>e</strong> = <span id="rsa-e">7</span></div>
+            <div class="rsa-step">Esponente privato (mod inverse): <strong>d</strong> = <span id="rsa-d">103</span></div>
+            <div class="rsa-step">Chiave pubblica = <strong>(e, n)</strong> &nbsp; Chiave privata = <strong>(d, n)</strong></div>
+            <button class="rsa-btn" id="rsa-regen" style="margin-top: 0.8rem;">Genera nuova coppia</button>
+        </div>
+
+        <p class="lesson-text">
+            Per cifrare un messaggio M: <strong>C = M<sup>e</sup> mod n</strong>. Per decifrarlo: <strong>M = C<sup>d</sup> mod n</strong>. La sicurezza dipende dal fatto che chi conosce solo (e, n) non riesce a ricavare d senza fattorizzare n in p e q.
+        </p>
+
+        <div class="cipher-box">
+            <h3 style="color: var(--physics-color); margin-bottom: 1rem;">Prova RSA in mini-formato</h3>
+            <label style="color: var(--text-muted); font-size: 0.9rem;">Numero da cifrare (M, intero piccolo):</label>
+            <input type="number" id="rsa-input" class="cipher-input" value="42" min="2" max="140">
+            <div class="rsa-step">Cifrato: <strong style="color: var(--chem-color);"><span id="rsa-cipher">-</span></strong></div>
+            <div class="rsa-step">Decifrato: <strong style="color: var(--physics-color);"><span id="rsa-decipher">-</span></strong></div>
+            <button class="rsa-btn" id="rsa-go">Cifra e Decifra</button>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title" style="color: var(--chem-color);">HTTPS: il lucchetto del browser</h2>
+        <p class="lesson-text">
+            Quando l'URL della pagina inizia con <strong>https://</strong> e vedi un lucchetto, il tuo browser sta usando il protocollo <strong>TLS</strong> (un tempo SSL). E un mix astuto delle due tecniche:
+        </p>
+
+        <ol class="lesson-text" style="margin-left: 1.5rem;">
+            <li>Il server invia il suo <strong>certificato digitale</strong>, firmato da un'autorita fidata (es. Let's Encrypt). Contiene la chiave pubblica del sito.</li>
+            <li>Il browser verifica la firma del certificato. Se non e valida, mostra l'allerta rossa.</li>
+            <li>Browser e server usano la crittografia <em>asimmetrica</em> per scambiarsi in sicurezza una chiave <em>simmetrica</em> usa-e-getta.</li>
+            <li>D'ora in avanti l'intera conversazione viaggia cifrata con AES (simmetrico, velocissimo).</li>
+        </ol>
+
+        <div style="background: rgba(16,185,129,0.06); border-left: 4px solid var(--physics-color); padding: 1.2rem; border-radius: 0 10px 10px 0; margin-top: 1rem;">
+            <p class="lesson-text" style="margin-bottom: 0;">
+                <strong>Curiosita:</strong> Anche WhatsApp, Telegram (chat segrete) e Signal usano variante simili dello stesso schema. La crittografia <em>end-to-end</em> significa che nemmeno il fornitore del servizio puo leggere i tuoi messaggi.
+            </p>
+        </div>
+    </section>
+
+    <section class="lesson-section" style="background: rgba(245,158,11,0.03);">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Verso la Crittografia Post-Quantistica</h2>
+        <p class="lesson-text">
+            C'e una nuvola all'orizzonte: il <strong>computer quantistico</strong>. Un algoritmo quantistico di Peter Shor, dimostrato teoricamente negli anni '90, puo fattorizzare numeri enormi in tempi ragionevoli. Quando esistera un quantum computer abbastanza potente, <strong>RSA sara morto</strong>.
+        </p>
+        <p class="lesson-text">
+            Per questo da anni i crittografi stanno progettando algoritmi <strong>post-quantistici</strong>: schemi basati su problemi matematici (come il lattice problem) che restano duri anche per computer quantistici. NIST ha gia standardizzato i primi algoritmi (CRYSTALS-Kyber, Dilithium) nel 2024.
+        </p>
+        <p class="lesson-text">
+            E come la transizione tra carrozze e automobili: avverra nei prossimi 10-15 anni, e probabilmente non te ne accorgerai. Le chat e i bonifici continueranno a essere sicuri, solo con matematica diversa sotto il cofano.
+        </p>
+    </section>
+
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title" style="color: var(--chem-color);">Quiz di Riepilogo</h2>
+        <p class="lesson-text" style="font-size: 0.95rem;">Verifica la tua conoscenza dei codici segreti.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Informatica.</p>
+</footer>
+
+<script src="crittografia.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

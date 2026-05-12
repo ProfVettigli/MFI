@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serie di Taylor e Fourier - Lezione Interattiva MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        .back-button { display: inline-flex; align-items: center; color: var(--text-muted); text-decoration: none; margin-bottom: 2rem; font-weight: 600; transition: color 0.3s, transform 0.3s; }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+        .sub-hero { padding: 4rem 0 2rem; text-align: left; }
+        .sub-hero-title { font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; margin-bottom: 1rem; }
+        .widget-box { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 2rem; margin: 2rem 0; }
+        .widget-title { color: var(--math-color); margin-bottom: 1rem; font-size: 1.2rem; font-weight: 700; }
+        canvas.graph { width: 100%; max-width: 700px; height: 360px; background: rgba(0,0,0,0.3); border-radius: 10px; display: block; margin: 1rem auto; }
+        .ctrl-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+        .ctrl-row label { min-width: 120px; color: var(--text-muted); font-family: monospace; font-size: 0.95rem; }
+        input[type=range] { flex: 1; min-width: 150px; accent-color: var(--math-color); }
+        .val-display { font-family: monospace; color: var(--math-color); min-width: 80px; font-weight: 700; }
+        .result-card { background: rgba(59,130,246,0.06); border-left: 4px solid var(--math-color); padding: 1rem 1.2rem; border-radius: 0 10px 10px 0; margin-top: 1rem; font-family: monospace; font-size: 0.9rem; }
+        .formula-block { background: rgba(0,0,0,0.3); border-radius: 10px; padding: 1.5rem; margin: 1rem 0; font-size: 1.05rem; border-left: 3px solid var(--math-color); }
+        .func-pick { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+        .func-pick button { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-main); padding: 0.5rem 1rem; border-radius: 8px; font-family: monospace; cursor: pointer; font-size: 0.95rem; transition: all 0.2s; }
+        .func-pick button.active { background: var(--math-color); border-color: var(--math-color); color: white; }
+        .tabs { display: flex; gap: 0.5rem; margin-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .tabs button { background: none; border: none; color: var(--text-muted); padding: 1rem; cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.2s; font-weight: 600; }
+        .tabs button.active { color: var(--text-main); border-color: var(--math-color); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="studio-funzione.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Studio di Funzione
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Serie di Taylor e Fourier: <span class="gradient-text">Approssimazione e Scomposizione</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 900px; font-weight: 300;">
+            Dall'approssimazione polinomiale alla decomposizione in onde sinusoidali: due strumenti rivoluzionari che collegano analisi, fisica e ingegneria.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Introduzione alle Due Serie</h2>
+        <p class="lesson-text">
+            Le <strong>Serie di Taylor</strong> e le <strong>Serie di Fourier</strong> sono due dei concetti più potenti dell'analisi matematica moderna.
+        </p>
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+            <div class="card" style="padding: 1.5rem; border-left: 4px solid #3b82f6;">
+                <h4 style="color: #3b82f6;">✨ Serie di Taylor</h4>
+                <p style="font-size: 0.95rem; color: var(--text-muted);">
+                    Approssima una funzione con un polinomio centrato in un punto. Perfetto per calcoli numerici e analisi locale.
+                </p>
+                <p style="font-family: monospace; font-size: 0.9rem; color: var(--math-color); margin-top: 1rem;">
+                    \(f(x) \approx \sum_{n=0}^N \frac{f^{(n)}(a)}{n!}(x-a)^n\)
+                </p>
+            </div>
+            <div class="card" style="padding: 1.5rem; border-left: 4px solid #F59E0B;">
+                <h4 style="color: #F59E0B;">🌊 Serie di Fourier</h4>
+                <p style="font-size: 0.95rem; color: var(--text-muted);">
+                    Scompone una funzione periodica in una somma di onde sinusoidali. Fondamentale per segnali e onde.
+                </p>
+                <p style="font-family: monospace; font-size: 0.9rem; color: var(--math-color); margin-top: 1rem;">
+                    \(f(x) = \frac{a_0}{2} + \sum_{n=1}^\infty (a_n \cos nx + b_n \sin nx)\)
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <div class="tabs">
+            <button class="tab-button active" onclick="switchTab('taylor')">Serie di Taylor</button>
+            <button class="tab-button" onclick="switchTab('fourier')">Serie di Fourier</button>
+        </div>
+
+        <!-- TAB 1: TAYLOR -->
+        <div id="tab-taylor" class="tab-content active">
+            <h2 class="lesson-title">Serie di Taylor: Approssimazione Polinomiale</h2>
+            <p class="lesson-text">
+                Una funzione liscia può essere approssimata da un polinomio. Più termini aggiungiamo, più l'approssimazione è precisa intorno al punto di sviluppo.
+            </p>
+
+            <div class="formula-block" style="text-align: center; font-size: 1.1rem;">
+                \(\displaystyle f(x) = f(a) + f'(a)(x-a) + \frac{f''(a)}{2!}(x-a)^2 + \frac{f'''(a)}{3!}(x-a)^3 + \cdots\)
+            </div>
+
+            <p class="lesson-text">
+                Ogni derivata della funzione aggiunge un nuovo termine che cattura il comportamento più fine della curva.
+            </p>
+
+            <div class="widget-box">
+                <h3 class="widget-title">Approssimatore Interattivo di Taylor</h3>
+                <p style="color: var(--text-muted); font-size: 0.95rem;">Scegli una funzione, il grado del polinomio, e vedi come converge l'approssimazione.</p>
+
+                <div class="func-pick" id="taylor-func-pick">
+                    <button class="active" data-fn="sin">sin(x)</button>
+                    <button data-fn="cos">cos(x)</button>
+                    <button data-fn="exp">e^x</button>
+                    <button data-fn="ln">ln(1+x)</button>
+                </div>
+
+                <div class="ctrl-row">
+                    <label>Grado polinomio:</label>
+                    <input type="range" id="taylor-degree" min="1" max="12" step="1" value="3">
+                    <span class="val-display" id="taylor-degree-val">3</span>
+                </div>
+
+                <div class="ctrl-row">
+                    <label>Centro a (x₀):</label>
+                    <input type="range" id="taylor-center" min="-2" max="2" step="0.1" value="0">
+                    <span class="val-display" id="taylor-center-val">0</span>
+                </div>
+
+                <canvas class="graph" id="taylor-canvas" width="700" height="360"></canvas>
+
+                <div class="result-card" id="taylor-result">
+                    Errore massimo in [-2, 2]: ...
+                </div>
+            </div>
+
+            <h3 class="lesson-title" style="margin-top: 3rem;">Esempi di Sviluppi Classici</h3>
+            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin: 1.5rem 0;">
+                <div class="card" style="padding: 1.2rem;">
+                    <h4 style="color: var(--math-color);">e^x</h4>
+                    <p style="font-family: monospace; font-size: 0.85rem; color: var(--math-color);">\(\sum_{n=0}^\infty \frac{x^n}{n!}\)</p>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem;">Converge per tutti gli x</p>
+                </div>
+                <div class="card" style="padding: 1.2rem;">
+                    <h4 style="color: var(--math-color);">sin(x)</h4>
+                    <p style="font-family: monospace; font-size: 0.85rem; color: var(--math-color);">\(\sum_{n=0}^\infty \frac{(-1)^n x^{2n+1}}{(2n+1)!}\)</p>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem;">Converge per tutti gli x</p>
+                </div>
+                <div class="card" style="padding: 1.2rem;">
+                    <h4 style="color: var(--math-color);">1/(1-x)</h4>
+                    <p style="font-family: monospace; font-size: 0.85rem; color: var(--math-color);">\(\sum_{n=0}^\infty x^n\)</p>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem;">Converge per |x| < 1</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: FOURIER -->
+        <div id="tab-fourier" class="tab-content">
+            <h2 class="lesson-title">Serie di Fourier: Scomposizione in Onde</h2>
+            <p class="lesson-text">
+                Una funzione periodica può essere scomposta in una somma di onde sinusoidali di frequenze diverse. Questo è il cuore dell'elaborazione dei segnali.
+            </p>
+
+            <div class="formula-block" style="text-align: center; font-size: 1.05rem;">
+                \(\displaystyle f(x) = \frac{a_0}{2} + \sum_{n=1}^\infty \left( a_n \cos\left(\frac{2\pi n x}{L}\right) + b_n \sin\left(\frac{2\pi n x}{L}\right) \right)\)
+            </div>
+
+            <p class="lesson-text">
+                I coefficienti \(a_n\) e \(b_n\) catturano quanto "peso" ha ogni frequenza nella funzione originale.
+            </p>
+
+            <div class="widget-box">
+                <h3 class="widget-title">Visualizzatore di Fourier</h3>
+                <p style="color: var(--text-muted); font-size: 0.95rem;">Visualizza come gli armonici sinusoidali si sommano per ricostruire una funzione periodica.</p>
+
+                <div class="func-pick" id="fourier-func-pick">
+                    <button class="active" data-fn="square">Onda quadra</button>
+                    <button data-fn="triangle">Onda triangolare</button>
+                    <button data-fn="sawtooth">Onda a dente di sega</button>
+                </div>
+
+                <div class="ctrl-row">
+                    <label>Numero di armonici:</label>
+                    <input type="range" id="fourier-harmonics" min="1" max="20" step="1" value="5">
+                    <span class="val-display" id="fourier-harmonics-val">5</span>
+                </div>
+
+                <canvas class="graph" id="fourier-canvas" width="700" height="360"></canvas>
+
+                <div class="result-card" id="fourier-result">
+                    Energie dei coefficienti: ...
+                </div>
+            </div>
+
+            <h3 class="lesson-title" style="margin-top: 3rem;">Applicazioni Pratiche</h3>
+            <ul style="color: var(--text-muted); font-size: 1rem; line-height: 1.8; margin: 1rem 0;">
+                <li><strong>Elaborazione audio:</strong> Compressione MP3, equalizzatori, riconoscimento vocale.</li>
+                <li><strong>Elaborazione immagini:</strong> JPEG, filtri di immagine, compressione.</li>
+                <li><strong>Comunicazioni:</strong> Modulazione di segnali, trasmissione wireless.</li>
+                <li><strong>Acustica e musica:</strong> Analisi armonica, sintesi di strumenti.</li>
+                <li><strong>Fisica:</strong> Onde, calore, equazioni differenziali.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="lesson-section" style="border-left: 4px solid #10b981;">
+        <h2 class="lesson-title" style="color: #10b981;">Confronto Diretto</h2>
+        <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0;">
+            <div class="card" style="padding: 1.5rem;">
+                <h4 style="color: #3b82f6;">Serie di Taylor</h4>
+                <ul style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; margin: 1rem 0; padding-left: 1rem;">
+                    <li>✓ Approssimazione locale</li>
+                    <li>✓ Polinomi facili da calcolare</li>
+                    <li>✓ Perfetta intorno al centro</li>
+                    <li>✗ Non periodica</li>
+                    <li>✗ Difficile per funzioni complesse</li>
+                </ul>
+            </div>
+            <div class="card" style="padding: 1.5rem;">
+                <h4 style="color: #F59E0B;">Serie di Fourier</h4>
+                <ul style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; margin: 1rem 0; padding-left: 1rem;">
+                    <li>✓ Approssimazione globale</li>
+                    <li>✓ Funziona su tutta la funzione</li>
+                    <li>✓ Naturale per funzioni periodiche</li>
+                    <li>✗ Più termini necessari</li>
+                    <li>✗ Richiede funzioni periodiche</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 MFI - Matematica.</p>
+</footer>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="serie-taylor-fourier.js"></script>
+</body>
+
+</html>
