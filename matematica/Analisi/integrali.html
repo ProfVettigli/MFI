@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Integrali - Lezione Interattiva MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        .back-button { display: inline-flex; align-items: center; color: var(--text-muted); text-decoration: none; margin-bottom: 2rem; font-weight: 600; transition: color 0.3s, transform 0.3s; }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+        .sub-hero { padding: 4rem 0 2rem; text-align: left; }
+        .sub-hero-title { font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; margin-bottom: 1rem; }
+        .widget-box { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 2rem; margin: 2rem 0; }
+        .widget-title { color: var(--math-color); margin-bottom: 1rem; font-size: 1.2rem; font-weight: 700; }
+        canvas.graph { width: 100%; max-width: 600px; height: 360px; background: rgba(0,0,0,0.3); border-radius: 10px; display: block; margin: 1rem auto; }
+        .ctrl-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap; }
+        .ctrl-row label { min-width: 80px; color: var(--text-muted); font-family: monospace; font-size: 0.95rem; }
+        input[type=range] { flex: 1; min-width: 150px; accent-color: var(--math-color); }
+        .val-display { font-family: monospace; color: var(--math-color); min-width: 70px; font-weight: 700; }
+        .result-card { background: rgba(59,130,246,0.06); border-left: 4px solid var(--math-color); padding: 1rem 1.2rem; border-radius: 0 10px 10px 0; margin-top: 1rem; font-family: monospace; font-size: 0.95rem; }
+        .formula-block { background: rgba(0,0,0,0.3); border-radius: 10px; padding: 1.2rem; margin: 1rem 0; font-size: 1.05rem; border-left: 3px solid var(--math-color); }
+        .pill { display: inline-block; padding: 0.2rem 0.7rem; border-radius: 999px; background: rgba(59,130,246,0.15); color: var(--math-color); font-size: 0.8rem; font-weight: 700; margin-right: 0.4rem; }
+        .func-pick { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+        .func-pick button { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-main); padding: 0.5rem 1rem; border-radius: 8px; font-family: monospace; cursor: pointer; font-size: 0.95rem; transition: all 0.2s; }
+        .func-pick button.active { background: var(--math-color); border-color: var(--math-color); color: white; }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="studio-funzione.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Studio di Funzione
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Integrali: <span class="gradient-text">L'Area sotto la Curva</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+            Dall'integrale indefinito al teorema fondamentale del calcolo: scopri come sommare infinite particelle infinitesime.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">L'Integrale Definito come Area</h2>
+        <p class="lesson-text">
+            Un architetto ha la pianta di una stanza a forma strana e vuole sapere l'area. Come fare? Può dividerla in tante piccole rettangoli, sommare le aree e nel limite di rettangoli infinitesimi ottiene l'area vera.
+        </p>
+        <p class="lesson-text">
+            L'<strong>integrale definito</strong> \(\displaystyle \int_a^b f(x) \, dx\) è esattamente questo: l'area tra il grafico di \(f\) e l'asse x, nell'intervallo \([a,b]\).
+        </p>
+        <div class="formula-block" style="text-align: center; font-size: 1.3rem;">
+            \(\displaystyle \int_a^b f(x) \, dx = \lim_{n \to \infty} \sum_{i=1}^n f(x_i^*) \Delta x\)
+        </div>
+        <p class="lesson-text">
+            Questa è la <strong>somma di Riemann</strong>: divide l'intervallo in \(n\) rettangoli, valuta la funzione in ogni rettangolo, e somma le aree.
+        </p>
+
+        <div class="widget-box">
+            <h3 class="widget-title">Somma di Riemann Interattiva</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">Regola il numero di rettangoli per vedere come la somma converge all'area vera. Ogni rettangolo ha altezza \(f(x_i)\).</p>
+            <div class="func-pick" id="riemann-func-pick">
+                <button class="active" data-fn="quad">x²</button>
+                <button data-fn="sin">sin(x)</button>
+                <button data-fn="exp">e^x</button>
+            </div>
+            <div class="ctrl-row">
+                <label>n =</label>
+                <input type="range" id="riemann-n" min="1" max="50" step="1" value="10">
+                <span class="val-display" id="riemann-n-val">10</span>
+            </div>
+            <canvas class="graph" id="riemann-canvas" width="600" height="360"></canvas>
+            <div class="result-card" id="riemann-result">Area (Riemann) ≈ ... · Area vera ≈ ...</div>
+        </div>
+    </section>
+
+    <section class="lesson-section" style="border-left: 4px solid #F59E0B;">
+        <h2 class="lesson-title" style="color: #F59E0B;">Il Teorema Fondamentale del Calcolo</h2>
+        <p class="lesson-text">
+            Ecco la scoperta geniale di Newton e Leibniz: <strong>la derivata e l'integrale sono operazioni inverse</strong>!
+        </p>
+        <div class="formula-block" style="text-align: center; font-size: 1.25rem;">
+            Se \(F'(x) = f(x)\), allora \(\displaystyle \int_a^b f(x) \, dx = F(b) - F(a)\)
+        </div>
+        <p class="lesson-text">
+            Questo significa che per calcolare l'area, non devi fare tante somme: basta trovare una funzione \(F\) (detta <strong>primitiva</strong>) la cui derivata è \(f\), e valutarla ai due estremi!
+        </p>
+
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin: 1.5rem 0;">
+            <div class="card" style="padding: 1.5rem;">
+                <h4 style="color: #F59E0B;">Primitiva di Potenza</h4>
+                <p style="font-family: monospace; font-size: 1rem; margin: 1rem 0; color: var(--math-color);">\(\int x^n \, dx = \frac{x^{n+1}}{n+1} + C\)</p>
+            </div>
+            <div class="card" style="padding: 1.5rem;">
+                <h4 style="color: #F59E0B;">Primitiva di sin</h4>
+                <p style="font-family: monospace; font-size: 1rem; margin: 1rem 0; color: var(--math-color);">\(\int \sin x \, dx = -\cos x + C\)</p>
+            </div>
+            <div class="card" style="padding: 1.5rem;">
+                <h4 style="color: #F59E0B;">Primitiva di e^x</h4>
+                <p style="font-family: monospace; font-size: 1rem; margin: 1rem 0; color: var(--math-color);">\(\int e^x \, dx = e^x + C\)</p>
+            </div>
+        </div>
+
+        <div class="widget-box">
+            <h3 class="widget-title">Visualizzatore dell'Area</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">Regola gli estremi \(a\) e \(b\). L'area blu è \(\int_a^b f(x) \, dx\). Usa il Teorema Fondamentale per calcolarla.</p>
+            <div class="ctrl-row">
+                <label>a =</label>
+                <input type="range" id="area-a" min="-2" max="1" step="0.1" value="-1">
+                <span class="val-display" id="area-a-val">-1.0</span>
+            </div>
+            <div class="ctrl-row">
+                <label>b =</label>
+                <input type="range" id="area-b" min="1" max="4" step="0.1" value="2">
+                <span class="val-display" id="area-b-val">2.0</span>
+            </div>
+            <canvas class="graph" id="area-canvas" width="600" height="360"></canvas>
+            <div class="result-card" id="area-result">Area = ... · Teorema: F(b) - F(a) = ...</div>
+        </div>
+    </section>
+
+    <section class="lesson-section" style="border-left: 4px solid var(--physics-color);">
+        <h2 class="lesson-title" style="color: var(--physics-color);">Metodi di Integrazione</h2>
+        <p class="lesson-text">
+            Non tutte le funzioni hanno primitive "banali". Per integrali più complessi, usiamo tecniche speciali:
+        </p>
+
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin: 1.5rem 0;">
+            <div class="card" style="padding: 1.5rem;">
+                <h4 style="color: var(--physics-color);">Sostituzione (u-substitution)</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Poni \(u = g(x)\), allora \(\int f(g(x)) g'(x) \, dx = \int f(u) \, du\). Esempio: \(\int 2x e^{x^2} \, dx\) con \(u = x^2\)</p>
+            </div>
+            <div class="card" style="padding: 1.5rem;">
+                <h4 style="color: var(--physics-color);">Integrazione per Parti</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">\(\int u \, dv = uv - \int v \, du\). Utile quando hai un prodotto di funzioni "diverse". Esempio: \(\int x e^x \, dx\)</p>
+            </div>
+            <div class="card" style="padding: 1.5rem;">
+                <h4 style="color: var(--physics-color);">Decomposizione in Frazioni Parziali</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Se hai \(\frac{P(x)}{Q(x)}\) razionale, la spezzi in frazioni più semplici. Esempio: \(\frac{1}{x^2-1} = \frac{1/2}{x-1} - \frac{1/2}{x+1}\)</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title">Quiz di Riepilogo</h2>
+        <p class="lesson-text" style="font-size: 0.95rem;">Verifica la comprensione di integrali e loro applicazioni.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+    </section>
+
+</main>
+
+<footer><p>&copy; 2026 MFI - Piattaforma Didattica Interattiva. Sezione di Matematica.</p></footer>
+
+<script src="integrali.js"></script>
+<script src="../../js/main.js"></script>
+</body>
+</html>

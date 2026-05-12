@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Microscopio - Lezione Interattiva MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+        .sub-hero {
+            padding: 4rem 0 2rem;
+            text-align: left;
+        }
+        .sub-hero-title {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .canvas-wrap {
+            background: rgba(0,0,0,0.35);
+            border-radius: 12px;
+            padding: 1.2rem;
+            margin: 1.5rem 0;
+            text-align: center;
+            border: 1px solid rgba(16,185,129,0.15);
+        }
+        canvas {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+            border-radius: 8px;
+            background: #060a10;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin: 1rem 0;
+            align-items: center;
+            justify-content: center;
+        }
+        .ctrl {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            min-width: 180px;
+        }
+        .ctrl label {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .ctrl input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            background: rgba(16,185,129,0.25);
+            border-radius: 3px;
+            outline: none;
+        }
+        .ctrl input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--physics-color);
+            cursor: pointer;
+            box-shadow: 0 0 8px var(--physics-glow);
+        }
+        .ctrl select {
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(16,185,129,0.3);
+            color: var(--text-main);
+            padding: 0.5rem 0.7rem;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+        .val-display {
+            font-family: monospace;
+            color: var(--physics-color);
+            font-size: 0.9rem;
+        }
+
+        .section {
+            margin: 3rem 0;
+        }
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-main);
+            border-left: 4px solid var(--physics-color);
+            padding-left: 1rem;
+        }
+
+        .formula {
+            background: rgba(16,185,129,0.08);
+            border-left: 3px solid var(--physics-color);
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.05rem;
+            overflow-x: auto;
+        }
+
+        .diagram-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .diagram-card {
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            padding: 1.5rem;
+            border-left: 3px solid var(--physics-color);
+        }
+        .diagram-card h4 {
+            color: var(--physics-color);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .sample-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .sample-card {
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            border: 1px solid rgba(16,185,129,0.2);
+            text-align: center;
+        }
+        .sample-card h5 {
+            color: var(--text-main);
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+        .sample-view {
+            background: rgba(16,185,129,0.08);
+            border-radius: 6px;
+            padding: 1.5rem 0.5rem;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .quiz-container {
+            background: rgba(59,130,246,0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        .quiz-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text-main);
+        }
+        .quiz-item {
+            background: rgba(0,0,0,0.3);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            border-left: 3px solid var(--physics-color);
+        }
+        .quiz-question {
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: var(--text-main);
+        }
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .quiz-option {
+            padding: 0.6rem;
+            background: rgba(0,0,0,0.5);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+        .quiz-option:hover {
+            background: rgba(16,185,129,0.2);
+            border-color: var(--physics-color);
+        }
+        .quiz-option.selected {
+            background: rgba(16,185,129,0.3);
+            border-color: var(--physics-color);
+        }
+        .quiz-option.correct {
+            background: rgba(34,197,94,0.3);
+            border-color: #22c55e;
+            color: #22c55e;
+        }
+        .quiz-option.incorrect {
+            background: rgba(239,68,68,0.3);
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+        .feedback {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .diagram-grid, .sample-grid {
+                grid-template-columns: 1fr;
+            }
+            .sample-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        footer {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../ottica.html" class="back-button">← Torna a Ottica</a>
+
+        <div class="sub-hero">
+            <h1 class="sub-hero-title">Microscopio</h1>
+            <p style="color: var(--text-muted); font-size: 1.1rem;">Esplorare il mondo microscopico con lenti combinate</p>
+        </div>
+
+        <!-- SEZIONE 1: STRUTTURA -->
+        <div class="section">
+            <h2 class="section-title">Struttura del Microscopio Ottico</h2>
+            <p>Un microscopio ottico combina due lenti convergenti (obiettivo e oculare) per ottenere grandi ingrandimenti e osservare oggetti microscopici.</p>
+
+            <div class="diagram-grid">
+                <div class="diagram-card">
+                    <h4>🔬 Componenti Ottici</h4>
+                    <ul style="margin-left: 1rem; line-height: 1.8;">
+                        <li><strong>Obiettivo</strong>: Lente convergente ad alto ingrandimento (4×, 10×, 40×, 100×)</li>
+                        <li><strong>Oculare</strong>: Lente convergente che ingrandisce l'immagine dell'obiettivo (10×)</li>
+                        <li><strong>Condenser</strong>: Concentra la luce sul campione</li>
+                        <li><strong>Diaframma</strong>: Controlla la luminosità</li>
+                    </ul>
+                </div>
+                <div class="diagram-card">
+                    <h4>⚙️ Regolazioni Meccaniche</h4>
+                    <ul style="margin-left: 1rem; line-height: 1.8;">
+                        <li><strong>Vite micrometrica</strong>: Focus preciso</li>
+                        <li><strong>Vite macrometrica</strong>: Focus approssimativo</li>
+                        <li><strong>Tavolo</strong>: Movimento X-Y del campione</li>
+                        <li><strong>Revolver</strong>: Cambia gli obiettivi</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEZIONE 2: FORMAZIONE IMMAGINE -->
+        <div class="section">
+            <h2 class="section-title">Formazione dell'Immagine</h2>
+
+            <h3 style="margin-top: 1.5rem; color: var(--text-muted);">Due Stadi di Ingrandimento</h3>
+            <p><strong>Stadio 1 - Obiettivo</strong>: Forma un'immagine reale, invertita, ingrandita del campione. Questa immagine si forma internamente nel tubo ottico.</p>
+            <p><strong>Stadio 2 - Oculare</strong>: Agisce come lente di ingrandimento, creando un'immagine virtuale ulteriormente ingrandita che l'occhio osserva.</p>
+
+            <div class="formula">
+                Ingrandimento Totale:<br>
+                M_totale = M_obiettivo × M_oculare<br><br>
+                Esempio:<br>
+                40× obiettivo × 10× oculare = 400× ingrandimento totale
+            </div>
+
+            <h3 style="margin-top: 1.5rem; color: var(--text-muted);">Potere Risolutivo (Limite di Abbe)</h3>
+            <p>La risoluzione del microscopio è limitata dalla lunghezza d'onda della luce usata:</p>
+
+            <div class="formula">
+                Limite di Diffrazione (Abbe):<br>
+                d = λ / (2 × NA)<br><br>
+                Dove:<br>
+                • λ = lunghezza d'onda (≈0.55 μm per luce visibile)<br>
+                • NA = apertura numerica dell'obiettivo<br>
+                • d = minima distanza risolvibile<br><br>
+                Per luce visibile: d_min ≈ 0.2 μm = 200 nm
+            </div>
+        </div>
+
+        <!-- SEZIONE 3: SIMULATORE -->
+        <div class="section">
+            <h2 class="section-title">Simulatore Interattivo: Campo Microscopico</h2>
+            <div class="canvas-wrap">
+                <canvas id="microscopeCanvas" width="500" height="500"></canvas>
+            </div>
+            <div class="controls">
+                <div class="ctrl">
+                    <label for="magnSlider">Ingrandimento</label>
+                    <input type="range" id="magnSlider" min="10" max="100" value="40" step="10">
+                    <div class="val-display" id="magnVal">40×</div>
+                </div>
+                <div class="ctrl">
+                    <label for="focusSlider">Focus</label>
+                    <input type="range" id="focusSlider" min="0" max="100" value="50" step="5">
+                    <div class="val-display" id="focusVal">50%</div>
+                </div>
+                <div class="ctrl">
+                    <label for="sampleSelect">Campione</label>
+                    <select id="sampleSelect">
+                        <option value="blood">Sangue</option>
+                        <option value="leaf">Foglia</option>
+                        <option value="fabric">Tessuto</option>
+                        <option value="cell">Cellula</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEZIONE 4: CAMPIONI -->
+        <div class="section">
+            <h2 class="section-title">Osservazione di Campioni Biologici</h2>
+            <p>Il microscopio ottico è lo strumento fondamentale per lo studio della biologia cellulare e della microbiologia.</p>
+
+            <div class="sample-grid">
+                <div class="sample-card">
+                    <h5>Cellule del Sangue</h5>
+                    <div class="sample-view">
+                        Globuli rossi (RBC)<br>
+                        Globuli bianchi (WBC)
+                    </div>
+                    <p style="font-size: 0.85rem; color: var(--text-muted);">
+                        Osservabile con obiettivo 40×
+                    </p>
+                </div>
+                <div class="sample-card">
+                    <h5>Struttura Foglia</h5>
+                    <div class="sample-view">
+                        Cellule epidermiche<br>
+                        Cloroplasti
+                    </div>
+                    <p style="font-size: 0.85rem; color: var(--text-muted);">
+                        Sezione trasversale 10×-40×
+                    </p>
+                </div>
+                <div class="sample-card">
+                    <h5>Tessuto Umano</h5>
+                    <div class="sample-view">
+                        Fibre muscolari<br>
+                        Collagene
+                    </div>
+                    <p style="font-size: 0.85rem; color: var(--text-muted);">
+                        Colorato con istologia
+                    </p>
+                </div>
+                <div class="sample-card">
+                    <h5>Cellula Animale</h5>
+                    <div class="sample-view">
+                        Nucleo<br>
+                        Mitocondri
+                    </div>
+                    <p style="font-size: 0.85rem; color: var(--text-muted);">
+                        Osservabile 40×-100×
+                    </p>
+                </div>
+                <div class="sample-card">
+                    <h5>Batteri e Microbi</h5>
+                    <div class="sample-view">
+                        Bacilli, cocci<br>
+                        Spirilli
+                    </div>
+                    <p style="font-size: 0.85rem; color: var(--text-muted);">
+                        Necessario 100× olio</                    </p>
+                </div>
+                <div class="sample-card">
+                    <h5>Protozoi</h5>
+                    <div class="sample-view">
+                        Paramecium<br>
+                        Ameba
+                    </div>
+                    <p style="font-size: 0.85rem; color: var(--text-muted);">
+                        Osservabile 10×-40×
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEZIONE 5: TECNICHE -->
+        <div class="section">
+            <h2 class="section-title">Tecniche e Accorgimenti</h2>
+
+            <h3 style="margin-top: 1.5rem; color: var(--text-muted);">Illuminazione Köhler</h3>
+            <p>La tecnica di illuminazione Köhler fornisce un'illuminazione uniforme e omogena del campione, essenziale per immagini di qualità.</p>
+
+            <h3 style="margin-top: 1.5rem; color: var(--text-muted);">Obiettivi a Immersione in Olio (100×)</h3>
+            <p>Gli obiettivi a immersione usano olio con indice di rifrazione simile al vetro. Questo aumenta l'apertura numerica e la risoluzione.</p>
+
+            <div class="formula">
+                Apertura Numerica (NA):<br>
+                NA = n × sin(α)<br><br>
+                Dove:<br>
+                • n = indice di rifrazione del mezzo tra obiettivo e campione<br>
+                • α = semi-angolo di apertura dell'obiettivo<br><br>
+                Aria: NA ≤ 1.0<br>
+                Olio: NA ≤ 1.4
+            </div>
+
+            <h3 style="margin-top: 1.5rem; color: var(--text-muted);">Colorazione</h3>
+            <ul style="margin-left: 2rem; line-height: 1.8;">
+                <li><strong>Colorazione Semplice</strong>: Un solo colore (viola di cristallo, metilene blu)</li>
+                <li><strong>Colorazione di Gram</strong>: Batterica, differenzia Gram+ e Gram−</li>
+                <li><strong>Colorazione Istologica</strong>: Ematossilina-eosina (H&E) per tessuti</li>
+                <li><strong>Fluorescenza</strong>: Coloranti fluorescenti visibili con illuminazione UV</li>
+            </ul>
+        </div>
+
+        <!-- QUIZ -->
+        <div class="quiz-container">
+            <h2 class="quiz-title">Quiz - Verifica la Comprensione</h2>
+
+            <div class="quiz-item">
+                <div class="quiz-question">1. Se un microscopio ha obiettivo 40× e oculare 10×, qual è l'ingrandimento totale?</div>
+                <div class="quiz-options">
+                    <div class="quiz-option" data-quiz="q1" data-correct="false">A) 50×</div>
+                    <div class="quiz-option" data-quiz="q1" data-correct="true">B) 400×</div>
+                    <div class="quiz-option" data-quiz="q1" data-correct="false">C) 100×</div>
+                    <div class="quiz-option" data-quiz="q1" data-correct="false">D) 4×</div>
+                </div>
+                <div class="feedback" id="feedback-q1"></div>
+            </div>
+
+            <div class="quiz-item">
+                <div class="quiz-question">2. Qual è il ruolo dell'obiettivo in un microscopio?</div>
+                <div class="quiz-options">
+                    <div class="quiz-option" data-quiz="q2" data-correct="true">A) Forma un'immagine reale, invertita del campione</div>
+                    <div class="quiz-option" data-quiz="q2" data-correct="false">B) Forma un'immagine virtuale dritta</div>
+                    <div class="quiz-option" data-quiz="q2" data-correct="false">C) Concentra solo la luce</div>
+                    <div class="quiz-option" data-quiz="q2" data-correct="false">D) Cambia il colore del campione</div>
+                </div>
+                <div class="feedback" id="feedback-q2"></div>
+            </div>
+
+            <div class="quiz-item">
+                <div class="quiz-question">3. Il limite di diffrazione di Abbe dipende principalmente da:</div>
+                <div class="quiz-options">
+                    <div class="quiz-option" data-quiz="q3" data-correct="false">A) Solo dall'ingrandimento</div>
+                    <div class="quiz-option" data-quiz="q3" data-correct="true">B) Dalla lunghezza d'onda della luce e dall'apertura numerica</div>
+                    <div class="quiz-option" data-quiz="q3" data-correct="false">C) Dalla dimensione dell'oculare</div>
+                    <div class="quiz-option" data-quiz="q3" data-correct="false">D) Dalla messa a fuoco</div>
+                </div>
+                <div class="feedback" id="feedback-q3"></div>
+            </div>
+
+            <div class="quiz-item">
+                <div class="quiz-question">4. Per luce visibile, il limite di risoluzione del microscopio ottico è circa:</div>
+                <div class="quiz-options">
+                    <div class="quiz-option" data-quiz="q4" data-correct="false">A) 1 nm</div>
+                    <div class="quiz-option" data-quiz="q4" data-correct="true">B) 200 nm (0.2 μm)</div>
+                    <div class="quiz-option" data-quiz="q4" data-correct="false">C) 1 μm</div>
+                    <div class="quiz-option" data-quiz="q4" data-correct="false">D) 10 μm</div>
+                </div>
+                <div class="feedback" id="feedback-q4"></div>
+            </div>
+
+            <div class="quiz-item">
+                <div class="quiz-question">5. Cosa è un obiettivo a immersione in olio (100×)?</div>
+                <div class="quiz-options">
+                    <div class="quiz-option" data-quiz="q5" data-correct="false">A) Un obiettivo che funziona solo in acqua</div>
+                    <div class="quiz-option" data-quiz="q5" data-correct="true">B) Un obiettivo che usa olio con NA > 1 per maggiore risoluzione</div>
+                    <div class="quiz-option" data-quiz="q5" data-correct="false">C) Un obiettivo sporco di olio</div>
+                    <div class="quiz-option" data-quiz="q5" data-correct="false">D) Un obiettivo che non serve per campioni biologici</div>
+                </div>
+                <div class="feedback" id="feedback-q5"></div>
+            </div>
+
+            <div class="quiz-item">
+                <div class="quiz-question">6. L'apertura numerica (NA) è massima quando:</div>
+                <div class="quiz-options">
+                    <div class="quiz-option" data-quiz="q6" data-correct="false">A) Si usa aria tra obiettivo e campione</div>
+                    <div class="quiz-option" data-quiz="q6" data-correct="true">B) Si usa olio con indice di rifrazione alto</div>
+                    <div class="quiz-option" data-quiz="q6" data-correct="false">C) Si aumenta l'ingrandimento arbitrariamente</div>
+                    <div class="quiz-option" data-quiz="q6" data-correct="false">D) Si riduce la lunghezza d'onda della luce</div>
+                </div>
+                <div class="feedback" id="feedback-q6"></div>
+            </div>
+
+            <div class="quiz-item">
+                <div class="quiz-question">7. Qual è lo scopo principale della colorazione in microscopia?</div>
+                <div class="quiz-options">
+                    <div class="quiz-option" data-quiz="q7" data-correct="false">A) Fare il campione più grande</div>
+                    <div class="quiz-option" data-quiz="q7" data-correct="true">B) Aumentare il contrasto per visibilità migliore</div>
+                    <div class="quiz-option" data-quiz="q7" data-correct="false">C) Ridurre l'ingrandimento</div>
+                    <div class="quiz-option" data-quiz="q7" data-correct="false">D) Riscaldare il campione</div>
+                </div>
+                <div class="feedback" id="feedback-q7"></div>
+            </div>
+
+            <div class="quiz-item">
+                <div class="quiz-question">8. Quale cellula non è visibile con un microscopio ottico standard?</div>
+                <div class="quiz-options">
+                    <div class="quiz-option" data-quiz="q8" data-correct="false">A) Cellula animale (20 μm)</div>
+                    <div class="quiz-option" data-quiz="q8" data-correct="true">B) Virus (0.1 μm) - Oltre il limite di Abbe</div>
+                    <div class="quiz-option" data-quiz="q8" data-correct="false">C) Globulo rosso (7 μm)</div>
+                    <div class="quiz-option" data-quiz="q8" data-correct="false">D) Batterio (1 μm)</div>
+                </div>
+                <div class="feedback" id="feedback-q8"></div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Fisica 2026 - Lezione Interattiva MFI</p>
+        </footer>
+    </div>
+
+    <script src="../../js/main.js"></script>
+    <script src="microscopio.js"></script>
+</body>
+</html>

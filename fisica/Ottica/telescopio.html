@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telescopio - Lezione Interattiva MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+        .sub-hero {
+            padding: 4rem 0 2rem;
+            text-align: left;
+        }
+        .sub-hero-title {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .canvas-wrap {
+            background: rgba(0,0,0,0.35);
+            border-radius: 12px;
+            padding: 1.2rem;
+            margin: 1.5rem 0;
+            text-align: center;
+            border: 1px solid rgba(16,185,129,0.15);
+        }
+        canvas {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+            border-radius: 8px;
+            background: #060a10;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin: 1rem 0;
+            align-items: center;
+            justify-content: center;
+        }
+        .ctrl {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            min-width: 180px;
+        }
+        .ctrl label {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .ctrl input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            background: rgba(16,185,129,0.25);
+            border-radius: 3px;
+            outline: none;
+        }
+        .ctrl input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--physics-color);
+            cursor: pointer;
+            box-shadow: 0 0 8px var(--physics-glow);
+        }
+        .val-display {
+            font-family: monospace;
+            color: var(--physics-color);
+            font-size: 0.9rem;
+        }
+
+        .section {
+            margin: 3rem 0;
+        }
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-main);
+            border-left: 4px solid var(--physics-color);
+            padding-left: 1rem;
+        }
+
+        .formula {
+            background: rgba(16,185,129,0.08);
+            border-left: 3px solid var(--physics-color);
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.05rem;
+            overflow-x: auto;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .comparison-card {
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            padding: 1.5rem;
+            border-left: 3px solid var(--physics-color);
+        }
+        .comparison-card h4 {
+            color: var(--physics-color);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        .comparison-card ul {
+            margin-left: 1rem;
+            line-height: 1.8;
+            font-size: 0.95rem;
+        }
+
+        .image-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .image-card {
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            border: 1px solid rgba(16,185,129,0.2);
+            text-align: center;
+        }
+        .image-card h4 {
+            margin-bottom: 1rem;
+            color: var(--text-main);
+        }
+        .image-placeholder {
+            background: rgba(16,185,129,0.1);
+            border-radius: 6px;
+            padding: 2rem 1rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            min-height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .quiz-container {
+            background: rgba(59,130,246,0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        .quiz-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text-main);
+        }
+        .quiz-item {
+            background: rgba(0,0,0,0.3);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            border-left: 3px solid var(--physics-color);
+        }
+        .quiz-question {
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: var(--text-main);
+        }
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .quiz-option {
+            padding: 0.6rem;
+            background: rgba(0,0,0,0.5);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+        .quiz-option:hover {
+            background: rgba(16,185,129,0.2);
+            border-color: var(--physics-color);
+        }
+        .quiz-option.selected {
+            background: rgba(16,185,129,0.3);
+            border-color: var(--physics-color);
+        }
+        .quiz-option.correct {
+            background: rgba(34,197,94,0.3);
+            border-color: #22c55e;
+            color: #22c55e;
+        }
+        .quiz-option.incorrect {
+            background: rgba(239,68,68,0.3);
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+        .feedback {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .comparison-grid, .image-comparison {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        footer {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../ottica.html" class="back-button">← Torna a Ottica</a>
+
+        <div class="sub-hero">
+            <h1 class="sub-hero-title">Telescopio</h1>
+            <p style="color: var(--text-muted); font-size: 1.1rem;">Dalla scoperta di Galileo ai moderni osservatori spaziali</p>
+        </div>
+
+        <!-- SEZIONE 1: STORIA -->
+        <div class="section">
+            <h2 class="section-title">Storia del Telescopio</h2>
+
+            <h3 style="margin-top: 1.5rem; color: var(--text-muted);">Galileo Galilei (1609)</h3>
+            <p>Galileo non inventò il telescopio, ma lo perfezionò per l'astronomia. Con una semplice lente convergente (obiettivo) e una divergente (oculare), realizzò un telescopio con magnificazione 20x. Con esso scoprì:</p>
+            <ul style="margin-left: 2rem; line-height: 1.8;">
+                <li>I satelliti di Giove (Lune Galileane)</li>
+                <li>Le fasi di Venere</li>
+                <li>Le montagne sulla Luna</li>
+                <li>Le macchie solari</li>
+            </ul>
+
+            <h3 style="margin-top: 1.5rem; color: var(--text-muted);">Isaac Newton (1668)</h3>
+            <p>Newton sviluppò il telescopio riflettore utilizzando specchi concavi invece che lenti. Questo elimina l'aberrazione cromatica e permette telescopi più grandi.</p>
+
+            <h3 style="margin-top: 1.5rem; color: var(--text-muted);">Telescopi Moderni</h3>
+            <ul style="margin-left: 2rem; line-height: 1.8;">
+                <li><strong>Hubble (1990-oggi)</strong>: Telescopio spaziale riflettore, specchio 2.4m, ha rivoluzionato l'astronomia.</li>
+                <li><strong>JWST (2021-oggi)</strong>: Telescopio spaziale infrarosso, specchio segmentato 6.5m, osserva le galassie più antiche.</li>
+                <li><strong>Ground-based</strong>: Telescopi terrestri con specchi fino a 10m, adattive optics per correggere turbolenza atmosferica.</li>
+            </ul>
+        </div>
+
+        <!-- SEZIONE 2: TIPI DI TELESCOPI -->
+        <div class="section">
+            <h2 class="section-title">Rifrattori vs Riflettori</h2>
+
+            <div class="comparison-grid">
+                <div class="comparison-card">
+                    <h4>🔭 Telescopio Rifrattore</h4>
+                    <ul>
+                        <li>Usa lenti convergenti</li>
+                        <li>Leggero e compatto</li>
+                        <li>Aberrazione cromatica</li>
+                        <li>Limitato a diametri piccoli (<40 cm)</li>
+                        <li>Galileo, binocoli</li>
+                    </ul>
+                </div>
+                <div class="comparison-card">
+                    <h4>🔭 Telescopio Riflettore</h4>
+                    <ul>
+                        <li>Usa specchi concavi</li>
+                        <li>Nessuna aberrazione cromatica</li>
+                        <li>Può avere grandi diametri (10m+)</li>
+                        <li>Richiede collimazione regolare</li>
+                        <li>Newton, Hubble, observatori</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="formula">
+                Magnificazione Telescopio:<br>
+                M = -f_obiettivo / f_oculare<br><br>
+                Dove:<br>
+                • f_obiettivo = distanza focale obiettivo<br>
+                • f_oculare = distanza focale oculare<br>
+                • M negativo = immagine capovolta
+            </div>
+        </div>
+
+        <!-- SEZIONE 3: SIMULATORE -->
+        <div class="section">
+            <h2 class="section-title">Simulatore Interattivo: Telescopio Rifrattore</h2>
+            <div class="canvas-wrap">
+                <canvas id="telescopeCanvas" width="650" height="400"></canvas>
+            </div>
+            <div class="controls">
+                <div class="ctrl">
+                    <label for="zoomSlider">Zoom (Magnificazione)</label>
+                    <input type="range" id="zoomSlider" min="5" max="100" value="20" step="5">
+                    <div class="val-display" id="zoomVal">20×</div>
+                </div>
+            </div>
+            <p style="color: var(--text-muted); text-align: center; margin-top: 1rem;">
+                Osserva come aumentando lo zoom si vede una porzione più piccola del cielo con maggiore dettaglio.
+            </p>
+        </div>
+
+        <!-- SEZIONE 4: CONFRONTO IMMAGINI -->
+        <div class="section">
+            <h2 class="section-title">Osservazioni Astronomiche</h2>
+            <p>Il progresso dei telescopi ha permesso di scoprire dettagli sempre più piccoli e oggetti sempre più lontani.</p>
+
+            <div class="image-comparison">
+                <div class="image-card">
+                    <h4>Telescopio di Galileo (1609)</h4>
+                    <div class="image-placeholder">
+                        Luna: cratere fuzzy<br>
+                        Giove: 4 puntini
+                    </div>
+                    <p>Magnificazione: 20×</p>
+                </div>
+                <div class="image-card">
+                    <h4>Hubble (1995)</h4>
+                    <div class="image-placeholder">
+                        Galassie distanti<br>
+                        Nebulose colorate
+                    </div>
+                    <p>Campo profondo: milioni di galassie</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEZIONE 5: OTTICA TELESCOPIO -->
+        <div class="section">
+            <h2 class="section-title">Optical Design</h2>
+
+            <h3 style="margin-top: 1.5rem; color: var(--text-muted);">Aberrazioni Ottiche</h3>
+            <ul style="margin-left: 2rem; line-height: 1.8;">
+                <li><strong>Aberrazione Cromatica</strong>: Le lenti disperdono colori diversamente. Causa alone colorato nelle immagini. I riflettori non hanno questo problema.</li>
+                <li><strong>Aberrazione Sferica</strong>: I raggi paralleli non converge nello stesso punto. Risolto con lenti asferiche.</li>
+                <li><strong>Diffrazione</strong>: Limite di risoluzione = 1.22 × λ / D, dove D è il diametro dell'apertura.</li>
+            </ul>
+
+            <div class="formula">
+                Potere Risolutivo (Criterio di Rayleigh):<br>
+                θ_min = 1.22 × λ / D<br><br>
+                Dove:<br>
+                • λ = lunghezza d'onda della luce<br>
+                • D = diametro dell'obiettivo<br>
+                • θ = minimo angolo separabile
+            </div>
+        </div>
+
+        <!-- QUIZ -->
+        <div class="quiz-container">
+            <h2 class="quiz-title">Quiz - Verifica la Comprensione</h2>
+
+            <div class="quiz-item">
+                <div class="quiz-question">1. Quando ha sviluppato il telescopio Galileo?</div>
+                <div class="quiz-options">
+                    <div class="quiz-option" data-quiz="q1" data-correct="true">A) 1609</div>
+                    <div class="quiz-option" data-quiz="q1" data-correct="false">B) 1595</div>
+                    <div class="quiz-option" data-quiz="q1" data-correct="false">C) 1650</div>
+                    <div class="quiz-option" data-quiz="q1" data-correct="false">D) 1700</div>
+                </div>
+                <div class="feedback" id="feedback-q1"></div>
+            </div>
+
+            <div class="quiz-item">
+                <div class="quiz-question">2. Quale scoperta astronomica NON fece Galileo?</div>
+                <div class="quiz-options">
+                    <div class="quiz-option" data-quiz="q2" data-correct="false">A) I satelliti di Giove</div>
+                    <div class="quiz-option" data-quiz="q2" data-correct="false">B) Le fasi di Venere</div>
+                    <div class="quiz-option" data-quiz="q2" data-correct="true">C) Gli anelli di Saturno</div>
+                    <div class="quiz-option" data-quiz="q2" data-correct="false">D) Le macchie solari</div>
+                </div>
+                <div class="feedback" id="feedback-q2"></div>
+            </div>
+
+            <div class="quiz-item">
+                <div class="quiz-question">3. Il vantaggio principale del telescopio riflettore di Newton è:</div>
+                <div class="quiz-options">
+                    <div class="quiz-option" data-quiz="q3" data-correct="true">A) Nessuna aberrazione cromatica</div>
+                    <div class="quiz-option" data-quiz="q3" data-correct="false">B) Più leggero della lente</div>
+                    <div class="quiz-option" data-quiz="q3" data-correct="false">C) Più facile da costruire</div>
+                    <div class="quiz-option" data-quiz="q3" data-correct="false">D) Ingrandimento maggiore</div>
+                </div>
+                <div class="feedback" id="feedback-q3"></div>
+            </div>
+
+            <div class="quiz-item">
+                <div class="quiz-question">4. Se un telescopio ha f_obiettivo = 100 cm e f_oculare = 5 cm, qual è la magnificazione?</div>
+                <div class="quiz-options">
+                    <div class="quiz-option" data-quiz="q4" data-correct="true">A) 20×</div>
+                    <div class="quiz-option" data-quiz="q4" data-correct="false">B) 10×</div>
+                    <div class="quiz-option" data-quiz="q4" data-correct="false">C) 5×</div>
+                    <div class="quiz-option" data-quiz="q4" data-correct="false">D) 40×</div>
+                </div>
+                <div class="feedback" id="feedback-q4"></div>
+            </div>
+
+            <div class="quiz-item">
+                <div class="quiz-question">5. Hubble è un telescopio:</div>
+                <div class="quiz-options">
+                    <div class="quiz-option" data-quiz="q5" data-correct="false">A) Rifrattore con lenti</div>
+                    <div class="quiz-option" data-quiz="q5" data-correct="true">B) Riflettore con specchio</div>
+                    <div class="quiz-option" data-quiz="q5" data-correct="false">C) Ibrido (lenti + specchi)</div>
+                    <div class="quiz-option" data-quiz="q5" data-correct="false">D) Telescopio radio</div>
+                </div>
+                <div class="feedback" id="feedback-q5"></div>
+            </div>
+
+            <div class="quiz-item">
+                <div class="quiz-question">6. Qual è il principale vantaggio di un telescopio spaziale come Hubble?</div>
+                <div class="quiz-options">
+                    <div class="quiz-option" data-quiz="q6" data-correct="false">A) Ha uno specchio più grande</div>
+                    <div class="quiz-option" data-quiz="q6" data-correct="true">B) Non è disturbato dall'atmosfera terrestre</div>
+                    <div class="quiz-option" data-quiz="q6" data-correct="false">C) È meno costoso</div>
+                    <div class="quiz-option" data-quiz="q6" data-correct="false">D) Può ingrandire illimitatamente</div>
+                </div>
+                <div class="feedback" id="feedback-q6"></div>
+            </div>
+
+            <div class="quiz-item">
+                <div class="quiz-question">7. L'aberrazione cromatica è causata da:</div>
+                <div class="quiz-options">
+                    <div class="quiz-option" data-quiz="q7" data-correct="true">A) La dispersione della luce in colori diversi nelle lenti</div>
+                    <div class="quiz-option" data-quiz="q7" data-correct="false">B) La riflessione imperfetta dello specchio</div>
+                    <div class="quiz-option" data-quiz="q7" data-correct="false">C) L'atmosfera terrestre</div>
+                    <div class="quiz-option" data-quiz="q7" data-correct="false">D) La curvatura dello spazio-tempo</div>
+                </div>
+                <div class="feedback" id="feedback-q7"></div>
+            </div>
+
+            <div class="quiz-item">
+                <div class="quiz-question">8. Il JWST (James Webb Space Telescope) osserva principalmente in quale regione dello spettro?</div>
+                <div class="quiz-options">
+                    <div class="quiz-option" data-quiz="q8" data-correct="false">A) Ultravioletto</div>
+                    <div class="quiz-option" data-quiz="q8" data-correct="true">B) Infrarosso</div>
+                    <div class="quiz-option" data-quiz="q8" data-correct="false">C) Raggi X</div>
+                    <div class="quiz-option" data-quiz="q8" data-correct="false">D) Microonde</div>
+                </div>
+                <div class="feedback" id="feedback-q8"></div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Fisica 2026 - Lezione Interattiva MFI</p>
+        </footer>
+    </div>
+
+    <script src="../../js/main.js"></script>
+    <script src="telescopio.js"></script>
+</body>
+</html>
