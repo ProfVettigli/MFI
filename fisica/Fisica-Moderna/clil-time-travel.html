@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLIL: Time Travel - Interactive Lesson MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        .back-button { display: inline-flex; align-items: center; color: var(--text-muted); text-decoration: none; margin-bottom: 2rem; font-weight: 600; transition: color 0.3s ease, transform 0.3s ease; }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+        .sub-hero { padding: 4rem 0 2rem; text-align: left; }
+        .sub-hero-title { font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; margin-bottom: 1rem; }
+        .lesson-title { color: var(--physics-color) !important; }
+
+        .interactive-box {
+            background: rgba(168,85,247,0.04);
+            border: 1px solid rgba(168,85,247,0.18);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .slider-row { display: flex; align-items: center; gap: 1rem; margin: 1rem 0; flex-wrap: wrap; }
+        .slider-row label { min-width: 180px; font-weight: 600; color: var(--text-muted); }
+        .slider-row input[type=range] { flex: 1; min-width: 200px; accent-color: #a855f7; }
+        .slider-row .value { font-family: monospace; font-weight: 800; color: #a855f7; min-width: 90px; }
+
+        .result-box {
+            background: rgba(0,0,0,0.3);
+            border-left: 5px solid #a855f7;
+            padding: 1.2rem 1.5rem;
+            border-radius: 0 10px 10px 0;
+            margin-top: 1.2rem;
+            font-family: monospace;
+            font-size: 1.05rem;
+        }
+
+        .formula { font-family: 'Cambria Math', Cambria, serif; font-size: 1.4rem; text-align: center; padding: 1rem; background: rgba(0,0,0,0.25); border-radius: 10px; margin: 1rem 0; }
+        .formula em { color: #a855f7; font-style: italic; }
+
+        .timeline { position: relative; padding-left: 2.5rem; margin: 2rem 0; }
+        .timeline::before { content: ''; position: absolute; left: 0.6rem; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, #a855f7, rgba(168,85,247,0.1)); }
+        .timeline-item { position: relative; margin-bottom: 2rem; }
+        .timeline-item::before { content: ''; position: absolute; left: -1.95rem; top: 0.4rem; width: 10px; height: 10px; border-radius: 50%; background: #a855f7; box-shadow: 0 0 8px rgba(168,85,247,0.5); }
+        .timeline-year { font-size: 0.8rem; font-weight: 700; color: #a855f7; letter-spacing: 1px; margin-bottom: 0.3rem; }
+        .timeline-text { font-size: 0.97rem; color: var(--text-muted); line-height: 1.6; }
+        .timeline-text strong { color: var(--text-main); }
+
+        /* Time Models selector */
+        .model-buttons { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+        .model-btn {
+            padding: 0.6rem 1.2rem;
+            border: 2px solid rgba(168,85,247,0.35);
+            border-radius: 8px;
+            background: transparent;
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            font-family: inherit;
+        }
+        .model-btn:hover { border-color: #a855f7; color: var(--text-main); }
+        .model-btn.active { background: rgba(168,85,247,0.15); border-color: #a855f7; color: #a855f7; }
+
+        .model-content { display: none; }
+        .model-content.active { display: block; }
+
+        .model-visual {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            background: rgba(0,0,0,0.25);
+            border-radius: 12px;
+            margin: 1.2rem 0;
+            min-height: 110px;
+        }
+
+        /* Fixed Past visual */
+        .fp-line {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            width: 100%;
+            max-width: 420px;
+        }
+        .fp-node {
+            width: 14px; height: 14px;
+            border-radius: 50%;
+            background: #a855f7;
+            box-shadow: 0 0 8px rgba(168,85,247,0.6);
+            flex-shrink: 0;
+        }
+        .fp-arrow {
+            flex: 1;
+            height: 2px;
+            background: linear-gradient(to right, #a855f7, rgba(168,85,247,0.3));
+            position: relative;
+        }
+        .fp-arrow::after {
+            content: '';
+            position: absolute;
+            right: -1px; top: -5px;
+            width: 0; height: 0;
+            border-left: 10px solid rgba(168,85,247,0.6);
+            border-top: 6px solid transparent;
+            border-bottom: 6px solid transparent;
+        }
+        .fp-label {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            text-align: center;
+            margin-top: 0.5rem;
+        }
+        .fp-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 420px;
+        }
+
+        /* Branching visual */
+        .branch-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            width: 100%;
+            max-width: 420px;
+            gap: 0.2rem;
+        }
+        .branch-row {
+            display: flex;
+            align-items: center;
+            gap: 0;
+        }
+        .branch-stem {
+            width: 80px; height: 2px;
+            background: #a855f7;
+        }
+        .branch-fork {
+            width: 2px; height: 60px;
+            background: linear-gradient(to bottom, #a855f7, rgba(168,85,247,0.2));
+            margin-left: 0;
+            position: relative;
+        }
+        .branch-arm {
+            display: flex;
+            align-items: center;
+        }
+        .branch-line {
+            width: 120px; height: 2px;
+        }
+        .branch-line.top { background: linear-gradient(to right, #a855f7, rgba(168,85,247,0.4)); }
+        .branch-line.bottom { background: linear-gradient(to right, rgba(168,85,247,0.5), rgba(168,85,247,0.2)); }
+        .branch-dot {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            background: #a855f7;
+            flex-shrink: 0;
+        }
+        .branch-dot.dim { background: rgba(168,85,247,0.4); }
+        .branch-label-small { font-size: 0.75rem; color: var(--text-muted); margin-left: 0.4rem; }
+
+        /* Block Universe visual */
+        .block-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            width: 100%;
+            max-width: 380px;
+        }
+        .block-strip {
+            width: 100%;
+            height: 28px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        .block-strip.past   { background: rgba(168,85,247,0.30); color: #d8b4fe; }
+        .block-strip.now    { background: rgba(168,85,247,0.55); color: #fff; border: 1px solid #a855f7; }
+        .block-strip.future { background: rgba(168,85,247,0.15); color: rgba(168,85,247,0.7); }
+        .block-caption { font-size: 0.78rem; color: var(--text-muted); }
+
+        .film-badge {
+            display: inline-block;
+            background: rgba(168,85,247,0.12);
+            border: 1px solid rgba(168,85,247,0.3);
+            border-radius: 6px;
+            padding: 0.3rem 0.8rem;
+            font-size: 0.88rem;
+            color: #d8b4fe;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="fisica-moderna.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Back to Fisica Moderna
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Time <span class="gradient-text">Travel</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+            From H. G. Wells to Hawking: explore the physics, philosophy, and narrative structures behind one of humanity's oldest scientific fantasies.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">What Is Time Travel?</h2>
+        <p class="lesson-text">
+            Time travel — moving between different points in time as freely as we move through space — has fascinated scientists and storytellers alike for centuries. What began as pure fantasy gradually became a legitimate area of scientific inquiry after Einstein's theory of relativity revealed that time is not the fixed, universal backdrop Newton imagined.
+        </p>
+        <p class="lesson-text">
+            Modern physics does not rule out all forms of time travel. In fact, <strong>forward time travel</strong> is not only possible — it happens every day, at scales too small to notice. The deeper question is whether backward time travel is physically realizable, and what it would mean for causality, free will, and the structure of reality itself.
+        </p>
+        <p class="lesson-text">
+            In this lesson we will explore <strong>three frameworks</strong> for thinking about time travel: the Fixed Past model, the Branching Timelines model, and the Block Universe model. Each has roots in both physics and narrative fiction, and each gives a radically different answer to the paradoxes time travel creates.
+        </p>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">A Brief History of Time Travel</h2>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-year">1895</div>
+                <p class="timeline-text"><strong>H. G. Wells</strong> publishes <em>The Time Machine</em> — the first major work of fiction to treat time travel as a technological achievement rather than magic. Wells introduced the idea of time as a "fourth dimension" navigable by machine, decades before Einstein formalized the concept.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1905</div>
+                <p class="timeline-text"><strong>Albert Einstein</strong> publishes his Special Theory of Relativity. The central consequence for time: <strong>time dilation</strong>. A clock moving at high velocity ticks more slowly relative to a stationary observer. Forward time travel is therefore not science fiction — it is a measurable physical effect.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1915</div>
+                <p class="timeline-text">Einstein's <strong>General Theory of Relativity</strong> extends the framework: massive objects curve spacetime, and extreme gravitational fields also slow time. Near a black hole, time passes more slowly — the closer you are, the greater the effect.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1949</div>
+                <p class="timeline-text"><strong>Kurt Gödel</strong> discovers an exact solution to Einstein's field equations that contains <strong>closed timelike curves (CTCs)</strong> — paths through spacetime that loop back on themselves, theoretically allowing a traveller to return to their own past.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1992</div>
+                <p class="timeline-text"><strong>Stephen Hawking</strong> proposes the <strong>Chronology Protection Conjecture</strong>: the laws of physics conspire to prevent backward time travel at a macroscopic scale, preserving causality and preventing paradoxes. Hawking quipped: "The best evidence we have that time travel is not possible, and never will be, is that we have not been invaded by hordes of tourists from the future."</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Three Models of Time</h2>
+        <p class="lesson-text">
+            How does time travel actually work — if it works at all? Three competing models dominate both scientific and narrative discussions. Select each to explore its logic, its visual structure, and its most famous fictional example.
+        </p>
+
+        <div class="interactive-box">
+            <div class="model-buttons">
+                <button class="model-btn active" data-model="fixed">Fixed Past</button>
+                <button class="model-btn" data-model="branching">Branching Timelines</button>
+                <button class="model-btn" data-model="block">Block Universe</button>
+            </div>
+
+            <!-- Fixed Past -->
+            <div class="model-content active" id="model-fixed">
+                <h3 style="color: #a855f7; margin-bottom: 0.6rem;">Fixed Past (Novikov Self-Consistency)</h3>
+                <p style="color: var(--text-muted); font-size: 0.97rem; line-height: 1.7;">
+                    In this model, time is a single, unalterable timeline. If you travel to the past, you were <em>always</em> there — your actions are already part of history and cannot change the outcome. Paradoxes are logically impossible because the universe enforces self-consistency. This view, formalized by physicist Igor Novikov, implies that free will in time travel is an illusion: you can only do what you were always going to do.
+                </p>
+                <div class="model-visual">
+                    <div class="fp-wrap">
+                        <div class="fp-line">
+                            <div class="fp-node"></div>
+                            <div class="fp-arrow"></div>
+                            <div class="fp-node"></div>
+                            <div class="fp-arrow"></div>
+                            <div class="fp-node"></div>
+                            <div class="fp-arrow"></div>
+                            <div class="fp-node"></div>
+                        </div>
+                        <div class="fp-label">Past &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Present &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Future &nbsp; (one fixed line)</div>
+                    </div>
+                </div>
+                <div class="film-badge">Classic example: <strong>12 Monkeys</strong> (1995) — Bruce Willis cannot change the past; every attempt is already part of the original timeline.</div>
+            </div>
+
+            <!-- Branching Timelines -->
+            <div class="model-content" id="model-branching">
+                <h3 style="color: #a855f7; margin-bottom: 0.6rem;">Branching Timelines (Many-Worlds)</h3>
+                <p style="color: var(--text-muted); font-size: 0.97rem; line-height: 1.7;">
+                    Every intervention in the past creates a new branch of reality, diverging from the original timeline. The traveller who goes back does not change <em>their</em> past — they create an alternate universe. This model, loosely inspired by Hugh Everett's Many-Worlds interpretation of quantum mechanics, resolves the grandfather paradox cleanly: killing your grandfather only affects the new branch, not the one you came from.
+                </p>
+                <div class="model-visual">
+                    <div class="branch-wrap">
+                        <div style="display: flex; align-items: center; gap: 0;">
+                            <div class="branch-stem"></div>
+                            <div style="display: flex; flex-direction: column; gap: 0.4rem;">
+                                <div class="branch-arm">
+                                    <div style="width: 0; height: 0; border-bottom: 5px solid transparent; border-left: 10px solid #a855f7; border-top: 5px solid transparent; margin-bottom: 14px;"></div>
+                                    <div class="branch-line top" style="transform: rotate(-14deg); transform-origin: left center; margin-bottom: 14px;"></div>
+                                    <div class="branch-dot" style="margin-bottom: 14px;"></div>
+                                    <span class="branch-label-small" style="margin-bottom: 14px;">Original timeline</span>
+                                </div>
+                                <div class="branch-arm">
+                                    <div style="width: 0; height: 0; border-bottom: 5px solid transparent; border-left: 10px solid rgba(168,85,247,0.5); border-top: 5px solid transparent; margin-top: 14px;"></div>
+                                    <div class="branch-line bottom" style="transform: rotate(14deg); transform-origin: left center; margin-top: 14px;"></div>
+                                    <div class="branch-dot dim" style="margin-top: 14px;"></div>
+                                    <span class="branch-label-small" style="margin-top: 14px; color: rgba(168,85,247,0.5);">New branch (altered past)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="film-badge">Classic example: <strong>Back to the Future</strong> (1985) — Marty's actions create divergent timelines; the original 1985 still exists "elsewhere."</div>
+            </div>
+
+            <!-- Block Universe -->
+            <div class="model-content" id="model-block">
+                <h3 style="color: #a855f7; margin-bottom: 0.6rem;">Block Universe (Eternalism)</h3>
+                <p style="color: var(--text-muted); font-size: 0.97rem; line-height: 1.7;">
+                    In the Block Universe (or Eternalist) view, past, present, and future all exist simultaneously in a four-dimensional spacetime "block." Time is not something that flows — all moments coexist equally. This view is fully consistent with relativity. Time travel here means navigating to a different spacetime coordinate, much like moving through space. There is no privileged "now" — your present is just a slice of an eternal structure.
+                </p>
+                <div class="model-visual">
+                    <div class="block-wrap">
+                        <div class="block-strip past">PAST &mdash; already exists</div>
+                        <div class="block-strip now">NOW &mdash; your current slice</div>
+                        <div class="block-strip future">FUTURE &mdash; also exists, equally real</div>
+                        <div class="block-caption" style="margin-top: 0.6rem;">All slices coexist in the 4D block</div>
+                    </div>
+                </div>
+                <div class="film-badge">Classic example: <strong>Interstellar</strong> (2014) — Cooper navigates a tesseract where all moments of his daughter's life coexist simultaneously.</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section">
+        <h2 class="lesson-title">Time Dilation Calculator</h2>
+        <p class="lesson-text">
+            Einstein's Special Relativity predicts that a traveller moving at a significant fraction of the speed of light ages more slowly than a stationary observer. This is <strong>time dilation</strong>, described by the Lorentz factor. If a traveller moves at velocity <em>v</em> for a period of time <em>t</em> (measured by the stationary observer), the traveller's own elapsed time <em>&tau;</em> is:
+        </p>
+        <div class="formula">&tau; = t &sdot; &radic;(1 &minus; v&sup2;/c&sup2;)</div>
+        <p class="lesson-text">
+            Use the slider below to explore how much time passes for the traveller versus an outside observer for a journey of <strong>10 years</strong> (as measured from Earth).
+        </p>
+
+        <div class="interactive-box">
+            <h3 style="color: #a855f7; margin-bottom: 1rem;">Lorentz Time Dilation</h3>
+            <div class="slider-row">
+                <label for="velocity-slider">Velocity (% of c):</label>
+                <input type="range" id="velocity-slider" min="0" max="99" step="1" value="0">
+                <span class="value" id="velocity-display">0%</span>
+            </div>
+            <div class="result-box" id="dilation-result">
+                At <strong id="vel-text">0% c</strong>, after <strong>10 years</strong> on Earth:<br>
+                Traveller ages: <strong id="traveller-time">10.000 years</strong><br>
+                Lorentz factor &gamma;: <strong id="gamma-val">1.000</strong><br>
+                <span id="dilation-note" style="color: var(--text-muted); font-size: 0.92rem;"></span>
+            </div>
+        </div>
+    </section>
+
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title">Quiz: Test Your Knowledge</h2>
+        <p class="lesson-text" style="font-size: 0.95rem;">Six questions on the physics and narrative structures of time travel.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 MFI - Interactive Educational Platform.</p>
+</footer>
+
+<script src="clil-time-travel.js"></script>
+<script src="../../js/main.js"></script>
+</body>
+</html>

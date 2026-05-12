@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equazioni Differenziali - Lezione Interattiva MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        .back-button { display: inline-flex; align-items: center; color: var(--text-muted); text-decoration: none; margin-bottom: 2rem; font-weight: 600; transition: color 0.3s, transform 0.3s; }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+        .sub-hero { padding: 4rem 0 2rem; text-align: left; }
+        .sub-hero-title { font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; margin-bottom: 1rem; }
+        .widget-box { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 2rem; margin: 2rem 0; }
+        .widget-title { color: var(--math-color); margin-bottom: 1rem; font-size: 1.2rem; font-weight: 700; }
+        canvas.graph { width: 100%; max-width: 600px; height: 360px; background: rgba(0,0,0,0.3); border-radius: 10px; display: block; margin: 1rem auto; }
+        .ctrl-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap; }
+        .ctrl-row label { min-width: 80px; color: var(--text-muted); font-family: monospace; font-size: 0.95rem; }
+        input[type=range] { flex: 1; min-width: 150px; accent-color: var(--math-color); }
+        .val-display { font-family: monospace; color: var(--math-color); min-width: 70px; font-weight: 700; }
+        .result-card { background: rgba(59,130,246,0.06); border-left: 4px solid var(--math-color); padding: 1rem 1.2rem; border-radius: 0 10px 10px 0; margin-top: 1rem; font-family: monospace; font-size: 0.95rem; }
+        .formula-block { background: rgba(0,0,0,0.3); border-radius: 10px; padding: 1.2rem; margin: 1rem 0; font-size: 1.05rem; border-left: 3px solid var(--math-color); }
+        .pill { display: inline-block; padding: 0.2rem 0.7rem; border-radius: 999px; background: rgba(59,130,246,0.15); color: var(--math-color); font-size: 0.8rem; font-weight: 700; margin-right: 0.4rem; }
+
+        /* Timeline */
+        .timeline { position: relative; padding-left: 2rem; margin: 1.5rem 0; }
+        .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--math-color), transparent); }
+        .timeline-item { position: relative; margin-bottom: 1.5rem; }
+        .timeline-item::before { content: ''; position: absolute; left: -2rem; top: 0.4rem; width: 10px; height: 10px; border-radius: 50%; background: var(--math-color); border: 2px solid rgba(59,130,246,0.3); }
+        .timeline-date { font-family: monospace; color: var(--math-color); font-size: 0.85rem; font-weight: 700; margin-bottom: 0.2rem; }
+        .timeline-desc { color: var(--text-muted); font-size: 0.95rem; }
+
+        /* Pendolo canvas */
+        canvas#pendulum-canvas { background: rgba(0,0,0,0.4); }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="studio-funzione.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Studio di Funzione
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Equazioni Differenziali: <span class="gradient-text">Il Linguaggio del Cambiamento</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 800px; font-weight: 300;">
+            Dalle leggi di Newton al pendolo oscillante: come descrivere l'evoluzione di un sistema nel tempo attraverso relazioni tra funzioni e le loro derivate.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <!-- SEZIONE 1: COS'È UN'EQUAZIONE DIFFERENZIALE -->
+    <section class="lesson-section">
+        <h2 class="lesson-title">Cos'è un'Equazione Differenziale</h2>
+        <p class="lesson-text">
+            Un'<strong>equazione differenziale</strong> è un'equazione in cui compare una funzione incognita insieme alle sue derivate. Invece di cercare un numero, si cerca una <em>funzione</em>.
+        </p>
+        <p class="lesson-text">
+            La forma generale di un'<strong>EDO (Equazione Differenziale Ordinaria)</strong> del primo ordine è:
+        </p>
+        <div class="formula-block" style="text-align: center; font-size: 1.3rem;">
+            \(\displaystyle \frac{dy}{dx} = f(x, y)\)
+        </div>
+        <p class="lesson-text">
+            dove \(y = y(x)\) è la funzione incognita. Capire il comportamento di \(y\) significa trovare la funzione che soddisfa questa relazione.
+        </p>
+
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin: 1.5rem 0;">
+            <div class="card" style="padding: 1.5rem;">
+                <h4 style="color: var(--math-color);">EDO — Ordinaria</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Coinvolge derivate rispetto a <strong>una sola variabile</strong> indipendente. Esempio: \(y' = ky\) (crescita esponenziale).</p>
+            </div>
+            <div class="card" style="padding: 1.5rem;">
+                <h4 style="color: var(--math-color);">EDP — alle Derivate Parziali</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Coinvolge derivate rispetto a <strong>più variabili</strong>. Esempio: equazione del calore \(\frac{\partial u}{\partial t} = \alpha \frac{\partial^2 u}{\partial x^2}\).</p>
+            </div>
+            <div class="card" style="padding: 1.5rem;">
+                <h4 style="color: var(--math-color);">Ordine</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">L'<strong>ordine</strong> di una EDO è l'ordine della derivata più alta presente. \(y' = f\) è del 1° ordine; \(y'' = f\) è del 2°.</p>
+            </div>
+        </div>
+
+        <p class="lesson-text">
+            <span class="pill">Esempio fisico</span> La <strong>velocità</strong> è la derivata della posizione rispetto al tempo:
+        </p>
+        <div class="formula-block">
+            \(\displaystyle v(t) = \frac{ds}{dt}\)
+            &nbsp;&nbsp;⟹&nbsp;&nbsp; se conosci \(v(t)\), integrare ti dà la posizione \(s(t)\).
+        </div>
+        <p class="lesson-text">
+            Se sai che un oggetto rallenta proporzionalmente alla velocità (\(a = -kv\)), stai descrivendo il sistema con una EDO: \(\dfrac{dv}{dt} = -kv\).
+        </p>
+    </section>
+
+    <!-- SEZIONE 2: TIMELINE STORICA -->
+    <section class="lesson-section" style="border-left: 4px solid #F59E0B;">
+        <h2 class="lesson-title" style="color: #F59E0B;">Una Breve Storia delle EDO</h2>
+        <p class="lesson-text">
+            Le equazioni differenziali nascono quasi in contemporanea con il calcolo infinitesimale, e da allora hanno rivoluzionato fisica, ingegneria e biologia.
+        </p>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-date">1680s — Newton e Leibniz</div>
+                <div class="timeline-desc">Inventano il calcolo infinitesimale indipendentemente. Newton formula le leggi del moto come EDO: \(F = m \ddot{x}\). Nasce l'idea di descrivere il cambiamento con equazioni.</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-date">1690s — Bernoulli (separazione delle variabili)</div>
+                <div class="timeline-desc">Jakob Bernoulli e suo fratello Johann sviluppano il metodo di <strong>separazione delle variabili</strong>: per \(\dfrac{dy}{dx} = g(x) h(y)\) si scrive \(\dfrac{dy}{h(y)} = g(x)\,dx\) e si integra separatamente.</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-date">1768 — Euler (metodo numerico)</div>
+                <div class="timeline-desc">Leonhard Euler propone il primo metodo numerico per approssimare soluzioni di EDO passo dopo passo: \(y_{n+1} = y_n + h \cdot f(x_n, y_n)\). Ancora oggi è il punto di partenza dell'analisi numerica.</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-date">1890 — Poincaré (sistemi dinamici)</div>
+                <div class="timeline-desc">Henri Poincaré studia il problema dei tre corpi e scopre il <strong>caos deterministico</strong>: sistemi di EDO semplici possono avere comportamenti imprevedibili. Nasce la teoria dei sistemi dinamici.</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-date">Oggi — ML e simulazioni fisiche</div>
+                <div class="timeline-desc">Le EDO guidano le simulazioni fisiche nei videogiochi e nei motori di rendering, le reti neurali ODE (Neural ODEs) per l'apprendimento automatico, i modelli epidemiologici SIR e i modelli climatici globali.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SEZIONE 3: SIMULATORE CRESCITA ESPONENZIALE -->
+    <section class="lesson-section">
+        <h2 class="lesson-title">Simulatore: Crescita Esponenziale</h2>
+        <p class="lesson-text">
+            Una delle EDO più importanti è la <strong>legge di crescita/decadimento esponenziale</strong>:
+        </p>
+        <div class="formula-block" style="text-align: center; font-size: 1.3rem;">
+            \(\displaystyle \frac{dN}{dt} = kN \quad \Longrightarrow \quad N(t) = N_0 \cdot e^{kt}\)
+        </div>
+        <p class="lesson-text">
+            Con \(k &gt; 0\) descrive la crescita di una <strong>popolazione</strong>; con \(k &lt; 0\) il <strong>decadimento radioattivo</strong> (o il raffreddamento di un oggetto). La soluzione si ottiene separando le variabili e integrando.
+        </p>
+
+        <div class="widget-box">
+            <h3 class="widget-title">Crescita / Decadimento Esponenziale</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">Varia il tasso \(k\) e il valore iniziale \(N_0\) per vedere come cambia la curva \(N(t) = N_0 \cdot e^{kt}\).</p>
+
+            <div class="ctrl-row">
+                <label>k =</label>
+                <input type="range" id="growth-k" min="-0.5" max="1.0" step="0.05" value="0.3">
+                <span class="val-display" id="growth-k-val">0.30</span>
+            </div>
+            <div class="ctrl-row">
+                <label>N₀ =</label>
+                <input type="range" id="growth-n0" min="5" max="100" step="5" value="20">
+                <span class="val-display" id="growth-n0-val">20</span>
+            </div>
+            <canvas class="graph" id="growth-canvas" width="600" height="360"></canvas>
+            <div class="result-card" id="growth-result">N(t) = 20 · e^(0.30·t)</div>
+        </div>
+    </section>
+
+    <!-- SEZIONE 4: METODO DI EULERO -->
+    <section class="lesson-section" style="border-left: 4px solid var(--physics-color);">
+        <h2 class="lesson-title" style="color: var(--physics-color);">Il Metodo di Eulero</h2>
+        <p class="lesson-text">
+            Quando non è possibile trovare una soluzione esatta in forma chiusa, si ricorre a <strong>metodi numerici</strong>. Il metodo di Eulero è il più intuitivo: approssima la curva soluzione con piccoli passi lineari, usando la pendenza (cioè la derivata) come guida locale.
+        </p>
+        <div class="formula-block">
+            <strong>Idea:</strong> se so che \(y'(x) = f(x,y)\) e conosco \(y(x_n)\), il valore nel passo successivo è:
+            <div style="text-align: center; margin-top: 0.8rem; font-size: 1.15rem;">
+                \(y_{n+1} = y_n + h \cdot f(x_n,\, y_n)\)
+            </div>
+        </div>
+        <p class="lesson-text">
+            Qui mostriamo il confronto tra la soluzione esatta di \(\dfrac{dy}{dx} = y\) (ovvero \(y = e^x\)) e l'approssimazione di Eulero. Passi piccoli (\(h\) basso) danno risultati più accurati.
+        </p>
+
+        <div class="widget-box">
+            <h3 class="widget-title">Eulero vs. Soluzione Esatta: dy/dx = y</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">Regola il passo \(h\). La curva <span style="color:#3b82f6; font-weight:700;">blu</span> è \(e^x\) (esatta); quella <span style="color:#f59e0b; font-weight:700;">arancione</span> è l'approssimazione di Eulero con passo \(h\).</p>
+            <div class="ctrl-row">
+                <label>h =</label>
+                <input type="range" id="euler-h" min="0.1" max="1.0" step="0.05" value="0.5">
+                <span class="val-display" id="euler-h-val">0.50</span>
+            </div>
+            <canvas class="graph" id="euler-canvas" width="600" height="360"></canvas>
+            <div class="result-card" id="euler-result">Errore finale (x=3): ...</div>
+        </div>
+    </section>
+
+    <!-- SEZIONE 5: EQUAZIONE DEL PENDOLO -->
+    <section class="lesson-section">
+        <h2 class="lesson-title">Equazione del Pendolo</h2>
+        <p class="lesson-text">
+            Il pendolo semplice è descritto da una EDO del <strong>secondo ordine</strong> non lineare:
+        </p>
+        <div class="formula-block" style="text-align: center; font-size: 1.25rem;">
+            \(\displaystyle \frac{d^2\theta}{dt^2} = -\frac{g}{L} \sin\theta\)
+        </div>
+        <p class="lesson-text">
+            dove \(\theta\) è l'angolo dalla verticale, \(g = 9.81\) m/s² l'accelerazione di gravità e \(L\) la lunghezza del filo. Per angoli piccoli (\(\sin\theta \approx \theta\)) si ottiene il moto armonico con periodo \(T = 2\pi\sqrt{L/g}\). Per angoli grandi, il non-linearismo \(\sin\theta\) produce un periodo leggermente più lungo.
+        </p>
+        <p class="lesson-text">
+            La simulazione integra numericamente le equazioni (metodo di Eulero–Cromer) in tempo reale.
+        </p>
+
+        <div class="widget-box">
+            <h3 class="widget-title">Simulazione Animata del Pendolo</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">Modifica la lunghezza \(L\) e l'angolo iniziale \(\theta_0\). Il filo rosso mostra la traiettoria recente.</p>
+            <div class="ctrl-row">
+                <label>L (m) =</label>
+                <input type="range" id="pend-L" min="0.5" max="2.0" step="0.1" value="1.0">
+                <span class="val-display" id="pend-L-val">1.0</span>
+            </div>
+            <div class="ctrl-row">
+                <label>θ₀ (°) =</label>
+                <input type="range" id="pend-theta" min="5" max="45" step="1" value="20">
+                <span class="val-display" id="pend-theta-val">20</span>
+            </div>
+            <canvas class="graph" id="pendulum-canvas" width="600" height="360"></canvas>
+            <div class="result-card" id="pend-result">T ≈ ... s &nbsp;|&nbsp; θ = ...°</div>
+        </div>
+    </section>
+
+    <!-- SEZIONE 6: QUIZ -->
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title">Quiz di Riepilogo</h2>
+        <p class="lesson-text" style="font-size: 0.95rem;">Verifica la comprensione delle equazioni differenziali e dei metodi di soluzione.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+    </section>
+
+</main>
+
+<footer><p>&copy; 2026 MFI - Piattaforma Didattica Interattiva.</p></footer>
+
+<script src="equazioni-differenziali.js"></script>
+<script src="../../js/main.js"></script>
+</body>
+</html>
