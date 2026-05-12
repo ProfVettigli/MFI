@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reti di Hopfield - Lezione Interattiva MFI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        .back-button { display: inline-flex; align-items: center; color: var(--text-muted); text-decoration: none; margin-bottom: 2rem; font-weight: 600; transition: color 0.3s ease, transform 0.3s ease; }
+        .back-button:hover { color: var(--text-main); transform: translateX(-5px); }
+        .sub-hero { padding: 4rem 0 2rem; text-align: left; }
+        .sub-hero-title { font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; margin-bottom: 1rem; }
+
+        /* Timeline */
+        .timeline { position: relative; padding-left: 2.5rem; margin: 2rem 0; }
+        .timeline::before { content: ''; position: absolute; left: 0.6rem; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, #6366f1, rgba(99,102,241,0.1)); }
+        .timeline-item { position: relative; margin-bottom: 2rem; }
+        .timeline-item::before { content: ''; position: absolute; left: -1.95rem; top: 0.4rem; width: 10px; height: 10px; border-radius: 50%; background: #6366f1; box-shadow: 0 0 8px rgba(99,102,241,0.6); }
+        .timeline-year { font-size: 0.8rem; font-weight: 700; color: #6366f1; letter-spacing: 1px; margin-bottom: 0.3rem; }
+        .timeline-text { font-size: 0.97rem; color: var(--text-muted); line-height: 1.6; }
+        .timeline-text strong { color: var(--text-main); }
+
+        /* Hopfield accent color */
+        .hop-color { color: #6366f1; }
+        .lesson-section { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 2.5rem; margin-bottom: 2rem; }
+
+        /* Demo grid */
+        .demo-box { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 2rem; margin-top: 1.5rem; }
+        .hop-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; width: fit-content; margin: 1rem auto; }
+        .hop-cell { width: 38px; height: 38px; border-radius: 4px; cursor: pointer; transition: background 0.15s; border: 1px solid rgba(255,255,255,0.08); }
+        .hop-cell.on  { background: #6366f1; box-shadow: 0 0 6px rgba(99,102,241,0.6); }
+        .hop-cell.off { background: rgba(255,255,255,0.05); }
+
+        .pattern-row { display: flex; gap: 0.7rem; flex-wrap: wrap; justify-content: center; margin: 1rem 0; }
+        .pat-btn { padding: 0.6rem 1.1rem; border-radius: 8px; border: 1px solid rgba(99,102,241,0.35); background: rgba(99,102,241,0.1); color: var(--text-main); cursor: pointer; font-family: inherit; font-weight: 600; font-size: 0.95rem; transition: all 0.2s; }
+        .pat-btn:hover { background: rgba(99,102,241,0.25); border-color: #6366f1; }
+        .pat-btn.active { background: #6366f1; border-color: #6366f1; color: white; }
+
+        .hop-controls { display: flex; flex-wrap: wrap; gap: 0.7rem; margin: 1rem 0; justify-content: center; }
+        .hop-btn { padding: 0.65rem 1.3rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.06); color: var(--text-main); cursor: pointer; font-family: inherit; font-weight: 600; font-size: 0.95rem; transition: all 0.2s; }
+        .hop-btn:hover { background: rgba(255,255,255,0.12); }
+        .hop-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .hop-btn.primary { background: #6366f1; border-color: #6366f1; color: white; }
+        .hop-btn.primary:hover { background: #4f46e5; }
+
+        .energy-display { text-align: center; font-family: monospace; font-size: 1.1rem; color: #6366f1; margin-top: 1rem; font-weight: 700; }
+        .status-msg { text-align: center; color: var(--text-muted); font-size: 0.92rem; margin: 0.5rem 0; min-height: 1.4em; }
+        .trained-badge { display: inline-block; background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.4); color: var(--physics-color); border-radius: 6px; padding: 0.2rem 0.7rem; font-size: 0.85rem; font-weight: 600; margin-left: 0.5rem; }
+
+        /* Formula box */
+        .formula-box { background: rgba(0,0,0,0.3); border: 1px solid rgba(99,102,241,0.25); border-radius: 10px; padding: 1.2rem 1.8rem; margin: 1.2rem 0; font-family: monospace; font-size: 1.05rem; color: #a5b4fc; line-height: 1.8; }
+
+        /* App cards */
+        .app-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.2rem; margin: 1.5rem 0; }
+        .app-card { background: rgba(99,102,241,0.06); border: 1px solid rgba(99,102,241,0.2); border-radius: 12px; padding: 1.3rem; }
+        .app-card h4 { color: #a5b4fc; margin-bottom: 0.5rem; }
+        .app-card p { font-size: 0.9rem; color: var(--text-muted); }
+
+        /* Infobox */
+        .info-box { background: rgba(99,102,241,0.07); border-left: 4px solid #6366f1; border-radius: 0 10px 10px 0; padding: 1.2rem 1.5rem; margin: 1.2rem 0; }
+        .info-box p { color: var(--text-muted); font-size: 0.97rem; margin: 0; }
+        .info-box strong { color: var(--text-main); }
+    </style>
+</head>
+<body>
+
+<header class="sub-hero">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <a href="informatica.html" class="back-button" style="margin-bottom: 0;">
+                <span style="margin-right:0.5rem;font-size:1.2rem;">&larr;</span> Torna a Informatica
+            </a>
+        </div>
+        <h1 class="sub-hero-title">Reti di <span class="gradient-text">Hopfield</span></h1>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 820px; font-weight: 300;">
+            Dalla regola di Hebb al Nobel 2024: come una rete neurale ricorda i pattern e li recupera a partire da frammenti rumorosi. Esplora la memoria associativa in modo interattivo.
+        </p>
+    </div>
+</header>
+
+<main class="container">
+
+    <!-- SEZIONE 1: Contesto storico -->
+    <section class="lesson-section" style="border-left: 4px solid #6366f1;">
+        <h2 class="lesson-title hop-color">1. Contesto Storico</h2>
+        <p class="lesson-text">
+            Le reti di Hopfield nascono da decenni di riflessione sul funzionamento del cervello e sul modo in cui la fisica statistica puo descrivere sistemi complessi. Il cammino che porta al Nobel del 2024 attraversa contributi fondamentali di biologi, neuroscienziati e fisici.
+        </p>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-year">1943</div>
+                <p class="timeline-text"><strong>Warren McCulloch e Walter Pitts</strong> pubblicano il primo modello matematico di neurone artificiale. Dimostrano che un insieme di neuroni binari puo calcolare qualsiasi funzione logica: e l'alba della computazione neurale.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1949</div>
+                <p class="timeline-text"><strong>Donald Hebb</strong> pubblica <em>"The Organisation of Behavior"</em> e formula la celebre <strong>regola di Hebb</strong>: <em>"neurons that fire together wire together"</em>. I neuroni che si attivano insieme rinforzano le connessioni tra loro. E il principio dell'apprendimento hebbiano, ancora usato oggi.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1982</div>
+                <p class="timeline-text"><strong>John Hopfield</strong> pubblica su <em>PNAS</em> il lavoro <em>"Neural networks and physical systems with emergent collective computational abilities"</em>. Nasce la rete di Hopfield: un modello ricorrente capace di memorizzare pattern e recuperarli come una memoria associativa. L'analogia con la fisica statistica (energia, minimi, spin) e immediatamente potente.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1986</div>
+                <p class="timeline-text"><strong>Rumelhart, Hinton e Williams</strong> formalizzano la <strong>backpropagation</strong>: l'algoritmo che permette di addestrare reti neurali profonde a strati. Apre la strada al deep learning moderno.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2024</div>
+                <p class="timeline-text"><strong>John Hopfield e Geoffrey Hinton</strong> vincono il <strong>Premio Nobel per la Fisica</strong> per i loro contributi fondamentali alle reti neurali artificiali. Il Nobel riconosce come i metodi della fisica statistica abbiano permesso di capire e progettare sistemi di apprendimento automatico.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SEZIONE 2: Come funziona -->
+    <section class="lesson-section">
+        <h2 class="lesson-title hop-color">2. Come Funziona una Rete di Hopfield</h2>
+        <p class="lesson-text">
+            Una rete di Hopfield e composta da <strong>N neuroni</strong>, ognuno dei quali puo trovarsi in uno dei due stati: <strong>+1</strong> (attivo) oppure <strong>-1</strong> (inattivo). Ogni neurone e connesso a tutti gli altri tramite una <strong>matrice di pesi W</strong> simmetrica (W<sub>ij</sub> = W<sub>ji</sub>).
+        </p>
+
+        <h3 style="margin: 1.5rem 0 0.8rem; color: #a5b4fc; font-size: 1.1rem;">Fase 1 — Memorizzazione (regola di Hebb)</h3>
+        <p class="lesson-text">
+            Per memorizzare un insieme di pattern, i pesi vengono calcolati sommando il contributo di ogni pattern:
+        </p>
+        <div class="formula-box">
+            W<sub>ij</sub> = (1/N) &Sigma;<sub>k</sub> x<sub>i</sub><sup>(k)</sup> &middot; x<sub>j</sub><sup>(k)</sup>
+            <br><span style="color:var(--text-muted); font-size:0.9rem;">dove x<sup>(k)</sup> e il k-esimo pattern memorizzato, N e il numero di neuroni</span>
+        </div>
+        <p class="lesson-text">
+            La diagonale viene azzerata: W<sub>ii</sub> = 0 (nessun neurone si connette a se stesso). Se due neuroni si attivano insieme in molti pattern, la loro connessione diventa forte — esattamente come prevede la regola di Hebb.
+        </p>
+
+        <h3 style="margin: 1.5rem 0 0.8rem; color: #a5b4fc; font-size: 1.1rem;">Fase 2 — Recupero (aggiornamento iterativo)</h3>
+        <p class="lesson-text">
+            Dato un pattern di partenza (anche rumoroso o parziale), ogni neurone si aggiorna in modo asincrono seguendo la regola:
+        </p>
+        <div class="formula-box">
+            s<sub>i</sub> = sign(&Sigma;<sub>j</sub> W<sub>ij</sub> &middot; s<sub>j</sub>)
+            <br><span style="color:var(--text-muted); font-size:0.9rem;">sign(x) = +1 se x &ge; 0, altrimenti -1</span>
+        </div>
+        <p class="lesson-text">
+            Le iterazioni continuano finche lo stato non cambia piu: la rete ha raggiunto un <strong>attrattore</strong>, cioe un pattern memorizzato (o un suo spurio). La convergenza e garantita dalla funzione energia.
+        </p>
+
+        <div class="info-box">
+            <p><strong>Capacita di memoria:</strong> una rete di Hopfield con N neuroni puo memorizzare in modo affidabile circa <strong>0.138 &times; N</strong> pattern distinti. Per 49 neuroni (come nella nostra demo 7&times;7) ci aspettiamo di recuperare al massimo ~6&ndash;7 pattern senza errori.</p>
+        </div>
+    </section>
+
+    <!-- SEZIONE 3: Funzione Energia -->
+    <section class="lesson-section" style="border-left: 4px solid #6366f1;">
+        <h2 class="lesson-title hop-color">3. La Funzione Energia</h2>
+        <p class="lesson-text">
+            L'intuizione geniale di Hopfield fu quella di associare alla rete una <strong>funzione energia</strong>, mutuata dalla fisica dei materiali magnetici (<em>modello di Ising</em>):
+        </p>
+        <div class="formula-box">
+            E = &minus;&frac12; &Sigma;<sub>i,j</sub> W<sub>ij</sub> &middot; s<sub>i</sub> &middot; s<sub>j</sub>
+        </div>
+        <p class="lesson-text">
+            Ogni aggiornamento di un neurone puo solo <strong>diminuire</strong> l'energia (o lasciarla invariata). La rete si comporta come una pallina che rotola in un paesaggio collinare: scende sempre verso i minimi locali. I <strong>minimi dell'energia corrispondono esattamente ai pattern memorizzati</strong>. Dare alla rete un input rumoroso equivale a piazzare la pallina su un versante: automaticamente scivolera verso la valle piu vicina, recuperando il pattern originale.
+        </p>
+
+        <div class="app-grid" style="margin-top: 1.5rem;">
+            <div class="app-card">
+                <h4>Minimi locali = Memoria</h4>
+                <p>I pattern memorizzati sono i minimi profondi del paesaggio energetico. La rete li raggiunge per discesa del gradiente discreta.</p>
+            </div>
+            <div class="app-card">
+                <h4>Pattern spuri</h4>
+                <p>Esistono anche minimi non desiderati: combinazioni di pattern memorizzati che la rete pu&ograve; raggiungere per errore. Sono un limite intrinseco della capacita di memoria.</p>
+            </div>
+            <div class="app-card">
+                <h4>Analogia fisica</h4>
+                <p>Il modello e matematicamente equivalente al modello di Ising dei magneti. Hopfield importo nella Computer Science gli strumenti della fisica statistica.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SEZIONE 4: Demo interattiva -->
+    <section class="lesson-section">
+        <h2 class="lesson-title hop-color">4. Demo Interattiva: Memoria Associativa</h2>
+        <p class="lesson-text">
+            Una griglia 7&times;7 di neuroni (pixel bianchi = +1, scuri = &minus;1). Scegli fino a 3 pattern predefiniti da memorizzare, poi aggiungi rumore e osserva la rete recuperare il pattern originale, passo dopo passo.
+        </p>
+
+        <div class="demo-box">
+            <!-- Selezione pattern -->
+            <h3 style="color: #a5b4fc; margin-bottom: 1rem; font-size: 1rem; text-transform: uppercase; letter-spacing: 0.08em;">Fase 1 — Scegli i pattern da memorizzare</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.8rem;">Clicca su uno o piu pattern predefiniti (lettera T, lettera L, lettera H), poi premi "Memorizza".</p>
+            <div class="pattern-row">
+                <button class="pat-btn" id="pat-T">Lettera T</button>
+                <button class="pat-btn" id="pat-L">Lettera L</button>
+                <button class="pat-btn" id="pat-H">Lettera H</button>
+            </div>
+            <div style="text-align:center;">
+                <button class="hop-btn primary" id="btn-memorize">Memorizza Pattern</button>
+                <span id="trained-status"></span>
+            </div>
+            <p class="status-msg" id="msg-memorize"></p>
+
+            <hr style="border-color: rgba(255,255,255,0.08); margin: 1.5rem 0;">
+
+            <!-- Griglia interattiva -->
+            <h3 style="color: #a5b4fc; margin-bottom: 0.5rem; font-size: 1rem; text-transform: uppercase; letter-spacing: 0.08em;">Fase 2 — Griglia Interattiva</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.5rem; text-align:center;">Clicca sulle celle per disegnare manualmente, oppure usa i pulsanti qui sotto.</p>
+            <div class="hop-grid" id="hopfield-grid"></div>
+            <div class="energy-display" id="energy-display">Energia E: &mdash;</div>
+
+            <div class="hop-controls">
+                <button class="hop-btn" id="btn-load-T">Carica T</button>
+                <button class="hop-btn" id="btn-load-L">Carica L</button>
+                <button class="hop-btn" id="btn-load-H">Carica H</button>
+                <button class="hop-btn" id="btn-noise">Aggiungi Rumore (30%)</button>
+                <button class="hop-btn primary" id="btn-recover">Recupera!</button>
+                <button class="hop-btn" id="btn-clear-grid">Pulisci griglia</button>
+            </div>
+            <p class="status-msg" id="msg-recover"></p>
+        </div>
+    </section>
+
+    <!-- SEZIONE 5: Applicazioni moderne -->
+    <section class="lesson-section" style="border-left: 4px solid #6366f1;">
+        <h2 class="lesson-title hop-color">5. Applicazioni Moderne e Sviluppi Recenti</h2>
+        <p class="lesson-text">
+            Le reti di Hopfield classiche del 1982 hanno una capacita di memoria limitata (~0.138N pattern). Nel 2020 un risultato sorprendente ha rinnovato l'interesse per questi modelli.
+        </p>
+
+        <div class="app-grid">
+            <div class="app-card">
+                <h4>Modern Hopfield Networks (2020)</h4>
+                <p>Ramsauer et al. (2020) mostrano che, usando una funzione energia diversa (softmax invece di segno), la capacita di memoria scala <strong>esponenzialmente</strong> con N. La connessione con il meccanismo di <strong>Attention dei Transformer</strong> (come ChatGPT) e formale: ogni layer di attention puo essere visto come un passo di aggiornamento di Hopfield.</p>
+            </div>
+            <div class="app-card">
+                <h4>Content-Addressable Memory</h4>
+                <p>A differenza delle RAM, le reti di Hopfield recuperano informazioni per <em>contenuto</em>, non per indirizzo. Dai un frammento di ricordo, la rete completa il resto. E il modello piu vicino al modo in cui funziona la memoria umana.</p>
+            </div>
+            <div class="app-card">
+                <h4>Riconoscimento di Pattern</h4>
+                <p>Applicazioni storiche nel riconoscimento di caratteri scritti a mano, immagini degradate, segnali con rumore. Pur superate dal deep learning per le prestazioni, rimangono un modello teoricamente elegante e interpretabile.</p>
+            </div>
+            <div class="app-card">
+                <h4>Neuroscienza Computazionale</h4>
+                <p>Le reti di Hopfield sono il modello di riferimento per spiegare come il cervello potrebbe consolidare i ricordi a lungo termine durante il sonno (riattivazione degli attrattori) e come avviene il completamento dei pattern nella corteccia.</p>
+            </div>
+        </div>
+
+        <div class="info-box" style="margin-top: 1.5rem;">
+            <p><strong>Connessione con i Transformer:</strong> Il meccanismo di self-attention in modelli come BERT e GPT puo essere derivato come caso speciale di un aggiornamento di Hopfield moderno. Questo significa che ogni volta che ChatGPT "presta attenzione" a una parola in un testo, sta eseguendo implicitamente un recupero di memoria associativa.</p>
+        </div>
+    </section>
+
+    <!-- SEZIONE 6: Quiz -->
+    <section class="lesson-section quiz-container">
+        <h2 class="lesson-title hop-color">Quiz di Riepilogo</h2>
+        <p class="lesson-text" style="font-size: 0.95rem;">Mettiti alla prova sulle reti di Hopfield, la regola di Hebb e il Nobel 2024.</p>
+        <div id="quiz-area"></div>
+        <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva.</p>
+</footer>
+
+<script src="hopfield.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

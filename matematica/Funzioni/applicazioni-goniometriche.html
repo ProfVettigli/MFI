@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Applicazioni delle Funzioni Goniometriche - MFI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- MathJax -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <style>
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: color 0.3s, transform 0.3s;
+        }
+        .back-button:hover {
+            color: var(--text-main);
+            transform: translateX(-5px);
+        }
+        .back-icon {
+            margin-right: 0.5rem;
+        }
+
+        .appl-gradient {
+            background: linear-gradient(135deg, #2563eb, #3b82f6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .widget-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .widget-box h4 {
+            color: var(--math-color);
+            margin-bottom: 1.2rem;
+            font-size: 1.1rem;
+        }
+
+        .dual-panel {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .panel-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+        }
+
+        canvas {
+            width: 100%;
+            display: block;
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 12px;
+        }
+
+        .slider-row {
+            margin: 1rem 0;
+        }
+
+        .slider-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--math-color);
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .slider-value {
+            font-family: 'Fira Code', monospace;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-left: 0.5rem;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+            margin: 0.6rem 0;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            background: var(--math-color);
+            cursor: pointer;
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--math-glow);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            background: var(--math-color);
+            cursor: pointer;
+            border-radius: 50%;
+            border: none;
+            box-shadow: 0 0 10px var(--math-glow);
+        }
+
+        .info-box {
+            background: rgba(59, 130, 246, 0.08);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 12px;
+            padding: 1.2rem 1.5rem;
+            margin: 1.2rem 0;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        .info-box strong {
+            color: var(--math-color);
+        }
+
+        .formula-box {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 20px;
+            text-align: center;
+            padding: 1.5rem 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .checkbox-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin: 1rem 0;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 0.4rem 0.8rem;
+            cursor: pointer;
+            transition: border-color 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .checkbox-item:hover {
+            border-color: var(--math-color);
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            accent-color: var(--math-color);
+            width: 15px;
+            height: 15px;
+            cursor: pointer;
+        }
+
+        .current-formula {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.95rem;
+            color: var(--math-color);
+            background: rgba(59, 130, 246, 0.08);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 8px;
+            padding: 0.6rem 1rem;
+            margin-top: 0.8rem;
+            word-break: break-all;
+        }
+
+        .rms-badge {
+            display: inline-block;
+            background: rgba(59, 130, 246, 0.15);
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            border-radius: 10px;
+            padding: 0.8rem 1.5rem;
+            margin-top: 1rem;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        .rms-badge .big {
+            display: block;
+            font-family: 'Fira Code', monospace;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--math-color);
+            margin-top: 0.3rem;
+        }
+
+        @media (max-width: 768px) {
+            .dual-panel {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="lesson-header">
+        <div class="container" style="padding: 4rem 0 2rem;">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <a href="funzioni.html" class="back-button">
+                    <span class="back-icon">&larr;</span> Torna a Funzioni
+                </a>
+            </div>
+            <h1 class="lesson-title" style="font-size: clamp(2rem, 5vw, 3.2rem); margin-bottom: 1rem;">
+                <span class="appl-gradient">Applicazioni delle Funzioni Goniometriche</span>
+            </h1>
+            <p class="lesson-subtitle">
+                Onde sonore, corrente alternata, moti circolari e serie di Fourier: seno e coseno ovunque nel mondo reale.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- 1. INTRODUZIONE -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">1. Introduzione: il Linguaggio dei Fenomeni Ciclici</h2>
+            <p class="lesson-text">
+                Ogni volta che un fenomeno si <strong>ripete nel tempo</strong> — un suono, un'onda luminosa, la corrente elettrica, la rotazione di un motore, il livello delle maree — la matematica lo descrive con seno e coseno. La formula generale è:
+            </p>
+            <div class="formula-box">
+                $$f(t) = A \cdot \sin(\omega t + \varphi)$$
+            </div>
+            <p class="lesson-text">
+                dove i tre parametri hanno un preciso significato fisico:
+            </p>
+            <div class="info-box">
+                <strong>A — Ampiezza:</strong> l'altezza massima dell'onda, cioè quanto è "forte" il fenomeno (volume di un suono, tensione di picco in un circuito).<br><br>
+                <strong>ω — Frequenza angolare (rad/s):</strong> quanto velocemente l'onda oscilla. Legata alla frequenza in Hz da \(\omega = 2\pi f\). Frequenza alta → onda più fitta.<br><br>
+                <strong>φ — Fase iniziale (rad):</strong> dove si trova l'onda all'istante \(t = 0\). Permette di "shiftare" orizzontalmente la curva.
+            </div>
+            <p class="lesson-text">
+                Nelle sezioni seguenti esplorerai quattro applicazioni reali, ciascuna con un widget interattivo.
+            </p>
+        </section>
+
+        <!-- 2. SINTESI DI ONDE SONORE -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">2. Sintesi di Onde Sonore</h2>
+            <p class="lesson-text">
+                Un suono puro (come un diapason) è descritto da una singola sinusoide \(f_1(t) = A \cdot \sin(\omega t + \varphi)\). I suoni più ricchi — di uno strumento musicale, di una voce — nascono dalla <strong>sovrapposizione</strong> di più onde. Usa gli slider per modellare l'onda principale, poi attiva la seconda componente per vederne l'effetto.
+            </p>
+
+            <div class="widget-box">
+                <h4>Sintetizzatore d'Onda</h4>
+
+                <!-- Componente 1 -->
+                <p style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.8rem;">Componente 1 (blu)</p>
+                <div class="slider-row">
+                    <label class="slider-label">Ampiezza A₁ <span class="slider-value" id="wave-A1-val">1.0</span></label>
+                    <input type="range" id="wave-A1" min="0" max="2" step="0.1" value="1.0">
+                </div>
+                <div class="slider-row">
+                    <label class="slider-label">Frequenza angolare ω₁ <span class="slider-value" id="wave-W1-val">2.0</span></label>
+                    <input type="range" id="wave-W1" min="1" max="5" step="0.1" value="2.0">
+                </div>
+                <div class="slider-row">
+                    <label class="slider-label">Fase φ₁ <span class="slider-value" id="wave-P1-val">0.00</span></label>
+                    <input type="range" id="wave-P1" min="0" max="6.283" step="0.05" value="0">
+                </div>
+
+                <!-- Componente 2 -->
+                <div style="margin-top: 1.2rem; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 1.2rem;">
+                    <label class="checkbox-item" style="display: inline-flex; margin-bottom: 0.8rem;">
+                        <input type="checkbox" id="wave-enable2"> Attiva seconda componente (arancio)
+                    </label>
+                    <div id="wave-comp2-controls">
+                        <div class="slider-row">
+                            <label class="slider-label">Ampiezza A₂ <span class="slider-value" id="wave-A2-val">0.5</span></label>
+                            <input type="range" id="wave-A2" min="0" max="2" step="0.1" value="0.5">
+                        </div>
+                        <div class="slider-row">
+                            <label class="slider-label">Frequenza angolare ω₂ <span class="slider-value" id="wave-W2-val">4.0</span></label>
+                            <input type="range" id="wave-W2" min="1" max="5" step="0.1" value="4.0">
+                        </div>
+                        <div class="slider-row">
+                            <label class="slider-label">Fase φ₂ <span class="slider-value" id="wave-P2-val">0.00</span></label>
+                            <input type="range" id="wave-P2" min="0" max="6.283" step="0.05" value="0">
+                        </div>
+                    </div>
+                </div>
+
+                <canvas id="wave-canvas" height="220"></canvas>
+                <div class="current-formula" id="wave-formula">f(t) = 1.0·sin(2.0t)</div>
+            </div>
+
+            <p class="lesson-text" style="font-style: italic; color: var(--text-muted);">
+                Osserva: quando due onde hanno frequenze simili, la loro sovrapposizione crea il fenomeno dei <strong>battimenti</strong> — variazioni periodiche di volume udibili nell'accordatura degli strumenti.
+            </p>
+        </section>
+
+        <!-- 3. MOTO CIRCOLARE UNIFORME -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">3. Moto Circolare Uniforme</h2>
+            <p class="lesson-text">
+                Un punto che si muove a velocità costante su una circonferenza di raggio \(R\) ha coordinate:
+            </p>
+            <div class="formula-box">
+                $$x(t) = R \cdot \cos(\omega t) \qquad y(t) = R \cdot \sin(\omega t)$$
+            </div>
+            <p class="lesson-text">
+                Le <strong>proiezioni</strong> sugli assi cartesiani oscillano sinusoidalmente. È per questo che seno e coseno "nascono" dal cerchio. Regola la velocità angolare e osserva come cambiano le proiezioni in tempo reale.
+            </p>
+
+            <div class="widget-box">
+                <h4>Animazione Moto Circolare</h4>
+                <div class="slider-row">
+                    <label class="slider-label">Velocità angolare ω <span class="slider-value" id="circ-W-val">1.5 rad/s</span></label>
+                    <input type="range" id="circ-W" min="0.5" max="3" step="0.1" value="1.5">
+                </div>
+                <canvas id="circ-canvas" height="300"></canvas>
+                <div class="info-box" style="margin-top: 1rem;">
+                    Posizione attuale: <strong>x = <span id="circ-x">1.00</span></strong> &nbsp;|&nbsp; <strong>y = <span id="circ-y">0.00</span></strong>
+                    &nbsp;&nbsp;—&nbsp;&nbsp; Angolo: <strong><span id="circ-angle">0.00</span> rad</strong>
+                </div>
+            </div>
+
+            <p class="lesson-text">
+                Applicazioni reali: motori elettrici, alternatori, ruote dentate, sistemi di navigazione inerziale. Ogni rotazione produce seni e coseni.
+            </p>
+        </section>
+
+        <!-- 4. CORRENTE ALTERNATA -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">4. Corrente Alternata (AC)</h2>
+            <p class="lesson-text">
+                La corrente elettrica nelle nostre case è <strong>alternata</strong>: inverte il verso di scorrimento 50 volte al secondo (50 Hz in Europa). La sua intensità segue la legge:
+            </p>
+            <div class="formula-box">
+                $$I(t) = I_0 \cdot \sin(2\pi f t)$$
+            </div>
+            <p class="lesson-text">
+                dove \(I_0\) è il valore di picco e \(f = 50 \text{ Hz}\). La scelta di 50 Hz è un compromesso storico: abbastanza alta da rendere invisibile lo sfarfallio delle lampade, abbastanza bassa da ridurre le perdite per induttanza nei cavi di trasmissione.
+            </p>
+
+            <div class="widget-box">
+                <h4>Visualizzatore Corrente Alternata</h4>
+                <div class="dual-panel" style="margin: 0 0 1rem 0;">
+                    <div>
+                        <div class="slider-row">
+                            <label class="slider-label">Frequenza f <span class="slider-value" id="ac-f-val">50 Hz</span></label>
+                            <input type="range" id="ac-f" min="1" max="100" step="1" value="50">
+                        </div>
+                        <div class="slider-row">
+                            <label class="slider-label">Ampiezza I₀ <span class="slider-value" id="ac-A-val">1.0</span></label>
+                            <input type="range" id="ac-A" min="0.1" max="2" step="0.1" value="1.0">
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; justify-content: center;">
+                        <div class="rms-badge">
+                            Valore efficace (RMS)
+                            <span class="big" id="ac-rms">I₀/√2 = 0.707</span>
+                        </div>
+                    </div>
+                </div>
+                <canvas id="ac-canvas" height="200"></canvas>
+                <div class="current-formula" id="ac-formula">I(t) = 1.0·sin(2π·50·t)</div>
+            </div>
+
+            <div class="info-box">
+                <strong>Perché il valore efficace (RMS)?</strong><br>
+                La corrente alternata oscilla tra \(+I_0\) e \(-I_0\), quindi la sua media è zero. Per confrontarla con la corrente continua si usa il <em>valore quadratico medio</em>:
+                \[I_{\text{RMS}} = \frac{I_0}{\sqrt{2}} \approx 0{,}707 \cdot I_0\]
+                In Italia la presa a 230 V si riferisce proprio al valore RMS. Il picco reale è \(230\sqrt{2} \approx 325 \text{ V}\).
+            </div>
+        </section>
+
+        <!-- 5. ANALISI DI FOURIER -->
+        <section class="lesson-section">
+            <h2 class="lesson-title">5. Analisi di Fourier (cenni)</h2>
+            <p class="lesson-text">
+                Nel 1822 il matematico Joseph Fourier dimostrò un risultato sorprendente: <strong>qualsiasi onda periodica</strong> può essere scritta come somma (potenzialmente infinita) di sinusoidi con frequenze multiple della frequenza fondamentale. Questo è il <em>Teorema di Fourier</em>.
+            </p>
+            <div class="formula-box">
+                $$f(t) = \frac{4}{\pi} \sum_{k=1,3,5,...} \frac{1}{k}\sin(k\,\omega\, t)$$
+            </div>
+            <p class="lesson-text">
+                L'esempio più famoso è l'<strong>onda quadra</strong>: sommando seno fondamentale (\(n=1\)), terza armonica (\(n=3\)), quinta (\(n=5\)), settima (\(n=7\))... si ottiene un'approssimazione sempre migliore di un segnale on/off perfetto. Spunta le armoniche e osserva la magia:
+            </p>
+
+            <div class="widget-box">
+                <h4>Costruttore di Onda Quadra — Serie di Fourier</h4>
+                <div class="checkbox-grid" id="fourier-checkboxes">
+                    <label class="checkbox-item">
+                        <input type="checkbox" class="fourier-harmonic" value="1" checked> n=1 (fondamentale)
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" class="fourier-harmonic" value="3"> n=3
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" class="fourier-harmonic" value="5"> n=5
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" class="fourier-harmonic" value="7"> n=7
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" class="fourier-harmonic" value="9"> n=9
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" class="fourier-harmonic" value="11"> n=11
+                    </label>
+                </div>
+                <canvas id="fourier-canvas" height="250"></canvas>
+                <div class="current-formula" id="fourier-formula">f(t) = (4/π)·sin(t)</div>
+            </div>
+
+            <div class="info-box">
+                <strong>Perché è rivoluzionario?</strong> La trasformata di Fourier è alla base di: compressione audio MP3, immagini JPEG, trasmissione Wi-Fi, risonanza magnetica (MRI), elaborazione delle onde sismiche. Ogni volta che ascolti musica in digitale, stai usando questo teorema.
+            </div>
+        </section>
+
+        <!-- 6. QUIZ -->
+        <section class="lesson-section quiz-container">
+            <h2 class="lesson-title">6. Quiz di Riepilogo</h2>
+            <p class="lesson-text" style="font-size: 0.95rem;">Verifica di aver compreso le applicazioni delle funzioni goniometriche.</p>
+            <div id="quiz-area"></div>
+            <div id="quiz-score" class="feedback-msg" style="font-size: 1.2rem; margin-top: 2rem;"></div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MFI - Piattaforma Didattica Interattiva.</p>
+    </footer>
+
+    <script src="applicazioni-goniometriche.js"></script>
+    <script src="../../js/main.js"></script>
+</body>
+</html>
